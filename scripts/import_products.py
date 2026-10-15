@@ -27,13 +27,14 @@ expected_categories = (
     + ["Churnas"] * 19
     + ["Gritas"] * 5
     + ["Tailas"] * 16
+    + ["Pills"] * 6
 )
-if len(products) != 81:
-    raise SystemExit(f"Safety check failed: expected 81 products, found {len(products)}")
+if len(products) != 87:
+    raise SystemExit(f"Safety check failed: expected 87 products, found {len(products)}")
 if any(product.get("product_category") != expected_categories[i] for i, product in enumerate(products)):
     raise SystemExit(
         "Safety check failed: categories must be products 1–32 Rasayoga, "
-        "33–41 Rasayanas, 42–60 Churnas, 61–65 Gritas, and 66–81 Tailas"
+        "33–41 Rasayanas, 42–60 Churnas, 61–65 Gritas, 66–81 Tailas, and 82–87 Pills"
     )
 required_fields = {"product_name", "product_quantity", "product_weight", "product_price", "product_units", "product_category"}
 if any(not required_fields.issubset(product) for product in products):
