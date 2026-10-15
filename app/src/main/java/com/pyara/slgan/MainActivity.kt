@@ -41,6 +41,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 
 private val Forest = Color(0xFF762A24)
 private val Leaf = Color(0xFF8A4B2A)
@@ -75,6 +76,11 @@ private val categories = listOf("All", "Supplements", "Powders", "Oils", "Skin C
 private fun AyurvedicApp() {
     val auth = remember { FirebaseAuth.getInstance() }
     var signedIn by remember { mutableStateOf(auth.currentUser != null) }
+    var showSplash by remember { mutableStateOf(true) }
+    LaunchedEffect(Unit) {
+        delay(5000)
+        showSplash = false
+    }
     DisposableEffect(auth) {
         val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             signedIn = firebaseAuth.currentUser != null
@@ -93,7 +99,9 @@ private fun AyurvedicApp() {
     val cart = remember { mutableStateMapOf<Int, Int>() }
     MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Color.White, onSurface = Ink)) {
         Surface(Modifier.fillMaxSize(), color = Cream) {
-            if (!signedIn) LoginScreen(
+            if (showSplash) {
+                SplashScreen()
+            } else if (!signedIn) LoginScreen(
                 value = userInput,
                 onValueChange = { userInput = it },
                 password = password,
@@ -132,6 +140,74 @@ private fun AyurvedicApp() {
         }
     }
 }
+@Composable
+private fun SplashScreen() {
+    val transition = rememberInfiniteTransition(label = "splashGoldCircle")
+    val ringRotation by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(tween(2200, easing = FastOutSlowInEasing), RepeatMode.Restart),
+        label = "ringRotation"
+    )
+    val glow by transition.animateFloat(
+        initialValue = 0.35f,
+        targetValue = 0.95f,
+        animationSpec = infiniteRepeatable(tween(900, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "goldGlow"
+    )
+    val logoScale = remember { Animatable(0.72f) }
+    val logoAlpha = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        logoAlpha.animateTo(1f, tween(650))
+        logoScale.animateTo(1f, tween(900, easing = FastOutSlowInEasing))
+    }
+    Box(
+        Modifier.fillMaxSize().background(
+            androidx.compose.ui.graphics.Brush.verticalGradient(
+                listOf(Color(0xFF260806), Color(0xFF651B17), Color(0xFF210605))
+            )
+        ),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(Modifier.fillMaxWidth().height(3.dp).align(Alignment.TopCenter).background(Gold.copy(alpha = 0.9f)))
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(Modifier.size(220.dp), contentAlignment = Alignment.Center) {
+                Box(
+                    Modifier.size(194.dp)
+                        .graphicsLayer { rotationZ = ringRotation; alpha = glow }
+                        .border(2.dp, Gold.copy(alpha = glow), CircleShape)
+                )
+                Box(
+                    Modifier.size(174.dp)
+                        .graphicsLayer { rotationZ = -ringRotation * 0.55f; alpha = glow * 0.7f }
+                        .border(1.dp, Color(0xFFFFE6A3).copy(alpha = glow), CircleShape)
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.logo2),
+                    contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
+                    modifier = Modifier.size(150.dp).graphicsLayer {
+                        alpha = logoAlpha.value
+                        scaleX = logoScale.value
+                        scaleY = logoScale.value
+                    }
+                )
+            }
+            Spacer(Modifier.height(22.dp))
+            Text("Sri Lakshmi Ganapathi", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, color = Color(0xFFFFE6A3), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+            Text("Ayurveda Nilayam", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+            Spacer(Modifier.height(10.dp))
+            Text("Estd. 1900 by Perraju Sharma", fontSize = 13.sp, fontWeight = FontWeight.Medium, color = Color(0xFFFFD783), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+            Spacer(Modifier.height(26.dp))
+            CircularProgressIndicator(
+                modifier = Modifier.size(22.dp),
+                color = Gold,
+                strokeWidth = 2.dp
+            )
+        }
+        Box(Modifier.fillMaxWidth().height(3.dp).align(Alignment.BottomCenter).background(Gold.copy(alpha = 0.9f)))
+    }
+}
+
 @Composable
 private fun LoginScreen(
     value: String,
