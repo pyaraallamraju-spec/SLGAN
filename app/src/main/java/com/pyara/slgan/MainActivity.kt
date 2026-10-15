@@ -275,8 +275,8 @@ private fun SplashScreen() {
     val textAlpha = remember { Animatable(0f) }
     val breathe = rememberInfiniteTransition(label = "premiumSplash")
     val halo by breathe.animateFloat(
-        initialValue = 0.16f,
-        targetValue = 0.34f,
+        initialValue = 0.18f,
+        targetValue = 0.36f,
         animationSpec = infiniteRepeatable(
             animation = tween(1700, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
@@ -291,79 +291,50 @@ private fun SplashScreen() {
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Cream),
+        modifier = Modifier.fillMaxSize().background(Cream),
         contentAlignment = Alignment.Center
     ) {
-        // Modern heritage-inspired maroon panels with restrained gold detailing.
         Box(
-            Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.40f)
-                .align(Alignment.TopCenter)
-                .background(
-                    androidx.compose.ui.graphics.Brush.verticalGradient(
-                        listOf(Color(0xFF4D100E), Color(0xFF762A24))
-                    )
-                )
+            Modifier.fillMaxWidth().fillMaxHeight(0.40f).align(Alignment.TopCenter)
+                .background(androidx.compose.ui.graphics.Brush.verticalGradient(
+                    listOf(Color(0xFF4D100E), Color(0xFF762A24))
+                ))
         )
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .height(3.dp)
-                .align(Alignment.TopCenter)
-                .background(Gold)
-        )
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .height(3.dp)
-                .align(Alignment.BottomCenter)
-                .background(Gold)
-        )
+        Box(Modifier.fillMaxWidth().height(3.dp).align(Alignment.TopCenter).background(Gold))
+        Box(Modifier.fillMaxWidth().height(3.dp).align(Alignment.BottomCenter).background(Gold))
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 28.dp)
-                .offset(y = (-4).dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
-                modifier = Modifier
-                    .size(226.dp)
-                    .graphicsLayer { alpha = halo }
-                    .border(1.dp, Gold.copy(alpha = 0.75f), CircleShape)
-            )
-            Box(
-                modifier = Modifier
-                    .offset(y = (-226).dp)
-                    .size(226.dp)
-                    .border(1.dp, Gold.copy(alpha = 0.45f), CircleShape)
-            )
-            Box(
-                modifier = Modifier
-                    .offset(y = (-420).dp)
-                    .size(174.dp)
-                    .background(Color.White, CircleShape)
-                    .border(3.dp, Gold, CircleShape)
-                    .padding(12.dp),
+                modifier = Modifier.size(214.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo2),
-                    contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer {
+                Box(
+                    Modifier.fillMaxSize().graphicsLayer { alpha = halo }
+                        .border(1.dp, Gold, CircleShape)
+                )
+                Box(
+                    Modifier.size(192.dp).border(1.dp, Gold.copy(alpha = 0.65f), CircleShape)
+                )
+                Box(
+                    Modifier.size(164.dp).background(Color.White, CircleShape)
+                        .border(3.dp, Gold, CircleShape).padding(11.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo2),
+                        contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
+                        modifier = Modifier.fillMaxSize().graphicsLayer {
                             alpha = logoAlpha.value
                             scaleX = logoScale.value
                             scaleY = logoScale.value
                         }
-                )
+                    )
+                }
             }
-            Spacer(Modifier.height((-398).dp))
+            Spacer(Modifier.height(28.dp))
             Column(
                 modifier = Modifier.graphicsLayer { alpha = textAlpha.value },
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -412,7 +383,7 @@ private fun SplashScreen() {
                     color = Muted,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
-                Spacer(Modifier.height(28.dp))
+                Spacer(Modifier.height(26.dp))
                 CircularProgressIndicator(
                     modifier = Modifier.size(22.dp),
                     color = Forest,
