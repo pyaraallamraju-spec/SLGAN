@@ -1,6 +1,9 @@
 package com.pyara.slgan
 
 import android.os.Bundle
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -683,6 +686,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCatego
 private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
     val user = remember { FirebaseAuth.getInstance().currentUser }
     val uid = user?.uid
+    val context = LocalContext.current
     var firstName by remember(uid) { mutableStateOf("") }
     var lastName by remember(uid) { mutableStateOf("") }
     var nickname by remember(uid) { mutableStateOf("") }
@@ -692,6 +696,20 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
     var isLoading by remember { mutableStateOf(true) }
     var isSaving by remember { mutableStateOf(false) }
     var saveMessage by remember { mutableStateOf<String?>(null) }
+    var profileSection by remember { mutableStateOf("Profile") }
+    var showAddressForm by remember { mutableStateOf(false) }
+    var addresses by remember(uid) { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    var addressLabel by remember { mutableStateOf("Home") }
+    var recipientName by remember { mutableStateOf("") }
+    var recipientPhone by remember { mutableStateOf("") }
+    var addressLine1 by remember { mutableStateOf("") }
+    var addressLine2 by remember { mutableStateOf("") }
+    var landmark by remember { mutableStateOf("") }
+    var city by remember { mutableStateOf("") }
+    var state by remember { mutableStateOf("") }
+    var pincode by remember { mutableStateOf("") }
+    var addressSaving by remember { mutableStateOf(false) }
+    var addressMessage by remember { mutableStateOf<String?>(null) }
 
     DisposableEffect(uid) {
         var registration: ListenerRegistration? = null
@@ -701,12 +719,14 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                     if (error != null) {
                         isLoading = false
                         saveMessage = "Couldn't load profile. Check your connection and try again."
-                    } else if (snapshot != null && snapshot.exists()) {
+                    } else if (snapshot != null) {
                         firstName = snapshot.getString("firstName").orEmpty()
                         lastName = snapshot.getString("lastName").orEmpty()
                         nickname = snapshot.getString("nickname").orEmpty()
                         gender = snapshot.getString("gender").orEmpty()
                         mobileNumber = snapshot.getString("mobileNumber").orEmpty()
+                        @Suppress("UNCHECKED_CAST")
+                        addresses = (snapshot.get("addresses") as? List<Map<String, Any>>).orEmpty()
                         isLoading = false
                     } else {
                         isLoading = false
@@ -719,119 +739,220 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
     }
 
     Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
-        Text("Your profile", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Spacer(Modifier.height(8.dp))
-        Text("Update your personal details. Changes sync to your SLGAN account.", color = Muted, fontSize = 13.sp)
-        Spacer(Modifier.height(18.dp))
-        Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(20.dp)) {
-            Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(58.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Person, null, tint = Forest, modifier = Modifier.size(30.dp))
-                }
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(
-                        listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname.ifBlank { "SLGAN Customer" } },
-                        color = Ink, fontWeight = FontWeight.Bold
-                    )
-                    Text(mobileNumber.ifBlank { user?.email.orEmpty() }, color = Muted, fontSize = 12.sp)
+        Text("Your account", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+        Text("Manage your personal details and delivery addresses.", color = Muted, fontSize = 13.sp)
+        Spacer(Modifier.height(16.dp))
+        Row(Modifier.fillMaxWidth().background(Color(0xFFF1E5D0), RoundedCornerShape(14.dp)).padding(4.dp)) {
+            listOf("Profile", "Addresses").forEach { section ->
+                val selected = profileSection == section
+                Box(
+                    Modifier.weight(1f).clip(RoundedCornerShape(11.dp))
+                        .background(if (selected) Forest else Color.Transparent)
+                        .clickable { profileSection = section; showAddressForm = false }
+                        .padding(vertical = 12.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(section, color = if (selected) Color.White else Ink, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                 }
             }
         }
-        Spacer(Modifier.height(20.dp))
-        OutlinedTextField(
-            value = firstName, onValueChange = { firstName = it; saveMessage = null },
-            modifier = Modifier.fillMaxWidth(), label = { Text("First name") }, singleLine = true,
-            leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Forest) }
-        )
-        Spacer(Modifier.height(12.dp))
-        OutlinedTextField(
-            value = lastName, onValueChange = { lastName = it; saveMessage = null },
-            modifier = Modifier.fillMaxWidth(), label = { Text("Last name") }, singleLine = true,
-            leadingIcon = { Icon(Icons.Default.Badge, null, tint = Forest) }
-        )
-        Spacer(Modifier.height(12.dp))
-        OutlinedTextField(
-            value = nickname, onValueChange = { nickname = it; saveMessage = null },
-            modifier = Modifier.fillMaxWidth(), label = { Text("Nickname") }, singleLine = true,
-            leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) }
-        )
-        Spacer(Modifier.height(12.dp))
-        OutlinedTextField(
-            value = mobileNumber,
-            onValueChange = { input -> mobileNumber = input.filter { it.isDigit() || it == '+' }.take(15); saveMessage = null },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text("Mobile number") },
-            placeholder = { Text("Enter mobile number") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) }
-        )
-        Spacer(Modifier.height(12.dp))
-        Box(Modifier.fillMaxWidth()) {
-            OutlinedTextField(
-                value = gender, onValueChange = {}, readOnly = true,
-                modifier = Modifier.fillMaxWidth(), label = { Text("Gender") },
-                placeholder = { Text("Select gender") },
-                trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) },
-                leadingIcon = { Icon(Icons.Default.Wc, null, tint = Forest) }
-            )
-            Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
-            DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }) {
-                listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
-                    DropdownMenuItem(text = { Text(option) }, onClick = {
-                        gender = option
-                        genderMenuExpanded = false
-                        saveMessage = null
-                    })
-                }
-            }
-        }
-        if (saveMessage != null) {
-            Spacer(Modifier.height(10.dp))
-            Text(saveMessage!!, color = if (saveMessage!!.startsWith("Saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
-        }
         Spacer(Modifier.height(18.dp))
-        Button(
-            onClick = {
-                val currentUid = uid
-                if (currentUid == null) {
-                    saveMessage = "Please sign in again to save your profile."
-                } else {
-                    isSaving = true
-                    saveMessage = null
-                    FirebaseData.saveCustomerProfile(
-                        currentUid,
-                        mapOf(
-                            "email" to (user.email ?: ""),
-                            "firstName" to firstName.trim(),
-                            "lastName" to lastName.trim(),
-                            "nickname" to nickname.trim(),
-                            "gender" to gender,
-                            "mobileNumber" to mobileNumber.trim(),
-                            "updatedAt" to System.currentTimeMillis()
+
+        if (profileSection == "Profile") {
+            Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(20.dp)) {
+                Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(58.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.Person, null, tint = Forest, modifier = Modifier.size(30.dp))
+                    }
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname.ifBlank { "SLGAN Customer" } },
+                            color = Ink, fontWeight = FontWeight.Bold
                         )
-                    ) { error ->
-                        isSaving = false
-                        saveMessage = if (error == null) "Saved successfully." else "Couldn't save profile. Please try again."
+                        Text(mobileNumber.ifBlank { user?.email.orEmpty() }, color = Muted, fontSize = 12.sp)
                     }
                 }
-            },
-            enabled = !isSaving && !isLoading,
-            modifier = Modifier.fillMaxWidth().height(52.dp),
-            shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Forest)
-        ) {
-            if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
-            else Icon(Icons.Default.Save, null)
-            Spacer(Modifier.width(8.dp))
-            Text(if (isLoading) "Loading profile…" else if (isSaving) "Saving…" else "Save profile", fontWeight = FontWeight.Bold)
-        }
-        Spacer(Modifier.height(12.dp))
-        OutlinedButton(onClick = onSignOut, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RoundedCornerShape(14.dp)) {
-            Icon(Icons.Default.Logout, null)
-            Spacer(Modifier.width(8.dp))
-            Text("Sign out")
+            }
+            Spacer(Modifier.height(20.dp))
+            OutlinedTextField(value = firstName, onValueChange = { firstName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("First name") }, singleLine = true, leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Forest) })
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(value = lastName, onValueChange = { lastName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Last name") }, singleLine = true, leadingIcon = { Icon(Icons.Default.Badge, null, tint = Forest) })
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Nickname") }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) })
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(value = mobileNumber, onValueChange = { input -> mobileNumber = input.filter { it.isDigit() || it == '+' }.take(15); saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Mobile number") }, placeholder = { Text("Enter mobile number") }, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) })
+            Spacer(Modifier.height(12.dp))
+            Box(Modifier.fillMaxWidth()) {
+                OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text("Gender") }, placeholder = { Text("Select gender") }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Forest) })
+                Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
+                DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }) {
+                    listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
+                        DropdownMenuItem(text = { Text(option) }, onClick = { gender = option; genderMenuExpanded = false; saveMessage = null })
+                    }
+                }
+            }
+            if (saveMessage != null) {
+                Spacer(Modifier.height(10.dp))
+                Text(saveMessage!!, color = if (saveMessage!!.startsWith("Saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
+            }
+            Spacer(Modifier.height(18.dp))
+            Button(
+                onClick = {
+                    val currentUid = uid
+                    if (currentUid == null) saveMessage = "Please sign in again to save your profile."
+                    else {
+                        isSaving = true
+                        saveMessage = null
+                        FirebaseData.saveCustomerProfile(currentUid, mapOf(
+                            "email" to (user.email ?: ""), "firstName" to firstName.trim(),
+                            "lastName" to lastName.trim(), "nickname" to nickname.trim(),
+                            "gender" to gender, "mobileNumber" to mobileNumber.trim(),
+                            "updatedAt" to System.currentTimeMillis()
+                        )) { error ->
+                            isSaving = false
+                            saveMessage = if (error == null) "Saved successfully." else "Couldn't save profile. Please try again."
+                        }
+                    }
+                },
+                enabled = !isSaving && !isLoading,
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Forest)
+            ) {
+                if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null)
+                Spacer(Modifier.width(8.dp))
+                Text(if (isLoading) "Loading profile…" else if (isSaving) "Saving…" else "Save profile", fontWeight = FontWeight.Bold)
+            }
+            Spacer(Modifier.height(12.dp))
+            OutlinedButton(onClick = onSignOut, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RoundedCornerShape(14.dp)) {
+                Icon(Icons.Default.Logout, null); Spacer(Modifier.width(8.dp)); Text("Sign out")
+            }
+        } else if (showAddressForm) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = { showAddressForm = false; addressMessage = null }) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
+                Column {
+                    Text("Add address", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                    Text("Enter delivery details below.", color = Muted, fontSize = 12.sp)
+                }
+            }
+            Spacer(Modifier.height(14.dp))
+            OutlinedButton(
+                onClick = {
+                    val query = listOf(addressLine1, addressLine2, landmark, city, state, pincode).filter { it.isNotBlank() }.joinToString(" ")
+                    val mapUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(query.ifBlank { "Choose delivery address" }))
+                    try { context.startActivity(Intent(Intent.ACTION_VIEW, mapUri)) }
+                    catch (_: Exception) { addressMessage = "Google Maps couldn't be opened. Please check that a browser or Maps app is installed." }
+                },
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                shape = RoundedCornerShape(14.dp)
+            ) {
+                Icon(Icons.Default.Map, null, tint = Forest); Spacer(Modifier.width(8.dp)); Text("Choose / check location on Google Maps")
+            }
+            Spacer(Modifier.height(8.dp))
+            Text("Google Maps opens separately. Please copy the address details into the fields below.", color = Muted, fontSize = 12.sp)
+            Spacer(Modifier.height(14.dp))
+            Text("Address type", color = Ink, fontWeight = FontWeight.Bold)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf("Home", "Work", "Other").forEach { label ->
+                    FilterChip(selected = addressLabel == label, onClick = { addressLabel = label }, label = { Text(label) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White))
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(value = recipientName, onValueChange = { recipientName = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Recipient name *") }, singleLine = true)
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(value = recipientPhone, onValueChange = { recipientPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(15); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Mobile number *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), singleLine = true)
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(value = addressLine1, onValueChange = { addressLine1 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("House / flat, building, street *") })
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(value = addressLine2, onValueChange = { addressLine2 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Area / village / locality") })
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(value = landmark, onValueChange = { landmark = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Landmark (optional)") })
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(value = city, onValueChange = { city = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("City / town *") }, singleLine = true)
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(value = state, onValueChange = { state = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("State *") }, singleLine = true)
+            Spacer(Modifier.height(10.dp))
+            OutlinedTextField(value = pincode, onValueChange = { pincode = it.filter(Char::isDigit).take(6); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("PIN code *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true)
+            if (addressMessage != null) {
+                Spacer(Modifier.height(10.dp))
+                Text(addressMessage!!, color = if (addressMessage!!.startsWith("Address saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
+            }
+            Spacer(Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    if (uid == null) addressMessage = "Please sign in again."
+                    else if (recipientName.isBlank() || recipientPhone.isBlank() || addressLine1.isBlank() || city.isBlank() || state.isBlank() || pincode.length != 6) {
+                        addressMessage = "Please complete all required fields and enter a 6-digit PIN code."
+                    } else {
+                        addressSaving = true
+                        addressMessage = null
+                        val newAddress = mapOf<String, Any>(
+                            "id" to System.currentTimeMillis().toString(), "label" to addressLabel,
+                            "recipientName" to recipientName.trim(), "phone" to recipientPhone.trim(),
+                            "addressLine1" to addressLine1.trim(), "addressLine2" to addressLine2.trim(),
+                            "landmark" to landmark.trim(), "city" to city.trim(), "state" to state.trim(),
+                            "pincode" to pincode.trim(), "createdAt" to System.currentTimeMillis()
+                        )
+                        val updatedAddresses = addresses + newAddress
+                        FirebaseFirestore.getInstance().collection("customers").document(uid)
+                            .update("addresses", updatedAddresses)
+                            .addOnSuccessListener {
+                                addresses = updatedAddresses
+                                addressSaving = false
+                                addressMessage = "Address saved successfully."
+                                showAddressForm = false
+                                recipientName = ""; recipientPhone = ""; addressLine1 = ""; addressLine2 = ""
+                                landmark = ""; city = ""; state = ""; pincode = ""; addressLabel = "Home"
+                                profileSection = "Addresses"
+                            }
+                            .addOnFailureListener {
+                                addressSaving = false
+                                addressMessage = "Couldn't save address. Please check your connection and try again."
+                            }
+                    }
+                },
+                enabled = !addressSaving,
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Forest)
+            ) {
+                if (addressSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null)
+                Spacer(Modifier.width(8.dp)); Text(if (addressSaving) "Saving address…" else "Save address", fontWeight = FontWeight.Bold)
+            }
+        } else {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("Saved addresses", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                    Text("Keep delivery locations for future orders.", color = Muted, fontSize = 12.sp)
+                }
+                Button(onClick = { showAddressForm = true; addressMessage = null }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+                    Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text("Add address")
+                }
+            }
+            Spacer(Modifier.height(14.dp))
+            if (addresses.isEmpty()) {
+                EmptyState("📍", "No addresses yet", "Tap Add address to save your first delivery location.")
+            } else {
+                addresses.forEach { address ->
+                    Card(Modifier.fillMaxWidth().padding(bottom = 10.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(16.dp)) {
+                        Column(Modifier.padding(16.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.LocationOn, null, tint = Forest)
+                                Spacer(Modifier.width(8.dp))
+                                Text(address["label"]?.toString() ?: "Address", color = Ink, fontWeight = FontWeight.Bold)
+                            }
+                            Spacer(Modifier.height(6.dp))
+                            Text(address["recipientName"]?.toString().orEmpty(), color = Ink, fontWeight = FontWeight.SemiBold)
+                            Text(address["phone"]?.toString().orEmpty(), color = Muted, fontSize = 12.sp)
+                            Text(listOf(address["addressLine1"], address["addressLine2"], address["landmark"], address["city"], address["state"], address["pincode"]).mapNotNull { it?.toString()?.takeIf(String::isNotBlank) }.joinToString(", "), color = Ink, fontSize = 13.sp)
+                        }
+                    }
+                }
+            }
+            if (addressMessage != null) {
+                Spacer(Modifier.height(8.dp)); Text(addressMessage!!, color = Forest, fontSize = 13.sp)
+            }
         }
         Spacer(Modifier.height(18.dp))
     }
