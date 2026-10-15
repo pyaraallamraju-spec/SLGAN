@@ -66,10 +66,12 @@ private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "C
 private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val name = data["product_name"]?.toString()?.trim().orEmpty()
     if (name.isBlank()) return null
-    val quantity = data["product_quantity"]?.toString()?.trim().orEmpty()
+    // Show only the pack weight beneath the product name, e.g. "5g".
+    // Quantity is intentionally hidden; avoid separators such as "1 · 5 · g".
     val weight = data["product_weight"]?.toString()?.trim().orEmpty()
     val units = data["product_units"]?.toString()?.trim().orEmpty()
-    val details = listOf(quantity, weight, units).filter { it.isNotBlank() }.distinct().joinToString(" · ")
+    val cleanWeight = weight.removeSuffix(units).trim().removeSuffix(".").trim()
+    val details = if (cleanWeight.isNotBlank() && units.isNotBlank()) "$cleanWeight$units" else cleanWeight.ifBlank { units }
     val price = data["product_price"]?.toString()?.replace(",", "")?.toDoubleOrNull() ?: 0.0
     val rawCategory = data["product_category"]?.toString()?.trim().orEmpty()
     val category = when (rawCategory.lowercase()) {
