@@ -9,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -75,27 +77,105 @@ private fun AyurvedicApp() {
 
 @Composable
 private fun LoginScreen(value: String, onValueChange: (String) -> Unit, onContinue: () -> Unit) {
-    Column(Modifier.fillMaxSize().background(Cream).padding(horizontal = 28.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Image(painter = painterResource(id = R.drawable.logo2), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", modifier = Modifier.size(112.dp))
-        Spacer(Modifier.height(18.dp))
-        Text("Sri Lakshmi Ganapathi", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Forest, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Text("Ayurveda Nilayam", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Forest, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(4.dp))
-        Text("Estd. 1900 by Perraju Sharma", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Leaf, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(36.dp))
-        Text("Nature's care,\nrooted in tradition.", fontSize = 27.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold, color = Ink)
+    Column(
+        Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Traditional maroon-and-gold header band
+        Box(Modifier.fillMaxWidth().height(48.dp).background(Forest.copy(red = 0.47f, green = 0.12f, blue = 0.10f))) {
+            Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.BottomCenter).background(Gold))
+        }
+        Spacer(Modifier.height(24.dp))
+        Image(
+            painter = painterResource(id = R.drawable.logo2),
+            contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
+            modifier = Modifier.size(142.dp)
+        )
+        Spacer(Modifier.height(12.dp))
+        Text(
+            "Sri Lakshmi Ganapathi",
+            fontSize = 29.sp,
+            lineHeight = 34.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = Color(0xFF8B211B),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+        Text(
+            "Ayurveda Nilayam",
+            fontSize = 27.sp,
+            lineHeight = 32.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = Color(0xFF245D32),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
         Spacer(Modifier.height(10.dp))
-        Text("Sign in to explore your everyday herbal essentials.", color = Muted, fontSize = 14.sp)
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+            Box(Modifier.width(54.dp).height(1.dp).background(Gold))
+            Text("  ✦  🌿  ✦  ", color = Gold, fontSize = 16.sp)
+            Box(Modifier.width(54.dp).height(1.dp).background(Gold))
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            "Estd. 1900 by Perraju Sharma",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color(0xFF245D32),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
         Spacer(Modifier.height(28.dp))
-        OutlinedTextField(value, onValueChange, Modifier.fillMaxWidth(), label = { Text("Mobile number or email") }, placeholder = { Text("Enter mobile number or email") }, leadingIcon = { Icon(Icons.Default.Person, null) }, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), shape = RoundedCornerShape(16.dp))
-        Spacer(Modifier.height(16.dp))
-        Button(onClick = onContinue, modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-            Text("Continue", fontSize = 16.sp, fontWeight = FontWeight.Bold); Spacer(Modifier.width(8.dp)); Icon(Icons.Default.ArrowForward, null)
+        Text(
+            "Nature's care,\nrooted in tradition.",
+            fontSize = 29.sp,
+            lineHeight = 34.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF8B211B),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+        Spacer(Modifier.height(12.dp))
+        Text(
+            "Sign in to explore your herbal wellness products.",
+            color = Color(0xFF56534D),
+            fontSize = 14.sp,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+        Spacer(Modifier.height(28.dp))
+        OutlinedTextField(
+            value,
+            onValueChange,
+            Modifier.fillMaxWidth().padding(horizontal = 22.dp),
+            label = { Text("Mobile number or email") },
+            placeholder = { Text("Mobile number or email") },
+            leadingIcon = { Icon(Icons.Default.PhoneAndroid, null, tint = Color(0xFF8B211B)) },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            shape = RoundedCornerShape(20.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFFD2BE9C),
+                unfocusedBorderColor = Color(0xFFD2BE9C),
+                focusedContainerColor = Color(0xFFFFFCF5),
+                unfocusedContainerColor = Color(0xFFFFFCF5),
+                focusedLabelColor = Color(0xFF8B211B),
+                cursorColor = Color(0xFF8B211B)
+            )
+        )
+        Spacer(Modifier.height(18.dp))
+        Button(
+            onClick = onContinue,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(62.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B211B))
+        ) {
+            Text("Continue", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.width(12.dp))
+            Icon(Icons.Default.ArrowForward, null)
         }
         Spacer(Modifier.height(12.dp))
-        Text("Demo sign-in only · no OTP is sent", fontSize = 12.sp, color = Muted)
-        Spacer(Modifier.height(36.dp))
-        Text("HERBAL  •  THOUGHTFUL  •  TRADITIONAL", fontSize = 10.sp, color = Leaf, letterSpacing = 1.sp)
+        Text("Demo sign-in only · no OTP is sent", fontSize = 13.sp, color = Color(0xFF56534D))
+        Spacer(Modifier.height(30.dp))
+        Box(Modifier.fillMaxWidth().height(48.dp).background(Color(0xFF8B211B))) {
+            Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.TopCenter).background(Gold))
+        }
     }
 }
 
