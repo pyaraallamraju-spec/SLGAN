@@ -253,7 +253,7 @@
     "product_weight": 200,
     "product_price": 200,
     "product_units": "ml",
-    "product_category": "Rasayanas"
+    "product_category": "Rasayoga"
   },
   {
     "product_name": "Kashaya Amrutham",
@@ -400,7 +400,7 @@
     "product_category": "Churnas"
   },
   {
-    "product_name": "Rasna-related Churnam (name unclear)",
+    "product_name": "Rasna-related Churnam",
     "product_quantity": 1,
     "product_weight": 50,
     "product_price": 65,
@@ -624,7 +624,7 @@
     "product_category": "Tailas"
   },
   {
-    "product_name": "Karanja-related Tailam (name unclear)",
+    "product_name": "Karanja-related Tailam",
     "product_quantity": 1,
     "product_weight": 10,
     "product_price": 80,
@@ -646,53 +646,5 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Tailas"
-  },
-  {
-    "product_name": "Siddha Makaradhwajam",
-    "product_quantity": 30,
-    "product_weight": 30,
-    "product_price": 2500,
-    "product_units": "tablets",
-    "product_category": "Pills"
-  },
-  {
-    "product_name": "Poorna Chandrodayam",
-    "product_quantity": 30,
-    "product_weight": 30,
-    "product_price": 2000,
-    "product_units": "tablets",
-    "product_category": "Pills"
-  },
-  {
-    "product_name": "Vasantha Kusumakaram",
-    "product_quantity": 30,
-    "product_weight": 30,
-    "product_price": 2500,
-    "product_units": "tablets",
-    "product_category": "Pills"
-  },
-  {
-    "product_name": "Raktita Chandrodayam (name unclear in source)",
-    "product_quantity": 30,
-    "product_weight": 30,
-    "product_price": 1200,
-    "product_units": "tablets",
-    "product_category": "Pills"
-  },
-  {
-    "product_name": "Brihat Vata Chintamani",
-    "product_quantity": 30,
-    "product_weight": 30,
-    "product_price": 3000,
-    "product_units": "tablets",
-    "product_category": "Pills"
-  },
-  {
-    "product_name": "Maha Panchabana Rasam",
-    "product_quantity": 30,
-    "product_weight": 30,
-    "product_price": 3000,
-    "product_units": "tablets",
-    "product_category": "Pills"
   }
 ]
