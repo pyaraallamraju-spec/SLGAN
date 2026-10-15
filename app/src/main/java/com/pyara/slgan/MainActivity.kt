@@ -1,6 +1,7 @@
 package com.pyara.slgan
 
 import android.os.Bundle
+import android.view.WindowManager
 import android.content.Intent
 import android.net.Uri
 import android.webkit.WebView
@@ -122,6 +123,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
+        // Deter screenshots and screen recording on supported Android surfaces.
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         setContent { AyurvedicApp() }
     }
 }
