@@ -722,13 +722,30 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     var showCheckout by remember { mutableStateOf(false) }
-    var customerName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser?.email.orEmpty()) }
-    var phone by remember { mutableStateOf("") }
+    val signedInUser = FirebaseAuth.getInstance().currentUser
+    var customerName by remember(signedInUser?.uid) { mutableStateOf(signedInUser?.displayName.orEmpty()) }
+    var email by remember(signedInUser?.uid) { mutableStateOf(signedInUser?.email.orEmpty()) }
+    var phone by remember(signedInUser?.uid) { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
     var submitting by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var orderMessage by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(signedInUser?.uid) {
+        val user = signedInUser
+        if (user != null) {
+            FirebaseFirestore.getInstance().collection("customers").document(user.uid).get()
+                .addOnSuccessListener { snapshot ->
+                    val savedName = listOf(snapshot.getString("firstName"), snapshot.getString("lastName"))
+                        .filterNotNull().map { it.trim() }.filter { it.isNotBlank() }.joinToString(" ")
+                    val nickname = snapshot.getString("nickname").orEmpty().trim()
+                    val savedPhone = snapshot.getString("mobileNumber").orEmpty().trim()
+                    if (customerName.isBlank()) customerName = savedName.ifBlank { nickname }.ifBlank { user.displayName.orEmpty() }
+                    if (phone.isBlank()) phone = savedPhone
+                    if (email.isBlank()) email = user.email.orEmpty()
+                }
+        }
+    }
 
     Column(modifier.fillMaxSize().padding(18.dp)) {
         Text(tr("Your cart", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
