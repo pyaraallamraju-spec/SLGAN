@@ -725,8 +725,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                         nickname = snapshot.getString("nickname").orEmpty()
                         gender = snapshot.getString("gender").orEmpty()
                         mobileNumber = snapshot.getString("mobileNumber").orEmpty()
-                        @Suppress("UNCHECKED_CAST")
-                        addresses = (snapshot.get("addresses") as? List<Map<String, Any>>).orEmpty()
                         isLoading = false
                     } else {
                         isLoading = false
@@ -736,6 +734,19 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
             isLoading = false
         }
         onDispose { registration?.remove() }
+    }
+    DisposableEffect(uid) {
+        var addressRegistration: ListenerRegistration? = null
+        if (uid != null) {
+            addressRegistration = FirebaseFirestore.getInstance().collection("addresses")
+                .whereEqualTo("userId", uid)
+                .addSnapshotListener { snapshot, _ ->
+                    addresses = snapshot?.documents?.mapNotNull { doc ->
+                        doc.data?.plus("id" to doc.id)
+                    }.orEmpty()
+                }
+        }
+        onDispose { addressRegistration?.remove() }
     }
 
     Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
@@ -894,11 +905,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                             "landmark" to landmark.trim(), "city" to city.trim(), "state" to state.trim(),
                             "pincode" to pincode.trim(), "createdAt" to System.currentTimeMillis()
                         )
-                        val updatedAddresses = addresses + newAddress
-                        FirebaseFirestore.getInstance().collection("customers").document(uid)
-                            .update("addresses", updatedAddresses)
+                        val addressId = newAddress["id"].toString()
+                        val addressRecord = newAddress + ("userId" to uid)
+                        FirebaseFirestore.getInstance().collection("addresses").document(addressId)
+                            .set(addressRecord)
                             .addOnSuccessListener {
-                                addresses = updatedAddresses
                                 addressSaving = false
                                 addressMessage = "Address saved successfully."
                                 showAddressForm = false
