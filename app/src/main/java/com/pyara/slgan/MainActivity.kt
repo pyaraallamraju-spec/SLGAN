@@ -4,6 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.border
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -86,11 +96,74 @@ private fun LoginScreen(value: String, onValueChange: (String) -> Unit, onContin
             Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.BottomCenter).background(Gold))
         }
         Spacer(Modifier.height(24.dp))
-        Image(
-            painter = painterResource(id = R.drawable.logo2),
-            contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
-            modifier = Modifier.size(142.dp)
+        val logoScale = remember { Animatable(0.55f) }
+        val logoRotation = remember { Animatable(-18f) }
+        val logoAlpha = remember { Animatable(0f) }
+        val sparkleTransition = rememberInfiniteTransition(label = "logoCombinedEffect")
+        val haloAlpha by sparkleTransition.animateFloat(
+            initialValue = 0.28f,
+            targetValue = 0.85f,
+            animationSpec = infiniteRepeatable(tween(950, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+            label = "goldHalo"
         )
+        val leafDrift by sparkleTransition.animateFloat(
+            initialValue = -7f,
+            targetValue = 7f,
+            animationSpec = infiniteRepeatable(tween(1300, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+            label = "leafDrift"
+        )
+        val shineX by sparkleTransition.animateFloat(
+            initialValue = -78f,
+            targetValue = 78f,
+            animationSpec = infiniteRepeatable(tween(1700, easing = FastOutSlowInEasing), RepeatMode.Restart),
+            label = "goldShine"
+        )
+        LaunchedEffect(Unit) {
+            logoAlpha.animateTo(1f, tween(500))
+            logoScale.animateTo(1f, tween(850, easing = FastOutSlowInEasing))
+            logoRotation.animateTo(0f, tween(850, easing = FastOutSlowInEasing))
+        }
+        Box(
+            Modifier.size(168.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                Modifier.size(154.dp)
+                    .graphicsLayer { alpha = haloAlpha }
+                    .border(2.dp, Gold.copy(alpha = haloAlpha), CircleShape)
+            )
+            Text(
+                "🍃",
+                modifier = Modifier.align(Alignment.TopStart).graphicsLayer { translationY = leafDrift; rotationZ = -25f },
+                fontSize = 25.sp
+            )
+            Text(
+                "🍃",
+                modifier = Modifier.align(Alignment.BottomEnd).graphicsLayer { translationY = -leafDrift; rotationZ = 25f },
+                fontSize = 25.sp
+            )
+            Image(
+                painter = painterResource(id = R.drawable.logo2),
+                contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
+                modifier = Modifier.size(142.dp).graphicsLayer {
+                    alpha = logoAlpha.value
+                    scaleX = logoScale.value
+                    scaleY = logoScale.value
+                    rotationZ = logoRotation.value
+                }
+            )
+            Box(
+                Modifier.offset(x = shineX.dp)
+                    .width(18.dp).height(130.dp)
+                    .graphicsLayer { rotationZ = 24f; alpha = 0.22f }
+                    .background(
+                        androidx.compose.ui.graphics.Brush.horizontalGradient(
+                            listOf(Color.Transparent, Color.White, Color.Transparent)
+                        ),
+                        RoundedCornerShape(50)
+                    )
+            )
+        }
         Spacer(Modifier.height(12.dp))
         Text(
             "Sri Lakshmi Ganapathi",
