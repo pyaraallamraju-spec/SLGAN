@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Product catalogue is readable by the app; only trusted administrators
+    // should publish or change product data.
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Customers may access only their own profile.
+    match /customers/{userId} {
+      allow read, create, update, delete: if request.auth != null
+        && request.auth.uid == userId;
+
+      // Orders are read-only from the client until trusted order creation
+      // (for example, through a Cloud Function) is implemented.
+      match /orders/{orderId} {
+        allow read: if request.auth != null
+          && request.auth.uid == userId;
+        allow write: if false;
+      }
+    }
+
+    // Deny access to every collection not explicitly listed above.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
