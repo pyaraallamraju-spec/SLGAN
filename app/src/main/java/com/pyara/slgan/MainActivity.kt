@@ -3,6 +3,7 @@ package com.pyara.slgan
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -74,7 +76,7 @@ private fun AyurvedicApp() {
 @Composable
 private fun LoginScreen(value: String, onValueChange: (String) -> Unit, onContinue: () -> Unit) {
     Column(Modifier.fillMaxSize().background(Cream).padding(horizontal = 28.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Box(Modifier.size(104.dp).background(Forest, CircleShape), contentAlignment = Alignment.Center) { Text("🌿", fontSize = 48.sp) }
+        Image(painter = painterResource(id = R.drawable.logo2), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", modifier = Modifier.size(112.dp))
         Spacer(Modifier.height(18.dp))
         Text("SLGAN", fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Forest)
         Text("AYURVEDIC NILAYAM", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Leaf, letterSpacing = 3.sp)
@@ -103,7 +105,7 @@ private fun ShopScreen(
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
         Row(Modifier.fillMaxWidth().background(Cream).padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(42.dp).background(Forest, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) { Text("🌿", fontSize = 23.sp) }
+            Image(painter = painterResource(id = R.drawable.logo2), contentDescription = "SLGAN logo", modifier = Modifier.size(42.dp))
             Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) { Text("SLGAN", color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 19.sp); Text("Ayurvedic Nilayam", color = Muted, fontSize = 11.sp) }
             IconButton(onClick = { onTabChange("Cart") }) {
