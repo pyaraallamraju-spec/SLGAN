@@ -1,20 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Product catalogue is readable by the app; only trusted administrators
-    // should publish or change product data.
+    // Product catalogue is public-read and backend/admin-write only.
     match /products/{productId} {
       allow read: if true;
       allow write: if false;
     }
 
-    // Customers may access only their own profile.
+    // Customers can access only their own profile.
     match /customers/{userId} {
       allow read, create, update, delete: if request.auth != null
         && request.auth.uid == userId;
 
-      // Orders are read-only from the client until trusted order creation
-      // (for example, through a Cloud Function) is implemented.
+      // Legacy nested orders remain read-only.
       match /orders/{orderId} {
         allow read: if request.auth != null
           && request.auth.uid == userId;
@@ -22,9 +20,15 @@ service cloud.firestore {
       }
     }
 
+    // Top-level orders are created/updated only by trusted Cloud Functions.
+    // Customers may read only their own orders.
+    match /orders/{orderId} {
+      allow read: if request.auth != null
+        && resource.data.customerId == request.auth.uid;
+      allow create, update, delete: if false;
+    }
 
-    // Each address is stored as a separate document and is accessible only
-    // to the signed-in customer whose UID is recorded as userId.
+    // Each saved address belongs to the signed-in customer.
     match /addresses/{addressId} {
       allow create: if request.auth != null
         && request.resource.data.userId == request.auth.uid;
@@ -35,7 +39,7 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
-    // Deny access to every collection not explicitly listed above.
+    // Deny all other access by default.
     match /{document=**} {
       allow read, write: if false;
     }
