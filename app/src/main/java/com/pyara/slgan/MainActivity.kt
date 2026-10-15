@@ -782,34 +782,55 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     } else {
                         submitting = true
                         errorMessage = null
-                        val itemPayload = selected.map { product ->
-                            mapOf("productId" to product.id, "quantity" to (cart[product.id] ?: 0))
+                        val user = FirebaseAuth.getInstance().currentUser
+                        if (user == null) {
+                            errorMessage = "Please sign in again before placing an order."
+                            submitting = false
+                        } else {
+                            val orderId = "SLGAN-" + java.util.UUID.randomUUID().toString().take(8).uppercase()
+                            val itemPayload = selected.map { product ->
+                                mapOf(
+                                    "productId" to product.id,
+                                    "productName" to product.name,
+                                    "unitPrice" to product.price,
+                                    "quantity" to (cart[product.id] ?: 0),
+                                    "lineTotal" to (product.price * (cart[product.id] ?: 0))
+                                )
+                            }
+                            val now = com.google.firebase.Timestamp.now()
+                            val orderFields = mapOf<String, Any>(
+                                "orderId" to orderId,
+                                "customerId" to user.uid,
+                                "customerName" to customerName.trim(),
+                                "email" to email.trim(),
+                                "phone" to phone.trim(),
+                                "shippingAddress" to address.trim(),
+                                "items" to itemPayload,
+                                "subtotal" to total,
+                                "grandTotal" to total,
+                                "currency" to "INR",
+                                "paymentStatus" to "not_collected",
+                                "orderStatus" to "pending_verification",
+                                "invoiceNumber" to orderId,
+                                "invoiceStatus" to "not_generated",
+                                "createdAt" to now,
+                                "updatedAt" to now
+                            )
+                            FirebaseFirestore.getInstance().collection("orders").document(orderId)
+                                .set(orderFields)
+                                .addOnSuccessListener {
+                                    orderMessage = "Order saved: " + orderId
+                                    submitting = false
+                                    showCheckout = false
+                                    onOrderResult(orderId, true, null, "Order saved. Payment has not been collected; the shop must verify the order.")
+                                }
+                                .addOnFailureListener { err ->
+                                    val message = err.localizedMessage ?: "Could not save order. Please try again."
+                                    errorMessage = message
+                                    submitting = false
+                                    onOrderResult("", false, null, message)
+                                }
                         }
-                        val payload = mapOf(
-                            "customerName" to customerName.trim(),
-                            "email" to email.trim(),
-                            "phone" to phone.trim(),
-                            "shippingAddress" to address.trim(),
-                            "items" to itemPayload
-                        )
-                        FirebaseFunctions.getInstance("asia-south1").getHttpsCallable("placeOrder").call(payload)
-                            .addOnSuccessListener { result ->
-                                val data = result.getData() as? Map<*, *>
-                                val orderId = data?.get("orderId")?.toString().orEmpty()
-                                val invoiceUrl = data?.get("invoiceUrl")?.toString()
-                                val message = data?.get("message")?.toString() ?: "Order placed successfully."
-                                orderMessage = if (orderId.isNotBlank()) "Order placed: " + orderId else message
-                                submitting = false
-                                showCheckout = false
-                                onOrderResult(orderId, true, invoiceUrl, message)
-                            }
-                            .addOnFailureListener { err ->
-                                val message = err.localizedMessage ?: "Could not place order. Please try again."
-                                errorMessage = message
-                                submitting = false
-                                showCheckout = false
-                                onOrderResult("", false, null, message)
-                            }
                     }
                 }) { Text(if (submitting) "Placing order…" else "Place order") }
             },
