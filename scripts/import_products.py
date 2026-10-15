@@ -17,18 +17,31 @@ db = firestore.client()
 products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.json"
 products = json.loads(products_path.read_text(encoding="utf-8"))
 
-# Let Firestore generate document IDs. On reruns, update a matching product by
-# product_name so the workflow does not create duplicates for the same product.
+if len(products) != 31:
+    raise SystemExit(f"Safety check failed: expected 31 products, found {len(products)}")
+if any(product.get("product_category") != "Rasayoga" for product in products):
+    raise SystemExit("Safety check failed: every product must have category Rasayoga")
+
 collection = db.collection("products")
-created_or_updated = 0
 
+# Explicitly requested replacement: delete all current product documents first.
+existing_docs = list(collection.stream())
+batch = db.batch()
+pending = 0
+for doc in existing_docs:
+    batch.delete(doc.reference)
+    pending += 1
+    if pending == 400:
+        batch.commit()
+        batch = db.batch()
+        pending = 0
+if pending:
+    batch.commit()
+
+# Insert the 31 replacement products with the existing app's product schema.
+batch = db.batch()
 for product in products:
-    matches = collection.where("product_name", "==", product["product_name"]).limit(1).stream()
-    existing = next(matches, None)
-    if existing:
-        existing.reference.set(product, merge=True)
-    else:
-        collection.add(product)
-    created_or_updated += 1
+    batch.set(collection.document(), product)
+batch.commit()
 
-print(f"Imported/updated {created_or_updated} products in Firestore collection 'products'.")
+print(f"Replaced products collection: deleted {len(existing_docs)} existing documents and inserted {len(products)} Rasayoga products.")
