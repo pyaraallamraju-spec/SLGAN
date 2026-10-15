@@ -1,17 +1,17 @@
 [
   {
-    "product_name": "Mahakanakasindhurarasam",
+    "product_name": "Mahakanakasindhura Rasam",
     "product_quantity": 1,
     "product_weight": 1,
-    "product_price": 800,
+    "product_price": 2000,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Siddhamakaradwajam",
+    "product_name": "Siddha Makaradhwajam",
     "product_quantity": 1,
     "product_weight": 1,
-    "product_price": 500,
+    "product_price": 1200,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
@@ -19,236 +19,68 @@
     "product_name": "Poornachandrodayam",
     "product_quantity": 1,
     "product_weight": 1,
-    "product_price": 300,
+    "product_price": 800,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Mahalakshmivilasarasam",
-    "product_quantity": 1,
-    "product_weight": 1,
-    "product_price": 100,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Mahavatharakshasam",
+    "product_name": "Mahavatavidhwamsa Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 100,
+    "product_price": 2000,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Swarnakanthavalallabarasam",
+    "product_name": "Mahavata Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 150,
+    "product_price": 450,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Kanthavalallabarasam",
+    "product_name": "Swarna Kanta Vallabha Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 80,
+    "product_price": 500,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Pralayagnirudrasam",
+    "product_name": "Kanthavallabha Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 80,
+    "product_price": 250,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Shleshanthakarasam",
+    "product_name": "Pralayagni Rudra Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 70,
+    "product_price": 250,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Lokanadharasam",
+    "product_name": "Sleshma-related Rasam (name unclear)",
+    "product_quantity": 1,
+    "product_weight": 30,
+    "product_price": 260,
+    "product_units": "tablets",
+    "product_category": "Rasayoga"
+  },
+  {
+    "product_name": "Lokanatha Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 75,
+    "product_price": 250,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Vyadiharanarasam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 100,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Hemasundararasam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 100,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Shleshagajaamkusham",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 25,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Laghulakshmivilasarasam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 100,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Vijayachinthamani",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 400,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Rajithaloharasayanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 300,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Rasachinthamani",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 100,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Swarnataamrarasayanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 600,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Taamrarasayanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 300,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Taamravangarasayanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 300,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Chaturloharasayanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 300,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Astaloharasayanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 1000,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Rajamrugankarasam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 1000,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Mahaloharasayanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 300,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "loharasayanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 150,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Mehavangarajeeyam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 125,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Rajithamehavangarajeeyam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 300,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Soothikabharanam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 125,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Swarnasuryavarthi",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 300,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Kanakabalasuryodayam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 400,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Vantabalasuryodayam",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 100,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Maharajashirobhushanam",
+    "product_name": "Vyadhihara Rasam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 350,
@@ -256,39 +88,47 @@
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Astalohapoornachandrodayam",
+    "product_name": "Hemasundara Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 1000,
+    "product_price": 350,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Vaikranthachandrodayam",
+    "product_name": "Product name unclear in scan",
+    "product_quantity": 1,
+    "product_weight": 30,
+    "product_price": 260,
+    "product_units": "tablets",
+    "product_category": "Rasayoga"
+  },
+  {
+    "product_name": "Lakshmi Vilasa Rasam",
+    "product_quantity": 1,
+    "product_weight": 30,
+    "product_price": 200,
+    "product_units": "tablets",
+    "product_category": "Rasayoga"
+  },
+  {
+    "product_name": "Lakshmi Vilasa Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 100,
+    "product_price": 250,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Rajithachandrodayam",
+    "product_name": "Vishama Jwarantaka",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 300,
+    "product_price": 500,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Trilokyachintamani",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 150,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Lohachandodayam",
+    "product_name": "Rakta-related formulation (name unclear)",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 600,
@@ -296,39 +136,23 @@
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Kaphakesari",
+    "product_name": "Rasa Sindhuram",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 75,
+    "product_price": 3000,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Kshyakutaram",
+    "product_name": "Swarna Prashana formulation (name unclear)",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 90,
+    "product_price": 2500,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Shwasakutaram",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 90,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Shadgunasindhuram",
-    "product_quantity": 1,
-    "product_weight": 5,
-    "product_price": 300,
-    "product_units": "g",
-    "product_category": "Rasayoga"
-  },
-  {
-    "product_name": "Navagrahisindhuram",
+    "product_name": "Tattu Rasam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 600,
@@ -336,74 +160,90 @@
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Maharasarattu",
+    "product_name": "Tattu Vanga Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 125,
+    "product_price": 750,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "rasarattu",
+    "product_name": "Chaturmukha Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 90,
+    "product_price": 750,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Vatharakshasam",
+    "product_name": "Agnivalla Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 75,
+    "product_price": 1200,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Tripakachandrodayam",
+    "product_name": "Raja Mriganka Rasam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 600,
+    "product_price": 1200,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Vathagnikumaram",
+    "product_name": "Mahavata Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 150,
+    "product_price": 750,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Rasaparpati",
+    "product_name": "Loham Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 100,
+    "product_price": 500,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Navagrahi",
+    "product_name": "Mahavanga Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 600,
+    "product_price": 350,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Navarasachintamani",
+    "product_name": "Rakta-related formulation (name unclear)",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 400,
+    "product_price": 750,
     "product_units": "g",
     "product_category": "Rasayoga"
   },
   {
-    "product_name": "Divyasindhuram",
+    "product_name": "Sukha-related formulation (name unclear)",
     "product_quantity": 1,
     "product_weight": 5,
-    "product_price": 100,
+    "product_price": 500,
+    "product_units": "g",
+    "product_category": "Rasayoga"
+  },
+  {
+    "product_name": "Swarna-related formulation (name unclear)",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 1500,
+    "product_units": "g",
+    "product_category": "Rasayoga"
+  },
+  {
+    "product_name": "Kanaka Bala formulation (name unclear)",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 1500,
     "product_units": "g",
     "product_category": "Rasayoga"
   }
