@@ -17,10 +17,18 @@ db = firestore.client()
 products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.json"
 products = json.loads(products_path.read_text(encoding="utf-8"))
 
-# Stable document IDs make reruns update the same products rather than duplicate them.
-batch = db.batch()
+# Let Firestore generate document IDs. On reruns, update a matching product by
+# product_name so the workflow does not create duplicates for the same product.
+collection = db.collection("products")
+created_or_updated = 0
+
 for product in products:
-    doc_id = str(product["id"])
-    batch.set(db.collection("products").document(doc_id), product, merge=True)
-batch.commit()
-print(f"Imported/updated {len(products)} products in Firestore collection 'products'.")
+    matches = collection.where("product_name", "==", product["product_name"]).limit(1).stream()
+    existing = next(matches, None)
+    if existing:
+        existing.reference.set(product, merge=True)
+    else:
+        collection.add(product)
+    created_or_updated += 1
+
+print(f"Imported/updated {created_or_updated} products in Firestore collection 'products'.")
