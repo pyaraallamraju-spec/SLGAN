@@ -1,0 +1,21 @@
+name: Import products to Firebase
+
+on:
+  workflow_dispatch:
+
+jobs:
+  import-products:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Firebase Admin SDK
+        run: pip install firebase-admin
+      - name: Import products
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: python scripts/import_products.py
