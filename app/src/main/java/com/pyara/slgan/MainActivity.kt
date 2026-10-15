@@ -423,7 +423,7 @@ private fun ShopScreen(
         Row(Modifier.fillMaxWidth().background(Cream).padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.logo2), contentDescription = "SLGAN logo", modifier = Modifier.size(42.dp))
             Spacer(Modifier.width(10.dp))
-            Column(Modifier.weight(1f)) { Text("SLGAN", color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 19.sp); Text("Ayurvedic Nilayam", color = Muted, fontSize = 11.sp) }
+            Column(Modifier.weight(1f)) { Text("Sri Lakshmi Ganapathi", color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp); Text("Ayurveda Nilayam", color = Muted, fontSize = 11.sp) }
             IconButton(onClick = { onTabChange("Cart") }) {
                 BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) { Icon(Icons.Default.ShoppingCart, "Cart", tint = Forest) }
             }
