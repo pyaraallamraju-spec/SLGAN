@@ -8,6 +8,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.functions.FirebaseFunctions
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -695,6 +696,15 @@ private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, m
 private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit) {
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
+    var showCheckout by remember { mutableStateOf(false) }
+    var customerName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser?.email.orEmpty()) }
+    var phone by remember { mutableStateOf("") }
+    var address by remember { mutableStateOf("") }
+    var submitting by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var orderMessage by remember { mutableStateOf<String?>(null) }
+
     Column(modifier.fillMaxSize().padding(18.dp)) {
         Text(tr("Your cart", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Text(cart.values.sum().toString() + " items selected", color = Muted, fontSize = 13.sp)
@@ -705,9 +715,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 items(selected) { product ->
                     Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(16.dp)) {
                         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.size(54.dp).background(PaleGreen, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 28.sp) }
-                            Spacer(Modifier.width(12.dp))
-                            Column(Modifier.weight(1f)) { Text(product.name, fontWeight = FontWeight.Bold, color = Ink, fontSize = 13.sp); Text(tr("₹", LocalAppLanguage.current) + (if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price)) + " each", color = Muted, fontSize = 12.sp) }
+                            Text(product.emoji, fontSize = 24.sp)
+                            Spacer(Modifier.width(10.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(product.name, fontWeight = FontWeight.Bold, color = Ink)
+                                Text(product.subtitle, color = Muted, fontSize = 12.sp)
+                                Text("₹" + String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.Bold)
+                            }
                             IconButton(onClick = { onRemove(product.id) }) { Icon(Icons.Default.Remove, "Remove one") }
                             Text((cart[product.id] ?: 0).toString(), fontWeight = FontWeight.Bold)
                             IconButton(onClick = { onAdd(product.id) }) { Icon(Icons.Default.Add, "Add one") }
@@ -716,12 +730,70 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
             }
             Spacer(Modifier.height(12.dp))
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) { Text(tr("Subtotal", LocalAppLanguage.current), color = Muted, fontSize = 13.sp); Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", total), color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
-                Button(onClick = { }, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) { Text(tr("Checkout", LocalAppLanguage.current)) }
+            Card(colors = CardDefaults.cardColors(containerColor = PaleGreen), shape = RoundedCornerShape(18.dp)) {
+                Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(tr("Subtotal", LocalAppLanguage.current), color = Muted, modifier = Modifier.weight(1f))
+                        Text("₹" + String.format("%.2f", total), color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                    }
+                    Button(onClick = { showCheckout = true; errorMessage = null }, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest), modifier = Modifier.fillMaxWidth()) {
+                        Text(tr("Checkout", LocalAppLanguage.current))
+                    }
+                }
             }
-            Text(tr("Demo only: checkout and payments are not connected.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
+            Text("No online payment. Place your order and we will confirm delivery details.", color = Muted, fontSize = 11.sp)
         }
+    }
+
+    if (showCheckout) {
+        AlertDialog(
+            onDismissRequest = { if (!submitting) showCheckout = false },
+            title = { Text("Place order") },
+            text = {
+                Column(Modifier.fillMaxWidth().heightIn(max = 430.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("Total: ₹" + String.format("%.2f", total), fontWeight = FontWeight.Bold, color = Forest)
+                    OutlinedTextField(customerName, { customerName = it }, label = { Text("Customer name *") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(email, { email = it }, label = { Text("Email for invoice *") }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
+                    OutlinedTextField(phone, { phone = it }, label = { Text("Phone number") }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone))
+                    OutlinedTextField(address, { address = it }, label = { Text("Full delivery address *") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
+                    Text("Payment: none. This order request does not collect payment.", color = Muted, fontSize = 12.sp)
+                    if (errorMessage != null) Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
+                    if (orderMessage != null) Text(orderMessage!!, color = Forest)
+                }
+            },
+            confirmButton = {
+                Button(enabled = !submitting && orderMessage == null, onClick = {
+                    if (customerName.isBlank() || !email.contains("@") || address.isBlank()) {
+                        errorMessage = "Enter your name, valid email and full delivery address."
+                    } else {
+                        submitting = true
+                        errorMessage = null
+                        val itemPayload = selected.map { product ->
+                            mapOf("productId" to product.id, "quantity" to (cart[product.id] ?: 0))
+                        }
+                        val payload = mapOf(
+                            "customerName" to customerName.trim(),
+                            "email" to email.trim(),
+                            "phone" to phone.trim(),
+                            "shippingAddress" to address.trim(),
+                            "items" to itemPayload
+                        )
+                        FirebaseFunctions.getInstance("asia-south1").getHttpsCallable("placeOrder").call(payload)
+                            .addOnSuccessListener { result ->
+                                val data = result.data as? Map<*, *>
+                                val orderId = data?.get("orderId")?.toString().orEmpty()
+                                orderMessage = if (orderId.isNotBlank()) "Order placed: " + orderId else "Order placed successfully."
+                                submitting = false
+                            }
+                            .addOnFailureListener { err ->
+                                errorMessage = err.localizedMessage ?: "Could not place order. Please try again."
+                                submitting = false
+                            }
+                    }
+                }) { Text(if (submitting) "Placing order…" else "Place order") }
+            },
+            dismissButton = { TextButton(enabled = !submitting, onClick = { showCheckout = false }) { Text("Cancel") } }
+        )
     }
 }
 
