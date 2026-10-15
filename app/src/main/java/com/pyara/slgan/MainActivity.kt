@@ -3,7 +3,10 @@ package com.pyara.slgan
 import android.os.Bundle
 import android.content.Intent
 import android.net.Uri
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -1104,6 +1107,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var saveMessage by remember { mutableStateOf<String?>(null) }
     var profileSection by remember { mutableStateOf("Profile") }
     var showAddressForm by remember { mutableStateOf(false) }
+    var showMapPicker by remember { mutableStateOf(false) }
     var addresses by remember(uid) { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var addressLabel by remember { mutableStateOf("Home") }
     var recipientName by remember { mutableStateOf("") }
@@ -1310,20 +1314,59 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             }
             Spacer(Modifier.height(14.dp))
             OutlinedButton(
-                onClick = {
-                    val query = listOf(addressLine1, addressLine2, landmark, city, state, pincode).filter { it.isNotBlank() }.joinToString(" ")
-                    val mapUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(query.ifBlank { "Choose delivery address" }))
-                    try { context.startActivity(Intent(Intent.ACTION_VIEW, mapUri)) }
-                    catch (_: Exception) { addressMessage = "Google Maps couldn't be opened. Please check that a browser or Maps app is installed." }
-                },
+                onClick = { showMapPicker = !showMapPicker },
                 modifier = Modifier.fillMaxWidth().height(52.dp),
                 shape = RoundedCornerShape(14.dp)
             ) {
-                Icon(Icons.Default.Map, null, tint = Forest); Spacer(Modifier.width(8.dp)); Text(tr("Choose / check location on Google Maps", LocalAppLanguage.current))
+                Icon(Icons.Default.Map, null, tint = Forest)
+                Spacer(Modifier.width(8.dp))
+                Text(if (showMapPicker) "Hide map" else "Search and select address on map")
             }
-            Spacer(Modifier.height(8.dp))
-            Text(tr("Google Maps opens separately. Please copy the address details into the fields below.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
-            Spacer(Modifier.height(14.dp))
+            if (showMapPicker) {
+                Text("Search a place or address below, then tap a result to fill the address fields.", color = Muted, fontSize = 12.sp)
+                Spacer(Modifier.height(8.dp))
+                AndroidView(
+                    modifier = Modifier.fillMaxWidth().height(360.dp).clip(RoundedCornerShape(14.dp)),
+                    factory = { ctx ->
+                        WebView(ctx).apply {
+                            settings.javaScriptEnabled = true
+                            settings.domStorageEnabled = true
+                            webViewClient = WebViewClient()
+                            addJavascriptInterface(object {
+                                @android.webkit.JavascriptInterface
+                                fun selectAddress(line1: String, line2: String, landmarkValue: String, cityValue: String, stateValue: String, pinValue: String) {
+                                    android.os.Handler(android.os.Looper.getMainLooper()).post {
+                                        addressLine1 = line1
+                                        addressLine2 = line2
+                                        landmark = landmarkValue
+                                        city = cityValue
+                                        state = stateValue
+                                        pincode = pinValue
+                                        addressMessage = "Address filled from map. Please verify before saving."
+                                    }
+                                }
+                            }, "AddressBridge")
+                            loadDataWithBaseURL("https://www.openstreetmap.org/", """
+                                <!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">
+                                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+                                <style>body{font-family:Arial;margin:0;background:#fff7e8;color:#38251f}#search{box-sizing:border-box;width:100%;padding:12px;border:1px solid #d9a441;border-radius:8px;font-size:16px}#results{max-height:115px;overflow:auto;background:white}.result{padding:10px;border-bottom:1px solid #eee;font-size:14px}#map{height:220px;width:100%}.hint{font-size:12px;padding:7px}</style></head>
+                                <body><div style="padding:9px"><input id="search" placeholder="Search address, area, village or PIN code"><div id="results"></div></div><div id="map"></div><div class="hint">Choose a search result to fill the address form.</div>
+                                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
+                                const map=L.map('map').setView([17.385,78.4867],5);
+                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors',maxZoom:19}).addTo(map);
+                                let marker=null;
+                                async function searchPlaces(){const q=document.getElementById('search').value.trim();if(q.length<3)return;const box=document.getElementById('results');box.innerHTML='<div class="result">Searching…</div>';try{const response=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&q='+encodeURIComponent(q));const data=await response.json();box.innerHTML='';data.forEach(p=>{const row=document.createElement('div');row.className='result';row.textContent=p.display_name;row.onclick=()=>choose(p);box.appendChild(row)});if(!data.length)box.innerHTML='<div class="result">No results. Try a more specific search.</div>'}catch(e){box.innerHTML='<div class="result">Search unavailable. Check internet and try again.</div>'}}
+                                let timer;document.getElementById('search').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(searchPlaces,650)});
+                                function choose(p){document.getElementById('results').innerHTML='';map.setView([Number(p.lat),Number(p.lon)],16);if(marker)map.removeLayer(marker);marker=L.marker([Number(p.lat),Number(p.lon)]).addTo(map);const a=p.address||{};const line1=[a.house_number,a.road||a.pedestrian||a.footway].filter(Boolean).join(' ');const line2=[a.suburb||a.neighbourhood||a.quarter||a.village||a.hamlet,a.county].filter(Boolean).join(', ');const city=a.city||a.town||a.village||a.municipality||a.county||'';const st=a.state||'';const pin=a.postcode||'';const lm=a.amenity||a.shop||a.building||'';AddressBridge.selectAddress(line1||p.name||'',line2,lm,city,st,pin);document.getElementById('search').value=p.display_name}
+                                </script></body></html>
+                            """.trimIndent(), "text/html", "UTF-8", null)
+                        }
+                    }
+                )
+                Spacer(Modifier.height(14.dp))
+            } else {
+                Spacer(Modifier.height(14.dp))
+            }
             Text(tr("Address type", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("Home", "Work", "Other").forEach { label ->
