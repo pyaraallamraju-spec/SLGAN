@@ -586,7 +586,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Text("Shop by category", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Spacer(Modifier.height(8.dp))
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    categories.forEach { item -> FilterChip(selected = category == item, onClick = { onCategoryChange(item) }, label = { Text(item, fontSize = 11.sp) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)) }
+                    categories.forEach { item -> FilterChip(selected = category == item, onClick = { onCategoryChange(item) }, label = { Text((when (item) { "All" -> "🌿"; "Lehyas" -> "🍯"; "Grutas" -> "🧈"; "Pills" -> "💊"; "Tailas" -> "🫒"; "Churnas" -> "🌾"; "Rasayanas" -> "🌱"; "Bhasmas" -> "⚱️"; else -> "🌿" }) + " " + item, fontSize = 11.sp) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)) }
                 }
                 Spacer(Modifier.height(18.dp))
                 Text(if (search.isBlank()) "Our Ayurvedic products" else "Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
