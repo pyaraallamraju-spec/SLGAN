@@ -17,15 +17,15 @@ db = firestore.client()
 products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.json"
 products = json.loads(products_path.read_text(encoding="utf-8"))
 
-if len(products) != 31:
-    raise SystemExit(f"Safety check failed: expected 31 products, found {len(products)}")
-if any(product.get("product_category") != "Rasayoga" for product in products):
-    raise SystemExit("Safety check failed: every product must have category Rasayoga")
+if len(products) != 41:
+    raise SystemExit(f"Safety check failed: expected 41 products, found {len(products)}")
+if any(product.get("product_category") != ("Rasayoga" if i < 31 else "Rasayanas") for i, product in enumerate(products)):
+    raise SystemExit("Safety check failed: products 1–31 must be Rasayoga and products 32–41 must be Rasayanas")
 
 collection = db.collection("products")
-
-# Explicitly requested replacement: delete all current product documents first.
 existing_docs = list(collection.stream())
+
+# Replace the products collection with the approved 41-item catalogue.
 batch = db.batch()
 pending = 0
 for doc in existing_docs:
@@ -38,10 +38,9 @@ for doc in existing_docs:
 if pending:
     batch.commit()
 
-# Insert the 31 replacement products with the existing app's product schema.
 batch = db.batch()
 for product in products:
     batch.set(collection.document(), product)
 batch.commit()
 
-print(f"Replaced products collection: deleted {len(existing_docs)} existing documents and inserted {len(products)} Rasayoga products.")
+print(f"Replaced products collection: deleted {len(existing_docs)} existing documents and inserted {len(products)} products.")
