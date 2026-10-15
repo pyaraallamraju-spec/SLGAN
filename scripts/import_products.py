@@ -17,15 +17,20 @@ db = firestore.client()
 products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.json"
 products = json.loads(products_path.read_text(encoding="utf-8"))
 
-if len(products) != 41:
-    raise SystemExit(f"Safety check failed: expected 41 products, found {len(products)}")
-if any(product.get("product_category") != ("Rasayoga" if i < 31 else "Rasayanas") for i, product in enumerate(products)):
-    raise SystemExit("Safety check failed: products 1–31 must be Rasayoga and products 32–41 must be Rasayanas")
+if len(products) != 60:
+    raise SystemExit(f"Safety check failed: expected 60 products, found {len(products)}")
+expected_categories = (
+    ["Rasayoga"] * 31
+    + ["Rasayanas"] * 10
+    + ["Churnas"] * 19
+)
+if any(product.get("product_category") != expected_categories[i] for i, product in enumerate(products)):
+    raise SystemExit("Safety check failed: categories must be products 1–31 Rasayoga, 32–41 Rasayanas, and 42–60 Churnas")
 
 collection = db.collection("products")
 existing_docs = list(collection.stream())
 
-# Replace the products collection with the approved 41-item catalogue.
+# Replace the products collection with the approved 60-item catalogue.
 batch = db.batch()
 pending = 0
 for doc in existing_docs:
