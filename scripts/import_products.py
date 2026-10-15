@@ -10,8 +10,12 @@ if not secret:
     raise SystemExit("Missing GitHub Actions secret: FIREBASE_SERVICE_ACCOUNT_JSON")
 
 service_account_info = json.loads(secret)
+expected_project_id = "slgan-a364e"
+actual_project_id = service_account_info.get("project_id")
+if actual_project_id != expected_project_id:
+    raise SystemExit(f"Safety check failed: FIREBASE_SERVICE_ACCOUNT_JSON targets {actual_project_id!r}, expected {expected_project_id!r}")
 if not firebase_admin._apps:
-    firebase_admin.initialize_app(credentials.Certificate(service_account_info))
+    firebase_admin.initialize_app(credentials.Certificate(service_account_info), {"projectId": expected_project_id})
 
 db = firestore.client()
 products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.json"
