@@ -22,6 +22,17 @@ service cloud.firestore {
       }
     }
 
+
+    // Each address is stored as a separate document and is accessible only
+    // to the signed-in customer whose UID is recorded as userId.
+    match /addresses/{addressId} {
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if request.auth != null
+        && resource.data.userId == request.auth.uid
+        && (request.method != 'update' || request.resource.data.userId == request.auth.uid);
+    }
+
     // Deny access to every collection not explicitly listed above.
     match /{document=**} {
       allow read, write: if false;
