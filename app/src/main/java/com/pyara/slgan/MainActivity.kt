@@ -79,7 +79,7 @@ private fun AyurvedicApp() {
     var authResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
-        delay(3000)
+        delay(5000)
         showSplash = false
     }
     DisposableEffect(auth) {
