@@ -518,5 +518,133 @@
     "product_price": 150,
     "product_units": "ml",
     "product_category": "Gritas"
+  },
+  {
+    "product_name": "Bhringaraja Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Amlaki Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 175,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Aragwadhadi Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 180,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Chandanadi Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 250,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Narayana Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 250,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Vishnupushpi Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 175,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Amruthadi Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 180,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Sahacharadi Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Mahanarayana Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 250,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Bala Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 250,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Maha Vishagarbha Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Pinda Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Tamra Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Karanja-related Tailam (name unclear)",
+    "product_quantity": 1,
+    "product_weight": 10,
+    "product_price": 80,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Maha Mas Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 250,
+    "product_units": "ml",
+    "product_category": "Tailas"
+  },
+  {
+    "product_name": "Vidangadi Tailam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Tailas"
   }
 ]
