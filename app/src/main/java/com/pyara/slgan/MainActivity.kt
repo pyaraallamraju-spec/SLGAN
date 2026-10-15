@@ -78,8 +78,10 @@ private fun LoginScreen(value: String, onValueChange: (String) -> Unit, onContin
     Column(Modifier.fillMaxSize().background(Cream).padding(horizontal = 28.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = R.drawable.logo2), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", modifier = Modifier.size(112.dp))
         Spacer(Modifier.height(18.dp))
-        Text("SLGAN", fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = Forest)
-        Text("AYURVEDIC NILAYAM", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Leaf, letterSpacing = 3.sp)
+        Text("Sri Lakshmi Ganapathi", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Forest, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text("Ayurveda Nilayam", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Forest, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Spacer(Modifier.height(4.dp))
+        Text("Estd. 1900 by Perraju Sharma", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Leaf, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(36.dp))
         Text("Nature's care,\nrooted in tradition.", fontSize = 27.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold, color = Ink)
         Spacer(Modifier.height(10.dp))
