@@ -75,6 +75,13 @@ private val categories = listOf("All", "Supplements", "Powders", "Oils", "Skin C
 private fun AyurvedicApp() {
     val auth = remember { FirebaseAuth.getInstance() }
     var signedIn by remember { mutableStateOf(auth.currentUser != null) }
+    DisposableEffect(auth) {
+        val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            signedIn = firebaseAuth.currentUser != null
+        }
+        auth.addAuthStateListener(authStateListener)
+        onDispose { auth.removeAuthStateListener(authStateListener) }
+    }
     var userInput by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isCreatingAccount by remember { mutableStateOf(false) }
