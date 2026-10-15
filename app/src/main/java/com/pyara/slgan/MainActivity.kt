@@ -61,16 +61,16 @@ class MainActivity : ComponentActivity() {
 
 private data class Product(val id: Int, val name: String, val subtitle: String, val price: Int, val category: String, val emoji: String)
 private val products = listOf(
-    Product(1, "Ashwagandha Capsules", "Herbal wellness · 60 caps", 249, "Supplements", "🌿"),
-    Product(2, "Amla Powder", "Traditional herb · 100 g", 149, "Powders", "🍃"),
-    Product(3, "Neem Hair Oil", "Herbal hair care · 100 ml", 199, "Oils", "🫒"),
-    Product(4, "Triphala Churna", "Herbal powder · 100 g", 129, "Powders", "🌱"),
-    Product(5, "Aloe Vera Gel", "Skin care · 150 g", 179, "Skin Care", "🌵"),
-    Product(6, "Brahmi Herbal Oil", "Traditional oil · 100 ml", 229, "Oils", "🪴"),
-    Product(7, "Tulsi Herbal Drops", "Herbal extract · 30 ml", 99, "Supplements", "🌿"),
-    Product(8, "Herbal Bath Powder", "Daily care · 100 g", 159, "Skin Care", "🌼")
+    Product(1, "Ashwagandha Capsules", "Herbal wellness · 60 caps", 249, "Pills", "🌿"),
+    Product(2, "Amla Powder", "Traditional herb · 100 g", 149, "Churnas", "🍃"),
+    Product(3, "Neem Hair Oil", "Herbal hair care · 100 ml", 199, "Tailas", "🫒"),
+    Product(4, "Triphala Churna", "Herbal powder · 100 g", 129, "Churnas", "🌱"),
+    Product(5, "Aloe Vera Gel", "Skin care · 150 g", 179, "All", "🌵"),
+    Product(6, "Brahmi Herbal Oil", "Traditional oil · 100 ml", 229, "Tailas", "🪴"),
+    Product(7, "Tulsi Herbal Drops", "Herbal extract · 30 ml", 99, "Grutas", "🌿"),
+    Product(8, "Herbal Bath Powder", "Daily care · 100 g", 159, "Churnas", "🌼")
 )
-private val categories = listOf("All", "Supplements", "Powders", "Oils", "Skin Care")
+private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
 
 @Composable
 private fun AyurvedicApp() {
@@ -481,8 +481,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Spacer(Modifier.height(20.dp))
                 Text("Shop by category", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Spacer(Modifier.height(8.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    categories.take(4).forEach { item -> FilterChip(selected = category == item, onClick = { onCategoryChange(item) }, label = { Text(item, fontSize = 10.sp) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)) }
+                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    categories.forEach { item -> FilterChip(selected = category == item, onClick = { onCategoryChange(item) }, label = { Text(item, fontSize = 11.sp) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)) }
                 }
                 Spacer(Modifier.height(18.dp))
                 Text(if (search.isBlank()) "Popular essentials" else "Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
@@ -563,7 +563,7 @@ private fun CategoriesPage(modifier: Modifier, onCategoryChange: (String) -> Uni
         categories.drop(1).forEach { item ->
             Card(Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { onCategoryChange(item); onHome() }, colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(18.dp)) {
                 Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(48.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Text(when (item) { "Oils" -> "🫒"; "Powders" -> "🌾"; "Skin Care" -> "🌼"; else -> "🌿" }, fontSize = 24.sp) }
+                    Box(Modifier.size(48.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Text(when (item) { "Lehyas" -> "🍯"; "Grutas" -> "🧈"; "Pills" -> "💊"; "Tailas" -> "🫒"; "Churnas" -> "🌾"; "Rasayanas" -> "🌿"; "Bhasmas" -> "⚱️"; else -> "🌿" }, fontSize = 24.sp) }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) { Text(item, color = Ink, fontWeight = FontWeight.Bold); Text(products.count { it.category == item }.toString() + " products", color = Muted, fontSize = 12.sp) }
                     Icon(Icons.Default.ChevronRight, null, tint = Forest)
