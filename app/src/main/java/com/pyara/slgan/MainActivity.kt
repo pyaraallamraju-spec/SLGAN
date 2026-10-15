@@ -26,13 +26,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val Forest = Color(0xFF1F563B)
-private val Leaf = Color(0xFF3D8055)
-private val Cream = Color(0xFFF7F4E9)
-private val PaleGreen = Color(0xFFE7F0E4)
-private val Ink = Color(0xFF203329)
-private val Muted = Color(0xFF68776C)
-private val Gold = Color(0xFFD4A64A)
+private val Forest = Color(0xFF762A24)
+private val Leaf = Color(0xFF8A4B2A)
+private val Cream = Color(0xFFFFF7E8)
+private val PaleGreen = Color(0xFFF5E5C8)
+private val Ink = Color(0xFF38251F)
+private val Muted = Color(0xFF806D60)
+private val Gold = Color(0xFFD9A441)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,7 +146,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         Spacer(Modifier.height(7.dp))
                         Text("Everyday wellness,\nwith a herbal touch.", color = Color.White, fontSize = 20.sp, lineHeight = 26.sp, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(10.dp))
-                        Text("Explore collection  →", color = Color(0xFFE5F0D9), fontSize = 12.sp)
+                        Text("Explore collection  →", color = Color(0xFFFFE7B3), fontSize = 12.sp)
                     }
                     Text("🌿", fontSize = 48.sp)
                 }
@@ -206,7 +206,7 @@ private fun CartPage(modifier: Modifier, cart: Map<Int, Int>, onAdd: (Int) -> Un
         else {
             LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 items(selected) { product ->
-                    Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(16.dp)) {
+                    Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(16.dp)) {
                         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(54.dp).background(PaleGreen, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 28.sp) }
                             Spacer(Modifier.width(12.dp))
@@ -235,7 +235,7 @@ private fun CategoriesPage(modifier: Modifier, onCategoryChange: (String) -> Uni
         Text("Find the collection for your routine.", color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(18.dp))
         categories.drop(1).forEach { item ->
-            Card(Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { onCategoryChange(item); onHome() }, colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(18.dp)) {
+            Card(Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { onCategoryChange(item); onHome() }, colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(18.dp)) {
                 Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(48.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Text(when (item) { "Oils" -> "🫒"; "Powders" -> "🌾"; "Skin Care" -> "🌼"; else -> "🌿" }, fontSize = 24.sp) }
                     Spacer(Modifier.width(14.dp))
@@ -252,7 +252,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
     Column(modifier.fillMaxSize().padding(20.dp)) {
         Text("Your profile", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Spacer(Modifier.height(20.dp))
-        Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
+        Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(20.dp)) {
             Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(58.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.Person, null, tint = Forest, modifier = Modifier.size(30.dp)) }
                 Spacer(Modifier.width(14.dp))
