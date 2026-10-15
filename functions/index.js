@@ -93,6 +93,10 @@ exports.placeOrder = onCall({
       resumable: false, contentType: "application/pdf",
       metadata: { cacheControl: "private, max-age=0, no-transform" }
     });
+    const [signedInvoiceUrl] = await getStorage().bucket().file(storagePath).getSignedUrl({
+      action: "read",
+      expires: Date.now() + 7 * 24 * 60 * 60 * 1000
+    });
     const gmail = GMAIL_ADDRESS.value();
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -106,8 +110,8 @@ exports.placeOrder = onCall({
       attachments: [{ filename: orderId + ".pdf", content: pdf, contentType: "application/pdf" }]
     });
     await ref.update({ invoiceStatus: "generated", invoiceStoragePath: storagePath,
-      invoiceEmailStatus: "sent", updatedAt: FieldValue.serverTimestamp() });
-    return { success: true, orderId, message: "Order placed and confirmation emailed." };
+      invoiceUrl: signedInvoiceUrl, invoiceEmailStatus: "sent", updatedAt: FieldValue.serverTimestamp() });
+    return { success: true, orderId, invoiceUrl: signedInvoiceUrl, message: "Order placed and confirmation emailed." };
   } catch (err) {
     console.error("Invoice/email processing failed for order", orderId, err.message);
     await ref.update({ invoiceStatus: "failed", invoiceEmailStatus: "failed",
