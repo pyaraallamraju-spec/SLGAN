@@ -22,16 +22,17 @@ expected_categories = (
     + ["Rasayanas"] * 10
     + ["Churnas"] * 19
     + ["Gritas"] * 5
+    + ["Tailas"] * 16
 )
-if len(products) != 65:
-    raise SystemExit(f"Safety check failed: expected 65 products, found {len(products)}")
+if len(products) != 81:
+    raise SystemExit(f"Safety check failed: expected 81 products, found {len(products)}")
 if any(product.get("product_category") != expected_categories[i] for i, product in enumerate(products)):
-    raise SystemExit("Safety check failed: categories must be products 1–31 Rasayoga, 32–41 Rasayanas, 42–60 Churnas, and 61–65 Gritas")
+    raise SystemExit("Safety check failed: categories must be products 1–31 Rasayoga, 32–41 Rasayanas, 42–60 Churnas, 61–65 Gritas, and 66–81 Tailas")
 
 collection = db.collection("products")
 existing_docs = list(collection.stream())
 
-# Replace the products collection with the approved 65-item catalogue.
+# Replace the products collection with the approved 81-item catalogue.
 batch = db.batch()
 pending = 0
 for doc in existing_docs:
