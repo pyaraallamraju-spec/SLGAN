@@ -478,5 +478,45 @@
     "product_price": 60,
     "product_units": "g",
     "product_category": "Churnas"
+  },
+  {
+    "product_name": "Saraswathi Ghritam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Gritas"
+  },
+  {
+    "product_name": "Phala Ghritam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Gritas"
+  },
+  {
+    "product_name": "Shatadhouta Ghritam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Gritas"
+  },
+  {
+    "product_name": "Kalyana Ghritam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 150,
+    "product_units": "ml",
+    "product_category": "Gritas"
+  },
+  {
+    "product_name": "Surya-prabha Kashaya Ghritam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 150,
+    "product_units": "ml",
+    "product_category": "Gritas"
   }
 ]
