@@ -2,6 +2,9 @@ name: Import products to Firebase
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "data/products_seed.json"
 
 jobs:
   import-products:
