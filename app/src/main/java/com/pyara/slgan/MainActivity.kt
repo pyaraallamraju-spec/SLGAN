@@ -584,7 +584,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(54.dp).background(PaleGreen, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 28.sp) }
                             Spacer(Modifier.width(12.dp))
-                            Column(Modifier.weight(1f)) { Text(product.name, fontWeight = FontWeight.Bold, color = Ink, fontSize = 13.sp); Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) + " each", color = Muted, fontSize = 12.sp) }
+                            Column(Modifier.weight(1f)) { Text(product.name, fontWeight = FontWeight.Bold, color = Ink, fontSize = 13.sp); Text("₹" + (if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price)) + " each", color = Muted, fontSize = 12.sp) }
                             IconButton(onClick = { onRemove(product.id) }) { Icon(Icons.Default.Remove, "Remove one") }
                             Text((cart[product.id] ?: 0).toString(), fontWeight = FontWeight.Bold)
                             IconButton(onClick = { onAdd(product.id) }) { Icon(Icons.Default.Add, "Add one") }
