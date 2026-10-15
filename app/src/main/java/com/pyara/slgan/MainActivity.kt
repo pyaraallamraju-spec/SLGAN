@@ -730,7 +730,10 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                 }
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(listOf(nickname, firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { "SLGAN Customer" }, color = Ink, fontWeight = FontWeight.Bold)
+                    Text(
+                        listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname.ifBlank { "SLGAN Customer" } },
+                        color = Ink, fontWeight = FontWeight.Bold
+                    )
                     Text(mobileNumber.ifBlank { user?.email.orEmpty() }, color = Muted, fontSize = 12.sp)
                 }
             }
