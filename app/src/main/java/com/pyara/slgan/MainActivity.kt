@@ -60,19 +60,40 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private data class Product(val id: Int, val name: String, val subtitle: String, val price: Int, val category: String, val emoji: String)
-private val products = listOf(
-    Product(1, "Ashwagandha Capsules", "Herbal wellness · 60 caps", 249, "Pills", "🌿"),
-    Product(2, "Amla Powder", "Traditional herb · 100 g", 149, "Churnas", "🍃"),
-    Product(3, "Neem Hair Oil", "Herbal hair care · 100 ml", 199, "Tailas", "🫒"),
-    Product(4, "Triphala Churna", "Herbal powder · 100 g", 129, "Churnas", "🌱"),
-    Product(5, "Aloe Vera Gel", "Skin care · 150 g", 179, "All", "🌵"),
-    Product(6, "Brahmi Herbal Oil", "Traditional oil · 100 ml", 229, "Tailas", "🪴"),
-    Product(7, "Tulsi Herbal Drops", "Herbal extract · 30 ml", 99, "Grutas", "🌿"),
-    Product(8, "Herbal Bath Powder", "Daily care · 100 g", 159, "Churnas", "🌼")
-)
+private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String)
 private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
 
+private fun productFromFirestore(data: Map<String, Any?>): Product? {
+    val name = data["product_name"]?.toString()?.trim().orEmpty()
+    if (name.isBlank()) return null
+    val quantity = data["product_quantity"]?.toString()?.trim().orEmpty()
+    val weight = data["product_weight"]?.toString()?.trim().orEmpty()
+    val units = data["product_units"]?.toString()?.trim().orEmpty()
+    val details = listOf(quantity, weight, units).filter { it.isNotBlank() }.distinct().joinToString(" · ")
+    val price = data["product_price"]?.toString()?.replace(",", "")?.toDoubleOrNull() ?: 0.0
+    val rawCategory = data["product_category"]?.toString()?.trim().orEmpty()
+    val category = when (rawCategory.lowercase()) {
+        "rasayoga", "rasayanas", "rasayana" -> "Rasayanas"
+        "lehya", "lehyam", "lehyas" -> "Lehyas"
+        "grutha", "ghrita", "grutas", "gruthas" -> "Grutas"
+        "pill", "pills", "vati" -> "Pills"
+        "taila", "tailam", "tailas" -> "Tailas"
+        "churna", "churnas" -> "Churnas"
+        "bhasma", "bhasmas" -> "Bhasmas"
+        else -> rawCategory
+    }
+    val emoji = when (category) {
+        "Lehyas" -> "🍯"
+        "Grutas" -> "🧈"
+        "Pills" -> "💊"
+        "Tailas" -> "🫒"
+        "Churnas" -> "🌾"
+        "Rasayanas" -> "🌿"
+        "Bhasmas" -> "⚱️"
+        else -> "🌿"
+    }
+    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji)
+}
 @Composable
 private fun AyurvedicApp() {
     val auth = remember { FirebaseAuth.getInstance() }
@@ -99,7 +120,31 @@ private fun AyurvedicApp() {
     var selectedTab by remember { mutableStateOf("Home") }
     var selectedCategory by remember { mutableStateOf("All") }
     var search by remember { mutableStateOf("") }
-    val cart = remember { mutableStateMapOf<Int, Int>() }
+    var liveProducts by remember { mutableStateOf<List<Product>>(emptyList()) }
+    var productsLoading by remember { mutableStateOf(true) }
+    var productsError by remember { mutableStateOf<String?>(null) }
+    DisposableEffect(signedIn) {
+        if (signedIn) {
+            val registration = FirebaseData.observeProducts(
+                onProducts = { records ->
+                    liveProducts = records.mapNotNull { record -> productFromFirestore(record) }
+                    productsLoading = false
+                    productsError = null
+                },
+                onError = { error ->
+                    productsError = error.localizedMessage ?: "Unable to load products."
+                    productsLoading = false
+                }
+            )
+            onDispose { registration.remove() }
+        } else {
+            liveProducts = emptyList()
+            productsLoading = true
+            productsError = null
+            onDispose { }
+        }
+    }
+    val cart = remember { mutableStateMapOf<String, Int>() }
     MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Color.White, onSurface = Ink)) {
         Surface(Modifier.fillMaxSize(), color = Cream) {
             if (showSplash || !authResolved) {
@@ -136,7 +181,7 @@ private fun AyurvedicApp() {
                     }
                 }
             )
-            else ShopScreen(selectedTab, { selectedTab = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart,
+            else ShopScreen(selectedTab, { selectedTab = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productsLoading, productsError,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
                 { auth.signOut(); signedIn = false; password = "" })
@@ -417,7 +462,7 @@ private fun LoginScreen(
 @Composable
 private fun ShopScreen(
     selectedTab: String, onTabChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
-    search: String, onSearchChange: (String) -> Unit, cart: Map<Int, Int>, onAdd: (Int) -> Unit, onRemove: (Int) -> Unit, onSignOut: () -> Unit
+    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onSignOut: () -> Unit
 ) {
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
@@ -437,8 +482,8 @@ private fun ShopScreen(
         }
     }) { padding ->
         when (selectedTab) {
-            "Cart" -> CartPage(Modifier.padding(padding), cart, onAdd, onRemove)
-            "Categories" -> CategoriesPage(Modifier.padding(padding), onCategoryChange) { onTabChange("Home") }
+            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove)
+            "Categories" -> CategoriesPage(Modifier.padding(padding), products, onCategoryChange) { onTabChange("Home") }
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, onAdd)
         }
@@ -446,7 +491,7 @@ private fun ShopScreen(
 }
 
 @Composable
-private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<Int, Int>, onAdd: (Int) -> Unit) {
+private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit) {
     val currentUser = remember { FirebaseAuth.getInstance().currentUser }
     var welcomeNickname by remember(currentUser?.uid) { mutableStateOf("") }
     DisposableEffect(currentUser?.uid) {
@@ -459,7 +504,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
         }
         onDispose { registration?.remove() }
     }
-    val visible = products.filter { (category == "All" || it.category == category) && (it.name.contains(search, true) || it.subtitle.contains(search, true)) }
+    val visible = products.filter { (category == "All" || it.category.equals(category, true)) && (it.name.contains(search, true) || it.subtitle.contains(search, true)) }
     LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 20.dp)) {
         item {
             Column(Modifier.padding(horizontal = 18.dp)) {
@@ -486,10 +531,12 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     categories.forEach { item -> FilterChip(selected = category == item, onClick = { onCategoryChange(item) }, label = { Text(item, fontSize = 11.sp) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)) }
                 }
                 Spacer(Modifier.height(18.dp))
-                Text(if (search.isBlank()) "Popular essentials" else "Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Text(if (search.isBlank()) "Our Ayurvedic products" else "Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                if (productsLoading) { Spacer(Modifier.height(12.dp)); LinearProgressIndicator(Modifier.fillMaxWidth(), color = Forest) }
+                if (productsError != null) { Spacer(Modifier.height(8.dp)); Text("Could not load products: $productsError", color = Color(0xFFB3261E), fontSize = 12.sp) }
             }
         }
-        if (visible.isEmpty()) item { Text("No products found. Try another search.", Modifier.padding(24.dp), color = Muted) }
+        if (visible.isEmpty()) item { Text(if (productsLoading) "Loading products…" else if (productsError != null) "Products could not be loaded. Check your internet and Firestore rules." else "No products found in this category. Try All or another search.", Modifier.padding(24.dp), color = Muted) }
         else items(visible.chunked(2)) { pair ->
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 pair.forEach { product -> ProductCard(product, cart[product.id] ?: 0, onAdd, Modifier.weight(1f)) }
@@ -501,7 +548,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
 }
 
 @Composable
-private fun ProductCard(product: Product, count: Int, onAdd: (Int) -> Unit, modifier: Modifier = Modifier) {
+private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, modifier: Modifier = Modifier) {
     Card(modifier, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
         Column(Modifier.padding(11.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
@@ -513,7 +560,7 @@ private fun ProductCard(product: Product, count: Int, onAdd: (Int) -> Unit, modi
             Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(9.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("₹" + product.price, color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
                 if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(34.dp), colors = IconButtonDefaults.filledIconButtonColors(containerColor = Forest)) { Icon(Icons.Default.Add, "Add " + product.name, modifier = Modifier.size(18.dp)) }
                 else Text(count.toString() + " in cart", fontSize = 10.sp, color = Forest, fontWeight = FontWeight.Bold)
             }
@@ -522,7 +569,7 @@ private fun ProductCard(product: Product, count: Int, onAdd: (Int) -> Unit, modi
 }
 
 @Composable
-private fun CartPage(modifier: Modifier, cart: Map<Int, Int>, onAdd: (Int) -> Unit, onRemove: (Int) -> Unit) {
+private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit) {
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     Column(modifier.fillMaxSize().padding(18.dp)) {
@@ -537,7 +584,7 @@ private fun CartPage(modifier: Modifier, cart: Map<Int, Int>, onAdd: (Int) -> Un
                         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(54.dp).background(PaleGreen, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 28.sp) }
                             Spacer(Modifier.width(12.dp))
-                            Column(Modifier.weight(1f)) { Text(product.name, fontWeight = FontWeight.Bold, color = Ink, fontSize = 13.sp); Text("₹" + product.price + " each", color = Muted, fontSize = 12.sp) }
+                            Column(Modifier.weight(1f)) { Text(product.name, fontWeight = FontWeight.Bold, color = Ink, fontSize = 13.sp); Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) + " each", color = Muted, fontSize = 12.sp) }
                             IconButton(onClick = { onRemove(product.id) }) { Icon(Icons.Default.Remove, "Remove one") }
                             Text((cart[product.id] ?: 0).toString(), fontWeight = FontWeight.Bold)
                             IconButton(onClick = { onAdd(product.id) }) { Icon(Icons.Default.Add, "Add one") }
@@ -547,7 +594,7 @@ private fun CartPage(modifier: Modifier, cart: Map<Int, Int>, onAdd: (Int) -> Un
             }
             Spacer(Modifier.height(12.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) { Text("Subtotal", color = Muted, fontSize = 13.sp); Text("₹" + total, color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
+                Column(Modifier.weight(1f)) { Text("Subtotal", color = Muted, fontSize = 13.sp); Text("₹" + String.format("%.2f", total), color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
                 Button(onClick = { }, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) { Text("Checkout") }
             }
             Text("Demo only: checkout and payments are not connected.", color = Muted, fontSize = 11.sp)
@@ -556,7 +603,7 @@ private fun CartPage(modifier: Modifier, cart: Map<Int, Int>, onAdd: (Int) -> Un
 }
 
 @Composable
-private fun CategoriesPage(modifier: Modifier, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
+private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
     Column(modifier.fillMaxSize().padding(18.dp)) {
         Text("Categories", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Text("Find the collection for your routine.", color = Muted, fontSize = 13.sp)
@@ -566,7 +613,7 @@ private fun CategoriesPage(modifier: Modifier, onCategoryChange: (String) -> Uni
                 Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(48.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Text(when (item) { "Lehyas" -> "🍯"; "Grutas" -> "🧈"; "Pills" -> "💊"; "Tailas" -> "🫒"; "Churnas" -> "🌾"; "Rasayanas" -> "🌿"; "Bhasmas" -> "⚱️"; else -> "🌿" }, fontSize = 24.sp) }
                     Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) { Text(item, color = Ink, fontWeight = FontWeight.Bold); Text(products.count { it.category == item }.toString() + " products", color = Muted, fontSize = 12.sp) }
+                    Column(Modifier.weight(1f)) { Text(item, color = Ink, fontWeight = FontWeight.Bold); Text(products.count { it.category.equals(item, true) }.toString() + " products", color = Muted, fontSize = 12.sp) }
                     Icon(Icons.Default.ChevronRight, null, tint = Forest)
                 }
             }
