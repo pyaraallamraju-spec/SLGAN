@@ -598,7 +598,9 @@ private fun LoginScreen(
             Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Forest)
         }
         Spacer(Modifier.height(8.dp))
-        Text(tr("Secure email and password sign-in", LocalAppLanguage.current), fontSize = 13.sp, color = Color(0xFF56534D))
+        Text("Sign in with your registered email and password.", fontSize = 13.sp, color = Color(0xFF56534D), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Spacer(Modifier.height(4.dp))
+        Text("Mobile-number login is not available yet.", fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(30.dp))
         Box(Modifier.fillMaxWidth().height(48.dp).background(Color(0xFF8B211B))) {
             Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.TopCenter).background(Gold))
