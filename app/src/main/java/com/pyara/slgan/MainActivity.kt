@@ -485,7 +485,7 @@ private fun ShopScreen(
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove)
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, onCategoryChange) { onTabChange("Home") }
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut)
-            else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, onAdd)
+            else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productsLoading, productsError, onAdd)
         }
     }
 }
