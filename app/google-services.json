@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1034428021231",
+    "project_id": "slgan-a364e",
+    "storage_bucket": "slgan-a364e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034428021231:android:ebbb53dac3fc87545e9e1a",
+        "android_client_info": {
+          "package_name": "com.pyara.slgan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZjCjajI25DZMWZUzHBJh_FztS2-r_E9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
