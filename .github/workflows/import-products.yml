@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "data/products_seed.json"
+      - "scripts/import_products.py"
 
 jobs:
   import-products:
