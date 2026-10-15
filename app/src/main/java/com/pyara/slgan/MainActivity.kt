@@ -1,6 +1,7 @@
 package com.pyara.slgan
 
 import android.os.Bundle
+import com.google.firebase.FirebaseApp
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -49,6 +50,7 @@ private val Gold = Color(0xFFD9A441)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContent { AyurvedicApp() }
     }
 }
