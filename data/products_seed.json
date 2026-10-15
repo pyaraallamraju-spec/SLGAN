@@ -1,461 +1,410 @@
 [
   {
-    "id": 1,
-    "name": "Mahakanakasindhurarasam",
-    "quantity": 1,
-    "weight": 1,
-    "price": 800,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Mahakanakasindhurarasam",
+    "product_quantity": 1,
+    "product_weight": 1,
+    "product_price": 800,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 2,
-    "name": "Siddhamakaradwajam",
-    "quantity": 1,
-    "weight": 1,
-    "price": 500,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Siddhamakaradwajam",
+    "product_quantity": 1,
+    "product_weight": 1,
+    "product_price": 500,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 3,
-    "name": "Poornachandrodayam",
-    "quantity": 1,
-    "weight": 1,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Poornachandrodayam",
+    "product_quantity": 1,
+    "product_weight": 1,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 4,
-    "name": "Mahalakshmivilasarasam",
-    "quantity": 1,
-    "weight": 1,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Mahalakshmivilasarasam",
+    "product_quantity": 1,
+    "product_weight": 1,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 5,
-    "name": "Mahavatharakshasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Mahavatharakshasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 6,
-    "name": "Swarnakanthavalallabarasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 150,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Swarnakanthavalallabarasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 150,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 7,
-    "name": "Kanthavalallabarasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 80,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Kanthavalallabarasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 80,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 8,
-    "name": "Pralayagnirudrasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 80,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Pralayagnirudrasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 80,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 9,
-    "name": "Shleshanthakarasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 70,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Shleshanthakarasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 70,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 10,
-    "name": "Lokanadharasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 75,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Lokanadharasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 75,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 11,
-    "name": "Vyadiharanarasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Vyadiharanarasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 12,
-    "name": "Hemasundararasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Hemasundararasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 13,
-    "name": "Shleshagajaamkusham",
-    "quantity": 1,
-    "weight": 5,
-    "price": 25,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Shleshagajaamkusham",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 25,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 14,
-    "name": "Laghulakshmivilasarasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Laghulakshmivilasarasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 15,
-    "name": "Vijayachinthamani",
-    "quantity": 1,
-    "weight": 5,
-    "price": 400,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Vijayachinthamani",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 400,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 16,
-    "name": "Rajithaloharasayanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Rajithaloharasayanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 17,
-    "name": "Rasachinthamani",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Rasachinthamani",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 18,
-    "name": "Swarnataamrarasayanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 600,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Swarnataamrarasayanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 600,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 19,
-    "name": "Taamrarasayanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Taamrarasayanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 20,
-    "name": "Taamravangarasayanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Taamravangarasayanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 21,
-    "name": "Chaturloharasayanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Chaturloharasayanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 22,
-    "name": "Astaloharasayanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 1000,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Astaloharasayanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 1000,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 23,
-    "name": "Rajamrugankarasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 1000,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Rajamrugankarasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 1000,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 24,
-    "name": "Mahaloharasayanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Mahaloharasayanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 25,
-    "name": "loharasayanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 150,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "loharasayanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 150,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 26,
-    "name": "Mehavangarajeeyam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 125,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Mehavangarajeeyam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 125,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 27,
-    "name": "Rajithamehavangarajeeyam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Rajithamehavangarajeeyam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 28,
-    "name": "Soothikabharanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 125,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Soothikabharanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 125,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 29,
-    "name": "Swarnasuryavarthi",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Swarnasuryavarthi",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 30,
-    "name": "Kanakabalasuryodayam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 400,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Kanakabalasuryodayam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 400,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 31,
-    "name": "Vantabalasuryodayam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Vantabalasuryodayam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 32,
-    "name": "Maharajashirobhushanam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 350,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Maharajashirobhushanam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 350,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 33,
-    "name": "Astalohapoornachandrodayam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 1000,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Astalohapoornachandrodayam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 1000,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 34,
-    "name": "Vaikranthachandrodayam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Vaikranthachandrodayam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 35,
-    "name": "Rajithachandrodayam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Rajithachandrodayam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 36,
-    "name": "Trilokyachintamani",
-    "quantity": 1,
-    "weight": 5,
-    "price": 150,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Trilokyachintamani",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 150,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 37,
-    "name": "Lohachandodayam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 600,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Lohachandodayam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 600,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 38,
-    "name": "Kaphakesari",
-    "quantity": 1,
-    "weight": 5,
-    "price": 75,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Kaphakesari",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 75,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 39,
-    "name": "Kshyakutaram",
-    "quantity": 1,
-    "weight": 5,
-    "price": 90,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Kshyakutaram",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 90,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 40,
-    "name": "Shwasakutaram",
-    "quantity": 1,
-    "weight": 5,
-    "price": 90,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Shwasakutaram",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 90,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 41,
-    "name": "Shadgunasindhuram",
-    "quantity": 1,
-    "weight": 5,
-    "price": 300,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Shadgunasindhuram",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 300,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 42,
-    "name": "Navagrahisindhuram",
-    "quantity": 1,
-    "weight": 5,
-    "price": 600,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Navagrahisindhuram",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 600,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 43,
-    "name": "Maharasarattu",
-    "quantity": 1,
-    "weight": 5,
-    "price": 125,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Maharasarattu",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 125,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 44,
-    "name": "rasarattu",
-    "quantity": 1,
-    "weight": 5,
-    "price": 90,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "rasarattu",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 90,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 45,
-    "name": "Vatharakshasam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 75,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Vatharakshasam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 75,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 46,
-    "name": "Tripakachandrodayam",
-    "quantity": 1,
-    "weight": 5,
-    "price": 600,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Tripakachandrodayam",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 600,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 47,
-    "name": "Vathagnikumaram",
-    "quantity": 1,
-    "weight": 5,
-    "price": 150,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Vathagnikumaram",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 150,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 48,
-    "name": "Rasaparpati",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Rasaparpati",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 49,
-    "name": "Navagrahi",
-    "quantity": 1,
-    "weight": 5,
-    "price": 600,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Navagrahi",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 600,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 50,
-    "name": "Navarasachintamani",
-    "quantity": 1,
-    "weight": 5,
-    "price": 400,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Navarasachintamani",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 400,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   },
   {
-    "id": 51,
-    "name": "Divyasindhuram",
-    "quantity": 1,
-    "weight": 5,
-    "price": 100,
-    "units": "g",
-    "category": "Rasayoga"
+    "product_name": "Divyasindhuram",
+    "product_quantity": 1,
+    "product_weight": 5,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Rasayoga"
   }
 ]
