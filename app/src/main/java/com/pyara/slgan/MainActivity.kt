@@ -701,11 +701,14 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 }
                 Spacer(Modifier.height(18.dp))
                 Text(if (search.isBlank()) "Our Ayurvedic products" else "Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-                if (productsLoading) { Spacer(Modifier.height(12.dp)); LinearProgressIndicator(Modifier.fillMaxWidth(), color = Forest) }
+                if (productsLoading) {
+                    Spacer(Modifier.height(18.dp))
+                    AppLoader(message = "Loading products…", compact = true)
+                }
                 if (productsError != null) { Spacer(Modifier.height(8.dp)); Text(tr("Could not load products: $productsError", LocalAppLanguage.current), color = Color(0xFFB3261E), fontSize = 12.sp) }
             }
         }
-        if (visible.isEmpty()) item { Text(if (productsLoading) "Loading products…" else if (productsError != null) "Products could not be loaded. Check your internet and Firestore rules." else "No products found in this category. Try All or another search.", Modifier.padding(24.dp), color = Muted) }
+        if (visible.isEmpty() && !productsLoading) item { Text(if (productsError != null) "Products could not be loaded. Check your internet and Firestore rules." else "No products found in this category. Try All or another search.", Modifier.padding(24.dp), color = Muted) }
         else items(visible.chunked(2)) { pair ->
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 pair.forEach { product -> ProductCard(product, cart[product.id] ?: 0, onAdd, onProductClick, Modifier.weight(1f)) }
@@ -1590,6 +1593,38 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             }
         }
         Spacer(Modifier.height(18.dp))
+    }
+}
+
+@Composable
+private fun AppLoader(message: String, compact: Boolean = false) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = if (compact) 8.dp else 28.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .size(if (compact) 48.dp else 76.dp)
+                .background(Cream, CircleShape)
+                .border(2.dp, Gold, CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(if (compact) 30.dp else 46.dp),
+                color = Forest,
+                trackColor = PaleGreen,
+                strokeWidth = 3.dp
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        Text(message, color = Forest, fontSize = if (compact) 13.sp else 15.sp, fontWeight = FontWeight.SemiBold)
+        if (!compact) {
+            Spacer(Modifier.height(4.dp))
+            Text("Please wait a moment", color = Muted, fontSize = 12.sp)
+        }
     }
 }
 
