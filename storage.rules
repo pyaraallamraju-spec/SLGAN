@@ -1,0 +1,9 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /invoices/{fileName} {
+      // Invoices are emailed by the trusted backend; no public access.
+      allow read, write: if false;
+    }
+  }
+}
