@@ -860,6 +860,7 @@ private fun OrdersPage(
     var previousOrders by remember(user?.uid) { mutableStateOf<List<Map<String, Any?>>>(emptyList()) }
     var loadingOrders by remember(user?.uid) { mutableStateOf(true) }
     var ordersError by remember(user?.uid) { mutableStateOf<String?>(null) }
+    var selectedOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
 
     DisposableEffect(user?.uid) {
         var registration: ListenerRegistration? = null
@@ -946,7 +947,7 @@ private fun OrdersPage(
                     Card(
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
                         shape = RoundedCornerShape(14.dp),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().clickable { selectedOrder = order }
                     ) {
                         Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                             Text(orderId, fontWeight = FontWeight.Bold, color = Forest)
@@ -954,14 +955,17 @@ private fun OrdersPage(
                             Text("Product total: ₹" + String.format("%.2f", total), color = Ink)
                             val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                             if (timestamp != null) Text(timestamp.toDate().toString(), color = Muted, fontSize = 11.sp)
+                            TextButton(onClick = { selectedOrder = order }) {
+                                Icon(Icons.Default.ReceiptLong, contentDescription = null)
+                                Spacer(Modifier.width(6.dp))
+                                Text("View complete invoice")
+                            }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
                                     Icon(Icons.Default.PictureAsPdf, contentDescription = null)
                                     Spacer(Modifier.width(6.dp))
-                                    Text("View invoice")
+                                    Text("Open invoice PDF")
                                 }
-                            } else {
-                                Text("Invoice not available", color = Muted, fontSize = 12.sp)
                             }
                         }
                     }
@@ -969,6 +973,97 @@ private fun OrdersPage(
             }
         }
     }
+
+
+    selectedOrder?.let { order ->
+        val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
+        val invoiceNo = order["invoiceNumber"]?.toString() ?: orderId
+        val customerName = order["customerName"]?.toString().orEmpty()
+        val email = order["email"]?.toString().orEmpty()
+        val phone = order["phone"]?.toString().orEmpty()
+        val address = order["shippingAddress"]?.toString().orEmpty()
+        val status = order["orderStatus"]?.toString() ?: "received"
+        val paymentStatus = order["paymentStatus"]?.toString() ?: "not_collected"
+        val subtotal = (order["subtotal"] as? Number)?.toDouble() ?: (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
+        val grandTotal = (order["grandTotal"] as? Number)?.toDouble() ?: subtotal
+        val invoiceItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
+        val created = (order["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.toString() ?: "Not available"
+
+        AlertDialog(
+            onDismissRequest = { selectedOrder = null },
+            title = {
+                Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Text("ORDER INVOICE", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = Forest)
+                    Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", fontSize = 13.sp, color = Muted)
+                }
+            },
+            text = {
+                Column(
+                    Modifier.fillMaxWidth().heightIn(max = 440.dp).verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    HorizontalDivider(color = Gold)
+                    Text("Invoice No: $invoiceNo", fontWeight = FontWeight.Bold, color = Ink)
+                    Text("Order ID: $orderId", color = Ink, fontSize = 12.sp)
+                    Text("Order date: $created", color = Muted, fontSize = 12.sp)
+                    Text("Order status: " + status.replaceFirstChar { it.uppercase() }, color = Ink)
+                    Text("Payment status: " + paymentStatus.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Ink)
+                    HorizontalDivider(color = Gold.copy(alpha = 0.7f))
+                    Text("BILL TO", fontWeight = FontWeight.Bold, color = Forest)
+                    Text(customerName.ifBlank { "Customer name not provided" }, color = Ink)
+                    if (phone.isNotBlank()) Text("Phone: $phone", color = Ink)
+                    if (email.isNotBlank()) Text("Email: $email", color = Ink)
+                    if (address.isNotBlank()) Text("Delivery address: $address", color = Ink)
+                    HorizontalDivider(color = Gold.copy(alpha = 0.7f))
+                    Text("ITEM DETAILS", fontWeight = FontWeight.Bold, color = Forest)
+                    if (invoiceItems.isEmpty()) {
+                        Text("No item details were saved with this order.", color = Muted)
+                    } else {
+                        invoiceItems.forEachIndexed { index, item ->
+                            val name = item["productName"]?.toString() ?: item["name"]?.toString() ?: "Item \${index + 1}"
+                            val quantity = (item["quantity"] as? Number)?.toInt() ?: 0
+                            val unitPrice = (item["unitPrice"] as? Number)?.toDouble() ?: (item["price"] as? Number)?.toDouble() ?: 0.0
+                            val lineTotal = (item["lineTotal"] as? Number)?.toDouble() ?: (unitPrice * quantity)
+                            Card(
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                                shape = RoundedCornerShape(10.dp)
+                            ) {
+                                Column(Modifier.fillMaxWidth().padding(10.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                                    Text(name, fontWeight = FontWeight.SemiBold, color = Ink)
+                                    Text("$quantity × ₹" + String.format("%.2f", unitPrice) + "     Line total: ₹" + String.format("%.2f", lineTotal), color = Muted, fontSize = 12.sp)
+                                }
+                            }
+                        }
+                    }
+                    HorizontalDivider(color = Gold.copy(alpha = 0.7f))
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text("Subtotal", color = Ink)
+                        Text("₹" + String.format("%.2f", subtotal), color = Ink)
+                    }
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text("Delivery / tax", color = Ink)
+                        Text("₹0.00", color = Ink)
+                    }
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text("GRAND TOTAL", fontWeight = FontWeight.ExtraBold, color = Forest)
+                        Text("₹" + String.format("%.2f", grandTotal), fontWeight = FontWeight.ExtraBold, color = Forest)
+                    }
+                    Text("Payment has not been collected unless the status above says otherwise.", color = Muted, fontSize = 11.sp)
+                }
+            },
+            confirmButton = { TextButton(onClick = { selectedOrder = null }) { Text("Close") } },
+            dismissButton = {
+                val invoiceUrl = order["invoiceUrl"]?.toString()
+                if (!invoiceUrl.isNullOrBlank()) {
+                    TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
+                        Text("Open PDF")
+                    }
+                }
+            },
+            containerColor = Cream
+        )
+    }
+
 }
 
 @Composable
