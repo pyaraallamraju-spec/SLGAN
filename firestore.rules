@@ -20,12 +20,36 @@ service cloud.firestore {
       }
     }
 
-    // Top-level orders are created/updated only by trusted Cloud Functions.
-    // Customers may read only their own orders.
+    // Orders are client-created on the Spark plan. Restrict each order to
+    // its authenticated owner and keep it pending until the shop verifies it.
+    // Client-supplied prices are not trusted for final fulfilment/payment.
     match /orders/{orderId} {
       allow read: if request.auth != null
         && resource.data.customerId == request.auth.uid;
-      allow create, update, delete: if false;
+      allow create: if request.auth != null
+        && request.resource.data.customerId == request.auth.uid
+        && request.resource.data.orderId == orderId
+        && request.resource.data.orderStatus == 'pending_verification'
+        && request.resource.data.paymentStatus == 'not_collected'
+        && request.resource.data.invoiceStatus == 'not_generated'
+        && request.resource.data.customerName is string
+        && request.resource.data.customerName.size() > 0
+        && request.resource.data.customerName.size() <= 120
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() <= 30
+        && request.resource.data.shippingAddress is string
+        && request.resource.data.shippingAddress.size() > 0
+        && request.resource.data.shippingAddress.size() <= 1000
+        && request.resource.data.items is list
+        && request.resource.data.items.size() > 0
+        && request.resource.data.items.size() <= 100
+        && request.resource.data.grandTotal is number
+        && request.resource.data.grandTotal >= 0
+        && request.resource.data.subtotal is number
+        && request.resource.data.subtotal >= 0;
+      allow update, delete: if false;
     }
 
     // Each saved address belongs to the signed-in customer.
