@@ -76,14 +76,16 @@ private val categories = listOf("All", "Supplements", "Powders", "Oils", "Skin C
 private fun AyurvedicApp() {
     val auth = remember { FirebaseAuth.getInstance() }
     var signedIn by remember { mutableStateOf(auth.currentUser != null) }
+    var authResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
-        delay(5000)
+        delay(3000)
         showSplash = false
     }
     DisposableEffect(auth) {
         val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             signedIn = firebaseAuth.currentUser != null
+            authResolved = true
         }
         auth.addAuthStateListener(authStateListener)
         onDispose { auth.removeAuthStateListener(authStateListener) }
@@ -99,7 +101,7 @@ private fun AyurvedicApp() {
     val cart = remember { mutableStateMapOf<Int, Int>() }
     MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Color.White, onSurface = Ink)) {
         Surface(Modifier.fillMaxSize(), color = Cream) {
-            if (showSplash) {
+            if (showSplash || !authResolved) {
                 SplashScreen()
             } else if (!signedIn) LoginScreen(
                 value = userInput,
