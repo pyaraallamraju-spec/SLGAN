@@ -2,6 +2,7 @@ package com.pyara.slgan
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.SetOptions
 
 /**
  * Firestore access layer for SLGAN.
@@ -35,7 +36,7 @@ object FirebaseData {
         onComplete: (Exception?) -> Unit
     ) {
         db.collection("customers").document(uid)
-            .set(fields)
+            .set(fields, SetOptions.merge())
             .addOnSuccessListener { onComplete(null) }
             .addOnFailureListener { error -> onComplete(error) }
     }
