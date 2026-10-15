@@ -1598,6 +1598,25 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
 
 @Composable
 private fun AppLoader(message: String, compact: Boolean = false) {
+    val leafMotion = rememberInfiniteTransition(label = "herbalLeafLoader")
+    val leafRotation by leafMotion.animateFloat(
+        initialValue = -18f,
+        targetValue = 342f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "leafRotation"
+    )
+    val leafScale by leafMotion.animateFloat(
+        initialValue = 0.88f,
+        targetValue = 1.08f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(750, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "leafScale"
+    )
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -1612,11 +1631,14 @@ private fun AppLoader(message: String, compact: Boolean = false) {
                 .border(2.dp, Gold, CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(if (compact) 30.dp else 46.dp),
-                color = Forest,
-                trackColor = PaleGreen,
-                strokeWidth = 3.dp
+            Text(
+                text = "🌿",
+                fontSize = if (compact) 25.sp else 39.sp,
+                modifier = Modifier.graphicsLayer {
+                    rotationZ = leafRotation
+                    scaleX = leafScale
+                    scaleY = leafScale
+                }
             )
         }
         Spacer(Modifier.height(10.dp))
