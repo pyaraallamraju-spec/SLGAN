@@ -19,7 +19,7 @@ if not firebase_admin._apps:
 
 db = firestore.client()
 products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.json"
-products = json.loads(products_path.read_text(encoding="utf-8"))
+products = json.loads(products_path.read_text(encoding="utf-8"))  # Catalogue includes the Pills category.
 
 expected_categories = (
     ["Rasayoga"] * 32
