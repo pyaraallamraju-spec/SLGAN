@@ -55,6 +55,57 @@ private val Ink = Color(0xFF38251F)
 private val Muted = Color(0xFF806D60)
 private val Gold = Color(0xFFD9A441)
 
+private val LocalAppLanguage = staticCompositionLocalOf { "English" }
+
+private fun tr(text: String, language: String): String {
+    if (language == "English") return text
+    val te = mapOf(
+        "Home" to "హోమ్", "Categories" to "వర్గాలు", "Cart" to "కార్ట్", "Profile" to "ప్రొఫైల్",
+        "Your account" to "మీ ఖాతా", "Manage your personal details and delivery addresses." to "మీ వ్యక్తిగత వివరాలు, డెలివరీ చిరునామాలను నిర్వహించండి.",
+        "Profile" to "ప్రొఫైల్", "Addresses" to "చిరునామాలు", "First name" to "పేరు", "Last name" to "ఇంటి పేరు",
+        "Nickname" to "ముద్దుపేరు", "Mobile number" to "మొబైల్ నంబర్", "Enter mobile number" to "మొబైల్ నంబర్ నమోదు చేయండి",
+        "Gender" to "లింగం", "Select gender" to "లింగాన్ని ఎంచుకోండి", "Female" to "స్త్రీ", "Male" to "పురుషుడు",
+        "Non-binary" to "నాన్-బైనరీ", "Prefer not to say" to "చెప్పదలచుకోలేదు", "Save profile" to "ప్రొఫైల్ సేవ్ చేయండి",
+        "Saved successfully." to "విజయవంతంగా సేవ్ అయింది.", "Saving…" to "సేవ్ అవుతోంది…", "Loading profile…" to "ప్రొఫైల్ లోడ్ అవుతోంది…",
+        "Sign out" to "సైన్ అవుట్", "Add address" to "చిరునామా జోడించండి", "Enter delivery details below." to "డెలివరీ వివరాలను క్రింద నమోదు చేయండి.",
+        "Choose / check location on Google Maps" to "Google Maps లో లొకేషన్ ఎంచుకోండి / చూడండి",
+        "Google Maps opens separately. Please copy the address details into the fields below." to "Google Maps వేరుగా తెరుచుకుంటుంది. చిరునామా వివరాలను క్రింది ఫీల్డ్స్‌లో నమోదు చేయండి.",
+        "Address type" to "చిరునామా రకం", "Home" to "ఇల్లు", "Work" to "పని", "Other" to "ఇతర",
+        "Recipient name *" to "పొందేవారి పేరు *", "House / flat, building, street *" to "ఇల్లు / ఫ్లాట్, భవనం, వీధి *",
+        "Area / village / locality" to "ప్రాంతం / గ్రామం / కాలనీ", "Landmark (optional)" to "గుర్తింపు స్థలం (ఐచ్ఛికం)",
+        "City / town *" to "నగరం / పట్టణం *", "State *" to "రాష్ట్రం *", "PIN code *" to "పిన్ కోడ్ *",
+        "Save address" to "చిరునామా సేవ్ చేయండి", "Saving address…" to "చిరునామా సేవ్ అవుతోంది…",
+        "Saved addresses" to "సేవ్ చేసిన చిరునామాలు", "Keep delivery locations for future orders." to "భవిష్యత్ ఆర్డర్ల కోసం డెలివరీ చిరునామాలను ఉంచండి.",
+        "No addresses yet" to "ఇంకా చిరునామాలు లేవు", "Tap Add address to save your first delivery location." to "మొదటి డెలివరీ చిరునామాను సేవ్ చేయడానికి చిరునామా జోడించండి నొక్కండి.",
+        "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Grutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
+        "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
+        "Language" to "భాష", "Select language" to "భాషను ఎంచుకోండి", "Save language preference" to "భాష ప్రాధాన్యతను సేవ్ చేయండి",
+        "Language preference saved." to "భాష ప్రాధాన్యత సేవ్ అయింది.", "Couldn't save language. Please try again." to "భాషను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
+        "English" to "English", "Telugu" to "తెలుగు", "Hindi" to "హిందీ"
+    )
+    val hi = mapOf(
+        "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
+        "Your account" to "आपका खाता", "Manage your personal details and delivery addresses." to "अपनी व्यक्तिगत जानकारी और डिलीवरी पते प्रबंधित करें।",
+        "First name" to "पहला नाम", "Last name" to "उपनाम", "Nickname" to "उपनाम", "Mobile number" to "मोबाइल नंबर",
+        "Enter mobile number" to "मोबाइल नंबर दर्ज करें", "Gender" to "लिंग", "Select gender" to "लिंग चुनें",
+        "Female" to "महिला", "Male" to "पुरुष", "Non-binary" to "नॉन-बाइनरी", "Prefer not to say" to "बताना नहीं चाहते",
+        "Save profile" to "प्रोफ़ाइल सहेजें", "Saved successfully." to "सफलतापूर्वक सहेजा गया।",
+        "Saving…" to "सहेज रहे हैं…", "Loading profile…" to "प्रोफ़ाइल लोड हो रही है…", "Sign out" to "साइन आउट",
+        "Add address" to "पता जोड़ें", "Enter delivery details below." to "नीचे डिलीवरी विवरण दर्ज करें।",
+        "Address type" to "पते का प्रकार", "Home" to "घर", "Work" to "काम", "Other" to "अन्य",
+        "Recipient name *" to "प्राप्तकर्ता का नाम *", "House / flat, building, street *" to "मकान / फ्लैट, भवन, सड़क *",
+        "Area / village / locality" to "क्षेत्र / गाँव / इलाका", "Landmark (optional)" to "नज़दीकी पहचान (वैकल्पिक)",
+        "City / town *" to "शहर / कस्बा *", "State *" to "राज्य *", "PIN code *" to "पिन कोड *",
+        "Save address" to "पता सहेजें", "Saved addresses" to "सहेजे गए पते", "Keep delivery locations for future orders." to "भविष्य के ऑर्डर के लिए डिलीवरी पते रखें।",
+        "No addresses yet" to "अभी कोई पता नहीं", "All" to "सभी", "Lehyas" to "लेह्य", "Grutas" to "घृत",
+        "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
+        "Language" to "भाषा", "Select language" to "भाषा चुनें", "Save language preference" to "भाषा प्राथमिकता सहेजें",
+        "Language preference saved." to "भाषा प्राथमिकता सहेजी गई।", "Couldn't save language. Please try again." to "भाषा सहेजी नहीं जा सकी। फिर प्रयास करें।",
+        "English" to "English", "Telugu" to "तेलुगु", "Hindi" to "हिन्दी"
+    )
+    return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
+}
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,6 +174,7 @@ private fun AyurvedicApp() {
     var authError by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableStateOf("Home") }
+    var appLanguage by remember { mutableStateOf("English") }
     var selectedCategory by remember { mutableStateOf("All") }
     var search by remember { mutableStateOf("") }
     var liveProducts by remember { mutableStateOf<List<Product>>(emptyList()) }
@@ -150,6 +202,7 @@ private fun AyurvedicApp() {
         }
     }
     val cart = remember { mutableStateMapOf<String, Int>() }
+    CompositionLocalProvider(LocalAppLanguage provides appLanguage) {
     MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Color.White, onSurface = Ink)) {
         Surface(Modifier.fillMaxSize(), color = Cream) {
             if (showSplash || !authResolved) {
@@ -186,11 +239,12 @@ private fun AyurvedicApp() {
                     }
                 }
             )
-            else ShopScreen(selectedTab, { selectedTab = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productsLoading, productsError,
+            else ShopScreen(selectedTab, { selectedTab = it }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productsLoading, productsError,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
                 { auth.signOut(); signedIn = false; password = "" })
         }
+    }
     }
 }
 @Composable
@@ -426,7 +480,7 @@ private fun LoginScreen(
         Spacer(Modifier.height(10.dp))
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
             Box(Modifier.width(54.dp).height(1.dp).background(Gold))
-            Text("  ✦  🌿  ✦  ", color = Gold, fontSize = 16.sp)
+            Text(tr("  ✦  🌿  ✦  ", LocalAppLanguage.current), color = Gold, fontSize = 16.sp)
             Box(Modifier.width(54.dp).height(1.dp).background(Gold))
         }
         Spacer(Modifier.height(6.dp))
@@ -459,8 +513,8 @@ private fun LoginScreen(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            label = { Text("Email address") },
-            placeholder = { Text("you@example.com") },
+            label = { Text(tr("Email address", LocalAppLanguage.current)) },
+            placeholder = { Text(tr("you@example.com", LocalAppLanguage.current)) },
             leadingIcon = { Icon(Icons.Default.Email, null, tint = Color(0xFF8B211B)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -479,7 +533,7 @@ private fun LoginScreen(
             value = password,
             onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            label = { Text("Password (at least 6 characters)") },
+            label = { Text(tr("Password (at least 6 characters)", LocalAppLanguage.current)) },
             leadingIcon = { Icon(Icons.Default.Lock, null, tint = Color(0xFF8B211B)) },
             singleLine = true,
             visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
@@ -512,7 +566,7 @@ private fun LoginScreen(
             Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Forest)
         }
         Spacer(Modifier.height(8.dp))
-        Text("Secure email and password sign-in", fontSize = 13.sp, color = Color(0xFF56534D))
+        Text(tr("Secure email and password sign-in", LocalAppLanguage.current), fontSize = 13.sp, color = Color(0xFF56534D))
         Spacer(Modifier.height(30.dp))
         Box(Modifier.fillMaxWidth().height(48.dp).background(Color(0xFF8B211B))) {
             Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.TopCenter).background(Gold))
@@ -522,7 +576,7 @@ private fun LoginScreen(
 
 @Composable
 private fun ShopScreen(
-    selectedTab: String, onTabChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
+    selectedTab: String, onTabChange: (String) -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
     search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onSignOut: () -> Unit
 ) {
     val cartCount = cart.values.sum()
@@ -530,7 +584,7 @@ private fun ShopScreen(
         Row(Modifier.fillMaxWidth().background(Cream).padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.logo2), contentDescription = "SLGAN logo", modifier = Modifier.size(42.dp))
             Spacer(Modifier.width(10.dp))
-            Column(Modifier.weight(1f)) { Text("Sri Lakshmi Ganapathi", color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp); Text("Ayurveda Nilayam", color = Muted, fontSize = 11.sp) }
+            Column(Modifier.weight(1f)) { Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp); Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 11.sp) }
             IconButton(onClick = { onTabChange("Cart") }) {
                 BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) { Icon(Icons.Default.ShoppingCart, "Cart", tint = Forest) }
             }
@@ -538,14 +592,14 @@ private fun ShopScreen(
     }, bottomBar = {
         NavigationBar(containerColor = Color.White, contentColor = Forest) {
             listOf(Triple("Home", Icons.Default.Home, "Home"), Triple("Categories", Icons.Default.GridView, "Categories"), Triple("Cart", Icons.Default.ShoppingCart, "Cart"), Triple("Profile", Icons.Default.Person, "Profile")).forEach { (label, icon, route) ->
-                NavigationBarItem(selected = selectedTab == route, onClick = { onTabChange(route) }, icon = { Icon(icon, label) }, label = { Text(label, fontSize = 10.sp) }, colors = NavigationBarItemDefaults.colors(selectedIconColor = Forest, selectedTextColor = Forest, indicatorColor = PaleGreen, unselectedIconColor = Muted))
+                NavigationBarItem(selected = selectedTab == route, onClick = { onTabChange(route) }, icon = { Icon(icon, label) }, label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) }, colors = NavigationBarItemDefaults.colors(selectedIconColor = Forest, selectedTextColor = Forest, indicatorColor = PaleGreen, unselectedIconColor = Muted))
             }
         }
     }) { padding ->
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove)
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, onCategoryChange) { onTabChange("Home") }
-            "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut)
+            "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productsLoading, productsError, onAdd)
         }
     }
@@ -571,22 +625,22 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
             Column(Modifier.padding(horizontal = 18.dp)) {
                 Spacer(Modifier.height(4.dp))
                 Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-                Text("Explore thoughtful herbal essentials.", color = Muted, fontSize = 14.sp)
+                Text(tr("Explore thoughtful herbal essentials.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
                 Row(Modifier.fillMaxWidth().background(Forest, RoundedCornerShape(22.dp)).padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text("ROOTED IN NATURE", color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
+                        Text(tr("ROOTED IN NATURE", LocalAppLanguage.current), color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
                         Spacer(Modifier.height(7.dp))
-                        Text("Everyday wellness,\nwith a herbal touch.", color = Color.White, fontSize = 20.sp, lineHeight = 26.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Everyday wellness,\nwith a herbal touch.", LocalAppLanguage.current), color = Color.White, fontSize = 20.sp, lineHeight = 26.sp, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(10.dp))
-                        Text("Explore collection  →", color = Color(0xFFFFE7B3), fontSize = 12.sp)
+                        Text(tr("Explore collection  →", LocalAppLanguage.current), color = Color(0xFFFFE7B3), fontSize = 12.sp)
                     }
-                    Text("🌿", fontSize = 48.sp)
+                    Text(tr("🌿", LocalAppLanguage.current), fontSize = 48.sp)
                 }
                 Spacer(Modifier.height(18.dp))
-                OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text("Search products") }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
+                OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text(tr("Search products", LocalAppLanguage.current)) }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
                 Spacer(Modifier.height(20.dp))
-                Text("Shop by category", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Spacer(Modifier.height(8.dp))
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     categories.forEach { item -> FilterChip(selected = category == item, onClick = { onCategoryChange(item) }, label = { Text((when (item) { "All" -> "✨"; "Lehyas" -> "🫙"; "Grutas" -> "🥣"; "Pills" -> "💊"; "Tailas" -> "🪔"; "Churnas" -> "🌰"; "Rasayanas" -> "🪷"; "Bhasmas" -> "⚱️"; else -> "🌿" }) + " " + item, fontSize = 11.sp) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)) }
@@ -594,7 +648,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Spacer(Modifier.height(18.dp))
                 Text(if (search.isBlank()) "Our Ayurvedic products" else "Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 if (productsLoading) { Spacer(Modifier.height(12.dp)); LinearProgressIndicator(Modifier.fillMaxWidth(), color = Forest) }
-                if (productsError != null) { Spacer(Modifier.height(8.dp)); Text("Could not load products: $productsError", color = Color(0xFFB3261E), fontSize = 12.sp) }
+                if (productsError != null) { Spacer(Modifier.height(8.dp)); Text(tr("Could not load products: $productsError", LocalAppLanguage.current), color = Color(0xFFB3261E), fontSize = 12.sp) }
             }
         }
         if (visible.isEmpty()) item { Text(if (productsLoading) "Loading products…" else if (productsError != null) "Products could not be loaded. Check your internet and Firestore rules." else "No products found in this category. Try All or another search.", Modifier.padding(24.dp), color = Muted) }
@@ -604,7 +658,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 if (pair.size == 1) Spacer(Modifier.weight(1f))
             }
         }
-        item { Text("Made with care for your everyday rituals.", Modifier.fillMaxWidth().padding(20.dp), color = Muted, fontSize = 12.sp) }
+        item { Text(tr("Made with care for your everyday rituals.", LocalAppLanguage.current), Modifier.fillMaxWidth().padding(20.dp), color = Muted, fontSize = 12.sp) }
     }
 }
 
@@ -614,14 +668,14 @@ private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, m
         Column(Modifier.padding(11.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 Text(product.emoji, fontSize = 42.sp)
-                Text("HERBAL", Modifier.align(Alignment.BottomEnd).padding(6.dp), color = Leaf, fontSize = 8.sp, fontWeight = FontWeight.Bold)
+                Text(tr("HERBAL", LocalAppLanguage.current), Modifier.align(Alignment.BottomEnd).padding(6.dp), color = Leaf, fontSize = 8.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(10.dp))
             Text(product.name, fontSize = 13.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(9.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
                 if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(34.dp), colors = IconButtonDefaults.filledIconButtonColors(containerColor = Forest)) { Icon(Icons.Default.Add, "Add " + product.name, modifier = Modifier.size(18.dp)) }
                 else Text(count.toString() + " in cart", fontSize = 10.sp, color = Forest, fontWeight = FontWeight.Bold)
             }
@@ -634,7 +688,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     Column(modifier.fillMaxSize().padding(18.dp)) {
-        Text("Your cart", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+        Text(tr("Your cart", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Text(cart.values.sum().toString() + " items selected", color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(18.dp))
         if (selected.isEmpty()) EmptyState("🛍️", "Your cart is waiting", "Add herbal essentials from the Home page.")
@@ -645,7 +699,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(54.dp).background(PaleGreen, RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 28.sp) }
                             Spacer(Modifier.width(12.dp))
-                            Column(Modifier.weight(1f)) { Text(product.name, fontWeight = FontWeight.Bold, color = Ink, fontSize = 13.sp); Text("₹" + (if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price)) + " each", color = Muted, fontSize = 12.sp) }
+                            Column(Modifier.weight(1f)) { Text(product.name, fontWeight = FontWeight.Bold, color = Ink, fontSize = 13.sp); Text(tr("₹", LocalAppLanguage.current) + (if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price)) + " each", color = Muted, fontSize = 12.sp) }
                             IconButton(onClick = { onRemove(product.id) }) { Icon(Icons.Default.Remove, "Remove one") }
                             Text((cart[product.id] ?: 0).toString(), fontWeight = FontWeight.Bold)
                             IconButton(onClick = { onAdd(product.id) }) { Icon(Icons.Default.Add, "Add one") }
@@ -655,10 +709,10 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             }
             Spacer(Modifier.height(12.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) { Text("Subtotal", color = Muted, fontSize = 13.sp); Text("₹" + String.format("%.2f", total), color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
-                Button(onClick = { }, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) { Text("Checkout") }
+                Column(Modifier.weight(1f)) { Text(tr("Subtotal", LocalAppLanguage.current), color = Muted, fontSize = 13.sp); Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", total), color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
+                Button(onClick = { }, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) { Text(tr("Checkout", LocalAppLanguage.current)) }
             }
-            Text("Demo only: checkout and payments are not connected.", color = Muted, fontSize = 11.sp)
+            Text(tr("Demo only: checkout and payments are not connected.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
         }
     }
 }
@@ -666,8 +720,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
 @Composable
 private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
     Column(modifier.fillMaxSize().padding(18.dp)) {
-        Text("Categories", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Text("Find the collection for your routine.", color = Muted, fontSize = 13.sp)
+        Text(tr("Categories", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+        Text(tr("Find the collection for your routine.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(18.dp))
         categories.drop(1).forEach { item ->
             Card(Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { onCategoryChange(item); onHome() }, colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(18.dp)) {
@@ -683,7 +737,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCatego
 }
 
 @Composable
-private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
+private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit) {
     val user = remember { FirebaseAuth.getInstance().currentUser }
     val uid = user?.uid
     val context = LocalContext.current
@@ -693,6 +747,9 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
     var gender by remember(uid) { mutableStateOf("") }
     var mobileNumber by remember(uid) { mutableStateOf("") }
     var genderMenuExpanded by remember { mutableStateOf(false) }
+    var languageMenuExpanded by remember { mutableStateOf(false) }
+    var languageSaving by remember { mutableStateOf(false) }
+    var languageMessage by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var isSaving by remember { mutableStateOf(false) }
     var saveMessage by remember { mutableStateOf<String?>(null) }
@@ -725,6 +782,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                         nickname = snapshot.getString("nickname").orEmpty()
                         gender = snapshot.getString("gender").orEmpty()
                         mobileNumber = snapshot.getString("mobileNumber").orEmpty()
+                        snapshot.getString("languagePreference")?.let(onLanguageChange)
                         isLoading = false
                     } else {
                         isLoading = false
@@ -750,8 +808,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
     }
 
     Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
-        Text("Your account", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Text("Manage your personal details and delivery addresses.", color = Muted, fontSize = 13.sp)
+        Text(tr("Your account", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+        Text(tr("Manage your personal details and delivery addresses.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(16.dp))
         Row(Modifier.fillMaxWidth().background(Color(0xFFF1E5D0), RoundedCornerShape(14.dp)).padding(4.dp)) {
             listOf("Profile", "Addresses").forEach { section ->
@@ -763,7 +821,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                         .padding(vertical = 12.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(section, color = if (selected) Color.White else Ink, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                    Text(tr(section, LocalAppLanguage.current), color = if (selected) Color.White else Ink, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                 }
             }
         }
@@ -786,22 +844,76 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                 }
             }
             Spacer(Modifier.height(20.dp))
-            OutlinedTextField(value = firstName, onValueChange = { firstName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("First name") }, singleLine = true, leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Forest) })
+            OutlinedTextField(value = firstName, onValueChange = { firstName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("First name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Forest) })
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = lastName, onValueChange = { lastName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Last name") }, singleLine = true, leadingIcon = { Icon(Icons.Default.Badge, null, tint = Forest) })
+            OutlinedTextField(value = lastName, onValueChange = { lastName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Last name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Badge, null, tint = Forest) })
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Nickname") }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) })
+            OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) })
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = mobileNumber, onValueChange = { input -> mobileNumber = input.filter { it.isDigit() || it == '+' }.take(15); saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Mobile number") }, placeholder = { Text("Enter mobile number") }, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) })
+            OutlinedTextField(value = mobileNumber, onValueChange = { input -> mobileNumber = input.filter { it.isDigit() || it == '+' }.take(15); saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Mobile number", LocalAppLanguage.current)) }, placeholder = { Text(tr("Enter mobile number", LocalAppLanguage.current)) }, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) })
             Spacer(Modifier.height(12.dp))
             Box(Modifier.fillMaxWidth()) {
-                OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text("Gender") }, placeholder = { Text("Select gender") }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Forest) })
+                OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Forest) })
                 Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
                 DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }) {
                     listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
-                        DropdownMenuItem(text = { Text(option) }, onClick = { gender = option; genderMenuExpanded = false; saveMessage = null })
+                        DropdownMenuItem(text = { Text(tr(option, LocalAppLanguage.current)) }, onClick = { gender = option; genderMenuExpanded = false; saveMessage = null })
                     }
                 }
+            }
+            Spacer(Modifier.height(16.dp))
+            Text(tr("Language", appLanguage), fontWeight = FontWeight.Bold, color = Ink)
+            Spacer(Modifier.height(8.dp))
+            Box(Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = tr(appLanguage, appLanguage),
+                    onValueChange = {},
+                    readOnly = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(tr("Select language", appLanguage)) },
+                    trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) },
+                    leadingIcon = { Icon(Icons.Default.Language, null, tint = Forest) }
+                )
+                Box(Modifier.matchParentSize().clickable { languageMenuExpanded = true })
+                DropdownMenu(expanded = languageMenuExpanded, onDismissRequest = { languageMenuExpanded = false }) {
+                    listOf("English", "Telugu", "Hindi").forEach { option ->
+                        DropdownMenuItem(text = { Text(tr(option, appLanguage)) }, onClick = {
+                            onLanguageChange(option)
+                            languageMenuExpanded = false
+                            languageMessage = null
+                        })
+                    }
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            Button(
+                onClick = {
+                    if (uid == null) languageMessage = "Please sign in again to save your profile."
+                    else {
+                        languageSaving = true
+                        languageMessage = null
+                        FirebaseData.saveCustomerProfile(uid, mapOf(
+                            "languagePreference" to appLanguage,
+                            "updatedAt" to System.currentTimeMillis()
+                        )) { error ->
+                            languageSaving = false
+                            languageMessage = if (error == null) "Language preference saved." else "Couldn't save language. Please try again."
+                        }
+                    }
+                },
+                enabled = !languageSaving,
+                modifier = Modifier.fillMaxWidth().height(48.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                if (languageSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                else Icon(Icons.Default.Save, null)
+                Spacer(Modifier.width(8.dp))
+                Text(tr("Save language preference", appLanguage))
+            }
+            if (languageMessage != null) {
+                Spacer(Modifier.height(6.dp))
+                Text(tr(languageMessage!!, appLanguage), color = if (languageMessage!!.contains("saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
             }
             if (saveMessage != null) {
                 Spacer(Modifier.height(10.dp))
@@ -837,14 +949,14 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
             }
             Spacer(Modifier.height(12.dp))
             OutlinedButton(onClick = onSignOut, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RoundedCornerShape(14.dp)) {
-                Icon(Icons.Default.Logout, null); Spacer(Modifier.width(8.dp)); Text("Sign out")
+                Icon(Icons.Default.Logout, null); Spacer(Modifier.width(8.dp)); Text(tr("Sign out", LocalAppLanguage.current))
             }
         } else if (showAddressForm) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { showAddressForm = false; addressMessage = null }) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
                 Column {
-                    Text("Add address", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-                    Text("Enter delivery details below.", color = Muted, fontSize = 12.sp)
+                    Text(tr("Add address", LocalAppLanguage.current), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                    Text(tr("Enter delivery details below.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                 }
             }
             Spacer(Modifier.height(14.dp))
@@ -858,33 +970,33 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                 modifier = Modifier.fillMaxWidth().height(52.dp),
                 shape = RoundedCornerShape(14.dp)
             ) {
-                Icon(Icons.Default.Map, null, tint = Forest); Spacer(Modifier.width(8.dp)); Text("Choose / check location on Google Maps")
+                Icon(Icons.Default.Map, null, tint = Forest); Spacer(Modifier.width(8.dp)); Text(tr("Choose / check location on Google Maps", LocalAppLanguage.current))
             }
             Spacer(Modifier.height(8.dp))
-            Text("Google Maps opens separately. Please copy the address details into the fields below.", color = Muted, fontSize = 12.sp)
+            Text(tr("Google Maps opens separately. Please copy the address details into the fields below.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
             Spacer(Modifier.height(14.dp))
-            Text("Address type", color = Ink, fontWeight = FontWeight.Bold)
+            Text(tr("Address type", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("Home", "Work", "Other").forEach { label ->
-                    FilterChip(selected = addressLabel == label, onClick = { addressLabel = label }, label = { Text(label) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White))
+                    FilterChip(selected = addressLabel == label, onClick = { addressLabel = label }, label = { Text(tr(label, LocalAppLanguage.current)) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White))
                 }
             }
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = recipientName, onValueChange = { recipientName = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Recipient name *") }, singleLine = true)
+            OutlinedTextField(value = recipientName, onValueChange = { recipientName = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Recipient name *", LocalAppLanguage.current)) }, singleLine = true)
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = recipientPhone, onValueChange = { recipientPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(15); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Mobile number *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), singleLine = true)
+            OutlinedTextField(value = recipientPhone, onValueChange = { recipientPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(15); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Mobile number *", LocalAppLanguage.current)) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), singleLine = true)
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = addressLine1, onValueChange = { addressLine1 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("House / flat, building, street *") })
+            OutlinedTextField(value = addressLine1, onValueChange = { addressLine1 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("House / flat, building, street *", LocalAppLanguage.current)) })
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = addressLine2, onValueChange = { addressLine2 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Area / village / locality") })
+            OutlinedTextField(value = addressLine2, onValueChange = { addressLine2 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Area / village / locality", LocalAppLanguage.current)) })
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = landmark, onValueChange = { landmark = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Landmark (optional)") })
+            OutlinedTextField(value = landmark, onValueChange = { landmark = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Landmark (optional)", LocalAppLanguage.current)) })
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = city, onValueChange = { city = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("City / town *") }, singleLine = true)
+            OutlinedTextField(value = city, onValueChange = { city = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("City / town *", LocalAppLanguage.current)) }, singleLine = true)
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = state, onValueChange = { state = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("State *") }, singleLine = true)
+            OutlinedTextField(value = state, onValueChange = { state = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("State *", LocalAppLanguage.current)) }, singleLine = true)
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = pincode, onValueChange = { pincode = it.filter(Char::isDigit).take(6); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("PIN code *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true)
+            OutlinedTextField(value = pincode, onValueChange = { pincode = it.filter(Char::isDigit).take(6); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("PIN code *", LocalAppLanguage.current)) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true)
             if (addressMessage != null) {
                 Spacer(Modifier.height(10.dp))
                 Text(addressMessage!!, color = if (addressMessage!!.startsWith("Address saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
@@ -934,11 +1046,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Saved addresses", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-                    Text("Keep delivery locations for future orders.", color = Muted, fontSize = 12.sp)
+                    Text(tr("Saved addresses", LocalAppLanguage.current), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                    Text(tr("Keep delivery locations for future orders.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                 }
                 Button(onClick = { showAddressForm = true; addressMessage = null }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-                    Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text("Add address")
+                    Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text(tr("Add address", LocalAppLanguage.current))
                 }
             }
             Spacer(Modifier.height(14.dp))
