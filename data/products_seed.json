@@ -326,5 +326,157 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Sitopaladi Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 75,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Talisadi Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Pushyanuga Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 65,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Gangadhara Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 65,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Lavanadi Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 130,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Kachuradi Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 130,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Sudarshana Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 70,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Bhasma-related formulation (name unclear)",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 100,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Maha Dhadhi Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 120,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Rasna-related Churnam (name unclear)",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 65,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Hingvashtaka Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 80,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Chandana Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 120,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Ativisha Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 75,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Triphala Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 90,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Dantadhavana Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 120,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Vasadi Churnam",
+    "product_quantity": 1,
+    "product_weight": 50,
+    "product_price": 80,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Ahiphena Satva",
+    "product_quantity": 1,
+    "product_weight": 10,
+    "product_price": 60,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Vacha Churnam",
+    "product_quantity": 1,
+    "product_weight": 10,
+    "product_price": 60,
+    "product_units": "g",
+    "product_category": "Churnas"
+  },
+  {
+    "product_name": "Gorochana",
+    "product_quantity": 1,
+    "product_weight": 10,
+    "product_price": 60,
+    "product_units": "g",
+    "product_category": "Churnas"
   }
 ]
