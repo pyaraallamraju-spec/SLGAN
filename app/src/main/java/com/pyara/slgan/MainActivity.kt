@@ -361,12 +361,24 @@ private fun ShopScreen(
 
 @Composable
 private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<Int, Int>, onAdd: (Int) -> Unit) {
+    val currentUser = remember { FirebaseAuth.getInstance().currentUser }
+    var welcomeNickname by remember(currentUser?.uid) { mutableStateOf("") }
+    DisposableEffect(currentUser?.uid) {
+        var registration: ListenerRegistration? = null
+        currentUser?.uid?.let { uid ->
+            registration = FirebaseFirestore.getInstance().collection("customers").document(uid)
+                .addSnapshotListener { snapshot, _ ->
+                    welcomeNickname = snapshot?.getString("nickname").orEmpty().trim()
+                }
+        }
+        onDispose { registration?.remove() }
+    }
     val visible = products.filter { (category == "All" || it.category == category) && (it.name.contains(search, true) || it.subtitle.contains(search, true)) }
     LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 20.dp)) {
         item {
             Column(Modifier.padding(horizontal = 18.dp)) {
                 Spacer(Modifier.height(4.dp))
-                Text("A little closer to nature", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text("Explore thoughtful herbal essentials.", color = Muted, fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
                 Row(Modifier.fillMaxWidth().background(Forest, RoundedCornerShape(22.dp)).padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -484,6 +496,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
     var lastName by remember(uid) { mutableStateOf("") }
     var nickname by remember(uid) { mutableStateOf("") }
     var gender by remember(uid) { mutableStateOf("") }
+    var mobileNumber by remember(uid) { mutableStateOf("") }
     var genderMenuExpanded by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(true) }
     var isSaving by remember { mutableStateOf(false) }
@@ -502,6 +515,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                         lastName = snapshot.getString("lastName").orEmpty()
                         nickname = snapshot.getString("nickname").orEmpty()
                         gender = snapshot.getString("gender").orEmpty()
+                        mobileNumber = snapshot.getString("mobileNumber").orEmpty()
                         isLoading = false
                     } else {
                         isLoading = false
@@ -526,7 +540,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
                     Text(listOf(nickname, firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { "SLGAN Customer" }, color = Ink, fontWeight = FontWeight.Bold)
-                    Text(user?.email ?: "Signed-in account", color = Muted, fontSize = 12.sp)
+                    Text(mobileNumber.ifBlank { user?.email.orEmpty() }, color = Muted, fontSize = 12.sp)
                 }
             }
         }
@@ -589,6 +603,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
                             "lastName" to lastName.trim(),
                             "nickname" to nickname.trim(),
                             "gender" to gender,
+                            "mobileNumber" to mobileNumber.trim(),
                             "updatedAt" to System.currentTimeMillis()
                         )
                     ) { error ->
