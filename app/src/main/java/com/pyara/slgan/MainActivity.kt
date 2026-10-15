@@ -270,125 +270,162 @@ private fun AyurvedicApp() {
 }
 @Composable
 private fun SplashScreen() {
-    val transition = rememberInfiniteTransition(label = "lotusBloom")
-    val glow by transition.animateFloat(
-        initialValue = 0.42f,
-        targetValue = 0.82f,
-        animationSpec = infiniteRepeatable(tween(1800, easing = FastOutSlowInEasing), RepeatMode.Reverse),
-        label = "lotusGlow"
-    )
-    val shimmer by transition.animateFloat(
-        initialValue = 0.12f,
-        targetValue = 0.42f,
-        animationSpec = infiniteRepeatable(tween(2200, easing = FastOutSlowInEasing), RepeatMode.Reverse),
-        label = "lotusShimmer"
-    )
-    val petalProgress = remember { Animatable(0f) }
-    val logoScale = remember { Animatable(0.88f) }
     val logoAlpha = remember { Animatable(0f) }
-    val titleAlpha = remember { Animatable(0f) }
-    LaunchedEffect(Unit) {
-        delay(180)
-        petalProgress.animateTo(1f, tween(1250, easing = FastOutSlowInEasing))
-        logoAlpha.animateTo(1f, tween(650, easing = FastOutSlowInEasing))
-        logoScale.animateTo(1f, tween(850, easing = FastOutSlowInEasing))
-        titleAlpha.animateTo(1f, tween(550, easing = FastOutSlowInEasing))
-    }
-    Box(
-        Modifier.fillMaxSize().background(
-            androidx.compose.ui.graphics.Brush.verticalGradient(
-                listOf(Color(0xFF260806), Color(0xFF651B17), Color(0xFF210605))
-            )
+    val logoScale = remember { Animatable(0.86f) }
+    val textAlpha = remember { Animatable(0f) }
+    val breathe = rememberInfiniteTransition(label = "premiumSplash")
+    val halo by breathe.animateFloat(
+        initialValue = 0.16f,
+        targetValue = 0.34f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1700, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
         ),
+        label = "halo"
+    )
+    LaunchedEffect(Unit) {
+        logoAlpha.animateTo(1f, tween(650, easing = FastOutSlowInEasing))
+        logoScale.animateTo(1f, tween(750, easing = FastOutSlowInEasing))
+        delay(120)
+        textAlpha.animateTo(1f, tween(500, easing = FastOutSlowInEasing))
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Cream),
         contentAlignment = Alignment.Center
     ) {
-        Box(Modifier.fillMaxWidth().height(2.dp).align(Alignment.TopCenter).background(Gold.copy(alpha = 0.8f)))
-        Box(Modifier.fillMaxWidth().height(2.dp).align(Alignment.BottomCenter).background(Gold.copy(alpha = 0.8f)))
-
-        // Eight soft gold petals open outward around the original logo.
-        Box(Modifier.size(250.dp), contentAlignment = Alignment.Center) {
-            val petals = listOf(
-                Triple(0f, -82f, 0f),
-                Triple(58f, -58f, 45f),
-                Triple(82f, 0f, 90f),
-                Triple(58f, 58f, 135f),
-                Triple(0f, 82f, 180f),
-                Triple(-58f, 58f, 225f),
-                Triple(-82f, 0f, 270f),
-                Triple(-58f, -58f, 315f)
-            )
-            petals.forEachIndexed { index, petal ->
-                Box(
-                    Modifier
-                        .offset(
-                            x = (petal.first * petalProgress.value).dp,
-                            y = (petal.second * petalProgress.value).dp
-                        )
-                        .size(width = 25.dp, height = 58.dp)
-                        .graphicsLayer {
-                            rotationZ = petal.third
-                            scaleX = petalProgress.value
-                            scaleY = petalProgress.value
-                            alpha = petalProgress.value * (0.62f + shimmer)
-                        }
-                        .background(
-                            androidx.compose.ui.graphics.Brush.verticalGradient(
-                                listOf(Color(0xFFFFE8A6), Gold, Color(0xFF9D6722))
-                            ),
-                            RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp, bottomStart = 13.dp, bottomEnd = 13.dp)
-                        )
+        // Modern heritage-inspired maroon panels with restrained gold detailing.
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.40f)
+                .align(Alignment.TopCenter)
+                .background(
+                    androidx.compose.ui.graphics.Brush.verticalGradient(
+                        listOf(Color(0xFF4D100E), Color(0xFF762A24))
+                    )
                 )
-            }
-            Box(
-                Modifier.size(174.dp)
-                    .graphicsLayer { alpha = glow }
-                    .border(1.dp, Color(0xFFFFE8A6).copy(alpha = glow), CircleShape)
-            )
-            Box(
-                Modifier.size(158.dp)
-                    .graphicsLayer { alpha = glow * 0.55f }
-                    .border(1.dp, Gold.copy(alpha = glow), CircleShape)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.logo2),
-                contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
-                modifier = Modifier.size(142.dp).graphicsLayer {
-                    alpha = logoAlpha.value
-                    scaleX = logoScale.value
-                    scaleY = logoScale.value
-                }
-            )
-        }
+        )
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(3.dp)
+                .align(Alignment.TopCenter)
+                .background(Gold)
+        )
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(3.dp)
+                .align(Alignment.BottomCenter)
+                .background(Gold)
+        )
+
         Column(
-            Modifier.align(Alignment.Center).padding(top = 214.dp).graphicsLayer { alpha = titleAlpha.value },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 28.dp)
+                .offset(y = (-4).dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                "Sri Lakshmi Ganapathi",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.ExtraBold,
-                color = Color(0xFFFFE6A3),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            Box(
+                modifier = Modifier
+                    .size(226.dp)
+                    .graphicsLayer { alpha = halo }
+                    .border(1.dp, Gold.copy(alpha = 0.75f), CircleShape)
             )
-            Text(
-                "Ayurveda Nilayam",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            Box(
+                modifier = Modifier
+                    .offset(y = (-226).dp)
+                    .size(226.dp)
+                    .border(1.dp, Gold.copy(alpha = 0.45f), CircleShape)
             )
-            Spacer(Modifier.height(10.dp))
-            Box(Modifier.width(92.dp).height(1.dp).background(Gold.copy(alpha = 0.85f)))
-            Spacer(Modifier.height(9.dp))
-            Text(
-                "Estd. 1900 by Perraju Sharma",
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFFFFD783),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center
-            )
-            Spacer(Modifier.height(22.dp))
-            CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Gold, strokeWidth = 2.dp)
+            Box(
+                modifier = Modifier
+                    .offset(y = (-420).dp)
+                    .size(174.dp)
+                    .background(Color.White, CircleShape)
+                    .border(3.dp, Gold, CircleShape)
+                    .padding(12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo2),
+                    contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            alpha = logoAlpha.value
+                            scaleX = logoScale.value
+                            scaleY = logoScale.value
+                        }
+                )
+            }
+            Spacer(Modifier.height((-398).dp))
+            Column(
+                modifier = Modifier.graphicsLayer { alpha = textAlpha.value },
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "SRI LAKSHMI GANAPATHI",
+                    fontSize = 21.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Forest,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    letterSpacing = 1.1.sp
+                )
+                Spacer(Modifier.height(5.dp))
+                Text(
+                    "AYURVEDA NILAYAM",
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Leaf,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    letterSpacing = 2.0.sp
+                )
+                Spacer(Modifier.height(18.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Box(Modifier.width(42.dp).height(1.dp).background(Gold))
+                    Spacer(Modifier.width(10.dp))
+                    Box(Modifier.size(6.dp).background(Gold, CircleShape))
+                    Spacer(Modifier.width(10.dp))
+                    Box(Modifier.width(42.dp).height(1.dp).background(Gold))
+                }
+                Spacer(Modifier.height(13.dp))
+                Text(
+                    "TRADITION • TRUST • WELLNESS",
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Muted,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    letterSpacing = 1.1.sp
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    "Serving with care since 1990",
+                    fontSize = 12.sp,
+                    color = Muted,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+                Spacer(Modifier.height(28.dp))
+                CircularProgressIndicator(
+                    modifier = Modifier.size(22.dp),
+                    color = Forest,
+                    strokeWidth = 2.dp
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    "Preparing your wellness experience",
+                    fontSize = 11.sp,
+                    color = Muted,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                )
+            }
         }
     }
 }
