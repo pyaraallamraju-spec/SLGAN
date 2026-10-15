@@ -18,37 +18,43 @@ products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.js
 products = json.loads(products_path.read_text(encoding="utf-8"))
 
 expected_categories = (
-    ["Rasayoga"] * 31
-    + ["Rasayanas"] * 10
+    ["Rasayoga"] * 32
+    + ["Rasayanas"] * 9
     + ["Churnas"] * 19
     + ["Gritas"] * 5
     + ["Tailas"] * 16
-    + ["Pills"] * 6
 )
-if len(products) != 87:
-    raise SystemExit(f"Safety check failed: expected 87 products, found {len(products)}")
+if len(products) != 81:
+    raise SystemExit(f"Safety check failed: expected 81 products, found {len(products)}")
 if any(product.get("product_category") != expected_categories[i] for i, product in enumerate(products)):
-    raise SystemExit("Safety check failed: categories must be products 1–31 Rasayoga, 32–41 Rasayanas, 42–60 Churnas, 61–65 Gritas, 66–81 Tailas, and 82–87 Pills")
+    raise SystemExit(
+        "Safety check failed: categories must be products 1–32 Rasayoga, "
+        "33–41 Rasayanas, 42–60 Churnas, 61–65 Gritas, and 66–81 Tailas"
+    )
+required_fields = {"product_name", "product_quantity", "product_weight", "product_price", "product_units", "product_category"}
+if any(not required_fields.issubset(product) for product in products):
+    raise SystemExit("Safety check failed: one or more products are missing required app fields")
 
 collection = db.collection("products")
 existing_docs = list(collection.stream())
+new_document_ids = {f"product-{i:03d}" for i in range(1, len(products) + 1)}
 
-# Replace the products collection with the approved 87-item catalogue.
-batch = db.batch()
-pending = 0
-for doc in existing_docs:
-    batch.delete(doc.reference)
-    pending += 1
-    if pending == 400:
-        batch.commit()
-        batch = db.batch()
-        pending = 0
-if pending:
+# Write and verify the new catalogue first; only then remove old product documents.
+for start in range(0, len(products), 400):
+    batch = db.batch()
+    for index, product in enumerate(products[start:start + 400], start=start + 1):
+        batch.set(collection.document(f"product-{index:03d}"), product)
     batch.commit()
 
-batch = db.batch()
-for product in products:
-    batch.set(collection.document(), product)
-batch.commit()
+written_count = sum(1 for doc_id in new_document_ids if collection.document(doc_id).get().exists)
+if written_count != len(products):
+    raise SystemExit(f"Safety check failed: wrote {written_count} of {len(products)} products; old documents were retained")
 
-print(f"Replaced products collection: deleted {len(existing_docs)} existing documents and inserted {len(products)} products.")
+stale_docs = [doc for doc in existing_docs if doc.id not in new_document_ids]
+for start in range(0, len(stale_docs), 400):
+    batch = db.batch()
+    for doc in stale_docs[start:start + 400]:
+        batch.delete(doc.reference)
+    batch.commit()
+
+print(f"Replaced products collection: inserted/updated {written_count} products and removed {len(stale_docs)} old product documents.")
