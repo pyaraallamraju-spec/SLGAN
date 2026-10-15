@@ -183,6 +183,10 @@ private fun AyurvedicApp() {
     var authError by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableStateOf("Home") }
+    var latestOrderId by remember { mutableStateOf<String?>(null) }
+    var latestOrderSuccess by remember { mutableStateOf<Boolean?>(null) }
+    var latestOrderInvoiceUrl by remember { mutableStateOf<String?>(null) }
+    var latestOrderMessage by remember { mutableStateOf<String?>(null) }
     var appLanguage by remember { mutableStateOf("English") }
     var selectedCategory by remember { mutableStateOf("All") }
     var search by remember { mutableStateOf("") }
@@ -251,6 +255,14 @@ private fun AyurvedicApp() {
             else ShopScreen(selectedTab, { selectedTab = it }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productsLoading, productsError,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
+                { orderId, success, invoiceUrl, message ->
+                    latestOrderId = orderId.ifBlank { null }
+                    latestOrderSuccess = success
+                    latestOrderInvoiceUrl = invoiceUrl
+                    latestOrderMessage = message
+                    if (success) cart.clear()
+                    selectedTab = "Orders"
+                },
                 { auth.signOut(); signedIn = false; password = "" })
         }
     }
@@ -586,7 +598,8 @@ private fun LoginScreen(
 @Composable
 private fun ShopScreen(
     selectedTab: String, onTabChange: (String) -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
-    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onSignOut: () -> Unit
+    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
+    onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit
 ) {
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
@@ -600,13 +613,14 @@ private fun ShopScreen(
         }
     }, bottomBar = {
         NavigationBar(containerColor = Color.White, contentColor = Forest) {
-            listOf(Triple("Home", Icons.Default.Home, "Home"), Triple("Categories", Icons.Default.GridView, "Categories"), Triple("Cart", Icons.Default.ShoppingCart, "Cart"), Triple("Profile", Icons.Default.Person, "Profile")).forEach { (label, icon, route) ->
+            listOf(Triple("Home", Icons.Default.Home, "Home"), Triple("Categories", Icons.Default.GridView, "Categories"), Triple("Cart", Icons.Default.ShoppingCart, "Cart"), Triple("Orders", Icons.Default.ReceiptLong, "Orders"), Triple("Profile", Icons.Default.Person, "Profile")).forEach { (label, icon, route) ->
                 NavigationBarItem(selected = selectedTab == route, onClick = { onTabChange(route) }, icon = { Icon(icon, label) }, label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) }, colors = NavigationBarItemDefaults.colors(selectedIconColor = Forest, selectedTextColor = Forest, indicatorColor = PaleGreen, unselectedIconColor = Muted))
             }
         }
     }) { padding ->
         when (selectedTab) {
-            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove)
+            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
+            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage)
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, onCategoryChange) { onTabChange("Home") }
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productsLoading, productsError, onAdd)
@@ -693,7 +707,7 @@ private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, m
 }
 
 @Composable
-private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit) {
+private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit) {
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     var showCheckout by remember { mutableStateOf(false) }
@@ -782,18 +796,149 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             .addOnSuccessListener { result ->
                                 val data = result.data as? Map<*, *>
                                 val orderId = data?.get("orderId")?.toString().orEmpty()
-                                orderMessage = if (orderId.isNotBlank()) "Order placed: " + orderId else "Order placed successfully."
+                                val invoiceUrl = data?.get("invoiceUrl")?.toString()
+                                val message = data?.get("message")?.toString() ?: "Order placed successfully."
+                                orderMessage = if (orderId.isNotBlank()) "Order placed: " + orderId else message
                                 submitting = false
+                                showCheckout = false
+                                onOrderResult(orderId, true, invoiceUrl, message)
                             }
                             .addOnFailureListener { err ->
-                                errorMessage = err.localizedMessage ?: "Could not place order. Please try again."
+                                val message = err.localizedMessage ?: "Could not place order. Please try again."
+                                errorMessage = message
                                 submitting = false
+                                showCheckout = false
+                                onOrderResult("", false, null, message)
                             }
                     }
                 }) { Text(if (submitting) "Placing order…" else "Place order") }
             },
             dismissButton = { TextButton(enabled = !submitting, onClick = { showCheckout = false }) { Text("Cancel") } }
         )
+    }
+}
+
+@Composable
+private fun OrdersPage(
+    modifier: Modifier,
+    latestOrderId: String?,
+    latestOrderSuccess: Boolean?,
+    latestInvoiceUrl: String?,
+    latestOrderMessage: String?
+) {
+    val user = FirebaseAuth.getInstance().currentUser
+    val context = LocalContext.current
+    var previousOrders by remember(user?.uid) { mutableStateOf<List<Map<String, Any?>>>(emptyList()) }
+    var loadingOrders by remember(user?.uid) { mutableStateOf(true) }
+    var ordersError by remember(user?.uid) { mutableStateOf<String?>(null) }
+
+    DisposableEffect(user?.uid) {
+        var registration: ListenerRegistration? = null
+        if (user != null) {
+            registration = FirebaseFirestore.getInstance().collection("orders")
+                .whereEqualTo("customerId", user.uid)
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        ordersError = error.localizedMessage ?: "Could not load previous orders."
+                        loadingOrders = false
+                    } else {
+                        previousOrders = snapshot?.documents?.map { doc ->
+                            doc.data.orEmpty() + ("_documentId" to doc.id)
+                        }?.sortedByDescending { row ->
+                            (row["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.time ?: 0L
+                        }.orEmpty()
+                        loadingOrders = false
+                        ordersError = null
+                    }
+                }
+        } else {
+            previousOrders = emptyList()
+            loadingOrders = false
+        }
+        onDispose { registration?.remove() }
+    }
+
+    Column(modifier.fillMaxSize().padding(18.dp)) {
+        Text("My Orders", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+        Spacer(Modifier.height(12.dp))
+        if (latestOrderSuccess != null) {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = if (latestOrderSuccess) Color(0xFFE5F4E8) else Color(0xFFFCE8E6)),
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            if (latestOrderSuccess) Icons.Default.CheckCircle else Icons.Default.Error,
+                            contentDescription = null,
+                            tint = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            if (latestOrderSuccess) "Order successful" else "Order failed",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E)
+                        )
+                    }
+                    latestOrderId?.let { Text("Order ID: " + it, color = Ink, fontWeight = FontWeight.SemiBold) }
+                    Text(latestOrderMessage ?: if (latestOrderSuccess) "Your order was saved." else "Your order could not be placed.", color = Ink)
+                    if (latestOrderSuccess && !latestInvoiceUrl.isNullOrBlank()) {
+                        Button(
+                            onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(latestInvoiceUrl))) },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(containerColor = Forest)
+                        ) {
+                            Icon(Icons.Default.PictureAsPdf, contentDescription = null)
+                            Spacer(Modifier.width(8.dp))
+                            Text("View / Download Invoice")
+                        }
+                    } else if (latestOrderSuccess) {
+                        Text("Your order is saved. The invoice is not available here yet; please check your email or contact the shop.", color = Muted, fontSize = 12.sp)
+                    }
+                }
+            }
+            Spacer(Modifier.height(18.dp))
+        }
+
+        Text("Previous orders", fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Ink)
+        Spacer(Modifier.height(8.dp))
+        when {
+            loadingOrders -> Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Forest) }
+            ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
+            previousOrders.isEmpty() -> Text("You have no previous orders yet.", color = Muted)
+            else -> LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                items(previousOrders) { order ->
+                    val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
+                    val status = order["orderStatus"]?.toString() ?: "received"
+                    val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
+                    val invoiceUrl = order["invoiceUrl"]?.toString()
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        shape = RoundedCornerShape(14.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Text(orderId, fontWeight = FontWeight.Bold, color = Forest)
+                            Text("Status: " + status.replaceFirstChar { it.uppercase() }, color = Ink)
+                            Text("Product total: ₹" + String.format("%.2f", total), color = Ink)
+                            val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
+                            if (timestamp != null) Text(timestamp.toDate().toString(), color = Muted, fontSize = 11.sp)
+                            if (!invoiceUrl.isNullOrBlank()) {
+                                TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
+                                    Icon(Icons.Default.PictureAsPdf, contentDescription = null)
+                                    Spacer(Modifier.width(6.dp))
+                                    Text("View invoice")
+                                }
+                            } else {
+                                Text("Invoice not available", color = Muted, fontSize = 12.sp)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
