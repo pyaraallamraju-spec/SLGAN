@@ -3,6 +3,8 @@ package com.pyara.slgan
 import android.os.Bundle
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -476,21 +478,142 @@ private fun CategoriesPage(modifier: Modifier, onCategoryChange: (String) -> Uni
 
 @Composable
 private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
-    Column(modifier.fillMaxSize().padding(20.dp)) {
+    val user = remember { FirebaseAuth.getInstance().currentUser }
+    val uid = user?.uid
+    var firstName by remember(uid) { mutableStateOf("") }
+    var lastName by remember(uid) { mutableStateOf("") }
+    var nickname by remember(uid) { mutableStateOf("") }
+    var gender by remember(uid) { mutableStateOf("") }
+    var genderMenuExpanded by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
+    var isSaving by remember { mutableStateOf(false) }
+    var saveMessage by remember { mutableStateOf<String?>(null) }
+
+    DisposableEffect(uid) {
+        var registration: ListenerRegistration? = null
+        if (uid != null) {
+            registration = FirebaseFirestore.getInstance().collection("customers").document(uid)
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        isLoading = false
+                        saveMessage = "Couldn't load profile. Check your connection and try again."
+                    } else if (snapshot != null && snapshot.exists()) {
+                        firstName = snapshot.getString("firstName").orEmpty()
+                        lastName = snapshot.getString("lastName").orEmpty()
+                        nickname = snapshot.getString("nickname").orEmpty()
+                        gender = snapshot.getString("gender").orEmpty()
+                        isLoading = false
+                    } else {
+                        isLoading = false
+                    }
+                }
+        } else {
+            isLoading = false
+        }
+        onDispose { registration?.remove() }
+    }
+
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
         Text("Your profile", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(8.dp))
+        Text("Update your personal details. Changes sync to your SLGAN account.", color = Muted, fontSize = 13.sp)
+        Spacer(Modifier.height(18.dp))
         Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(20.dp)) {
             Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(58.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.Person, null, tint = Forest, modifier = Modifier.size(30.dp)) }
+                Box(Modifier.size(58.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Person, null, tint = Forest, modifier = Modifier.size(30.dp))
+                }
                 Spacer(Modifier.width(14.dp))
-                Column { Text("Welcome to SLGAN", color = Ink, fontWeight = FontWeight.Bold); Text("Guest account · demo mode", color = Muted, fontSize = 12.sp) }
+                Column(Modifier.weight(1f)) {
+                    Text(listOf(nickname, firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { "SLGAN Customer" }, color = Ink, fontWeight = FontWeight.Bold)
+                    Text(user?.email ?: "Signed-in account", color = Muted, fontSize = 12.sp)
+                }
             }
         }
-        Spacer(Modifier.height(14.dp))
-        Text("About this app", fontWeight = FontWeight.Bold, color = Ink)
-        Text("A starter storefront for Ayurvedic and herbal products. Product information shown is sample content.", color = Muted, fontSize = 13.sp, lineHeight = 20.sp)
-        Spacer(Modifier.height(22.dp))
-        OutlinedButton(onClick = onSignOut, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) { Icon(Icons.Default.Logout, null); Spacer(Modifier.width(8.dp)); Text("Sign out") }
+        Spacer(Modifier.height(20.dp))
+        OutlinedTextField(
+            value = firstName, onValueChange = { firstName = it; saveMessage = null },
+            modifier = Modifier.fillMaxWidth(), label = { Text("First name") }, singleLine = true,
+            leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Forest) }
+        )
+        Spacer(Modifier.height(12.dp))
+        OutlinedTextField(
+            value = lastName, onValueChange = { lastName = it; saveMessage = null },
+            modifier = Modifier.fillMaxWidth(), label = { Text("Last name") }, singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Badge, null, tint = Forest) }
+        )
+        Spacer(Modifier.height(12.dp))
+        OutlinedTextField(
+            value = nickname, onValueChange = { nickname = it; saveMessage = null },
+            modifier = Modifier.fillMaxWidth(), label = { Text("Nickname") }, singleLine = true,
+            leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) }
+        )
+        Spacer(Modifier.height(12.dp))
+        Box(Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = gender, onValueChange = {}, readOnly = true,
+                modifier = Modifier.fillMaxWidth(), label = { Text("Gender") },
+                placeholder = { Text("Select gender") },
+                trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) },
+                leadingIcon = { Icon(Icons.Default.Wc, null, tint = Forest) }
+            )
+            Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
+            DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }) {
+                listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
+                    DropdownMenuItem(text = { Text(option) }, onClick = {
+                        gender = option
+                        genderMenuExpanded = false
+                        saveMessage = null
+                    })
+                }
+            }
+        }
+        if (saveMessage != null) {
+            Spacer(Modifier.height(10.dp))
+            Text(saveMessage!!, color = if (saveMessage!!.startsWith("Saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
+        }
+        Spacer(Modifier.height(18.dp))
+        Button(
+            onClick = {
+                val currentUid = uid
+                if (currentUid == null) {
+                    saveMessage = "Please sign in again to save your profile."
+                } else {
+                    isSaving = true
+                    saveMessage = null
+                    FirebaseData.saveCustomerProfile(
+                        currentUid,
+                        mapOf(
+                            "email" to (user.email ?: ""),
+                            "firstName" to firstName.trim(),
+                            "lastName" to lastName.trim(),
+                            "nickname" to nickname.trim(),
+                            "gender" to gender,
+                            "updatedAt" to System.currentTimeMillis()
+                        )
+                    ) { error ->
+                        isSaving = false
+                        saveMessage = if (error == null) "Saved successfully." else "Couldn't save profile. Please try again."
+                    }
+                }
+            },
+            enabled = !isSaving && !isLoading,
+            modifier = Modifier.fillMaxWidth().height(52.dp),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Forest)
+        ) {
+            if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+            else Icon(Icons.Default.Save, null)
+            Spacer(Modifier.width(8.dp))
+            Text(if (isLoading) "Loading profile…" else if (isSaving) "Saving…" else "Save profile", fontWeight = FontWeight.Bold)
+        }
+        Spacer(Modifier.height(12.dp))
+        OutlinedButton(onClick = onSignOut, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RoundedCornerShape(14.dp)) {
+            Icon(Icons.Default.Logout, null)
+            Spacer(Modifier.width(8.dp))
+            Text("Sign out")
+        }
+        Spacer(Modifier.height(18.dp))
     }
 }
 
