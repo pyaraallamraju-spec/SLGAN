@@ -646,5 +646,53 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Tailas"
+  },
+  {
+    "product_name": "Siddha Makaradhwajam",
+    "product_quantity": 30,
+    "product_weight": 30,
+    "product_price": 2500,
+    "product_units": "tablets",
+    "product_category": "Pills"
+  },
+  {
+    "product_name": "Poorna Chandrodayam",
+    "product_quantity": 30,
+    "product_weight": 30,
+    "product_price": 2000,
+    "product_units": "tablets",
+    "product_category": "Pills"
+  },
+  {
+    "product_name": "Vasantha Kusumakaram",
+    "product_quantity": 30,
+    "product_weight": 30,
+    "product_price": 2500,
+    "product_units": "tablets",
+    "product_category": "Pills"
+  },
+  {
+    "product_name": "Raktita Chandrodayam (name unclear in source)",
+    "product_quantity": 30,
+    "product_weight": 30,
+    "product_price": 1200,
+    "product_units": "tablets",
+    "product_category": "Pills"
+  },
+  {
+    "product_name": "Brihat Vata Chintamani",
+    "product_quantity": 30,
+    "product_weight": 30,
+    "product_price": 3000,
+    "product_units": "tablets",
+    "product_category": "Pills"
+  },
+  {
+    "product_name": "Maha Panchabana Rasam",
+    "product_quantity": 30,
+    "product_weight": 30,
+    "product_price": 3000,
+    "product_units": "tablets",
+    "product_category": "Pills"
   }
 ]
