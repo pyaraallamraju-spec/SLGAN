@@ -563,6 +563,17 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit) {
             leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) }
         )
         Spacer(Modifier.height(12.dp))
+        OutlinedTextField(
+            value = mobileNumber,
+            onValueChange = { input -> mobileNumber = input.filter { it.isDigit() || it == '+' }.take(15); saveMessage = null },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Mobile number") },
+            placeholder = { Text("Enter mobile number") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) }
+        )
+        Spacer(Modifier.height(12.dp))
         Box(Modifier.fillMaxWidth()) {
             OutlinedTextField(
                 value = gender, onValueChange = {}, readOnly = true,
