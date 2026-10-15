@@ -2,6 +2,7 @@ package com.pyara.slgan
 
 import android.os.Bundle
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -70,25 +71,70 @@ private val categories = listOf("All", "Supplements", "Powders", "Oils", "Skin C
 
 @Composable
 private fun AyurvedicApp() {
-    var signedIn by remember { mutableStateOf(false) }
+    val auth = remember { FirebaseAuth.getInstance() }
+    var signedIn by remember { mutableStateOf(auth.currentUser != null) }
     var userInput by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var isCreatingAccount by remember { mutableStateOf(false) }
+    var authError by remember { mutableStateOf<String?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableStateOf("Home") }
     var selectedCategory by remember { mutableStateOf("All") }
     var search by remember { mutableStateOf("") }
     val cart = remember { mutableStateMapOf<Int, Int>() }
     MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Color.White, onSurface = Ink)) {
         Surface(Modifier.fillMaxSize(), color = Cream) {
-            if (!signedIn) LoginScreen(userInput, { userInput = it }) { if (userInput.trim().length >= 5) signedIn = true }
+            if (!signedIn) LoginScreen(
+                value = userInput,
+                onValueChange = { userInput = it },
+                password = password,
+                onPasswordChange = { password = it },
+                isCreatingAccount = isCreatingAccount,
+                onToggleMode = { isCreatingAccount = !isCreatingAccount; authError = null },
+                errorMessage = authError,
+                loading = isLoading,
+                onContinue = {
+                    val email = userInput.trim()
+                    if (email.isBlank() || password.length < 6) {
+                        authError = "Enter an email and a password with at least 6 characters."
+                    } else {
+                        isLoading = true
+                        authError = null
+                        val task = if (isCreatingAccount) auth.createUserWithEmailAndPassword(email, password)
+                                   else auth.signInWithEmailAndPassword(email, password)
+                        task.addOnCompleteListener { result ->
+                            isLoading = false
+                            if (result.isSuccessful) {
+                                signedIn = true
+                                auth.currentUser?.uid?.let { uid ->
+                                    FirebaseData.saveCustomerProfile(uid, mapOf("email" to email, "updatedAt" to System.currentTimeMillis())) { }
+                                }
+                            } else {
+                                authError = result.exception?.localizedMessage ?: "Sign-in failed. Please try again."
+                            }
+                        }
+                    }
+                }
+            )
             else ShopScreen(selectedTab, { selectedTab = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
-                { signedIn = false })
+                { auth.signOut(); signedIn = false; password = "" })
         }
     }
 }
-
 @Composable
-private fun LoginScreen(value: String, onValueChange: (String) -> Unit, onContinue: () -> Unit) {
+private fun LoginScreen(
+    value: String,
+    onValueChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    isCreatingAccount: Boolean,
+    onToggleMode: () -> Unit,
+    errorMessage: String?,
+    loading: Boolean,
+    onContinue: () -> Unit
+) {
     Column(
         Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -216,12 +262,12 @@ private fun LoginScreen(value: String, onValueChange: (String) -> Unit, onContin
         )
         Spacer(Modifier.height(28.dp))
         OutlinedTextField(
-            value,
-            onValueChange,
-            Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            label = { Text("Mobile number or email") },
-            placeholder = { Text("Mobile number or email") },
-            leadingIcon = { Icon(Icons.Default.PhoneAndroid, null, tint = Color(0xFF8B211B)) },
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
+            label = { Text("Email address") },
+            placeholder = { Text("you@example.com") },
+            leadingIcon = { Icon(Icons.Default.Email, null, tint = Color(0xFF8B211B)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RoundedCornerShape(20.dp),
@@ -234,19 +280,45 @@ private fun LoginScreen(value: String, onValueChange: (String) -> Unit, onContin
                 cursorColor = Color(0xFF8B211B)
             )
         )
+        Spacer(Modifier.height(12.dp))
+        OutlinedTextField(
+            value = password,
+            onValueChange = onPasswordChange,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
+            label = { Text("Password (at least 6 characters)") },
+            leadingIcon = { Icon(Icons.Default.Lock, null, tint = Color(0xFF8B211B)) },
+            singleLine = true,
+            visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            shape = RoundedCornerShape(20.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFFD2BE9C),
+                unfocusedBorderColor = Color(0xFFD2BE9C),
+                focusedContainerColor = Color(0xFFFFFCF5),
+                unfocusedContainerColor = Color(0xFFFFFCF5),
+                focusedLabelColor = Color(0xFF8B211B),
+                cursorColor = Color(0xFF8B211B)
+            )
+        )
+        if (errorMessage != null) Text(errorMessage, Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp), color = Color(0xFFB3261E), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
         Button(
             onClick = onContinue,
+            enabled = !loading,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(62.dp),
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B211B))
         ) {
-            Text("Continue", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.width(12.dp))
-            Icon(Icons.Default.ArrowForward, null)
+            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+            else Icon(Icons.Default.ArrowForward, null)
         }
-        Spacer(Modifier.height(12.dp))
-        Text("Demo sign-in only · no OTP is sent", fontSize = 13.sp, color = Color(0xFF56534D))
+        TextButton(onClick = onToggleMode, modifier = Modifier.padding(top = 2.dp)) {
+            Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Forest)
+        }
+        Spacer(Modifier.height(8.dp))
+        Text("Secure email and password sign-in", fontSize = 13.sp, color = Color(0xFF56534D))
         Spacer(Modifier.height(30.dp))
         Box(Modifier.fillMaxWidth().height(48.dp).background(Color(0xFF8B211B))) {
             Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.TopCenter).background(Gold))
