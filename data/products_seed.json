@@ -246,5 +246,85 @@
     "product_price": 1500,
     "product_units": "g",
     "product_category": "Rasayoga"
+  },
+  {
+    "product_name": "Maha Manjishtha Rasam",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Kashaya Amrutham",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Jeeva Paanam",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Jeevana Sathyam",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Mahabala",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Ganesh Amrutham",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Gada Sanjeevini",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Madhura Rasayanam",
+    "product_quantity": 1,
+    "product_weight": 100,
+    "product_price": 75,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Madhura Rasayanam",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 150,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
+  },
+  {
+    "product_name": "Jandhira Rasayanam",
+    "product_quantity": 1,
+    "product_weight": 200,
+    "product_price": 200,
+    "product_units": "ml",
+    "product_category": "Rasayanas"
   }
 ]
