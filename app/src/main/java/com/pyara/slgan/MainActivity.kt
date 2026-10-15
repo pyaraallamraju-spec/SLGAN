@@ -477,7 +477,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     Text("🌿", fontSize = 48.sp)
                 }
                 Spacer(Modifier.height(18.dp))
-                OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text("Search herbs and products") }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
+                OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text("Search products") }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
                 Spacer(Modifier.height(20.dp))
                 Text("Shop by category", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Spacer(Modifier.height(8.dp))
