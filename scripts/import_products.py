@@ -38,7 +38,7 @@ if actual_category_counts != expected_category_counts:
         f"Safety check failed: expected category counts {expected_category_counts}, "
         f"found {actual_category_counts}"
     )
-required_fields = {"product_name", "product_quantity", "product_weight", "product_price", "product_units", "product_category", "signature"}
+required_fields = {"product_name", "product_quantity", "product_weight", "product_price", "product_units", "product_category", "signature", "product_description", "product_usage", "product_ingredients"}
 if any(not required_fields.issubset(product) for product in products):
     raise SystemExit("Safety check failed: one or more products are missing required app fields")
 if any(product.get("signature") not in (0, 1) for product in products):
