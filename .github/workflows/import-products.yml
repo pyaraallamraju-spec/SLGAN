@@ -1,4 +1,4 @@
-name: Import products to Firebase
+name: Import catalogue data to Firebase
 
 on:
   workflow_dispatch:
@@ -6,6 +6,8 @@ on:
     paths:
       - "data/products_seed.json"
       - "scripts/import_products.py"
+      - "data/diseases_seed.json"
+      - "scripts/import_diseases.py"
 
 jobs:
   import-products:
@@ -23,3 +25,8 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: python scripts/import_products.py
+      - name: Import diseases
+        if: contains(join(github.event.commits.*.modified, ','), 'data/diseases_seed.json') || contains(join(github.event.commits.*.added, ','), 'data/diseases_seed.json') || contains(join(github.event.commits.*.modified, ','), 'scripts/import_diseases.py') || contains(join(github.event.commits.*.added, ','), 'scripts/import_diseases.py') || github.event_name == 'workflow_dispatch'
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: python scripts/import_diseases.py
