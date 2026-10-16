@@ -975,7 +975,8 @@ private data class HomeBannerSlide(
     val productName: String,
     val tagline: String,
     val fallbackImageUrl: String,
-    val isCompanySlide: Boolean = false
+    val isCompanySlide: Boolean = false,
+    val drawableResId: Int? = null
 )
 
 @Composable
@@ -988,26 +989,44 @@ private fun HomeBannerSlider(
             HomeBannerSlide(
                 "Sri Lakshmi Ganapathi Ayurveda Nilayam",
                 "Traditional Ayurveda for everyday wellness.",
-                "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85",
-                isCompanySlide = true
-            ),
-            HomeBannerSlide(
-                "Nature's Herbal Goodness",
-                "Discover herbs, roots and traditional ingredients.",
-                "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=85",
-                isCompanySlide = true
+                "",
+                isCompanySlide = true,
+                drawableResId = R.drawable.01_brand_heritage
             ),
             HomeBannerSlide(
                 "Traditional Ayurvedic Formulations",
                 "Explore Lehyas, Grutas, Pills, Tailas, Churnas and more.",
-                "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=85",
-                isCompanySlide = true
+                "",
+                isCompanySlide = true,
+                drawableResId = R.drawable.02_traditional_formulations
             ),
             HomeBannerSlide(
-                "Your Ayurveda Store, Made Simple",
-                "Browse products and discover the SLGAN catalogue.",
-                "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=85",
-                isCompanySlide = true
+                "Natural Care for Every Generation",
+                "Traditional wellness inspired by nature.",
+                "",
+                isCompanySlide = true,
+                drawableResId = R.drawable.03_natural_family_care
+            ),
+            HomeBannerSlide(
+                "Authentic Herbs. Better Living.",
+                "Discover herbs, roots and traditional ingredients.",
+                "",
+                isCompanySlide = true,
+                drawableResId = R.drawable.04_authentic_herbs
+            ),
+            HomeBannerSlide(
+                "Wellness Benefits",
+                "Explore wellness through traditional Ayurveda.",
+                "",
+                isCompanySlide = true,
+                drawableResId = R.drawable.05_wellness_benefits
+            ),
+            HomeBannerSlide(
+                "Tradition, Purity, Wellness",
+                "Sri Lakshmi Ganapathi Ayurvedic Nilayam.",
+                "",
+                isCompanySlide = true,
+                drawableResId = R.drawable.06_tradition_purity_wellness
             )
         ) + products.filter { it.signature }.map { product ->
             HomeBannerSlide(
@@ -1080,31 +1099,33 @@ private fun HomeBannerSlider(
                 val productImage = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }?.imageUrl.orEmpty()
                 Box(Modifier.fillMaxSize()) {
                     AsyncImage(
-                        model = productImage.ifBlank { slide.fallbackImageUrl },
+                        model = slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl },
                         contentDescription = slide.productName,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                    Box(
-                        Modifier.fillMaxSize().background(
-                            Brush.horizontalGradient(
-                                colors = listOf(
-                                    Color(0xFF4D100E).copy(alpha = 0.97f),
-                                    Forest.copy(alpha = 0.86f),
-                                    Forest.copy(alpha = 0.40f),
-                                    Color.Transparent
+                    if (!slide.isCompanySlide) {
+                        Box(
+                            Modifier.fillMaxSize().background(
+                                Brush.horizontalGradient(
+                                    colors = listOf(
+                                        Color(0xFF4D100E).copy(alpha = 0.97f),
+                                        Forest.copy(alpha = 0.86f),
+                                        Forest.copy(alpha = 0.40f),
+                                        Color.Transparent
+                                    )
                                 )
                             )
                         )
-                    )
-                    Box(
-                        Modifier.fillMaxSize().background(
-                            Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color(0xFF4D100E).copy(alpha = 0.30f))
+                        Box(
+                            Modifier.fillMaxSize().background(
+                                Brush.verticalGradient(
+                                    colors = listOf(Color.Transparent, Color(0xFF4D100E).copy(alpha = 0.30f))
+                                )
                             )
                         )
-                    )
-                    Column(
+                    }
+                    if (!slide.isCompanySlide) Column(
                         modifier = Modifier
                             .fillMaxWidth(0.88f)
                             .align(Alignment.CenterStart)
