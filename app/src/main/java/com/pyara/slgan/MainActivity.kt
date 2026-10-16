@@ -891,7 +891,7 @@ private fun ShopScreen(
 ) {
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
-        Row(Modifier.fillMaxWidth().background(Cream).padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().background(Cream).statusBarsPadding().padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.logo2), contentDescription = "SLGAN logo", modifier = Modifier.size(42.dp))
             Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) { Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp); Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 11.sp) }
