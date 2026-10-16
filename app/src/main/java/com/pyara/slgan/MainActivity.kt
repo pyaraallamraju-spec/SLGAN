@@ -881,8 +881,28 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Text(tr("Explore thoughtful herbal essentials.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
                 HomeBannerSlider(products = products, onViewProduct = { productName ->
-                    val match = products.firstOrNull { it.name.trim().equals(productName, ignoreCase = true) }
-                    if (match != null) onProductClick(match) else { onCategoryChange("All"); onSearchChange(productName) }
+                    val normalize: (String) -> String = { value -> value.lowercase().filter { it.isLetterOrDigit() } }
+                    val match = products.firstOrNull { normalize(it.name) == normalize(productName) }
+                        ?: products.firstOrNull { it.name.contains(productName, ignoreCase = true) || productName.contains(it.name, ignoreCase = true) }
+                    if (match != null) {
+                        onProductClick(match)
+                    } else {
+                        // Keep the banner button opening the product-details page even before its Firestore record exists.
+                        onProductClick(Product(
+                            id = "signature-" + normalize(productName),
+                            name = productName,
+                            subtitle = "Product information not available yet",
+                            price = 0.0,
+                            category = "Signature",
+                            emoji = "🌿",
+                            description = "",
+                            imageUrl = "",
+                            quantity = "",
+                            usage = "",
+                            cures = "",
+                            majorIngredients = ""
+                        ))
+                    }
                 })
                 Spacer(Modifier.height(18.dp))
                 OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text(tr("Search products", LocalAppLanguage.current)) }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
@@ -977,7 +997,11 @@ private fun ProductDetailsPage(
             }
             Text(product.name, color = Ink, fontSize = 25.sp, lineHeight = 31.sp, fontWeight = FontWeight.ExtraBold)
             Text(product.subtitle, color = Muted, fontSize = 15.sp)
-            Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+            if (product.price > 0.0) {
+                Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+            } else {
+                Text("Price not available yet.", color = Muted, fontSize = 15.sp)
+            }
             HorizontalDivider(color = Gold.copy(alpha = 0.45f))
             Text("Product details", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Text("Description", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
@@ -1004,7 +1028,8 @@ private fun ProductDetailsPage(
                 Text(cartCount.toString(), color = Ink, fontWeight = FontWeight.Bold)
             }
             Button(
-                onClick = { onAdd(product.id) },
+                onClick = { if (product.price > 0.0) onAdd(product.id) },
+                enabled = product.price > 0.0,
                 modifier = Modifier.weight(1f).height(52.dp),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Forest)
