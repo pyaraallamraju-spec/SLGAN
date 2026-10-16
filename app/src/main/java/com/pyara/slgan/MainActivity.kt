@@ -1953,7 +1953,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
     var diseaseDescriptionLoading by remember(selectedDisease) { mutableStateOf(false) }
     LaunchedEffect(selectedDisease) {
         diseaseDescription = ""
-        if (selectedDisease != null && selectedDisease != "All Diseases") {
+        if (selectedDisease != null) {
             diseaseDescriptionLoading = true
             FirebaseFirestore.getInstance().collection("diseases")
                 .whereEqualTo("diseases_name", selectedDisease).limit(1).get()
@@ -2091,10 +2091,9 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     Spacer(Modifier.height(7.dp))
                     Text(
                         when {
-                            selectedDisease == "All Diseases" -> "Browse the disease catalogue and select a specific disease to view its information and related products."
                             diseaseDescriptionLoading -> "Loading disease information…"
                             diseaseDescription.isNotBlank() -> diseaseDescription
-                            else -> "Information not available. The disease description can be added to this disease record in the database."
+                            else -> "Information not available."
                         },
                         color = Muted, fontSize = 13.sp, lineHeight = 19.sp
                     )
