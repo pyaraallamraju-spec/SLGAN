@@ -22,19 +22,19 @@ products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.js
 products = json.loads(products_path.read_text(encoding="utf-8"))  # Catalogue includes the Pills category.
 
 expected_categories = (
-    ["Rasayoga"] * 32
+    ["Rasayoga"] * 31
     + ["Rasayanas"] * 9
     + ["Churnas"] * 19
     + ["Gritas"] * 5
     + ["Tailas"] * 16
-    + ["Pills"] * 6
+    + ["Pills"] * 7
 )
 if len(products) != 87:
     raise SystemExit(f"Safety check failed: expected 87 products, found {len(products)}")
 if any(product.get("product_category") != expected_categories[i] for i, product in enumerate(products)):
     raise SystemExit(
-        "Safety check failed: categories must be products 1–32 Rasayoga, "
-        "33–41 Rasayanas, 42–60 Churnas, 61–65 Gritas, 66–81 Tailas, and 82–87 Pills"
+        "Safety check failed: categories must be products 1–31 Rasayoga, "
+        "32–40 Rasayanas, 41–59 Churnas, 60–64 Gritas, 65–80 Tailas, and 81–87 Pills"
     )
 required_fields = {"product_name", "product_quantity", "product_weight", "product_price", "product_units", "product_category", "signature"}
 if any(not required_fields.issubset(product) for product in products):
