@@ -998,7 +998,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         Text(tr("Your cart", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Text(cart.values.sum().toString() + " items selected", color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(18.dp))
-        if (selected.isEmpty()) EmptyState("🛍️", "Your cart is waiting", "Add herbal essentials from the Home page.")
+        if (selected.isEmpty()) EmptyState("🛍️", "Your cart is waiting", "Add products from the Home page.")
         else {
             LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 items(selected) { product ->
