@@ -303,133 +303,140 @@ private fun AyurvedicApp() {
 }
 @Composable
 private fun SplashScreen() {
-    val logoAlpha = remember { Animatable(0f) }
-    val logoScale = remember { Animatable(0.86f) }
-    val textAlpha = remember { Animatable(0f) }
-    val breathe = rememberInfiniteTransition(label = "premiumSplash")
-    val halo by breathe.animateFloat(
-        initialValue = 0.18f,
-        targetValue = 0.36f,
+    val motion = rememberInfiniteTransition(label = "natureSplash")
+    val rotation by motion.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1700, easing = FastOutSlowInEasing),
+            animation = tween(9000, easing = androidx.compose.animation.core.LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "logoRotation"
+    )
+    val halo by motion.animateFloat(
+        initialValue = 0.12f,
+        targetValue = 0.30f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1800, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
-        label = "halo"
+        label = "softHalo"
     )
-    LaunchedEffect(Unit) {
-        logoAlpha.animateTo(1f, tween(650, easing = FastOutSlowInEasing))
-        logoScale.animateTo(1f, tween(750, easing = FastOutSlowInEasing))
-        delay(120)
-        textAlpha.animateTo(1f, tween(500, easing = FastOutSlowInEasing))
-    }
 
-    Box(
-        modifier = Modifier.fillMaxSize().background(Cream),
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxSize().background(Color(0xFFFFFCF4)),
         contentAlignment = Alignment.Center
     ) {
+        // Soft botanical background accents and gently falling leaves.
         Box(
-            Modifier.fillMaxWidth().fillMaxHeight(0.40f).align(Alignment.TopCenter)
-                .background(androidx.compose.ui.graphics.Brush.verticalGradient(
-                    listOf(Color(0xFF4D100E), Color(0xFF762A24))
-                ))
+            Modifier.fillMaxSize().background(
+                Brush.verticalGradient(
+                    listOf(Color(0xFFFFFCF4), Color(0xFFF2F7E9), Color(0xFFFFFCF4))
+                )
+            )
         )
-        Box(Modifier.fillMaxWidth().height(3.dp).align(Alignment.TopCenter).background(Gold))
-        Box(Modifier.fillMaxWidth().height(3.dp).align(Alignment.BottomCenter).background(Gold))
+        val leafPositions = listOf(0.08f, 0.24f, 0.43f, 0.62f, 0.80f, 0.94f)
+        val leafDurations = listOf(5600, 7200, 6300, 8000, 6700, 7600)
+        leafPositions.forEachIndexed { index, fraction ->
+            val fall by motion.animateFloat(
+                initialValue = -80f - (index * 95f),
+                targetValue = maxHeight.value + 100f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(leafDurations[index], easing = androidx.compose.animation.core.LinearEasing),
+                    repeatMode = RepeatMode.Restart
+                ),
+                label = "fallingLeaf$index"
+            )
+            val sway by motion.animateFloat(
+                initialValue = -12f,
+                targetValue = 12f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(1700 + index * 130, easing = FastOutSlowInEasing),
+                    repeatMode = RepeatMode.Reverse
+                ),
+                label = "leafSway$index"
+            )
+            Text(
+                text = if (index % 2 == 0) "🍃" else "🌿",
+                modifier = Modifier
+                    .offset(x = maxWidth * fraction - 12.dp + sway.dp, y = fall.dp)
+                    .graphicsLayer { rotationZ = (fall * 0.8f) % 360f; alpha = 0.82f },
+                fontSize = if (index % 3 == 0) 25.sp else 19.sp
+            )
+        }
 
+        // Light, clean center stage for the rotating company logo.
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 26.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
-                modifier = Modifier.size(214.dp),
+                modifier = Modifier.size(224.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
-                    Modifier.fillMaxSize().graphicsLayer { alpha = halo }
-                        .border(1.dp, Gold, CircleShape)
+                    Modifier.size(220.dp).graphicsLayer { alpha = halo }
+                        .background(Color(0xFFB9D5A6), CircleShape)
                 )
                 Box(
-                    Modifier.size(192.dp).border(1.dp, Gold.copy(alpha = 0.65f), CircleShape)
+                    Modifier.size(202.dp)
+                        .border(1.dp, Color(0xFF9EBB86).copy(alpha = 0.75f), CircleShape)
                 )
                 Box(
-                    Modifier.size(164.dp).background(Color.White, CircleShape)
-                        .border(3.dp, Gold, CircleShape).padding(11.dp),
+                    Modifier.size(178.dp)
+                        .background(Color.White, CircleShape)
+                        .border(2.dp, Gold, CircleShape)
+                        .padding(13.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.logo2),
                         contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo",
-                        modifier = Modifier.fillMaxSize().graphicsLayer {
-                            alpha = logoAlpha.value
-                            scaleX = logoScale.value
-                            scaleY = logoScale.value
-                        }
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.fillMaxSize().graphicsLayer { rotationZ = rotation }
                     )
                 }
             }
-            Spacer(Modifier.height(28.dp))
-            Column(
-                modifier = Modifier.graphicsLayer { alpha = textAlpha.value },
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    "SRI LAKSHMI GANAPATHI",
-                    fontSize = 21.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Forest,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    letterSpacing = 1.1.sp
-                )
-                Spacer(Modifier.height(5.dp))
-                Text(
-                    "AYURVEDA NILAYAM",
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Leaf,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    letterSpacing = 2.0.sp
-                )
-                Spacer(Modifier.height(18.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Box(Modifier.width(42.dp).height(1.dp).background(Gold))
-                    Spacer(Modifier.width(10.dp))
-                    Box(Modifier.size(6.dp).background(Gold, CircleShape))
-                    Spacer(Modifier.width(10.dp))
-                    Box(Modifier.width(42.dp).height(1.dp).background(Gold))
-                }
-                Spacer(Modifier.height(13.dp))
-                Text(
-                    "TRADITION • TRUST • WELLNESS",
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Muted,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    letterSpacing = 1.1.sp
-                )
-                Spacer(Modifier.height(8.dp))
-                Text(
-                    "Serving with care since 1990",
-                    fontSize = 12.sp,
-                    color = Muted,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                )
-                Spacer(Modifier.height(26.dp))
-                CircularProgressIndicator(
-                    modifier = Modifier.size(22.dp),
-                    color = Forest,
-                    strokeWidth = 2.dp
-                )
-                Spacer(Modifier.height(8.dp))
-                Text(
-                    "Preparing your wellness experience",
-                    fontSize = 11.sp,
-                    color = Muted,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                )
-            }
+            Spacer(Modifier.height(24.dp))
+            Text(
+                "SRI LAKSHMI GANAPATHI",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = Forest,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                letterSpacing = 0.8.sp
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                "AYURVEDA NILAYAM",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Leaf,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                letterSpacing = 1.8.sp
+            )
+            Spacer(Modifier.height(14.dp))
+            Text(
+                "TRADITION • TRUST • WELLNESS",
+                fontSize = 10.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Muted,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                letterSpacing = 1.1.sp
+            )
+            Spacer(Modifier.height(24.dp))
+            CircularProgressIndicator(
+                modifier = Modifier.size(22.dp),
+                color = Leaf,
+                strokeWidth = 2.dp
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                "Preparing your wellness experience",
+                fontSize = 11.sp,
+                color = Muted,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
         }
     }
 }
