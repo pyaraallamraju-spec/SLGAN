@@ -1,10 +1,17 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Product catalogue is public-read and backend/admin-write only.
+    // Product catalogue is public-read. Only users whose trusted customer
+    // profile has is_admin == true may create, update, or delete products.
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/customers/$(request.auth.uid))
+        && get(/databases/$(database)/documents/customers/$(request.auth.uid)).data.is_admin == true;
+    }
+
     match /products/{productId} {
       allow read: if true;
-      allow write: if false;
+      allow create, update, delete: if isAdmin();
     }
 
     // Disease names are public catalogue data used by the Select disease search.
