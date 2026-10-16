@@ -102,6 +102,57 @@ private fun tr(text: String, language: String): String {
         "No addresses yet" to "ఇంకా చిరునామాలు లేవు", "Tap Add address to save your first delivery location." to "మొదటి డెలివరీ చిరునామాను సేవ్ చేయడానికి చిరునామా జోడించండి నొక్కండి.",
         "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Grutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
         "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
+        "Sign in with your registered email and password." to "మీ నమోదైన ఇమెయిల్ మరియు పాస్‌వర్డ్‌తో సైన్ ఇన్ చేయండి.",
+        "Mobile-number login is not available yet." to "మొబైల్ నంబర్ లాగిన్ ఇంకా అందుబాటులో లేదు.",
+        "View product" to "ఉత్పత్తి వివరాలు",
+        "Price not available yet." to "ధర ఇంకా అందుబాటులో లేదు.",
+        "Product details" to "ఉత్పత్తి వివరాలు",
+        "Description" to "వివరణ",
+        "Usage" to "వాడే విధానం",
+        "Cures" to "ఉపయోగ సూచనలు",
+        "Major ingredients" to "ప్రధాన పదార్థాలు",
+        "No online payment. Place your order and we will confirm delivery details." to "ఆన్‌లైన్ చెల్లింపు లేదు. ఆర్డర్ చేయండి; డెలివరీ వివరాలను మేము నిర్ధారిస్తాము.",
+        "Place order" to "ఆర్డర్ చేయండి",
+        "Customer name *" to "కస్టమర్ పేరు *",
+        "Email for invoice *" to "ఇన్‌వాయిస్ కోసం ఇమెయిల్ *",
+        "Phone number" to "ఫోన్ నంబర్",
+        "Full delivery address *" to "పూర్తి డెలివరీ చిరునామా *",
+        "Payment: none. This order request does not collect payment." to "చెల్లింపు లేదు. ఈ ఆర్డర్ అభ్యర్థనలో డబ్బు వసూలు చేయబడదు.",
+        "Cancel" to "రద్దు చేయండి",
+        "My Orders" to "నా ఆర్డర్లు",
+        "You have no previous orders yet." to "మీకు ఇంకా పాత ఆర్డర్లు లేవు.",
+        "View / Download Invoice" to "ఇన్‌వాయిస్ చూడండి / డౌన్‌లోడ్ చేయండి",
+        "Previous orders" to "మునుపటి ఆర్డర్లు",
+        "View complete invoice" to "పూర్తి ఇన్‌వాయిస్ చూడండి",
+        "Open invoice PDF" to "ఇన్‌వాయిస్ PDF తెరవండి",
+        "ORDER INVOICE" to "ఆర్డర్ ఇన్‌వాయిస్",
+        "Invoice No: $invoiceNo" to "ఇన్‌వాయిస్ నం.: $invoiceNo",
+        "Order ID: $orderId" to "ఆర్డర్ ID: $orderId",
+        "Order date: $created" to "ఆర్డర్ తేదీ: $created",
+        "BILL TO" to "బిల్ వివరాలు",
+        "ITEM DETAILS" to "వస్తువు వివరాలు",
+        "No item details were saved with this order." to "ఈ ఆర్డర్‌తో వస్తువుల వివరాలు సేవ్ కాలేదు.",
+        "GRAND TOTAL" to "మొత్తం",
+        "Payment has not been collected unless the status above says otherwise." to "పై స్థితిలో వేరుగా చూపకపోతే చెల్లింపు స్వీకరించలేదు.",
+        "Close" to "మూసివేయండి",
+        "Open PDF" to "PDF తెరవండి",
+        "Diseases" to "వ్యాధులు",
+        "Find a disease from the available list." to "అందుబాటులో ఉన్న జాబితా నుంచి వ్యాధిని ఎంచుకోండి.",
+        "Select disease" to "వ్యాధిని ఎంచుకోండి",
+        "Loading diseases from database…" to "డేటాబేస్ నుంచి వ్యాధులు లోడ్ అవుతున్నాయి…",
+        "Could not load diseases: $error" to "వ్యాధులను లోడ్ చేయలేకపోయాం: $error",
+        "No matching diseases found." to "సరిపోలే వ్యాధులు కనబడలేదు.",
+        "DISEASE OVERVIEW" to "వ్యాధి వివరాలు",
+        "What is this disease?" to "ఈ వ్యాధి అంటే ఏమిటి?",
+        "Medicines available" to "అందుబాటులో ఉన్న మందులు",
+        "Choose a specific disease to see matching medicines." to "సంబంధిత మందులను చూడటానికి ఒక నిర్దిష్ట వ్యాధిని ఎంచుకోండి.",
+        "Use medicines only with guidance from a qualified healthcare professional." to "అర్హత కలిగిన వైద్య నిపుణుల సూచనతో మాత్రమే మందులను వాడండి.",
+        "Information not available." to "సమాచారం అందుబాటులో లేదు.",
+        "Pack size: ${product.subtitle}" to "ప్యాక్ పరిమాణం: ${product.subtitle}",
+        "Category: ${product.category}" to "వర్గం: ${product.category}",
+        "Quantity / stock: ${product.quantity}" to "పరిమాణం / నిల్వ: ${product.quantity}",
+        "Search a place or address below, then tap a result to fill the address fields." to "క్రింద స్థలం లేదా చిరునామాను వెతికి, వివరాలు నింపడానికి ఫలితాన్ని ఎంచుకోండి.",
+        "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Grutas" to "ఘృతాలు", "Pills" to "మాత్రలు", "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
         "Language" to "భాష", "Select language" to "భాషను ఎంచుకోండి", "Save language preference" to "భాష ప్రాధాన్యతను సేవ్ చేయండి",
         "Email address" to "ఇమెయిల్ చిరునామా", "Password (at least 6 characters)" to "పాస్‌వర్డ్ (కనీసం 6 అక్షరాలు)", "Secure email and password sign-in" to "ఇమెయిల్ మరియు పాస్‌వర్డ్‌తో సురక్షిత లాగిన్",
         "Explore thoughtful herbal essentials." to "సహజ మూలికా ఉత్పత్తులను అన్వేషించండి.", "ROOTED IN NATURE" to "ప్రకృతిలో వేళ్లూనుకున్నది", "Everyday wellness,\\nwith a herbal touch." to "ప్రతిరోజూ ఆరోగ్యం,\\nమూలికలతో.", "Explore collection  →" to "ఉత్పత్తులను చూడండి  →",
@@ -126,6 +177,57 @@ private fun tr(text: String, language: String): String {
         "Save address" to "पता सहेजें", "Saved addresses" to "सहेजे गए पते", "Keep delivery locations for future orders." to "भविष्य के ऑर्डर के लिए डिलीवरी पते रखें।",
         "No addresses yet" to "अभी कोई पता नहीं", "All" to "सभी", "Lehyas" to "लेह्य", "Grutas" to "घृत",
         "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
+        "Sign in with your registered email and password." to "अपने पंजीकृत ईमेल और पासवर्ड से साइन इन करें।",
+        "Mobile-number login is not available yet." to "मोबाइल नंबर से लॉगिन अभी उपलब्ध नहीं है।",
+        "View product" to "उत्पाद देखें",
+        "Price not available yet." to "कीमत अभी उपलब्ध नहीं है।",
+        "Product details" to "उत्पाद विवरण",
+        "Description" to "विवरण",
+        "Usage" to "उपयोग विधि",
+        "Cures" to "उपयोग संबंधी जानकारी",
+        "Major ingredients" to "मुख्य सामग्री",
+        "No online payment. Place your order and we will confirm delivery details." to "ऑनलाइन भुगतान उपलब्ध नहीं है। ऑर्डर दें; हम डिलीवरी विवरण की पुष्टि करेंगे।",
+        "Place order" to "ऑर्डर करें",
+        "Customer name *" to "ग्राहक का नाम *",
+        "Email for invoice *" to "इनवॉइस के लिए ईमेल *",
+        "Phone number" to "फ़ोन नंबर",
+        "Full delivery address *" to "पूरा डिलीवरी पता *",
+        "Payment: none. This order request does not collect payment." to "कोई भुगतान नहीं। इस ऑर्डर अनुरोध में पैसे नहीं लिए जाते।",
+        "Cancel" to "रद्द करें",
+        "My Orders" to "मेरे ऑर्डर",
+        "You have no previous orders yet." to "आपके अभी तक कोई पुराने ऑर्डर नहीं हैं।",
+        "View / Download Invoice" to "इनवॉइस देखें / डाउनलोड करें",
+        "Previous orders" to "पिछले ऑर्डर",
+        "View complete invoice" to "पूरा इनवॉइस देखें",
+        "Open invoice PDF" to "इनवॉइस PDF खोलें",
+        "ORDER INVOICE" to "ऑर्डर इनवॉइस",
+        "Invoice No: $invoiceNo" to "इनवॉइस नंबर: $invoiceNo",
+        "Order ID: $orderId" to "ऑर्डर ID: $orderId",
+        "Order date: $created" to "ऑर्डर की तारीख: $created",
+        "BILL TO" to "बिल प्राप्तकर्ता",
+        "ITEM DETAILS" to "वस्तु विवरण",
+        "No item details were saved with this order." to "इस ऑर्डर के साथ वस्तु विवरण सेव नहीं हुए।",
+        "GRAND TOTAL" to "कुल योग",
+        "Payment has not been collected unless the status above says otherwise." to "ऊपर अलग स्थिति न हो तो भुगतान प्राप्त नहीं हुआ है।",
+        "Close" to "बंद करें",
+        "Open PDF" to "PDF खोलें",
+        "Diseases" to "रोग",
+        "Find a disease from the available list." to "सूची में से रोग खोजें।",
+        "Select disease" to "रोग चुनें",
+        "Loading diseases from database…" to "डेटाबेस से रोग लोड हो रहे हैं…",
+        "Could not load diseases: $error" to "रोग लोड नहीं हो सके: $error",
+        "No matching diseases found." to "कोई मेल खाता रोग नहीं मिला।",
+        "DISEASE OVERVIEW" to "रोग का विवरण",
+        "What is this disease?" to "यह रोग क्या है?",
+        "Medicines available" to "उपलब्ध दवाएँ",
+        "Choose a specific disease to see matching medicines." to "संबंधित दवाएँ देखने के लिए कोई विशिष्ट रोग चुनें।",
+        "Use medicines only with guidance from a qualified healthcare professional." to "दवाओं का उपयोग केवल योग्य स्वास्थ्य विशेषज्ञ की सलाह से करें।",
+        "Information not available." to "जानकारी उपलब्ध नहीं है।",
+        "Pack size: ${product.subtitle}" to "पैक का आकार: ${product.subtitle}",
+        "Category: ${product.category}" to "श्रेणी: ${product.category}",
+        "Quantity / stock: ${product.quantity}" to "मात्रा / स्टॉक: ${product.quantity}",
+        "Search a place or address below, then tap a result to fill the address fields." to "नीचे स्थान या पता खोजें और जानकारी भरने के लिए परिणाम चुनें।",
+        "All" to "सभी", "Lehyas" to "लेह्य", "Grutas" to "घृत", "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
         "Language" to "भाषा", "Select language" to "भाषा चुनें", "Save language preference" to "भाषा प्राथमिकता सहेजें",
         "Email address" to "ईमेल पता", "Password (at least 6 characters)" to "पासवर्ड (कम से कम 6 अक्षर)", "Secure email and password sign-in" to "ईमेल और पासवर्ड से सुरक्षित साइन-इन",
         "Explore thoughtful herbal essentials." to "चुनिंदा हर्बल उत्पाद देखें।", "ROOTED IN NATURE" to "प्रकृति से जुड़ा", "Everyday wellness,\\nwith a herbal touch." to "हर दिन स्वास्थ्य,\\nजड़ी-बूटियों के साथ।", "Explore collection  →" to "उत्पाद देखें  →",
@@ -148,6 +250,188 @@ class MainActivity : ComponentActivity() {
         )
         setContent { AyurvedicApp() }
     }
+}
+
+
+private fun localizedProductName(name: String, language: String): String {
+    if (language == "English") return name
+    val telugu = mapOf(
+        "Mahakanakasindhura Rasam" to "మహాకనకసింధూర రసం",
+        "Siddha Makaradhwajam" to "సిద్ధ మకరధ్వజం",
+        "Poornachandrodayam" to "పూర్ణచంద్రోదయం",
+        "Mahavatavidhwamsa Rasam" to "మహావాతవిధ్వంస రసం",
+        "Mahavata Rasam" to "మహావాత రసం",
+        "Swarna Kanta Vallabha Rasam" to "స్వర్ణ కంఠవల్లభ రసం",
+        "Kanthavallabha Rasam" to "కంఠవల్లభ రసం",
+        "Pralayagni Rudra Rasam" to "ప్రళయాగ్ని రుద్ర రసం",
+        "Sleshantaka Rasam (name unclear)" to "శ్లేషాంతక రసం",
+        "Lokanatha Rasam" to "లోకనాథ రసం",
+        "Vyadhihara Rasam" to "వ్యాధిహర రసం",
+        "Hemasundara Rasam" to "హేమసుందర రసం",
+        "Sleshma Gajamkusam" to "శ్లేష్మ గజాంకుశం",
+        "Lakshmi Vilasa Rasam" to "లక్ష్మీ విలాస రసం",
+        "Vijaya Chintamani" to "విజయ చింతామణి",
+        "Rajita Loha Rasayanam" to "రజిత లోహ రసాయనం",
+        "Rasa Chintamani" to "రస చింతామణి",
+        "Swarna Tamra Rasayanam" to "స్వర్ణ తామ్ర రసాయనం",
+        "Tamra Rasayanam" to "తామ్ర రసాయనం",
+        "Tamra Vanga Rasayanam" to "తామ్ర వంగ రసాయనం",
+        "Chaturloha Rasayanam" to "చతుర్లోహ రసాయనం",
+        "Asta Loha Rasayanam" to "అష్ట లోహ రసాయనం",
+        "Raja Mruganka Rasam" to "రాజ మృగాంక రసం",
+        "Mahaloha Rasayanam" to "మహాలోహ రసాయనం",
+        "Loha Rasayanam" to "లోహ రసాయనం",
+        "Meha Vanga Raajeyem" to "మేహ వంగ రాజేయం",
+        "Rajita Meha Vanga Raajeyem" to "రజిత మేహ వంగ రాజేయం",
+        "Sootikaabharanam" to "సూతికాభరణం",
+        "Swarna Suryavarti" to "స్వర్ణ సూర్యవర్తి",
+        "Kanaka Bala Suryodayam" to "కనక బాల సూర్యోదయం",
+        "Mahila Priya" to "మహిళా ప్రియ",
+        "Swasaamrutam" to "శ్వాసామృతం",
+        "Jaambu Paanam" to "జాంబు పానం",
+        "Jeeva Satvam" to "జీవ సత్వం",
+        "Mahaabala" to "మహాబల",
+        "Ganeshamrutham" to "గణేశామృతం",
+        "Gadaa Sanjeevi" to "గదా సంజీవి",
+        "Maadeephala Rasayanam" to "మాదీఫల రసాయనం",
+        "Jambeera Rasayanam" to "జంబీర రసాయనం",
+        "Sitopaladi Churnam" to "సితోపలాది చూర్ణం",
+        "Talisadi Churnam" to "తాలిసాది చూర్ణం",
+        "Pushyanuga Churnam" to "పుష్యానుగ చూర్ణం",
+        "Gangadhara Churnam" to "గంగాధర చూర్ణం",
+        "Lavanadi Churnam" to "లవణాది చూర్ణం",
+        "Chaturjaataka Churnam" to "చతుర్జాతక చూర్ణం",
+        "Sudarshana Churnam" to "సుదర్శన చూర్ణం",
+        "Bhaskara Lavana Churnam" to "భాస్కర లవణ చూర్ణం",
+        "Maha Drakshaadi Churnam" to "మహా ద్రాక్షాది చూర్ణం",
+        "Rasottamaadi Churnam" to "రసోత్తమాది చూర్ణం",
+        "Hingvashtaka Churnam" to "హింగ్వాష్టక చూర్ణం",
+        "Chandanaadi Churnam" to "చందనాది చూర్ణం",
+        "Ashwagandha Churnam" to "అశ్వగంధ చూర్ణం",
+        "Triphala Churnam" to "త్రిఫల చూర్ణం",
+        "Dantadhavana Churnam" to "దంతధావన చూర్ణం",
+        "Vaasadi Dhoomapaanadi Churnam" to "వాసాది ధూమపానాది చూర్ణం",
+        "Tippasattu" to "తిప్పసత్తు",
+        "Patcha Karpuram" to "పచ్చ కర్పూరం",
+        "Garudamjanam" to "గరుడాంజనం",
+        "Saraswathi Ghritam" to "సరస్వతీ ఘృతం",
+        "Phala Ghritam" to "ఫల ఘృతం",
+        "Shatadhouta Ghritam" to "శతధౌత ఘృతం",
+        "Kalyana Ghritam" to "కల్యాణ ఘృతం",
+        "Surya-prabha Kashaya Ghritam" to "సూర్యప్రభ కషాయ ఘృతం",
+        "Bhringaraja Tailam" to "భృంగరాజ తైలం",
+        "Amlaki Tailam" to "ఆమలకి తైలం",
+        "Aragwadhadi Tailam" to "అరగ్వధాది తైలం",
+        "Chandanaadi Tailam" to "చందనాది తైలం",
+        "Narayana Tailam" to "నారాయణ తైలం",
+        "Vishnupushpi Tailam" to "విష్ణుపుష్పి తైలం",
+        "Amruthaadi Tailam" to "అమృతాది తైలం",
+        "Sahacharaadi Tailam" to "సహచరాది తైలం",
+        "Mahanarayana Tailam" to "మహానారాయణ తైలం",
+        "Bala Tailam" to "బల తైలం",
+        "Maha Vishagarbha Tailam" to "మహా విషగర్భ తైలం",
+        "Pinda Tailam" to "పిండ తైలం",
+        "Tamra Tailam" to "తామ్ర తైలం",
+        "Karna Roganthaka Tailam" to "కర్ణ రోగాంతక తైలం",
+        "Mahaa Moosha Tailam" to "మహా మూష తైలం",
+        "Vidangaadi Tailam" to "విడంగాది తైలం",
+        "Poorna Chandrodayam" to "పూర్ణ చంద్రోదయం",
+        "Vasantha Kusumakaram" to "వసంత కుసుమాకరం",
+        "Rajita Chandrodayam" to "రజిత చంద్రోదయం",
+        "Bruhat Vaata Chintamani" to "బృహత్ వాత చింతామణి",
+        "Maha Panchabhana Rasam" to "మహా పంచభాణ రసం",
+        "Tippasattu" to "తిప్పసత్తు",
+        "Siddha Makaradhwajam" to "సిద్ధ మకరధ్వజం"
+    )
+    val hindi = mapOf(
+        "Mahakanakasindhura Rasam" to "महाकनकसिंधूर रस",
+        "Siddha Makaradhwajam" to "सिद्ध मकरध्वज",
+        "Poornachandrodayam" to "पूर्णचन्द्रोदय",
+        "Mahavatavidhwamsa Rasam" to "महावातविध्वंस रस",
+        "Mahavata Rasam" to "महावात रस",
+        "Swarna Kanta Vallabha Rasam" to "स्वर्ण कंठवल्लभ रस",
+        "Kanthavallabha Rasam" to "कंठवल्लभ रस",
+        "Pralayagni Rudra Rasam" to "प्रलयाग्नि रुद्र रस",
+        "Sleshantaka Rasam (name unclear)" to "श्लेषांतक रस",
+        "Lokanatha Rasam" to "लोकनाथ रस",
+        "Vyadhihara Rasam" to "व्याधिहर रस",
+        "Hemasundara Rasam" to "हेमसुंदर रस",
+        "Sleshma Gajamkusam" to "श्लेष्म गजांकुश",
+        "Lakshmi Vilasa Rasam" to "लक्ष्मी विलास रस",
+        "Vijaya Chintamani" to "विजय चिंतामणि",
+        "Rajita Loha Rasayanam" to "रजित लोह रसायन",
+        "Rasa Chintamani" to "रस चिंतामणि",
+        "Swarna Tamra Rasayanam" to "स्वर्ण ताम्र रसायन",
+        "Tamra Rasayanam" to "ताम्र रसायन",
+        "Tamra Vanga Rasayanam" to "ताम्र वंग रसायन",
+        "Chaturloha Rasayanam" to "चतुर्लोह रसायन",
+        "Asta Loha Rasayanam" to "अष्ट लोह रसायन",
+        "Raja Mruganka Rasam" to "राज मृगांक रस",
+        "Mahaloha Rasayanam" to "महोलोह रसायन",
+        "Loha Rasayanam" to "लोह रसायन",
+        "Meha Vanga Raajeyem" to "मेह वंग राजेयम",
+        "Rajita Meha Vanga Raajeyem" to "रजित मेह वंग राजेयम",
+        "Sootikaabharanam" to "सूतिकाभरण",
+        "Swarna Suryavarti" to "स्वर्ण सूर्यवर्ती",
+        "Kanaka Bala Suryodayam" to "कनक बाल सूर्योदय",
+        "Mahila Priya" to "महिला प्रिय",
+        "Swasaamrutam" to "श्वासामृत",
+        "Jaambu Paanam" to "जाम्बु पान",
+        "Jeeva Satvam" to "जीव सत्व",
+        "Mahaabala" to "महाबल",
+        "Ganeshamrutham" to "गणेशामृत",
+        "Gadaa Sanjeevi" to "गदा संजीवी",
+        "Maadeephala Rasayanam" to "मादीफल रसायन",
+        "Jambeera Rasayanam" to "जम्बीर रसायन",
+        "Sitopaladi Churnam" to "सितोपलादि चूर्ण",
+        "Talisadi Churnam" to "तालिसादि चूर्ण",
+        "Pushyanuga Churnam" to "पुष्यानुग चूर्ण",
+        "Gangadhara Churnam" to "गंगाधर चूर्ण",
+        "Lavanadi Churnam" to "लवणादि चूर्ण",
+        "Chaturjaataka Churnam" to "चतुर्जातक चूर्ण",
+        "Sudarshana Churnam" to "सुदर्शन चूर्ण",
+        "Bhaskara Lavana Churnam" to "भास्कर लवण चूर्ण",
+        "Maha Drakshaadi Churnam" to "महा द्राक्षादि चूर्ण",
+        "Rasottamaadi Churnam" to "रसॊत्तमादि चूर्ण",
+        "Hingvashtaka Churnam" to "हिंग्वाष्टक चूर्ण",
+        "Chandanaadi Churnam" to "चन्दनादि चूर्ण",
+        "Ashwagandha Churnam" to "अश्वगंधा चूर्ण",
+        "Triphala Churnam" to "त्रिफला चूर्ण",
+        "Dantadhavana Churnam" to "दंतधावन चूर्ण",
+        "Vaasadi Dhoomapaanadi Churnam" to "वासादि धूमपानादि चूर्ण",
+        "Tippasattu" to "तिप्पसत्तु",
+        "Patcha Karpuram" to "पच्चा कपूर",
+        "Garudamjanam" to "गरुड़ांजन",
+        "Saraswathi Ghritam" to "सरस्वती घृत",
+        "Phala Ghritam" to "फल घृत",
+        "Shatadhouta Ghritam" to "शतधौत घृत",
+        "Kalyana Ghritam" to "कल्याण घृत",
+        "Surya-prabha Kashaya Ghritam" to "सूर्यप्रभा कषाय घृत",
+        "Bhringaraja Tailam" to "भृंगराज तैल",
+        "Amlaki Tailam" to "आमलकी तैल",
+        "Aragwadhadi Tailam" to "अरग्वधादि तैल",
+        "Chandanaadi Tailam" to "चन्दनादि तैल",
+        "Narayana Tailam" to "नारायण तैल",
+        "Vishnupushpi Tailam" to "विष्णुपुष्पी तैल",
+        "Amruthaadi Tailam" to "अमृतादि तैल",
+        "Sahacharaadi Tailam" to "सहचरादि तैल",
+        "Mahanarayana Tailam" to "महानारायण तैल",
+        "Bala Tailam" to "बल तैल",
+        "Maha Vishagarbha Tailam" to "महा विषगर्भ तैल",
+        "Pinda Tailam" to "पिंड तैल",
+        "Tamra Tailam" to "ताम्र तैल",
+        "Karna Roganthaka Tailam" to "कर्ण रोगांतक तैल",
+        "Mahaa Moosha Tailam" to "महा मूष तैल",
+        "Vidangaadi Tailam" to "विडंगादि तैल",
+        "Poorna Chandrodayam" to "पूर्ण चन्द्रोदय",
+        "Vasantha Kusumakaram" to "वसंत कुसुमाकर",
+        "Rajita Chandrodayam" to "रजित चन्द्रोदय",
+        "Bruhat Vaata Chintamani" to "बृहत वात चिंतामणि",
+        "Maha Panchabhana Rasam" to "महा पंचभाण रस",
+        "Tippasattu" to "तिप्पसत्तु",
+        "Siddha Makaradhwajam" to "सिद्ध मकरध्वज"
+    )
+    return when (language) { "Telugu" -> telugu[name] ?: name; "Hindi" -> hindi[name] ?: name; else -> name }
 }
 
 private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false)
@@ -671,9 +955,9 @@ private fun LoginScreen(
             Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Forest)
         }
         Spacer(Modifier.height(8.dp))
-        Text("Sign in with your registered email and password.", fontSize = 13.sp, color = Color(0xFF56534D), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Color(0xFF56534D), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(4.dp))
-        Text("Mobile-number login is not available yet.", fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text(tr("Mobile-number login is not available yet.", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(30.dp))
         Box(Modifier.fillMaxWidth().height(48.dp).background(Color(0xFF8B211B))) {
             Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.TopCenter).background(Gold))
@@ -996,7 +1280,7 @@ private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, o
                 Text(tr("SLGAN", LocalAppLanguage.current), Modifier.align(Alignment.BottomEnd).padding(6.dp), color = Leaf, fontSize = 8.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(10.dp))
-            Text(product.name, fontSize = 13.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(9.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1024,7 +1308,7 @@ private fun ProductDetailsPage(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back to products", tint = Forest) }
-            Text("View product", modifier = Modifier.weight(1f), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
+            Text(tr("View product", LocalAppLanguage.current), modifier = Modifier.weight(1f), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
         }
         Column(
             Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(18.dp),
@@ -1051,7 +1335,7 @@ private fun ProductDetailsPage(
                 }
             }
             Text(
-                product.name,
+                localizedProductName(product.name, LocalAppLanguage.current),
                 color = Ink,
                 fontSize = 25.sp,
                 lineHeight = 31.sp,
@@ -1061,30 +1345,30 @@ private fun ProductDetailsPage(
                 Text("Pack size: ${product.subtitle}", color = Muted, fontSize = 14.sp)
             }
             if (product.category.isNotBlank()) {
-                Text("Category: ${product.category}", color = Muted, fontSize = 14.sp)
+                Text(tr("Category: ${product.category}", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
             }
             if (product.quantity.isNotBlank()) {
                 Text("Quantity / stock: ${product.quantity}", color = Muted, fontSize = 14.sp)
             }
             if (product.price > 0.0) {
-                Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
             } else {
-                Text("Price not available yet.", color = Muted, fontSize = 15.sp)
+                Text(tr("Price not available yet.", LocalAppLanguage.current), color = Muted, fontSize = 15.sp)
             }
             HorizontalDivider(color = Gold.copy(alpha = 0.45f))
-            Text("Product details", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-            Text("Description", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Product details", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Description", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(
                 product.description.ifBlank { "Information not available." },
                 color = Muted,
                 fontSize = 14.sp,
                 lineHeight = 22.sp
             )
-            Text("Usage", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Usage", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(product.usage.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
-            Text("Cures", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Cures", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(product.cures.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
-            Text("Major ingredients", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Major ingredients", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(product.majorIngredients.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
         }
         Row(
@@ -1156,7 +1440,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             Column(Modifier.weight(1f)) {
                                 Text(product.name, fontWeight = FontWeight.Bold, color = Ink)
                                 Text(product.subtitle, color = Muted, fontSize = 12.sp)
-                                Text("₹" + String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.Bold)
+                                Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.Bold)
                             }
                             IconButton(onClick = { onRemove(product.id) }) { Icon(Icons.Default.Remove, "Remove one") }
                             Text((cart[product.id] ?: 0).toString(), fontWeight = FontWeight.Bold)
@@ -1170,29 +1454,29 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 Column(Modifier.fillMaxWidth().padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(tr("Subtotal", LocalAppLanguage.current), color = Muted, modifier = Modifier.weight(1f))
-                        Text("₹" + String.format("%.2f", total), color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", total), color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
                     }
                     Button(onClick = { showCheckout = true; errorMessage = null }, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest), modifier = Modifier.fillMaxWidth()) {
                         Text(tr("Checkout", LocalAppLanguage.current))
                     }
                 }
             }
-            Text("No online payment. Place your order and we will confirm delivery details.", color = Muted, fontSize = 11.sp)
+            Text(tr("No online payment. Place your order and we will confirm delivery details.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
         }
     }
 
     if (showCheckout) {
         AlertDialog(
             onDismissRequest = { if (!submitting) showCheckout = false },
-            title = { Text("Place order") },
+            title = { Text(tr("Place order", LocalAppLanguage.current)) },
             text = {
                 Column(Modifier.fillMaxWidth().heightIn(max = 430.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Total: ₹" + String.format("%.2f", total), fontWeight = FontWeight.Bold, color = Forest)
-                    OutlinedTextField(customerName, { customerName = it }, label = { Text("Customer name *") }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(email, { email = it }, label = { Text("Email for invoice *") }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
-                    OutlinedTextField(phone, { phone = it }, label = { Text("Phone number") }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone))
-                    OutlinedTextField(address, { address = it }, label = { Text("Full delivery address *") }, modifier = Modifier.fillMaxWidth(), minLines = 2)
-                    Text("Payment: none. This order request does not collect payment.", color = Muted, fontSize = 12.sp)
+                    Text(tr("Total: ₹", LocalAppLanguage.current) + String.format("%.2f", total), fontWeight = FontWeight.Bold, color = Forest)
+                    OutlinedTextField(customerName, { customerName = it }, label = { Text(tr("Customer name *", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(email, { email = it }, label = { Text(tr("Email for invoice *", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
+                    OutlinedTextField(phone, { phone = it }, label = { Text(tr("Phone number", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone))
+                    OutlinedTextField(address, { address = it }, label = { Text(tr("Full delivery address *", LocalAppLanguage.current)) }, modifier = Modifier.fillMaxWidth(), minLines = 2)
+                    Text(tr("Payment: none. This order request does not collect payment.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                     if (errorMessage != null) Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
                     if (orderMessage != null) Text(orderMessage!!, color = Forest)
                 }
@@ -1256,7 +1540,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }) { Text(if (submitting) "Placing order…" else "Place order") }
             },
-            dismissButton = { TextButton(enabled = !submitting, onClick = { showCheckout = false }) { Text("Cancel") } }
+            dismissButton = { TextButton(enabled = !submitting, onClick = { showCheckout = false }) { Text(tr("Cancel", LocalAppLanguage.current)) } }
         )
     }
 }
@@ -1303,7 +1587,7 @@ private fun OrdersPage(
     }
 
     Column(modifier.fillMaxSize().padding(18.dp)) {
-        Text("My Orders", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+        Text(tr("My Orders", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Spacer(Modifier.height(12.dp))
         if (latestOrderSuccess != null) {
             Card(
@@ -1326,7 +1610,7 @@ private fun OrdersPage(
                             color = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E)
                         )
                     }
-                    latestOrderId?.let { Text("Order ID: " + it, color = Ink, fontWeight = FontWeight.SemiBold) }
+                    latestOrderId?.let { Text(tr("Order ID: ", LocalAppLanguage.current) + it, color = Ink, fontWeight = FontWeight.SemiBold) }
                     Text(latestOrderMessage ?: if (latestOrderSuccess) "Your order was saved." else "Your order could not be placed.", color = Ink)
                     if (latestOrderSuccess && !latestInvoiceUrl.isNullOrBlank()) {
                         Button(
@@ -1336,22 +1620,22 @@ private fun OrdersPage(
                         ) {
                             Icon(Icons.Default.PictureAsPdf, contentDescription = null)
                             Spacer(Modifier.width(8.dp))
-                            Text("View / Download Invoice")
+                            Text(tr("View / Download Invoice", LocalAppLanguage.current))
                         }
                     } else if (latestOrderSuccess) {
-                        Text("Your order is saved. The invoice is not available here yet; please check your email or contact the shop.", color = Muted, fontSize = 12.sp)
+                        Text(tr("Your order is saved. The invoice is not available here yet; please check your email or contact the shop.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                     }
                 }
             }
             Spacer(Modifier.height(18.dp))
         }
 
-        Text("Previous orders", fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Ink)
+        Text(tr("Previous orders", LocalAppLanguage.current), fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Ink)
         Spacer(Modifier.height(8.dp))
         when {
             loadingOrders -> Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Forest) }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
-            previousOrders.isEmpty() -> Text("You have no previous orders yet.", color = Muted)
+            previousOrders.isEmpty() -> Text(tr("You have no previous orders yet.", LocalAppLanguage.current), color = Muted)
             else -> LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 items(previousOrders) { order ->
                     val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
@@ -1365,20 +1649,20 @@ private fun OrdersPage(
                     ) {
                         Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                             Text(orderId, fontWeight = FontWeight.Bold, color = Forest)
-                            Text("Status: " + status.replaceFirstChar { it.uppercase() }, color = Ink)
-                            Text("Product total: ₹" + String.format("%.2f", total), color = Ink)
+                            Text(tr("Status: ", LocalAppLanguage.current) + status.replaceFirstChar { it.uppercase() }, color = Ink)
+                            Text(tr("Product total: ₹", LocalAppLanguage.current) + String.format("%.2f", total), color = Ink)
                             val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                             if (timestamp != null) Text(timestamp.toDate().toString(), color = Muted, fontSize = 11.sp)
                             TextButton(onClick = { selectedOrder = order }) {
                                 Icon(Icons.Default.ReceiptLong, contentDescription = null)
                                 Spacer(Modifier.width(6.dp))
-                                Text("View complete invoice")
+                                Text(tr("View complete invoice", LocalAppLanguage.current))
                             }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
                                     Icon(Icons.Default.PictureAsPdf, contentDescription = null)
                                     Spacer(Modifier.width(6.dp))
-                                    Text("Open invoice PDF")
+                                    Text(tr("Open invoice PDF", LocalAppLanguage.current))
                                 }
                             }
                         }
@@ -1407,8 +1691,8 @@ private fun OrdersPage(
             onDismissRequest = { selectedOrder = null },
             title = {
                 Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                    Text("ORDER INVOICE", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = Forest)
-                    Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", fontSize = 13.sp, color = Muted)
+                    Text(tr("ORDER INVOICE", LocalAppLanguage.current), fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = Forest)
+                    Text(tr("Sri Lakshmi Ganapathi Ayurveda Nilayam", LocalAppLanguage.current), fontSize = 13.sp, color = Muted)
                 }
             },
             text = {
@@ -1420,18 +1704,18 @@ private fun OrdersPage(
                     Text("Invoice No: $invoiceNo", fontWeight = FontWeight.Bold, color = Ink)
                     Text("Order ID: $orderId", color = Ink, fontSize = 12.sp)
                     Text("Order date: $created", color = Muted, fontSize = 12.sp)
-                    Text("Order status: " + status.replaceFirstChar { it.uppercase() }, color = Ink)
-                    Text("Payment status: " + paymentStatus.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Ink)
+                    Text(tr("Order status: ", LocalAppLanguage.current) + status.replaceFirstChar { it.uppercase() }, color = Ink)
+                    Text(tr("Payment status: ", LocalAppLanguage.current) + paymentStatus.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Ink)
                     HorizontalDivider(color = Gold.copy(alpha = 0.7f))
-                    Text("BILL TO", fontWeight = FontWeight.Bold, color = Forest)
+                    Text(tr("BILL TO", LocalAppLanguage.current), fontWeight = FontWeight.Bold, color = Forest)
                     Text(customerName.ifBlank { "Customer name not provided" }, color = Ink)
                     if (phone.isNotBlank()) Text("Phone: $phone", color = Ink)
                     if (email.isNotBlank()) Text("Email: $email", color = Ink)
                     if (address.isNotBlank()) Text("Delivery address: $address", color = Ink)
                     HorizontalDivider(color = Gold.copy(alpha = 0.7f))
-                    Text("ITEM DETAILS", fontWeight = FontWeight.Bold, color = Forest)
+                    Text(tr("ITEM DETAILS", LocalAppLanguage.current), fontWeight = FontWeight.Bold, color = Forest)
                     if (invoiceItems.isEmpty()) {
-                        Text("No item details were saved with this order.", color = Muted)
+                        Text(tr("No item details were saved with this order.", LocalAppLanguage.current), color = Muted)
                     } else {
                         invoiceItems.forEachIndexed { index, item ->
                             val name = item["productName"]?.toString() ?: item["name"]?.toString() ?: "Item \${index + 1}"
@@ -1451,26 +1735,26 @@ private fun OrdersPage(
                     }
                     HorizontalDivider(color = Gold.copy(alpha = 0.7f))
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Subtotal", color = Ink)
-                        Text("₹" + String.format("%.2f", subtotal), color = Ink)
+                        Text(tr("Subtotal", LocalAppLanguage.current), color = Ink)
+                        Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", subtotal), color = Ink)
                     }
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Delivery / tax", color = Ink)
-                        Text("₹0.00", color = Ink)
+                        Text(tr("Delivery / tax", LocalAppLanguage.current), color = Ink)
+                        Text(tr("₹0.00", LocalAppLanguage.current), color = Ink)
                     }
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("GRAND TOTAL", fontWeight = FontWeight.ExtraBold, color = Forest)
-                        Text("₹" + String.format("%.2f", grandTotal), fontWeight = FontWeight.ExtraBold, color = Forest)
+                        Text(tr("GRAND TOTAL", LocalAppLanguage.current), fontWeight = FontWeight.ExtraBold, color = Forest)
+                        Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", grandTotal), fontWeight = FontWeight.ExtraBold, color = Forest)
                     }
-                    Text("Payment has not been collected unless the status above says otherwise.", color = Muted, fontSize = 11.sp)
+                    Text(tr("Payment has not been collected unless the status above says otherwise.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
                 }
             },
-            confirmButton = { TextButton(onClick = { selectedOrder = null }) { Text("Close") } },
+            confirmButton = { TextButton(onClick = { selectedOrder = null }) { Text(tr("Close", LocalAppLanguage.current)) } },
             dismissButton = {
                 val invoiceUrl = order["invoiceUrl"]?.toString()
                 if (!invoiceUrl.isNullOrBlank()) {
                     TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
-                        Text("Open PDF")
+                        Text(tr("Open PDF", LocalAppLanguage.current))
                     }
                 }
             },
@@ -1529,8 +1813,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             }
             .verticalScroll(rememberScrollState()).padding(18.dp)
     ) {
-        Text("Diseases", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Text("Find a disease from the available list.", color = Muted, fontSize = 13.sp)
+        Text(tr("Diseases", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+        Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(20.dp))
         OutlinedTextField(
             value = query,
@@ -1538,7 +1822,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             modifier = Modifier.fillMaxWidth()
                 .onGloballyPositioned { diseaseFieldBounds = it.boundsInRoot() }
                 .onFocusChanged { if (it.isFocused) expanded = true },
-            label = { Text("Select disease") },
+            label = { Text(tr("Select disease", LocalAppLanguage.current)) },
             placeholder = { Text(if (loading) "Loading diseases…" else "Type to search diseases") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
             trailingIcon = {
@@ -1586,14 +1870,14 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             Row(verticalAlignment = Alignment.CenterVertically) {
                 CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp, color = Forest)
                 Spacer(Modifier.width(10.dp))
-                Text("Loading diseases from database…", color = Muted, fontSize = 13.sp)
+                Text(tr("Loading diseases from database…", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
             }
         } else if (error != null) {
             Spacer(Modifier.height(12.dp))
             Text("Could not load diseases: $error", color = Color(0xFFB3261E), fontSize = 13.sp)
         } else if (matches.isEmpty()) {
             Spacer(Modifier.height(12.dp))
-            Text("No matching diseases found.", color = Muted, fontSize = 13.sp)
+            Text(tr("No matching diseases found.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
         } else if (selectedDisease == null) {
             Spacer(Modifier.height(8.dp))
             Text("${matches.size} disease${if (matches.size == 1) "" else "s"} available", color = Muted, fontSize = 12.sp)
@@ -1613,7 +1897,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         }
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
-                            Text("DISEASE OVERVIEW", color = Leaf, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
+                            Text(tr("DISEASE OVERVIEW", LocalAppLanguage.current), color = Leaf, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
                             Text(selectedDisease!!, color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 19.sp)
                         }
                         IconButton(onClick = { selectedDisease = null; query = ""; expanded = true }) {
@@ -1624,7 +1908,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.Info, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("What is this disease?", color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text(tr("What is this disease?", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     }
                     Spacer(Modifier.height(7.dp))
                     Text(
@@ -1640,7 +1924,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest, modifier = Modifier.size(21.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Medicines available", color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                        Text(tr("Medicines available", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
                         Spacer(Modifier.weight(1f))
                         Box(Modifier.background(PaleGreen, RoundedCornerShape(20.dp)).padding(horizontal = 10.dp, vertical = 4.dp)) {
                             Text(relatedMedicines.size.toString(), color = Forest, fontWeight = FontWeight.Bold, fontSize = 12.sp)
@@ -1648,9 +1932,9 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     }
                     Spacer(Modifier.height(10.dp))
                     if (selectedDisease == "All Diseases") {
-                        Text("Choose a specific disease to see matching medicines.", color = Muted, fontSize = 13.sp)
+                        Text(tr("Choose a specific disease to see matching medicines.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                     } else if (relatedMedicines.isEmpty()) {
-                        Text("No medicines are linked to this disease yet. Add the disease name to a product’s product_cures / cures / indications field to link it here.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                        Text(tr("No medicines are linked to this disease yet. Add the disease name to a product’s product_cures / cures / indications field to link it here.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                     } else {
                         relatedMedicines.forEachIndexed { index, product ->
                             Row(
@@ -1662,16 +1946,16 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 }
                                 Spacer(Modifier.width(11.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(product.name, color = Ink, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                                    Text(listOf(product.subtitle, product.category).filter { it.isNotBlank() }.joinToString(" • "), color = Muted, fontSize = 11.sp)
+                                    Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                    Text(listOf(product.subtitle, tr(product.category, LocalAppLanguage.current)).filter { it.isNotBlank() }.joinToString(" • "), color = Muted, fontSize = 11.sp)
                                 }
-                                Text("₹" + String.format(java.util.Locale.US, "%.0f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
+                                Text(tr("₹", LocalAppLanguage.current) + String.format(java.util.Locale.US, "%.0f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
                             }
                             if (index < relatedMedicines.lastIndex) HorizontalDivider(color = Gold.copy(alpha = 0.25f))
                         }
                     }
                     Spacer(Modifier.height(12.dp))
-                    Text("Use medicines only with guidance from a qualified healthcare professional.", color = Muted, fontSize = 11.sp, lineHeight = 15.sp)
+                    Text(tr("Use medicines only with guidance from a qualified healthcare professional.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, lineHeight = 15.sp)
                 }
             }
         }
@@ -1937,7 +2221,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text(if (showMapPicker) "Hide map" else "Search and select address on map")
             }
             if (showMapPicker) {
-                Text("Search a place or address below, then tap a result to fill the address fields.", color = Muted, fontSize = 12.sp)
+                Text(tr("Search a place or address below, then tap a result to fill the address fields.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                 Spacer(Modifier.height(8.dp))
                 AndroidView(
                     modifier = Modifier.fillMaxWidth().height(360.dp).clip(RoundedCornerShape(14.dp)),
@@ -2152,7 +2436,7 @@ private fun AppLoader(message: String, compact: Boolean = false) {
         Text(message, color = Forest, fontSize = if (compact) 13.sp else 15.sp, fontWeight = FontWeight.SemiBold)
         if (!compact) {
             Spacer(Modifier.height(4.dp))
-            Text("Please wait a moment", color = Muted, fontSize = 12.sp)
+            Text(tr("Please wait a moment", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
         }
     }
 }
