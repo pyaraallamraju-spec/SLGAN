@@ -30,6 +30,28 @@ object FirebaseData {
             }
     }
 
+    fun observeDiseases(
+        onDiseases: (List<String>) -> Unit,
+        onError: (Exception) -> Unit
+    ): ListenerRegistration {
+        return db.collection("diseases")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    onError(error)
+                    return@addSnapshotListener
+                }
+                onDiseases(snapshot?.documents
+                    ?.mapNotNull { document ->
+                        (document.getString("diseases_name")
+                            ?: document.getString("disease_name")
+                            ?: document.getString("name"))?.trim()?.takeIf { it.isNotBlank() }
+                    }
+                    ?.distinctBy { it.lowercase() }
+                    ?.sortedBy { it.lowercase() }
+                    .orEmpty())
+            }
+    }
+
     fun saveCustomerProfile(
         uid: String,
         fields: Map<String, Any>,
