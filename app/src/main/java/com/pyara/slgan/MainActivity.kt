@@ -919,6 +919,7 @@ private fun ShopScreen(
 
 @Composable
 private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
+    val context = LocalContext.current
     val currentUser = remember { FirebaseAuth.getInstance().currentUser }
     var welcomeNickname by remember(currentUser?.uid) { mutableStateOf("") }
     DisposableEffect(currentUser?.uid) {
@@ -946,7 +947,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     if (match != null) {
                         onProductClick(match)
                     } else {
-                        Toast.makeText(appContext, "Product details are not available in the database yet.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Product details are not available in the database yet.", Toast.LENGTH_SHORT).show()
                     }
                 })
                 Spacer(Modifier.height(18.dp))
