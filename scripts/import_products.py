@@ -36,9 +36,11 @@ if any(product.get("product_category") != expected_categories[i] for i, product 
         "Safety check failed: categories must be products 1–32 Rasayoga, "
         "33–41 Rasayanas, 42–60 Churnas, 61–65 Gritas, 66–81 Tailas, and 82–87 Pills"
     )
-required_fields = {"product_name", "product_quantity", "product_weight", "product_price", "product_units", "product_category"}
+required_fields = {"product_name", "product_quantity", "product_weight", "product_price", "product_units", "product_category", "signature"}
 if any(not required_fields.issubset(product) for product in products):
     raise SystemExit("Safety check failed: one or more products are missing required app fields")
+if any(product.get("signature") not in (0, 1) for product in products):
+    raise SystemExit("Safety check failed: signature must be 1 for signature products or 0 for other products")
 
 collection = db.collection("products")
 existing_docs = list(collection.stream())
