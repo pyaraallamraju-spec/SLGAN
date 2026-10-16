@@ -13,9 +13,22 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Customers can access only their own profile.
+    // Customers can access only their own profile. The is_admin role is
+    // managed by trusted Firebase Admin SDK scripts, never by the client.
     match /customers/{userId} {
-      allow read, create, update, delete: if request.auth != null
+      allow read: if request.auth != null
+        && request.auth.uid == userId;
+      allow create: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.is_admin == false;
+      allow update: if request.auth != null
+        && request.auth.uid == userId
+        && (
+          ( !('is_admin' in resource.data)
+            && request.resource.data.is_admin == false )
+          || request.resource.data.is_admin == resource.data.is_admin
+        );
+      allow delete: if request.auth != null
         && request.auth.uid == userId;
 
       // Legacy nested orders remain read-only.
