@@ -14,10 +14,11 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
-    // Disease names are public catalogue data used by the Select disease search.
+    // Disease catalogue is public-read for the customer selector.
+    // Only trusted administrators may add or edit catalogue entries.
     match /diseases/{diseaseId} {
       allow read: if true;
-      allow write: if false;
+      allow create, update, delete: if isAdmin();
     }
 
     // Customers can access only their own profile. The is_admin role is
