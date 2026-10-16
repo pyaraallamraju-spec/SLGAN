@@ -553,7 +553,16 @@ private fun AyurvedicApp() {
         if (signedIn) {
             val registration = FirebaseData.observeProducts(
                 onProducts = { records ->
-                    liveProducts = records.mapNotNull { record -> productFromFirestore(record) }
+                    // A malformed Firestore document must not crash the entire app after login.
+                    val parsedProducts = records.mapNotNull { record ->
+                        try {
+                            productFromFirestore(record)
+                        } catch (error: Exception) {
+                            android.util.Log.w("SLGAN_PRODUCTS", "Skipping an invalid product record", error)
+                            null
+                        }
+                    }
+                    liveProducts = parsedProducts
                     productsLoading = false
                     productsError = null
                 },
@@ -639,9 +648,17 @@ private fun AyurvedicApp() {
                         task.addOnCompleteListener { result ->
                             isLoading = false
                             if (result.isSuccessful) {
-                                signedIn = true
+                                // Let FirebaseAuth.AuthStateListener be the single source of truth
+                                // for navigation. Avoid switching screens before currentUser is ready.
                                 auth.currentUser?.uid?.let { uid ->
-                                    FirebaseData.saveCustomerProfile(uid, mapOf("email" to email, "updatedAt" to System.currentTimeMillis())) { }
+                                    FirebaseData.saveCustomerProfile(
+                                        uid,
+                                        mapOf("email" to email, "updatedAt" to System.currentTimeMillis())
+                                    ) { error ->
+                                        if (error != null) {
+                                            android.util.Log.w("SLGAN_AUTH", "Profile save failed after sign-in", error)
+                                        }
+                                    }
                                 }
                             } else {
                                 authError = result.exception?.localizedMessage ?: "Sign-in failed. Please try again."
