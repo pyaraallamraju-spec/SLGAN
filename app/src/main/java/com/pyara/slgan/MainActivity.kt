@@ -995,8 +995,13 @@ private fun ProductDetailsPage(
                     }
                 }
             }
-            Text(product.name, color = Ink, fontSize = 25.sp, lineHeight = 31.sp, fontWeight = FontWeight.ExtraBold)
-            Text(product.subtitle, color = Muted, fontSize = 15.sp)
+            Text(
+                if (product.subtitle.isNotBlank() && product.subtitle != "Traditional Ayurvedic product" && !product.subtitle.startsWith("Product information not available")) "${product.name} (${product.subtitle})" else product.name,
+                color = Ink,
+                fontSize = 25.sp,
+                lineHeight = 31.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
             if (product.price > 0.0) {
                 Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
             } else {
