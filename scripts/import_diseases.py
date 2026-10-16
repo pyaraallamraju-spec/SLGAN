@@ -75,10 +75,15 @@ for name in names:
     else:
         max_number += 1
         disease_id = f"DISEASE{max_number:03d}"
-    batch.set(collection.document(disease_id), {
+    seed_record = next(item for item in diseases if str(item["diseases_name"]).strip() == name)
+    fields = {
         "disease_id": disease_id,
         "diseases_name": name,
-    }, merge=True)
+    }
+    description = str(seed_record.get("disease_desc", "")).strip()
+    if description:
+        fields["disease_desc"] = description
+    batch.set(collection.document(disease_id), fields, merge=True)
     written += 1
     if written % 400 == 0:
         batch.commit()
