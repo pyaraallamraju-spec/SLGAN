@@ -491,6 +491,8 @@ private fun AyurvedicApp() {
     val auth = remember { FirebaseAuth.getInstance() }
     var signedIn by remember { mutableStateOf(auth.currentUser != null) }
     var authResolved by remember { mutableStateOf(false) }
+    var isAdmin by remember { mutableStateOf(false) }
+    var adminRoleResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
         delay(10000)
@@ -503,6 +505,28 @@ private fun AyurvedicApp() {
         }
         auth.addAuthStateListener(authStateListener)
         onDispose { auth.removeAuthStateListener(authStateListener) }
+    }
+    DisposableEffect(signedIn, auth.currentUser?.uid) {
+        val user = auth.currentUser
+        if (!signedIn || user == null) {
+            isAdmin = false
+            adminRoleResolved = true
+            onDispose { }
+        } else {
+            adminRoleResolved = false
+            val registration = FirebaseFirestore.getInstance()
+                .collection("customers").document(user.uid)
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        isAdmin = false
+                        adminRoleResolved = true
+                    } else {
+                        isAdmin = snapshot?.getBoolean("is_admin") == true
+                        adminRoleResolved = true
+                    }
+                }
+            onDispose { registration.remove() }
+        }
     }
     var userInput by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -618,6 +642,17 @@ private fun AyurvedicApp() {
                             }
                         }
                     }
+                }
+            )
+            else if (!adminRoleResolved) AppLoader("Checking account permissions…")
+            else if (isAdmin) AdminDashboardScreen(
+                email = auth.currentUser?.email.orEmpty(),
+                productCount = liveProducts.size,
+                onSignOut = {
+                    auth.signOut()
+                    selectedTab = "Home"
+                    selectedProduct = null
+                    cart.clear()
                 }
             )
             else if (selectedProduct != null) ProductDetailsPage(
@@ -1157,6 +1192,134 @@ private fun HomeBannerSlider(
                         .background(if (selected) Forest else Gold.copy(alpha = 0.65f))
                         .clickable { activeSlide = index }
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AdminDashboardScreen(
+    email: String,
+    productCount: Int,
+    onSignOut: () -> Unit
+) {
+    Column(
+        Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(20.dp)
+    ) {
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text("SLGAN ADMIN", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+                Spacer(Modifier.height(4.dp))
+                Text("Dashboard", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+            }
+            IconButton(onClick = onSignOut) {
+                Icon(Icons.Default.Logout, contentDescription = "Sign out", tint = Forest)
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+        Text("Welcome back", color = Muted, fontSize = 15.sp)
+        Text(email.ifBlank { "Administrator" }, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+        Spacer(Modifier.height(22.dp))
+        Card(
+            Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(22.dp),
+            colors = CardDefaults.cardColors(containerColor = Forest)
+        ) {
+            Column(Modifier.padding(20.dp)) {
+                Text("Sri Lakshmi Ganapathi", color = Color.White.copy(alpha = 0.82f), fontSize = 13.sp)
+                Text("Ayurvedic Nilayam", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                Spacer(Modifier.height(12.dp))
+                Text("Manage your store from one place.", color = Cream, fontSize = 13.sp)
+            }
+        }
+        Spacer(Modifier.height(20.dp))
+        Text("OVERVIEW", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
+        Spacer(Modifier.height(10.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            AdminSummaryCard(
+                modifier = Modifier.weight(1f),
+                icon = Icons.Default.Inventory2,
+                title = "Products",
+                value = productCount.toString(),
+                subtitle = "Catalogue items"
+            )
+            AdminSummaryCard(
+                modifier = Modifier.weight(1f),
+                icon = Icons.Default.ShoppingBag,
+                title = "Store",
+                value = "Active",
+                subtitle = "Admin access"
+            )
+        }
+        Spacer(Modifier.height(20.dp))
+        Text("ADMIN MODULES", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
+        Spacer(Modifier.height(10.dp))
+        AdminModuleInfo(Icons.Default.Inventory2, "Products", "View the catalogue and product information.")
+        AdminModuleInfo(Icons.Default.ReceiptLong, "Orders", "Order management module.")
+        AdminModuleInfo(Icons.Default.PeopleAlt, "Customers", "Customer accounts and profiles.")
+        AdminModuleInfo(Icons.Default.MedicalServices, "Diseases", "Disease catalogue information.")
+        Spacer(Modifier.height(20.dp))
+        OutlinedButton(
+            onClick = onSignOut,
+            modifier = Modifier.fillMaxWidth().height(50.dp),
+            shape = RoundedCornerShape(14.dp)
+        ) {
+            Icon(Icons.Default.Logout, contentDescription = null)
+            Spacer(Modifier.width(8.dp))
+            Text("Sign out")
+        }
+    }
+}
+
+@Composable
+private fun AdminSummaryCard(
+    modifier: Modifier,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    value: String,
+    subtitle: String
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Column(Modifier.padding(15.dp)) {
+            Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(24.dp))
+            Spacer(Modifier.height(12.dp))
+            Text(value, color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+            Text(title, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            Text(subtitle, color = Muted, fontSize = 11.sp)
+        }
+    }
+}
+
+@Composable
+private fun AdminModuleInfo(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    subtitle: String
+) {
+    Card(
+        Modifier.fillMaxWidth().padding(bottom = 10.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Row(Modifier.padding(15.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                Modifier.size(44.dp).clip(RoundedCornerShape(13.dp)).background(PaleGreen),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(icon, contentDescription = null, tint = Forest)
+            }
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text(subtitle, color = Muted, fontSize = 12.sp)
             }
         }
     }
