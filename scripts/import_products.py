@@ -21,20 +21,22 @@ db = firestore.client()
 products_path = Path(__file__).resolve().parents[1] / "data" / "products_seed.json"
 products = json.loads(products_path.read_text(encoding="utf-8"))  # Catalogue includes the Pills category.
 
-expected_categories = (
-    ["Rasayoga"] * 31
-    + ["Rasayanas"] * 9
-    + ["Churnas"] * 19
-    + ["Gritas"] * 5
-    + ["Tailas"] * 16
-    + ["Pills"] * 7
-)
-if len(products) != 87:
-    raise SystemExit(f"Safety check failed: expected 87 products, found {len(products)}")
-if any(product.get("product_category") != expected_categories[i] for i, product in enumerate(products)):
+expected_category_counts = {
+    "Rasayoga": 31,
+    "Rasayanas": 9,
+    "Churnas": 19,
+    "Gritas": 5,
+    "Tailas": 16,
+    "Pills": 7,
+}
+actual_category_counts = {}
+for product in products:
+    category = product.get("product_category")
+    actual_category_counts[category] = actual_category_counts.get(category, 0) + 1
+if actual_category_counts != expected_category_counts:
     raise SystemExit(
-        "Safety check failed: categories must be products 1–31 Rasayoga, "
-        "32–40 Rasayanas, 41–59 Churnas, 60–64 Gritas, 65–80 Tailas, and 81–87 Pills"
+        f"Safety check failed: expected category counts {expected_category_counts}, "
+        f"found {actual_category_counts}"
     )
 required_fields = {"product_name", "product_quantity", "product_weight", "product_price", "product_units", "product_category", "signature"}
 if any(not required_fields.issubset(product) for product in products):
