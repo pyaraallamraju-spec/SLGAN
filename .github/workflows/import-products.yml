@@ -8,6 +8,7 @@ on:
       - "scripts/import_products.py"
       - "data/diseases_seed.json"
       - "scripts/import_diseases.py"
+      - "scripts/add_customer_admin_flag.py"
       - ".github/workflows/import-products.yml"
 
 jobs:
@@ -30,3 +31,7 @@ jobs:
         env:
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: python scripts/import_diseases.py
+      - name: Add is_admin flag to existing customers
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: python scripts/add_customer_admin_flag.py
