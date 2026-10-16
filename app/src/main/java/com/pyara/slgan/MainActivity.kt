@@ -1302,8 +1302,13 @@ private fun AdminProductsScreen(
         }.sortedBy { it.name.lowercase() }
     }
     Column(Modifier.fillMaxSize().background(Cream)) {
+        Column(
+            Modifier.fillMaxWidth()
+                .background(Color.White, RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+                .padding(bottom = 14.dp)
+        ) {
         Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp),
+            Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = Forest) }
@@ -1322,7 +1327,7 @@ private fun AdminProductsScreen(
         OutlinedTextField(
             value = searchText,
             onValueChange = { searchText = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
             singleLine = true,
             label = { Text("Search product") },
             placeholder = { Text("Name, category or product ID") },
@@ -1352,6 +1357,24 @@ private fun AdminProductsScreen(
             }
         }
         Spacer(Modifier.height(4.dp))
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(start = 18.dp, end = 18.dp, top = 16.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(Modifier.weight(1f)) {
+                Text(if (selectedAdminCategory == "All") "PRODUCT CATALOGUE" else selectedAdminCategory.uppercase(),
+                    color = Leaf, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.4.sp)
+                Text("${filtered.size} products", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            }
+            if (searchText.isNotBlank() || selectedAdminCategory != "All") {
+                TextButton(onClick = { searchText = ""; selectedAdminCategory = "All" }) {
+                    Icon(Icons.Default.Close, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text("Reset")
+                }
+            }
+        }
         if (loading) {
             AppLoader("Loading products…", compact = true)
         } else if (loadError != null && products.isEmpty()) {
@@ -1367,10 +1390,11 @@ private fun AdminProductsScreen(
                 items(filtered, key = { it.id }) { product ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                        shape = RoundedCornerShape(20.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
-                        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                             if (product.imageUrl.isNotBlank()) {
                                 AsyncImage(
                                     model = product.imageUrl,
