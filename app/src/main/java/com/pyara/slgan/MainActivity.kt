@@ -874,7 +874,7 @@ private fun ShopScreen(
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
         Row(Modifier.fillMaxWidth().background(Cream).statusBarsPadding().padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp))
+            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Cream))
             Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) { Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp); Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 11.sp) }
             IconButton(onClick = { onTabChange("Cart") }) {
