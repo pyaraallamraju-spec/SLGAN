@@ -991,42 +991,42 @@ private fun HomeBannerSlider(
                 "Traditional Ayurveda for everyday wellness.",
                 "",
                 isCompanySlide = true,
-                drawableResId = R.drawable.01_brand_heritage
+                drawableResId = R.drawable.slgan_banner_01_brand_heritage
             ),
             HomeBannerSlide(
                 "Traditional Ayurvedic Formulations",
                 "Explore Lehyas, Grutas, Pills, Tailas, Churnas and more.",
                 "",
                 isCompanySlide = true,
-                drawableResId = R.drawable.02_traditional_formulations
+                drawableResId = R.drawable.slgan_banner_02_traditional_formulations
             ),
             HomeBannerSlide(
                 "Natural Care for Every Generation",
                 "Traditional wellness inspired by nature.",
                 "",
                 isCompanySlide = true,
-                drawableResId = R.drawable.03_natural_family_care
+                drawableResId = R.drawable.slgan_banner_03_natural_family_care
             ),
             HomeBannerSlide(
                 "Authentic Herbs. Better Living.",
                 "Discover herbs, roots and traditional ingredients.",
                 "",
                 isCompanySlide = true,
-                drawableResId = R.drawable.04_authentic_herbs
+                drawableResId = R.drawable.slgan_banner_04_authentic_herbs
             ),
             HomeBannerSlide(
                 "Wellness Benefits",
                 "Explore wellness through traditional Ayurveda.",
                 "",
                 isCompanySlide = true,
-                drawableResId = R.drawable.05_wellness_benefits
+                drawableResId = R.drawable.slgan_banner_05_wellness_benefits
             ),
             HomeBannerSlide(
                 "Tradition, Purity, Wellness",
                 "Sri Lakshmi Ganapathi Ayurvedic Nilayam.",
                 "",
                 isCompanySlide = true,
-                drawableResId = R.drawable.06_tradition_purity_wellness
+                drawableResId = R.drawable.slgan_banner_06_tradition_purity_wellness
             )
         ) + products.filter { it.signature }.map { product ->
             HomeBannerSlide(
