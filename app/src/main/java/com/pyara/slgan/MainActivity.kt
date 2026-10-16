@@ -1073,22 +1073,28 @@ private fun HomeBannerSlider(
                 .height(190.dp)
                 .clip(RoundedCornerShape(22.dp))
                 .background(Cream)
-                .pointerInput(slides.size) {
-                    var totalDrag = 0f
-                    detectHorizontalDragGestures(
-                        onHorizontalDrag = { _, dragAmount -> totalDrag += dragAmount },
-                        onDragEnd = {
-                            if (kotlin.math.abs(totalDrag) > 40f && slides.isNotEmpty()) {
-                                activeSlide = if (totalDrag < 0f) (activeSlide + 1) % slides.size
-                                    else (activeSlide - 1 + slides.size) % slides.size
-                            }
-                            totalDrag = 0f
-                        },
-                        onDragCancel = { totalDrag = 0f }
-                    )
-                }
         ) {
             AnimatedContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(slides.size, activeSlide) {
+                        var totalDrag = 0f
+                        detectHorizontalDragGestures(
+                            onDragStart = { totalDrag = 0f },
+                            onHorizontalDrag = { change, dragAmount ->
+                                totalDrag += dragAmount
+                                change.consume()
+                            },
+                            onDragEnd = {
+                                if (kotlin.math.abs(totalDrag) > 35f && slides.isNotEmpty()) {
+                                    activeSlide = if (totalDrag < 0f) (activeSlide + 1) % slides.size
+                                        else (activeSlide - 1 + slides.size) % slides.size
+                                }
+                                totalDrag = 0f
+                            },
+                            onDragCancel = { totalDrag = 0f }
+                        )
+                    },
                 targetState = activeSlide,
                 transitionSpec = {
                     (slideInHorizontally(initialOffsetX = { width -> width }) + fadeIn()) togetherWith
