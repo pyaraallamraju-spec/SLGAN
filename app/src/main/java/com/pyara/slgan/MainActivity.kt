@@ -1313,80 +1313,6 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     }
                 }
                 Spacer(Modifier.height(18.dp))
-                val signatureProducts = products.filter { it.signature }
-                if (signatureProducts.isNotEmpty()) {
-                    Row(
-                        Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Signature Products", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-                        Text("SLGAN", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Leaf)
-                    }
-                    Spacer(Modifier.height(10.dp))
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        contentPadding = PaddingValues(end = 4.dp)
-                    ) {
-                        items(signatureProducts, key = { it.id }) { product ->
-                            Card(
-                                modifier = Modifier.width(158.dp).clickable { onProductClick(product) },
-                                shape = RoundedCornerShape(18.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                            ) {
-                                Column(Modifier.padding(10.dp)) {
-                                    Box(
-                                        Modifier.fillMaxWidth().height(112.dp)
-                                            .clip(RoundedCornerShape(13.dp))
-                                            .background(Cream),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        if (product.imageUrl.isNotBlank()) {
-                                            AsyncImage(
-                                                model = product.imageUrl,
-                                                contentDescription = product.name,
-                                                modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(13.dp)),
-                                                contentScale = ContentScale.Crop
-                                            )
-                                        } else {
-                                            Text(product.emoji, fontSize = 43.sp)
-                                        }
-                                        Text(
-                                            "SIGNATURE",
-                                            Modifier.align(Alignment.TopStart).padding(6.dp)
-                                                .background(Gold, RoundedCornerShape(6.dp)).padding(horizontal = 6.dp, vertical = 3.dp),
-                                            color = Color(0xFF38251F),
-                                            fontSize = 8.sp,
-                                            fontWeight = FontWeight.ExtraBold
-                                        )
-                                    }
-                                    Spacer(Modifier.height(9.dp))
-                                    Text(
-                                        localizedProductName(product.name, LocalAppLanguage.current),
-                                        fontSize = 13.sp,
-                                        color = Ink,
-                                        fontWeight = FontWeight.Bold,
-                                        maxLines = 2,
-                                        minLines = 2,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                    Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                    Spacer(Modifier.height(7.dp))
-                                    Text(
-                                        tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
-                                        color = Forest,
-                                        fontWeight = FontWeight.ExtraBold,
-                                        fontSize = 15.sp
-                                    )
-                                    Spacer(Modifier.height(5.dp))
-                                    Text("View product  →", color = Leaf, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                }
-                            }
-                        }
-                    }
-                    Spacer(Modifier.height(18.dp))
-                }
                 Text(if (search.isBlank()) "Our Ayurvedic products" else "Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 if (productsLoading) {
                     Spacer(Modifier.height(18.dp))
@@ -1400,6 +1326,84 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 pair.forEach { product -> ProductCard(product, cart[product.id] ?: 0, onAdd, onProductClick, Modifier.weight(1f)) }
                 if (pair.size == 1) Spacer(Modifier.weight(1f))
+            }
+        }
+        item {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 14.dp)) {
+                    val signatureProducts = products.filter { it.signature }
+                    if (signatureProducts.isNotEmpty()) {
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text("Signature Products", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                            Text("SLGAN", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Leaf)
+                        }
+                        Spacer(Modifier.height(10.dp))
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            contentPadding = PaddingValues(end = 4.dp)
+                        ) {
+                            items(signatureProducts, key = { it.id }) { product ->
+                                Card(
+                                    modifier = Modifier.width(158.dp).clickable { onProductClick(product) },
+                                    shape = RoundedCornerShape(18.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                ) {
+                                    Column(Modifier.padding(10.dp)) {
+                                        Box(
+                                            Modifier.fillMaxWidth().height(112.dp)
+                                                .clip(RoundedCornerShape(13.dp))
+                                                .background(Cream),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            if (product.imageUrl.isNotBlank()) {
+                                                AsyncImage(
+                                                    model = product.imageUrl,
+                                                    contentDescription = product.name,
+                                                    modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(13.dp)),
+                                                    contentScale = ContentScale.Crop
+                                                )
+                                            } else {
+                                                Text(product.emoji, fontSize = 43.sp)
+                                            }
+                                            Text(
+                                                "SIGNATURE",
+                                                Modifier.align(Alignment.TopStart).padding(6.dp)
+                                                    .background(Gold, RoundedCornerShape(6.dp)).padding(horizontal = 6.dp, vertical = 3.dp),
+                                                color = Color(0xFF38251F),
+                                                fontSize = 8.sp,
+                                                fontWeight = FontWeight.ExtraBold
+                                            )
+                                        }
+                                        Spacer(Modifier.height(9.dp))
+                                        Text(
+                                            localizedProductName(product.name, LocalAppLanguage.current),
+                                            fontSize = 13.sp,
+                                            color = Ink,
+                                            fontWeight = FontWeight.Bold,
+                                            maxLines = 2,
+                                            minLines = 2,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                        Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                        Spacer(Modifier.height(7.dp))
+                                        Text(
+                                            tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
+                                            color = Forest,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            fontSize = 15.sp
+                                        )
+                                        Spacer(Modifier.height(5.dp))
+                                        Text("View product  →", color = Leaf, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                            }
+                        }
+                        Spacer(Modifier.height(18.dp))
+                    }
             }
         }
         item { Text(tr("Made with care for your everyday rituals.", LocalAppLanguage.current), Modifier.fillMaxWidth().padding(20.dp), color = Muted, fontSize = 12.sp) }
