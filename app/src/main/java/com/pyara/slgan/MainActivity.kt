@@ -1624,6 +1624,142 @@ private fun AdminDashboardScreen(
     }
 }
 
+
+@Composable
+private fun AdminCustomersScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    var customers by remember { mutableStateOf<List<Map<String, Any?>>>(emptyList()) }
+    var loading by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var search by remember { mutableStateOf("") }
+    var updatingIds by remember { mutableStateOf<Set<String>>(emptySet()) }
+
+    DisposableEffect(Unit) {
+        val registration = FirebaseFirestore.getInstance().collection("customers")
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    error = exception.localizedMessage ?: "Unable to load customers."
+                    loading = false
+                } else {
+                    customers = snapshot?.documents?.mapNotNull { doc ->
+                        val data = doc.data ?: return@mapNotNull null
+                        if (data["is_admin"] == true) return@mapNotNull null
+                        data + mapOf("uid" to doc.id)
+                    }?.sortedBy {
+                        (it["firstName"]?.toString().orEmpty() + " " + it["lastName"]?.toString().orEmpty()).trim().lowercase()
+                    }.orEmpty()
+                    error = null
+                    loading = false
+                }
+            }
+        onDispose { registration.remove() }
+    }
+
+    val visibleCustomers = customers.filter { customer ->
+        listOf("firstName", "lastName", "nickname", "email", "mobileNumber")
+            .mapNotNull { customer[it]?.toString() }.joinToString(" ")
+            .contains(search.trim(), ignoreCase = true)
+    }
+
+    Column(Modifier.fillMaxSize().background(Cream).padding(top = 8.dp)) {
+        Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            Column(Modifier.weight(1f)) {
+                Text("Customers", color = Ink, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                Text("${customers.size} customer accounts", color = Muted, fontSize = 12.sp)
+            }
+        }
+        OutlinedTextField(
+            value = search,
+            onValueChange = { search = it },
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            singleLine = true,
+            label = { Text("Search name, email or mobile") },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            shape = RoundedCornerShape(14.dp)
+        )
+        Spacer(Modifier.height(10.dp))
+        when {
+            loading -> AppLoader("Loading customers…")
+            error != null -> Text("Could not load customers: ${error}", color = Color(0xFFB3261E), modifier = Modifier.padding(16.dp))
+            visibleCustomers.isEmpty() -> EmptyState("👥", if (search.isBlank()) "No customers yet" else "No matching customers", "Registered customer accounts will appear here.")
+            else -> LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(visibleCustomers, key = { it["uid"].toString() }) { customer ->
+                    val uid = customer["uid"].toString()
+                    val firstName = customer["firstName"]?.toString().orEmpty().trim()
+                    val lastName = customer["lastName"]?.toString().orEmpty().trim()
+                    val nickname = customer["nickname"]?.toString().orEmpty().trim()
+                    val name = listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname }.ifBlank { "Customer" }
+                    val email = customer["email"]?.toString().orEmpty()
+                    val phone = customer["mobileNumber"]?.toString().orEmpty()
+                    val gender = customer["gender"]?.toString().orEmpty()
+                    val enabled = customer["enabled"] != false
+                    val isUpdating = uid in updatingIds
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(18.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                    ) {
+                        Column(Modifier.padding(15.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(Modifier.size(44.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
+                                    Icon(Icons.Default.Person, contentDescription = null, tint = Forest)
+                                }
+                                Spacer(Modifier.width(11.dp))
+                                Column(Modifier.weight(1f)) {
+                                    Text(name, color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                    Text(email.ifBlank { "Email not provided" }, color = Muted, fontSize = 12.sp)
+                                }
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Switch(
+                                        checked = enabled,
+                                        onCheckedChange = { newValue ->
+                                            if (!isUpdating) {
+                                                updatingIds = updatingIds + uid
+                                                FirebaseFirestore.getInstance().collection("customers").document(uid)
+                                                    .update(mapOf("enabled" to newValue, "updatedAt" to System.currentTimeMillis()))
+                                                    .addOnSuccessListener {
+                                                        Toast.makeText(context, if (newValue) "Customer enabled" else "Customer disabled", Toast.LENGTH_SHORT).show()
+                                                        updatingIds = updatingIds - uid
+                                                    }
+                                                    .addOnFailureListener { exception ->
+                                                        Toast.makeText(context, "Could not update customer: " + (exception.localizedMessage ?: "permission denied"), Toast.LENGTH_LONG).show()
+                                                        updatingIds = updatingIds - uid
+                                                    }
+                                            }
+                                        },
+                                        enabled = !isUpdating,
+                                        colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Forest)
+                                    )
+                                    Text(if (enabled) "Enabled" else "Disabled", color = if (enabled) Forest else Color(0xFFB3261E), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                            Spacer(Modifier.height(10.dp))
+                            HorizontalDivider(color = PaleGreen)
+                            Spacer(Modifier.height(8.dp))
+                            if (phone.isNotBlank()) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Default.Phone, contentDescription = null, tint = Muted, modifier = Modifier.size(16.dp))
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(phone, color = Ink, fontSize = 13.sp)
+                                }
+                                Spacer(Modifier.height(5.dp))
+                            }
+                            if (gender.isNotBlank()) Text("Gender: " + gender, color = Muted, fontSize = 12.sp)
+                            Text("Customer ID: " + uid, color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun AdminOrdersScreen(onBack: () -> Unit) {
     val context = LocalContext.current
