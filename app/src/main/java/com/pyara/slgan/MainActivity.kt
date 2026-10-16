@@ -1434,6 +1434,7 @@ private fun AdminProductEditor(
     onBack: () -> Unit,
     onSaved: () -> Unit
 ) {
+    val context = LocalContext.current
     val isNew = product == null
     var name by remember(product?.id) { mutableStateOf(product?.name.orEmpty()) }
     var category by remember(product?.id) { mutableStateOf(product?.category ?: "Lehyas") }
@@ -1508,11 +1509,14 @@ private fun AdminProductEditor(
                     } else db.document(product.id).set(fields, com.google.firebase.firestore.SetOptions.merge())
                     task.addOnSuccessListener {
                         saving = false
+                        Toast.makeText(context, "Product saved successfully.", Toast.LENGTH_SHORT).show()
                         message = "Saved successfully."
                         onSaved()
                     }.addOnFailureListener { error ->
                         saving = false
-                        message = "Save failed: ${error.localizedMessage ?: "Check Firestore permissions."}"
+                        val errorMessage = error.localizedMessage ?: "Check Firestore permissions."
+                        Toast.makeText(context, "Failed to save product: $errorMessage", Toast.LENGTH_SHORT).show()
+                        message = "Save failed: $errorMessage"
                     }
                 }
             },
