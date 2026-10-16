@@ -130,9 +130,9 @@ private fun tr(text: String, language: String): String {
         "View complete invoice" to "పూర్తి ఇన్‌వాయిస్ చూడండి",
         "Open invoice PDF" to "ఇన్‌వాయిస్ PDF తెరవండి",
         "ORDER INVOICE" to "ఆర్డర్ ఇన్‌వాయిస్",
-        "Invoice No: $invoiceNo" to "ఇన్‌వాయిస్ నం.: $invoiceNo",
-        "Order ID: $orderId" to "ఆర్డర్ ID: $orderId",
-        "Order date: $created" to "ఆర్డర్ తేదీ: $created",
+        "Invoice No: ${'$' }invoiceNo" to "ఇన్‌వాయిస్ నం.: $invoiceNo",
+        "Order ID: ${'$' }orderId" to "ఆర్డర్ ID: $orderId",
+        "Order date: ${'$' }created" to "ఆర్డర్ తేదీ: $created",
         "BILL TO" to "బిల్ వివరాలు",
         "ITEM DETAILS" to "వస్తువు వివరాలు",
         "No item details were saved with this order." to "ఈ ఆర్డర్‌తో వస్తువుల వివరాలు సేవ్ కాలేదు.",
@@ -144,7 +144,7 @@ private fun tr(text: String, language: String): String {
         "Find a disease from the available list." to "అందుబాటులో ఉన్న జాబితా నుంచి వ్యాధిని ఎంచుకోండి.",
         "Select disease" to "వ్యాధిని ఎంచుకోండి",
         "Loading diseases from database…" to "డేటాబేస్ నుంచి వ్యాధులు లోడ్ అవుతున్నాయి…",
-        "Could not load diseases: $error" to "వ్యాధులను లోడ్ చేయలేకపోయాం: $error",
+        "Could not load diseases: ${'$' }error" to "వ్యాధులను లోడ్ చేయలేకపోయాం: $error",
         "No matching diseases found." to "సరిపోలే వ్యాధులు కనబడలేదు.",
         "DISEASE OVERVIEW" to "వ్యాధి వివరాలు",
         "What is this disease?" to "ఈ వ్యాధి అంటే ఏమిటి?",
@@ -152,9 +152,9 @@ private fun tr(text: String, language: String): String {
         "Choose a specific disease to see matching medicines." to "సంబంధిత మందులను చూడటానికి ఒక నిర్దిష్ట వ్యాధిని ఎంచుకోండి.",
         "Use medicines only with guidance from a qualified healthcare professional." to "అర్హత కలిగిన వైద్య నిపుణుల సూచనతో మాత్రమే మందులను వాడండి.",
         "Information not available." to "సమాచారం అందుబాటులో లేదు.",
-        "Pack size: ${product.subtitle}" to "ప్యాక్ పరిమాణం: ${product.subtitle}",
-        "Category: ${product.category}" to "వర్గం: ${product.category}",
-        "Quantity / stock: ${product.quantity}" to "పరిమాణం / నిల్వ: ${product.quantity}",
+        "Pack size: ${'$' }{product.subtitle}" to "ప్యాక్ పరిమాణం: ${product.subtitle}",
+        "Category: ${'$' }{product.category}" to "వర్గం: ${product.category}",
+        "Quantity / stock: ${'$' }{product.quantity}" to "పరిమాణం / నిల్వ: ${product.quantity}",
         "Search a place or address below, then tap a result to fill the address fields." to "క్రింద స్థలం లేదా చిరునామాను వెతికి, వివరాలు నింపడానికి ఫలితాన్ని ఎంచుకోండి.",
         "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Grutas" to "ఘృతాలు", "Pills" to "మాత్రలు", "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
         "Language" to "భాష", "Select language" to "భాషను ఎంచుకోండి", "Save language preference" to "భాష ప్రాధాన్యతను సేవ్ చేయండి",
@@ -207,9 +207,9 @@ private fun tr(text: String, language: String): String {
         "View complete invoice" to "पूरा इनवॉइस देखें",
         "Open invoice PDF" to "इनवॉइस PDF खोलें",
         "ORDER INVOICE" to "ऑर्डर इनवॉइस",
-        "Invoice No: $invoiceNo" to "इनवॉइस नंबर: $invoiceNo",
-        "Order ID: $orderId" to "ऑर्डर ID: $orderId",
-        "Order date: $created" to "ऑर्डर की तारीख: $created",
+        "Invoice No: ${'$' }invoiceNo" to "इनवॉइस नंबर: $invoiceNo",
+        "Order ID: ${'$' }orderId" to "ऑर्डर ID: $orderId",
+        "Order date: ${'$' }created" to "ऑर्डर की तारीख: $created",
         "BILL TO" to "बिल प्राप्तकर्ता",
         "ITEM DETAILS" to "वस्तु विवरण",
         "No item details were saved with this order." to "इस ऑर्डर के साथ वस्तु विवरण सेव नहीं हुए।",
@@ -221,7 +221,7 @@ private fun tr(text: String, language: String): String {
         "Find a disease from the available list." to "सूची में से रोग खोजें।",
         "Select disease" to "रोग चुनें",
         "Loading diseases from database…" to "डेटाबेस से रोग लोड हो रहे हैं…",
-        "Could not load diseases: $error" to "रोग लोड नहीं हो सके: $error",
+        "Could not load diseases: ${'$' }error" to "रोग लोड नहीं हो सके: $error",
         "No matching diseases found." to "कोई मेल खाता रोग नहीं मिला।",
         "DISEASE OVERVIEW" to "रोग का विवरण",
         "What is this disease?" to "यह रोग क्या है?",
@@ -229,9 +229,9 @@ private fun tr(text: String, language: String): String {
         "Choose a specific disease to see matching medicines." to "संबंधित दवाएँ देखने के लिए कोई विशिष्ट रोग चुनें।",
         "Use medicines only with guidance from a qualified healthcare professional." to "दवाओं का उपयोग केवल योग्य स्वास्थ्य विशेषज्ञ की सलाह से करें।",
         "Information not available." to "जानकारी उपलब्ध नहीं है।",
-        "Pack size: ${product.subtitle}" to "पैक का आकार: ${product.subtitle}",
-        "Category: ${product.category}" to "श्रेणी: ${product.category}",
-        "Quantity / stock: ${product.quantity}" to "मात्रा / स्टॉक: ${product.quantity}",
+        "Pack size: ${'$' }{product.subtitle}" to "पैक का आकार: ${product.subtitle}",
+        "Category: ${'$' }{product.category}" to "श्रेणी: ${product.category}",
+        "Quantity / stock: ${'$' }{product.quantity}" to "मात्रा / स्टॉक: ${product.quantity}",
         "Search a place or address below, then tap a result to fill the address fields." to "नीचे स्थान या पता खोजें और जानकारी भरने के लिए परिणाम चुनें।",
         "All" to "सभी", "Lehyas" to "लेह्य", "Grutas" to "घृत", "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
         "Language" to "भाषा", "Select language" to "भाषा चुनें", "Save language preference" to "भाषा प्राथमिकता सहेजें",
@@ -1397,13 +1397,13 @@ private fun ProductDetailsPage(
                 fontWeight = FontWeight.ExtraBold
             )
             if (product.subtitle.isNotBlank()) {
-                Text("Pack size: ${product.subtitle}", color = Muted, fontSize = 14.sp)
+                Text("Pack size: ${'$' }{product.subtitle}", color = Muted, fontSize = 14.sp)
             }
             if (product.category.isNotBlank()) {
-                Text(tr("Category: ${product.category}", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                Text(tr("Category: ${'$' }{product.category}", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
             }
             if (product.quantity.isNotBlank()) {
-                Text("Quantity / stock: ${product.quantity}", color = Muted, fontSize = 14.sp)
+                Text("Quantity / stock: ${'$' }{product.quantity}", color = Muted, fontSize = 14.sp)
             }
             if (product.price > 0.0) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
@@ -1756,9 +1756,9 @@ private fun OrdersPage(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     HorizontalDivider(color = Gold)
-                    Text("Invoice No: $invoiceNo", fontWeight = FontWeight.Bold, color = Ink)
-                    Text("Order ID: $orderId", color = Ink, fontSize = 12.sp)
-                    Text("Order date: $created", color = Muted, fontSize = 12.sp)
+                    Text("Invoice No: ${'$' }invoiceNo", fontWeight = FontWeight.Bold, color = Ink)
+                    Text("Order ID: ${'$' }orderId", color = Ink, fontSize = 12.sp)
+                    Text("Order date: ${'$' }created", color = Muted, fontSize = 12.sp)
                     Text(tr("Order status: ", LocalAppLanguage.current) + status.replaceFirstChar { it.uppercase() }, color = Ink)
                     Text(tr("Payment status: ", LocalAppLanguage.current) + paymentStatus.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Ink)
                     HorizontalDivider(color = Gold.copy(alpha = 0.7f))
@@ -1929,7 +1929,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             }
         } else if (error != null) {
             Spacer(Modifier.height(12.dp))
-            Text("Could not load diseases: $error", color = Color(0xFFB3261E), fontSize = 13.sp)
+            Text("Could not load diseases: ${'$' }error", color = Color(0xFFB3261E), fontSize = 13.sp)
         } else if (matches.isEmpty()) {
             Spacer(Modifier.height(12.dp))
             Text(tr("No matching diseases found.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
