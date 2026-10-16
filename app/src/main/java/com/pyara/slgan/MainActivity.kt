@@ -1104,7 +1104,7 @@ private fun HomeBannerSlider(
                         contentScale = if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                    if (!slide.isCompanySlide) {
+                    {
                         Box(
                             Modifier.fillMaxSize().background(
                                 Brush.horizontalGradient(
@@ -1125,7 +1125,7 @@ private fun HomeBannerSlider(
                             )
                         )
                     }
-                    if (!slide.isCompanySlide) Column(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth(0.88f)
                             .align(Alignment.CenterStart)
