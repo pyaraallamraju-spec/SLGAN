@@ -599,7 +599,7 @@ private fun LoginScreen(
             color = Color(0xFF245D32),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(12.dp))
         Text(
             "Nature's care,\nrooted in tradition.",
             fontSize = 29.sp,
@@ -608,8 +608,8 @@ private fun LoginScreen(
             color = Color(0xFF8B211B),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
-        Spacer(Modifier.height(12.dp))
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(4.dp))
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
