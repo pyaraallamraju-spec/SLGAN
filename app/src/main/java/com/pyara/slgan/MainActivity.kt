@@ -493,6 +493,7 @@ private fun AyurvedicApp() {
     var authResolved by remember { mutableStateOf(false) }
     var isAdmin by remember { mutableStateOf(false) }
     var adminProductsOpen by remember { mutableStateOf(false) }
+    var adminOrdersOpen by remember { mutableStateOf(false) }
     var adminRoleResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
@@ -601,6 +602,7 @@ private fun AyurvedicApp() {
     var lastBackPressedAt by remember { mutableStateOf(0L) }
     BackHandler(enabled = !showSplash && authResolved) {
         when {
+            isAdmin && adminOrdersOpen -> adminOrdersOpen = false
             isAdmin && adminProductsOpen -> adminProductsOpen = false
             selectedProduct != null -> selectedProduct = null
             signedIn && selectedTab != "Home" -> selectedTab = "Home"
@@ -669,6 +671,7 @@ private fun AyurvedicApp() {
                 }
             )
             else if (!adminRoleResolved) AppLoader("Checking account permissions…")
+            else if (isAdmin && adminOrdersOpen) AdminOrdersScreen(onBack = { adminOrdersOpen = false })
             else if (isAdmin && adminProductsOpen) AdminProductsScreen(
                 products = liveProducts,
                 loading = productsLoading,
@@ -679,6 +682,7 @@ private fun AyurvedicApp() {
                 email = auth.currentUser?.email.orEmpty(),
                 productCount = liveProducts.size,
                 onProductsClick = { adminProductsOpen = true },
+                onOrdersClick = { adminOrdersOpen = true },
                 onSignOut = {
                     auth.signOut()
                     adminProductsOpen = false
@@ -1538,6 +1542,7 @@ private fun AdminDashboardScreen(
     email: String,
     productCount: Int,
     onProductsClick: () -> Unit,
+    onOrdersClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
     Column(
@@ -1596,7 +1601,7 @@ private fun AdminDashboardScreen(
         Text("ADMIN MODULES", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
         Spacer(Modifier.height(10.dp))
         AdminModuleInfo(Icons.Default.Inventory2, "Products", "View the catalogue and product information.", onClick = onProductsClick)
-        AdminModuleInfo(Icons.Default.ReceiptLong, "Orders", "Order management module.")
+        AdminModuleInfo(Icons.Default.ReceiptLong, "Orders", "Review, accept or reject customer orders.", onClick = onOrdersClick)
         AdminModuleInfo(Icons.Default.PeopleAlt, "Customers", "Customer accounts and profiles.")
         AdminModuleInfo(Icons.Default.MedicalServices, "Diseases", "Disease catalogue information.")
         Spacer(Modifier.height(20.dp))
@@ -1608,6 +1613,64 @@ private fun AdminDashboardScreen(
             Icon(Icons.Default.Logout, contentDescription = null)
             Spacer(Modifier.width(8.dp))
             Text("Sign out")
+        }
+    }
+}
+
+@Composable
+private fun AdminOrdersScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    var orders by remember { mutableStateOf<List<Map<String, Any?>>>(emptyList()) }
+    var loading by remember { mutableStateOf(true) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var busy by remember { mutableStateOf<String?>(null) }
+    DisposableEffect(Unit) {
+        val listener = FirebaseFirestore.getInstance().collection("orders").addSnapshotListener { snap, err ->
+            if (err != null) { error = err.localizedMessage ?: "Unable to load orders"; loading = false }
+            else { orders = snap?.documents?.map { it.data.orEmpty() + ("_documentId" to it.id) }?.sortedByDescending { (it["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.time ?: 0L }.orEmpty(); loading = false; error = null }
+        }
+        onDispose { listener.remove() }
+    }
+    val dateFormat = remember { java.text.SimpleDateFormat("EEEE, dd MMM yyyy", java.util.Locale.getDefault()) }
+    val grouped = orders.groupBy { row -> val ts = row["createdAt"] as? com.google.firebase.Timestamp; if (ts == null) "Date not available" else dateFormat.format(ts.toDate()) }
+    Column(Modifier.fillMaxSize().background(Cream)) {
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
+            Column(Modifier.weight(1f)) { Text("Orders", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold); Text(orders.size.toString() + " total orders • newest first", color = Muted, fontSize = 12.sp) }
+        }
+        when {
+            loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Forest) }
+            error != null -> Text("Could not load orders: " + error, color = Color(0xFFB3261E), modifier = Modifier.padding(20.dp))
+            orders.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("No orders yet", color = Muted, fontSize = 18.sp) }
+            else -> LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                grouped.forEach { (date, rows) ->
+                    item(key = "date-" + date) { Text(date + " • " + rows.size + " orders", color = Forest, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 8.dp)) }
+                    items(rows, key = { it["_documentId"]?.toString().orEmpty() }) { order ->
+                        val id = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
+                        val status = order["orderStatus"]?.toString() ?: "pending_verification"
+                        val pending = status == "pending_verification" || status == "pending"
+                        val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
+                        val ts = order["createdAt"] as? com.google.firebase.Timestamp
+                        val time = ts?.let { java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Time unavailable"
+                        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(2.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                            Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Row(verticalAlignment = Alignment.Top) {
+                                    Column(Modifier.weight(1f)) { Text(order["customerName"]?.toString().orEmpty().ifBlank { "Customer" }, color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp); Text("Order #" + id.takeLast(10) + " • " + time, color = Muted, fontSize = 11.sp); Text(order["phone"]?.toString().orEmpty(), color = Muted, fontSize = 12.sp) }
+                                    Column(horizontalAlignment = Alignment.End) { Text("₹" + String.format(java.util.Locale.US, "%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp); Text(status.replace("_", " ").replaceFirstChar { it.uppercase() }, color = if (status == "accepted") Color(0xFF206B3A) else if (status == "rejected") Color(0xFFB3261E) else Forest, fontWeight = FontWeight.Bold, fontSize = 11.sp) }
+                                }
+                                HorizontalDivider(color = PaleGreen)
+                                Text(order["shippingAddress"]?.toString().orEmpty(), color = Ink, fontSize = 12.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                                val itemRows = order["items"] as? List<*> ?: emptyList<Any>()
+                                itemRows.forEach { raw -> val row = raw as? Map<*, *>; if (row != null) Text("• " + (row["productName"]?.toString() ?: "Item") + " × " + ((row["quantity"] as? Number)?.toInt() ?: 0), color = Muted, fontSize = 12.sp) }
+                                if (pending) Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                    OutlinedButton(onClick = { busy = id; FirebaseFirestore.getInstance().collection("orders").document(id).update(mapOf("orderStatus" to "rejected", "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp())).addOnSuccessListener { busy = null; Toast.makeText(context, "Order rejected.", Toast.LENGTH_SHORT).show() }.addOnFailureListener { e -> busy = null; Toast.makeText(context, "Reject failed: " + (e.localizedMessage ?: "Try again"), Toast.LENGTH_LONG).show() } }, enabled = busy == null, modifier = Modifier.weight(1f), colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFB3261E))) { Icon(Icons.Default.Close, null); Spacer(Modifier.width(5.dp)); Text(if (busy == id) "Updating…" else "Reject") }
+                                    Button(onClick = { busy = id; FirebaseFirestore.getInstance().collection("orders").document(id).update(mapOf("orderStatus" to "accepted", "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp())).addOnSuccessListener { busy = null; Toast.makeText(context, "Order accepted.", Toast.LENGTH_SHORT).show() }.addOnFailureListener { e -> busy = null; Toast.makeText(context, "Accept failed: " + (e.localizedMessage ?: "Try again"), Toast.LENGTH_LONG).show() } }, enabled = busy == null, modifier = Modifier.weight(1f), colors = ButtonDefaults.buttonColors(containerColor = Forest)) { Icon(Icons.Default.Check, null); Spacer(Modifier.width(5.dp)); Text(if (busy == id) "Updating…" else "Accept") }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
