@@ -998,7 +998,7 @@ private fun LoginScreen(
             value = password,
             onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            label = { Text(tr("Password (at least 6 characters)", LocalAppLanguage.current)) },
+            label = { Text(tr("Password", LocalAppLanguage.current)) },
             leadingIcon = { Icon(Icons.Default.Lock, null, tint = Color(0xFF8B211B)) },
             trailingIcon = {
                 IconButton(onClick = { showPassword = !showPassword }) {
