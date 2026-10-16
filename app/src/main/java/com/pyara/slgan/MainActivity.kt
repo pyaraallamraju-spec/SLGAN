@@ -5,6 +5,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import android.content.Intent
 import android.net.Uri
+import android.speech.RecognizerIntent
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.ui.platform.LocalContext
@@ -17,6 +18,7 @@ import com.google.firebase.functions.FirebaseFunctions
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.animation.AnimatedContent
@@ -102,6 +104,8 @@ private fun tr(text: String, language: String): String {
         "No addresses yet" to "ఇంకా చిరునామాలు లేవు", "Tap Add address to save your first delivery location." to "మొదటి డెలివరీ చిరునామాను సేవ్ చేయడానికి చిరునామా జోడించండి నొక్కండి.",
         "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Grutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
         "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
+        "Voice search" to "వాయిస్ సెర్చ్",
+        "Voice search is not available on this device." to "ఈ పరికరంలో వాయిస్ సెర్చ్ అందుబాటులో లేదు.",
         "Sign in with your registered email and password." to "మీ నమోదైన ఇమెయిల్ మరియు పాస్‌వర్డ్‌తో సైన్ ఇన్ చేయండి.",
         "Mobile-number login is not available yet." to "మొబైల్ నంబర్ లాగిన్ ఇంకా అందుబాటులో లేదు.",
         "View product" to "ఉత్పత్తి వివరాలు",
@@ -177,6 +181,8 @@ private fun tr(text: String, language: String): String {
         "Save address" to "पता सहेजें", "Saved addresses" to "सहेजे गए पते", "Keep delivery locations for future orders." to "भविष्य के ऑर्डर के लिए डिलीवरी पते रखें।",
         "No addresses yet" to "अभी कोई पता नहीं", "All" to "सभी", "Lehyas" to "लेह्य", "Grutas" to "घृत",
         "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
+        "Voice search" to "वॉइस सर्च",
+        "Voice search is not available on this device." to "इस डिवाइस पर वॉइस सर्च उपलब्ध नहीं है।",
         "Sign in with your registered email and password." to "अपने पंजीकृत ईमेल और पासवर्ड से साइन इन करें।",
         "Mobile-number login is not available yet." to "मोबाइल नंबर से लॉगिन अभी उपलब्ध नहीं है।",
         "View product" to "उत्पाद देखें",
@@ -1190,6 +1196,18 @@ private fun ShopScreen(
 @Composable
 private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
     val context = LocalContext.current
+    val currentLanguage = LocalAppLanguage.current
+    val voiceSearchLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            val spoken = result.data
+                ?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                ?.firstOrNull()
+                ?.trim()
+            if (!spoken.isNullOrBlank()) onSearchChange(spoken)
+        }
+    }
     val currentUser = remember { FirebaseAuth.getInstance().currentUser }
     var welcomeNickname by remember(currentUser?.uid) { mutableStateOf("") }
     DisposableEffect(currentUser?.uid) {
@@ -1221,7 +1239,44 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     }
                 })
                 Spacer(Modifier.height(18.dp))
-                OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text(tr("Search products", LocalAppLanguage.current)) }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
+                OutlinedTextField(
+                    value = search,
+                    onValueChange = onSearchChange,
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text(tr("Search products", LocalAppLanguage.current)) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = tr("Search products", LocalAppLanguage.current)) },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            try {
+                                val voiceIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                                    putExtra(RecognizerIntent.EXTRA_LANGUAGE, when (currentLanguage) {
+                                        "Telugu" -> "te-IN"
+                                        "Hindi" -> "hi-IN"
+                                        else -> "en-IN"
+                                    })
+                                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, when (currentLanguage) {
+                                        "Telugu" -> "te-IN"
+                                        "Hindi" -> "hi-IN"
+                                        else -> "en-IN"
+                                    })
+                                    putExtra(RecognizerIntent.EXTRA_PROMPT, when (currentLanguage) {
+                                        "Telugu" -> "ఉత్పత్తి పేరు చెప్పండి"
+                                        "Hindi" -> "उत्पाद का नाम बोलें"
+                                        else -> "Speak a product name"
+                                    })
+                                }
+                                voiceSearchLauncher.launch(voiceIntent)
+                            } catch (_: android.content.ActivityNotFoundException) {
+                                Toast.makeText(context, tr("Voice search is not available on this device.", currentLanguage), Toast.LENGTH_LONG).show()
+                            }
+                        }) {
+                            Icon(Icons.Default.Mic, contentDescription = tr("Voice search", LocalAppLanguage.current), tint = Forest)
+                        }
+                    },
+                    singleLine = true,
+                    shape = RoundedCornerShape(16.dp)
+                )
                 Spacer(Modifier.height(20.dp))
                 Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Spacer(Modifier.height(8.dp))
