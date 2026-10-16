@@ -437,7 +437,7 @@ private fun SplashScreen() {
                         .padding(13.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.fillMaxSize().graphicsLayer { rotationZ = rotation })
+                    Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.fillMaxSize().clip(CircleShape).background(Cream).graphicsLayer { rotationZ = rotation })
                 }
             }
             Spacer(Modifier.height(24.dp))
