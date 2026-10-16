@@ -246,26 +246,21 @@ private fun AyurvedicApp() {
             onDispose { }
         }
     }
-    DisposableEffect(signedIn) {
-        if (signedIn) {
-            val registration = FirebaseData.observeDiseases(
-                onDiseases = { records ->
-                    liveDiseases = records
-                    diseasesLoading = false
-                    diseasesError = null
-                },
-                onError = { error ->
-                    diseasesError = error.localizedMessage ?: "Unable to load diseases."
-                    diseasesLoading = false
-                }
-            )
-            onDispose { registration.remove() }
-        } else {
-            liveDiseases = emptyList()
-            diseasesLoading = true
-            diseasesError = null
-            onDispose { }
-        }
+    // Disease catalogue is public-read data; load it regardless of sign-in state.
+    DisposableEffect(Unit) {
+        diseasesLoading = true
+        val registration = FirebaseData.observeDiseases(
+            onDiseases = { records ->
+                liveDiseases = records
+                diseasesLoading = false
+                diseasesError = null
+            },
+            onError = { error ->
+                diseasesError = error.localizedMessage ?: "Unable to load diseases."
+                diseasesLoading = false
+            }
+        )
+        onDispose { registration.remove() }
     }
     val cart = remember { mutableStateMapOf<String, Int>() }
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
