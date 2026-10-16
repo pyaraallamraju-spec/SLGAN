@@ -51,7 +51,7 @@ service cloud.firestore {
     // Client-supplied prices are not trusted for final fulfilment/payment.
     match /orders/{orderId} {
       allow read: if request.auth != null
-        && resource.data.customerId == request.auth.uid;
+        && (isAdmin() || resource.data.customerId == request.auth.uid);
       allow create: if request.auth != null
         && request.resource.data.customerId == request.auth.uid
         && request.resource.data.orderId == orderId
@@ -75,7 +75,11 @@ service cloud.firestore {
         && request.resource.data.grandTotal >= 0
         && request.resource.data.subtotal is number
         && request.resource.data.subtotal >= 0;
-      allow update, delete: if false;
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['orderStatus', 'updatedAt'])
+        && request.resource.data.orderStatus in ['accepted', 'rejected'];
+      allow delete: if false;
     }
 
     // Each saved address belongs to the signed-in customer.
