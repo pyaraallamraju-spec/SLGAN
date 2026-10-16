@@ -57,8 +57,14 @@ object FirebaseData {
         fields: Map<String, Any>,
         onComplete: (Exception?) -> Unit
     ) {
-        db.collection("customers").document(uid)
-            .set(fields, SetOptions.merge())
+        val customerRef = db.collection("customers").document(uid)
+        db.runTransaction { transaction ->
+            val existing = transaction.get(customerRef)
+            val safeFields = fields.toMutableMap()
+            if (!existing.contains("is_admin")) safeFields["is_admin"] = false
+            transaction.set(customerRef, safeFields, SetOptions.merge())
+            null
+        }
             .addOnSuccessListener { onComplete(null) }
             .addOnFailureListener { error -> onComplete(error) }
     }
