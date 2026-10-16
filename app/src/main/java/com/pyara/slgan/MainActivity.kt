@@ -530,6 +530,7 @@ private fun AyurvedicApp() {
     }
     var userInput by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     var isCreatingAccount by remember { mutableStateOf(false) }
     var authError by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
@@ -617,14 +618,18 @@ private fun AyurvedicApp() {
                 onValueChange = { userInput = it },
                 password = password,
                 onPasswordChange = { password = it },
+                confirmPassword = confirmPassword,
+                onConfirmPasswordChange = { confirmPassword = it },
                 isCreatingAccount = isCreatingAccount,
-                onToggleMode = { isCreatingAccount = !isCreatingAccount; authError = null },
+                onToggleMode = { isCreatingAccount = !isCreatingAccount; authError = null; confirmPassword = "" },
                 errorMessage = authError,
                 loading = isLoading,
                 onContinue = {
                     val email = userInput.trim()
                     if (email.isBlank() || password.length < 6) {
                         authError = "Enter an email and a password with at least 6 characters."
+                    } else if (isCreatingAccount && password != confirmPassword) {
+                        authError = "Password and confirm password do not match."
                     } else {
                         isLoading = true
                         authError = null
@@ -819,6 +824,8 @@ private fun LoginScreen(
     onValueChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
+    confirmPassword: String,
+    onConfirmPasswordChange: (String) -> Unit,
     isCreatingAccount: Boolean,
     onToggleMode: () -> Unit,
     errorMessage: String?,
@@ -989,6 +996,38 @@ private fun LoginScreen(
                 cursorColor = Color(0xFF8B211B)
             )
         )
+        if (isCreatingAccount) {
+            Spacer(Modifier.height(12.dp))
+            var showConfirmPassword by remember { mutableStateOf(false) }
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = onConfirmPasswordChange,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
+                label = { Text("Confirm password") },
+                leadingIcon = { Icon(Icons.Default.Lock, null, tint = Color(0xFF8B211B)) },
+                trailingIcon = {
+                    IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
+                        Icon(
+                            if (showConfirmPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                            contentDescription = if (showConfirmPassword) "Hide confirm password" else "Show confirm password",
+                            tint = Color(0xFF8B211B)
+                        )
+                    }
+                },
+                singleLine = true,
+                visualTransformation = if (showConfirmPassword) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                shape = RoundedCornerShape(20.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFD2BE9C),
+                    unfocusedBorderColor = Color(0xFFD2BE9C),
+                    focusedContainerColor = Color(0xFFFFFCF5),
+                    unfocusedContainerColor = Color(0xFFFFFCF5),
+                    focusedLabelColor = Color(0xFF8B211B),
+                    cursorColor = Color(0xFF8B211B)
+                )
+            )
+        }
         if (errorMessage != null) Text(errorMessage, Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp), color = Color(0xFFB3261E), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
         Button(
