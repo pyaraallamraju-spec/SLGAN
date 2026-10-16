@@ -946,21 +946,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     if (match != null) {
                         onProductClick(match)
                     } else {
-                        // Keep the banner button opening the product-details page even before its Firestore record exists.
-                        onProductClick(Product(
-                            id = "signature-" + normalize(productName),
-                            name = productName,
-                            subtitle = "Product information not available yet",
-                            price = 0.0,
-                            category = "Signature",
-                            emoji = "🌿",
-                            description = "",
-                            imageUrl = "",
-                            quantity = "",
-                            usage = "",
-                            cures = "",
-                            majorIngredients = ""
-                        ))
+                        Toast.makeText(appContext, "Product details are not available in the database yet.", Toast.LENGTH_SHORT).show()
                     }
                 })
                 Spacer(Modifier.height(18.dp))
@@ -1055,12 +1041,21 @@ private fun ProductDetailsPage(
                 }
             }
             Text(
-                if (product.subtitle.isNotBlank() && product.subtitle != "Traditional Ayurvedic product" && !product.subtitle.startsWith("Product information not available")) "${product.name} (${product.subtitle})" else product.name,
+                product.name,
                 color = Ink,
                 fontSize = 25.sp,
                 lineHeight = 31.sp,
                 fontWeight = FontWeight.ExtraBold
             )
+            if (product.subtitle.isNotBlank()) {
+                Text("Pack size: ${product.subtitle}", color = Muted, fontSize = 14.sp)
+            }
+            if (product.category.isNotBlank()) {
+                Text("Category: ${product.category}", color = Muted, fontSize = 14.sp)
+            }
+            if (product.quantity.isNotBlank()) {
+                Text("Quantity / stock: ${product.quantity}", color = Muted, fontSize = 14.sp)
+            }
             if (product.price > 0.0) {
                 Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
             } else {
@@ -1070,17 +1065,17 @@ private fun ProductDetailsPage(
             Text("Product details", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Text("Description", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(
-                product.description.ifBlank { "Description not available yet." },
+                product.description.ifBlank { "Not provided in the database." },
                 color = Muted,
                 fontSize = 14.sp,
                 lineHeight = 22.sp
             )
             Text("Usage", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.usage.ifBlank { "Usage information not available yet." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text(product.usage.ifBlank { "Not provided in the database." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
             Text("Cures", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.cures.ifBlank { "Information not available yet." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text(product.cures.ifBlank { "Not provided in the database." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
             Text("Major ingredients", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.majorIngredients.ifBlank { "Ingredient information not available yet." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text(product.majorIngredients.ifBlank { "Not provided in the database." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
         }
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(16.dp),
