@@ -946,20 +946,19 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             onClick = { onCategoryChange(item) },
                             label = { Text(item, fontSize = 11.sp) },
                             leadingIcon = {
-                                Icon(
-                                    imageVector = when (item) {
-                                        "All" -> Icons.Default.GridView
-                                        "Lehyas" -> Icons.Default.LocalDining
-                                        "Grutas" -> Icons.Default.Restaurant
-                                        "Pills" -> Icons.Default.Medication
-                                        "Tailas" -> Icons.Default.Opacity
-                                        "Churnas" -> Icons.Default.Spa
-                                        "Rasayanas" -> Icons.Default.Eco
-                                        "Bhasmas" -> Icons.Default.Grass
-                                        else -> Icons.Default.Eco
+                                Text(
+                                    text = when (item) {
+                                        "All" -> "🌿"
+                                        "Lehyas" -> "🫙"
+                                        "Grutas" -> "🥣"
+                                        "Pills" -> "💊"
+                                        "Tailas" -> "🪔"
+                                        "Churnas" -> "🌰"
+                                        "Rasayanas" -> "🪷"
+                                        "Bhasmas" -> "🪨"
+                                        else -> "🌿"
                                     },
-                                    contentDescription = null,
-                                    modifier = Modifier.size(16.dp)
+                                    fontSize = 16.sp
                                 )
                             },
                             colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)
