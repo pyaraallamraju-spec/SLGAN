@@ -1819,7 +1819,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
             }
         }
         item {
-            Column(Modifier.fillMaxWidth().padding(horizontal = 14.dp)) {
+            Column(Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp, top = 24.dp)) {
                     val signatureProducts = products.filter { it.signature }
                     if (signatureProducts.isNotEmpty()) {
                         Row(
