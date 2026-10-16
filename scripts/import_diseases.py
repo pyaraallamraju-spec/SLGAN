@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from pathlib import Path
 
 import firebase_admin
@@ -31,33 +32,67 @@ diseases = json.loads(seed_path.read_text(encoding="utf-8"))
 if not isinstance(diseases, list):
     raise SystemExit("Safety check failed: diseases_seed.json must contain a JSON array")
 
-required_fields = {"disease_id", "diseases_name"}
-seen_ids = set()
+names = []
+seen_names = set()
 for disease in diseases:
-    if not isinstance(disease, dict) or not required_fields.issubset(disease):
-        raise SystemExit("Safety check failed: every disease requires disease_id and diseases_name")
-    disease_id = str(disease["disease_id"]).strip()
-    disease_name = str(disease["diseases_name"]).strip()
-    if not disease_id or not disease_name:
-        raise SystemExit("Safety check failed: disease_id and diseases_name cannot be blank")
-    if disease_id in seen_ids:
-        raise SystemExit(f"Safety check failed: duplicate disease_id {disease_id!r}")
-    seen_ids.add(disease_id)
+    if not isinstance(disease, dict) or "diseases_name" not in disease:
+        raise SystemExit("Safety check failed: every disease requires diseases_name")
+    name = str(disease["diseases_name"]).strip()
+    if not name:
+        raise SystemExit("Safety check failed: diseases_name cannot be blank")
+    normalized = name.casefold()
+    if normalized in seen_names:
+        raise SystemExit(f"Safety check failed: duplicate diseases_name {name!r}")
+    seen_names.add(normalized)
+    names.append(name)
 
 collection = db.collection("diseases")
-for start in range(0, len(diseases), 400):
-    batch = db.batch()
-    for disease in diseases[start:start + 400]:
-        disease_id = str(disease["disease_id"]).strip()
-        batch.set(collection.document(disease_id), {
-            "disease_id": disease_id,
-            "diseases_name": str(disease["diseases_name"]).strip(),
-        }, merge=True)
+
+# Remove only the old placeholder created by the initial setup.
+for doc in collection.stream():
+    old_name = str((doc.to_dict() or {}).get("diseases_name", "")).strip()
+    if old_name == "Example disease - replace with actual disease name":
+        doc.reference.delete()
+
+# Preserve IDs for names already in Firestore; generate the next ID for each new name.
+existing_by_name = {}
+max_number = 0
+for doc in collection.stream():
+    data = doc.to_dict() or {}
+    name = str(data.get("diseases_name", "")).strip()
+    if name:
+        existing_by_name[name.casefold()] = (doc.id, data)
+    match = re.fullmatch(r"DISEASE(\d+)", str(data.get("disease_id", doc.id)))
+    if match:
+        max_number = max(max_number, int(match.group(1)))
+
+batch = db.batch()
+written = 0
+for name in names:
+    existing = existing_by_name.get(name.casefold())
+    if existing:
+        disease_id = existing[0]
+    else:
+        max_number += 1
+        disease_id = f"DISEASE{max_number:03d}"
+    batch.set(collection.document(disease_id), {
+        "disease_id": disease_id,
+        "diseases_name": name,
+    }, merge=True)
+    written += 1
+    if written % 400 == 0:
+        batch.commit()
+        batch = db.batch()
+
+if written % 400:
     batch.commit()
 
-for disease in diseases:
-    doc = collection.document(str(disease["disease_id"]).strip()).get()
-    if not doc.exists:
-        raise SystemExit(f"Verification failed: disease {disease['disease_id']!r} was not written")
+for name in names:
+    matches = list(collection.where("diseases_name", "==", name).limit(1).stream())
+    if not matches:
+        raise SystemExit(f"Verification failed: disease {name!r} was not written")
+    data = matches[0].to_dict() or {}
+    if not data.get("disease_id"):
+        raise SystemExit(f"Verification failed: disease {name!r} has no disease_id")
 
-print(f"Verified diseases collection: inserted/updated {len(diseases)} disease records.")
+print(f"Verified diseases collection: inserted/updated {len(names)} disease records with unique auto-generated IDs.")
