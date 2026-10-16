@@ -1,20 +1,26 @@
 [
     {
-        "diseases_name": "All Diseases"
+        "diseases_name": "All Diseases",
+        "disease_desc": "Browse the available disease catalogue. Select a specific disease to view its description and related products."
     },
     {
-        "diseases_name": "Tuberculosis (TB)"
+        "diseases_name": "Tuberculosis (TB)",
+        "disease_desc": "Tuberculosis (TB) is an infectious disease caused by bacteria that most often affects the lungs. It can be treated with a prescribed course of antibiotics; consult a qualified healthcare professional for evaluation and treatment."
     },
     {
-        "diseases_name": "Cough"
+        "diseases_name": "Cough",
+        "disease_desc": "A cough is a reflex that helps clear the airways. It can have many causes, including infections, allergies, asthma, or reflux. Seek medical advice if it persists, worsens, or occurs with breathing difficulty or blood."
     },
     {
-        "diseases_name": "Flum"
+        "diseases_name": "Flu",
+        "disease_desc": "Influenza (flu) is a contagious respiratory illness caused by influenza viruses. Symptoms can include fever, body aches, tiredness, and cough. Medical advice is important for severe symptoms or people at higher risk."
     },
     {
-        "diseases_name": "Fever"
+        "diseases_name": "Fever",
+        "disease_desc": "Fever is a temporary rise in body temperature that commonly occurs with infections or other illnesses. The cause depends on accompanying symptoms and duration; seek urgent care for severe symptoms or persistent fever."
     },
     {
-        "diseases_name": "Obesity"
+        "diseases_name": "Obesity",
+        "disease_desc": "Obesity is a condition involving excess body fat that can affect health. Assessment and care may include nutrition, physical activity, sleep, and medical support tailored to the individual."
     }
 ]
