@@ -1065,17 +1065,17 @@ private fun ProductDetailsPage(
             Text("Product details", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Text("Description", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(
-                product.description.ifBlank { "Not provided in the database." },
+                product.description.ifBlank { "Information not available." },
                 color = Muted,
                 fontSize = 14.sp,
                 lineHeight = 22.sp
             )
             Text("Usage", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.usage.ifBlank { "Not provided in the database." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text(product.usage.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
             Text("Cures", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.cures.ifBlank { "Not provided in the database." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text(product.cures.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
             Text("Major ingredients", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.majorIngredients.ifBlank { "Not provided in the database." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text(product.majorIngredients.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
         }
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(16.dp),
