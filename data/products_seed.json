@@ -378,7 +378,7 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayoga",
-    "signature": 0,
+    "signature": 1,
     "product_description": "",
     "product_usage": "",
     "product_ingredients": ""
@@ -390,7 +390,7 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0,
+    "signature": 1,
     "product_description": "",
     "product_usage": "",
     "product_ingredients": ""
@@ -414,7 +414,7 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0,
+    "signature": 1,
     "product_description": "",
     "product_usage": "",
     "product_ingredients": ""
@@ -438,7 +438,7 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0,
+    "signature": 1,
     "product_description": "",
     "product_usage": "",
     "product_ingredients": ""
