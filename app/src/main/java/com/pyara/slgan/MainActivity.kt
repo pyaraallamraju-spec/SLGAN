@@ -488,6 +488,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
 }
 @Composable
 private fun AyurvedicApp() {
+    val appContext = LocalContext.current
     val auth = remember { FirebaseAuth.getInstance() }
     var signedIn by remember { mutableStateOf(auth.currentUser != null) }
     var authResolved by remember { mutableStateOf(false) }
@@ -608,7 +609,6 @@ private fun AyurvedicApp() {
     }
     val cart = remember { mutableStateMapOf<String, Int>() }
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
-    val appContext = LocalContext.current
     var lastBackPressedAt by remember { mutableStateOf(0L) }
     BackHandler(enabled = !showSplash && authResolved) {
         when {
