@@ -1,26 +1,26 @@
 [
     {
         "diseases_name": "All Diseases",
-        "disease_desc": "Browse the available disease catalogue. Select a specific disease to view its description and related products."
+        "disease_desc": "This section is a catalogue of disease information. Choose a specific disease to read a general overview and explore related catalogue items. The information is educational and is not a diagnosis or a substitute for advice from a qualified healthcare professional."
     },
     {
         "diseases_name": "Tuberculosis (TB)",
-        "disease_desc": "Tuberculosis (TB) is an infectious disease caused by bacteria that most often affects the lungs. It can be treated with a prescribed course of antibiotics; consult a qualified healthcare professional for evaluation and treatment."
+        "disease_desc": "Tuberculosis (TB) is an infectious disease caused by Mycobacterium tuberculosis. It most often affects the lungs, but it can affect other parts of the body. Possible symptoms include a cough lasting several weeks, chest pain, coughing up blood, fever, night sweats, tiredness, and unintended weight loss. TB can usually be cured with a complete course of specific antibiotics prescribed by a clinician; treatment must not be stopped early. Seek medical assessment if TB is suspected, and follow local advice to reduce spread."
     },
     {
         "diseases_name": "Cough",
-        "disease_desc": "A cough is a reflex that helps clear the airways. It can have many causes, including infections, allergies, asthma, or reflux. Seek medical advice if it persists, worsens, or occurs with breathing difficulty or blood."
+        "disease_desc": "A cough is a reflex that helps clear mucus, irritants, or germs from the airways. Common causes include viral respiratory infections, allergies, asthma, smoke or pollution exposure, acid reflux, and some medicines. A cough may be dry or produce mucus, and the cause cannot be determined from the symptom alone. Get medical advice for a cough that lasts more than a few weeks or is worsening. Seek urgent care for breathing difficulty, chest pain, coughing up blood, confusion, or severe illness."
     },
     {
         "diseases_name": "Flu",
-        "disease_desc": "Influenza (flu) is a contagious respiratory illness caused by influenza viruses. Symptoms can include fever, body aches, tiredness, and cough. Medical advice is important for severe symptoms or people at higher risk."
+        "disease_desc": "Influenza (flu) is a contagious respiratory infection caused by influenza viruses. Symptoms often begin suddenly and may include fever or chills, cough, sore throat, runny or blocked nose, muscle aches, headache, and marked tiredness. Flu is different from the common cold, although symptoms can overlap. Rest and fluids may help with comfort; antiviral medicines may be appropriate for some people when prescribed promptly. Seek urgent medical care for breathing difficulty, chest pain, confusion, dehydration, or symptoms that improve and then become worse."
     },
     {
         "diseases_name": "Fever",
-        "disease_desc": "Fever is a temporary rise in body temperature that commonly occurs with infections or other illnesses. The cause depends on accompanying symptoms and duration; seek urgent care for severe symptoms or persistent fever."
+        "disease_desc": "Fever is a rise in body temperature, commonly related to an infection but sometimes caused by other conditions. It is a symptom rather than a disease, and the cause depends on the person's age, temperature, duration, and other symptoms. Drink fluids if safe for you, rest, and monitor symptoms. Seek medical advice for persistent or worsening fever. Urgent assessment is needed for difficulty breathing, confusion, stiff neck, seizure, severe dehydration, or other serious symptoms; infants and people with significant chronic illnesses may need earlier assessment."
     },
     {
         "diseases_name": "Obesity",
-        "disease_desc": "Obesity is a condition involving excess body fat that can affect health. Assessment and care may include nutrition, physical activity, sleep, and medical support tailored to the individual."
+        "disease_desc": "Obesity is a chronic condition involving excess body fat that can increase the risk of health problems such as type 2 diabetes, high blood pressure, heart disease, sleep apnoea, and joint problems. In adults, body mass index (BMI) is one screening measure, but it does not assess health on its own and should be interpreted in context. Care may include sustainable eating habits, appropriate physical activity, sleep and behavioural support, and medical treatment when indicated. A healthcare professional can help create a safe, individualised plan without stigma."
     }
 ]
