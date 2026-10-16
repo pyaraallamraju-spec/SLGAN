@@ -1725,11 +1725,26 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             loadDataWithBaseURL("https://www.openstreetmap.org/", """
                                 <!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">
                                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-                                <style>body{font-family:Arial;margin:0;background:#fff7e8;color:#38251f}#search{box-sizing:border-box;width:100%;padding:12px;border:1px solid #d9a441;border-radius:8px;font-size:16px}#results{max-height:115px;overflow:auto;background:white}.result{padding:10px;border-bottom:1px solid #eee;font-size:14px}#map{height:220px;width:100%}.hint{font-size:12px;padding:7px}</style></head>
-                                <body><div style="padding:9px"><input id="search" placeholder="Search address, area, village or PIN code"><div id="results"></div></div><div id="map"></div><div class="hint">Choose a search result to fill the address form.</div>
+                                <style>
+                                *{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;padding:12px;background:#171b1a;color:#f8f0df}
+                                .search-panel{padding:12px;background:linear-gradient(145deg,#292b27,#1d211f);border:1px solid #b88b43;border-radius:16px;box-shadow:0 8px 20px #0005}
+                                .heading{font-size:11px;font-weight:700;letter-spacing:1.5px;color:#e0b45c;margin:0 0 9px}
+                                #search{display:block;width:100%;padding:13px 14px;border:1px solid #675638;border-radius:10px;background:#101412;color:#fff7e8;font-size:15px;outline:none}
+                                #search::placeholder{color:#aaa99e}#search:focus{border-color:#e0b45c;box-shadow:0 0 0 2px #e0b45c30}
+                                #results{max-height:130px;overflow:auto;background:#222725;border-radius:10px;margin-top:7px}
+                                .result{padding:11px 12px;border-bottom:1px solid #3b3f38;font-size:13px;line-height:1.45;color:#f8f0df;cursor:pointer}
+                                .result:last-child{border-bottom:0}.result:active{background:#3a382c}
+                                #map-frame{margin-top:11px;padding:4px;border:1px solid #b88b43;border-radius:16px;background:linear-gradient(135deg,#d9a441,#634c2d);box-shadow:0 9px 22px #0006;overflow:hidden}
+                                #map{height:250px;width:100%;border-radius:12px;overflow:hidden;background:#222725}
+                                .hint{font-size:11px;line-height:1.5;color:#c7c0af;padding:10px 3px 0}
+                                .leaflet-control-zoom a{background:#202522!important;color:#f8f0df!important;border-color:#5b533f!important}
+                                .leaflet-control-attribution{background:#171b1acc!important;color:#d4cbb7!important}
+                                .leaflet-control-attribution a{color:#e0b45c!important}
+                                </style></head>
+                                <body><div class="search-panel"><div class="heading">DELIVERY LOCATION</div><input id="search" placeholder="Search area, street, landmark or PIN code"><div id="results"></div></div><div id="map-frame"><div id="map"></div></div><div class="hint">Search for your locality and tap a result to fill the address. Map data © OpenStreetMap contributors / CARTO.</div>
                                 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
                                 const map=L.map('map').setView([22.9734,78.6569],4);
-                                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap contributors © CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+                                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap contributors © CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
                                 let marker=null;
                                 async function searchPlaces(){const q=document.getElementById('search').value.trim();if(q.length<3)return;const box=document.getElementById('results');box.innerHTML='<div class="result">Searching…</div>';try{const searchQuery=/\\b(india|telangana|andhra pradesh|hyderabad)\\b/i.test(q)?q:(q+', India');const response=await fetch('https://photon.komoot.io/api/?limit=10&lat=17.385&lon=78.4867&q='+encodeURIComponent(searchQuery));if(!response.ok)throw new Error('Search HTTP '+response.status);const data=await response.json();box.innerHTML='';data.features.forEach(p=>{const row=document.createElement('div');row.className='result';row.textContent=p.properties.name?([p.properties.name,p.properties.street,p.properties.city||p.properties.town||p.properties.village,p.properties.state,p.properties.postcode].filter(Boolean).join(', ')):Object.values(p.properties).filter(v=>typeof v==='string').slice(0,5).join(', ');row.onclick=()=>choose(p);box.appendChild(row)});if(!data.features.length)box.innerHTML='<div class="result">No results found in India. Try the full address, locality, Manikonda, Hyderabad, or PIN code.</div>'}catch(e){box.innerHTML='<div class="result">Address search blocked or unavailable. Check internet and try again.</div>'}}
                                 let timer;document.getElementById('search').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(searchPlaces,900)});
