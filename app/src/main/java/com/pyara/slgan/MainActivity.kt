@@ -947,22 +947,19 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             label = { Text(item, fontSize = 11.sp) },
                             leadingIcon = {
                                 Icon(
-                                    painter = painterResource(
-                                        id = when (item) {
-                                            "All" -> R.drawable.ic_cat_all
-                                            "Lehyas" -> R.drawable.ic_cat_lehyas
-                                            "Grutas" -> R.drawable.ic_cat_grutas
-                                            "Pills" -> R.drawable.ic_cat_pills
-                                            "Tailas" -> R.drawable.ic_cat_tailas
-                                            "Churnas" -> R.drawable.ic_cat_churnas
-                                            "Rasayanas" -> R.drawable.ic_cat_rasayanas
-                                            "Bhasmas" -> R.drawable.ic_cat_bhasmas
-                                            else -> R.drawable.ic_cat_herbs
-                                        }
-                                    ),
+                                    imageVector = when (item) {
+                                        "All" -> Icons.Default.GridView
+                                        "Lehyas" -> Icons.Default.LocalDining
+                                        "Grutas" -> Icons.Default.Restaurant
+                                        "Pills" -> Icons.Default.Medication
+                                        "Tailas" -> Icons.Default.Opacity
+                                        "Churnas" -> Icons.Default.Spa
+                                        "Rasayanas" -> Icons.Default.Eco
+                                        "Bhasmas" -> Icons.Default.Grass
+                                        else -> Icons.Default.Eco
+                                    },
                                     contentDescription = null,
-                                    modifier = Modifier.size(18.dp),
-                                    tint = Forest
+                                    modifier = Modifier.size(16.dp)
                                 )
                             },
                             colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)
