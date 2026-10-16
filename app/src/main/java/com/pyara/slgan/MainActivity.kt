@@ -492,6 +492,7 @@ private fun AyurvedicApp() {
     var signedIn by remember { mutableStateOf(auth.currentUser != null) }
     var authResolved by remember { mutableStateOf(false) }
     var isAdmin by remember { mutableStateOf(false) }
+    var adminProductsOpen by remember { mutableStateOf(false) }
     var adminRoleResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
@@ -650,11 +651,19 @@ private fun AyurvedicApp() {
                 }
             )
             else if (!adminRoleResolved) AppLoader("Checking account permissions…")
+            else if (isAdmin && adminProductsOpen) AdminProductsScreen(
+                products = liveProducts,
+                loading = productsLoading,
+                loadError = productsError,
+                onBack = { adminProductsOpen = false }
+            )
             else if (isAdmin) AdminDashboardScreen(
                 email = auth.currentUser?.email.orEmpty(),
                 productCount = liveProducts.size,
+                onProductsClick = { adminProductsOpen = true },
                 onSignOut = {
                     auth.signOut()
+                    adminProductsOpen = false
                     selectedTab = "Home"
                     selectedProduct = null
                     cart.clear()
@@ -1246,10 +1255,222 @@ private fun HomeBannerSlider(
     }
 }
 
+
+@Composable
+private fun AdminProductsScreen(
+    products: List<Product>,
+    loading: Boolean,
+    loadError: String?,
+    onBack: () -> Unit
+) {
+    var searchText by remember { mutableStateOf("") }
+    var editingProduct by remember { mutableStateOf<Product?>(null) }
+    var addingProduct by remember { mutableStateOf(false) }
+    if (editingProduct != null || addingProduct) {
+        AdminProductEditor(
+            product = editingProduct,
+            onBack = { editingProduct = null; addingProduct = false },
+            onSaved = { editingProduct = null; addingProduct = false }
+        )
+        return
+    }
+    val filtered = remember(products, searchText) {
+        products.filter {
+            it.name.contains(searchText, ignoreCase = true) ||
+            it.category.contains(searchText, ignoreCase = true) ||
+            it.id.contains(searchText, ignoreCase = true)
+        }.sortedBy { it.name.lowercase() }
+    }
+    Column(Modifier.fillMaxSize().background(Cream)) {
+        Row(
+            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = Forest) }
+            Column(Modifier.weight(1f)) {
+                Text("Products", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text("${products.size} catalogue items", color = Muted, fontSize = 12.sp)
+            }
+            Button(
+                onClick = { addingProduct = true },
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Forest)
+            ) {
+                Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text("Add product")
+            }
+        }
+        OutlinedTextField(
+            value = searchText,
+            onValueChange = { searchText = it },
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+            singleLine = true,
+            label = { Text("Search product") },
+            placeholder = { Text("Name, category or product ID") },
+            leadingIcon = { Icon(Icons.Default.Search, null, tint = Forest) },
+            trailingIcon = {
+                if (searchText.isNotEmpty()) IconButton(onClick = { searchText = "" }) {
+                    Icon(Icons.Default.Close, "Clear search")
+                }
+            },
+            shape = RoundedCornerShape(14.dp)
+        )
+        if (loading) {
+            AppLoader("Loading products…", compact = true)
+        } else if (loadError != null && products.isEmpty()) {
+            Text("Could not load products: $loadError", Modifier.padding(18.dp), color = Color(0xFFB3261E))
+        } else if (filtered.isEmpty()) {
+            EmptyState("📦", "No products found", if (searchText.isBlank()) "Tap Add product to create your first product." else "Try another product name or category.")
+        } else {
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(start = 14.dp, end = 14.dp, top = 2.dp, bottom = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(filtered, key = { it.id }) { product ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                    ) {
+                        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                            if (product.imageUrl.isNotBlank()) {
+                                AsyncImage(
+                                    model = product.imageUrl,
+                                    contentDescription = product.name,
+                                    modifier = Modifier.size(62.dp).clip(RoundedCornerShape(12.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
+                            } else {
+                                Box(Modifier.size(62.dp).clip(RoundedCornerShape(12.dp)).background(PaleGreen), contentAlignment = Alignment.Center) {
+                                    Text(product.emoji, fontSize = 30.sp)
+                                }
+                            }
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(product.name, color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                Text(product.category.ifBlank { "Uncategorised" }, color = Muted, fontSize = 12.sp)
+                                Text(
+                                    if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
+                                    color = Forest, fontWeight = FontWeight.Bold, fontSize = 14.sp
+                                )
+                                if (product.subtitle.isNotBlank()) Text(product.subtitle, color = Muted, fontSize = 11.sp)
+                            }
+                            IconButton(onClick = { editingProduct = product }) {
+                                Icon(Icons.Default.Edit, "Edit ${product.name}", tint = Forest)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AdminProductEditor(
+    product: Product?,
+    onBack: () -> Unit,
+    onSaved: () -> Unit
+) {
+    val isNew = product == null
+    var name by remember(product?.id) { mutableStateOf(product?.name.orEmpty()) }
+    var category by remember(product?.id) { mutableStateOf(product?.category ?: "Lehyas") }
+    var price by remember(product?.id) { mutableStateOf(if (product == null || product.price == 0.0) "" else product.price.toString()) }
+    var weight by remember(product?.id) { mutableStateOf(product?.subtitle?.filter { it.isDigit() || it == '.' }.orEmpty()) }
+    var units by remember(product?.id) { mutableStateOf(product?.subtitle?.filter { it.isLetter() }.orEmpty()) }
+    var quantity by remember(product?.id) { mutableStateOf(product?.quantity.orEmpty()) }
+    var imageUrl by remember(product?.id) { mutableStateOf(product?.imageUrl.orEmpty()) }
+    var description by remember(product?.id) { mutableStateOf(product?.description.orEmpty()) }
+    var usage by remember(product?.id) { mutableStateOf(product?.usage.orEmpty()) }
+    var cures by remember(product?.id) { mutableStateOf(product?.cures.orEmpty()) }
+    var ingredients by remember(product?.id) { mutableStateOf(product?.majorIngredients.orEmpty()) }
+    var signature by remember(product?.id) { mutableStateOf(product?.signature ?: false) }
+    var saving by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf<String?>(null) }
+    Column(Modifier.fillMaxSize().background(Cream)) {
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack, enabled = !saving) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
+            Text(if (isNew) "Add product" else "Edit product", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+        }
+        Column(
+            Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Text("Product information", color = Forest, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, singleLine = true)
+            OutlinedTextField(category, { category = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Category *") }, singleLine = true, supportingText = { Text("Use: Lehyas, Grutas, Pills, Tailas, Churnas, Rasayanas or Bhasmas") })
+            OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Pack weight") }, singleLine = true)
+                OutlinedTextField(units, { units = it; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight units (g/ml)") }, singleLine = true)
+            }
+            OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity / stock") }, singleLine = true)
+            OutlinedTextField(imageUrl, { imageUrl = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product image URL") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), minLines = 1)
+            OutlinedTextField(description, { description = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Description") }, minLines = 3)
+            OutlinedTextField(usage, { usage = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Usage / directions") }, minLines = 2)
+            OutlinedTextField(cures, { cures = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Cures / indications") }, minLines = 2)
+            OutlinedTextField(ingredients, { ingredients = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Major ingredients") }, minLines = 2)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(checked = signature, onCheckedChange = { signature = it }, colors = CheckboxDefaults.colors(checkedColor = Forest))
+                Text("Show as signature product", color = Ink)
+            }
+            if (message != null) Text(message!!, color = if (message!!.startsWith("Saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
+            Spacer(Modifier.height(4.dp))
+        }
+        Button(
+            onClick = {
+                if (name.isBlank() || category.isBlank() || price.toDoubleOrNull() == null) {
+                    message = "Enter a product name, category and valid price."
+                } else {
+                    saving = true
+                    message = null
+                    val fields = hashMapOf<String, Any>(
+                        "product_name" to name.trim(),
+                        "product_category" to category.trim(),
+                        "product_price" to (price.toDoubleOrNull() ?: 0.0),
+                        "product_weight" to weight.trim(),
+                        "product_units" to units.trim(),
+                        "product_quantity" to quantity.trim(),
+                        "product_image" to imageUrl.trim(),
+                        "product_description" to description.trim(),
+                        "product_usage" to usage.trim(),
+                        "product_cures" to cures.trim(),
+                        "product_major_ingredients" to ingredients.trim(),
+                        "signature" to signature,
+                        "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()
+                    )
+                    val db = FirebaseFirestore.getInstance().collection("products")
+                    val task = if (product == null) {
+                        fields["createdAt"] = com.google.firebase.firestore.FieldValue.serverTimestamp()
+                        db.document().set(fields)
+                    } else db.document(product.id).set(fields, com.google.firebase.firestore.SetOptions.merge())
+                    task.addOnSuccessListener {
+                        saving = false
+                        message = "Saved successfully."
+                        onSaved()
+                    }.addOnFailureListener { error ->
+                        saving = false
+                        message = "Save failed: ${error.localizedMessage ?: "Check Firestore permissions."}"
+                    }
+                }
+            },
+            enabled = !saving,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 16.dp).height(52.dp),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Forest)
+        ) {
+            if (saving) CircularProgressIndicator(Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+            else Icon(Icons.Default.Save, null)
+            Spacer(Modifier.width(8.dp)); Text(if (saving) "Saving…" else "Save product", fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
 @Composable
 private fun AdminDashboardScreen(
     email: String,
     productCount: Int,
+    onProductsClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
     Column(
