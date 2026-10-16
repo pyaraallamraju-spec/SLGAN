@@ -23,18 +23,30 @@ service cloud.firestore {
     // Customers can access only their own profile. The is_admin role is
     // managed by trusted Firebase Admin SDK scripts, never by the client.
     match /customers/{userId} {
+      // Customers can read their own profile; administrators can list customer
+      // profiles to manage account access.
       allow read: if request.auth != null
-        && request.auth.uid == userId;
+        && (request.auth.uid == userId || isAdmin());
       allow create: if request.auth != null
         && request.auth.uid == userId
-        && request.resource.data.is_admin == false;
-      allow update: if request.auth != null
-        && request.auth.uid == userId
-        && (
-          ( !('is_admin' in resource.data)
-            && request.resource.data.is_admin == false )
-          || request.resource.data.is_admin == resource.data.is_admin
-        );
+        && request.resource.data.is_admin == false
+        && request.resource.data.enabled == true;
+      allow update: if request.auth != null && (
+        // Admins may only change the account enabled flag and its timestamp.
+        (isAdmin()
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['enabled', 'updatedAt'])
+          && request.resource.data.enabled is bool)
+        ||
+        // Customers may edit their own profile but never their role or status.
+        (request.auth.uid == userId
+          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['enabled'])
+          && (
+            (!('is_admin' in resource.data)
+              && request.resource.data.is_admin == false)
+            || request.resource.data.is_admin == resource.data.is_admin
+          ))
+      );
       allow delete: if request.auth != null
         && request.auth.uid == userId;
 
