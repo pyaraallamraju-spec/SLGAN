@@ -2,6 +2,7 @@ package com.pyara.slgan
 
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import android.content.Intent
 import android.net.Uri
 import android.webkit.WebView
@@ -15,6 +16,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.functions.FirebaseFunctions
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.animation.AnimatedContent
@@ -240,6 +242,26 @@ private fun AyurvedicApp() {
     }
     val cart = remember { mutableStateMapOf<String, Int>() }
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
+    var lastBackPressedAt by remember { mutableStateOf(0L) }
+    BackHandler(enabled = !showSplash && authResolved) {
+        when {
+            selectedProduct != null -> selectedProduct = null
+            signedIn && selectedTab != "Home" -> selectedTab = "Home"
+            else -> {
+                val now = System.currentTimeMillis()
+                if (now - lastBackPressedAt < 2000L) {
+                    (androidx.compose.ui.platform.LocalContext.current as? android.app.Activity)?.finish()
+                } else {
+                    lastBackPressedAt = now
+                    android.widget.Toast.makeText(
+                        androidx.compose.ui.platform.LocalContext.current,
+                        "Press back again to exit",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
     CompositionLocalProvider(LocalAppLanguage provides appLanguage) {
     MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Color.White, onSurface = Ink)) {
         Surface(Modifier.fillMaxSize(), color = Cream) {
