@@ -72,7 +72,7 @@
     "signature": 0
   },
   {
-    "product_name": "Sleshma-related Rasam (name unclear)",
+    "product_name": "Sleshantaka Rasam (name unclear)",
     "product_quantity": 1,
     "product_weight": 30,
     "product_price": 260,
@@ -108,7 +108,7 @@
     "signature": 0
   },
   {
-    "product_name": "Product name unclear in scan",
+    "product_name": "Sleshma Gajamkusam",
     "product_quantity": 1,
     "product_weight": 30,
     "product_price": 260,
@@ -122,7 +122,7 @@
     "product_weight": 30,
     "product_price": 200,
     "product_units": "tablets",
-    "product_category": "Rasayoga",
+    "product_category": "Pills",
     "signature": 0
   },
   {
@@ -135,7 +135,7 @@
     "signature": 0
   },
   {
-    "product_name": "Vishama Jwarantaka",
+    "product_name": "Vijaya Chintamani",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 500,
@@ -144,7 +144,7 @@
     "signature": 0
   },
   {
-    "product_name": "Rakta-related formulation (name unclear)",
+    "product_name": "Rajita Loha Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 600,
@@ -153,7 +153,7 @@
     "signature": 0
   },
   {
-    "product_name": "Rasa Sindhuram",
+    "product_name": "Rasa Chintamani",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 3000,
@@ -162,7 +162,7 @@
     "signature": 0
   },
   {
-    "product_name": "Swarna Prashana formulation (name unclear)",
+    "product_name": "Swarna Tamra Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 2500,
@@ -171,7 +171,7 @@
     "signature": 0
   },
   {
-    "product_name": "Tattu Rasam",
+    "product_name": "Tamra Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 600,
@@ -180,7 +180,7 @@
     "signature": 0
   },
   {
-    "product_name": "Tattu Vanga Rasam",
+    "product_name": "Tamra Vanga Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 750,
@@ -189,7 +189,7 @@
     "signature": 0
   },
   {
-    "product_name": "Chaturmukha Rasam",
+    "product_name": "Chaturloha Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 750,
@@ -198,7 +198,7 @@
     "signature": 0
   },
   {
-    "product_name": "Agnivalla Rasam",
+    "product_name": "Asta Loha Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 1200,
@@ -207,7 +207,7 @@
     "signature": 0
   },
   {
-    "product_name": "Raja Mriganka Rasam",
+    "product_name": "Raja Mruganka Rasam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 1200,
@@ -216,7 +216,7 @@
     "signature": 0
   },
   {
-    "product_name": "Mahavata Rasayanam",
+    "product_name": "Mahaloha Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 750,
@@ -225,7 +225,7 @@
     "signature": 0
   },
   {
-    "product_name": "Loham Rasayanam",
+    "product_name": "Loha Rasayanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 500,
@@ -234,7 +234,7 @@
     "signature": 0
   },
   {
-    "product_name": "Mahavanga Rasayanam",
+    "product_name": "Meha Vanga Raajeyem",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 350,
@@ -243,7 +243,7 @@
     "signature": 0
   },
   {
-    "product_name": "Rakta-related formulation (name unclear)",
+    "product_name": "Rajita Meha Vanga Raajeyem",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 750,
@@ -252,7 +252,7 @@
     "signature": 0
   },
   {
-    "product_name": "Sukha-related formulation (name unclear)",
+    "product_name": "Sootikaabharanam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 500,
@@ -261,7 +261,7 @@
     "signature": 0
   },
   {
-    "product_name": "Swarna-related formulation (name unclear)",
+    "product_name": "Swarna Suryavarti",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 1500,
@@ -270,7 +270,7 @@
     "signature": 0
   },
   {
-    "product_name": "Kanaka Bala formulation (name unclear)",
+    "product_name": "Kanaka Bala Suryodayam",
     "product_quantity": 1,
     "product_weight": 5,
     "product_price": 1500,
@@ -279,7 +279,7 @@
     "signature": 0
   },
   {
-    "product_name": "Maha Manjishtha Rasam",
+    "product_name": "Mahila Priya",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 200,
@@ -288,7 +288,7 @@
     "signature": 0
   },
   {
-    "product_name": "Kashaya Amrutham",
+    "product_name": "Swasaamrutam",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 200,
@@ -297,7 +297,7 @@
     "signature": 0
   },
   {
-    "product_name": "Jeeva Paanam",
+    "product_name": "Jaambu Paanam",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 200,
@@ -306,7 +306,7 @@
     "signature": 0
   },
   {
-    "product_name": "Jeevana Sathyam",
+    "product_name": "Jeeva Satvam",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 200,
@@ -315,7 +315,7 @@
     "signature": 0
   },
   {
-    "product_name": "Mahabala",
+    "product_name": "Mahaabala",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 200,
@@ -324,7 +324,7 @@
     "signature": 1
   },
   {
-    "product_name": "Ganesh Amrutham",
+    "product_name": "Ganeshamrutham",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 200,
@@ -333,7 +333,7 @@
     "signature": 0
   },
   {
-    "product_name": "Gada Sanjeevini",
+    "product_name": "Gadaa Sanjeevi",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 200,
@@ -342,7 +342,7 @@
     "signature": 0
   },
   {
-    "product_name": "Madhura Rasayanam",
+    "product_name": "Maadeephala Rasayanam",
     "product_quantity": 1,
     "product_weight": 100,
     "product_price": 75,
@@ -351,7 +351,7 @@
     "signature": 0
   },
   {
-    "product_name": "Madhura Rasayanam",
+    "product_name": "Maadeephala Rasayanam",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 150,
@@ -360,7 +360,7 @@
     "signature": 0
   },
   {
-    "product_name": "Jandhira Rasayanam",
+    "product_name": "Jambeera Rasayanam",
     "product_quantity": 1,
     "product_weight": 200,
     "product_price": 200,
@@ -414,7 +414,7 @@
     "signature": 0
   },
   {
-    "product_name": "Kachuradi Churnam",
+    "product_name": "Chaturjaataka Churnam",
     "product_quantity": 1,
     "product_weight": 50,
     "product_price": 130,
@@ -432,7 +432,7 @@
     "signature": 0
   },
   {
-    "product_name": "Bhasma-related formulation (name unclear)",
+    "product_name": "Bhaskara Lavana Churnam",
     "product_quantity": 1,
     "product_weight": 50,
     "product_price": 100,
@@ -441,7 +441,7 @@
     "signature": 0
   },
   {
-    "product_name": "Maha Dhadhi Churnam",
+    "product_name": "Maha Drakshaadi Churnam",
     "product_quantity": 1,
     "product_weight": 50,
     "product_price": 120,
@@ -450,7 +450,7 @@
     "signature": 0
   },
   {
-    "product_name": "Rasna-related Churnam",
+    "product_name": "Rasottamaadi Churnam",
     "product_quantity": 1,
     "product_weight": 50,
     "product_price": 65,
@@ -468,7 +468,7 @@
     "signature": 0
   },
   {
-    "product_name": "Chandana Churnam",
+    "product_name": "Chandanaadi Churnam",
     "product_quantity": 1,
     "product_weight": 50,
     "product_price": 120,
@@ -477,7 +477,7 @@
     "signature": 0
   },
   {
-    "product_name": "Ativisha Churnam",
+    "product_name": "Ashwagandha Churnam",
     "product_quantity": 1,
     "product_weight": 50,
     "product_price": 75,
@@ -504,7 +504,7 @@
     "signature": 0
   },
   {
-    "product_name": "Vasadi Churnam",
+    "product_name": "Vaasadi Dhoomapaanadi Churnam",
     "product_quantity": 1,
     "product_weight": 50,
     "product_price": 80,
@@ -513,7 +513,7 @@
     "signature": 0
   },
   {
-    "product_name": "Ahiphena Satva",
+    "product_name": "Tippasattu",
     "product_quantity": 1,
     "product_weight": 10,
     "product_price": 60,
@@ -522,7 +522,7 @@
     "signature": 0
   },
   {
-    "product_name": "Vacha Churnam",
+    "product_name": "Patcha Karpuram",
     "product_quantity": 1,
     "product_weight": 10,
     "product_price": 60,
@@ -531,7 +531,7 @@
     "signature": 0
   },
   {
-    "product_name": "Gorochana",
+    "product_name": "Garudamjanam",
     "product_quantity": 1,
     "product_weight": 10,
     "product_price": 60,
@@ -612,7 +612,7 @@
     "signature": 0
   },
   {
-    "product_name": "Chandanadi Tailam",
+    "product_name": "Chandanaadi Tailam",
     "product_quantity": 1,
     "product_weight": 100,
     "product_price": 250,
@@ -639,7 +639,7 @@
     "signature": 0
   },
   {
-    "product_name": "Amruthadi Tailam",
+    "product_name": "Amruthaadi Tailam",
     "product_quantity": 1,
     "product_weight": 100,
     "product_price": 180,
@@ -648,7 +648,7 @@
     "signature": 0
   },
   {
-    "product_name": "Sahacharadi Tailam",
+    "product_name": "Sahacharaadi Tailam",
     "product_quantity": 1,
     "product_weight": 100,
     "product_price": 200,
@@ -702,7 +702,7 @@
     "signature": 0
   },
   {
-    "product_name": "Karanja-related Tailam",
+    "product_name": "Karna Roganthaka Tailam",
     "product_quantity": 1,
     "product_weight": 10,
     "product_price": 80,
@@ -711,7 +711,7 @@
     "signature": 0
   },
   {
-    "product_name": "Maha Mas Tailam",
+    "product_name": "Mahaa Moosha Tailam",
     "product_quantity": 1,
     "product_weight": 100,
     "product_price": 250,
@@ -720,7 +720,7 @@
     "signature": 0
   },
   {
-    "product_name": "Vidangadi Tailam",
+    "product_name": "Vidangaadi Tailam",
     "product_quantity": 1,
     "product_weight": 100,
     "product_price": 200,
@@ -756,7 +756,7 @@
     "signature": 0
   },
   {
-    "product_name": "Raktita Chandrodayam",
+    "product_name": "Rajita Chandrodayam",
     "product_quantity": 1,
     "product_weight": 30,
     "product_price": 1200,
@@ -765,7 +765,7 @@
     "signature": 0
   },
   {
-    "product_name": "Brihat Vata Chintamani",
+    "product_name": "Bruhat Vaata Chintamani",
     "product_quantity": 1,
     "product_weight": 30,
     "product_price": 3000,
@@ -774,7 +774,7 @@
     "signature": 0
   },
   {
-    "product_name": "Maha Panchabana Rasam",
+    "product_name": "Maha Panchabhana Rasam",
     "product_quantity": 1,
     "product_weight": 30,
     "product_price": 3000,
