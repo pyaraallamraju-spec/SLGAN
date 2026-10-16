@@ -40,6 +40,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -55,6 +56,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -1481,19 +1485,33 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, loading: Bo
     var query by remember { mutableStateOf("") }
     var selectedDisease by remember { mutableStateOf<String?>(null) }
     var expanded by remember { mutableStateOf(false) }
+    var diseaseFieldBounds by remember { mutableStateOf<Rect?>(null) }
+    var diseaseSuggestionsBounds by remember { mutableStateOf<Rect?>(null) }
     val matches = remember(diseases, query) {
         if (query.isBlank()) diseases
         else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
     }
 
-    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(18.dp)) {
+    Column(
+        modifier = modifier.fillMaxSize()
+            .pointerInput(expanded, diseaseFieldBounds, diseaseSuggestionsBounds) {
+                detectTapGestures { tap ->
+                    if (expanded && diseaseFieldBounds?.contains(tap) != true && diseaseSuggestionsBounds?.contains(tap) != true) {
+                        expanded = false
+                    }
+                }
+            }
+            .verticalScroll(rememberScrollState()).padding(18.dp)
+    ) {
         Text("Diseases", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Text("Find a disease from the available list.", color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(20.dp))
         OutlinedTextField(
             value = query,
             onValueChange = { query = it; selectedDisease = null; expanded = true },
-            modifier = Modifier.fillMaxWidth().onFocusChanged { if (it.isFocused) expanded = true },
+            modifier = Modifier.fillMaxWidth()
+                .onGloballyPositioned { diseaseFieldBounds = it.boundsInRoot() }
+                .onFocusChanged { if (it.isFocused) expanded = true },
             label = { Text("Select disease") },
             placeholder = { Text(if (loading) "Loading diseases…" else "Type to search diseases") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
@@ -1510,7 +1528,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, loading: Bo
         if (expanded && !loading && error == null && matches.isNotEmpty() && selectedDisease == null) {
             Spacer(Modifier.height(4.dp))
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().onGloballyPositioned { diseaseSuggestionsBounds = it.boundsInRoot() },
                 shape = RoundedCornerShape(14.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
