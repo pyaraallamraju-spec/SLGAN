@@ -601,6 +601,7 @@ private fun AyurvedicApp() {
     var lastBackPressedAt by remember { mutableStateOf(0L) }
     BackHandler(enabled = !showSplash && authResolved) {
         when {
+            isAdmin && adminProductsOpen -> adminProductsOpen = false
             selectedProduct != null -> selectedProduct = null
             signedIn && selectedTab != "Home" -> selectedTab = "Home"
             else -> {
