@@ -33,6 +33,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.border
 import androidx.compose.foundation.background
@@ -221,6 +222,9 @@ private fun AyurvedicApp() {
     var liveProducts by remember { mutableStateOf<List<Product>>(emptyList()) }
     var productsLoading by remember { mutableStateOf(true) }
     var productsError by remember { mutableStateOf<String?>(null) }
+    var liveDiseases by remember { mutableStateOf<List<String>>(emptyList()) }
+    var diseasesLoading by remember { mutableStateOf(true) }
+    var diseasesError by remember { mutableStateOf<String?>(null) }
     DisposableEffect(signedIn) {
         if (signedIn) {
             val registration = FirebaseData.observeProducts(
@@ -239,6 +243,27 @@ private fun AyurvedicApp() {
             liveProducts = emptyList()
             productsLoading = true
             productsError = null
+            onDispose { }
+        }
+    }
+    DisposableEffect(signedIn) {
+        if (signedIn) {
+            val registration = FirebaseData.observeDiseases(
+                onDiseases = { records ->
+                    liveDiseases = records
+                    diseasesLoading = false
+                    diseasesError = null
+                },
+                onError = { error ->
+                    diseasesError = error.localizedMessage ?: "Unable to load diseases."
+                    diseasesLoading = false
+                }
+            )
+            onDispose { registration.remove() }
+        } else {
+            liveDiseases = emptyList()
+            diseasesLoading = true
+            diseasesError = null
             onDispose { }
         }
     }
@@ -309,7 +334,7 @@ private fun AyurvedicApp() {
                 onAdd = { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 onRemove = { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 }
             )
-            else ShopScreen(selectedTab, { selectedTab = it }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productsLoading, productsError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
+            else ShopScreen(selectedTab, { selectedTab = it }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productsLoading, productsError, liveDiseases, diseasesLoading, diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
                 { orderId, success, invoiceUrl, message ->
@@ -861,7 +886,7 @@ private fun HomeBannerSlider(
 @Composable
 private fun ShopScreen(
     selectedTab: String, onTabChange: (String) -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
-    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
+    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, diseases: List<String>, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
     onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit
 ) {
     val cartCount = cart.values.sum()
@@ -876,7 +901,7 @@ private fun ShopScreen(
         }
     }, bottomBar = {
         NavigationBar(containerColor = Color.White, contentColor = Forest) {
-            listOf(Triple("Home", Icons.Default.Home, "Home"), Triple("Categories", Icons.Default.GridView, "Categories"), Triple("Cart", Icons.Default.ShoppingCart, "Cart"), Triple("Orders", Icons.Default.ReceiptLong, "Orders"), Triple("Profile", Icons.Default.Person, "Profile")).forEach { (label, icon, route) ->
+            listOf(Triple("Home", Icons.Default.Home, "Home"), Triple("Categories", Icons.Default.GridView, "Categories"), Triple("Diseases", Icons.Default.Search, "Diseases"), Triple("Orders", Icons.Default.ReceiptLong, "Orders"), Triple("Profile", Icons.Default.Person, "Profile")).forEach { (label, icon, route) ->
                 NavigationBarItem(selected = selectedTab == route, onClick = { onTabChange(route) }, icon = { Icon(icon, label) }, label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) }, colors = NavigationBarItemDefaults.colors(selectedIconColor = Forest, selectedTextColor = Forest, indicatorColor = PaleGreen, unselectedIconColor = Muted))
             }
         }
@@ -885,6 +910,7 @@ private fun ShopScreen(
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage)
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, onCategoryChange) { onTabChange("Home") }
+            "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, diseasesLoading, diseasesError)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productsLoading, productsError, onAdd, onProductClick)
         }
@@ -1447,6 +1473,86 @@ private fun OrdersPage(
         )
     }
 
+}
+
+@Composable
+private fun DiseasesPage(modifier: Modifier, diseases: List<String>, loading: Boolean, error: String?) {
+    var query by remember { mutableStateOf("") }
+    var selectedDisease by remember { mutableStateOf<String?>(null) }
+    var expanded by remember { mutableStateOf(false) }
+    val matches = remember(diseases, query) {
+        if (query.isBlank()) diseases
+        else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
+    }
+
+    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(18.dp)) {
+        Text("Diseases", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+        Text("Find a disease from the available list.", color = Muted, fontSize = 13.sp)
+        Spacer(Modifier.height(20.dp))
+        Box(Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it; selectedDisease = null; expanded = true },
+                modifier = Modifier.fillMaxWidth().onFocusChanged { if (it.isFocused) expanded = true },
+                label = { Text("Select disease") },
+                placeholder = { Text(if (loading) "Loading diseases…" else "Type to search diseases") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                trailingIcon = {
+                    IconButton(onClick = { expanded = !expanded }) {
+                        Icon(Icons.Default.ArrowDropDown, contentDescription = "Show diseases")
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(16.dp)
+            )
+            DropdownMenu(
+                expanded = expanded && matches.isNotEmpty() && !loading,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.fillMaxWidth(0.88f).heightIn(max = 320.dp)
+            ) {
+                matches.forEach { disease ->
+                    DropdownMenuItem(
+                        text = { Text(disease, color = Ink) },
+                        onClick = { query = disease; selectedDisease = disease; expanded = false },
+                        leadingIcon = { Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest) }
+                    )
+                }
+            }
+        }
+        if (loading) {
+            Spacer(Modifier.height(16.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp, color = Forest)
+                Spacer(Modifier.width(10.dp))
+                Text("Loading diseases from database…", color = Muted, fontSize = 13.sp)
+            }
+        } else if (error != null) {
+            Spacer(Modifier.height(12.dp))
+            Text("Could not load diseases: $error", color = Color(0xFFB3261E), fontSize = 13.sp)
+        } else if (matches.isEmpty()) {
+            Spacer(Modifier.height(12.dp))
+            Text("No matching diseases found.", color = Muted, fontSize = 13.sp)
+        } else if (selectedDisease == null) {
+            Spacer(Modifier.height(8.dp))
+            Text("${matches.size} disease${if (matches.size == 1) "" else "s"} available", color = Muted, fontSize = 12.sp)
+        }
+        if (selectedDisease != null) {
+            Spacer(Modifier.height(18.dp))
+            Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(16.dp)) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest, modifier = Modifier.size(28.dp))
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text("Selected disease", color = Muted, fontSize = 12.sp)
+                        Text(selectedDisease!!, color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                    }
+                    IconButton(onClick = { selectedDisease = null; query = ""; expanded = true }) {
+                        Icon(Icons.Default.Close, contentDescription = "Clear selection", tint = Muted)
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
