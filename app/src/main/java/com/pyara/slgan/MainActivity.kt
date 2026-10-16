@@ -2054,43 +2054,134 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         }
     }
 
-    Column(modifier.fillMaxSize().padding(18.dp)) {
-        Text(tr("Your cart", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Text(cart.values.sum().toString() + " items selected", color = Muted, fontSize = 13.sp)
+    Column(modifier.fillMaxSize().background(Cream).padding(horizontal = 16.dp, vertical = 14.dp)) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Forest),
+            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+        ) {
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    Modifier.size(54.dp).background(Color.White.copy(alpha = 0.12f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) { Text("🛍️", fontSize = 29.sp) }
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Your shopping bag", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Cream)
+                    Text("${cart.values.sum()} items • Thoughtfully chosen for you", fontSize = 12.sp, color = Cream.copy(alpha = 0.82f))
+                }
+                Icon(Icons.Default.LocalFlorist, contentDescription = null, tint = Gold, modifier = Modifier.size(28.dp))
+            }
+        }
         Spacer(Modifier.height(18.dp))
-        if (selected.isEmpty()) EmptyState("🛍️", "Your cart is waiting", "Add products from the Home page.")
-        else {
-            LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        if (selected.isEmpty()) {
+            Card(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ) {
+                Column(
+                    Modifier.fillMaxWidth().fillMaxHeight().padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Box(Modifier.size(104.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
+                        Text("🛍️", fontSize = 52.sp)
+                    }
+                    Spacer(Modifier.height(18.dp))
+                    Text("Your cart is waiting", fontSize = 21.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                    Spacer(Modifier.height(8.dp))
+                    Text("Discover herbal favourites and add something special to your bag.", fontSize = 14.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                }
+            }
+        } else {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 2.dp, vertical = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text("YOUR SELECTION", fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, color = Leaf, letterSpacing = 1.5.sp)
+                Spacer(Modifier.weight(1f))
+                Text("${selected.size} products", fontSize = 12.sp, color = Muted)
+            }
+            Spacer(Modifier.height(8.dp))
+            LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(bottom = 8.dp)) {
                 items(selected) { product ->
-                    Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(16.dp)) {
-                        Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Text(product.emoji, fontSize = 24.sp)
-                            Spacer(Modifier.width(10.dp))
+                    val quantity = cart[product.id] ?: 0
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        shape = RoundedCornerShape(20.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    ) {
+                        Row(
+                            Modifier.fillMaxWidth().padding(14.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                Modifier.size(66.dp).background(PaleGreen, RoundedCornerShape(16.dp)),
+                                contentAlignment = Alignment.Center
+                            ) { Text(product.emoji, fontSize = 32.sp) }
+                            Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(product.name, fontWeight = FontWeight.Bold, color = Ink)
-                                Text(product.subtitle, color = Muted, fontSize = 12.sp)
-                                Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.Bold)
+                                Text(product.name, fontWeight = FontWeight.Bold, color = Ink, fontSize = 15.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                Spacer(Modifier.height(3.dp))
+                                Text(product.subtitle, color = Muted, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Spacer(Modifier.height(6.dp))
+                                Text("₹" + String.format("%.2f", product.price * quantity), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                                Text("₹" + String.format("%.2f", product.price) + " each", color = Muted, fontSize = 10.sp)
                             }
-                            IconButton(onClick = { onRemove(product.id) }) { Icon(Icons.Default.Remove, "Remove one") }
-                            Text((cart[product.id] ?: 0).toString(), fontWeight = FontWeight.Bold)
-                            IconButton(onClick = { onAdd(product.id) }) { Icon(Icons.Default.Add, "Add one") }
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.background(Cream, RoundedCornerShape(14.dp)).padding(horizontal = 2.dp)
+                                ) {
+                                    IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(34.dp)) {
+                                        Icon(Icons.Default.Remove, contentDescription = "Remove one", tint = Forest, modifier = Modifier.size(17.dp))
+                                    }
+                                    Text(quantity.toString(), fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
+                                    IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(34.dp)) {
+                                        Icon(Icons.Default.Add, contentDescription = "Add one", tint = Forest, modifier = Modifier.size(17.dp))
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-            Spacer(Modifier.height(12.dp))
-            Card(colors = CardDefaults.cardColors(containerColor = PaleGreen), shape = RoundedCornerShape(18.dp)) {
+            Spacer(Modifier.height(10.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                shape = RoundedCornerShape(22.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+            ) {
                 Column(Modifier.fillMaxWidth().padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(tr("Subtotal", LocalAppLanguage.current), color = Muted, modifier = Modifier.weight(1f))
-                        Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", total), color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                        Column(Modifier.weight(1f)) {
+                            Text("ORDER SUMMARY", fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, color = Leaf, letterSpacing = 1.3.sp)
+                            Spacer(Modifier.height(4.dp))
+                            Text("Subtotal · ${cart.values.sum()} items", color = Muted, fontSize = 13.sp)
+                        }
+                        Text("₹" + String.format("%.2f", total), color = Forest, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
                     }
-                    Button(onClick = { showCheckout = true; errorMessage = null }, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest), modifier = Modifier.fillMaxWidth()) {
-                        Text(tr("Checkout", LocalAppLanguage.current))
+                    Spacer(Modifier.height(14.dp))
+                    Button(
+                        onClick = { showCheckout = true; errorMessage = null },
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                        modifier = Modifier.fillMaxWidth().height(52.dp)
+                    ) {
+                        Text(tr("Checkout", LocalAppLanguage.current) + "  →", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                        Icon(Icons.Default.VerifiedUser, contentDescription = null, tint = Leaf, modifier = Modifier.size(14.dp))
+                        Spacer(Modifier.width(5.dp))
+                        Text("No online payment is collected in the app.", color = Muted, fontSize = 10.sp)
                     }
                 }
             }
-            Text(tr("No online payment. Place your order and we will confirm delivery details.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
         }
     }
 
