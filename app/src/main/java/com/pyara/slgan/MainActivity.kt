@@ -606,7 +606,7 @@ private fun LoginScreen(
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(12.dp))
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(12.dp))
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
