@@ -1069,9 +1069,9 @@ private fun HomeBannerSlider(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 190.dp, max = 232.dp)
+                .height(190.dp)
                 .clip(RoundedCornerShape(22.dp))
-                .background(Forest)
+                .background(Cream)
                 .pointerInput(slides.size) {
                     var totalDrag = 0f
                     detectHorizontalDragGestures(
@@ -1101,7 +1101,7 @@ private fun HomeBannerSlider(
                     AsyncImage(
                         model = slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl },
                         contentDescription = slide.productName,
-                        contentScale = ContentScale.Crop,
+                        contentScale = if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
                     if (!slide.isCompanySlide) {
