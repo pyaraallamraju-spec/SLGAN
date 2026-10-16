@@ -1959,7 +1959,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 .whereEqualTo("diseases_name", selectedDisease).limit(1).get()
                 .addOnSuccessListener { snapshot ->
                     val data = snapshot.documents.firstOrNull()
-                    diseaseDescription = listOf("disease_description", "description", "disease_details", "details", "about")
+                    diseaseDescription = listOf("disease_desc", "disease_description", "description", "disease_details", "details", "about")
                         .firstNotNullOfOrNull { key -> data?.getString(key)?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
                     diseaseDescriptionLoading = false
                 }
