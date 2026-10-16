@@ -17,6 +17,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -43,6 +49,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +58,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 
 private val Forest = Color(0xFF762A24)
@@ -626,6 +635,148 @@ private fun LoginScreen(
     }
 }
 
+private data class HomeBannerSlide(
+    val eyebrow: String,
+    val title: String,
+    val subtitle: String,
+    val imageUrl: String
+)
+
+@Composable
+private fun HomeBannerSlider(onExplore: () -> Unit) {
+    val slides = remember {
+        listOf(
+            HomeBannerSlide(
+                "ROOTED IN NATURE",
+                "Everyday wellness,\\nwith a herbal touch.",
+                "Explore collection  →",
+                "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85"
+            ),
+            HomeBannerSlide(
+                "HERBAL GOODNESS",
+                "Nature's care,\\nmade part of your day.",
+                "Explore collection  →",
+                "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=85"
+            ),
+            HomeBannerSlide(
+                "TRADITION MEETS NATURE",
+                "Discover the beauty\\nof botanical wellness.",
+                "Explore collection  →",
+                "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1200&q=85"
+            )
+        )
+    }
+    var activeSlide by remember { mutableIntStateOf(0) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(5000)
+            activeSlide = (activeSlide + 1) % slides.size
+        }
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 174.dp, max = 214.dp)
+                .clip(RoundedCornerShape(22.dp))
+                .background(Forest)
+                .clickable(onClick = onExplore)
+        ) {
+            AnimatedContent(
+                targetState = activeSlide,
+                transitionSpec = {
+                    (slideInHorizontally(initialOffsetX = { width -> width }) + fadeIn()) togetherWith
+                        (slideOutHorizontally(targetOffsetX = { width -> -width }) + fadeOut())
+                },
+                label = "homeBannerSlide"
+            ) { index ->
+                val slide = slides[index]
+                Box(Modifier.fillMaxSize()) {
+                    AsyncImage(
+                        model = slide.imageUrl,
+                        contentDescription = "Natural herbs and botanical wellness",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    Box(
+                        Modifier.fillMaxSize().background(
+                            Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color(0xFF4D100E).copy(alpha = 0.96f),
+                                    Forest.copy(alpha = 0.83f),
+                                    Forest.copy(alpha = 0.32f),
+                                    Color.Transparent
+                                )
+                            )
+                        )
+                    )
+                    Box(
+                        Modifier.fillMaxSize().background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color(0xFF4D100E).copy(alpha = 0.30f))
+                            )
+                        )
+                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(0.84f)
+                            .align(Alignment.CenterStart)
+                            .padding(horizontal = 18.dp, vertical = 18.dp),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            tr(slide.eyebrow, LocalAppLanguage.current),
+                            color = Gold,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.5.sp,
+                            maxLines = 1
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            tr(slide.title, LocalAppLanguage.current),
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            lineHeight = 26.sp,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                        Spacer(Modifier.height(12.dp))
+                        Text(
+                            tr(slide.subtitle, LocalAppLanguage.current),
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(Gold)
+                                .clickable(onClick = onExplore)
+                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                            color = Color(0xFF4D100E),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            slides.indices.forEach { index ->
+                val selected = index == activeSlide
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .size(width = if (selected) 22.dp else 7.dp, height = 7.dp)
+                        .clip(CircleShape)
+                        .background(if (selected) Forest else Gold.copy(alpha = 0.65f))
+                        .clickable { activeSlide = index }
+                )
+            }
+        }
+    }
+}
+
 @Composable
 private fun ShopScreen(
     selectedTab: String, onTabChange: (String) -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
@@ -681,16 +832,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text(tr("Explore thoughtful herbal essentials.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
-                Row(Modifier.fillMaxWidth().background(Forest, RoundedCornerShape(22.dp)).padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f)) {
-                        Text(tr("ROOTED IN NATURE", LocalAppLanguage.current), color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
-                        Spacer(Modifier.height(7.dp))
-                        Text(tr("Everyday wellness,\nwith a herbal touch.", LocalAppLanguage.current), color = Color.White, fontSize = 20.sp, lineHeight = 26.sp, fontWeight = FontWeight.Bold)
-                        Spacer(Modifier.height(10.dp))
-                        Text(tr("Explore collection  →", LocalAppLanguage.current), color = Color(0xFFFFE7B3), fontSize = 12.sp)
-                    }
-                    Text(tr("🌿", LocalAppLanguage.current), fontSize = 48.sp)
-                }
+                HomeBannerSlider(onExplore = { onCategoryChange("All") })
                 Spacer(Modifier.height(18.dp))
                 OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text(tr("Search products", LocalAppLanguage.current)) }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
                 Spacer(Modifier.height(20.dp))
