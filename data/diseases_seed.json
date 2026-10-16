@@ -1,26 +1,20 @@
 [
   {
-    "disease_id": "DISEASE001",
     "diseases_name": "All Diseases"
   },
   {
-    "disease_id": "DISEASE002",
     "diseases_name": "Tuberculosis (TB)"
   },
   {
-    "disease_id": "DISEASE003",
     "diseases_name": "Cough"
   },
   {
-    "disease_id": "DISEASE004",
     "diseases_name": "Flum"
   },
   {
-    "disease_id": "DISEASE005",
     "diseases_name": "Fever"
   },
   {
-    "disease_id": "DISEASE006",
     "diseases_name": "Obesity"
   }
 ]
