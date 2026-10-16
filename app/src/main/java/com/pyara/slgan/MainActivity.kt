@@ -37,6 +37,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.border
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -143,7 +145,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String)
+private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false)
 private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
 
 private fun productFromFirestore(data: Map<String, Any?>): Product? {
@@ -183,7 +185,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val majorIngredients = listOf("product_major_ingredients", "major_ingredients", "ingredients", "product_ingredients").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients)
+    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true)
 }
 @Composable
 private fun AyurvedicApp() {
@@ -680,47 +682,40 @@ private fun HomeBannerSlider(
     products: List<Product>,
     onViewProduct: (String) -> Unit
 ) {
-    val slides = remember {
+    val slides = remember(products) {
         listOf(
             HomeBannerSlide(
                 "Sri Lakshmi Ganapathi Ayurveda Nilayam",
                 "Established in 1900 by Sri Vidyaraju Perraju Sharma. Successfully serving for more than 125 years.",
                 "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85",
                 isCompanySlide = true
-            ),
-            HomeBannerSlide(
-                "Mahila Priya",
-                "A signature SLGAN product",
-                "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=1200&q=85"
-            ),
-            HomeBannerSlide(
-                "Sleshamrutham",
-                "A signature SLGAN product",
-                "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=85"
-            ),
-            HomeBannerSlide(
-                "Ganeshamrutam",
-                "A signature SLGAN product",
-                "https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1200&q=85"
-            ),
-            HomeBannerSlide(
-                "Jeevasatvam",
-                "A signature SLGAN product",
-                "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=85"
-            ),
-            HomeBannerSlide(
-                "Mahabala",
-                "A signature SLGAN product",
-                "https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1200&q=85"
             )
-        )
+        ) + products.filter { it.signature }.map { product ->
+            HomeBannerSlide(
+                product.name,
+                product.description.ifBlank { "A signature SLGAN product" },
+                product.imageUrl.ifBlank {
+                    when (product.name.lowercase().filter { it.isLetterOrDigit() }) {
+                        "mahilapriya" -> "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=1200&q=85"
+                        "swasaamrutam" -> "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=85"
+                        "jeevasatvam" -> "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=85"
+                        "mahaabala" -> "https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1200&q=85"
+                        "ganeshamrutham" -> "https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1200&q=85"
+                        else -> ""
+                    }
+                }
+            )
+        }
     }
     var activeSlide by remember { mutableIntStateOf(0) }
-    LaunchedEffect(Unit) {
-        while (true) {
+    LaunchedEffect(slides.size) {
+        if (slides.isNotEmpty()) while (true) {
             delay(5000)
             activeSlide = (activeSlide + 1) % slides.size
         }
+    }
+    LaunchedEffect(slides.size) {
+        if (activeSlide >= slides.size) activeSlide = 0
     }
     val openProduct: (String) -> Unit = { productName ->
         val matchingProduct = products.firstOrNull { it.name.trim().equals(productName, ignoreCase = true) }
@@ -739,6 +734,20 @@ private fun HomeBannerSlider(
                 .heightIn(min = 190.dp, max = 232.dp)
                 .clip(RoundedCornerShape(22.dp))
                 .background(Forest)
+                .pointerInput(slides.size) {
+                    var totalDrag = 0f
+                    detectHorizontalDragGestures(
+                        onHorizontalDrag = { _, dragAmount -> totalDrag += dragAmount },
+                        onDragEnd = {
+                            if (kotlin.math.abs(totalDrag) > 40f && slides.isNotEmpty()) {
+                                activeSlide = if (totalDrag < 0f) (activeSlide + 1) % slides.size
+                                    else (activeSlide - 1 + slides.size) % slides.size
+                            }
+                            totalDrag = 0f
+                        },
+                        onDragCancel = { totalDrag = 0f }
+                    )
+                }
         ) {
             AnimatedContent(
                 targetState = activeSlide,
