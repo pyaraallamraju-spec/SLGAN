@@ -242,6 +242,7 @@ private fun AyurvedicApp() {
     }
     val cart = remember { mutableStateMapOf<String, Int>() }
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
+    val appContext = LocalContext.current
     var lastBackPressedAt by remember { mutableStateOf(0L) }
     BackHandler(enabled = !showSplash && authResolved) {
         when {
@@ -250,11 +251,11 @@ private fun AyurvedicApp() {
             else -> {
                 val now = System.currentTimeMillis()
                 if (now - lastBackPressedAt < 2000L) {
-                    (androidx.compose.ui.platform.LocalContext.current as? android.app.Activity)?.finish()
+                    (appContext as? android.app.Activity)?.finish()
                 } else {
                     lastBackPressedAt = now
                     android.widget.Toast.makeText(
-                        androidx.compose.ui.platform.LocalContext.current,
+                        appContext,
                         "Press back again to exit",
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
