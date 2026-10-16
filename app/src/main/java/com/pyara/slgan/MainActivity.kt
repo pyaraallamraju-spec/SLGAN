@@ -1545,7 +1545,7 @@ private fun AdminDashboardScreen(
         Spacer(Modifier.height(20.dp))
         Text("ADMIN MODULES", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
         Spacer(Modifier.height(10.dp))
-        AdminModuleInfo(Icons.Default.Inventory2, "Products", "View the catalogue and product information.")
+        AdminModuleInfo(Icons.Default.Inventory2, "Products", "View the catalogue and product information.", onClick = onProductsClick)
         AdminModuleInfo(Icons.Default.ReceiptLong, "Orders", "Order management module.")
         AdminModuleInfo(Icons.Default.PeopleAlt, "Customers", "Customer accounts and profiles.")
         AdminModuleInfo(Icons.Default.MedicalServices, "Diseases", "Disease catalogue information.")
@@ -1589,10 +1589,13 @@ private fun AdminSummaryCard(
 private fun AdminModuleInfo(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
-    subtitle: String
+    subtitle: String,
+    onClick: (() -> Unit)? = null
 ) {
     Card(
-        Modifier.fillMaxWidth().padding(bottom = 10.dp),
+        Modifier.fillMaxWidth().padding(bottom = 10.dp).then(
+            if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
+        ),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
