@@ -641,7 +641,8 @@ private fun LoginScreen(
 private data class HomeBannerSlide(
     val productName: String,
     val tagline: String,
-    val fallbackImageUrl: String
+    val fallbackImageUrl: String,
+    val isCompanySlide: Boolean = false
 )
 
 @Composable
@@ -651,6 +652,12 @@ private fun HomeBannerSlider(
 ) {
     val slides = remember {
         listOf(
+            HomeBannerSlide(
+                "Sri Lakshmi Ganapathi Ayurveda Nilayam",
+                "Established in 1900 by Sri Vidyaraju Perraju Sharma. Successfully serving for more than 125 years.",
+                "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85",
+                isCompanySlide = true
+            ),
             HomeBannerSlide(
                 "Mahila Priya",
                 "A signature SLGAN product",
@@ -747,7 +754,7 @@ private fun HomeBannerSlider(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            "SLGAN SIGNATURE PRODUCT",
+                            if (slide.isCompanySlide) "OUR HERITAGE" else "SLGAN SIGNATURE PRODUCT",
                             color = Gold,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
@@ -758,32 +765,35 @@ private fun HomeBannerSlider(
                         Text(
                             slide.productName,
                             color = Color.White,
-                            fontSize = 25.sp,
-                            lineHeight = 30.sp,
+                            fontSize = if (slide.isCompanySlide) 20.sp else 25.sp,
+                            lineHeight = if (slide.isCompanySlide) 25.sp else 30.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            maxLines = 2,
+                            maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
                         Spacer(Modifier.height(6.dp))
                         Text(
                             slide.tagline,
                             color = Color.White.copy(alpha = 0.92f),
-                            fontSize = 12.sp,
-                            maxLines = 1,
+                            fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
+                            lineHeight = 16.sp,
+                            maxLines = if (slide.isCompanySlide) 3 else 1,
                             overflow = TextOverflow.Ellipsis
                         )
-                        Spacer(Modifier.height(12.dp))
-                        Text(
-                            "View product  →",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(20.dp))
-                                .background(Gold)
-                                .clickable { openProduct(slide.productName) }
-                                .padding(horizontal = 14.dp, vertical = 9.dp),
-                            color = Color(0xFF4D100E),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        if (!slide.isCompanySlide) {
+                            Spacer(Modifier.height(12.dp))
+                            Text(
+                                "View product  →",
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .background(Gold)
+                                    .clickable { openProduct(slide.productName) }
+                                    .padding(horizontal = 14.dp, vertical = 9.dp),
+                                color = Color(0xFF4D100E),
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }
