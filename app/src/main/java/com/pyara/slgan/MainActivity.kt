@@ -989,7 +989,7 @@ private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, o
         Column(Modifier.padding(11.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 Text(product.emoji, fontSize = 42.sp)
-                Text(tr("HERBAL", LocalAppLanguage.current), Modifier.align(Alignment.BottomEnd).padding(6.dp), color = Leaf, fontSize = 8.sp, fontWeight = FontWeight.Bold)
+                Text(tr("SLGAN", LocalAppLanguage.current), Modifier.align(Alignment.BottomEnd).padding(6.dp), color = Leaf, fontSize = 8.sp, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(10.dp))
             Text(product.name, fontSize = 13.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
