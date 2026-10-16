@@ -439,7 +439,7 @@ private fun SplashScreen() {
                         .padding(13.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Image(painter = painterResource(id = R.drawable.slgan_launcher), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.fillMaxSize().graphicsLayer { rotationZ = rotation })
+                    Image(painter = painterResource(id = R.drawable.slgan_logo_true_transparent), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.fillMaxSize().graphicsLayer { rotationZ = rotation })
                 }
             }
             Spacer(Modifier.height(24.dp))
@@ -552,7 +552,7 @@ private fun LoginScreen(
                 modifier = Modifier.align(Alignment.BottomEnd).graphicsLayer { translationY = -leafDrift; rotationZ = 25f },
                 fontSize = 25.sp
             )
-            Image(painter = painterResource(id = R.drawable.slgan_launcher), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.size(142.dp).graphicsLayer {
+            Image(painter = painterResource(id = R.drawable.slgan_logo_true_transparent), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.size(142.dp).graphicsLayer {
                     alpha = logoAlpha.value
                     scaleX = logoScale.value
                     scaleY = logoScale.value
@@ -876,7 +876,7 @@ private fun ShopScreen(
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
         Row(Modifier.fillMaxWidth().background(Cream).statusBarsPadding().padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-            Image(painter = painterResource(id = R.drawable.slgan_launcher), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp))
+            Image(painter = painterResource(id = R.drawable.slgan_logo_true_transparent), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp))
             Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) { Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp); Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 11.sp) }
             IconButton(onClick = { onTabChange("Cart") }) {
