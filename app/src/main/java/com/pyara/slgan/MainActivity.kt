@@ -496,6 +496,7 @@ private fun AyurvedicApp() {
     var adminProductsOpen by remember { mutableStateOf(false) }
     var adminOrdersOpen by remember { mutableStateOf(false) }
     var adminCustomersOpen by remember { mutableStateOf(false) }
+    var adminDiseasesOpen by remember { mutableStateOf(false) }
     var adminRoleResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
@@ -613,6 +614,7 @@ private fun AyurvedicApp() {
     BackHandler(enabled = !showSplash && authResolved) {
         when {
             isAdmin && adminCustomersOpen -> adminCustomersOpen = false
+            isAdmin && adminDiseasesOpen -> adminDiseasesOpen = false
             isAdmin && adminOrdersOpen -> adminOrdersOpen = false
             isAdmin && adminProductsOpen -> adminProductsOpen = false
             selectedProduct != null -> selectedProduct = null
@@ -683,6 +685,7 @@ private fun AyurvedicApp() {
             )
             else if (!adminRoleResolved) AppLoader("Checking account permissions…")
             else if (isAdmin && adminCustomersOpen) AdminCustomersScreen(onBack = { adminCustomersOpen = false })
+            else if (isAdmin && adminDiseasesOpen) AdminDiseasesScreen(onBack = { adminDiseasesOpen = false })
             else if (isAdmin && adminOrdersOpen) AdminOrdersScreen(onBack = { adminOrdersOpen = false })
             else if (isAdmin && adminProductsOpen) AdminProductsScreen(
                 products = liveProducts,
@@ -696,11 +699,13 @@ private fun AyurvedicApp() {
                 onProductsClick = { adminProductsOpen = true },
                 onOrdersClick = { adminOrdersOpen = true },
                 onCustomersClick = { adminCustomersOpen = true },
+                onDiseasesClick = { adminDiseasesOpen = true },
                 onSignOut = {
                     auth.signOut()
                     adminProductsOpen = false
                     adminOrdersOpen = false
                     adminCustomersOpen = false
+                    adminDiseasesOpen = false
                     selectedTab = "Home"
                     selectedProduct = null
                     cart.clear()
@@ -1559,6 +1564,7 @@ private fun AdminDashboardScreen(
     onProductsClick: () -> Unit,
     onOrdersClick: () -> Unit,
     onCustomersClick: () -> Unit,
+    onDiseasesClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
     Column(
@@ -1619,7 +1625,7 @@ private fun AdminDashboardScreen(
         AdminModuleInfo(Icons.Default.Inventory2, "Products", "View the catalogue and product information.", onClick = onProductsClick)
         AdminModuleInfo(Icons.Default.ReceiptLong, "Orders", "Review, accept or reject customer orders.", onClick = onOrdersClick)
         AdminModuleInfo(Icons.Default.PeopleAlt, "Customers", "View customer details and enable or disable accounts.", onClick = onCustomersClick)
-        AdminModuleInfo(Icons.Default.MedicalServices, "Diseases", "Disease catalogue information.")
+        AdminModuleInfo(Icons.Default.MedicalServices, "Diseases", "Manage disease names and descriptions.", onClick = onDiseasesClick)
         Spacer(Modifier.height(20.dp))
         OutlinedButton(
             onClick = onSignOut,
@@ -1633,6 +1639,221 @@ private fun AdminDashboardScreen(
     }
 }
 
+
+@Composable
+private fun AdminDiseasesScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    val db = remember { FirebaseFirestore.getInstance() }
+    var records by remember { mutableStateOf<List<Map<String, Any?>>>(emptyList()) }
+    var loading by remember { mutableStateOf(true) }
+    var loadError by remember { mutableStateOf<String?>(null) }
+    var search by remember { mutableStateOf("") }
+    var showAddDialog by remember { mutableStateOf(false) }
+    var diseaseName by remember { mutableStateOf("") }
+    var diseaseDescription by remember { mutableStateOf("") }
+    var saving by remember { mutableStateOf(false) }
+
+    DisposableEffect(Unit) {
+        val registration = db.collection("diseases").addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                loadError = error.localizedMessage ?: "Unable to load diseases."
+                loading = false
+            } else {
+                records = snapshot?.documents?.map { doc ->
+                    val data = doc.data.orEmpty()
+                    data + mapOf(
+                        "_documentId" to doc.id,
+                        "disease_id" to (data["disease_id"]?.toString()?.takeIf { it.isNotBlank() } ?: doc.id),
+                        "diseases_name" to (data["diseases_name"]?.toString() ?: ""),
+                        "disease_desc" to (data["disease_desc"]?.toString() ?: "")
+                    )
+                }?.sortedBy { it["diseases_name"].toString().lowercase() }.orEmpty()
+                loadError = null
+                loading = false
+            }
+        }
+        onDispose { registration.remove() }
+    }
+
+    val filtered = records.filter {
+        (it["diseases_name"]?.toString().orEmpty() + " " + it["disease_desc"]?.toString().orEmpty())
+            .contains(search.trim(), ignoreCase = true)
+    }
+
+    if (showAddDialog) {
+        AlertDialog(
+            onDismissRequest = { if (!saving) showAddDialog = false },
+            containerColor = Color(0xFFFFFCF5),
+            shape = RoundedCornerShape(24.dp),
+            icon = {
+                Box(Modifier.size(54.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest, modifier = Modifier.size(28.dp))
+                }
+            },
+            title = { Text("Add disease", color = Ink, fontWeight = FontWeight.ExtraBold) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text("Add a disease to the app catalogue.", color = Muted, fontSize = 13.sp)
+                    OutlinedTextField(
+                        value = diseaseName,
+                        onValueChange = { diseaseName = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("Disease name *") },
+                        placeholder = { Text("e.g. Cough") },
+                        singleLine = true,
+                        shape = RoundedCornerShape(14.dp)
+                    )
+                    OutlinedTextField(
+                        value = diseaseDescription,
+                        onValueChange = { diseaseDescription = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("Description") },
+                        placeholder = { Text("Enter details (optional)") },
+                        minLines = 3,
+                        maxLines = 5,
+                        shape = RoundedCornerShape(14.dp)
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    enabled = !saving && diseaseName.trim().isNotEmpty(),
+                    onClick = {
+                        val cleanName = diseaseName.trim()
+                        val duplicate = records.any { it["diseases_name"]?.toString()?.equals(cleanName, ignoreCase = true) == true }
+                        if (duplicate) {
+                            Toast.makeText(context, "This disease already exists.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            saving = true
+                            val ref = db.collection("diseases").document()
+                            ref.set(
+                                mapOf(
+                                    "disease_id" to ref.id,
+                                    "diseases_name" to cleanName,
+                                    "disease_desc" to diseaseDescription.trim(),
+                                    "createdAt" to System.currentTimeMillis(),
+                                    "updatedAt" to System.currentTimeMillis()
+                                )
+                            ).addOnSuccessListener {
+                                saving = false
+                                showAddDialog = false
+                                diseaseName = ""
+                                diseaseDescription = ""
+                                Toast.makeText(context, "Disease added successfully.", Toast.LENGTH_SHORT).show()
+                            }.addOnFailureListener { error ->
+                                saving = false
+                                Toast.makeText(context, "Could not add disease: ${error.localizedMessage ?: "Please try again."}", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                    shape = RoundedCornerShape(12.dp)
+                ) { if (saving) CircularProgressIndicator(Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp) else Text("Save disease") }
+            },
+            dismissButton = {
+                TextButton(enabled = !saving, onClick = { showAddDialog = false }) { Text("Cancel", color = Muted) }
+            }
+        )
+    }
+
+    Column(Modifier.fillMaxSize().background(Cream).padding(top = 8.dp)) {
+        Row(
+            Modifier.fillMaxWidth().padding(start = 12.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            Column(Modifier.weight(1f)) {
+                Text("Diseases", color = Ink, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                Text("Manage your disease catalogue", color = Muted, fontSize = 12.sp)
+            }
+            Button(
+                onClick = { showAddDialog = true },
+                colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                shape = RoundedCornerShape(14.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.width(4.dp))
+                Text("Add")
+            }
+        }
+        Card(
+            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            shape = RoundedCornerShape(22.dp),
+            colors = CardDefaults.cardColors(containerColor = Forest)
+        ) {
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(Modifier.size(50.dp).background(Color.White.copy(alpha = 0.13f), RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Gold, modifier = Modifier.size(27.dp))
+                }
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Disease library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("Names and information shown in the customer app", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(if (loading) "—" else records.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                }
+            }
+        }
+        Spacer(Modifier.height(14.dp))
+        OutlinedTextField(
+            value = search,
+            onValueChange = { search = it },
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            singleLine = true,
+            label = { Text("Search diseases") },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+            shape = RoundedCornerShape(15.dp)
+        )
+        Spacer(Modifier.height(10.dp))
+        when {
+            loading -> AppLoader("Loading diseases…")
+            loadError != null -> Column(Modifier.fillMaxWidth().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(Icons.Default.CloudOff, contentDescription = null, tint = Muted, modifier = Modifier.size(36.dp))
+                Spacer(Modifier.height(8.dp))
+                Text("Could not load diseases", color = Ink, fontWeight = FontWeight.Bold)
+                Text(loadError.orEmpty(), color = Color(0xFFB3261E), fontSize = 12.sp)
+                Text("Check that the latest Firestore rules are published.", color = Muted, fontSize = 12.sp)
+            }
+            filtered.isEmpty() -> EmptyState("🌿", if (search.isBlank()) "No diseases added yet" else "No matching diseases", "Use Add to create your first disease entry.")
+            else -> LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 5.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(filtered, key = { it["_documentId"].toString() }) { disease ->
+                    val name = disease["diseases_name"]?.toString().orEmpty().ifBlank { "Unnamed disease" }
+                    val description = disease["disease_desc"]?.toString().orEmpty().ifBlank { "Information not available." }
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(18.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                    ) {
+                        Row(Modifier.fillMaxWidth().padding(15.dp), verticalAlignment = Alignment.Top) {
+                            Box(Modifier.size(44.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+                                Icon(Icons.Default.Spa, contentDescription = null, tint = Forest, modifier = Modifier.size(23.dp))
+                            }
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                Spacer(Modifier.height(5.dp))
+                                Text(description, color = Muted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 4, overflow = TextOverflow.Ellipsis)
+                                Spacer(Modifier.height(8.dp))
+                                Text("ID: ${disease["disease_id"]}", color = Forest, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 private fun AdminCustomersScreen(onBack: () -> Unit) {
