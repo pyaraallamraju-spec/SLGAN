@@ -141,7 +141,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String)
+private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String)
 private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
 
 private fun productFromFirestore(data: Map<String, Any?>): Product? {
@@ -178,7 +178,10 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val description = listOf("product_description", "description", "product_details", "details").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val imageUrl = listOf("product_image", "image_url", "imageUrl", "image", "product_image_url").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.startsWith("https://") || it.startsWith("http://") } }.orEmpty()
     val quantity = listOf("product_quantity", "quantity", "stock").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity)
+    val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    val majorIngredients = listOf("product_major_ingredients", "major_ingredients", "ingredients", "product_ingredients").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients)
 }
 @Composable
 private fun AyurvedicApp() {
@@ -924,22 +927,24 @@ private fun ProductDetailsPage(
                     }
                 }
             }
-            Text(product.category, color = Leaf, fontSize = 13.sp, fontWeight = FontWeight.Bold)
             Text(product.name, color = Ink, fontSize = 25.sp, lineHeight = 31.sp, fontWeight = FontWeight.ExtraBold)
             Text(product.subtitle, color = Muted, fontSize = 15.sp)
             Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
-            if (product.quantity.isNotBlank()) {
-                Text("Quantity / pack: " + product.quantity, color = Ink, fontSize = 14.sp)
-            }
             HorizontalDivider(color = Gold.copy(alpha = 0.45f))
             Text("Product details", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text("Description", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(
-                product.description.ifBlank { "Traditional Ayurvedic product. Please contact Sri Lakshmi Ganapathi Ayurveda Nilayam for more information about ingredients, usage and suitability." },
+                product.description.ifBlank { "Description not available yet." },
                 color = Muted,
                 fontSize = 14.sp,
                 lineHeight = 22.sp
             )
-            Text("Category: " + product.category, color = Ink, fontSize = 13.sp)
+            Text("Usage", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(product.usage.ifBlank { "Usage information not available yet." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text("Cures", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(product.cures.ifBlank { "Information not available yet." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text("Major ingredients", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(product.majorIngredients.ifBlank { "Ingredient information not available yet." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
         }
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(16.dp),
