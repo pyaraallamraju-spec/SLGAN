@@ -671,7 +671,7 @@ private fun HomeBannerSlider(
                 "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=1200&q=85"
             ),
             HomeBannerSlide(
-                "Sleahamrutham",
+                "Sleshamrutham",
                 "A signature SLGAN product",
                 "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=85"
             ),
