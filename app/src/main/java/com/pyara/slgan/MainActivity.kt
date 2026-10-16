@@ -880,7 +880,10 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text(tr("Explore thoughtful herbal essentials.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
-                HomeBannerSlider(products = products, onViewProduct = { productName ->\n                    val match = products.firstOrNull { it.name.trim().equals(productName, ignoreCase = true) }\n                    if (match != null) onProductClick(match) else { onCategoryChange("All"); onSearchChange(productName) }\n                })
+                HomeBannerSlider(products = products, onViewProduct = { productName ->
+                    val match = products.firstOrNull { it.name.trim().equals(productName, ignoreCase = true) }
+                    if (match != null) onProductClick(match) else { onCategoryChange("All"); onSearchChange(productName) }
+                })
                 Spacer(Modifier.height(18.dp))
                 OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text(tr("Search products", LocalAppLanguage.current)) }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
                 Spacer(Modifier.height(20.dp))
