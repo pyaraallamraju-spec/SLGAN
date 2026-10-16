@@ -523,6 +523,15 @@ private fun AyurvedicApp() {
                     if (error != null) {
                         isAdmin = false
                         adminRoleResolved = true
+                    } else if (snapshot?.contains("enabled") == true && snapshot.getBoolean("enabled") == false) {
+                        isAdmin = false
+                        adminRoleResolved = true
+                        Toast.makeText(
+                            appContext,
+                            "This account has been disabled. Please contact the store administrator.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        auth.signOut()
                     } else {
                         isAdmin = snapshot?.getBoolean("is_admin") == true
                         adminRoleResolved = true
