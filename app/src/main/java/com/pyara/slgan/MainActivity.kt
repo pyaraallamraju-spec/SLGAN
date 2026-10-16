@@ -494,6 +494,7 @@ private fun AyurvedicApp() {
     var isAdmin by remember { mutableStateOf(false) }
     var adminProductsOpen by remember { mutableStateOf(false) }
     var adminOrdersOpen by remember { mutableStateOf(false) }
+    var adminCustomersOpen by remember { mutableStateOf(false) }
     var adminRoleResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
@@ -602,6 +603,7 @@ private fun AyurvedicApp() {
     var lastBackPressedAt by remember { mutableStateOf(0L) }
     BackHandler(enabled = !showSplash && authResolved) {
         when {
+            isAdmin && adminCustomersOpen -> adminCustomersOpen = false
             isAdmin && adminOrdersOpen -> adminOrdersOpen = false
             isAdmin && adminProductsOpen -> adminProductsOpen = false
             selectedProduct != null -> selectedProduct = null
@@ -671,6 +673,7 @@ private fun AyurvedicApp() {
                 }
             )
             else if (!adminRoleResolved) AppLoader("Checking account permissions…")
+            else if (isAdmin && adminCustomersOpen) AdminCustomersScreen(onBack = { adminCustomersOpen = false })
             else if (isAdmin && adminOrdersOpen) AdminOrdersScreen(onBack = { adminOrdersOpen = false })
             else if (isAdmin && adminProductsOpen) AdminProductsScreen(
                 products = liveProducts,
@@ -683,9 +686,12 @@ private fun AyurvedicApp() {
                 productCount = liveProducts.size,
                 onProductsClick = { adminProductsOpen = true },
                 onOrdersClick = { adminOrdersOpen = true },
+                onCustomersClick = { adminCustomersOpen = true },
                 onSignOut = {
                     auth.signOut()
                     adminProductsOpen = false
+                    adminOrdersOpen = false
+                    adminCustomersOpen = false
                     selectedTab = "Home"
                     selectedProduct = null
                     cart.clear()
@@ -1543,6 +1549,7 @@ private fun AdminDashboardScreen(
     productCount: Int,
     onProductsClick: () -> Unit,
     onOrdersClick: () -> Unit,
+    onCustomersClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
     Column(
@@ -1602,7 +1609,7 @@ private fun AdminDashboardScreen(
         Spacer(Modifier.height(10.dp))
         AdminModuleInfo(Icons.Default.Inventory2, "Products", "View the catalogue and product information.", onClick = onProductsClick)
         AdminModuleInfo(Icons.Default.ReceiptLong, "Orders", "Review, accept or reject customer orders.", onClick = onOrdersClick)
-        AdminModuleInfo(Icons.Default.PeopleAlt, "Customers", "Customer accounts and profiles.")
+        AdminModuleInfo(Icons.Default.PeopleAlt, "Customers", "View customer details and enable or disable accounts.", onClick = onCustomersClick)
         AdminModuleInfo(Icons.Default.MedicalServices, "Diseases", "Disease catalogue information.")
         Spacer(Modifier.height(20.dp))
         OutlinedButton(
