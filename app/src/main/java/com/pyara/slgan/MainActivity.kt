@@ -1485,33 +1485,50 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, loading: Bo
         Text("Diseases", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Text("Find a disease from the available list.", color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(20.dp))
-        Box(Modifier.fillMaxWidth()) {
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it; selectedDisease = null; expanded = true },
-                modifier = Modifier.fillMaxWidth().onFocusChanged { if (it.isFocused) expanded = true },
-                label = { Text("Select disease") },
-                placeholder = { Text(if (loading) "Loading diseases…" else "Type to search diseases") },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
-                trailingIcon = {
-                    IconButton(onClick = { expanded = !expanded }) {
-                        Icon(Icons.Default.ArrowDropDown, contentDescription = "Show diseases")
-                    }
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(16.dp)
-            )
-            DropdownMenu(
-                expanded = expanded && matches.isNotEmpty() && !loading,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.fillMaxWidth(0.88f).heightIn(max = 320.dp)
+        OutlinedTextField(
+            value = query,
+            onValueChange = { query = it; selectedDisease = null; expanded = true },
+            modifier = Modifier.fillMaxWidth().onFocusChanged { if (it.isFocused) expanded = true },
+            label = { Text("Select disease") },
+            placeholder = { Text(if (loading) "Loading diseases…" else "Type to search diseases") },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+            trailingIcon = {
+                IconButton(onClick = { expanded = !expanded }) {
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = "Show diseases")
+                }
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(16.dp)
+        )
+        // Render suggestions in the normal layout instead of a popup so they remain
+        // visible on small Android screens and inside the scrollable Diseases page.
+        if (expanded && !loading && error == null && matches.isNotEmpty() && selectedDisease == null) {
+            Spacer(Modifier.height(4.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
-                matches.forEach { disease ->
-                    DropdownMenuItem(
-                        text = { Text(disease, color = Ink) },
-                        onClick = { query = disease; selectedDisease = disease; expanded = false },
-                        leadingIcon = { Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest) }
-                    )
+                Column(Modifier.heightIn(max = 320.dp).verticalScroll(rememberScrollState())) {
+                    matches.take(50).forEach { disease ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    query = disease
+                                    selectedDisease = disease
+                                    expanded = false
+                                }
+                                .padding(horizontal = 14.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest)
+                            Spacer(Modifier.width(10.dp))
+                            Text(disease, color = Ink, fontSize = 14.sp)
+                        }
+                        HorizontalDivider(color = Gold.copy(alpha = 0.25f))
+                    }
                 }
             }
         }
