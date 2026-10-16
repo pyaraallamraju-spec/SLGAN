@@ -1335,7 +1335,12 @@ private fun OrdersPage(
 
 @Composable
 private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
-    Column(modifier.fillMaxSize().padding(18.dp)) {
+    Column(
+        modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(18.dp)
+    ) {
         Text(tr("Categories", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
         Text(tr("Find the collection for your routine.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
         Spacer(Modifier.height(18.dp))
