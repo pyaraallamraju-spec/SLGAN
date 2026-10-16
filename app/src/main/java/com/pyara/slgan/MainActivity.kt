@@ -1281,6 +1281,7 @@ private fun AdminProductsScreen(
     onBack: () -> Unit
 ) {
     var searchText by remember { mutableStateOf("") }
+    var selectedAdminCategory by remember { mutableStateOf("All") }
     var editingProduct by remember { mutableStateOf<Product?>(null) }
     var addingProduct by remember { mutableStateOf(false) }
     if (editingProduct != null || addingProduct) {
@@ -1291,11 +1292,13 @@ private fun AdminProductsScreen(
         )
         return
     }
-    val filtered = remember(products, searchText) {
-        products.filter {
-            it.name.contains(searchText, ignoreCase = true) ||
-            it.category.contains(searchText, ignoreCase = true) ||
-            it.id.contains(searchText, ignoreCase = true)
+    val filtered = remember(products, searchText, selectedAdminCategory) {
+        products.filter { product ->
+            (selectedAdminCategory == "All" || product.category.equals(selectedAdminCategory, ignoreCase = true)) &&
+            (searchText.isBlank() ||
+                product.name.contains(searchText, ignoreCase = true) ||
+                product.category.contains(searchText, ignoreCase = true) ||
+                product.id.contains(searchText, ignoreCase = true))
         }.sortedBy { it.name.lowercase() }
     }
     Column(Modifier.fillMaxSize().background(Cream)) {
@@ -1331,6 +1334,24 @@ private fun AdminProductsScreen(
             },
             shape = RoundedCornerShape(14.dp)
         )
+        Row(
+            Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            categories.forEach { item ->
+                FilterChip(
+                    selected = selectedAdminCategory == item,
+                    onClick = { selectedAdminCategory = item },
+                    label = { Text(item, fontSize = 12.sp) },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = Forest,
+                        selectedLabelColor = Color.White,
+                        containerColor = Color.White
+                    )
+                )
+            }
+        }
+        Spacer(Modifier.height(4.dp))
         if (loading) {
             AppLoader("Loading products…", compact = true)
         } else if (loadError != null && products.isEmpty()) {
