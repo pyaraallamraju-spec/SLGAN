@@ -1226,7 +1226,47 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
         }
         onDispose { registration?.remove() }
     }
-    val visible = products.filter { (category == "All" || it.category.equals(category, true)) && (it.name.contains(search, true) || it.subtitle.contains(search, true)) }
+    val categoryProducts = products.filter { category == "All" || it.category.equals(category, true) }
+    val normalizedQuery = search.lowercase().filter { it.isLetterOrDigit() }
+    val exactMatches = categoryProducts.filter {
+        it.name.contains(search.trim(), true) || it.subtitle.contains(search.trim(), true) ||
+            (normalizedQuery.isNotBlank() && it.name.lowercase().filter { ch -> ch.isLetterOrDigit() }.contains(normalizedQuery))
+    }
+    val visible = if (search.isBlank() || exactMatches.isNotEmpty()) {
+        if (search.isBlank()) categoryProducts else exactMatches
+    } else {
+        fun editDistance(a: String, b: String): Int {
+            if (a.isEmpty()) return b.length
+            if (b.isEmpty()) return a.length
+            var previous = IntArray(b.length + 1) { it }
+            for (i in a.indices) {
+                val current = IntArray(b.length + 1)
+                current[0] = i + 1
+                for (j in b.indices) {
+                    current[j + 1] = minOf(
+                        current[j] + 1,
+                        previous[j + 1] + 1,
+                        previous[j] + if (a[i] == b[j]) 0 else 1
+                    )
+                }
+                previous = current
+            }
+            return previous[b.length]
+        }
+        val queryWords = search.lowercase().split(Regex("[^\\p{L}\\p{N}]+")).filter { it.length > 1 }.toSet()
+        categoryProducts.map { product ->
+            val name = product.name.lowercase()
+            val normalizedName = name.filter { it.isLetterOrDigit() }
+            val nameDistance = if (normalizedQuery.isBlank()) 1.0 else
+                1.0 - editDistance(normalizedQuery, normalizedName).toDouble() / maxOf(normalizedQuery.length, normalizedName.length, 1)
+            val wordMatches = queryWords.count { word -> name.contains(word) || product.subtitle.contains(word, true) }
+            val wordScore = if (queryWords.isEmpty()) 0.0 else wordMatches.toDouble() / queryWords.size
+            product to maxOf(nameDistance, wordScore * 0.9)
+        }.filter { it.second >= 0.25 }
+            .sortedByDescending { it.second }
+            .take(5)
+            .map { it.first }
+    }
     LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 20.dp)) {
         item {
             Column(Modifier.padding(horizontal = 18.dp)) {
