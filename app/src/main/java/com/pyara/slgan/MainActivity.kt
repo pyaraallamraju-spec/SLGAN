@@ -987,8 +987,26 @@ private fun HomeBannerSlider(
         listOf(
             HomeBannerSlide(
                 "Sri Lakshmi Ganapathi Ayurveda Nilayam",
-                "Established in 1900 by Sri Vidyaraju Perraju Sharma. Successfully serving for more than 125 years.",
+                "Traditional Ayurveda for everyday wellness.",
                 "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85",
+                isCompanySlide = true
+            ),
+            HomeBannerSlide(
+                "Nature's Herbal Goodness",
+                "Discover herbs, roots and traditional ingredients.",
+                "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=85",
+                isCompanySlide = true
+            ),
+            HomeBannerSlide(
+                "Traditional Ayurvedic Formulations",
+                "Explore Lehyas, Grutas, Pills, Tailas, Churnas and more.",
+                "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=85",
+                isCompanySlide = true
+            ),
+            HomeBannerSlide(
+                "Your Ayurveda Store, Made Simple",
+                "Browse products and discover the SLGAN catalogue.",
+                "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=85",
                 isCompanySlide = true
             )
         ) + products.filter { it.signature }.map { product ->
@@ -1094,7 +1112,7 @@ private fun HomeBannerSlider(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            if (slide.isCompanySlide) "OUR HERITAGE" else "SLGAN SIGNATURE PRODUCT",
+                            when { slide.productName == "Sri Lakshmi Ganapathi Ayurveda Nilayam" -> "OUR HERITAGE"; slide.isCompanySlide -> "DISCOVER SLGAN"; else -> "SLGAN SIGNATURE PRODUCT" },
                             color = Gold,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
