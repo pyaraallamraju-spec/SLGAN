@@ -825,7 +825,6 @@ private fun LoginScreen(
     loading: Boolean,
     onContinue: () -> Unit
 ) {
-    var showEmail by remember { mutableStateOf(true) }
     var showPassword by remember { mutableStateOf(false) }
     Column(
         Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()),
@@ -949,17 +948,7 @@ private fun LoginScreen(
             label = { Text(tr("Email address", LocalAppLanguage.current)) },
             placeholder = { Text(tr("you@example.com", LocalAppLanguage.current)) },
             leadingIcon = { Icon(Icons.Default.Email, null, tint = Color(0xFF8B211B)) },
-            trailingIcon = {
-                IconButton(onClick = { showEmail = !showEmail }) {
-                    Icon(
-                        if (showEmail) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = if (showEmail) "Hide email" else "Show email",
-                        tint = Color(0xFF8B211B)
-                    )
-                }
-            },
             singleLine = true,
-            visualTransformation = if (showEmail) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RoundedCornerShape(20.dp),
             colors = OutlinedTextFieldDefaults.colors(
