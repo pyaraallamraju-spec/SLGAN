@@ -639,33 +639,42 @@ private fun LoginScreen(
 }
 
 private data class HomeBannerSlide(
-    val eyebrow: String,
-    val title: String,
-    val subtitle: String,
-    val imageUrl: String
+    val productName: String,
+    val tagline: String,
+    val fallbackImageUrl: String
 )
 
 @Composable
-private fun HomeBannerSlider(onExplore: () -> Unit) {
+private fun HomeBannerSlider(
+    products: List<Product>,
+    onViewProduct: (String) -> Unit
+) {
     val slides = remember {
         listOf(
             HomeBannerSlide(
-                "ROOTED IN NATURE",
-                "Everyday wellness,\\nwith a herbal touch.",
-                "Explore collection  →",
-                "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85"
+                "Mahila Priya",
+                "A signature SLGAN product",
+                "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=1200&q=85"
             ),
             HomeBannerSlide(
-                "HERBAL GOODNESS",
-                "Nature's care,\\nmade part of your day.",
-                "Explore collection  →",
-                "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=85"
+                "Sleahamrutham",
+                "A signature SLGAN product",
+                "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=1200&q=85"
             ),
             HomeBannerSlide(
-                "TRADITION MEETS NATURE",
-                "Discover the beauty\\nof botanical wellness.",
-                "Explore collection  →",
-                "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1200&q=85"
+                "Ganeshamrutam",
+                "A signature SLGAN product",
+                "https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1200&q=85"
+            ),
+            HomeBannerSlide(
+                "Jeevasatvam",
+                "A signature SLGAN product",
+                "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=1200&q=85"
+            ),
+            HomeBannerSlide(
+                "Mahabala",
+                "A signature SLGAN product",
+                "https://images.unsplash.com/photo-1603909223429-69bb7101f420?auto=format&fit=crop&w=1200&q=85"
             )
         )
     }
@@ -676,15 +685,23 @@ private fun HomeBannerSlider(onExplore: () -> Unit) {
             activeSlide = (activeSlide + 1) % slides.size
         }
     }
+    val openProduct: (String) -> Unit = { productName ->
+        val matchingProduct = products.firstOrNull { it.name.trim().equals(productName, ignoreCase = true) }
+        if (matchingProduct != null) {
+            onViewProduct(productName)
+        } else {
+            // Keep the product discoverable if its Firestore record has not been added yet.
+            onViewProduct(productName)
+        }
+    }
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 174.dp, max = 214.dp)
+                .heightIn(min = 190.dp, max = 232.dp)
                 .clip(RoundedCornerShape(22.dp))
                 .background(Forest)
-                .clickable(onClick = onExplore)
         ) {
             AnimatedContent(
                 targetState = activeSlide,
@@ -695,10 +712,11 @@ private fun HomeBannerSlider(onExplore: () -> Unit) {
                 label = "homeBannerSlide"
             ) { index ->
                 val slide = slides[index]
+                val productImage = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }?.imageUrl.orEmpty()
                 Box(Modifier.fillMaxSize()) {
                     AsyncImage(
-                        model = slide.imageUrl,
-                        contentDescription = "Natural herbs and botanical wellness",
+                        model = productImage.ifBlank { slide.fallbackImageUrl },
+                        contentDescription = slide.productName,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -706,9 +724,9 @@ private fun HomeBannerSlider(onExplore: () -> Unit) {
                         Modifier.fillMaxSize().background(
                             Brush.horizontalGradient(
                                 colors = listOf(
-                                    Color(0xFF4D100E).copy(alpha = 0.96f),
-                                    Forest.copy(alpha = 0.83f),
-                                    Forest.copy(alpha = 0.32f),
+                                    Color(0xFF4D100E).copy(alpha = 0.97f),
+                                    Forest.copy(alpha = 0.86f),
+                                    Forest.copy(alpha = 0.40f),
                                     Color.Transparent
                                 )
                             )
@@ -723,35 +741,45 @@ private fun HomeBannerSlider(onExplore: () -> Unit) {
                     )
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth(0.84f)
+                            .fillMaxWidth(0.88f)
                             .align(Alignment.CenterStart)
                             .padding(horizontal = 18.dp, vertical = 18.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            tr(slide.eyebrow, LocalAppLanguage.current),
+                            "SLGAN SIGNATURE PRODUCT",
                             color = Gold,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            letterSpacing = 1.5.sp,
+                            letterSpacing = 1.3.sp,
                             maxLines = 1
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            tr(slide.title, LocalAppLanguage.current),
+                            slide.productName,
                             color = Color.White,
-                            fontSize = 20.sp,
-                            lineHeight = 26.sp,
-                            fontWeight = FontWeight.ExtraBold
+                            fontSize = 25.sp,
+                            lineHeight = 30.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            slide.tagline,
+                            color = Color.White.copy(alpha = 0.92f),
+                            fontSize = 12.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                         Spacer(Modifier.height(12.dp))
                         Text(
-                            tr(slide.subtitle, LocalAppLanguage.current),
+                            "View product  →",
                             modifier = Modifier
                                 .clip(RoundedCornerShape(20.dp))
                                 .background(Gold)
-                                .clickable(onClick = onExplore)
-                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                                .clickable { openProduct(slide.productName) }
+                                .padding(horizontal = 14.dp, vertical = 9.dp),
                             color = Color(0xFF4D100E),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
@@ -835,7 +863,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text(tr("Explore thoughtful herbal essentials.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
-                HomeBannerSlider(onExplore = { onCategoryChange("All") })
+                HomeBannerSlider(products = products, onViewProduct = { productName ->\n                    val match = products.firstOrNull { it.name.trim().equals(productName, ignoreCase = true) }\n                    if (match != null) onProductClick(match) else { onCategoryChange("All"); onSearchChange(productName) }\n                })
                 Spacer(Modifier.height(18.dp))
                 OutlinedTextField(search, onSearchChange, Modifier.fillMaxWidth(), placeholder = { Text(tr("Search products", LocalAppLanguage.current)) }, leadingIcon = { Icon(Icons.Default.Search, null) }, singleLine = true, shape = RoundedCornerShape(16.dp))
                 Spacer(Modifier.height(20.dp))
