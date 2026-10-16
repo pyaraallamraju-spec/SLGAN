@@ -1,20 +1,20 @@
 [
-  {
-    "diseases_name": "All Diseases"
-  },
-  {
-    "diseases_name": "Tuberculosis (TB)"
-  },
-  {
-    "diseases_name": "Cough"
-  },
-  {
-    "diseases_name": "Flum"
-  },
-  {
-    "diseases_name": "Fever"
-  },
-  {
-    "diseases_name": "Obesity"
-  }
+    {
+        "diseases_name": "All Diseases"
+    },
+    {
+        "diseases_name": "Tuberculosis (TB)"
+    },
+    {
+        "diseases_name": "Cough"
+    },
+    {
+        "diseases_name": "Flum"
+    },
+    {
+        "diseases_name": "Fever"
+    },
+    {
+        "diseases_name": "Obesity"
+    }
 ]
