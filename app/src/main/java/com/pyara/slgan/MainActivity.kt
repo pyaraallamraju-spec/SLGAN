@@ -621,13 +621,6 @@ private fun LoginScreen(
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(12.dp))
-        Text(
-            "Sign in to explore your herbal wellness products.",
-            color = Color(0xFF56534D),
-            fontSize = 14.sp,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 20.dp)
-        )
         Spacer(Modifier.height(28.dp))
         OutlinedTextField(
             value = value,
