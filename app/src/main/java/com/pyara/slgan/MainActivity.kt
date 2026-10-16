@@ -804,9 +804,10 @@ private fun HomeBannerSlider(
                         Spacer(Modifier.height(6.dp))
                         Text(
                             slide.tagline,
-                            color = Color.White.copy(alpha = 0.92f),
+                            color = if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFC8F0D2),
                             fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
                             lineHeight = 16.sp,
+                            fontWeight = FontWeight.Medium,
                             maxLines = if (slide.isCompanySlide) 3 else 1,
                             overflow = TextOverflow.Ellipsis
                         )
