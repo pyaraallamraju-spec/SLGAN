@@ -7,6 +7,12 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Disease names are public catalogue data used by the Select disease search.
+    match /diseases/{diseaseId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     // Customers can access only their own profile.
     match /customers/{userId} {
       allow read, create, update, delete: if request.auth != null
