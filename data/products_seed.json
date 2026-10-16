@@ -6,7 +6,10 @@
     "product_price": 2000,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Siddha Makaradhwajam",
@@ -15,7 +18,10 @@
     "product_price": 1200,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Poornachandrodayam",
@@ -24,7 +30,10 @@
     "product_price": 800,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Mahavatavidhwamsa Rasam",
@@ -33,7 +42,10 @@
     "product_price": 2000,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Mahavata Rasam",
@@ -42,7 +54,10 @@
     "product_price": 450,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Swarna Kanta Vallabha Rasam",
@@ -51,7 +66,10 @@
     "product_price": 500,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Kanthavallabha Rasam",
@@ -60,7 +78,10 @@
     "product_price": 250,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Pralayagni Rudra Rasam",
@@ -69,7 +90,10 @@
     "product_price": 250,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Sleshantaka Rasam (name unclear)",
@@ -78,7 +102,10 @@
     "product_price": 260,
     "product_units": "tablets",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Lokanatha Rasam",
@@ -87,7 +114,10 @@
     "product_price": 250,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Vyadhihara Rasam",
@@ -96,7 +126,10 @@
     "product_price": 350,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Hemasundara Rasam",
@@ -105,7 +138,10 @@
     "product_price": 350,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Sleshma Gajamkusam",
@@ -114,7 +150,10 @@
     "product_price": 260,
     "product_units": "tablets",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Lakshmi Vilasa Rasam",
@@ -123,7 +162,10 @@
     "product_price": 200,
     "product_units": "tablets",
     "product_category": "Pills",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Lakshmi Vilasa Rasam",
@@ -132,7 +174,10 @@
     "product_price": 250,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Vijaya Chintamani",
@@ -141,7 +186,10 @@
     "product_price": 500,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Rajita Loha Rasayanam",
@@ -150,7 +198,10 @@
     "product_price": 600,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Rasa Chintamani",
@@ -159,7 +210,10 @@
     "product_price": 3000,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Swarna Tamra Rasayanam",
@@ -168,7 +222,10 @@
     "product_price": 2500,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Tamra Rasayanam",
@@ -177,7 +234,10 @@
     "product_price": 600,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Tamra Vanga Rasayanam",
@@ -186,7 +246,10 @@
     "product_price": 750,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Chaturloha Rasayanam",
@@ -195,7 +258,10 @@
     "product_price": 750,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Asta Loha Rasayanam",
@@ -204,7 +270,10 @@
     "product_price": 1200,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Raja Mruganka Rasam",
@@ -213,7 +282,10 @@
     "product_price": 1200,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Mahaloha Rasayanam",
@@ -222,7 +294,10 @@
     "product_price": 750,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Loha Rasayanam",
@@ -231,7 +306,10 @@
     "product_price": 500,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Meha Vanga Raajeyem",
@@ -240,7 +318,10 @@
     "product_price": 350,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Rajita Meha Vanga Raajeyem",
@@ -249,7 +330,10 @@
     "product_price": 750,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Sootikaabharanam",
@@ -258,7 +342,10 @@
     "product_price": 500,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Swarna Suryavarti",
@@ -267,7 +354,10 @@
     "product_price": 1500,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Kanaka Bala Suryodayam",
@@ -276,7 +366,10 @@
     "product_price": 1500,
     "product_units": "g",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Mahila Priya",
@@ -285,7 +378,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayoga",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Swasaamrutam",
@@ -294,7 +390,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Jaambu Paanam",
@@ -303,7 +402,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Jeeva Satvam",
@@ -312,7 +414,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Mahaabala",
@@ -321,7 +426,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 1
+    "signature": 1,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Ganeshamrutham",
@@ -330,7 +438,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Gadaa Sanjeevi",
@@ -339,7 +450,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Maadeephala Rasayanam",
@@ -348,7 +462,10 @@
     "product_price": 75,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Maadeephala Rasayanam",
@@ -357,7 +474,10 @@
     "product_price": 150,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Jambeera Rasayanam",
@@ -366,7 +486,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Rasayanas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Sitopaladi Churnam",
@@ -375,7 +498,10 @@
     "product_price": 75,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Talisadi Churnam",
@@ -384,7 +510,10 @@
     "product_price": 100,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Pushyanuga Churnam",
@@ -393,7 +522,10 @@
     "product_price": 65,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Gangadhara Churnam",
@@ -402,7 +534,10 @@
     "product_price": 65,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Lavanadi Churnam",
@@ -411,7 +546,10 @@
     "product_price": 130,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Chaturjaataka Churnam",
@@ -420,7 +558,10 @@
     "product_price": 130,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Sudarshana Churnam",
@@ -429,7 +570,10 @@
     "product_price": 70,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Bhaskara Lavana Churnam",
@@ -438,7 +582,10 @@
     "product_price": 100,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Maha Drakshaadi Churnam",
@@ -447,7 +594,10 @@
     "product_price": 120,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Rasottamaadi Churnam",
@@ -456,7 +606,10 @@
     "product_price": 65,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Hingvashtaka Churnam",
@@ -465,7 +618,10 @@
     "product_price": 80,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Chandanaadi Churnam",
@@ -474,7 +630,10 @@
     "product_price": 120,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Ashwagandha Churnam",
@@ -483,7 +642,10 @@
     "product_price": 75,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Triphala Churnam",
@@ -492,7 +654,10 @@
     "product_price": 90,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Dantadhavana Churnam",
@@ -501,7 +666,10 @@
     "product_price": 120,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Vaasadi Dhoomapaanadi Churnam",
@@ -510,7 +678,10 @@
     "product_price": 80,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Tippasattu",
@@ -519,7 +690,10 @@
     "product_price": 60,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Patcha Karpuram",
@@ -528,7 +702,10 @@
     "product_price": 60,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Garudamjanam",
@@ -537,7 +714,10 @@
     "product_price": 60,
     "product_units": "g",
     "product_category": "Churnas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Saraswathi Ghritam",
@@ -546,7 +726,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Gritas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Phala Ghritam",
@@ -555,7 +738,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Gritas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Shatadhouta Ghritam",
@@ -564,7 +750,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Gritas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Kalyana Ghritam",
@@ -573,7 +762,10 @@
     "product_price": 150,
     "product_units": "ml",
     "product_category": "Gritas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Surya-prabha Kashaya Ghritam",
@@ -582,7 +774,10 @@
     "product_price": 150,
     "product_units": "ml",
     "product_category": "Gritas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Bhringaraja Tailam",
@@ -591,7 +786,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Amlaki Tailam",
@@ -600,7 +798,10 @@
     "product_price": 175,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Aragwadhadi Tailam",
@@ -609,7 +810,10 @@
     "product_price": 180,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Chandanaadi Tailam",
@@ -618,7 +822,10 @@
     "product_price": 250,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Narayana Tailam",
@@ -627,7 +834,10 @@
     "product_price": 250,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Vishnupushpi Tailam",
@@ -636,7 +846,10 @@
     "product_price": 175,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Amruthaadi Tailam",
@@ -645,7 +858,10 @@
     "product_price": 180,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Sahacharaadi Tailam",
@@ -654,7 +870,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Mahanarayana Tailam",
@@ -663,7 +882,10 @@
     "product_price": 250,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Bala Tailam",
@@ -672,7 +894,10 @@
     "product_price": 250,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Maha Vishagarbha Tailam",
@@ -681,7 +906,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Pinda Tailam",
@@ -690,7 +918,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Tamra Tailam",
@@ -699,7 +930,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Karna Roganthaka Tailam",
@@ -708,7 +942,10 @@
     "product_price": 80,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Mahaa Moosha Tailam",
@@ -717,7 +954,10 @@
     "product_price": 250,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Vidangaadi Tailam",
@@ -726,7 +966,10 @@
     "product_price": 200,
     "product_units": "ml",
     "product_category": "Tailas",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Siddha Makaradhwajam",
@@ -735,7 +978,10 @@
     "product_price": 2500,
     "product_units": "Tab",
     "product_category": "Pills",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Poorna Chandrodayam",
@@ -744,7 +990,10 @@
     "product_price": 2000,
     "product_units": "Tab",
     "product_category": "Pills",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Vasantha Kusumakaram",
@@ -753,7 +1002,10 @@
     "product_price": 2500,
     "product_units": "Tab",
     "product_category": "Pills",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Rajita Chandrodayam",
@@ -762,7 +1014,10 @@
     "product_price": 1200,
     "product_units": "Tab",
     "product_category": "Pills",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Bruhat Vaata Chintamani",
@@ -771,7 +1026,10 @@
     "product_price": 3000,
     "product_units": "Tab",
     "product_category": "Pills",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   },
   {
     "product_name": "Maha Panchabhana Rasam",
@@ -780,6 +1038,9 @@
     "product_price": 3000,
     "product_units": "Tab",
     "product_category": "Pills",
-    "signature": 0
+    "signature": 0,
+    "product_description": "",
+    "product_usage": "",
+    "product_ingredients": ""
   }
 ]
