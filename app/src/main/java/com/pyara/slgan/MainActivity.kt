@@ -1567,6 +1567,21 @@ private fun AdminDashboardScreen(
     onDiseasesClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
+    var orderCount by remember { mutableIntStateOf(0) }
+    var diseaseCount by remember { mutableIntStateOf(0) }
+    DisposableEffect(Unit) {
+        val db = FirebaseFirestore.getInstance()
+        val ordersListener = db.collection("orders").addSnapshotListener { snapshot, error ->
+            if (error == null) orderCount = snapshot?.size() ?: 0
+        }
+        val diseasesListener = db.collection("diseases").addSnapshotListener { snapshot, error ->
+            if (error == null) diseaseCount = snapshot?.size() ?: 0
+        }
+        onDispose {
+            ordersListener.remove()
+            diseasesListener.remove()
+        }
+    }
     Column(
         Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
@@ -1609,7 +1624,27 @@ private fun AdminDashboardScreen(
                 icon = Icons.Default.Inventory2,
                 title = "Products",
                 value = productCount.toString(),
-                subtitle = "Catalogue items"
+                subtitle = "Catalogue items",
+                onClick = onProductsClick
+            )
+            AdminSummaryCard(
+                modifier = Modifier.weight(1f),
+                icon = Icons.Default.ReceiptLong,
+                title = "Orders",
+                value = orderCount.toString(),
+                subtitle = "Customer orders",
+                onClick = onOrdersClick
+            )
+        }
+        Spacer(Modifier.height(12.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            AdminSummaryCard(
+                modifier = Modifier.weight(1f),
+                icon = Icons.Default.MedicalServices,
+                title = "Diseases",
+                value = diseaseCount.toString(),
+                subtitle = "Disease records",
+                onClick = onDiseasesClick
             )
             AdminSummaryCard(
                 modifier = Modifier.weight(1f),
@@ -1623,9 +1658,7 @@ private fun AdminDashboardScreen(
         Text("ADMIN MODULES", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
         Spacer(Modifier.height(10.dp))
         AdminModuleInfo(Icons.Default.Inventory2, "Products", "View the catalogue and product information.", onClick = onProductsClick)
-        AdminModuleInfo(Icons.Default.ReceiptLong, "Orders", "Review, accept or reject customer orders.", onClick = onOrdersClick)
         AdminModuleInfo(Icons.Default.PeopleAlt, "Customers", "View customer details and enable or disable accounts.", onClick = onCustomersClick)
-        AdminModuleInfo(Icons.Default.MedicalServices, "Diseases", "Manage disease names and descriptions.", onClick = onDiseasesClick)
         Spacer(Modifier.height(20.dp))
         OutlinedButton(
             onClick = onSignOut,
@@ -2054,10 +2087,11 @@ private fun AdminSummaryCard(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
     value: String,
-    subtitle: String
+    subtitle: String,
+    onClick: (() -> Unit)? = null
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
