@@ -1435,12 +1435,12 @@ private fun AdminProductsScreen(
             .sortedBy { it.lowercase() }
     }
     fun categoryEmoji(category: String): String = when (category.trim().lowercase()) {
-        "all" -> "📦"
+        "all" -> "🌿"
         "lehyas" -> "🍯"
         "grutas", "ghritas", "ghrutas" -> "🫙"
         "pills" -> "💊"
         "tailas" -> "🪔"
-        "churnas" -> "🌿"
+        "churnas" -> "🌰"
         "rasayanas" -> "🌱"
         "bhasmas" -> "🪨"
         else -> "🌿"
