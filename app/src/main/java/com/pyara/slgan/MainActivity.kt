@@ -3316,25 +3316,7 @@ private fun OrdersPage(
                 Text(tr("My Orders", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(5.dp))
                 Text("Track today's orders and revisit your order history.", color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
-                Spacer(Modifier.height(16.dp))
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Card(modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = Color(0x26FFFFFF))) {
-                        Column(Modifier.fillMaxWidth().padding(12.dp)) {
-                            Text("TODAY", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                            Spacer(Modifier.height(4.dp))
-                            Text(currentOrders.size.toString(), color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-                            Text("current orders", color = Color(0xFFF4E7D9), fontSize = 11.sp)
-                        }
-                    }
-                    Card(modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = Color(0x26FFFFFF))) {
-                        Column(Modifier.fillMaxWidth().padding(12.dp)) {
-                            Text("HISTORY", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                            Spacer(Modifier.height(4.dp))
-                            Text(historicalOrders.size.toString(), color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-                            Text("previous orders", color = Color(0xFFF4E7D9), fontSize = 11.sp)
-                        }
-                    }
-                }
+
             }
         }
 
