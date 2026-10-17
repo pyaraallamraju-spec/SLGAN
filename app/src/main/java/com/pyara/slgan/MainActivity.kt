@@ -3379,11 +3379,7 @@ private fun OrdersPage(
                     Text("Ready to discover your Ayurvedic essentials?", color = Muted, fontSize = 13.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center, lineHeight = 19.sp)
                     Spacer(Modifier.height(15.dp))
                     TextButton(onClick = onHome) { Text("Click here to order  →", color = Forest, fontWeight = FontWeight.Bold) }
-                    Button(onClick = onHome, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF641F2B))) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = null)
-                        Spacer(Modifier.width(8.dp))
-                        Text("Show orders", fontWeight = FontWeight.Bold)
-                    }
+
                 }
             }
             else -> currentOrders.forEach { order ->
