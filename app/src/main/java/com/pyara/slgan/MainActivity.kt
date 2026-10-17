@@ -1121,7 +1121,7 @@ private fun HomeBannerSlider(
     onViewProduct: (String) -> Unit
 ) {
     val slides = remember(products) {
-        products.filter { it.signature }.map { product ->
+        val signatureSlides = products.filter { it.signature }.map { product ->
             HomeBannerSlide(
                 product.name,
                 product.description.ifBlank { "A signature SLGAN product" },
@@ -1135,6 +1135,16 @@ private fun HomeBannerSlider(
                         else -> ""
                     }
                 }
+            )
+        }
+        signatureSlides.ifEmpty {
+            listOf(
+                HomeBannerSlide(
+                    productName = "Sri Lakshmi Ganapathi Ayurveda Nilayam",
+                    tagline = "Traditional Ayurvedic care, rooted in nature",
+                    fallbackImageUrl = "",
+                    isCompanySlide = true
+                )
             )
         }
     }
