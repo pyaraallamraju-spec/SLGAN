@@ -2687,7 +2687,9 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             overflow = TextOverflow.Ellipsis
                                         )
                                         Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                        Spacer(Modifier.height(7.dp))
+                                        Spacer(Modifier.height(4.dp))
+                                        ProductRatingLine(productRatings[product.id] ?: ProductRatingSummary())
+                                        Spacer(Modifier.height(6.dp))
                                         Text(
                                             tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
                                             color = Forest,
@@ -2708,7 +2710,6 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
     }
 }
 
-@Composable
 @Composable
 private fun ProductRatingLine(summary: ProductRatingSummary, showEmptyLabel: Boolean = false) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
