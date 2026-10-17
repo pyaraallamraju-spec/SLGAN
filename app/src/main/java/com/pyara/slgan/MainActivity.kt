@@ -1410,6 +1410,8 @@ private fun AdminProductsScreen(
     var selectedAdminCategory by remember { mutableStateOf("All") }
     var editingProduct by remember { mutableStateOf<Product?>(null) }
     var addingProduct by remember { mutableStateOf(false) }
+    var viewingProduct by remember { mutableStateOf<Product?>(null) }
+    var deletingProduct by remember { mutableStateOf<Product?>(null) }
     if (editingProduct != null || addingProduct) {
         AdminProductEditor(
             product = editingProduct,
@@ -1556,47 +1558,155 @@ private fun AdminProductsScreen(
         } else {
             LazyColumn(
                 modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(start = 14.dp, end = 14.dp, top = 2.dp, bottom = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                contentPadding = PaddingValues(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 28.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 items(filtered, key = { it.id }) { product ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(20.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        shape = RoundedCornerShape(24.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF6)),
+                        border = androidx.compose.foundation.BorderStroke(1.dp, Gold.copy(alpha = 0.48f)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
-                        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                            if (product.imageUrl.isNotBlank()) {
-                                AsyncImage(
-                                    model = product.imageUrl,
-                                    contentDescription = product.name,
-                                    modifier = Modifier.size(62.dp).clip(RoundedCornerShape(12.dp)),
-                                    contentScale = ContentScale.Crop
-                                )
-                            } else {
-                                Box(Modifier.size(62.dp).clip(RoundedCornerShape(12.dp)).background(PaleGreen), contentAlignment = Alignment.Center) {
-                                    Text(product.emoji, fontSize = 30.sp)
+                        Column {
+                            Box(
+                                Modifier.fillMaxWidth().height(5.dp)
+                                    .background(Brush.horizontalGradient(listOf(Forest, Gold, Forest)))
+                            )
+                            Row(
+                                Modifier.fillMaxWidth().padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Box(
+                                    Modifier.size(104.dp, 112.dp)
+                                        .clip(RoundedCornerShape(18.dp))
+                                        .background(Color(0xFFF2E5CB)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    if (product.imageUrl.isNotBlank()) {
+                                        AsyncImage(
+                                            model = product.imageUrl,
+                                            contentDescription = product.name,
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Crop
+                                        )
+                                    } else {
+                                        Text(product.emoji, fontSize = 42.sp)
+                                    }
+                                }
+                                Spacer(Modifier.width(14.dp))
+                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                    Text(
+                                        product.category.uppercase(),
+                                        color = Leaf,
+                                        fontSize = 9.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        letterSpacing = 1.2.sp
+                                    )
+                                    Text(
+                                        product.name,
+                                        color = Ink,
+                                        fontSize = 17.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    if (product.subtitle.isNotBlank()) {
+                                        Text(product.subtitle, color = Muted, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    }
+                                    Text(
+                                        if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
+                                        color = Forest,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        fontSize = 18.sp
+                                    )
+                                    Surface(
+                                        shape = RoundedCornerShape(50),
+                                        color = if (product.productStock == 1) Color(0xFFE1F3E4) else Color(0xFFFFE3DF)
+                                    ) {
+                                        Row(Modifier.padding(horizontal = 9.dp, vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
+                                            Box(Modifier.size(6.dp).clip(CircleShape).background(if (product.productStock == 1) Color(0xFF258348) else Color(0xFFC5392F)))
+                                            Spacer(Modifier.width(6.dp))
+                                            Text(
+                                                if (product.productStock == 1) "In stock" else "Out of stock",
+                                                color = if (product.productStock == 1) Color(0xFF176B37) else Color(0xFFAE2924),
+                                                fontSize = 10.sp,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        }
+                                    }
                                 }
                             }
-                            Spacer(Modifier.width(12.dp))
-                            Column(Modifier.weight(1f)) {
-                                Text(product.name, color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                                Text(product.category.ifBlank { "Uncategorised" }, color = Muted, fontSize = 12.sp)
-                                Text(
-                                    if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
-                                    color = Forest, fontWeight = FontWeight.Bold, fontSize = 14.sp
-                                )
-                                if (product.subtitle.isNotBlank()) Text(product.subtitle, color = Muted, fontSize = 11.sp)
-                            }
-                            IconButton(onClick = { editingProduct = product }) {
-                                Icon(Icons.Default.Edit, "Edit ${product.name}", tint = Forest)
+                            HorizontalDivider(color = Gold.copy(alpha = 0.28f))
+                            Row(
+                                Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text("PRODUCT DETAILS", Modifier.weight(1f), color = Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
+                                TextButton(
+                                    onClick = { viewingProduct = product },
+                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Icon(Icons.Default.Visibility, contentDescription = "View ${product.name}", modifier = Modifier.size(16.dp), tint = Forest)
+                                    Spacer(Modifier.width(4.dp))
+                                    Text("View", color = Forest, fontSize = 11.sp)
+                                }
+                                TextButton(
+                                    onClick = { editingProduct = product },
+                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Icon(Icons.Default.Edit, contentDescription = "Edit ${product.name}", modifier = Modifier.size(16.dp), tint = Forest)
+                                    Spacer(Modifier.width(4.dp))
+                                    Text("Edit", color = Forest, fontSize = 11.sp)
+                                }
+                                IconButton(onClick = { deletingProduct = product }, modifier = Modifier.size(34.dp)) {
+                                    Icon(Icons.Default.DeleteOutline, contentDescription = "Delete ${product.name}", tint = Color(0xFFB3261E), modifier = Modifier.size(19.dp))
+                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+    viewingProduct?.let { product ->
+        AlertDialog(
+            onDismissRequest = { viewingProduct = null },
+            containerColor = Color(0xFFFFFCF6),
+            title = { Text(product.name, color = Forest, fontWeight = FontWeight.ExtraBold) },
+            text = {
+                Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(16.dp)), contentScale = ContentScale.Crop)
+                    Text("Category: ${product.category}", color = Ink)
+                    Text("Price: " + if (product.price > 0) "₹${product.price}" else "Price not set", color = Forest, fontWeight = FontWeight.Bold)
+                    Text(if (product.productStock == 1) "Availability: In stock" else "Availability: Out of stock", color = if (product.productStock == 1) Color(0xFF258348) else Color(0xFFC5392F), fontWeight = FontWeight.Bold)
+                    Text("Pack size: ${product.subtitle.ifBlank { "Information not available." }}", color = Muted)
+                    Text("Description: ${product.description.ifBlank { "Information not available." }}", color = Ink)
+                    Text("Usage: ${product.usage.ifBlank { "Information not available." }}", color = Ink)
+                    Text("Ingredients: ${product.majorIngredients.ifBlank { "Information not available." }}", color = Ink)
+                }
+            },
+            confirmButton = { TextButton(onClick = { editingProduct = product; viewingProduct = null }) { Text("Edit product", color = Forest) } },
+            dismissButton = { TextButton(onClick = { viewingProduct = null }) { Text("Close", color = Muted) } }
+        )
+    }
+    deletingProduct?.let { product ->
+        AlertDialog(
+            onDismissRequest = { deletingProduct = null },
+            containerColor = Color(0xFFFFFCF6),
+            title = { Text("Delete product?", color = Forest, fontWeight = FontWeight.Bold) },
+            text = { Text("Delete \"${product.name}\" from the catalogue? This cannot be undone.", color = Ink) },
+            confirmButton = {
+                TextButton(onClick = {
+                    FirebaseFirestore.getInstance().collection("products").document(product.id).delete()
+                        .addOnSuccessListener { Toast.makeText(androidx.compose.ui.platform.LocalContext.current, "Product deleted", Toast.LENGTH_SHORT).show() }
+                    deletingProduct = null
+                }) { Text("Delete", color = Color(0xFFB3261E)) }
+            },
+            dismissButton = { TextButton(onClick = { deletingProduct = null }) { Text("Cancel", color = Muted) } }
+        )
     }
 }
 
