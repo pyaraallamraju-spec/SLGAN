@@ -1276,20 +1276,41 @@ private fun HomeBannerSlider(
                         Box(
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
-                                .padding(12.dp)
+                                .padding(10.dp)
+                                .size(76.dp)
                                 .clip(CircleShape)
                                 .background(Color(0xFF641F2B))
-                                .border(1.5.dp, Gold, CircleShape)
-                                .padding(horizontal = 10.dp, vertical = 7.dp)
+                                .border(2.dp, Gold, CircleShape)
+                                .padding(4.dp)
+                                .border(1.dp, Gold.copy(alpha = 0.85f), CircleShape)
+                                .padding(4.dp),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                "SLGANILAYAM",
-                                color = Gold,
-                                fontSize = 9.sp,
-                                fontWeight = FontWeight.ExtraBold,
-                                letterSpacing = 1.sp,
-                                maxLines = 1
-                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Spa,
+                                    contentDescription = "Ayurvedic seal",
+                                    tint = Gold,
+                                    modifier = Modifier.size(17.dp)
+                                )
+                                Spacer(Modifier.height(2.dp))
+                                Text(
+                                    "SLGANILAYAM",
+                                    color = Gold,
+                                    fontSize = 7.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    letterSpacing = 0.2.sp,
+                                    textAlign = TextAlign.Center,
+                                    lineHeight = 8.sp,
+                                    maxLines = 2
+                                )
+                                Spacer(Modifier.height(2.dp))
+                                Text("✦  ❧  ✦", color = Gold, fontSize = 8.sp, maxLines = 1)
+                            }
                         }
                     }
                     Column(
