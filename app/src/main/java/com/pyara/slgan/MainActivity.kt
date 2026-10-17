@@ -3601,10 +3601,28 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         if (query.isBlank()) diseases else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
     }
 
-    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(18.dp)) {
+    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
         if (selectedDisease == null) {
-            Text(tr("Diseases", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-            Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+            ) {
+                Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                    Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                    Spacer(Modifier.height(6.dp))
+                    Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                    Spacer(Modifier.height(5.dp))
+                    Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
+                    Spacer(Modifier.height(14.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(19.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text("${diseases.size} diseases available", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                    }
+                }
+            }
             Spacer(Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -3994,9 +4012,29 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         onDispose { addressRegistration?.remove() }
     }
 
-    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp)) {
-        Text(tr("Your account", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Text(tr("Manage your personal details and delivery addresses.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
+            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+        ) {
+            Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                Spacer(Modifier.height(6.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(tr("Your account", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
+                        Spacer(Modifier.height(5.dp))
+                        Text(tr("Manage your personal details and delivery addresses.", LocalAppLanguage.current), color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
+                    }
+                    Spacer(Modifier.width(8.dp))
+                    Box(Modifier.size(48.dp).background(Color(0x26FFFFFF), CircleShape), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.Person, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(28.dp))
+                    }
+                }
+            }
+        }
         Spacer(Modifier.height(16.dp))
         Row(Modifier.fillMaxWidth().background(Color(0xFFF1E5D0), RoundedCornerShape(14.dp)).padding(4.dp)) {
             listOf("Profile", "Addresses").forEach { section ->
