@@ -2763,10 +2763,11 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
                                             Text(
-                                                "SIGNATURE",
+                                                "✦ SIGNATURE ✦",
                                                 Modifier.align(Alignment.TopStart).padding(6.dp)
-                                                    .background(Gold, RoundedCornerShape(6.dp)).padding(horizontal = 6.dp, vertical = 3.dp),
-                                                color = Color(0xFF38251F),
+                                                    .background(Color(0xFF6D1020), RoundedCornerShape(6.dp))
+                                                    .padding(horizontal = 7.dp, vertical = 4.dp),
+                                                color = Gold,
                                                 fontSize = 8.sp,
                                                 fontWeight = FontWeight.ExtraBold
                                             )
@@ -2823,6 +2824,17 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             Box(Modifier.fillMaxWidth().height(98.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 Text(product.emoji, fontSize = 42.sp)
                 Text(tr("SLGAN", LocalAppLanguage.current), Modifier.align(Alignment.BottomEnd).padding(6.dp), color = Leaf, fontSize = 8.sp, fontWeight = FontWeight.Bold)
+                if (product.signature) {
+                    Text(
+                        "✦ SIGNATURE ✦",
+                        Modifier.align(Alignment.TopStart).padding(5.dp)
+                            .background(Color(0xFF6D1020), RoundedCornerShape(6.dp))
+                            .padding(horizontal = 6.dp, vertical = 4.dp),
+                        color = Gold,
+                        fontSize = 7.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                }
             }
             Spacer(Modifier.height(10.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
