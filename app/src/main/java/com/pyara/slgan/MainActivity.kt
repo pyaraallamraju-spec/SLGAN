@@ -1706,9 +1706,21 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             } else {
                 records = snapshot?.documents?.map { doc ->
                     val data = doc.data.orEmpty()
+                    val rawDiseaseId = data["disease_id"]
+                    val numericDiseaseId = when (rawDiseaseId) {
+                        is Number -> rawDiseaseId.toLong()
+                        else -> Regex("(?i)^disease(\\d+)$").matchEntire(rawDiseaseId?.toString() ?: doc.id)
+                            ?.groupValues?.getOrNull(1)?.toLongOrNull()
+                            ?: (rawDiseaseId as? String)?.toLongOrNull()
+                    }
+                    // Convert legacy IDs such as disease003 into numeric Firestore fields.
+                    if (numericDiseaseId != null && rawDiseaseId !is Number) {
+                        db.collection("diseases").document(doc.id)
+                            .update("disease_id", numericDiseaseId)
+                    }
                     data + mapOf(
                         "_documentId" to doc.id,
-                        "disease_id" to (data["disease_id"]?.toString()?.takeIf { it.isNotBlank() } ?: doc.id),
+                        "disease_id" to (numericDiseaseId ?: rawDiseaseId ?: doc.id),
                         "diseases_name" to (data["diseases_name"]?.toString() ?: ""),
                         "disease_desc" to (data["disease_desc"]?.toString() ?: "")
                     )
@@ -1771,20 +1783,39 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                         } else {
                             saving = true
                             val ref = db.collection("diseases").document()
-                            ref.set(
-                                mapOf(
-                                    "disease_id" to ref.id,
+                            val counterRef = db.collection("system_counters").document("disease_id")
+                            db.runTransaction { transaction ->
+                                val counterSnapshot = transaction.get(counterRef)
+                                val diseaseSnapshot = transaction.get(db.collection("diseases"))
+                                val maxExistingId = diseaseSnapshot.documents.mapNotNull { document ->
+                                    val raw = document.get("disease_id")
+                                    when (raw) {
+                                        is Number -> raw.toLong()
+                                        else -> {
+                                            val text = raw?.toString() ?: document.id
+                                            Regex("(?i)^disease(\\d+)$").matchEntire(text)
+                                                ?.groupValues?.getOrNull(1)?.toLongOrNull()
+                                                ?: text.toLongOrNull()
+                                        }
+                                    }
+                                }.maxOrNull() ?: 0L
+                                val nextId = maxOf(counterSnapshot.getLong("last_id") ?: 0L, maxExistingId) + 1L
+                                val now = System.currentTimeMillis()
+                                transaction.set(counterRef, mapOf("last_id" to nextId, "updatedAt" to now))
+                                transaction.set(ref, mapOf(
+                                    "disease_id" to nextId,
                                     "diseases_name" to cleanName,
                                     "disease_desc" to diseaseDescription.trim(),
-                                    "createdAt" to System.currentTimeMillis(),
-                                    "updatedAt" to System.currentTimeMillis()
-                                )
-                            ).addOnSuccessListener {
+                                    "createdAt" to now,
+                                    "updatedAt" to now
+                                ))
+                                nextId
+                            }.addOnSuccessListener {
                                 saving = false
                                 showAddDialog = false
                                 diseaseName = ""
                                 diseaseDescription = ""
-                                Toast.makeText(context, "Disease added successfully.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Disease added successfully (ID: $it).", Toast.LENGTH_SHORT).show()
                             }.addOnFailureListener { error ->
                                 saving = false
                                 Toast.makeText(context, "Could not add disease: ${error.localizedMessage ?: "Please try again."}", Toast.LENGTH_LONG).show()
