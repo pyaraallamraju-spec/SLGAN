@@ -3932,6 +3932,12 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp, vertical = 18.dp)
     ) {
+        AnimatedVisibility(
+            visible = selectedCategory == null,
+            enter = slideInHorizontally(initialOffsetX = { -it }, animationSpec = tween(300)) + fadeIn(animationSpec = tween(220)),
+            exit = slideOutHorizontally(targetOffsetX = { -it }, animationSpec = tween(300)) + fadeOut(animationSpec = tween(180))
+        ) {
+            Column(Modifier.fillMaxWidth()) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
@@ -4061,6 +4067,15 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 Spacer(Modifier.height(10.dp))
             }
         }
+            }
+        }
+
+        AnimatedVisibility(
+            visible = selectedCategory != null,
+            enter = slideInHorizontally(initialOffsetX = { it }, animationSpec = tween(300)) + fadeIn(animationSpec = tween(220)),
+            exit = slideOutHorizontally(targetOffsetX = { it }, animationSpec = tween(300)) + fadeOut(animationSpec = tween(180))
+        ) {
+            Column(Modifier.fillMaxWidth()) {
         if (selectedCategory != null) {
             Spacer(Modifier.height(18.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -4073,7 +4088,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     Text("${selectedProducts.size}", color = Color(0xFF762A24), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                 }
                 Spacer(Modifier.weight(1f))
-                TextButton(onClick = { selectedCategory = null }) { Text("Close", color = Forest) }
+                TextButton(onClick = { selectedCategory = null }) { Text("← Go to categories", color = Forest, fontWeight = FontWeight.Bold) }
             }
             Spacer(Modifier.height(8.dp))
             if (selectedProducts.isEmpty()) {
@@ -4155,7 +4170,8 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(12.dp))
-    }
+    }            }
+        }
 }
 
 @Composable
