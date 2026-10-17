@@ -2194,6 +2194,8 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                         "fever" -> "🤒"
                         "cough" -> "🦠"
                         "flu" -> "🫁"
+                        "obesity" -> "⚖️"
+                        "tuberculosis", "tuberculosis (tb)", "tb" -> "🫁"
                         else -> "🌿"
                     }
                     Card(
@@ -4118,7 +4120,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     matches.forEach { disease ->
                         DropdownMenuItem(
                             text = { Text(disease, color = Ink, fontWeight = FontWeight.Medium) },
-                            leadingIcon = { Text(when (disease.trim().lowercase()) { "fever" -> "🤒"; "cough" -> "🦠"; "flu" -> "🫁"; else -> "🌿" }, fontSize = 20.sp) },
+                            leadingIcon = { Text(when (disease.trim().lowercase()) { "fever" -> "🤒"; "cough" -> "🦠"; "flu" -> "🫁"; "obesity" -> "⚖️"; "tuberculosis", "tuberculosis (tb)", "tb" -> "🫁"; else -> "🌿" }, fontSize = 20.sp) },
                             onClick = {
                                 selectedDisease = disease
                                 query = disease
