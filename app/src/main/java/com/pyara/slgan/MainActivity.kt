@@ -2642,9 +2642,24 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 OutlinedTextField(
                     value = search,
                     onValueChange = onSearchChange,
-                    modifier = Modifier.fillMaxWidth().height(50.dp),
-                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 14.sp) },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = tr("Search products", LocalAppLanguage.current), modifier = Modifier.size(20.dp)) },
+                    modifier = Modifier.fillMaxWidth().height(50.dp)
+                        .border(
+                            width = 1.dp,
+                            brush = Brush.horizontalGradient(listOf(Gold.copy(alpha = 0.95f), Forest.copy(alpha = 0.72f), Gold.copy(alpha = 0.95f))),
+                            shape = RoundedCornerShape(18.dp)
+                        ),
+                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 14.sp, color = Muted) },
+                    leadingIcon = {
+                        Box(
+                            modifier = Modifier.size(34.dp).background(
+                                Brush.linearGradient(listOf(Forest, Leaf)),
+                                CircleShape
+                            ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.Search, contentDescription = tr("Search products", LocalAppLanguage.current), modifier = Modifier.size(19.dp), tint = Cream)
+                        }
+                    },
                     trailingIcon = {
                         IconButton(onClick = {
                             try {
@@ -2675,7 +2690,14 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         }
                     },
                     singleLine = true,
-                    shape = RoundedCornerShape(16.dp)
+                    shape = RoundedCornerShape(18.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Gold,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedContainerColor = Cream,
+                        unfocusedContainerColor = Cream,
+                        cursorColor = Forest
+                    )
                 )
                 Spacer(Modifier.height(20.dp))
                 Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
