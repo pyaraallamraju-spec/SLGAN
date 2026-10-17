@@ -1943,60 +1943,73 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
         )
     }
 
-    Column(Modifier.fillMaxSize().background(Cream).padding(top = 8.dp)) {
-        Row(
-            Modifier.fillMaxWidth().padding(start = 12.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
-            Column(Modifier.weight(1f)) {
-                Text("Diseases", color = Ink, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
-                Text("Manage your disease catalogue", color = Muted, fontSize = 12.sp)
-            }
-            Button(
-                onClick = { showAddDialog = true },
-                colors = ButtonDefaults.buttonColors(containerColor = Forest),
-                shape = RoundedCornerShape(14.dp),
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp)
-            ) {
-                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-                Spacer(Modifier.width(4.dp))
-                Text("Add")
-            }
-        }
-        Card(
-            Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            shape = RoundedCornerShape(22.dp),
-            colors = CardDefaults.cardColors(containerColor = Forest)
+    Column(Modifier.fillMaxSize().background(Cream)) {
+        // Match the Products admin page header: white rounded container, title row,
+        // forest-green library card, and search field inside the same header section.
+        Column(
+            Modifier.fillMaxWidth()
+                .background(Color.White, RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+                .padding(bottom = 14.dp)
         ) {
             Row(
-                Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp),
+                Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(Modifier.size(50.dp).background(Color.White.copy(alpha = 0.13f), RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Gold, modifier = Modifier.size(27.dp))
-                }
-                Spacer(Modifier.width(14.dp))
+                IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = Forest) }
                 Column(Modifier.weight(1f)) {
-                    Text("Disease library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Names and information shown in the customer app", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
-                }
-                Column(horizontalAlignment = Alignment.End) {
-                    Text(if (loading) "—" else records.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                    Text("Diseases", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                    Text("${records.size} disease catalogue items", color = Muted, fontSize = 12.sp)
                 }
             }
+            Card(
+                Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
+                shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = Forest)
+            ) {
+                Row(
+                    Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(Modifier.size(50.dp).background(Color.White.copy(alpha = 0.13f), RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Gold, modifier = Modifier.size(27.dp))
+                    }
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text("Disease library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("Manage diseases shown in the customer app", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                    }
+                    Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
+                        Button(
+                            onClick = { showAddDialog = true },
+                            shape = RoundedCornerShape(12.dp),
+                            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color(0xFF4D100E))
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
+                            Spacer(Modifier.width(4.dp))
+                            Text("Add disease", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                        Spacer(Modifier.height(5.dp))
+                        Text("${if (loading) "—" else records.size.toString()} TOTAL", color = Cream.copy(alpha = 0.9f), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+            OutlinedTextField(
+                value = search,
+                onValueChange = { search = it },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
+                singleLine = true,
+                label = { Text("Search diseases") },
+                placeholder = { Text("Disease name or description") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                trailingIcon = {
+                    if (search.isNotEmpty()) IconButton(onClick = { search = "" }) {
+                        Icon(Icons.Default.Close, "Clear search")
+                    }
+                },
+                shape = RoundedCornerShape(14.dp)
+            )
         }
-        Spacer(Modifier.height(14.dp))
-        OutlinedTextField(
-            value = search,
-            onValueChange = { search = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-            singleLine = true,
-            label = { Text("Search diseases") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
-            shape = RoundedCornerShape(15.dp)
-        )
         Spacer(Modifier.height(10.dp))
         when {
             loading -> AppLoader("Loading diseases…")
