@@ -2988,7 +2988,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 contentColor = Color(0xFFFFF7E8)
                                             ) {
                                                 Text(
-                                                    "✦ SIGNATURE",
+                                                    "SLGANILAYAM",
                                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                                                     color = Color(0xFFFFE6A3),
                                                     fontSize = 8.sp,
@@ -3025,14 +3025,15 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 fontSize = 15.sp,
                                                 maxLines = 1
                                             )
-                                            IconButton(
-                                                onClick = { if (product.price > 0.0) onAdd(product.id) },
-                                                enabled = product.price > 0.0,
-                                                modifier = Modifier.size(26.dp)
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(28.dp)
                                                     .background(
                                                         Brush.linearGradient(listOf(Forest, Leaf)),
                                                         CircleShape
                                                     )
+                                                    .then(if (product.price > 0.0) Modifier.clickable { onAdd(product.id) } else Modifier),
+                                                contentAlignment = Alignment.Center
                                             ) {
                                                 Icon(
                                                     imageVector = Icons.Default.Add,
@@ -3042,8 +3043,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 )
                                             }
                                         }
-                                        Spacer(Modifier.height(5.dp))
-                                        Text("View product  →", color = Leaf, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+
                                     }
                                 }
                             }
