@@ -2493,7 +2493,7 @@ private fun ShopScreen(
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage) { onTabChange("Home") }
-            "Categories" -> CategoriesPage(Modifier.padding(padding), products, onCategoryChange) { onTabChange("Home") }
+            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, onAdd, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productsLoading, productsError, onAdd, onProductClick)
@@ -3865,7 +3865,7 @@ private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.Image
 }
 
 @Composable
-private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
+private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, onAdd: (String) -> Unit, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<String?>(null) }
     val selectedProducts = products.filter { selectedCategory == "All" || it.category.equals(selectedCategory, ignoreCase = true) }
@@ -4061,6 +4061,31 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCatego
                                     if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
                                     color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp
                                 )
+                                Spacer(Modifier.height(7.dp))
+                                val cartQuantity = cart[product.id] ?: 0
+                                if (cartQuantity == 0) {
+                                    Button(
+                                        onClick = { onAdd(product.id) },
+                                        enabled = product.price > 0.0,
+                                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                                        shape = RoundedCornerShape(10.dp)
+                                    ) {
+                                        Icon(Icons.Default.AddShoppingCart, contentDescription = null, modifier = Modifier.size(16.dp))
+                                        Spacer(Modifier.width(5.dp))
+                                        Text("Add to cart", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    }
+                                } else {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(16.dp))
+                                        Spacer(Modifier.width(5.dp))
+                                        Text("Added · $cartQuantity", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Spacer(Modifier.width(8.dp))
+                                        TextButton(onClick = { onAdd(product.id) }, contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)) {
+                                            Text("Add another", fontSize = 11.sp, color = Forest)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
