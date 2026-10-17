@@ -1972,7 +1972,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                     val email = customer["email"]?.toString().orEmpty()
                     val phone = customer["mobileNumber"]?.toString().orEmpty()
                     val gender = customer["gender"]?.toString().orEmpty()
-                    val enabled = customer["enabled"] != false
+                    val enabled = (customer["is_active"] as? Boolean) ?: (customer["enabled"] != false)
                     val isUpdating = uid in updatingIds
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -1997,7 +1997,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                                             if (!isUpdating) {
                                                 updatingIds = updatingIds + uid
                                                 FirebaseFirestore.getInstance().collection("customers").document(uid)
-                                                    .update(mapOf("enabled" to newValue, "updatedAt" to System.currentTimeMillis()))
+                                                    .update(mapOf("is_active" to newValue, "updatedAt" to System.currentTimeMillis()))
                                                     .addOnSuccessListener {
                                                         Toast.makeText(context, if (newValue) "Customer enabled" else "Customer disabled", Toast.LENGTH_SHORT).show()
                                                         updatingIds = updatingIds - uid
