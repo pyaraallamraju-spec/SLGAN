@@ -4524,11 +4524,10 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                 val packSize = product.subtitle.ifBlank { product.quantity }
                                 val cartQuantity = cart[product.id] ?: 0
                                 Spacer(Modifier.height(5.dp))
-                                ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                 Row(
                                     Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                                 ) {
                                     if (packSize.isNotBlank()) {
                                         Surface(
@@ -4546,6 +4545,16 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             }
                                         }
                                     }
+                                    Spacer(Modifier.weight(1f))
+                                    ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
+                                    ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
+                                }
+                                Spacer(Modifier.height(5.dp))
+                                Row(
+                                    Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
                                     Text(
                                         if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
                                         modifier = Modifier.weight(1f, fill = false),
