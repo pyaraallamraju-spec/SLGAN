@@ -2459,6 +2459,15 @@ private fun ShopScreen(
 
 @Composable
 private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
+    val preferredCategoryOrder = listOf("Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
+    val databaseCategories = products.map { it.category.trim() }
+        .filter { it.isNotBlank() }
+        .distinctBy { it.lowercase() }
+    val homeCategories = listOf("All") +
+        preferredCategoryOrder.filter { preferred -> databaseCategories.any { it.equals(preferred, ignoreCase = true) } } +
+        databaseCategories.filterNot { item -> preferredCategoryOrder.any { it.equals(item, ignoreCase = true) } }
+            .sortedBy { it.lowercase() }
+
     val context = LocalContext.current
     val currentLanguage = LocalAppLanguage.current
     val voiceSearchLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
@@ -2585,7 +2594,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Spacer(Modifier.height(8.dp))
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    categories.forEach { item ->
+                    homeCategories.forEach { item ->
                         FilterChip(
                             selected = category == item,
                             onClick = { onCategoryChange(item) },
