@@ -1273,47 +1273,6 @@ private fun HomeBannerSlider(
                             )
                         )
                     }
-                    if (!slide.isCompanySlide) {
-                        Box(
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .padding(10.dp)
-                                .size(76.dp)
-                                .clip(CircleShape)
-                                .background(Color(0xFF641F2B))
-                                .border(2.dp, Gold, CircleShape)
-                                .padding(4.dp)
-                                .border(1.dp, Gold.copy(alpha = 0.85f), CircleShape)
-                                .padding(4.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center,
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Spa,
-                                    contentDescription = "Ayurvedic seal",
-                                    tint = Gold,
-                                    modifier = Modifier.size(17.dp)
-                                )
-                                Spacer(Modifier.height(2.dp))
-                                Text(
-                                    "SLGANILAYAM",
-                                    color = Gold,
-                                    fontSize = 7.sp,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    letterSpacing = 0.2.sp,
-                                    textAlign = TextAlign.Center,
-                                    lineHeight = 8.sp,
-                                    maxLines = 2
-                                )
-                                Spacer(Modifier.height(2.dp))
-                                Text("✦  ❧  ✦", color = Gold, fontSize = 8.sp, maxLines = 1)
-                            }
-                        }
-                    }
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(0.88f)
