@@ -2838,16 +2838,16 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 OutlinedTextField(
                     value = search,
                     onValueChange = onSearchChange,
-                    modifier = Modifier.fillMaxWidth().height(56.dp)
+                    modifier = Modifier.fillMaxWidth().height(50.dp)
                         .border(
                             width = 1.dp,
                             brush = Brush.horizontalGradient(listOf(Gold.copy(alpha = 0.95f), Forest.copy(alpha = 0.72f), Gold.copy(alpha = 0.95f))),
                             shape = RoundedCornerShape(18.dp)
                         ),
-                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, maxLines = 1) },
+                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, maxLines = 1, softWrap = false) },
                     leadingIcon = {
                         Box(
-                            modifier = Modifier.size(34.dp).background(
+                            modifier = Modifier.size(30.dp).background(
                                 Brush.linearGradient(listOf(Forest, Leaf)),
                                 CircleShape
                             ),
