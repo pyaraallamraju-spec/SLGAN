@@ -3841,7 +3841,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             }
         }
     }
-}
 
 @Composable
 private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String) {
