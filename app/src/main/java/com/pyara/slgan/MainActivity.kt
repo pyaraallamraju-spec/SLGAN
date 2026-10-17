@@ -3867,6 +3867,8 @@ private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.Image
 @Composable
 private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf<String?>(null) }
+    val selectedProducts = products.filter { selectedCategory == "All" || it.category.equals(selectedCategory, ignoreCase = true) }
     val categoryItems = categories.filter { it.contains(searchQuery.trim(), ignoreCase = true) }
     val categoryRows = categoryItems.chunked(2)
 
@@ -3969,8 +3971,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCatego
                         val count = if (item.equals("All", ignoreCase = true)) products.size else products.count { it.category.equals(item, ignoreCase = true) }
                         Card(
                             modifier = Modifier.weight(1f).padding(bottom = 2.dp).clickable {
-                                onCategoryChange(item)
-                                onHome()
+                                selectedCategory = item
                             },
                             shape = RoundedCornerShape(20.dp),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
@@ -4004,6 +4005,66 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCatego
                     if (rowItems.size == 1) Spacer(Modifier.weight(1f))
                 }
                 Spacer(Modifier.height(10.dp))
+            }
+        }
+        if (selectedCategory != null) {
+            Spacer(Modifier.height(18.dp))
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(tr(selectedCategory!!, LocalAppLanguage.current), color = Forest, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                Spacer(Modifier.width(8.dp))
+                Box(
+                    Modifier.background(Color(0xFFFFE7A3), RoundedCornerShape(50))
+                        .padding(horizontal = 11.dp, vertical = 5.dp)
+                ) {
+                    Text("${selectedProducts.size}", color = Color(0xFF762A24), fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                }
+                Spacer(Modifier.weight(1f))
+                TextButton(onClick = { selectedCategory = null }) { Text("Close", color = Forest) }
+            }
+            Spacer(Modifier.height(8.dp))
+            if (selectedProducts.isEmpty()) {
+                Text("No products found in this category.", color = Muted, fontSize = 13.sp, modifier = Modifier.padding(vertical = 12.dp))
+            } else {
+                selectedProducts.forEach { product ->
+                    Card(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 9.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                    ) {
+                        Row(
+                            Modifier.fillMaxWidth().padding(10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (product.imageUrl.isNotBlank()) {
+                                AsyncImage(
+                                    model = product.imageUrl,
+                                    contentDescription = product.name,
+                                    modifier = Modifier.size(68.dp).clip(RoundedCornerShape(12.dp)),
+                                    contentScale = ContentScale.Crop
+                                )
+                            } else {
+                                Box(
+                                    Modifier.size(68.dp).clip(RoundedCornerShape(12.dp)).background(PaleGreen),
+                                    contentAlignment = Alignment.Center
+                                ) { Text(product.emoji.ifBlank { "🌿" }, fontSize = 27.sp) }
+                            }
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                                if (product.quantity.isNotBlank()) {
+                                    Spacer(Modifier.height(3.dp))
+                                    Text(product.quantity, color = Muted, fontSize = 12.sp)
+                                }
+                                Spacer(Modifier.height(5.dp))
+                                Text(
+                                    if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
+                                    color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
         Spacer(Modifier.height(8.dp))
