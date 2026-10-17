@@ -3080,9 +3080,9 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     if (product.category.isNotBlank()) {
                         Surface(
                             shape = RoundedCornerShape(50.dp),
-                            color = Color(0xFFE8F1E7),
-                            contentColor = Forest,
-                            border = BorderStroke(0.7.dp, Color(0xFFB8CDB6))
+                            color = Color(0xFFF8E7E4),
+                            contentColor = Color(0xFF762A24),
+                            border = BorderStroke(0.7.dp, Color(0xFFD9A7A0))
                         ) {
                             Text(product.category, modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp), fontSize = 8.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
