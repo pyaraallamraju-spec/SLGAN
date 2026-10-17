@@ -1815,7 +1815,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                                 showAddDialog = false
                                 diseaseName = ""
                                 diseaseDescription = ""
-                                Toast.makeText(context, "Disease added successfully (ID: $it).", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Disease added successfully.", Toast.LENGTH_SHORT).show()
                             }.addOnFailureListener { error ->
                                 saving = false
                                 Toast.makeText(context, "Could not add disease: ${error.localizedMessage ?: "Please try again."}", Toast.LENGTH_LONG).show()
@@ -1921,7 +1921,6 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                                 Spacer(Modifier.height(5.dp))
                                 Text(description, color = Muted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 4, overflow = TextOverflow.Ellipsis)
                                 Spacer(Modifier.height(8.dp))
-                                Text("ID: ${disease["disease_id"]}", color = Forest, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
                             }
                         }
                     }
