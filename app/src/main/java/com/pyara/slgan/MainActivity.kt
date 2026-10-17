@@ -4089,7 +4089,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     modifier = Modifier.fillMaxWidth()
                         .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
                     label = { Text(tr("Select disease", LocalAppLanguage.current)) },
-                    placeholder = { Text("Search diseases by name") },
+                    placeholder = { Text("Search disease...", fontSize = 14.sp, maxLines = 1) },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
                     trailingIcon = {
                         IconButton(onClick = { dropdownExpanded = !dropdownExpanded }) {
