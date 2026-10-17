@@ -2360,7 +2360,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                         val total = (order["grandTotal"] as? Number)?.toDouble()
                             ?: (order["subtotal"] as? Number)?.toDouble() ?: 0.0
                         val ts = order["createdAt"] as? com.google.firebase.Timestamp
-                        val time = ts?.let { java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Time unavailable"
+                        val time = ts?.let { java.text.SimpleDateFormat("h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Time unavailable"
                         val itemRows = order["items"] as? List<*> ?: emptyList<Any>()
                         Card(
                             Modifier.fillMaxWidth().clickable { expandedOrderId = if (expanded) null else docId },
@@ -2389,7 +2389,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                     Text("Email: " + (order["email"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
                                     Text("Phone: " + (order["phone"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
                                     Text("Delivery address: " + (order["shippingAddress"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
-                                    Text("Order time: " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, hh:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Information not available"), color = Muted, fontSize = 12.sp)
+                                    Text("Order time: " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Information not available"), color = Muted, fontSize = 12.sp)
                                     Text("Items", color = Forest, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                     if (itemRows.isEmpty()) {
                                         Text("No item details were saved with this order.", color = Muted, fontSize = 12.sp)
@@ -3496,7 +3496,7 @@ private fun OrdersPage(
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
-                                Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
+                                Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
                             }
                             Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                         }
@@ -3594,7 +3594,7 @@ private fun OrdersPage(
         val subtotal = (order["subtotal"] as? Number)?.toDouble() ?: (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
         val grandTotal = (order["grandTotal"] as? Number)?.toDouble() ?: subtotal
         val invoiceItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
-        val created = (order["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.toString() ?: "Not available"
+        val created = (order["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Not available"
 
         AlertDialog(
             onDismissRequest = { selectedOrder = null },
