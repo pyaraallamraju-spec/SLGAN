@@ -2753,13 +2753,13 @@ private fun ProductDetailsPage(
                 fontWeight = FontWeight.ExtraBold
             )
             if (product.subtitle.isNotBlank()) {
-                Text("Pack size: ${'$' }{product.subtitle}", color = Muted, fontSize = 14.sp)
+                Text("Pack size: ${product.subtitle}", color = Muted, fontSize = 14.sp)
             }
             if (product.category.isNotBlank()) {
-                Text(tr("Category: ${'$' }{product.category}", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                Text(tr("Category: ${product.category}", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
             }
             if (product.quantity.isNotBlank()) {
-                Text("Quantity / stock: ${'$' }{product.quantity}", color = Muted, fontSize = 14.sp)
+                Text("Quantity / stock: ${product.quantity}", color = Muted, fontSize = 14.sp)
             }
             if (product.price > 0.0) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
