@@ -457,6 +457,7 @@ private fun localizedProductName(name: String, language: String): String {
 
 private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false)
 private data class ProductRatingSummary(val average: Double = 0.0, val count: Int = 0, val myRating: Int = 0)
+private data class ProductLikeSummary(val count: Int = 0, val likedByMe: Boolean = false)
 private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
 
 // Offline fallback keeps the disease selector usable until Firestore is populated.
@@ -578,6 +579,34 @@ private fun AyurvedicApp() {
     var diseasesLoading by remember { mutableStateOf(true) }
     var diseasesError by remember { mutableStateOf<String?>(null) }
     var productRatings by remember { mutableStateOf<Map<String, ProductRatingSummary>>(emptyMap()) }
+    var productLikes by remember { mutableStateOf<Map<String, ProductLikeSummary>>(emptyMap()) }
+    DisposableEffect(signedIn, auth.currentUser?.uid) {
+        val uid = auth.currentUser?.uid
+        val registration = FirebaseFirestore.getInstance().collection("productLikes")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null || snapshot == null) return@addSnapshotListener
+                val grouped = snapshot.documents.mapNotNull { doc ->
+                    val productId = doc.getString("productId")?.takeIf { it.isNotBlank() } ?: return@mapNotNull null
+                    val userId = doc.getString("userId")?.takeIf { it.isNotBlank() } ?: return@mapNotNull null
+                    productId to (userId == uid)
+                }.groupBy({ it.first }, { it.second })
+                productLikes = grouped.mapValues { (_, users) -> ProductLikeSummary(count = users.size, likedByMe = uid != null && users.any { it }) }
+            }
+        onDispose { registration.remove() }
+    }
+    val toggleProductLike: (Product) -> Unit = { product ->
+        val user = auth.currentUser
+        if (user == null) Toast.makeText(appContext, "Please sign in to like products.", Toast.LENGTH_SHORT).show()
+        else {
+            val likeRef = FirebaseFirestore.getInstance().collection("productLikes").document(product.id + "_" + user.uid)
+            if (productLikes[product.id]?.likedByMe == true) {
+                likeRef.delete().addOnFailureListener { error -> Toast.makeText(appContext, error.localizedMessage ?: "Could not remove like.", Toast.LENGTH_SHORT).show() }
+            } else {
+                likeRef.set(hashMapOf("productId" to product.id, "productName" to product.name, "userId" to user.uid, "createdAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
+                    .addOnFailureListener { error -> Toast.makeText(appContext, error.localizedMessage ?: "Could not like product.", Toast.LENGTH_SHORT).show() }
+            }
+        }
+    }
     DisposableEffect(signedIn) {
         if (signedIn) {
             val registration = FirebaseData.observeProducts(
@@ -753,12 +782,14 @@ private fun AyurvedicApp() {
             else if (selectedProduct != null) ProductDetailsPage(
                 product = selectedProduct!!,
                 ratingSummary = productRatings[selectedProduct!!.id] ?: ProductRatingSummary(),
+                likeSummary = productLikes[selectedProduct!!.id] ?: ProductLikeSummary(),
+                onToggleLike = { toggleProductLike(selectedProduct!!) },
                 cartCount = cart[selectedProduct!!.id] ?: 0,
                 onBack = { selectedProduct = null },
                 onAdd = { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 onRemove = { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 }
             )
-            else ShopScreen(selectedTab, { selectedTab = it }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productRatings, productsLoading, productsError, liveDiseases.ifEmpty { fallbackDiseases }, diseasesLoading, if (liveDiseases.isEmpty()) null else diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
+            else ShopScreen(selectedTab, { selectedTab = it }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productRatings, productLikes, toggleProductLike, productsLoading, productsError, liveDiseases.ifEmpty { fallbackDiseases }, diseasesLoading, if (liveDiseases.isEmpty()) null else diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
                 { orderId, success, invoiceUrl, message ->
@@ -2552,7 +2583,7 @@ private fun AdminModuleInfo(
 @Composable
 private fun ShopScreen(
     selectedTab: String, onTabChange: (String) -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
-    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productsLoading: Boolean, productsError: String?, diseases: List<String>, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
+    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, diseases: List<String>, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
     onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit
 ) {
     val cartCount = cart.values.sum()
@@ -2578,16 +2609,16 @@ private fun ShopScreen(
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage) { onTabChange("Home") }
-            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, onAdd, onCategoryChange) { onTabChange("Home") }
+            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productLikes, onToggleLike, onAdd, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
-            else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productsLoading, productsError, onAdd, onProductClick)
+            else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
         }
     }
 }
 
 @Composable
-private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
+private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
     val preferredCategoryOrder = listOf("Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
     val databaseCategories = products.map { it.category.trim() }
         .filter { it.isNotBlank() }
@@ -2782,7 +2813,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
         if (visible.isEmpty() && !productsLoading) item { Text(if (productsError != null) "Products could not be loaded. Check your internet and Firestore rules." else "No products found in this category. Try All or another search.", Modifier.padding(24.dp), color = Muted) }
         else items(visible.chunked(2)) { pair ->
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                pair.forEach { product -> ProductCard(product, cart[product.id] ?: 0, productRatings[product.id] ?: ProductRatingSummary(), onAdd, onProductClick, Modifier.weight(1f)) }
+                pair.forEach { product -> ProductCard(product, cart[product.id] ?: 0, productRatings[product.id] ?: ProductRatingSummary(), productLikes[product.id] ?: ProductLikeSummary(), onToggleLike, onAdd, onProductClick, Modifier.weight(1f)) }
                 if (pair.size == 1) Spacer(Modifier.weight(1f))
             }
         }
@@ -2872,6 +2903,19 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
 }
 
 @Composable
+@Composable
+private fun ProductLikeControl(product: Product, summary: ProductLikeSummary, onToggleLike: (Product) -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+        IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(30.dp)) {
+            Icon(if (summary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                contentDescription = if (summary.likedByMe) "Unlike product" else "Like product",
+                tint = if (summary.likedByMe) Color(0xFFD32F2F) else Muted, modifier = Modifier.size(19.dp))
+        }
+        Text(summary.count.toString(), color = if (summary.likedByMe) Color(0xFFD32F2F) else Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
 private fun ProductRatingLine(summary: ProductRatingSummary, showEmptyLabel: Boolean = false) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
         Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(15.dp))
@@ -2883,7 +2927,7 @@ private fun ProductRatingLine(summary: ProductRatingSummary, showEmptyLabel: Boo
 }
 
 @Composable
-private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
+private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
     Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
         Column(Modifier.padding(11.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
@@ -2951,7 +2995,9 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             }
             Spacer(Modifier.height(5.dp))
             ProductRatingLine(ratingSummary)
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(4.dp))
+            ProductLikeControl(product, likeSummary, onToggleLike)
+            Spacer(Modifier.height(5.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
                 if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(34.dp), colors = IconButtonDefaults.filledIconButtonColors(containerColor = Forest)) { Icon(Icons.Default.Add, "Add " + product.name, modifier = Modifier.size(18.dp)) }
@@ -2966,6 +3012,8 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
 private fun ProductDetailsPage(
     product: Product,
     ratingSummary: ProductRatingSummary,
+    likeSummary: ProductLikeSummary,
+    onToggleLike: () -> Unit,
     cartCount: Int,
     onBack: () -> Unit,
     onAdd: (String) -> Unit,
@@ -3092,6 +3140,7 @@ private fun ProductDetailsPage(
                     }
                 }
             }
+            ProductLikeControl(product, likeSummary, { onToggleLike() })
             if (product.price > 0.0) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
             } else {
@@ -4052,7 +4101,7 @@ private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.Image
 }
 
 @Composable
-private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, onAdd: (String) -> Unit, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
+private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<String?>(null) }
     val selectedProducts = products.filter { selectedCategory == "All" || it.category.equals(selectedCategory, ignoreCase = true) }
@@ -4266,6 +4315,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                 val packSize = product.subtitle.ifBlank { product.quantity }
                                 val cartQuantity = cart[product.id] ?: 0
                                 Spacer(Modifier.height(5.dp))
+                                ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                 Row(
                                     Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
