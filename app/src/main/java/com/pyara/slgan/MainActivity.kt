@@ -1212,7 +1212,7 @@ private fun HomeBannerSlider(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(190.dp)
+                .height(155.dp)
                 .clip(RoundedCornerShape(22.dp))
                 .background(Cream)
         ) {
@@ -2707,7 +2707,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     }
                 }
                 Spacer(Modifier.height(18.dp))
-                Text(if (search.isBlank()) "Our Ayurvedic products" else "Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                if (search.isNotBlank()) Text("Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 if (productsLoading) {
                     Spacer(Modifier.height(18.dp))
                     AppLoader(message = "Loading products…", compact = true)
