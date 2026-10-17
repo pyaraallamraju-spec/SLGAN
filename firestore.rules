@@ -21,37 +21,38 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
-    // Customers can access only their own profile. The is_admin role is
-    // managed by trusted Firebase Admin SDK scripts, never by the client.
+    // Customer profiles are private to their owner; admins can manage account status.
+    // The is_admin role is managed only by trusted Firebase Admin SDK scripts.
     match /customers/{userId} {
-      // Customers can read their own profile; administrators can list customer
-      // profiles to manage account access.
       allow read: if request.auth != null
         && (request.auth.uid == userId || isAdmin());
+
       allow create: if request.auth != null
         && request.auth.uid == userId
         && request.resource.data.is_admin == false
-        && request.resource.data.enabled == true;
+        && request.resource.data.is_active == true;
+
       allow update: if request.auth != null && (
-        // Admins may only change the account enabled flag and its timestamp.
+        // Verified admins may change only is_active and updatedAt.
         (isAdmin()
           && request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['enabled', 'updatedAt'])
-          && request.resource.data.enabled is bool)
+            .hasOnly(['is_active', 'updatedAt'])
+          && request.resource.data.is_active is bool)
         ||
-        // Customers may edit their own profile but never their role or status.
+        // Customers may update their own profile, but not their role or status.
         (request.auth.uid == userId
-          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['enabled'])
+          && !request.resource.data.diff(resource.data).affectedKeys()
+            .hasAny(['is_admin', 'is_active', 'enabled'])
           && (
             (!('is_admin' in resource.data)
               && request.resource.data.is_admin == false)
             || request.resource.data.is_admin == resource.data.is_admin
           ))
       );
+
       allow delete: if request.auth != null
         && request.auth.uid == userId;
 
-      // Legacy nested orders remain read-only.
       match /orders/{orderId} {
         allow read: if request.auth != null
           && request.auth.uid == userId;
