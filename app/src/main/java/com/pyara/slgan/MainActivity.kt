@@ -1272,6 +1272,26 @@ private fun HomeBannerSlider(
                             )
                         )
                     }
+                    if (!slide.isCompanySlide) {
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(12.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFF641F2B))
+                                .border(1.5.dp, Gold, CircleShape)
+                                .padding(horizontal = 10.dp, vertical = 7.dp)
+                        ) {
+                            Text(
+                                "SLGANILAYAM",
+                                color = Gold,
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                letterSpacing = 1.sp,
+                                maxLines = 1
+                            )
+                        }
+                    }
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(0.88f)
@@ -1279,15 +1299,17 @@ private fun HomeBannerSlider(
                             .padding(horizontal = 18.dp, vertical = 18.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(
-                            tr(when { slide.productName == "Sri Lakshmi Ganapathi Ayurveda Nilayam" -> "OUR HERITAGE"; slide.isCompanySlide -> "DISCOVER SLGAN"; else -> "SLGAN SIGNATURE PRODUCT" }, LocalAppLanguage.current),
-                            color = Gold,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 1.3.sp,
-                            maxLines = 1
-                        )
-                        Spacer(Modifier.height(8.dp))
+                        if (slide.isCompanySlide) {
+                            Text(
+                                tr("OUR HERITAGE", LocalAppLanguage.current),
+                                color = Gold,
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.3.sp,
+                                maxLines = 1
+                            )
+                            Spacer(Modifier.height(8.dp))
+                        }
                         Text(
                             if (slide.isCompanySlide) tr("Sri Lakshmi Ganapathi Ayurveda Nilayam", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
