@@ -3203,7 +3203,10 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
             }
             Spacer(Modifier.height(5.dp))
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Box(
+                modifier = Modifier.fillMaxWidth().height(48.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
                 ProductRatingLine(product, ratingSummary)
             }
             Spacer(Modifier.height(5.dp))
