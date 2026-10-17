@@ -3862,15 +3862,15 @@ private fun OrdersPage(
             }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
             currentOrders.isEmpty() -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
-                Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(Modifier.size(66.dp).background(Color(0xFFF2E5C9), CircleShape), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color(0xFF641F2B), modifier = Modifier.size(32.dp))
+                Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(Modifier.size(56.dp).background(Color(0xFFF2E5C9), CircleShape), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color(0xFF641F2B), modifier = Modifier.size(26.dp))
                     }
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(8.dp))
                     Text("No orders placed today", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                    Spacer(Modifier.height(5.dp))
+                    Spacer(Modifier.height(4.dp))
                     Text("Ready to discover your Ayurvedic essentials?", color = Muted, fontSize = 13.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center, lineHeight = 19.sp)
-                    Spacer(Modifier.height(15.dp))
+                    Spacer(Modifier.height(8.dp))
                     TextButton(onClick = onHome) { Text("Click here to order  →", color = Forest, fontWeight = FontWeight.Bold) }
 
                 }
