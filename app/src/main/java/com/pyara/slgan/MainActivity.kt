@@ -3333,7 +3333,38 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         if (selectedDisease == null) {
             Text(tr("Diseases", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
             Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Card(
+                    shape = RoundedCornerShape(50.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF2E5C9)),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 13.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.HealthAndSafety,
+                            contentDescription = null,
+                            tint = Color(0xFF641F2B),
+                            modifier = Modifier.size(17.dp)
+                        )
+                        Spacer(Modifier.width(7.dp))
+                        Text(
+                            "${diseases.size} " + tr("diseases available", LocalAppLanguage.current),
+                            color = Color(0xFF641F2B),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+            Spacer(Modifier.height(10.dp))
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
