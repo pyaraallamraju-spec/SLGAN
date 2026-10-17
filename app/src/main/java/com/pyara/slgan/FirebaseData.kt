@@ -62,7 +62,7 @@ object FirebaseData {
             val existing = transaction.get(customerRef)
             val safeFields = fields.toMutableMap()
             if (!existing.contains("is_admin")) safeFields["is_admin"] = false
-            if (!existing.contains("enabled")) safeFields["enabled"] = true
+            if (!existing.exists()) safeFields["is_active"] = true
             transaction.set(customerRef, safeFields, SetOptions.merge())
             null
         }
