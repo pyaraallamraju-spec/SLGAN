@@ -1242,7 +1242,15 @@ private fun HomeBannerSlider(
                 .height(190.dp)
                 .clip(RoundedCornerShape(22.dp))
                 .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
-                .background(Color(0xFF123A25))
+                .background(
+                    Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFF762A24),
+                            Color(0xFF5B1C29),
+                            Color(0xFF8A3D2B)
+                        )
+                    )
+                )
         ) {
             AnimatedContent(
                 modifier = Modifier
