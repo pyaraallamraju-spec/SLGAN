@@ -1783,43 +1783,52 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                         } else {
                             saving = true
                             val ref = db.collection("diseases").document()
+                            val diseasesCollection = db.collection("diseases")
                             val counterRef = db.collection("system_counters").document("disease_id")
-                            db.runTransaction { transaction ->
-                                val counterSnapshot = transaction.get(counterRef)
-                                val diseaseSnapshot = transaction.get(db.collection("diseases"))
-                                val maxExistingId = diseaseSnapshot.documents.mapNotNull { document ->
-                                    val raw = document.get("disease_id")
-                                    when (raw) {
-                                        is Number -> raw.toLong()
-                                        else -> {
-                                            val text = raw?.toString() ?: document.id
-                                            Regex("(?i)^disease(\\d+)$").matchEntire(text)
-                                                ?.groupValues?.getOrNull(1)?.toLongOrNull()
-                                                ?: text.toLongOrNull()
+                            // Firestore transactions can read documents, not an entire collection query.
+                            // Read existing IDs first, then atomically advance the shared counter.
+                            diseasesCollection.get()
+                                .addOnSuccessListener { diseaseSnapshot ->
+                                    val maxExistingId = diseaseSnapshot.documents.mapNotNull { document ->
+                                        val raw = document.get("disease_id")
+                                        when (raw) {
+                                            is Number -> raw.toLong()
+                                            else -> {
+                                                val text = raw?.toString() ?: document.id
+                                                Regex("(?i)^disease(\\d+)$").matchEntire(text)
+                                                    ?.groupValues?.getOrNull(1)?.toLongOrNull()
+                                                    ?: text.toLongOrNull()
+                                            }
                                         }
+                                    }.maxOrNull() ?: 0L
+                                    db.runTransaction { transaction ->
+                                        val counterSnapshot = transaction.get(counterRef)
+                                        val nextId = maxOf(counterSnapshot.getLong("last_id") ?: 0L, maxExistingId) + 1L
+                                        val now = System.currentTimeMillis()
+                                        transaction.set(counterRef, mapOf("last_id" to nextId, "updatedAt" to now))
+                                        transaction.set(ref, mapOf(
+                                            "disease_id" to nextId,
+                                            "diseases_name" to cleanName,
+                                            "disease_desc" to diseaseDescription.trim(),
+                                            "createdAt" to now,
+                                            "updatedAt" to now
+                                        ))
+                                        nextId
+                                    }.addOnSuccessListener {
+                                        saving = false
+                                        showAddDialog = false
+                                        diseaseName = ""
+                                        diseaseDescription = ""
+                                        Toast.makeText(context, "Disease added successfully.", Toast.LENGTH_SHORT).show()
+                                    }.addOnFailureListener { error ->
+                                        saving = false
+                                        Toast.makeText(context, "Could not add disease: ${error.localizedMessage ?: "Please try again."}", Toast.LENGTH_LONG).show()
                                     }
-                                }.maxOrNull() ?: 0L
-                                val nextId = maxOf(counterSnapshot.getLong("last_id") ?: 0L, maxExistingId) + 1L
-                                val now = System.currentTimeMillis()
-                                transaction.set(counterRef, mapOf("last_id" to nextId, "updatedAt" to now))
-                                transaction.set(ref, mapOf(
-                                    "disease_id" to nextId,
-                                    "diseases_name" to cleanName,
-                                    "disease_desc" to diseaseDescription.trim(),
-                                    "createdAt" to now,
-                                    "updatedAt" to now
-                                ))
-                                nextId
-                            }.addOnSuccessListener {
-                                saving = false
-                                showAddDialog = false
-                                diseaseName = ""
-                                diseaseDescription = ""
-                                Toast.makeText(context, "Disease added successfully.", Toast.LENGTH_SHORT).show()
-                            }.addOnFailureListener { error ->
-                                saving = false
-                                Toast.makeText(context, "Could not add disease: ${error.localizedMessage ?: "Please try again."}", Toast.LENGTH_LONG).show()
-                            }
+                                }
+                                .addOnFailureListener { error ->
+                                    saving = false
+                                    Toast.makeText(context, "Could not check existing diseases: ${error.localizedMessage ?: "Please try again."}", Toast.LENGTH_LONG).show()
+                                }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Forest),
