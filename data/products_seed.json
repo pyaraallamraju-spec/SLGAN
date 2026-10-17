@@ -9,7 +9,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Siddha Makaradhwajam",
@@ -21,7 +22,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Poornachandrodayam",
@@ -33,7 +35,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Mahavatavidhwamsa Rasam",
@@ -45,7 +48,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Mahavata Rasam",
@@ -57,7 +61,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Swarna Kanta Vallabha Rasam",
@@ -69,7 +74,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Kanthavallabha Rasam",
@@ -81,7 +87,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Pralayagni Rudra Rasam",
@@ -93,7 +100,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Sleshantaka Rasam (name unclear)",
@@ -105,7 +113,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Lokanatha Rasam",
@@ -117,7 +126,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Vyadhihara Rasam",
@@ -129,7 +139,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Hemasundara Rasam",
@@ -141,7 +152,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Sleshma Gajamkusam",
@@ -153,7 +165,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Lakshmi Vilasa Rasam",
@@ -165,7 +178,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Lakshmi Vilasa Rasam",
@@ -177,7 +191,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Vijaya Chintamani",
@@ -189,7 +204,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Rajita Loha Rasayanam",
@@ -201,7 +217,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Rasa Chintamani",
@@ -213,7 +230,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Swarna Tamra Rasayanam",
@@ -225,7 +243,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Tamra Rasayanam",
@@ -237,7 +256,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Tamra Vanga Rasayanam",
@@ -249,7 +269,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Chaturloha Rasayanam",
@@ -261,7 +282,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Asta Loha Rasayanam",
@@ -273,7 +295,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Raja Mruganka Rasam",
@@ -285,7 +308,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Mahaloha Rasayanam",
@@ -297,7 +321,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Loha Rasayanam",
@@ -309,7 +334,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Meha Vanga Raajeyem",
@@ -321,7 +347,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Rajita Meha Vanga Raajeyem",
@@ -333,7 +360,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Sootikaabharanam",
@@ -345,7 +373,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Swarna Suryavarti",
@@ -357,7 +386,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Kanaka Bala Suryodayam",
@@ -369,7 +399,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Mahila Priya",
@@ -381,7 +412,8 @@
     "signature": 1,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Swasaamrutam",
@@ -393,7 +425,8 @@
     "signature": 1,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Jaambu Paanam",
@@ -405,7 +438,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Jeeva Satvam",
@@ -417,7 +451,8 @@
     "signature": 1,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Mahaabala",
@@ -429,7 +464,8 @@
     "signature": 1,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Ganeshamrutham",
@@ -441,7 +477,8 @@
     "signature": 1,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Gadaa Sanjeevi",
@@ -453,7 +490,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Maadeephala Rasayanam",
@@ -465,7 +503,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Maadeephala Rasayanam",
@@ -477,7 +516,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Jambeera Rasayanam",
@@ -489,7 +529,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Sitopaladi Churnam",
@@ -501,7 +542,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Talisadi Churnam",
@@ -513,7 +555,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Pushyanuga Churnam",
@@ -525,7 +568,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Gangadhara Churnam",
@@ -537,7 +581,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Lavanadi Churnam",
@@ -549,7 +594,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Chaturjaataka Churnam",
@@ -561,7 +607,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Sudarshana Churnam",
@@ -573,7 +620,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Bhaskara Lavana Churnam",
@@ -585,7 +633,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Maha Drakshaadi Churnam",
@@ -597,7 +646,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Rasottamaadi Churnam",
@@ -609,7 +659,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Hingvashtaka Churnam",
@@ -621,7 +672,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Chandanaadi Churnam",
@@ -633,7 +685,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Ashwagandha Churnam",
@@ -645,7 +698,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Triphala Churnam",
@@ -657,7 +711,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Dantadhavana Churnam",
@@ -669,7 +724,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Vaasadi Dhoomapaanadi Churnam",
@@ -681,7 +737,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Tippasattu",
@@ -693,7 +750,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Patcha Karpuram",
@@ -705,7 +763,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Garudamjanam",
@@ -717,7 +776,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Saraswathi Ghritam",
@@ -729,7 +789,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Phala Ghritam",
@@ -741,7 +802,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Shatadhouta Ghritam",
@@ -753,7 +815,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Kalyana Ghritam",
@@ -765,7 +828,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Surya-prabha Kashaya Ghritam",
@@ -777,7 +841,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Bhringaraja Tailam",
@@ -789,7 +854,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Amlaki Tailam",
@@ -801,7 +867,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Aragwadhadi Tailam",
@@ -813,7 +880,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Chandanaadi Tailam",
@@ -825,7 +893,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Narayana Tailam",
@@ -837,7 +906,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Vishnupushpi Tailam",
@@ -849,7 +919,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Amruthaadi Tailam",
@@ -861,7 +932,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Sahacharaadi Tailam",
@@ -873,7 +945,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Mahanarayana Tailam",
@@ -885,7 +958,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Bala Tailam",
@@ -897,7 +971,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Maha Vishagarbha Tailam",
@@ -909,7 +984,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Pinda Tailam",
@@ -921,7 +997,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Tamra Tailam",
@@ -933,7 +1010,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Karna Roganthaka Tailam",
@@ -945,7 +1023,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Mahaa Moosha Tailam",
@@ -957,7 +1036,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Vidangaadi Tailam",
@@ -969,7 +1049,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Siddha Makaradhwajam",
@@ -981,7 +1062,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Poorna Chandrodayam",
@@ -993,7 +1075,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Vasantha Kusumakaram",
@@ -1005,7 +1088,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Rajita Chandrodayam",
@@ -1017,7 +1101,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Bruhat Vaata Chintamani",
@@ -1029,7 +1114,8 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   },
   {
     "product_name": "Maha Panchabhana Rasam",
@@ -1041,6 +1127,7 @@
     "signature": 0,
     "product_description": "",
     "product_usage": "",
-    "product_ingredients": ""
+    "product_ingredients": "",
+    "product_stock": 1
   }
 ]
