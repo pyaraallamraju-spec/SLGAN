@@ -3421,7 +3421,25 @@ private fun OrdersPage(
             Column(Modifier.fillMaxWidth().padding(20.dp)) {
                 Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                 Spacer(Modifier.height(6.dp))
-                Text(tr("My Orders", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(tr("My Orders", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                    Surface(
+                        shape = RoundedCornerShape(50.dp),
+                        color = Color(0xFFFFE7A3)
+                    ) {
+                        Text(
+                            "Total: ${previousOrders.size}",
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            color = Color(0xFF762A24),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
                 Spacer(Modifier.height(5.dp))
                 Text("Track today's orders and revisit your order history.", color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
 
