@@ -3070,7 +3070,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 14.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -3079,41 +3079,33 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 ) {
                     if (product.category.isNotBlank()) {
                         Surface(
-                            shape = RoundedCornerShape(7.dp),
-                            color = PaleGreen,
-                            contentColor = Forest
+                            shape = RoundedCornerShape(50.dp),
+                            color = Color(0xFFE8F1E7),
+                            contentColor = Forest,
+                            border = BorderStroke(0.7.dp, Color(0xFFB8CDB6))
                         ) {
-                            Text(
-                                product.category,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp),
-                                fontSize = 8.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                            Text(product.category, modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp), fontSize = 8.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                     if (product.subtitle.isNotBlank()) {
                         Surface(
-                            shape = RoundedCornerShape(7.dp),
-                            color = Color(0xFFFFEBC2),
-                            contentColor = Ink
+                            shape = RoundedCornerShape(50.dp),
+                            color = Color(0xFFFFF2D6),
+                            contentColor = Color(0xFF5A3514),
+                            border = BorderStroke(0.7.dp, Color(0xFFE4BE70))
                         ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(3.dp)
-                            ) {
-                                Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(10.dp))
-                                Text(
-                                    product.subtitle.replace(" ", ""),
-                                    fontSize = 9.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
+                            Row(modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+                                Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(9.dp), tint = Color(0xFF8B5A18))
+                                Text(product.subtitle.replace(" ", ""), fontSize = 9.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                         }
+                    }
+                    Spacer(Modifier.weight(1f))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(1.dp)) {
+                        IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(24.dp)) {
+                            Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = if (likeSummary.likedByMe) "Unlike product" else "Like product", tint = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, modifier = Modifier.size(15.dp))
+                        }
+                        Text(likeSummary.count.toString(), color = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }
