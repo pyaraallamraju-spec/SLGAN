@@ -101,6 +101,41 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // One customer rating per product. Ratings are readable so product cards can
+    // display a live average, but each customer can only create/edit their own record.
+    // Document ID format: <productId>_<Firebase Auth UID>.
+    match /productRatings/{ratingId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.productId is string
+        && request.resource.data.productId.size() > 0
+        && request.resource.data.productId.size() <= 200
+        && ratingId == request.resource.data.productId + '_' + request.auth.uid
+        && request.resource.data.productName is string
+        && request.resource.data.productName.size() > 0
+        && request.resource.data.productName.size() <= 200
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && request.resource.data.review is string
+        && request.resource.data.review.size() <= 1000;
+      allow update: if request.auth != null
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.productId == resource.data.productId
+        && request.resource.data.productName is string
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && request.resource.data.review is string
+        && request.resource.data.review.size() <= 1000
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['productName', 'userName', 'rating', 'review', 'updatedAt']);
+      allow delete: if request.auth != null
+        && resource.data.userId == request.auth.uid;
+    }
+
     // Each saved address belongs to the signed-in customer.
     match /addresses/{addressId} {
       allow create: if request.auth != null
