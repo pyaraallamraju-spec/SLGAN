@@ -2861,7 +2861,52 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             }
             Spacer(Modifier.height(10.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
-            Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (product.category.isNotBlank()) {
+                        Surface(
+                            shape = RoundedCornerShape(7.dp),
+                            color = PaleGreen,
+                            contentColor = Forest
+                        ) {
+                            Text(
+                                product.category,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp),
+                                fontSize = 8.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                    if (product.subtitle.isNotBlank()) {
+                        Surface(
+                            shape = RoundedCornerShape(7.dp),
+                            color = Color(0xFFFFEBC2),
+                            contentColor = Ink
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(3.dp)
+                            ) {
+                                Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(10.dp))
+                                Text(
+                                    product.subtitle.replace(" ", ""),
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
+                }
+            }
             Spacer(Modifier.height(5.dp))
             ProductRatingLine(ratingSummary)
             Spacer(Modifier.height(8.dp))
