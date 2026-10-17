@@ -264,11 +264,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
-        // Deter screenshots and screen recording on supported Android surfaces.
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+        // Temporary: allow screenshots and screen recording while testing the app.
+        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         setContent { Box(Modifier.fillMaxSize().safeDrawingPadding()) { AyurvedicApp() } }
     }
 }
