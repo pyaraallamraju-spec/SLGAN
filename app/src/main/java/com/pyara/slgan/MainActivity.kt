@@ -3159,22 +3159,31 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     if (product.category.isNotBlank()) {
                         Surface(
                             shape = RoundedCornerShape(50.dp),
-                            color = Color(0xFFF8E7E4),
-                            contentColor = Color(0xFF762A24),
-                            border = BorderStroke(0.7.dp, Color(0xFFD9A7A0))
+                            color = Color(0xFF762A24),
+                            contentColor = Color(0xFFFFF7E8)
                         ) {
-                            Text(product.category, modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp), fontSize = 8.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Row(
+                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(3.dp)
+                            ) {
+                                Text("🌿", fontSize = 9.sp)
+                                Text(product.category, fontSize = 8.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            }
                         }
                     }
                     if (product.subtitle.isNotBlank()) {
                         Surface(
                             shape = RoundedCornerShape(50.dp),
-                            color = Color(0xFFFFF2D6),
-                            contentColor = Color(0xFF5A3514),
-                            border = BorderStroke(0.7.dp, Color(0xFFE4BE70))
+                            color = Color(0xFFF5E5C8),
+                            contentColor = Color(0xFF762A24)
                         ) {
-                            Row(modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-                                Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(9.dp), tint = Color(0xFF8B5A18))
+                            Row(
+                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(3.dp)
+                            ) {
+                                Text("⚖", fontSize = 9.sp)
                                 Text(product.subtitle.replace(" ", ""), fontSize = 9.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                         }
