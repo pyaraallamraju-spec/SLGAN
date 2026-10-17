@@ -2190,6 +2190,12 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 items(filtered, key = { it["_documentId"].toString() }) { disease ->
                     val name = disease["diseases_name"]?.toString().orEmpty().ifBlank { "Unnamed disease" }
                     val description = disease["disease_desc"]?.toString().orEmpty().ifBlank { "Information not available." }
+                    val diseaseEmoji = when (name.trim().lowercase()) {
+                        "fever" -> "🤒"
+                        "cough" -> "🦠"
+                        "flu" -> "🫁"
+                        else -> "🌿"
+                    }
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
@@ -2198,7 +2204,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     ) {
                         Row(Modifier.fillMaxWidth().padding(15.dp), verticalAlignment = Alignment.Top) {
                             Box(Modifier.size(44.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
-                                Icon(Icons.Default.Spa, contentDescription = null, tint = Forest, modifier = Modifier.size(23.dp))
+                                Text(diseaseEmoji, fontSize = 24.sp)
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
@@ -4112,7 +4118,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     matches.forEach { disease ->
                         DropdownMenuItem(
                             text = { Text(disease, color = Ink, fontWeight = FontWeight.Medium) },
-                            leadingIcon = { Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest) },
+                            leadingIcon = { Text(when (disease.trim().lowercase()) { "fever" -> "🤒"; "cough" -> "🦠"; "flu" -> "🫁"; else -> "🌿" }, fontSize = 20.sp) },
                             onClick = {
                                 selectedDisease = disease
                                 query = disease
