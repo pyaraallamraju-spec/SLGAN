@@ -2881,7 +2881,9 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                         Spacer(Modifier.height(4.dp))
                                         ProductRatingLine(productRatings[product.id] ?: ProductRatingSummary())
-                                        Spacer(Modifier.height(6.dp))
+                                        Spacer(Modifier.height(3.dp))
+                                        ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
+                                        Spacer(Modifier.height(3.dp))
                                         Text(
                                             tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
                                             color = Forest,
