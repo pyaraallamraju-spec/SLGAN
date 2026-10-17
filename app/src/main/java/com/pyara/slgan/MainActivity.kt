@@ -160,7 +160,13 @@ private fun tr(text: String, language: String): String {
         "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Grutas" to "ఘృతాలు", "Pills" to "మాత్రలు", "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
         "Language" to "భాష", "Select language" to "భాషను ఎంచుకోండి", "Save language preference" to "భాష ప్రాధాన్యతను సేవ్ చేయండి",
         "Email address" to "ఇమెయిల్ చిరునామా", "Password (at least 6 characters)" to "పాస్‌వర్డ్ (కనీసం 6 అక్షరాలు)", "Secure email and password sign-in" to "ఇమెయిల్ మరియు పాస్‌వర్డ్‌తో సురక్షిత లాగిన్",
-        "Rooted in Tradition. Inspired by Nature." to "సహజ మూలికా ఉత్పత్తులను అన్వేషించండి.", "ROOTED IN NATURE" to "ప్రకృతిలో వేళ్లూనుకున్నది", "Everyday wellness,\\nwith a herbal touch." to "ప్రతిరోజూ ఆరోగ్యం,\\nమూలికలతో.", "Explore collection  →" to "ఉత్పత్తులను చూడండి  →",
+        "Rooted in Tradition. Inspired by Nature." to "సంప్రదాయంలో పాతుకుపోయి, ప్రకృతి స్ఫూర్తితో.", "ROOTED IN NATURE" to "ప్రకృతిలో వేళ్లూనుకున్నది", "Everyday wellness,\\nwith a herbal touch." to "ప్రతిరోజూ ఆరోగ్యం,\\nమూలికలతో.", "Explore collection  →" to "ఉత్పత్తులను చూడండి  →",
+        "SRI LAKSHMI GANAPATHI" to "శ్రీ లక్ష్మీ గణపతి", "AYURVEDA NILAYAM" to "ఆయుర్వేద నిలయం",
+        "TRADITION • TRUST • WELLNESS" to "సంప్రదాయం • నమ్మకం • ఆరోగ్యం", "Preparing your wellness experience" to "మీ ఆరోగ్య అనుభవాన్ని సిద్ధం చేస్తున్నాం",
+        "Sri Lakshmi Ganapathi" to "శ్రీ లక్ష్మీ గణపతి", "Ayurveda Nilayam" to "ఆయుర్వేద నిలయం",
+        "Estd. 1900 by Perraju Sharma" to "పెర్రాజు శర్మచే 1900లో స్థాపితం", "Nature's care,\\nrooted in tradition." to "ప్రకృతి సంరక్షణ,\\nసంప్రదాయ మూలాలతో.",
+        "OUR HERITAGE" to "మన వారసత్వం", "DISCOVER SLGAN" to "SLGANను తెలుసుకోండి", "SLGAN SIGNATURE PRODUCT" to "SLGAN ప్రత్యేక ఉత్పత్తి",
+        "Traditional Ayurvedic care, rooted in nature" to "ప్రకృతిలో పాతుకుపోయిన సంప్రదాయ ఆయుర్వేద సంరక్షణ", "A signature SLGAN product" to "SLGAN ప్రత్యేక ఉత్పత్తి",
         "Search products" to "ఉత్పత్తులను వెతకండి", "Shop by category" to "వర్గాల వారీగా కొనండి", "Could not load products: ${'$' }productsError" to "ఉత్పత్తులను లోడ్ చేయలేకపోయాం: ${'$' }productsError",
         "Made with care for your everyday rituals." to "మీ రోజువారీ అవసరాల కోసం శ్రద్ధగా తయారు చేయబడింది.", "Your cart" to "మీ కార్ట్", "Subtotal" to "మొత్తం", "Checkout" to "చెక్‌అవుట్", "Demo only: checkout and payments are not connected." to "ఇది డెమో మాత్రమే: చెక్‌అవుట్ మరియు చెల్లింపులు ఇంకా కనెక్ట్ కాలేదు.", "Find the collection for your routine." to "మీ అవసరానికి తగిన ఉత్పత్తుల సమాహారాన్ని కనుగొనండి.",
         "Language preference saved." to "భాష ప్రాధాన్యత సేవ్ అయింది.", "Couldn't save language. Please try again." to "భాషను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
@@ -237,7 +243,13 @@ private fun tr(text: String, language: String): String {
         "All" to "सभी", "Lehyas" to "लेह्य", "Grutas" to "घृत", "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
         "Language" to "भाषा", "Select language" to "भाषा चुनें", "Save language preference" to "भाषा प्राथमिकता सहेजें",
         "Email address" to "ईमेल पता", "Password (at least 6 characters)" to "पासवर्ड (कम से कम 6 अक्षर)", "Secure email and password sign-in" to "ईमेल और पासवर्ड से सुरक्षित साइन-इन",
-        "Rooted in Tradition. Inspired by Nature." to "चुनिंदा हर्बल उत्पाद देखें।", "ROOTED IN NATURE" to "प्रकृति से जुड़ा", "Everyday wellness,\\nwith a herbal touch." to "हर दिन स्वास्थ्य,\\nजड़ी-बूटियों के साथ।", "Explore collection  →" to "उत्पाद देखें  →",
+        "Rooted in Tradition. Inspired by Nature." to "परंपरा में निहित, प्रकृति से प्रेरित।", "ROOTED IN NATURE" to "प्रकृति से जुड़ा", "Everyday wellness,\\nwith a herbal touch." to "हर दिन स्वास्थ्य,\\nजड़ी-बूटियों के साथ।", "Explore collection  →" to "उत्पाद देखें  →",
+        "SRI LAKSHMI GANAPATHI" to "श्री लक्ष्मी गणपति", "AYURVEDA NILAYAM" to "आयुर्वेद निलयम",
+        "TRADITION • TRUST • WELLNESS" to "परंपरा • विश्वास • स्वास्थ्य", "Preparing your wellness experience" to "आपके स्वास्थ्य अनुभव की तैयारी हो रही है",
+        "Sri Lakshmi Ganapathi" to "श्री लक्ष्मी गणपति", "Ayurveda Nilayam" to "आयुर्वेद निलयम",
+        "Estd. 1900 by Perraju Sharma" to "पेर्राजू शर्मा द्वारा 1900 में स्थापित", "Nature's care,\\nrooted in tradition." to "प्रकृति की देखभाल,\\nपरंपरा की जड़ों से।",
+        "OUR HERITAGE" to "हमारी विरासत", "DISCOVER SLGAN" to "SLGAN को जानें", "SLGAN SIGNATURE PRODUCT" to "SLGAN विशेष उत्पाद",
+        "Traditional Ayurvedic care, rooted in nature" to "प्रकृति से जुड़ी पारंपरिक आयुर्वेदिक देखभाल", "A signature SLGAN product" to "SLGAN विशेष उत्पाद",
         "Search products" to "उत्पाद खोजें", "Shop by category" to "श्रेणी के अनुसार खरीदें", "Could not load products: ${'$' }productsError" to "उत्पाद लोड नहीं हो सके: ${'$' }productsError",
         "Made with care for your everyday rituals." to "आपकी रोज़मर्रा की ज़रूरतों के लिए सावधानी से बनाया गया।", "Your cart" to "आपकी कार्ट", "Subtotal" to "उप-योग", "Checkout" to "चेकआउट", "Demo only: checkout and payments are not connected." to "यह केवल डेमो है: चेकआउट और भुगतान जुड़े नहीं हैं।", "Find the collection for your routine." to "अपनी दिनचर्या के लिए उत्पाद खोजें।",
         "Language preference saved." to "भाषा प्राथमिकता सहेजी गई।", "Couldn't save language. Please try again." to "भाषा सहेजी नहीं जा सकी। फिर प्रयास करें।",
@@ -828,7 +840,7 @@ private fun SplashScreen() {
             }
             Spacer(Modifier.height(24.dp))
             Text(
-                "SRI LAKSHMI GANAPATHI",
+                tr("SRI LAKSHMI GANAPATHI", LocalAppLanguage.current),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = Forest,
@@ -837,7 +849,7 @@ private fun SplashScreen() {
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                "AYURVEDA NILAYAM",
+                tr("AYURVEDA NILAYAM", LocalAppLanguage.current),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Leaf,
@@ -846,7 +858,7 @@ private fun SplashScreen() {
             )
             Spacer(Modifier.height(14.dp))
             Text(
-                "TRADITION • TRUST • WELLNESS",
+                tr("TRADITION • TRUST • WELLNESS", LocalAppLanguage.current),
                 fontSize = 10.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Muted,
@@ -861,7 +873,7 @@ private fun SplashScreen() {
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                "Preparing your wellness experience",
+                tr("Preparing your wellness experience", LocalAppLanguage.current),
                 fontSize = 11.sp,
                 color = Muted,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -959,7 +971,7 @@ private fun LoginScreen(
         }
         Spacer(Modifier.height(12.dp))
         Text(
-            "Sri Lakshmi Ganapathi",
+            tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current),
             fontSize = 29.sp,
             lineHeight = 34.sp,
             fontWeight = FontWeight.ExtraBold,
@@ -967,7 +979,7 @@ private fun LoginScreen(
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Text(
-            "Ayurveda Nilayam",
+            tr("Ayurveda Nilayam", LocalAppLanguage.current),
             fontSize = 27.sp,
             lineHeight = 32.sp,
             fontWeight = FontWeight.ExtraBold,
@@ -982,7 +994,7 @@ private fun LoginScreen(
         }
         Spacer(Modifier.height(6.dp))
         Text(
-            "Estd. 1900 by Perraju Sharma",
+            tr("Estd. 1900 by Perraju Sharma", LocalAppLanguage.current),
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
             color = Color(0xFF245D32),
@@ -990,7 +1002,7 @@ private fun LoginScreen(
         )
         Spacer(Modifier.height(12.dp))
         Text(
-            "Nature's care,\nrooted in tradition.",
+            tr("Nature's care,\nrooted in tradition.", LocalAppLanguage.current),
             fontSize = 29.sp,
             lineHeight = 34.sp,
             fontWeight = FontWeight.Bold,
@@ -1242,7 +1254,7 @@ private fun HomeBannerSlider(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            when { slide.productName == "Sri Lakshmi Ganapathi Ayurveda Nilayam" -> "OUR HERITAGE"; slide.isCompanySlide -> "DISCOVER SLGAN"; else -> "SLGAN SIGNATURE PRODUCT" },
+                            tr(when { slide.productName == "Sri Lakshmi Ganapathi Ayurveda Nilayam" -> "OUR HERITAGE"; slide.isCompanySlide -> "DISCOVER SLGAN"; else -> "SLGAN SIGNATURE PRODUCT" }, LocalAppLanguage.current),
                             color = Gold,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
@@ -1251,7 +1263,8 @@ private fun HomeBannerSlider(
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            slide.productName,
+                            if (slide.isCompanySlide) tr("Sri Lakshmi Ganapathi Ayurveda Nilayam", LocalAppLanguage.current)
+                            else localizedProductName(slide.productName, LocalAppLanguage.current),
                             color = Color.White,
                             fontSize = if (slide.isCompanySlide) 20.sp else 25.sp,
                             lineHeight = if (slide.isCompanySlide) 25.sp else 30.sp,
@@ -1261,7 +1274,7 @@ private fun HomeBannerSlider(
                         )
                         Spacer(Modifier.height(6.dp))
                         Text(
-                            slide.tagline,
+                            tr(slide.tagline, LocalAppLanguage.current),
                             color = if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFC8F0D2),
                             fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
                             lineHeight = 16.sp,
