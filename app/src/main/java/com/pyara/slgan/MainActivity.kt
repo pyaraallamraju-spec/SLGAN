@@ -4479,29 +4479,36 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 <!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">
                                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
                                 <style>
-                                *{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;padding:12px;background:#171b1a;color:#f8f0df}
-                                .search-panel{padding:12px;background:linear-gradient(145deg,#292b27,#1d211f);border:1px solid #b88b43;border-radius:16px;box-shadow:0 8px 20px #0005}
-                                .heading{font-size:11px;font-weight:700;letter-spacing:1.5px;color:#e0b45c;margin:0 0 9px}
-                                #search{display:block;width:100%;padding:13px 14px;border:1px solid #675638;border-radius:10px;background:#101412;color:#fff7e8;font-size:15px;outline:none}
-                                #search::placeholder{color:#aaa99e}#search:focus{border-color:#e0b45c;box-shadow:0 0 0 2px #e0b45c30}
-                                #results{max-height:130px;overflow:auto;background:#222725;border-radius:10px;margin-top:7px}
-                                .result{padding:11px 12px;border-bottom:1px solid #3b3f38;font-size:13px;line-height:1.45;color:#f8f0df;cursor:pointer}
-                                .result:last-child{border-bottom:0}.result:active{background:#3a382c}
-                                #map-frame{margin-top:11px;padding:4px;border:1px solid #b88b43;border-radius:16px;background:linear-gradient(135deg,#d9a441,#634c2d);box-shadow:0 9px 22px #0006;overflow:hidden}
-                                #map{height:250px;width:100%;border-radius:12px;overflow:hidden;background:#222725}
-                                .hint{font-size:11px;line-height:1.5;color:#c7c0af;padding:10px 3px 0}
-                                .leaflet-control-zoom a{background:#202522!important;color:#f8f0df!important;border-color:#5b533f!important}
-                                .leaflet-control-attribution{background:#171b1acc!important;color:#d4cbb7!important}
-                                .leaflet-control-attribution a{color:#e0b45c!important}
+                                *{box-sizing:border-box}html,body{width:100%;margin:0;padding:0;font-family:Arial,sans-serif;background:#fbf6eb;color:#30251d}
+                                body{padding:10px}
+                                .search-panel{padding:14px;background:linear-gradient(145deg,#fffdf7,#f3e8d5);border:1px solid #dfc58e;border-radius:18px;box-shadow:0 5px 16px #4b2b1718}
+                                .heading{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:1.25px;color:#762b35;margin:0 0 10px}
+                                .heading:before{content:'📍';font-size:14px}
+                                #search{display:block;width:100%;padding:13px 14px;border:1px solid #d5c5a6;border-radius:12px;background:#fffefa;color:#30251d;font-size:15px;outline:none;box-shadow:inset 0 1px 2px #3e28100a}
+                                #search::placeholder{color:#8d8170}#search:focus{border-color:#9a6b2e;box-shadow:0 0 0 3px #c69a4b25}
+                                #results{max-height:150px;overflow:auto;background:#fffefa;border:1px solid #e7dcc7;border-radius:12px;margin-top:8px}
+                                .result{padding:12px;border-bottom:1px solid #eee4d2;font-size:13px;line-height:1.45;color:#30251d;cursor:pointer}
+                                .result:last-child{border-bottom:0}.result:active{background:#f5e8ce}
+                                #map-frame{position:relative;margin-top:12px;padding:4px;border:1px solid #b88b43;border-radius:18px;background:linear-gradient(135deg,#f0d18a,#8c542d);box-shadow:0 7px 18px #4b2b1724;overflow:hidden}
+                                #map{height:290px;width:100%;border-radius:14px;overflow:hidden;background:#e9e3d6}
+                                .map-caption{display:flex;align-items:center;justify-content:space-between;padding:9px 5px 3px;font-size:11px;color:#5b4939}
+                                .map-caption strong{color:#762b35;font-size:11px}
+                                .hint{font-size:11px;line-height:1.5;color:#786957;padding:9px 3px 1px}
+                                .leaflet-control-zoom{border:1px solid #b88b43!important;border-radius:10px!important;overflow:hidden}
+                                .leaflet-control-zoom a{background:#fffaf0!important;color:#762b35!important;border-color:#e4d2ad!important}
+                                .leaflet-control-attribution{background:#fffaf0e8!important;color:#665747!important;font-size:9px!important}
+                                .leaflet-control-attribution a{color:#762b35!important}
+                                .leaflet-container{font:12px Arial,sans-serif}
                                 </style></head>
-                                <body><div class="search-panel"><div class="heading">DELIVERY LOCATION</div><input id="search" placeholder="Search area, street, landmark or PIN code"><div id="results"></div></div><div id="map-frame"><div id="map"></div></div><div class="hint">Search for your locality and tap a result to fill the address. Map data © OpenStreetMap contributors / CARTO.</div>
+                                <body><div class="search-panel"><div class="heading">FIND YOUR DELIVERY LOCATION</div><input id="search" autocomplete="off" placeholder="Search locality, street, landmark or PIN code"><div id="results"></div></div><div id="map-frame"><div id="map"></div><div class="map-caption"><strong>✦ SLGAN DELIVERY MAP</strong><span>Move map · Select a search result</span></div></div><div class="hint">Search for your area and tap a result to auto-fill the address form. Please verify the details before saving. Map © OpenStreetMap contributors · CARTO.</div>
                                 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
-                                const map=L.map('map').setView([22.9734,78.6569],4);
-                                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap contributors © CARTO',subdomains:'abcd',maxZoom:19}).addTo(map);
+                                const map=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([22.9734,78.6569],5);
+                                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap contributors © CARTO',subdomains:'abcd',maxZoom:20}).addTo(map);
+                                const pinIcon=L.divIcon({className:'slgan-pin',html:'<div style="width:24px;height:24px;background:#762b35;border:3px solid #f0c56a;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 3px 8px #0005;position:relative"><span style="position:absolute;width:6px;height:6px;background:#fff2d0;border-radius:50%;left:6px;top:6px"></span></div>',iconSize:[28,34],iconAnchor:[12,30]});
                                 let marker=null;
                                 async function searchPlaces(){const q=document.getElementById('search').value.trim();if(q.length<3)return;const box=document.getElementById('results');box.innerHTML='<div class="result">Searching…</div>';try{const searchQuery=/\\b(india|telangana|andhra pradesh|hyderabad)\\b/i.test(q)?q:(q+', India');const response=await fetch('https://photon.komoot.io/api/?limit=10&lat=17.385&lon=78.4867&q='+encodeURIComponent(searchQuery));if(!response.ok)throw new Error('Search HTTP '+response.status);const data=await response.json();box.innerHTML='';data.features.forEach(p=>{const row=document.createElement('div');row.className='result';row.textContent=p.properties.name?([p.properties.name,p.properties.street,p.properties.city||p.properties.town||p.properties.village,p.properties.state,p.properties.postcode].filter(Boolean).join(', ')):Object.values(p.properties).filter(v=>typeof v==='string').slice(0,5).join(', ');row.onclick=()=>choose(p);box.appendChild(row)});if(!data.features.length)box.innerHTML='<div class="result">No results found in India. Try the full address, locality, Manikonda, Hyderabad, or PIN code.</div>'}catch(e){box.innerHTML='<div class="result">Address search blocked or unavailable. Check internet and try again.</div>'}}
                                 let timer;document.getElementById('search').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(searchPlaces,900)});
-                                function choose(p){document.getElementById('results').innerHTML='';const lon=Number(p.geometry.coordinates[0]),lat=Number(p.geometry.coordinates[1]);map.setView([lat,lon],16);if(marker)map.removeLayer(marker);marker=L.marker([lat,lon]).addTo(map);const a=p.properties||{};const line1=[a.housenumber,a.street].filter(Boolean).join(' ');const line2=[a.district||a.suburb||a.locality||a.neighbourhood,a.county].filter(Boolean).join(', ');const city=a.city||a.town||a.village||a.municipality||'';const st=a.state||'';const pin=a.postcode||'';const lm=a.amenity||a.name||'';AddressBridge.selectAddress(line1||a.name||'',line2,lm,city,st,pin);document.getElementById('search').value=rowLabel(a) }
+                                function choose(p){document.getElementById('results').innerHTML='';const lon=Number(p.geometry.coordinates[0]),lat=Number(p.geometry.coordinates[1]);map.setView([lat,lon],16);if(marker)map.removeLayer(marker);marker=L.marker([lat,lon],{icon:pinIcon}).addTo(map);const a=p.properties||{};const line1=[a.housenumber,a.street].filter(Boolean).join(' ');const line2=[a.district||a.suburb||a.locality||a.neighbourhood,a.county].filter(Boolean).join(', ');const city=a.city||a.town||a.village||a.municipality||'';const st=a.state||'';const pin=a.postcode||'';const lm=a.amenity||a.name||'';AddressBridge.selectAddress(line1||a.name||'',line2,lm,city,st,pin);document.getElementById('search').value=rowLabel(a) }
                                 function rowLabel(a){return [a.name,a.street,a.city||a.town||a.village,a.state,a.postcode].filter(Boolean).join(', ')}
                                 </script></body></html>
                             """.trimIndent(), "text/html", "UTF-8", null)
