@@ -2782,18 +2782,18 @@ private fun ProductDetailsPage(
             Text(tr("View product", LocalAppLanguage.current), modifier = Modifier.weight(1f), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
             IconButton(onClick = {
                 val shareText = buildString {
-                    append("Check out this product from Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN)\\n\\n")
+                    append("Check out this product from Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN)\n\n")
                     append(localizedProductName(product.name, currentLanguage))
-                    if (product.subtitle.isNotBlank()) append("\\nPack size: ${product.subtitle}")
-                    if (product.category.isNotBlank()) append("\\nCategory: ${product.category}")
+                    if (product.subtitle.isNotBlank()) append("\nPack size: ${product.subtitle}")
+                    if (product.category.isNotBlank()) append("\nCategory: ${product.category}")
                     if (product.price > 0.0) {
                         val priceText = if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price)
-                        append("\\nPrice: ₹$priceText")
-                    } else append("\\nPrice: Not available yet")
-                    if (product.description.isNotBlank()) append("\\n\\nDescription: ${product.description}")
-                    if (product.usage.isNotBlank()) append("\\nUsage: ${product.usage}")
-                    if (product.majorIngredients.isNotBlank()) append("\\nMajor ingredients: ${product.majorIngredients}")
-                    append("\\n\\nShared from SLGAN.")
+                        append("\nPrice: ₹$priceText")
+                    } else append("\nPrice: Not available yet")
+                    if (product.description.isNotBlank()) append("\n\nDescription: ${product.description}")
+                    if (product.usage.isNotBlank()) append("\nUsage: ${product.usage}")
+                    if (product.majorIngredients.isNotBlank()) append("\nMajor ingredients: ${product.majorIngredients}")
+                    append("\n\nShared from SLGAN.")
                 }
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
