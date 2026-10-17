@@ -61,12 +61,12 @@ def parse_numeric_id(doc, data):
     if isinstance(raw, int) and not isinstance(raw, bool) and raw > 0:
         return raw
     text = str(raw if raw is not None else doc.id).strip()
-    match = re.fullmatch(r"(?:DISEASE|disease)(\\d+)", text, re.IGNORECASE)
+    match = re.fullmatch(r"(?:DISEASE|disease)(\d+)", text, re.IGNORECASE)
     if match:
         return int(match.group(1))
-    if re.fullmatch(r"\\d+", text):
+    if re.fullmatch(r"\d+", text):
         return int(text)
-    match = re.fullmatch(r"(?:DISEASE|disease)(\\d+)", doc.id, re.IGNORECASE)
+    match = re.fullmatch(r"(?:DISEASE|disease)(\d+)", doc.id, re.IGNORECASE)
     return int(match.group(1)) if match else None
 
 parsed_ids = {doc.id: parse_numeric_id(doc, doc.to_dict() or {}) for doc in existing_docs}
