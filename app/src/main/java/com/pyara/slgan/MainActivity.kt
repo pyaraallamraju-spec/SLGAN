@@ -4861,19 +4861,35 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             }
             Spacer(Modifier.height(14.dp))
             OutlinedButton(
-                onClick = { showMapPicker = !showMapPicker },
+                onClick = { showMapPicker = true },
                 modifier = Modifier.fillMaxWidth().height(52.dp),
                 shape = RoundedCornerShape(14.dp)
             ) {
                 Icon(Icons.Default.Map, null, tint = Forest)
                 Spacer(Modifier.width(8.dp))
-                Text(if (showMapPicker) "Hide map" else "Search and select address on map")
+                Text("Show map")
             }
             if (showMapPicker) {
-                Text(tr("Search a place or address below, then tap a result to fill the address fields.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
-                Spacer(Modifier.height(8.dp))
-                AndroidView(
-                    modifier = Modifier.fillMaxWidth().height(360.dp).clip(RoundedCornerShape(14.dp)),
+                androidx.compose.ui.window.Dialog(onDismissRequest = { showMapPicker = false }) {
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(22.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                    ) {
+                        Column(Modifier.fillMaxWidth().padding(14.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Column(Modifier.weight(1f)) {
+                                    Text("Choose delivery location", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                                    Text("Search, select a result, or drag the pin.", color = Muted, fontSize = 12.sp)
+                                }
+                                IconButton(onClick = { showMapPicker = false }) {
+                                    Icon(Icons.Default.Close, contentDescription = "Close map", tint = Forest)
+                                }
+                            }
+                            Spacer(Modifier.height(8.dp))
+                            AndroidView(
+                    modifier = Modifier.fillMaxWidth().height(430.dp).clip(RoundedCornerShape(14.dp)),
                     factory = { ctx ->
                         WebView(ctx).apply {
                             settings.javaScriptEnabled = true
@@ -4926,13 +4942,23 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 let marker=null;
                                 async function searchPlaces(){const q=document.getElementById('search').value.trim();if(q.length<3)return;const box=document.getElementById('results');box.innerHTML='<div class="result">Searching…</div>';try{const searchQuery=/\\b(india|telangana|andhra pradesh|hyderabad)\\b/i.test(q)?q:(q+', India');const response=await fetch('https://photon.komoot.io/api/?limit=10&lat=17.385&lon=78.4867&q='+encodeURIComponent(searchQuery));if(!response.ok)throw new Error('Search HTTP '+response.status);const data=await response.json();box.innerHTML='';data.features.forEach(p=>{const row=document.createElement('div');row.className='result';row.textContent=p.properties.name?([p.properties.name,p.properties.street,p.properties.city||p.properties.town||p.properties.village,p.properties.state,p.properties.postcode].filter(Boolean).join(', ')):Object.values(p.properties).filter(v=>typeof v==='string').slice(0,5).join(', ');row.onclick=()=>choose(p);box.appendChild(row)});if(!data.features.length)box.innerHTML='<div class="result">No results found in India. Try the full address, locality, Manikonda, Hyderabad, or PIN code.</div>'}catch(e){box.innerHTML='<div class="result">Address search blocked or unavailable. Check internet and try again.</div>'}}
                                 let timer;document.getElementById('search').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(searchPlaces,900)});
-                                function choose(p){document.getElementById('results').innerHTML='';const lon=Number(p.geometry.coordinates[0]),lat=Number(p.geometry.coordinates[1]);map.setView([lat,lon],16);if(marker)map.removeLayer(marker);marker=L.marker([lat,lon],{icon:pinIcon}).addTo(map);const a=p.properties||{};const line1=[a.housenumber,a.street].filter(Boolean).join(' ');const line2=[a.district||a.suburb||a.locality||a.neighbourhood,a.county].filter(Boolean).join(', ');const city=a.city||a.town||a.village||a.municipality||'';const st=a.state||'';const pin=a.postcode||'';const lm=a.amenity||a.name||'';AddressBridge.selectAddress(line1||a.name||'',line2,lm,city,st,pin);document.getElementById('search').value=rowLabel(a) }
+                                function choose(p){document.getElementById('results').innerHTML='';const lon=Number(p.geometry.coordinates[0]),lat=Number(p.geometry.coordinates[1]);map.setView([lat,lon],16);if(marker)map.removeLayer(marker);marker=L.marker([lat,lon],{icon:pinIcon,draggable:true}).addTo(map);const a=p.properties||{};applyAddress(a);document.getElementById('search').value=rowLabel(a);marker.on('dragend',async()=>{const ll=marker.getLatLng();map.setView(ll,Math.max(map.getZoom(),16));document.getElementById('search').value='Selected map location';try{const r=await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+ll.lat+'&lon='+ll.lng);if(r.ok){const d=await r.json();applyAddress(d.address||{});document.getElementById('search').value=d.display_name||'Selected map location'}}catch(e){}}) }
+                                function applyAddress(a){const line1=[a.house_number||a.housenumber,a.road||a.street].filter(Boolean).join(' ');const line2=[a.suburb||a.neighbourhood||a.district||a.county].filter(Boolean).join(', ');const city=a.city||a.town||a.village||a.municipality||a.city_district||'';const st=a.state||'';const pin=a.postcode||'';const lm=a.amenity||a.name||'';AddressBridge.selectAddress(line1||a.name||'',line2,lm,city,st,pin) }
                                 function rowLabel(a){return [a.name,a.street,a.city||a.town||a.village,a.state,a.postcode].filter(Boolean).join(', ')}
                                 </script></body></html>
                             """.trimIndent(), "text/html", "UTF-8", null)
                         }
                     }
                 )
+                            Spacer(Modifier.height(10.dp))
+                            Text("Drag the pin to fine-tune the location. The address fields will update.", color = Muted, fontSize = 12.sp)
+                            Spacer(Modifier.height(10.dp))
+                            Button(onClick = { showMapPicker = false }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+                                Text("Use this location")
+                            }
+                        }
+                    }
+                }
                 Spacer(Modifier.height(14.dp))
             } else {
                 Spacer(Modifier.height(14.dp))
