@@ -1350,10 +1350,10 @@ private fun HomeBannerSlider(
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(
                                         Brush.horizontalGradient(
-                                            colors = listOf(Color(0xFF4D100E).copy(alpha = 0.96f), Forest.copy(alpha = 0.94f))
+                                            colors = listOf(Color(0xFFFFF7E8), Color(0xFFFFE6A3))
                                         )
                                     )
-                                    .border(1.dp, Gold.copy(alpha = 0.95f), RoundedCornerShape(12.dp))
+                                    .border(1.dp, Gold, RoundedCornerShape(12.dp))
                                     .clickable { openProduct(slide.productName) }
                                     .padding(horizontal = 12.dp, vertical = 7.dp),
                                 verticalAlignment = Alignment.CenterVertically,
@@ -1361,7 +1361,7 @@ private fun HomeBannerSlider(
                             ) {
                                 Text(
                                     "View product",
-                                    color = Color(0xFFFFE6A3),
+                                    color = Color(0xFF4D100E),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 0.2.sp
@@ -1369,7 +1369,7 @@ private fun HomeBannerSlider(
                                 Icon(
                                     Icons.Default.ArrowForward,
                                     contentDescription = null,
-                                    tint = Color(0xFFFFE6A3),
+                                    tint = Color(0xFF4D100E),
                                     modifier = Modifier.size(13.dp)
                                 )
                             }
