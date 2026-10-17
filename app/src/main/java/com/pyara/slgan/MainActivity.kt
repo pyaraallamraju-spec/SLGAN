@@ -3053,28 +3053,12 @@ private fun OrdersPage(
 private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: List<Product>, loading: Boolean, error: String?) {
     var query by remember { mutableStateOf("") }
     var selectedDisease by remember { mutableStateOf<String?>(null) }
-    var expanded by remember { mutableStateOf(false) }
-    var diseaseFieldBounds by remember { mutableStateOf<Rect?>(null) }
-    var diseaseSuggestionsBounds by remember { mutableStateOf<Rect?>(null) }
-    var diseaseDescription by remember(selectedDisease) { mutableStateOf("") }
-    var diseaseDescriptionLoading by remember(selectedDisease) { mutableStateOf(false) }
-    LaunchedEffect(selectedDisease) {
-        diseaseDescription = ""
-        if (selectedDisease != null) {
-            diseaseDescriptionLoading = true
-            FirebaseFirestore.getInstance().collection("diseases")
-                .whereEqualTo("diseases_name", selectedDisease).limit(1).get()
-                .addOnSuccessListener { snapshot ->
-                    val data = snapshot.documents.firstOrNull()
-                    diseaseDescription = listOf("disease_desc", "disease_description", "description", "disease_details", "details", "about")
-                        .firstNotNullOfOrNull { key -> data?.getString(key)?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-                    diseaseDescriptionLoading = false
-                }
-                .addOnFailureListener { diseaseDescriptionLoading = false }
-        } else {
-            diseaseDescriptionLoading = false
-        }
-    }
+    var detailLoading by remember { mutableStateOf(false) }
+    var diseaseDescription by remember { mutableStateOf("") }
+    var diseaseImageUrl by remember { mutableStateOf("") }
+    var diseasePrecautions by remember { mutableStateOf("") }
+    var suggestedMedicineNames by remember { mutableStateOf<List<String>>(emptyList()) }
+
     val relatedMedicines = remember(selectedDisease, products) {
         val chosen = selectedDisease?.takeIf { it != "All Diseases" }
         if (chosen == null) emptyList() else products.filter { product ->
@@ -3082,167 +3066,185 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 product.cures.contains(chosen, ignoreCase = true)
         }
     }
-    val matches = remember(diseases, query) {
-        if (query.isBlank()) diseases
-        else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
+
+    LaunchedEffect(selectedDisease) {
+        diseaseDescription = ""
+        diseaseImageUrl = ""
+        diseasePrecautions = ""
+        suggestedMedicineNames = emptyList()
+        if (selectedDisease != null) {
+            detailLoading = true
+            FirebaseFirestore.getInstance().collection("diseases")
+                .whereEqualTo("diseases_name", selectedDisease).limit(1).get()
+                .addOnSuccessListener { snapshot ->
+                    val data = snapshot.documents.firstOrNull()
+                    diseaseDescription = listOf("disease_desc", "disease_description", "description", "disease_details", "details", "about")
+                        .firstNotNullOfOrNull { key -> data?.getString(key)?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+                    diseaseImageUrl = listOf("disease_image", "disease_image_url", "image_url", "imageUrl", "image")
+                        .firstNotNullOfOrNull { key -> data?.getString(key)?.trim()?.takeIf { it.startsWith("https://") || it.startsWith("http://") } }.orEmpty()
+                    diseasePrecautions = listOf("precautions", "disease_precautions", "prevention", "safety_precautions")
+                        .firstNotNullOfOrNull { key ->
+                            val value = data?.get(key)
+                            when (value) {
+                                is String -> value.trim().takeIf { it.isNotBlank() }
+                                is List<*> -> value.mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }.joinToString("\n").takeIf { it.isNotBlank() }
+                                else -> null
+                            }
+                        }.orEmpty()
+                    suggestedMedicineNames = listOf("suggested_medicines", "suggestedMedicines", "recommended_medicines", "medicines")
+                        .firstNotNullOfOrNull { key ->
+                            val value = data?.get(key)
+                            when (value) {
+                                is String -> value.split(",", ";", "|", "\n").map { it.trim() }.filter { it.isNotBlank() }
+                                is List<*> -> value.mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+                                else -> null
+                            }
+                        }.orEmpty()
+                    detailLoading = false
+                }
+                .addOnFailureListener { detailLoading = false }
+        } else {
+            detailLoading = false
+        }
     }
 
-    Column(
-        modifier = modifier.fillMaxSize()
-            .pointerInput(expanded, diseaseFieldBounds, diseaseSuggestionsBounds) {
-                detectTapGestures { tap ->
-                    if (expanded && diseaseFieldBounds?.contains(tap) != true && diseaseSuggestionsBounds?.contains(tap) != true) {
-                        expanded = false
-                    }
-                }
-            }
-            .verticalScroll(rememberScrollState()).padding(18.dp)
-    ) {
-        Text(tr("Diseases", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
-        Spacer(Modifier.height(20.dp))
-        OutlinedTextField(
-            value = query,
-            onValueChange = { query = it; selectedDisease = null; expanded = true },
-            modifier = Modifier.fillMaxWidth()
-                .onGloballyPositioned { diseaseFieldBounds = it.boundsInRoot() }
-                .onFocusChanged { if (it.isFocused) expanded = true },
-            label = { Text(tr("Select disease", LocalAppLanguage.current)) },
-            placeholder = { Text(if (loading) "Loading diseases…" else "Type to search diseases") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
-            trailingIcon = {
-                IconButton(onClick = { expanded = !expanded }) {
-                    Icon(Icons.Default.ArrowDropDown, contentDescription = "Show diseases")
-                }
-            },
-            singleLine = true,
-            shape = RoundedCornerShape(16.dp)
-        )
-        // Render suggestions in the normal layout instead of a popup so they remain
-        // visible on small Android screens and inside the scrollable Diseases page.
-        if (expanded && !loading && error == null && matches.isNotEmpty() && selectedDisease == null) {
-            Spacer(Modifier.height(4.dp))
-            Card(
-                modifier = Modifier.fillMaxWidth().onGloballyPositioned { diseaseSuggestionsBounds = it.boundsInRoot() },
-                shape = RoundedCornerShape(14.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Column(Modifier.heightIn(max = 320.dp).verticalScroll(rememberScrollState())) {
-                    matches.take(50).forEach { disease ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    query = disease
-                                    selectedDisease = disease
-                                    expanded = false
-                                }
-                                .padding(horizontal = 14.dp, vertical = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest)
-                            Spacer(Modifier.width(10.dp))
-                            Text(disease, color = Ink, fontSize = 14.sp)
-                        }
-                        HorizontalDivider(color = Gold.copy(alpha = 0.25f))
-                    }
-                }
-            }
-        }
-        if (loading) {
-            Spacer(Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp, color = Forest)
-                Spacer(Modifier.width(10.dp))
-                Text(tr("Loading diseases from database…", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
-            }
-        } else if (error != null) {
-            Spacer(Modifier.height(12.dp))
-            Text("Could not load diseases: ${'$' }error", color = Color(0xFFB3261E), fontSize = 13.sp)
-        } else if (matches.isEmpty()) {
-            Spacer(Modifier.height(12.dp))
-            Text(tr("No matching diseases found.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
-        } else if (selectedDisease == null) {
-            Spacer(Modifier.height(8.dp))
-            Text("${matches.size} disease${if (matches.size == 1) "" else "s"} available", color = Muted, fontSize = 12.sp)
-        }
-        if (selectedDisease != null) {
+    val matches = remember(diseases, query) {
+        if (query.isBlank()) diseases else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
+    }
+
+    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(18.dp)) {
+        if (selectedDisease == null) {
+            Text(tr("Diseases", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+            Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
             Spacer(Modifier.height(18.dp))
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(tr("Select disease", LocalAppLanguage.current)) },
+                placeholder = { Text("Search diseases by name") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                singleLine = true,
+                shape = RoundedCornerShape(16.dp)
+            )
+            Spacer(Modifier.height(14.dp))
+            when {
+                loading -> AppLoader(tr("Loading diseases from database…", LocalAppLanguage.current), compact = true)
+                error != null -> Text("Could not load diseases: $error", color = Color(0xFFB3261E), fontSize = 13.sp)
+                matches.isEmpty() -> EmptyState("🌿", tr("No matching diseases found.", LocalAppLanguage.current), "Try another disease name.")
+                else -> {
+                    Text(matches.size.toString() + " diseases", color = Muted, fontSize = 12.sp)
+                    Spacer(Modifier.height(10.dp))
+                    matches.forEach { disease ->
+                        Card(
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedDisease = disease },
+                            shape = RoundedCornerShape(18.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(disease, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                Spacer(Modifier.height(9.dp))
+                                Box(Modifier.size(42.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
+                                    Icon(Icons.Default.HealthAndSafety, contentDescription = "View disease", tint = Forest, modifier = Modifier.size(25.dp))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = { selectedDisease = null }) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back to diseases", tint = Forest)
+                }
+                Column(Modifier.weight(1f)) {
+                    Text("DISEASE DETAILS", color = Leaf, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
+                    Text(selectedDisease!!, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                }
+            }
+            Spacer(Modifier.height(12.dp))
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
                 shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
-                Column(Modifier.fillMaxWidth().padding(18.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(48.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
-                            Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest, modifier = Modifier.size(28.dp))
-                        }
-                        Spacer(Modifier.width(12.dp))
-                        Column(Modifier.weight(1f)) {
-                            Text(tr("DISEASE OVERVIEW", LocalAppLanguage.current), color = Leaf, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
-                            Text(selectedDisease!!, color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 19.sp)
-                        }
-                        IconButton(onClick = { selectedDisease = null; query = ""; expanded = true }) {
-                            Icon(Icons.Default.Close, contentDescription = "Clear selection", tint = Muted)
+                Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                    if (diseaseImageUrl.isNotBlank()) {
+                        AsyncImage(
+                            model = diseaseImageUrl,
+                            contentDescription = selectedDisease,
+                            modifier = Modifier.fillMaxWidth().height(190.dp).clip(RoundedCornerShape(16.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Box(
+                            Modifier.fillMaxWidth().height(150.dp).background(Brush.verticalGradient(listOf(PaleGreen, Cream)), RoundedCornerShape(16.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest, modifier = Modifier.size(76.dp))
                         }
                     }
-                    Spacer(Modifier.height(16.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Info, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(tr("What is this disease?", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                    }
+                    Spacer(Modifier.height(18.dp))
+                    DetailSectionHeading(Icons.Default.Info, "Description")
                     Spacer(Modifier.height(7.dp))
                     Text(
                         when {
-                            diseaseDescriptionLoading -> "Loading disease information…"
+                            detailLoading -> "Loading disease information…"
                             diseaseDescription.isNotBlank() -> diseaseDescription
-                            else -> "Information not available."
+                            else -> tr("Information not available.", LocalAppLanguage.current)
                         },
-                        color = Muted, fontSize = 13.sp, lineHeight = 19.sp
+                        color = Muted, fontSize = 14.sp, lineHeight = 21.sp
                     )
-                    Spacer(Modifier.height(18.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest, modifier = Modifier.size(21.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text(tr("Medicines available", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                        Spacer(Modifier.weight(1f))
-                        Box(Modifier.background(PaleGreen, RoundedCornerShape(20.dp)).padding(horizontal = 10.dp, vertical = 4.dp)) {
-                            Text(relatedMedicines.size.toString(), color = Forest, fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                        }
-                    }
-                    Spacer(Modifier.height(10.dp))
-                    if (selectedDisease == "All Diseases") {
-                        Text(tr("Choose a specific disease to see matching medicines.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
-                    } else if (relatedMedicines.isEmpty()) {
-                        Text(tr("No medicines are linked to this disease yet. Add the disease name to a product’s product_cures / cures / indications field to link it here.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                    Spacer(Modifier.height(20.dp))
+                    DetailSectionHeading(Icons.Default.MedicalServices, "Suggested medicines")
+                    Spacer(Modifier.height(8.dp))
+                    val displayedSuggestions = if (suggestedMedicineNames.isNotEmpty()) suggestedMedicineNames else relatedMedicines.map { it.name }
+                    if (detailLoading) {
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp, color = Forest)
+                    } else if (displayedSuggestions.isEmpty()) {
+                        Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                     } else {
-                        relatedMedicines.forEachIndexed { index, product ->
-                            Row(
-                                Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Box(Modifier.size(44.dp).background(Color.White, RoundedCornerShape(12.dp)).border(1.dp, Gold.copy(alpha = 0.45f), RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
-                                    Text(product.emoji, fontSize = 23.sp)
-                                }
-                                Spacer(Modifier.width(11.dp))
-                                Column(Modifier.weight(1f)) {
-                                    Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                                    Text(listOf(product.subtitle, tr(product.category, LocalAppLanguage.current)).filter { it.isNotBlank() }.joinToString(" • "), color = Muted, fontSize = 11.sp)
-                                }
-                                Text(tr("₹", LocalAppLanguage.current) + String.format(java.util.Locale.US, "%.0f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
+                        displayedSuggestions.forEach { medicine ->
+                            Row(Modifier.fillMaxWidth().padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(18.dp))
+                                Spacer(Modifier.width(9.dp))
+                                Text(medicine, color = Ink, fontSize = 14.sp)
                             }
-                            if (index < relatedMedicines.lastIndex) HorizontalDivider(color = Gold.copy(alpha = 0.25f))
                         }
                     }
-                    Spacer(Modifier.height(12.dp))
-                    Text(tr("Use medicines only with guidance from a qualified healthcare professional.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, lineHeight = 15.sp)
+                    Spacer(Modifier.height(20.dp))
+                    DetailSectionHeading(Icons.Default.HealthAndSafety, "Precautions")
+                    Spacer(Modifier.height(7.dp))
+                    if (diseasePrecautions.isBlank()) {
+                        Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
+                    } else {
+                        diseasePrecautions.split("\n").filter { it.isNotBlank() }.forEach { precaution ->
+                            Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.Top) {
+                                Text("•", color = Forest, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                Spacer(Modifier.width(8.dp))
+                                Text(precaution, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(14.dp))
+                    Text(tr("Use medicines only with guidance from a qualified healthcare professional.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, lineHeight = 16.sp)
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(21.dp))
+        Spacer(Modifier.width(8.dp))
+        Text(title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
     }
 }
 
