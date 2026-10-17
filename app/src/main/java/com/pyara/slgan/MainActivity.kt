@@ -2159,7 +2159,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             orders.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("No orders yet", color = Muted, fontSize = 18.sp) }
             filteredOrders.isEmpty() -> Box(Modifier.fillMaxSize().padding(20.dp), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Default.SearchOff, contentDescription = null, tint = Muted, modifier = Modifier.size(42.dp))
+                    Icon(Icons.Default.Search, contentDescription = null, tint = Muted, modifier = Modifier.size(42.dp))
                     Spacer(Modifier.height(8.dp))
                     Text("No orders match your search", color = Muted, fontSize = 16.sp)
                 }
