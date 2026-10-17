@@ -142,7 +142,7 @@ private fun tr(text: String, language: String): String {
         "Close" to "మూసివేయండి",
         "Open PDF" to "PDF తెరవండి",
         "Diseases" to "వ్యాధులు",
-        "Find a disease from the available list." to "అందుబాటులో ఉన్న జాబితా నుంచి వ్యాధిని ఎంచుకోండి.",
+        "Select a disease to view." to "అందుబాటులో ఉన్న జాబితా నుంచి వ్యాధిని ఎంచుకోండి.",
         "Select disease" to "వ్యాధిని ఎంచుకోండి",
         "Loading diseases from database…" to "డేటాబేస్ నుంచి వ్యాధులు లోడ్ అవుతున్నాయి…",
         "Could not load diseases: ${'$' }error" to "వ్యాధులను లోడ్ చేయలేకపోయాం: ${'$' }error",
