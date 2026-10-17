@@ -1619,7 +1619,8 @@ private fun AdminProductEditor(
     var usage by remember(product?.id) { mutableStateOf(product?.usage.orEmpty()) }
     var cures by remember(product?.id) { mutableStateOf(product?.cures.orEmpty()) }
     var ingredients by remember(product?.id) { mutableStateOf(product?.majorIngredients.orEmpty()) }
-    var signature by remember(product?.id) { mutableStateOf(product?.signature ?: false) }\n    var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
+    var signature by remember(product?.id) { mutableStateOf(product?.signature ?: false) }
+    var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
     var saving by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     Column(Modifier.fillMaxSize().background(Cream)) {
@@ -1665,7 +1666,8 @@ private fun AdminProductEditor(
                         "product_price" to (price.toDoubleOrNull() ?: 0.0),
                         "product_weight" to weight.trim(),
                         "product_units" to units.trim(),
-                        "product_quantity" to quantity.trim(),\n                        "product_stock" to productStock,
+                        "product_quantity" to quantity.trim(),
+                        "product_stock" to productStock,
                         "product_image" to imageUrl.trim(),
                         "product_description" to description.trim(),
                         "product_usage" to usage.trim(),
