@@ -1485,7 +1485,7 @@ private fun AdminProductsScreen(
                         onClick = { addingProduct = true },
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color(0xFF4D100E), disabledContainerColor = Gold.copy(alpha = 0.6f), disabledContentColor = Color(0xFF4D100E))
+                        colors = ButtonDefaults.buttonColors(containerColor = Cream, contentColor = Color(0xFF4D100E), disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Color(0xFF4D100E))
                     ) {
                         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
                         Spacer(Modifier.width(4.dp))
@@ -2160,7 +2160,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                             onClick = { showAddDialog = true },
                             shape = RoundedCornerShape(12.dp),
                             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color(0xFF4D100E), disabledContainerColor = Gold.copy(alpha = 0.6f), disabledContentColor = Color(0xFF4D100E))
+                            colors = ButtonDefaults.buttonColors(containerColor = Cream, contentColor = Color(0xFF4D100E), disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Color(0xFF4D100E))
                         ) {
                             Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
                             Spacer(Modifier.width(4.dp))
