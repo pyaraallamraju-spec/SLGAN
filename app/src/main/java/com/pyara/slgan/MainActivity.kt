@@ -1472,7 +1472,7 @@ private fun AdminProductsScreen(
         }
         Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(50.dp).background(Gold, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Inventory2, contentDescription = null, tint = Color(0xFF4D100E), modifier = Modifier.size(27.dp))
                 }
                 Spacer(Modifier.width(14.dp))
@@ -2147,7 +2147,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(Modifier.size(50.dp).background(Gold, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                         Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Color(0xFF4D100E), modifier = Modifier.size(27.dp))
                     }
                     Spacer(Modifier.width(14.dp))
@@ -2292,7 +2292,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         }
         Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(50.dp).background(Gold, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Groups, contentDescription = null, tint = Color(0xFF4D100E), modifier = Modifier.size(27.dp))
                 }
                 Spacer(Modifier.width(14.dp))
@@ -2474,7 +2474,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         }
         Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(48.dp).background(Gold, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(48.dp).background(Cream, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Color(0xFF4D100E), modifier = Modifier.size(26.dp))
                 }
                 Spacer(Modifier.width(13.dp))
