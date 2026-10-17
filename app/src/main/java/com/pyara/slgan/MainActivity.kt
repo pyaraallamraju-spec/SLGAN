@@ -1686,8 +1686,8 @@ private fun AdminProductsScreen(
                                     Spacer(Modifier.width(4.dp))
                                     Text("Edit", color = Forest, fontSize = 11.sp)
                                 }
-                                IconButton(onClick = { deletingProduct = product }, modifier = Modifier.size(34.dp)) {
-                                    Icon(Icons.Default.DeleteOutline, contentDescription = "Delete ${product.name}", tint = Color(0xFFB3261E), modifier = Modifier.size(19.dp))
+                                IconButton(onClick = { }, enabled = false, modifier = Modifier.size(34.dp)) {
+                                    Icon(Icons.Default.DeleteOutline, contentDescription = "Delete disabled", tint = Muted.copy(alpha = 0.45f), modifier = Modifier.size(19.dp))
                                 }
                             }
                         }
