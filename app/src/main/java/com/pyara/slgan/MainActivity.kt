@@ -3698,37 +3698,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 }
             }
             Spacer(Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Card(
-                    shape = RoundedCornerShape(50.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF2E5C9)),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 13.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Default.HealthAndSafety,
-                            contentDescription = null,
-                            tint = Color(0xFF641F2B),
-                            modifier = Modifier.size(17.dp)
-                        )
-                        Spacer(Modifier.width(7.dp))
-                        Text(
-                            "${diseases.size} " + tr("diseases available", LocalAppLanguage.current),
-                            color = Color(0xFF641F2B),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-            }
-            Spacer(Modifier.height(10.dp))
             OutlinedTextField(
                 value = query,
                 onValueChange = { query = it },
@@ -3739,35 +3708,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 singleLine = true,
                 shape = RoundedCornerShape(16.dp)
             )
-            Spacer(Modifier.height(14.dp))
-            when {
-                loading -> AppLoader(tr("Loading diseases from database…", LocalAppLanguage.current), compact = true)
-                error != null -> Text("Could not load diseases: $error", color = Color(0xFFB3261E), fontSize = 13.sp)
-                matches.isEmpty() -> EmptyState("🌿", tr("No matching diseases found.", LocalAppLanguage.current), "Try another disease name.")
-                else -> {
-                    Text(matches.size.toString() + " diseases", color = Muted, fontSize = 12.sp)
-                    Spacer(Modifier.height(10.dp))
-                    matches.forEach { disease ->
-                        Card(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedDisease = disease },
-                            shape = RoundedCornerShape(18.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(disease, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                                Spacer(Modifier.height(9.dp))
-                                Box(Modifier.size(42.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
-                                    Icon(Icons.Default.HealthAndSafety, contentDescription = "View disease", tint = Forest, modifier = Modifier.size(25.dp))
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { selectedDisease = null }) {
