@@ -2845,7 +2845,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             brush = Brush.horizontalGradient(listOf(Gold.copy(alpha = 0.95f), Forest.copy(alpha = 0.72f), Gold.copy(alpha = 0.95f))),
                             shape = RoundedCornerShape(18.dp)
                         ),
-                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, maxLines = 1, softWrap = false) },
+                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 12.sp, lineHeight = 16.sp, color = Muted, maxLines = 1, softWrap = false, overflow = TextOverflow.Clip) },
                     leadingIcon = {
                         Box(
                             modifier = Modifier.size(30.dp).background(
