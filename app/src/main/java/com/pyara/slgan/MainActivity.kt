@@ -1314,17 +1314,34 @@ private fun HomeBannerSlider(
                         )
                         if (!slide.isCompanySlide) {
                             Spacer(Modifier.height(12.dp))
-                            Text(
-                                "View product  →",
+                            Row(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .background(Gold)
+                                    .clip(RoundedCornerShape(50))
+                                    .background(
+                                        Brush.horizontalGradient(
+                                            colors = listOf(Color(0xFFFFE6A3), Gold, Color(0xFFC88A25))
+                                        )
+                                    )
+                                    .border(1.dp, Color(0xFFFFEBC2), RoundedCornerShape(50))
                                     .clickable { openProduct(slide.productName) }
-                                    .padding(horizontal = 14.dp, vertical = 9.dp),
-                                color = Color(0xFF4D100E),
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+                                    .padding(horizontal = 10.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(5.dp)
+                            ) {
+                                Text(
+                                    "View product",
+                                    color = Color(0xFF4D100E),
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    letterSpacing = 0.15.sp
+                                )
+                                Icon(
+                                    Icons.Default.ArrowForward,
+                                    contentDescription = null,
+                                    tint = Color(0xFF4D100E),
+                                    modifier = Modifier.size(12.dp)
+                                )
+                            }
                         }
                     }
                 }
