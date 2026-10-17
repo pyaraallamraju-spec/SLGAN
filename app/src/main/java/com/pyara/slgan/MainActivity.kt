@@ -1434,13 +1434,6 @@ private fun AdminProductsScreen(
                 Text("Products", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 Text("${products.size} catalogue items", color = Muted, fontSize = 12.sp)
             }
-            Button(
-                onClick = { addingProduct = true },
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Forest)
-            ) {
-                Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text("Add product")
-            }
         }
         Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -1452,9 +1445,19 @@ private fun AdminProductsScreen(
                     Text("Product library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     Text("Manage your Ayurvedic catalogue", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
                 }
-                Column(horizontalAlignment = Alignment.End) {
-                    Text(products.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
+                    Button(
+                        onClick = { addingProduct = true },
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color(0xFF4D100E))
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Text("Add product", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Spacer(Modifier.height(5.dp))
+                    Text("${products.size} TOTAL", color = Cream.copy(alpha = 0.9f), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
