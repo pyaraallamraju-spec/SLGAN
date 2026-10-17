@@ -2251,13 +2251,13 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
     }
 
     Column(Modifier.fillMaxSize().background(Cream)) {
-        Row(Modifier.fillMaxWidth().background(Forest).padding(horizontal = 8.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Color.White) }
+        Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
-                Text("Manage Orders", color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                Text("${filteredOrders.size} of ${orders.size} orders • newest first", color = Color(0xFFFFE8B5), fontSize = 12.sp)
+                Text("Manage Orders", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text("${filteredOrders.size} of ${orders.size} orders • newest first", color = Ink.copy(alpha = 0.65f), fontSize = 12.sp)
             }
-            Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = Gold, modifier = Modifier.size(27.dp))
+            Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = Forest, modifier = Modifier.size(27.dp))
         }
         Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp), verticalAlignment = Alignment.CenterVertically) {
