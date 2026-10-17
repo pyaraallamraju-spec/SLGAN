@@ -1206,16 +1206,14 @@ private fun HomeBannerSlider(
                 }
             )
         }
-        signatureSlides.ifEmpty {
-            listOf(
-                HomeBannerSlide(
-                    productName = "Sri Lakshmi Ganapathi Ayurveda Nilayam",
-                    tagline = "Traditional Ayurvedic care, rooted in nature",
-                    fallbackImageUrl = "",
-                    isCompanySlide = true
-                )
+        listOf(
+            HomeBannerSlide(
+                productName = "Sri Lakshmi Ganapathi Ayurveda Nilayam",
+                tagline = "Authentic Ayurvedic formulations · Trusted Since 1990",
+                fallbackImageUrl = "",
+                isCompanySlide = true
             )
-        }
+        ) + signatureSlides
     }
     var activeSlide by remember { mutableIntStateOf(0) }
     LaunchedEffect(slides.size) {
@@ -1241,9 +1239,10 @@ private fun HomeBannerSlider(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(155.dp)
+                .height(190.dp)
                 .clip(RoundedCornerShape(22.dp))
-                .background(Cream)
+                .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
+                .background(Color(0xFF123A25))
         ) {
             AnimatedContent(
                 modifier = Modifier
@@ -1312,7 +1311,7 @@ private fun HomeBannerSlider(
                     ) {
                         if (slide.isCompanySlide) {
                             Text(
-                                tr("OUR HERITAGE", LocalAppLanguage.current),
+                                tr("TRUSTED SINCE 1990", LocalAppLanguage.current),
                                 color = Gold,
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
@@ -1322,11 +1321,11 @@ private fun HomeBannerSlider(
                             Spacer(Modifier.height(8.dp))
                         }
                         Text(
-                            if (slide.isCompanySlide) tr("Sri Lakshmi Ganapathi Ayurveda Nilayam", LocalAppLanguage.current)
+                            if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
                             color = Color.White,
-                            fontSize = if (slide.isCompanySlide) 20.sp else 25.sp,
-                            lineHeight = if (slide.isCompanySlide) 25.sp else 30.sp,
+                            fontSize = if (slide.isCompanySlide) 23.sp else 25.sp,
+                            lineHeight = if (slide.isCompanySlide) 27.sp else 30.sp,
                             fontWeight = FontWeight.ExtraBold,
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
@@ -1334,7 +1333,7 @@ private fun HomeBannerSlider(
                         Spacer(Modifier.height(6.dp))
                         Text(
                             tr(slide.tagline, LocalAppLanguage.current),
-                            color = if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFC8F0D2),
+                            color = if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
                             fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight.Medium,
