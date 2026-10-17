@@ -1410,6 +1410,25 @@ private fun AdminProductsScreen(
         )
         return
     }
+    // Build the admin category filters from live product records supplied by Firestore,
+    // rather than maintaining a separate hard-coded category list.
+    val adminCategories = remember(products) {
+        listOf("All") + products.map { it.category.trim() }
+            .filter { it.isNotBlank() }
+            .distinctBy { it.lowercase() }
+            .sortedBy { it.lowercase() }
+    }
+    fun categoryEmoji(category: String): String = when (category.trim().lowercase()) {
+        "all" -> "📦"
+        "lehyas" -> "🍯"
+        "grutas", "ghritas", "ghrutas" -> "🫙"
+        "pills" -> "💊"
+        "tailas" -> "🪔"
+        "churnas" -> "🌿"
+        "rasayanas" -> "🌱"
+        "bhasmas" -> "🪨"
+        else -> "🌿"
+    }
     val filtered = remember(products, searchText, selectedAdminCategory) {
         products.filter { product ->
             (selectedAdminCategory == "All" || product.category.equals(selectedAdminCategory, ignoreCase = true)) &&
@@ -1480,11 +1499,11 @@ private fun AdminProductsScreen(
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            categories.forEach { item ->
+            adminCategories.forEach { item ->
                 FilterChip(
                     selected = selectedAdminCategory == item,
                     onClick = { selectedAdminCategory = item },
-                    label = { Text(item, fontSize = 12.sp) },
+                    label = { Text("${categoryEmoji(item)} $item", fontSize = 12.sp) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = Forest,
                         selectedLabelColor = Color.White,
