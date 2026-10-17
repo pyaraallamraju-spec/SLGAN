@@ -4237,7 +4237,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 verticalAlignment = Alignment.CenterVertically,
                                                 horizontalArrangement = Arrangement.spacedBy(4.dp)
                                             ) {
-                                                Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(12.dp))
+                                                Icon(Icons.Default.Inventory2, contentDescription = "Pack size", modifier = Modifier.size(14.dp))
                                                 Text(packSize.replace(" ", ""), fontSize = 11.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
                                             }
                                         }
