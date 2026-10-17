@@ -1442,6 +1442,22 @@ private fun AdminProductsScreen(
                 Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text("Add product")
             }
         }
+        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(50.dp).background(Color.White.copy(alpha = 0.13f), RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Inventory2, contentDescription = null, tint = Gold, modifier = Modifier.size(27.dp))
+                }
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Product library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("Manage your Ayurvedic catalogue", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(products.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                }
+            }
+        }
         OutlinedTextField(
             value = searchText,
             onValueChange = { searchText = it },
@@ -2066,6 +2082,22 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                 Text("${customers.size} customer accounts", color = Muted, fontSize = 12.sp)
             }
         }
+        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(50.dp).background(Color.White.copy(alpha = 0.13f), RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Groups, contentDescription = null, tint = Gold, modifier = Modifier.size(27.dp))
+                }
+                Spacer(Modifier.width(14.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Customer library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("Registered customer accounts", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(customers.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                }
+            }
+        }
         OutlinedTextField(
             value = search,
             onValueChange = { search = it },
@@ -2224,13 +2256,29 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             }
             Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = Gold, modifier = Modifier.size(27.dp))
         }
+        Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(48.dp).background(Color.White.copy(alpha = 0.13f), RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Gold, modifier = Modifier.size(26.dp))
+                }
+                Spacer(Modifier.width(13.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Orders library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("Review and manage customer orders", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(orders.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                }
+            }
+        }
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
             singleLine = true,
             shape = RoundedCornerShape(14.dp),
-            placeholder = { Text("Search orders by customer, order ID, phone, email or status") },
+            placeholder = { Text("Search order") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = Forest) },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) IconButton(onClick = { searchQuery = "" }) {
