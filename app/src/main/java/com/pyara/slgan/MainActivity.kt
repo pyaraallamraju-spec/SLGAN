@@ -1569,6 +1569,7 @@ private fun AdminDashboardScreen(
 ) {
     var orderCount by remember { mutableIntStateOf(0) }
     var diseaseCount by remember { mutableIntStateOf(0) }
+    var customerCount by remember { mutableIntStateOf(0) }
     DisposableEffect(Unit) {
         val db = FirebaseFirestore.getInstance()
         val ordersListener = db.collection("orders").addSnapshotListener { snapshot, error ->
@@ -1577,9 +1578,13 @@ private fun AdminDashboardScreen(
         val diseasesListener = db.collection("diseases").addSnapshotListener { snapshot, error ->
             if (error == null) diseaseCount = snapshot?.size() ?: 0
         }
+        val customersListener = db.collection("customers").addSnapshotListener { snapshot, error ->
+            if (error == null) customerCount = snapshot?.documents?.count { it.getBoolean("is_admin") != true } ?: 0
+        }
         onDispose {
             ordersListener.remove()
             diseasesListener.remove()
+            customersListener.remove()
         }
     }
     Column(
@@ -1648,17 +1653,14 @@ private fun AdminDashboardScreen(
             )
             AdminSummaryCard(
                 modifier = Modifier.weight(1f),
-                icon = Icons.Default.ShoppingBag,
-                title = "Store",
-                value = "Active",
-                subtitle = "Admin access"
+                icon = Icons.Default.PeopleAlt,
+                title = "Customers",
+                value = customerCount.toString(),
+                subtitle = "Registered customers",
+                onClick = onCustomersClick
             )
         }
         Spacer(Modifier.height(20.dp))
-        Text("ADMIN MODULES", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
-        Spacer(Modifier.height(10.dp))
-        AdminModuleInfo(Icons.Default.Inventory2, "Products", "View the catalogue and product information.", onClick = onProductsClick)
-        AdminModuleInfo(Icons.Default.PeopleAlt, "Customers", "View customer details and enable or disable accounts.", onClick = onCustomersClick)
         Spacer(Modifier.height(20.dp))
         OutlinedButton(
             onClick = onSignOut,
