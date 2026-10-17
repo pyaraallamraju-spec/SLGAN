@@ -454,6 +454,7 @@ private fun localizedProductName(name: String, language: String): String {
 }
 
 private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false)
+private data class ProductRatingSummary(val average: Double = 0.0, val count: Int = 0, val myRating: Int = 0)
 private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
 
 // Offline fallback keeps the disease selector usable until Firestore is populated.
@@ -574,6 +575,7 @@ private fun AyurvedicApp() {
     var liveDiseases by remember { mutableStateOf<List<String>>(emptyList()) }
     var diseasesLoading by remember { mutableStateOf(true) }
     var diseasesError by remember { mutableStateOf<String?>(null) }
+    var productRatings by remember { mutableStateOf<Map<String, ProductRatingSummary>>(emptyMap()) }
     DisposableEffect(signedIn) {
         if (signedIn) {
             val registration = FirebaseData.observeProducts(
@@ -601,6 +603,29 @@ private fun AyurvedicApp() {
             liveProducts = emptyList()
             productsLoading = true
             productsError = null
+            onDispose { }
+        }
+    }
+    // Rating records are public-read; each signed-in customer maintains one rating per product.
+    DisposableEffect(signedIn) {
+        if (signedIn) {
+            val uid = auth.currentUser?.uid.orEmpty()
+            val registration = FirebaseFirestore.getInstance().collection("productRatings")
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null || snapshot == null) return@addSnapshotListener
+                    val grouped = snapshot.documents.mapNotNull { doc ->
+                        val productId = doc.getString("productId")?.takeIf { it.isNotBlank() } ?: return@mapNotNull null
+                        val rating = doc.getLong("rating")?.toInt()?.takeIf { it in 1..5 } ?: return@mapNotNull null
+                        Triple(productId, rating, doc.getString("userId") == uid)
+                    }.groupBy { it.first }
+                    productRatings = grouped.mapValues { (_, records) ->
+                        ProductRatingSummary(average = records.map { it.second }.average(), count = records.size,
+                            myRating = records.firstOrNull { it.third }?.second ?: 0)
+                    }
+                }
+            onDispose { registration.remove() }
+        } else {
+            productRatings = emptyMap()
             onDispose { }
         }
     }
@@ -725,12 +750,13 @@ private fun AyurvedicApp() {
             )
             else if (selectedProduct != null) ProductDetailsPage(
                 product = selectedProduct!!,
+                ratingSummary = productRatings[selectedProduct!!.id] ?: ProductRatingSummary(),
                 cartCount = cart[selectedProduct!!.id] ?: 0,
                 onBack = { selectedProduct = null },
                 onAdd = { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 onRemove = { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 }
             )
-            else ShopScreen(selectedTab, { selectedTab = it }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productsLoading, productsError, liveDiseases.ifEmpty { fallbackDiseases }, diseasesLoading, if (liveDiseases.isEmpty()) null else diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
+            else ShopScreen(selectedTab, { selectedTab = it }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productRatings, productsLoading, productsError, liveDiseases.ifEmpty { fallbackDiseases }, diseasesLoading, if (liveDiseases.isEmpty()) null else diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
                 { orderId, success, invoiceUrl, message ->
@@ -2397,7 +2423,7 @@ private fun AdminModuleInfo(
 @Composable
 private fun ShopScreen(
     selectedTab: String, onTabChange: (String) -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
-    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, diseases: List<String>, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
+    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productsLoading: Boolean, productsError: String?, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
     onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit
 ) {
     val cartCount = cart.values.sum()
@@ -2426,13 +2452,13 @@ private fun ShopScreen(
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
-            else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productsLoading, productsError, onAdd, onProductClick)
+            else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productsLoading, productsError, onAdd, onProductClick)
         }
     }
 }
 
 @Composable
-private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
+private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
     val context = LocalContext.current
     val currentLanguage = LocalAppLanguage.current
     val voiceSearchLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
@@ -2596,7 +2622,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
         if (visible.isEmpty() && !productsLoading) item { Text(if (productsError != null) "Products could not be loaded. Check your internet and Firestore rules." else "No products found in this category. Try All or another search.", Modifier.padding(24.dp), color = Muted) }
         else items(visible.chunked(2)) { pair ->
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                pair.forEach { product -> ProductCard(product, cart[product.id] ?: 0, onAdd, onProductClick, Modifier.weight(1f)) }
+                pair.forEach { product -> ProductCard(product, cart[product.id] ?: 0, productRatings[product.id] ?: ProductRatingSummary(), onAdd, onProductClick, Modifier.weight(1f)) }
                 if (pair.size == 1) Spacer(Modifier.weight(1f))
             }
         }
@@ -2683,7 +2709,19 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
 }
 
 @Composable
-private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
+@Composable
+private fun ProductRatingLine(summary: ProductRatingSummary, showEmptyLabel: Boolean = false) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+        Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(15.dp))
+        if (summary.count > 0) {
+            Text(String.format("%.1f", summary.average), color = Ink, fontWeight = FontWeight.Bold, fontSize = 11.sp)
+            Text("(${summary.count})", color = Muted, fontSize = 10.sp)
+        } else Text(if (showEmptyLabel) "No ratings yet" else "Be the first to rate", color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    }
+}
+
+@Composable
+private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
     Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
         Column(Modifier.padding(11.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
@@ -2693,7 +2731,9 @@ private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, o
             Spacer(Modifier.height(10.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Spacer(Modifier.height(9.dp))
+            Spacer(Modifier.height(5.dp))
+            ProductRatingLine(ratingSummary)
+            Spacer(Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
                 if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(34.dp), colors = IconButtonDefaults.filledIconButtonColors(containerColor = Forest)) { Icon(Icons.Default.Add, "Add " + product.name, modifier = Modifier.size(18.dp)) }
@@ -2707,12 +2747,30 @@ private fun ProductCard(product: Product, count: Int, onAdd: (String) -> Unit, o
 @Composable
 private fun ProductDetailsPage(
     product: Product,
+    ratingSummary: ProductRatingSummary,
     cartCount: Int,
     onBack: () -> Unit,
     onAdd: (String) -> Unit,
     onRemove: (String) -> Unit
 ) {
     val context = LocalContext.current
+    val ratingUser = FirebaseAuth.getInstance().currentUser
+    var selectedRating by remember(product.id, ratingUser?.uid) { mutableIntStateOf(ratingSummary.myRating) }
+    var ratingReview by remember(product.id, ratingUser?.uid) { mutableStateOf("") }
+    var ratingSaving by remember { mutableStateOf(false) }
+    var ratingMessage by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(product.id, ratingUser?.uid) {
+        selectedRating = ratingSummary.myRating
+        ratingReview = ""
+        if (ratingUser != null) {
+            FirebaseFirestore.getInstance().collection("productRatings")
+                .document(product.id.replace("/", "_") + "_" + ratingUser.uid).get()
+                .addOnSuccessListener { doc ->
+                    selectedRating = (doc.getLong("rating")?.toInt() ?: ratingSummary.myRating).coerceIn(0, 5)
+                    ratingReview = doc.getString("review").orEmpty()
+                }
+        }
+    }
     Column(Modifier.fillMaxSize().background(Cream)) {
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
@@ -2765,6 +2823,53 @@ private fun ProductDetailsPage(
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
             } else {
                 Text(tr("Price not available yet.", LocalAppLanguage.current), color = Muted, fontSize = 15.sp)
+            }
+            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("Customer rating", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                    ProductRatingLine(ratingSummary, showEmptyLabel = true)
+                    HorizontalDivider(color = Gold.copy(alpha = 0.35f))
+                    Text(if (ratingSummary.myRating > 0) "Update your rating" else "Rate this product", color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                        (1..5).forEach { star ->
+                            IconButton(onClick = { selectedRating = star; ratingMessage = null }, modifier = Modifier.size(42.dp)) {
+                                Icon(if (star <= selectedRating) Icons.Default.Star else Icons.Default.StarBorder,
+                                    contentDescription = "$star star${if (star == 1) "" else "s"}", tint = if (star <= selectedRating) Gold else Muted,
+                                    modifier = Modifier.size(30.dp))
+                            }
+                        }
+                        if (selectedRating > 0) Text("$selectedRating/5", color = Forest, fontWeight = FontWeight.Bold)
+                    }
+                    OutlinedTextField(value = ratingReview, onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null },
+                        modifier = Modifier.fillMaxWidth(), label = { Text("Review (optional)") },
+                        placeholder = { Text("Share your experience with this product") }, minLines = 2, maxLines = 4, shape = RoundedCornerShape(12.dp))
+                    ratingMessage?.let { Text(it, color = if (it.startsWith("Saved")) Forest else Color(0xFFB3261E), fontSize = 12.sp) }
+                    Button(onClick = {
+                        val user = ratingUser
+                        if (user == null) ratingMessage = "Please sign in to rate this product."
+                        else if (selectedRating !in 1..5) ratingMessage = "Select 1 to 5 stars before saving."
+                        else {
+                            ratingSaving = true
+                            val db = FirebaseFirestore.getInstance()
+                            val ratingRef = db.collection("productRatings").document(product.id.replace("/", "_") + "_" + user.uid)
+                            ratingRef.get().addOnSuccessListener { existing ->
+                                val payload = hashMapOf<String, Any>(
+                                    "productId" to product.id, "productName" to product.name, "userId" to user.uid,
+                                    "userName" to (user.displayName?.takeIf { it.isNotBlank() } ?: user.email.orEmpty().substringBefore("@")),
+                                    "rating" to selectedRating, "review" to ratingReview.trim(),
+                                    "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp())
+                                if (!existing.exists()) payload["createdAt"] = com.google.firebase.firestore.FieldValue.serverTimestamp()
+                                ratingRef.set(payload, com.google.firebase.firestore.SetOptions.merge())
+                                    .addOnSuccessListener { ratingSaving = false; ratingMessage = "Saved! Thank you for rating this product." }
+                                    .addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
+                            }.addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
+                        }
+                    }, enabled = !ratingSaving, modifier = Modifier.fillMaxWidth().height(48.dp), shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+                        if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                        else Text("Save rating", fontWeight = FontWeight.Bold)
+                    }
+                }
             }
             HorizontalDivider(color = Gold.copy(alpha = 0.45f))
             Text(tr("Product details", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
