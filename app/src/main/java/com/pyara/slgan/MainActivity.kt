@@ -2423,7 +2423,7 @@ private fun AdminModuleInfo(
 @Composable
 private fun ShopScreen(
     selectedTab: String, onTabChange: (String) -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
-    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productsLoading: Boolean, productsError: String?, diseases: List<Disease>, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
+    search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productsLoading: Boolean, productsError: String?, diseases: List<String>, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
     onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit
 ) {
     val cartCount = cart.values.sum()
