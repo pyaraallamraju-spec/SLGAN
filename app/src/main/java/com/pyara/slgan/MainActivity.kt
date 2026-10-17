@@ -3199,8 +3199,6 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             }
             Spacer(Modifier.height(5.dp))
             ProductRatingLine(product, ratingSummary)
-            Spacer(Modifier.height(4.dp))
-            ProductLikeControl(product, likeSummary, onToggleLike)
             Spacer(Modifier.height(5.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
