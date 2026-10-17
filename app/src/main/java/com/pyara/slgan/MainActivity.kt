@@ -2174,8 +2174,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             OutlinedTextField(
                 value = search,
                 onValueChange = { search = it },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)
-                    .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
                 singleLine = true,
                 label = { Text("Search diseases") },
                 placeholder = { Text("Disease name or description") },
@@ -2188,7 +2187,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 shape = RoundedCornerShape(18.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Forest,
-                    unfocusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Forest.copy(alpha = 0.75f),
                     focusedContainerColor = Color(0xFFFFFCF5),
                     unfocusedContainerColor = Color(0xFFFFFCF5),
                     cursorColor = Gold
