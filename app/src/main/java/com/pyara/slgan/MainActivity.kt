@@ -1641,7 +1641,8 @@ private fun AdminProductEditor(
                 OutlinedTextField(units, { units = it; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight units (g/ml)") }, singleLine = true)
             }
             OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity / pack count") }, singleLine = true)
-            Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)\n            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {\n                FilterChip(selected = productStock == 1, onClick = { productStock = 1 }, label = { Text("1 · In stock") })\n                FilterChip(selected = productStock == 0, onClick = { productStock = 0 }, label = { Text("0 · Out of stock") })\n            }
+            Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {\n                FilterChip(selected = productStock == 1, onClick = { productStock = 1 }, label = { Text("1 · In stock") })\n                FilterChip(selected = productStock == 0, onClick = { productStock = 0 }, label = { Text("0 · Out of stock") })\n            }
             OutlinedTextField(imageUrl, { imageUrl = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product image URL") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), minLines = 1)
             OutlinedTextField(description, { description = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Description") }, minLines = 3)
             OutlinedTextField(usage, { usage = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Usage / directions") }, minLines = 2)
