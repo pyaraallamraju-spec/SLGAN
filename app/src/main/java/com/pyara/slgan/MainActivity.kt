@@ -1618,8 +1618,42 @@ private fun AdminProductsScreen(
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis
                                     )
-                                    if (product.subtitle.isNotBlank()) {
-                                        Text(product.subtitle, color = Muted, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        if (product.subtitle.isNotBlank()) {
+                                            Surface(
+                                                shape = RoundedCornerShape(8.dp),
+                                                color = Color(0xFFFFEBC2),
+                                                contentColor = Ink
+                                            ) {
+                                                Text(
+                                                    "Pack size: " + product.subtitle,
+                                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
+                                                    fontSize = 10.sp,
+                                                    fontWeight = FontWeight.SemiBold,
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis
+                                                )
+                                            }
+                                        }
+                                        Surface(
+                                            shape = RoundedCornerShape(50),
+                                            color = if (product.productStock == 1) Color(0xFFE1F3E4) else Color(0xFFFFE3DF)
+                                        ) {
+                                            Row(Modifier.padding(horizontal = 9.dp, vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
+                                                Box(Modifier.size(6.dp).clip(CircleShape).background(if (product.productStock == 1) Color(0xFF258348) else Color(0xFFC5392F)))
+                                                Spacer(Modifier.width(6.dp))
+                                                Text(
+                                                    if (product.productStock == 1) "In stock" else "Out of stock",
+                                                    color = if (product.productStock == 1) Color(0xFF176B37) else Color(0xFFAE2924),
+                                                    fontSize = 10.sp,
+                                                    fontWeight = FontWeight.Bold
+                                                )
+                                            }
+                                        }
                                     }
                                     Text(
                                         if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
@@ -1627,21 +1661,6 @@ private fun AdminProductsScreen(
                                         fontWeight = FontWeight.ExtraBold,
                                         fontSize = 18.sp
                                     )
-                                    Surface(
-                                        shape = RoundedCornerShape(50),
-                                        color = if (product.productStock == 1) Color(0xFFE1F3E4) else Color(0xFFFFE3DF)
-                                    ) {
-                                        Row(Modifier.padding(horizontal = 9.dp, vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
-                                            Box(Modifier.size(6.dp).clip(CircleShape).background(if (product.productStock == 1) Color(0xFF258348) else Color(0xFFC5392F)))
-                                            Spacer(Modifier.width(6.dp))
-                                            Text(
-                                                if (product.productStock == 1) "In stock" else "Out of stock",
-                                                color = if (product.productStock == 1) Color(0xFF176B37) else Color(0xFFAE2924),
-                                                fontSize = 10.sp,
-                                                fontWeight = FontWeight.Bold
-                                            )
-                                        }
-                                    }
                                 }
                             }
                             HorizontalDivider(color = Gold.copy(alpha = 0.28f))
