@@ -2910,7 +2910,10 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     homeCategories.forEach { item ->
                         FilterChip(
                             selected = category == item,
-                            onClick = { onCategoryChange(item) },
+                            onClick = {
+                                onSearchChange("")
+                                onCategoryChange(item)
+                            },
                             label = { Text(item, fontSize = 11.sp) },
                             leadingIcon = {
                                 Text(
