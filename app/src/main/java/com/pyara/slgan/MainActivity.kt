@@ -3090,6 +3090,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
                                 "userId" to user.uid,
                                 "userName" to (user.displayName?.takeIf { it.isNotBlank() } ?: user.email.orEmpty().substringBefore("@")),
                                 "rating" to star,
+                                "review" to existing.getString("review").orEmpty(),
                                 "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()
                             )
                             if (!existing.exists()) payload["createdAt"] = com.google.firebase.firestore.FieldValue.serverTimestamp()
