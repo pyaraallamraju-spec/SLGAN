@@ -3297,9 +3297,9 @@ private fun ProductDetailsPage(
                         ProductRatingLine(ratingSummary, showEmptyLabel = true)
                     }
                     TextButton(onClick = { showReviewDialog = true; ratingMessage = null }) {
-                        Icon(Icons.Default.RateReview, contentDescription = "Write a review", tint = Forest)
+                        Text("⭐", fontSize = 18.sp)
                         Spacer(Modifier.width(6.dp))
-                        Text(if (ratingSummary.myRating > 0) "Edit review" else "Review", color = Forest, fontWeight = FontWeight.Bold)
+                        Text("Add rating", color = Forest, fontWeight = FontWeight.Bold)
                     }
                 }
             }
