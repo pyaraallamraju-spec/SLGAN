@@ -4210,38 +4210,66 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                                if (product.quantity.isNotBlank()) {
-                                    Spacer(Modifier.height(3.dp))
-                                    Text(product.quantity, color = Muted, fontSize = 12.sp)
-                                }
-                                Spacer(Modifier.height(5.dp))
                                 Text(
-                                    if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
-                                    color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp
+                                    localizedProductName(product.name, LocalAppLanguage.current),
+                                    color = Ink,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
                                 )
-                                Spacer(Modifier.height(7.dp))
-                                val cartQuantity = cart[product.id] ?: 0
-                                if (cartQuantity == 0) {
-                                    Button(
-                                        onClick = { onAdd(product.id) },
-                                        enabled = product.price > 0.0,
-                                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
-                                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
-                                        shape = RoundedCornerShape(10.dp)
+                                val packSize = product.subtitle.ifBlank { product.quantity }
+                                if (packSize.isNotBlank()) {
+                                    Spacer(Modifier.height(5.dp))
+                                    Surface(
+                                        shape = RoundedCornerShape(9.dp),
+                                        color = Color(0xFFFFEBC2),
+                                        contentColor = Ink
                                     ) {
-                                        Icon(Icons.Default.AddShoppingCart, contentDescription = null, modifier = Modifier.size(16.dp))
-                                        Spacer(Modifier.width(5.dp))
-                                        Text("Add to cart", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Row(
+                                            Modifier.padding(horizontal = 9.dp, vertical = 5.dp),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                                        ) {
+                                            Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(14.dp))
+                                            Text(packSize.replace(" ", ""), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                                        }
                                     }
-                                } else {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(16.dp))
-                                        Spacer(Modifier.width(5.dp))
-                                        Text("Added · $cartQuantity", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                        Spacer(Modifier.width(8.dp))
-                                        TextButton(onClick = { onAdd(product.id) }, contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)) {
-                                            Text("Add another", fontSize = 11.sp, color = Forest)
+                                }
+                                Spacer(Modifier.height(8.dp))
+                                val cartQuantity = cart[product.id] ?: 0
+                                Row(
+                                    Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Text(
+                                        if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
+                                        modifier = Modifier.weight(1f, fill = false),
+                                        color = Forest,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        fontSize = 14.sp,
+                                        maxLines = 1
+                                    )
+                                    if (cartQuantity == 0) {
+                                        Button(
+                                            onClick = { onAdd(product.id) },
+                                            enabled = product.price > 0.0,
+                                            contentPadding = PaddingValues(horizontal = 9.dp, vertical = 5.dp),
+                                            colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                                            shape = RoundedCornerShape(10.dp),
+                                            modifier = Modifier.heightIn(min = 34.dp)
+                                        ) {
+                                            Icon(Icons.Default.AddShoppingCart, contentDescription = null, modifier = Modifier.size(14.dp))
+                                            Spacer(Modifier.width(4.dp))
+                                            Text("Add to cart", fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                        }
+                                    } else {
+                                        Column(horizontalAlignment = Alignment.End) {
+                                            Text("Added · $cartQuantity", color = Forest, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                            TextButton(onClick = { onAdd(product.id) }, contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp)) {
+                                                Text("Add another", fontSize = 10.sp, color = Forest, maxLines = 1)
+                                            }
                                         }
                                     }
                                 }
