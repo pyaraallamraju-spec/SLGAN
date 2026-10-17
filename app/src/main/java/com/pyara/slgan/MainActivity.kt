@@ -3224,10 +3224,13 @@ private fun OrdersPage(
                                 Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
                             }
                         }
-                        if (!invoiceUrl.isNullOrBlank()) TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
-                            Icon(Icons.Default.PictureAsPdf, contentDescription = null)
-                            Spacer(Modifier.width(6.dp))
-                            Text(tr("Open invoice PDF", LocalAppLanguage.current))
+                        if (!invoiceUrl.isNullOrBlank()) {
+                            IconButton(
+                                onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
+                                modifier = Modifier.align(Alignment.End).size(40.dp).background(Color(0xFFF2E5C9), CircleShape)
+                            ) {
+                                Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Color(0xFF641F2B))
+                            }
                         }
                     }
                 }
@@ -3280,10 +3283,13 @@ private fun OrdersPage(
                                 Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
                             }
                         }
-                        if (!invoiceUrl.isNullOrBlank()) TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
-                            Icon(Icons.Default.PictureAsPdf, contentDescription = null)
-                            Spacer(Modifier.width(6.dp))
-                            Text(tr("Open invoice PDF", LocalAppLanguage.current))
+                        if (!invoiceUrl.isNullOrBlank()) {
+                            IconButton(
+                                onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
+                                modifier = Modifier.align(Alignment.End).size(40.dp).background(Color(0xFFF2E5C9), CircleShape)
+                            ) {
+                                Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Color(0xFF641F2B))
+                            }
                         }
                     }
                 }
