@@ -1406,6 +1406,7 @@ private fun AdminProductsScreen(
     loadError: String?,
     onBack: () -> Unit
 ) {
+    val context = LocalContext.current
     var searchText by remember { mutableStateOf("") }
     var selectedAdminCategory by remember { mutableStateOf("All") }
     var editingProduct by remember { mutableStateOf<Product?>(null) }
@@ -1701,7 +1702,7 @@ private fun AdminProductsScreen(
             confirmButton = {
                 TextButton(onClick = {
                     FirebaseFirestore.getInstance().collection("products").document(product.id).delete()
-                        .addOnSuccessListener { Toast.makeText(androidx.compose.ui.platform.LocalContext.current, "Product deleted", Toast.LENGTH_SHORT).show() }
+                        .addOnSuccessListener { Toast.makeText(context, "Product deleted", Toast.LENGTH_SHORT).show() }
                     deletingProduct = null
                 }) { Text("Delete", color = Color(0xFFB3261E)) }
             },
