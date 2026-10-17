@@ -3004,7 +3004,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         )
                                         Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                         Spacer(Modifier.height(4.dp))
-                                        ProductRatingLine(productRatings[product.id] ?: ProductRatingSummary())
+                                        ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
                                         Spacer(Modifier.height(3.dp))
                                         ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                         Spacer(Modifier.height(3.dp))
@@ -3064,13 +3064,67 @@ private fun ProductLikeControl(product: Product, summary: ProductLikeSummary, on
 }
 
 @Composable
-private fun ProductRatingLine(summary: ProductRatingSummary, showEmptyLabel: Boolean = false) {
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(15.dp))
+private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, showEmptyLabel: Boolean = false) {
+    val context = LocalContext.current
+    val ratingUser = FirebaseAuth.getInstance().currentUser
+    var savingRating by remember(product.id, ratingUser?.uid) { mutableStateOf(false) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(1.dp)
+    ) {
+        (1..5).forEach { star ->
+            IconButton(
+                onClick = {
+                    val user = ratingUser
+                    if (user == null) {
+                        Toast.makeText(context, "Please sign in to rate this product.", Toast.LENGTH_SHORT).show()
+                    } else if (!savingRating) {
+                        savingRating = true
+                        val db = FirebaseFirestore.getInstance()
+                        val ratingRef = db.collection("productRatings")
+                            .document(product.id.replace("/", "_") + "_" + user.uid)
+                        ratingRef.get().addOnSuccessListener { existing ->
+                            val payload = hashMapOf<String, Any>(
+                                "productId" to product.id,
+                                "productName" to product.name,
+                                "userId" to user.uid,
+                                "userName" to (user.displayName?.takeIf { it.isNotBlank() } ?: user.email.orEmpty().substringBefore("@")),
+                                "rating" to star,
+                                "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()
+                            )
+                            if (!existing.exists()) payload["createdAt"] = com.google.firebase.firestore.FieldValue.serverTimestamp()
+                            ratingRef.set(payload, com.google.firebase.firestore.SetOptions.merge())
+                                .addOnSuccessListener {
+                                    savingRating = false
+                                    Toast.makeText(context, "Rating saved", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { error ->
+                                    savingRating = false
+                                    Toast.makeText(context, error.localizedMessage ?: "Could not save rating.", Toast.LENGTH_SHORT).show()
+                                }
+                        }.addOnFailureListener { error ->
+                            savingRating = false
+                            Toast.makeText(context, error.localizedMessage ?: "Could not save rating.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                },
+                enabled = !savingRating,
+                modifier = Modifier.size(19.dp)
+            ) {
+                Icon(
+                    imageVector = if (star <= summary.average) Icons.Default.Star else Icons.Default.StarBorder,
+                    contentDescription = "Rate ${product.name} ${star} out of 5 stars",
+                    tint = if (star <= summary.average) Gold else Muted,
+                    modifier = Modifier.size(17.dp)
+                )
+            }
+        }
         if (summary.count > 0) {
-            Text(String.format("%.1f", summary.average), color = Ink, fontWeight = FontWeight.Bold, fontSize = 11.sp)
-            Text("(${summary.count})", color = Muted, fontSize = 10.sp)
-        } else Text(if (showEmptyLabel) "No ratings yet" else "Be the first to rate", color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(String.format(java.util.Locale.US, "%.1f", summary.average), color = Ink, fontWeight = FontWeight.Bold, fontSize = 10.sp)
+            Text("(${summary.count})", color = Muted, fontSize = 9.sp)
+        } else if (showEmptyLabel) {
+            Text("No ratings", color = Muted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        }
     }
 }
 
@@ -3134,7 +3188,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
             }
             Spacer(Modifier.height(5.dp))
-            ProductRatingLine(ratingSummary)
+            ProductRatingLine(product, ratingSummary)
             Spacer(Modifier.height(4.dp))
             ProductLikeControl(product, likeSummary, onToggleLike)
             Spacer(Modifier.height(5.dp))
@@ -3294,7 +3348,7 @@ private fun ProductDetailsPage(
                 ) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Text("Customer rating", color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                        ProductRatingLine(ratingSummary, showEmptyLabel = true)
+                        ProductRatingLine(product, ratingSummary, showEmptyLabel = true)
                     }
                     TextButton(onClick = { showReviewDialog = true; ratingMessage = null }) {
                         Text("⭐", fontSize = 18.sp)
