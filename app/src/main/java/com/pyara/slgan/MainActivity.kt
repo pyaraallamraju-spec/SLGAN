@@ -4219,30 +4219,29 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                     overflow = TextOverflow.Ellipsis
                                 )
                                 val packSize = product.subtitle.ifBlank { product.quantity }
-                                if (packSize.isNotBlank()) {
-                                    Spacer(Modifier.height(5.dp))
-                                    Surface(
-                                        shape = RoundedCornerShape(9.dp),
-                                        color = Color(0xFFFFEBC2),
-                                        contentColor = Ink
-                                    ) {
-                                        Row(
-                                            Modifier.padding(horizontal = 9.dp, vertical = 5.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(5.dp)
-                                        ) {
-                                            Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(14.dp))
-                                            Text(packSize.replace(" ", ""), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
-                                        }
-                                    }
-                                }
-                                Spacer(Modifier.height(8.dp))
                                 val cartQuantity = cart[product.id] ?: 0
+                                Spacer(Modifier.height(5.dp))
                                 Row(
                                     Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
+                                    if (packSize.isNotBlank()) {
+                                        Surface(
+                                            shape = RoundedCornerShape(8.dp),
+                                            color = Color(0xFFFFEBC2),
+                                            contentColor = Ink
+                                        ) {
+                                            Row(
+                                                Modifier.padding(horizontal = 7.dp, vertical = 5.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                            ) {
+                                                Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(12.dp))
+                                                Text(packSize.replace(" ", ""), fontSize = 11.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
+                                            }
+                                        }
+                                    }
                                     Text(
                                         if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
                                         modifier = Modifier.weight(1f, fill = false),
@@ -4255,14 +4254,14 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                         Button(
                                             onClick = { onAdd(product.id) },
                                             enabled = product.price > 0.0,
-                                            contentPadding = PaddingValues(horizontal = 9.dp, vertical = 5.dp),
+                                            contentPadding = PaddingValues(horizontal = 7.dp, vertical = 4.dp),
                                             colors = ButtonDefaults.buttonColors(containerColor = Forest),
-                                            shape = RoundedCornerShape(10.dp),
-                                            modifier = Modifier.heightIn(min = 34.dp)
+                                            shape = RoundedCornerShape(9.dp),
+                                            modifier = Modifier.heightIn(min = 32.dp)
                                         ) {
-                                            Icon(Icons.Default.AddShoppingCart, contentDescription = null, modifier = Modifier.size(14.dp))
-                                            Spacer(Modifier.width(4.dp))
-                                            Text("Add to cart", fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                            Icon(Icons.Default.AddShoppingCart, contentDescription = null, modifier = Modifier.size(13.dp))
+                                            Spacer(Modifier.width(3.dp))
+                                            Text("Add to cart", fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                                         }
                                     } else {
                                         Column(horizontalAlignment = Alignment.End) {
