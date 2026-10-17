@@ -1347,30 +1347,30 @@ private fun HomeBannerSlider(
                             Spacer(Modifier.height(12.dp))
                             Row(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(50))
+                                    .clip(RoundedCornerShape(12.dp))
                                     .background(
                                         Brush.horizontalGradient(
-                                            colors = listOf(Color(0xFFFFE6A3), Gold, Color(0xFFC88A25))
+                                            colors = listOf(Color(0xFF4D100E).copy(alpha = 0.96f), Forest.copy(alpha = 0.94f))
                                         )
                                     )
-                                    .border(1.dp, Color(0xFFFFEBC2), RoundedCornerShape(50))
+                                    .border(1.dp, Gold.copy(alpha = 0.95f), RoundedCornerShape(12.dp))
                                     .clickable { openProduct(slide.productName) }
-                                    .padding(horizontal = 10.dp, vertical = 6.dp),
+                                    .padding(horizontal = 12.dp, vertical = 7.dp),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(5.dp)
+                                horizontalArrangement = Arrangement.spacedBy(7.dp)
                             ) {
                                 Text(
                                     "View product",
-                                    color = Color(0xFF4D100E),
-                                    fontSize = 10.sp,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    letterSpacing = 0.15.sp
+                                    color = Color(0xFFFFE6A3),
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    letterSpacing = 0.2.sp
                                 )
                                 Icon(
                                     Icons.Default.ArrowForward,
                                     contentDescription = null,
-                                    tint = Color(0xFF4D100E),
-                                    modifier = Modifier.size(12.dp)
+                                    tint = Color(0xFFFFE6A3),
+                                    modifier = Modifier.size(13.dp)
                                 )
                             }
                         }
