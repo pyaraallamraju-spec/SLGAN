@@ -21,6 +21,11 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // Shared counter used by the Admin Diseases page for atomic numeric IDs.
+    match /system_counters/{counterId} {
+      allow read, write: if isAdmin();
+    }
+
     // Customer profiles are private to their owner; admins can manage account status.
     // The is_admin role is managed only by trusted Firebase Admin SDK scripts.
     match /customers/{userId} {
