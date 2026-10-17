@@ -3644,7 +3644,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCatego
             modifier = Modifier.fillMaxWidth(),
             color = Muted,
             fontSize = 12.sp,
-            textAlign = TextAlign.Center
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(12.dp))
     }
