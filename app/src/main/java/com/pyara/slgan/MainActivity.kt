@@ -2422,7 +2422,7 @@ private fun ShopScreen(
     }) { padding ->
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
-            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage)
+            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage) { onTabChange("Home") }
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
@@ -3053,7 +3053,8 @@ private fun OrdersPage(
     latestOrderId: String?,
     latestOrderSuccess: Boolean?,
     latestInvoiceUrl: String?,
-    latestOrderMessage: String?
+    latestOrderMessage: String?,
+    onHome: () -> Unit
 ) {
     val user = FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
@@ -3088,9 +3089,50 @@ private fun OrdersPage(
         onDispose { registration?.remove() }
     }
 
-    Column(modifier.fillMaxSize().padding(18.dp)) {
-        Text(tr("My Orders", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Spacer(Modifier.height(12.dp))
+    val today = java.time.LocalDate.now()
+    fun orderDate(order: Map<String, Any?>): java.time.LocalDate? {
+        val timestamp = order["createdAt"] as? com.google.firebase.Timestamp ?: return null
+        return timestamp.toDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()
+    }
+    val currentOrders = previousOrders.filter { orderDate(it) == today }
+    val historicalOrders = previousOrders.filter { orderDate(it)?.isBefore(today) != false }
+
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
+            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+        ) {
+            Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                Spacer(Modifier.height(6.dp))
+                Text(tr("My Orders", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                Spacer(Modifier.height(5.dp))
+                Text("Track today's orders and revisit your order history.", color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
+                Spacer(Modifier.height(16.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Card(modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = Color(0x26FFFFFF))) {
+                        Column(Modifier.fillMaxWidth().padding(12.dp)) {
+                            Text("TODAY", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            Spacer(Modifier.height(4.dp))
+                            Text(currentOrders.size.toString(), color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                            Text("current orders", color = Color(0xFFF4E7D9), fontSize = 11.sp)
+                        }
+                    }
+                    Card(modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = Color(0x26FFFFFF))) {
+                        Column(Modifier.fillMaxWidth().padding(12.dp)) {
+                            Text("HISTORY", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            Spacer(Modifier.height(4.dp))
+                            Text(historicalOrders.size.toString(), color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                            Text("previous orders", color = Color(0xFFF4E7D9), fontSize = 11.sp)
+                        }
+                    }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(18.dp))
         if (latestOrderSuccess != null) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = if (latestOrderSuccess) Color(0xFFE5F4E8) else Color(0xFFFCE8E6)),
@@ -3099,27 +3141,14 @@ private fun OrdersPage(
             ) {
                 Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            if (latestOrderSuccess) Icons.Default.CheckCircle else Icons.Default.Error,
-                            contentDescription = null,
-                            tint = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E)
-                        )
+                        Icon(if (latestOrderSuccess) Icons.Default.CheckCircle else Icons.Default.Error, contentDescription = null, tint = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E))
                         Spacer(Modifier.width(8.dp))
-                        Text(
-                            if (latestOrderSuccess) "Order successful" else "Order failed",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E)
-                        )
+                        Text(if (latestOrderSuccess) "Order successful" else "Order failed", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E))
                     }
                     latestOrderId?.let { Text(tr("Order ID: ", LocalAppLanguage.current) + it, color = Ink, fontWeight = FontWeight.SemiBold) }
                     Text(latestOrderMessage ?: if (latestOrderSuccess) "Your order was saved." else "Your order could not be placed.", color = Ink)
                     if (latestOrderSuccess && !latestInvoiceUrl.isNullOrBlank()) {
-                        Button(
-                            onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(latestInvoiceUrl))) },
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(containerColor = Forest)
-                        ) {
+                        Button(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(latestInvoiceUrl))) }, modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
                             Icon(Icons.Default.PictureAsPdf, contentDescription = null)
                             Spacer(Modifier.width(8.dp))
                             Text(tr("View / Download Invoice", LocalAppLanguage.current))
@@ -3129,51 +3158,138 @@ private fun OrdersPage(
                     }
                 }
             }
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(20.dp))
         }
 
-        Text(tr("Previous orders", LocalAppLanguage.current), fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Ink)
-        Spacer(Modifier.height(8.dp))
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text("Current orders", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Text("Placed today · ${today.format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"))}", color = Muted, fontSize = 12.sp)
+            }
+            Box(Modifier.background(Color(0xFFF2E5C9), RoundedCornerShape(50.dp)).padding(horizontal = 11.dp, vertical = 7.dp)) {
+                Text(currentOrders.size.toString(), color = Color(0xFF641F2B), fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
+            }
+        }
+        Spacer(Modifier.height(10.dp))
         when {
-            loadingOrders -> Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Forest) }
+            loadingOrders -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5))) {
+                Row(Modifier.fillMaxWidth().padding(22.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                    CircularProgressIndicator(color = Forest, modifier = Modifier.size(22.dp), strokeWidth = 2.dp)
+                    Spacer(Modifier.width(12.dp))
+                    Text("Loading your orders…", color = Muted, fontSize = 13.sp)
+                }
+            }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
-            previousOrders.isEmpty() -> Text(tr("You have no previous orders yet.", LocalAppLanguage.current), color = Muted)
-            else -> LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                items(previousOrders) { order ->
-                    val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
-                    val status = order["orderStatus"]?.toString() ?: "received"
-                    val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
-                    val invoiceUrl = order["invoiceUrl"]?.toString()
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
-                        shape = RoundedCornerShape(14.dp),
-                        modifier = Modifier.fillMaxWidth().clickable { selectedOrder = order }
-                    ) {
-                        Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Text(orderId, fontWeight = FontWeight.Bold, color = Forest)
-                            Text(tr("Status: ", LocalAppLanguage.current) + status.replaceFirstChar { it.uppercase() }, color = Ink)
-                            Text(tr("Product total: ₹", LocalAppLanguage.current) + String.format("%.2f", total), color = Ink)
-                            val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
-                            if (timestamp != null) Text(timestamp.toDate().toString(), color = Muted, fontSize = 11.sp)
+            currentOrders.isEmpty() -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
+                Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(Modifier.size(66.dp).background(Color(0xFFF2E5C9), CircleShape), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color(0xFF641F2B), modifier = Modifier.size(32.dp))
+                    }
+                    Spacer(Modifier.height(12.dp))
+                    Text("No orders placed today", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                    Spacer(Modifier.height(5.dp))
+                    Text("Ready to discover your Ayurvedic essentials?", color = Muted, fontSize = 13.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center, lineHeight = 19.sp)
+                    Spacer(Modifier.height(15.dp))
+                    TextButton(onClick = onHome) { Text("Click here to order  →", color = Forest, fontWeight = FontWeight.Bold) }
+                    Button(onClick = onHome, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF641F2B))) {
+                        Icon(Icons.Default.ShoppingCart, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Show orders", fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+            else -> currentOrders.forEach { order ->
+                val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
+                val status = order["orderStatus"]?.toString() ?: "received"
+                val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
+                val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
+                val invoiceUrl = order["invoiceUrl"]?.toString()
+                Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                    Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(42.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp)) }
+                            Spacer(Modifier.width(11.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
+                                Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
+                            }
+                            Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.background(Color(0xFFF2E5C9), RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Color(0xFF641F2B), fontSize = 11.sp, fontWeight = FontWeight.Bold) }
+                            Spacer(Modifier.weight(1f))
                             TextButton(onClick = { selectedOrder = order }) {
-                                Icon(Icons.Default.ReceiptLong, contentDescription = null)
-                                Spacer(Modifier.width(6.dp))
-                                Text(tr("View complete invoice", LocalAppLanguage.current))
+                                Text("View details", color = Forest, fontWeight = FontWeight.Bold)
+                                Spacer(Modifier.width(4.dp))
+                                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
                             }
-                            if (!invoiceUrl.isNullOrBlank()) {
-                                TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
-                                    Icon(Icons.Default.PictureAsPdf, contentDescription = null)
-                                    Spacer(Modifier.width(6.dp))
-                                    Text(tr("Open invoice PDF", LocalAppLanguage.current))
-                                }
+                        }
+                        if (!invoiceUrl.isNullOrBlank()) TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
+                            Icon(Icons.Default.PictureAsPdf, contentDescription = null)
+                            Spacer(Modifier.width(6.dp))
+                            Text(tr("Open invoice PDF", LocalAppLanguage.current))
+                        }
+                    }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(22.dp))
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text("Previous orders", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Text("Your order history", color = Muted, fontSize = 12.sp)
+            }
+            Box(Modifier.background(Color(0xFFE8EDE4), RoundedCornerShape(50.dp)).padding(horizontal = 11.dp, vertical = 7.dp)) {
+                Text(historicalOrders.size.toString(), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
+            }
+        }
+        Spacer(Modifier.height(10.dp))
+        when {
+            loadingOrders || ordersError != null -> {}
+            historicalOrders.isEmpty() -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFF7F4ED))) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Muted, modifier = Modifier.size(24.dp))
+                    Spacer(Modifier.width(10.dp))
+                    Text("No previous orders yet. Orders from earlier days will appear here.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                }
+            }
+            else -> historicalOrders.forEach { order ->
+                val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
+                val status = order["orderStatus"]?.toString() ?: "received"
+                val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
+                val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
+                val invoiceUrl = order["invoiceUrl"]?.toString()
+                Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                    Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(42.dp).background(Color(0xFFE8EDE4), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp)) }
+                            Spacer(Modifier.width(11.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
+                                Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
                             }
+                            Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.background(Color(0xFFE8EDE4), RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Forest, fontSize = 11.sp, fontWeight = FontWeight.Bold) }
+                            Spacer(Modifier.weight(1f))
+                            TextButton(onClick = { selectedOrder = order }) {
+                                Text("View details", color = Forest, fontWeight = FontWeight.Bold)
+                                Spacer(Modifier.width(4.dp))
+                                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
+                            }
+                        }
+                        if (!invoiceUrl.isNullOrBlank()) TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
+                            Icon(Icons.Default.PictureAsPdf, contentDescription = null)
+                            Spacer(Modifier.width(6.dp))
+                            Text(tr("Open invoice PDF", LocalAppLanguage.current))
                         }
                     }
                 }
             }
         }
     }
-
 
     selectedOrder?.let { order ->
         val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
