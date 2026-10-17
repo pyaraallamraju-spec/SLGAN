@@ -3742,32 +3742,38 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
 
     Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(22.dp),
-            colors = CardDefaults.cardColors(containerColor = Forest)
-        ) {
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
-                Box(
-                    Modifier.size(50.dp).background(Color.White.copy(alpha = 0.13f), RoundedCornerShape(16.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Gold, modifier = Modifier.size(27.dp))
-                }
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 17.sp)
-                }
-                Column(horizontalAlignment = Alignment.End) {
-                    Text(diseases.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                    Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                    Spacer(Modifier.height(6.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                        Surface(
+                            shape = RoundedCornerShape(50.dp),
+                            color = Color(0xFFFFE7A3)
+                        ) {
+                            Text(
+                                "${diseases.size} available",
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                color = Color(0xFF762A24),
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                    Spacer(Modifier.height(5.dp))
+                    Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
                 }
             }
-        }
-        Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
             Box(Modifier.fillMaxWidth()) {
                 OutlinedTextField(
                     value = query,
