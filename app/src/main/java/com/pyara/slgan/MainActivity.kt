@@ -3609,14 +3609,18 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 ) {
                                     Text(
                                         product.subtitle,
-                                        modifier = Modifier.weight(1f),
                                         color = Muted,
                                         fontSize = 11.sp,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
                                     )
-                                    Spacer(Modifier.width(6.dp))
-                                    Text("₹" + String.format("%.2f", product.price) + " each", color = Muted, fontSize = 10.sp, maxLines = 1)
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(
+                                        "₹" + String.format("%.2f", product.price) + " each",
+                                        color = Muted,
+                                        fontSize = 10.sp,
+                                        maxLines = 1
+                                    )
                                 }
                                 Spacer(Modifier.height(6.dp))
                                 Text("₹" + String.format("%.2f", product.price * quantity), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
