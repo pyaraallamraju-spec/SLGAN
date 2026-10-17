@@ -3686,15 +3686,27 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
                     Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                     Spacer(Modifier.height(6.dp))
-                    Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                        Surface(
+                            shape = RoundedCornerShape(50.dp),
+                            color = Color.White.copy(alpha = 0.12f)
+                        ) {
+                            Text(
+                                "${diseases.size} available",
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                color = Color(0xFFE7C783),
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
                     Spacer(Modifier.height(5.dp))
                     Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
-                    Spacer(Modifier.height(14.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(19.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text("${diseases.size} diseases available", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-                    }
                 }
             }
             Spacer(Modifier.height(16.dp))
