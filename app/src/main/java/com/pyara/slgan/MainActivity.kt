@@ -3694,12 +3694,12 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
                         Surface(
                             shape = RoundedCornerShape(50.dp),
-                            color = Color.White.copy(alpha = 0.12f)
+                            color = Color(0xFFFFE7A3)
                         ) {
                             Text(
                                 "${diseases.size} available",
-                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                                color = Color(0xFFE7C783),
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                color = Color(0xFF762A24),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold
                             )
