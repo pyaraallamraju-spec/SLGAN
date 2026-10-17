@@ -4173,8 +4173,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     },
                     modifier = Modifier.fillMaxWidth()
                         .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
-                    label = { Text(tr("Select disease", LocalAppLanguage.current)) },
-                    placeholder = { Text("Search disease...", fontSize = 14.sp, maxLines = 1) },
+                    placeholder = { Text(tr("Select disease", LocalAppLanguage.current), fontSize = 18.sp, maxLines = 1) },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
                     trailingIcon = {
                         IconButton(onClick = { dropdownExpanded = !dropdownExpanded }) {
@@ -4186,10 +4185,12 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         }
                     },
                     singleLine = true,
-                    shape = RoundedCornerShape(16.dp),
+                    shape = RoundedCornerShape(18.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Forest,
-                        unfocusedBorderColor = Color(0xFFE4D8C7),
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        disabledBorderColor = Color.Transparent,
+                        errorBorderColor = Color.Transparent,
                         focusedContainerColor = Color(0xFFFFFCF5),
                         unfocusedContainerColor = Color(0xFFFFFCF5)
                     )
