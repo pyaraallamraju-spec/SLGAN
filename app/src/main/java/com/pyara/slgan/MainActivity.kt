@@ -2837,14 +2837,43 @@ private fun ProductDetailsPage(
                 lineHeight = 31.sp,
                 fontWeight = FontWeight.ExtraBold
             )
-            if (product.subtitle.isNotBlank()) {
-                Text("Pack size: ${product.subtitle}", color = Muted, fontSize = 14.sp)
-            }
-            if (product.category.isNotBlank()) {
-                Text(tr("Category: ${product.category}", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
-            }
-            if (product.quantity.isNotBlank()) {
-                Text("Quantity / stock: ${product.quantity}", color = Muted, fontSize = 14.sp)
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (product.category.isNotBlank()) {
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = PaleGreen,
+                        contentColor = Forest
+                    ) {
+                        Row(
+                            Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Icon(Icons.Default.Category, contentDescription = null, modifier = Modifier.size(15.dp))
+                            Text(product.category, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                        }
+                    }
+                }
+                if (product.subtitle.isNotBlank()) {
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = Color(0xFFFFEBC2),
+                        contentColor = Ink
+                    ) {
+                        Row(
+                            Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(15.dp))
+                            Text(product.subtitle, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                        }
+                    }
+                }
             }
             if (product.price > 0.0) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
