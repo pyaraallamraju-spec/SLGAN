@@ -1060,8 +1060,8 @@ private fun LoginScreen(
         Spacer(Modifier.height(12.dp))
         Text(
             tr("Nature's care,\nrooted in tradition.", LocalAppLanguage.current),
-            fontSize = 29.sp,
-            lineHeight = 34.sp,
+            fontSize = 22.sp,
+            lineHeight = 26.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF8B211B),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
