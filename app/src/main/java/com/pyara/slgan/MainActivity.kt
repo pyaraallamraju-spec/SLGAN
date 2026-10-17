@@ -4176,10 +4176,14 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     placeholder = { Text(tr("Select disease", LocalAppLanguage.current), fontSize = 18.sp, maxLines = 1) },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
                     trailingIcon = {
-                        IconButton(onClick = { dropdownExpanded = !dropdownExpanded }) {
+                        IconButton(onClick = {
+                            // Reopen the complete disease list even when a disease is already selected.
+                            query = ""
+                            dropdownExpanded = true
+                        }) {
                             Icon(
                                 if (dropdownExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                                contentDescription = "Show disease options",
+                                contentDescription = "Show all disease options",
                                 tint = Forest
                             )
                         }
