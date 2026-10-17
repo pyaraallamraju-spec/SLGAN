@@ -1460,7 +1460,8 @@ private fun AdminProductsScreen(
         OutlinedTextField(
             value = searchText,
             onValueChange = { searchText = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)
+                .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
             singleLine = true,
             label = { Text("Search product") },
             placeholder = { Text("Name, category or product ID") },
@@ -1470,7 +1471,14 @@ private fun AdminProductsScreen(
                     Icon(Icons.Default.Close, "Clear search")
                 }
             },
-            shape = RoundedCornerShape(14.dp)
+            shape = RoundedCornerShape(18.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Forest,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color(0xFFFFFCF5),
+                unfocusedContainerColor = Color(0xFFFFFCF5),
+                cursorColor = Gold
+            )
         )
         Row(
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp),
@@ -1993,7 +2001,8 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             OutlinedTextField(
                 value = search,
                 onValueChange = { search = it },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)
+                    .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
                 singleLine = true,
                 label = { Text("Search diseases") },
                 placeholder = { Text("Disease name or description") },
@@ -2003,7 +2012,14 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                         Icon(Icons.Default.Close, "Clear search")
                     }
                 },
-                shape = RoundedCornerShape(14.dp)
+                shape = RoundedCornerShape(18.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Forest,
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedContainerColor = Color(0xFFFFFCF5),
+                    unfocusedContainerColor = Color(0xFFFFFCF5),
+                    cursorColor = Gold
+                )
             )
         }
         Spacer(Modifier.height(10.dp))
@@ -2113,11 +2129,19 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         OutlinedTextField(
             value = search,
             onValueChange = { search = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
             singleLine = true,
             label = { Text("Search name, email or mobile") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-            shape = RoundedCornerShape(14.dp)
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+            shape = RoundedCornerShape(18.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Forest,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color(0xFFFFFCF5),
+                unfocusedContainerColor = Color(0xFFFFFCF5),
+                cursorColor = Gold
+            )
         )
         Spacer(Modifier.height(10.dp))
         when {
@@ -2287,9 +2311,10 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp)
+                .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
             singleLine = true,
-            shape = RoundedCornerShape(14.dp),
+            shape = RoundedCornerShape(18.dp),
             placeholder = { Text("Search order") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = Forest) },
             trailingIcon = {
@@ -3888,7 +3913,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         selectedDisease = null
                         dropdownExpanded = true
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
+                        .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
                     label = { Text(tr("Select disease", LocalAppLanguage.current)) },
                     placeholder = { Text("Search diseases by name") },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
@@ -4080,9 +4106,10 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
             singleLine = true,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(18.dp),
             placeholder = { Text(tr("Search categories...", LocalAppLanguage.current)) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
             trailingIcon = {
@@ -4094,9 +4121,10 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Forest,
-                unfocusedBorderColor = Color(0xFFE4D8C7),
+                unfocusedBorderColor = Color.Transparent,
                 focusedContainerColor = Color(0xFFFFFCF5),
-                unfocusedContainerColor = Color(0xFFFFFCF5)
+                unfocusedContainerColor = Color(0xFFFFFCF5),
+                cursorColor = Gold
             )
         )
         Spacer(Modifier.height(18.dp))
