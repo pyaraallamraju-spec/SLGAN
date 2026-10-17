@@ -525,7 +525,7 @@ private fun AyurvedicApp() {
                     if (error != null) {
                         isAdmin = false
                         adminRoleResolved = true
-                    } else if (snapshot?.contains("enabled") == true && snapshot.getBoolean("enabled") == false) {
+                    } else if (((snapshot?.contains("is_active") == true && snapshot.getBoolean("is_active") == false) || (snapshot?.contains("is_active") != true && snapshot?.contains("enabled") == true && snapshot.getBoolean("enabled") == false))) {
                         isAdmin = false
                         adminRoleResolved = true
                         Toast.makeText(
