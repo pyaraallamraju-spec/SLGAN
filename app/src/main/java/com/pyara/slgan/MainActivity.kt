@@ -2982,15 +2982,21 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
-                                            Text(
-                                                "✦ SIGNATURE ✦",
-                                                Modifier.align(Alignment.TopStart).padding(6.dp)
-                                                    .background(Color(0xFF6D1020), RoundedCornerShape(6.dp))
-                                                    .padding(horizontal = 7.dp, vertical = 4.dp),
-                                                color = Gold,
-                                                fontSize = 8.sp,
-                                                fontWeight = FontWeight.ExtraBold
-                                            )
+                                            Surface(
+                                                modifier = Modifier.align(Alignment.TopStart).padding(6.dp),
+                                                shape = RoundedCornerShape(50.dp),
+                                                color = Color(0xFF762A24),
+                                                contentColor = Color(0xFFFFF7E8)
+                                            ) {
+                                                Text(
+                                                    "✦ SIGNATURE",
+                                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                                    color = Color(0xFFFFE6A3),
+                                                    fontSize = 8.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    maxLines = 1
+                                                )
+                                            }
                                         }
                                         Spacer(Modifier.height(9.dp))
                                         Text(
@@ -3023,7 +3029,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             IconButton(
                                                 onClick = { if (product.price > 0.0) onAdd(product.id) },
                                                 enabled = product.price > 0.0,
-                                                modifier = Modifier.size(30.dp)
+                                                modifier = Modifier.size(26.dp)
                                                     .background(
                                                         Brush.linearGradient(listOf(Forest, Leaf)),
                                                         CircleShape
@@ -3033,7 +3039,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                     imageVector = Icons.Default.Add,
                                                     contentDescription = "Add ${product.name} to cart",
                                                     tint = Color.White,
-                                                    modifier = Modifier.size(18.dp)
+                                                    modifier = Modifier.size(15.dp)
                                                 )
                                             }
                                         }
@@ -3204,7 +3210,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             Spacer(Modifier.height(5.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
-                if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(34.dp), colors = IconButtonDefaults.filledIconButtonColors(containerColor = Forest)) { Icon(Icons.Default.Add, "Add " + product.name, modifier = Modifier.size(18.dp)) }
+                if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp), colors = IconButtonDefaults.filledIconButtonColors(containerColor = Forest)) { Icon(Icons.Default.Add, "Add " + product.name, modifier = Modifier.size(15.dp)) }
                 else Text(count.toString() + " in cart", fontSize = 10.sp, color = Forest, fontWeight = FontWeight.Bold)
             }
         }
