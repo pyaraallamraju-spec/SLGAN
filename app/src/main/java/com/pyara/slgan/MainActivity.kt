@@ -4250,6 +4250,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                         fontSize = 14.sp,
                                         maxLines = 1
                                     )
+                                    Spacer(Modifier.weight(1f))
                                     if (cartQuantity == 0) {
                                         Button(
                                             onClick = { onAdd(product.id) },
