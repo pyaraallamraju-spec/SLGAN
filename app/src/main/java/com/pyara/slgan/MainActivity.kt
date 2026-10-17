@@ -1473,7 +1473,7 @@ private fun AdminProductsScreen(
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
                     Text("Product library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Manage your Ayurvedic catalogue", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                    Text("Manage your Ayurvedic catalogue", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 14.sp)
                 }
                 Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                     Button(
@@ -2129,7 +2129,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
                         Text("Disease library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text("Manage diseases shown in the customer app", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                        Text("Manage diseases shown in the customer app", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 14.sp)
                     }
                     Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                         Button(
@@ -2457,7 +2457,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                 Spacer(Modifier.width(13.dp))
                 Column(Modifier.weight(1f)) {
                     Text("Orders library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Review and manage customer orders", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                    Text("Review and manage customer orders", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 14.sp)
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(orders.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
