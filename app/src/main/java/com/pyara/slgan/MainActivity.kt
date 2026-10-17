@@ -3008,12 +3008,35 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         Spacer(Modifier.height(3.dp))
                                         ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                         Spacer(Modifier.height(3.dp))
-                                        Text(
-                                            tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
-                                            color = Forest,
-                                            fontWeight = FontWeight.ExtraBold,
-                                            fontSize = 15.sp
-                                        )
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.SpaceBetween
+                                        ) {
+                                            Text(
+                                                tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
+                                                color = Forest,
+                                                fontWeight = FontWeight.ExtraBold,
+                                                fontSize = 15.sp,
+                                                maxLines = 1
+                                            )
+                                            IconButton(
+                                                onClick = { if (product.price > 0.0) onAdd(product.id) },
+                                                enabled = product.price > 0.0,
+                                                modifier = Modifier.size(30.dp)
+                                                    .background(
+                                                        Brush.linearGradient(listOf(Forest, Leaf)),
+                                                        CircleShape
+                                                    )
+                                            ) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Add,
+                                                    contentDescription = "Add ${product.name} to cart",
+                                                    tint = Color.White,
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                            }
+                                        }
                                         Spacer(Modifier.height(5.dp))
                                         Text("View product  →", color = Leaf, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                     }
