@@ -455,7 +455,7 @@ private fun localizedProductName(name: String, language: String): String {
     return when (language) { "Telugu" -> telugu[name] ?: name; "Hindi" -> hindi[name] ?: name; else -> name }
 }
 
-private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false)
+private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1)
 private data class ProductRatingSummary(val average: Double = 0.0, val count: Int = 0, val myRating: Int = 0)
 private data class ProductLikeSummary(val count: Int = 0, val likedByMe: Boolean = false)
 private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
@@ -500,7 +500,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val majorIngredients = listOf("product_major_ingredients", "major_ingredients", "ingredients", "product_ingredients").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true)
+    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1)
 }
 @Composable
 private fun AyurvedicApp() {
@@ -1619,7 +1619,7 @@ private fun AdminProductEditor(
     var usage by remember(product?.id) { mutableStateOf(product?.usage.orEmpty()) }
     var cures by remember(product?.id) { mutableStateOf(product?.cures.orEmpty()) }
     var ingredients by remember(product?.id) { mutableStateOf(product?.majorIngredients.orEmpty()) }
-    var signature by remember(product?.id) { mutableStateOf(product?.signature ?: false) }
+    var signature by remember(product?.id) { mutableStateOf(product?.signature ?: false) }\n    var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
     var saving by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     Column(Modifier.fillMaxSize().background(Cream)) {
@@ -1639,7 +1639,7 @@ private fun AdminProductEditor(
                 OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Pack weight") }, singleLine = true)
                 OutlinedTextField(units, { units = it; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight units (g/ml)") }, singleLine = true)
             }
-            OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity / stock") }, singleLine = true)
+            OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity / pack count") }, singleLine = true)\n            Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)\n            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {\n                FilterChip(selected = productStock == 1, onClick = { productStock = 1 }, label = { Text("1 · In stock") })\n                FilterChip(selected = productStock == 0, onClick = { productStock = 0 }, label = { Text("0 · Out of stock") })\n            }
             OutlinedTextField(imageUrl, { imageUrl = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product image URL") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), minLines = 1)
             OutlinedTextField(description, { description = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Description") }, minLines = 3)
             OutlinedTextField(usage, { usage = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Usage / directions") }, minLines = 2)
@@ -1665,7 +1665,7 @@ private fun AdminProductEditor(
                         "product_price" to (price.toDoubleOrNull() ?: 0.0),
                         "product_weight" to weight.trim(),
                         "product_units" to units.trim(),
-                        "product_quantity" to quantity.trim(),
+                        "product_quantity" to quantity.trim(),\n                        "product_stock" to productStock,
                         "product_image" to imageUrl.trim(),
                         "product_description" to description.trim(),
                         "product_usage" to usage.trim(),
