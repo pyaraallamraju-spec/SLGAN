@@ -3829,12 +3829,16 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             if (selectedDisease != null) {
             Spacer(Modifier.height(14.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { selectedDisease = null; query = ""; dropdownExpanded = false }) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back to diseases", tint = Forest)
-                }
                 Column(Modifier.weight(1f)) {
                     Text("DISEASE DETAILS", color = Leaf, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
                     Text(selectedDisease!!, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                }
+                IconButton(onClick = {
+                    selectedDisease = null
+                    query = ""
+                    dropdownExpanded = false
+                }) {
+                    Icon(Icons.Default.Close, contentDescription = "Close disease details and clear search", tint = Forest)
                 }
             }
             Spacer(Modifier.height(12.dp))
