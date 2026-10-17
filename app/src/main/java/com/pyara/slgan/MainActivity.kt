@@ -2970,23 +2970,42 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Forest),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
             elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
         ) {
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 20.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    Modifier.size(54.dp).background(Color.White.copy(alpha = 0.12f), CircleShape),
-                    contentAlignment = Alignment.Center
-                ) { Text("🛍️", fontSize = 29.sp) }
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text("Your shopping bag", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Cream)
-                    Text("${cart.values.sum()} items • Thoughtfully chosen for you", fontSize = 12.sp, color = Cream.copy(alpha = 0.82f))
+            Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                Spacer(Modifier.height(6.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Your shopping bag", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
+                        Spacer(Modifier.height(5.dp))
+                        Text("Review your herbal favourites before placing your order.", fontSize = 13.sp, color = Color(0xFFF4E7D9), lineHeight = 19.sp)
+                    }
+                    Spacer(Modifier.width(8.dp))
+                    Box(Modifier.size(48.dp).background(Color(0x26FFFFFF), CircleShape), contentAlignment = Alignment.Center) {
+                        Text("🛍️", fontSize = 27.sp)
+                    }
                 }
-                Icon(Icons.Default.LocalFlorist, contentDescription = null, tint = Gold, modifier = Modifier.size(28.dp))
+                Spacer(Modifier.height(16.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Card(modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = Color(0x26FFFFFF))) {
+                        Column(Modifier.fillMaxWidth().padding(12.dp)) {
+                            Text("ITEMS", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            Spacer(Modifier.height(4.dp))
+                            Text(cart.values.sum().toString(), color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                            Text("in your bag", color = Color(0xFFF4E7D9), fontSize = 11.sp)
+                        }
+                    }
+                    Card(modifier = Modifier.weight(1f), shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = Color(0x26FFFFFF))) {
+                        Column(Modifier.fillMaxWidth().padding(12.dp)) {
+                            Text("PRODUCTS", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            Spacer(Modifier.height(4.dp))
+                            Text(selected.size.toString(), color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                            Text("different products", color = Color(0xFFF4E7D9), fontSize = 11.sp)
+                        }
+                    }
+                }
             }
         }
         Spacer(Modifier.height(18.dp))
