@@ -3467,25 +3467,155 @@ private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.Image
 
 @Composable
 private fun CategoriesPage(modifier: Modifier, products: List<Product>, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
+    var searchQuery by remember { mutableStateOf("") }
+    val categoryItems = categories.filter { it.contains(searchQuery.trim(), ignoreCase = true) }
+    val categoryRows = categoryItems.chunked(2)
+
     Column(
         modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(18.dp)
+            .padding(horizontal = 16.dp, vertical = 18.dp)
     ) {
-        Text(tr("Categories", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-        Text(tr("Find the collection for your routine.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
-        Spacer(Modifier.height(18.dp))
-        categories.drop(1).forEach { item ->
-            Card(Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { onCategoryChange(item); onHome() }, colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(18.dp)) {
-                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(48.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Text(when (item) { "Lehyas" -> "🫙"; "Grutas" -> "🥣"; "Pills" -> "💊"; "Tailas" -> "🪔"; "Churnas" -> "🌰"; "Rasayanas" -> "🪷"; "Bhasmas" -> "🪨"; else -> "🌿" }, fontSize = 24.sp) }
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B))
+        ) {
+            Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                Spacer(Modifier.height(7.dp))
+                Text(tr("Explore Categories", LocalAppLanguage.current), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    tr("Discover Ayurvedic products by collection.", LocalAppLanguage.current),
+                    color = Color(0xFFF4E7D9),
+                    fontSize = 13.sp,
+                    lineHeight = 19.sp
+                )
+                Spacer(Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.Inventory2, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(7.dp))
+                    Text("${products.size} products", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                     Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) { Text(item, color = Ink, fontWeight = FontWeight.Bold); Text(products.count { it.category.equals(item, true) }.toString() + " products", color = Muted, fontSize = 12.sp) }
-                    Icon(Icons.Default.ChevronRight, null, tint = Forest)
+                    Box(Modifier.width(1.dp).height(16.dp).background(Color(0x66FFFFFF)))
+                    Spacer(Modifier.width(14.dp))
+                    Icon(Icons.Default.Category, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(7.dp))
+                    Text("${categories.size} collections", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                 }
             }
         }
+
+        Spacer(Modifier.height(18.dp))
+        OutlinedTextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            shape = RoundedCornerShape(16.dp),
+            placeholder = { Text(tr("Search categories...", LocalAppLanguage.current)) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+            trailingIcon = {
+                if (searchQuery.isNotEmpty()) {
+                    IconButton(onClick = { searchQuery = "" }) {
+                        Icon(Icons.Default.Close, contentDescription = tr("Clear search", LocalAppLanguage.current))
+                    }
+                }
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Forest,
+                unfocusedBorderColor = Color(0xFFE4D8C7),
+                focusedContainerColor = Color(0xFFFFFCF5),
+                unfocusedContainerColor = Color(0xFFFFFCF5)
+            )
+        )
+        Spacer(Modifier.height(18.dp))
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(tr("Shop by category", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.weight(1f))
+            Text("${categoryItems.size} shown", color = Muted, fontSize = 12.sp)
+        }
+        Spacer(Modifier.height(12.dp))
+
+        if (categoryItems.isEmpty()) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5))
+            ) {
+                Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("🔎", fontSize = 30.sp)
+                    Spacer(Modifier.height(8.dp))
+                    Text(tr("No categories found", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text(tr("Try another search term.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
+                }
+            }
+        } else {
+            categoryRows.forEach { rowItems ->
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    rowItems.forEach { item ->
+                        val emoji = when (item) {
+                            "All" -> "🌳"
+                            "Lehyas" -> "🍯"
+                            "Grutas" -> "🌼"
+                            "Pills" -> "🌱"
+                            "Tailas" -> "🪔"
+                            "Churnas" -> "🌾"
+                            "Rasayanas" -> "🪷"
+                            "Bhasmas" -> "🪨"
+                            else -> "🌿"
+                        }
+                        val count = if (item.equals("All", ignoreCase = true)) products.size else products.count { it.category.equals(item, ignoreCase = true) }
+                        Card(
+                            modifier = Modifier.weight(1f).padding(bottom = 2.dp).clickable {
+                                onCategoryChange(item)
+                                onHome()
+                            },
+                            shape = RoundedCornerShape(20.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        ) {
+                            Column(Modifier.fillMaxWidth().padding(14.dp)) {
+                                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+                                    Box(
+                                        Modifier.size(48.dp).background(
+                                            if (item == "All") Color(0xFFF0DFC0) else PaleGreen,
+                                            CircleShape
+                                        ),
+                                        contentAlignment = Alignment.Center
+                                    ) { Text(emoji, fontSize = 24.sp) }
+                                    Spacer(Modifier.weight(1f))
+                                    Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Color(0xFF9A7845), modifier = Modifier.size(21.dp))
+                                }
+                                Spacer(Modifier.height(13.dp))
+                                Text(tr(item, LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp, maxLines = 1)
+                                Spacer(Modifier.height(4.dp))
+                                Text(
+                                    "$count " + tr("products", LocalAppLanguage.current),
+                                    color = Muted,
+                                    fontSize = 12.sp
+                                )
+                                Spacer(Modifier.height(10.dp))
+                                Box(Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(3.dp)).background(if (item == "All") Color(0xFFE7C783) else Color(0xFFDCE8D7)))
+                            }
+                        }
+                    }
+                    if (rowItems.size == 1) Spacer(Modifier.weight(1f))
+                }
+                Spacer(Modifier.height(10.dp))
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+        Text(
+            tr("Select a category to view its products.", LocalAppLanguage.current),
+            modifier = Modifier.fillMaxWidth(),
+            color = Muted,
+            fontSize = 12.sp,
+            textAlign = TextAlign.Center
+        )
+        Spacer(Modifier.height(12.dp))
     }
 }
 
