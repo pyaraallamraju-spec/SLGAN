@@ -136,6 +136,24 @@ service cloud.firestore {
         && resource.data.userId == request.auth.uid;
     }
 
+    // One like per signed-in customer and product.
+    // Document ID format: <productId>_<Firebase Auth UID>; counts are derived from these records.
+    match /productLikes/{likeId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.productId is string
+        && request.resource.data.productId.size() > 0
+        && request.resource.data.productId.size() <= 200
+        && likeId == request.resource.data.productId + '_' + request.auth.uid
+        && request.resource.data.productName is string
+        && request.resource.data.productName.size() > 0
+        && request.resource.data.productName.size() <= 200;
+      allow update: if false;
+      allow delete: if request.auth != null
+        && resource.data.userId == request.auth.uid;
+    }
+
     // Each saved address belongs to the signed-in customer.
     match /addresses/{addressId} {
       allow create: if request.auth != null
