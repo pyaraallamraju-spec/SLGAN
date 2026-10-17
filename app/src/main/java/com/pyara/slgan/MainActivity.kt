@@ -2755,6 +2755,7 @@ private fun ProductDetailsPage(
     onRemove: (String) -> Unit
 ) {
     val context = LocalContext.current
+    val currentLanguage = LocalAppLanguage.current
     val ratingUser = FirebaseAuth.getInstance().currentUser
     var selectedRating by remember(product.id, ratingUser?.uid) { mutableIntStateOf(ratingSummary.myRating) }
     var ratingReview by remember(product.id, ratingUser?.uid) { mutableStateOf("") }
@@ -2782,7 +2783,7 @@ private fun ProductDetailsPage(
             IconButton(onClick = {
                 val shareText = buildString {
                     append("Check out this product from Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN)\\n\\n")
-                    append(localizedProductName(product.name, LocalAppLanguage.current))
+                    append(localizedProductName(product.name, currentLanguage))
                     if (product.subtitle.isNotBlank()) append("\\nPack size: ${product.subtitle}")
                     if (product.category.isNotBlank()) append("\\nCategory: ${product.category}")
                     if (product.price > 0.0) {
@@ -2799,7 +2800,7 @@ private fun ProductDetailsPage(
                     putExtra(Intent.EXTRA_SUBJECT, "SLGAN - ${product.name}")
                     putExtra(Intent.EXTRA_TEXT, shareText)
                 }
-                context.startActivity(Intent.createChooser(shareIntent, tr("Share product", LocalAppLanguage.current)))
+                context.startActivity(Intent.createChooser(shareIntent, tr("Share product", currentLanguage)))
             }) {
                 Icon(Icons.Default.Share, contentDescription = tr("Share product", LocalAppLanguage.current), tint = Forest)
             }
