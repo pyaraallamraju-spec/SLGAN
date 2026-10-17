@@ -2905,7 +2905,6 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
 }
 
 @Composable
-@Composable
 private fun ProductLikeControl(product: Product, summary: ProductLikeSummary, onToggleLike: (Product) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
         IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(30.dp)) {
