@@ -3616,6 +3616,7 @@ private fun OrdersPage(
 private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: List<Product>, loading: Boolean, error: String?) {
     var query by remember { mutableStateOf("") }
     var selectedDisease by remember { mutableStateOf<String?>(null) }
+    var dropdownExpanded by remember { mutableStateOf(false) }
     var detailLoading by remember { mutableStateOf(false) }
     var diseaseDescription by remember { mutableStateOf("") }
     var diseaseImageUrl by remember { mutableStateOf("") }
@@ -3676,8 +3677,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
     }
 
     Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
-        if (selectedDisease == null) {
-            Card(
+        Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
@@ -3698,19 +3698,58 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 }
             }
             Spacer(Modifier.height(16.dp))
-            OutlinedTextField(
-                value = query,
-                onValueChange = { query = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text(tr("Select disease", LocalAppLanguage.current)) },
-                placeholder = { Text("Search diseases by name") },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
-                singleLine = true,
-                shape = RoundedCornerShape(16.dp)
-            )
-        } else {
+            Box(Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = {
+                        query = it
+                        selectedDisease = null
+                        dropdownExpanded = true
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(tr("Select disease", LocalAppLanguage.current)) },
+                    placeholder = { Text("Search diseases by name") },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                    trailingIcon = {
+                        IconButton(onClick = { dropdownExpanded = !dropdownExpanded }) {
+                            Icon(
+                                if (dropdownExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                                contentDescription = "Show disease options",
+                                tint = Forest
+                            )
+                        }
+                    },
+                    singleLine = true,
+                    shape = RoundedCornerShape(16.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Forest,
+                        unfocusedBorderColor = Color(0xFFE4D8C7),
+                        focusedContainerColor = Color(0xFFFFFCF5),
+                        unfocusedContainerColor = Color(0xFFFFFCF5)
+                    )
+                )
+                DropdownMenu(
+                    expanded = dropdownExpanded && matches.isNotEmpty(),
+                    onDismissRequest = { dropdownExpanded = false },
+                    modifier = Modifier.fillMaxWidth(0.94f).heightIn(max = 280.dp)
+                ) {
+                    matches.forEach { disease ->
+                        DropdownMenuItem(
+                            text = { Text(disease, color = Ink, fontWeight = FontWeight.Medium) },
+                            leadingIcon = { Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest) },
+                            onClick = {
+                                selectedDisease = disease
+                                query = disease
+                                dropdownExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
+            if (selectedDisease != null) {
+            Spacer(Modifier.height(14.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { selectedDisease = null }) {
+                IconButton(onClick = { selectedDisease = null; query = ""; dropdownExpanded = false }) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Back to diseases", tint = Forest)
                 }
                 Column(Modifier.weight(1f)) {
@@ -3786,6 +3825,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     Spacer(Modifier.height(14.dp))
                     Text(tr("Use medicines only with guidance from a qualified healthcare professional.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, lineHeight = 16.sp)
                 }
+            }
             }
         }
     }
