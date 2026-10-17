@@ -2642,9 +2642,9 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 OutlinedTextField(
                     value = search,
                     onValueChange = onSearchChange,
-                    modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text(tr("Search products", LocalAppLanguage.current)) },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = tr("Search products", LocalAppLanguage.current)) },
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 14.sp) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = tr("Search products", LocalAppLanguage.current), modifier = Modifier.size(20.dp)) },
                     trailingIcon = {
                         IconButton(onClick = {
                             try {
