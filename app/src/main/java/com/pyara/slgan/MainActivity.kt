@@ -2095,6 +2095,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
     var error by remember { mutableStateOf<String?>(null) }
     var busy by remember { mutableStateOf<String?>(null) }
     var searchQuery by remember { mutableStateOf("") }
+    var statusFilter by remember { mutableStateOf("All") }
     var expandedOrderId by remember { mutableStateOf<String?>(null) }
     val db = remember { FirebaseFirestore.getInstance() }
 
@@ -2116,14 +2117,27 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
 
     val dateFormat = remember { java.text.SimpleDateFormat("EEEE, dd MMM yyyy", java.util.Locale.getDefault()) }
     val query = searchQuery.trim().lowercase()
-    val filteredOrders = remember(orders, query) {
-        if (query.isBlank()) orders else orders.filter { order ->
-            listOf("orderId", "_documentId", "customerName", "phone", "email", "shippingAddress", "orderStatus")
-                .any { key -> order[key]?.toString()?.lowercase()?.contains(query) == true } ||
+    val orderStatusForFilter: (Map<String, Any?>) -> String = { order ->
+        when (order["orderStatus"]?.toString()?.lowercase()) {
+            "accepted" -> "accepted"
+            "rejected" -> "rejected"
+            else -> "pending"
+        }
+    }
+    val pendingCount = orders.count { orderStatusForFilter(it) == "pending" }
+    val acceptedCount = orders.count { orderStatusForFilter(it) == "accepted" }
+    val rejectedCount = orders.count { orderStatusForFilter(it) == "rejected" }
+    val filteredOrders = remember(orders, query, statusFilter) {
+        orders.filter { order ->
+            val matchesStatus = statusFilter == "All" || orderStatusForFilter(order) == statusFilter.lowercase()
+            val matchesQuery = query.isBlank() ||
+                listOf("orderId", "_documentId", "customerName", "phone", "email", "shippingAddress", "orderStatus")
+                    .any { key -> order[key]?.toString()?.lowercase()?.contains(query) == true } ||
                 ((order["items"] as? List<*>)?.any { raw ->
                     val item = raw as? Map<*, *>
                     item?.values?.any { it?.toString()?.lowercase()?.contains(query) == true } == true
                 } == true)
+            matchesStatus && matchesQuery
         }
     }
     val grouped = filteredOrders.groupBy { row ->
@@ -2132,12 +2146,13 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
     }
 
     Column(Modifier.fillMaxSize().background(Cream)) {
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
+        Row(Modifier.fillMaxWidth().background(Forest).padding(horizontal = 8.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Color.White) }
             Column(Modifier.weight(1f)) {
-                Text("Orders", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
-                Text("${filteredOrders.size} of ${orders.size} orders • newest first", color = Muted, fontSize = 12.sp)
+                Text("Manage Orders", color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text("${filteredOrders.size} of ${orders.size} orders • newest first", color = Color(0xFFFFE8B5), fontSize = 12.sp)
             }
+            Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = Gold, modifier = Modifier.size(27.dp))
         }
         OutlinedTextField(
             value = searchQuery,
@@ -2153,6 +2168,55 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                 }
             }
         )
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 2.dp),
+            shape = RoundedCornerShape(18.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(1.dp)
+        ) {
+            Column(Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.FilterList, contentDescription = null, tint = Forest, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(7.dp))
+                    Text("Filter orders by status", color = Ink, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                }
+                Spacer(Modifier.height(7.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(7.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    FilterChip(
+                        selected = statusFilter == "All",
+                        onClick = { statusFilter = "All" },
+                        label = { Text("All  ${orders.size}") },
+                        leadingIcon = { Icon(Icons.Default.ListAlt, null, modifier = Modifier.size(16.dp)) },
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, selectedLeadingIconColor = Color.White)
+                    )
+                    FilterChip(
+                        selected = statusFilter == "Pending",
+                        onClick = { statusFilter = "Pending" },
+                        label = { Text("Pending  ${pendingCount}") },
+                        leadingIcon = { Icon(Icons.Default.Schedule, null, modifier = Modifier.size(16.dp)) },
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color(0xFF8A5A12), selectedLabelColor = Color.White, selectedLeadingIconColor = Color.White)
+                    )
+                    FilterChip(
+                        selected = statusFilter == "Accepted",
+                        onClick = { statusFilter = "Accepted" },
+                        label = { Text("Accepted  ${acceptedCount}") },
+                        leadingIcon = { Icon(Icons.Default.CheckCircle, null, modifier = Modifier.size(16.dp)) },
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color(0xFF206B3A), selectedLabelColor = Color.White, selectedLeadingIconColor = Color.White)
+                    )
+                    FilterChip(
+                        selected = statusFilter == "Rejected",
+                        onClick = { statusFilter = "Rejected" },
+                        label = { Text("Rejected  ${rejectedCount}") },
+                        leadingIcon = { Icon(Icons.Default.Cancel, null, modifier = Modifier.size(16.dp)) },
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color(0xFFB3261E), selectedLabelColor = Color.White, selectedLeadingIconColor = Color.White)
+                    )
+                }
+            }
+        }
         when {
             loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Forest) }
             error != null -> Text("Could not load orders: " + error, color = Color(0xFFB3261E), modifier = Modifier.padding(20.dp))
