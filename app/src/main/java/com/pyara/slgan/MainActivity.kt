@@ -2824,7 +2824,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             onValueChange = { search = it },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
             singleLine = true,
-            label = { Text("Search name, email or mobile", modifier = Modifier.background(Cream), color = Forest) },
+            label = { Text("Search name, email or mobile", modifier = Modifier.background(Color.White), color = Forest) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
             shape = RoundedCornerShape(18.dp),
             colors = OutlinedTextFieldDefaults.colors(
