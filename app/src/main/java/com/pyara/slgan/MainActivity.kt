@@ -4645,17 +4645,15 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                 Row(
                                     Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
                                         if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
-                                        modifier = Modifier.weight(1f, fill = false),
                                         color = Forest,
                                         fontWeight = FontWeight.ExtraBold,
                                         fontSize = 14.sp,
                                         maxLines = 1
                                     )
-                                    Spacer(Modifier.weight(1f))
                                     if (cartQuantity == 0) {
                                         Button(
                                             onClick = { onAdd(product.id) },
