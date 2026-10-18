@@ -4956,18 +4956,21 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 )
             }
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(
-                value = dateOfBirth.takeIf { it.isNotBlank() }?.let { saved ->
-                    runCatching { LocalDate.parse(saved).format(DateTimeFormatter.ofPattern("dd MMM yyyy")) }.getOrDefault(saved)
-                }.orEmpty(),
-                onValueChange = {},
-                readOnly = true,
-                modifier = Modifier.fillMaxWidth().clickable { showDateOfBirthPicker = true },
-                label = { Text("Date of birth") },
-                placeholder = { Text("Select date of birth") },
-                leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Forest) },
-                trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = "Choose date", tint = Forest) }
-            )
+            Box(Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = dateOfBirth.takeIf { it.isNotBlank() }?.let { saved ->
+                        runCatching { LocalDate.parse(saved).format(DateTimeFormatter.ofPattern("dd MMM yyyy")) }.getOrDefault(saved)
+                    }.orEmpty(),
+                    onValueChange = {},
+                    readOnly = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Date of birth") },
+                    placeholder = { Text("Select date of birth") },
+                    leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Forest) },
+                    trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = "Choose date", tint = Forest) }
+                )
+                Box(Modifier.matchParentSize().clickable { showDateOfBirthPicker = true })
+            }
             if (showDateOfBirthPicker) {
                 val initialDobMillis = dateOfBirth.takeIf { it.isNotBlank() }?.let { saved ->
                     runCatching { LocalDate.parse(saved).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli() }.getOrNull()
@@ -4993,7 +4996,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             colors = ButtonDefaults.textButtonColors(contentColor = Forest)
                         ) { Text("Cancel") }
                     },
-                    colors = DatePickerDefaults.colors(containerColor = Cream)
+                    colors = DatePickerDialogDefaults.colors(containerColor = Cream)
                 ) {
                     DatePicker(
                         state = datePickerState,
