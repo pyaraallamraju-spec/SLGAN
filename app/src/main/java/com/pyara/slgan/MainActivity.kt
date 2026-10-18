@@ -1998,7 +1998,7 @@ private fun AdminProductEditor(
             ) {
                 Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(if (productStock == 1) "In" else "Out", color = if (productStock == 1) Forest else Color(0xFFB3261E), fontWeight = FontWeight.Bold)
+                    Text(if (productStock == 1) "IN" else "OUT", color = if (productStock == 1) Forest else Color(0xFFB3261E), fontWeight = FontWeight.Bold)
                     Switch(
                         checked = productStock == 1,
                         onCheckedChange = { productStock = if (it) 1 else 0 },
