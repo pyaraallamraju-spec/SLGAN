@@ -1601,7 +1601,7 @@ private fun AdminProductsScreen(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-            label = { Text("Search product", modifier = Modifier.background(Cream), color = Forest) },
+            label = { Text("Search product", modifier = Modifier.background(Color.White), color = Forest) },
             placeholder = { Text("Name, category or product ID", fontSize = 16.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search products", tint = Forest) },
             trailingIcon = {
