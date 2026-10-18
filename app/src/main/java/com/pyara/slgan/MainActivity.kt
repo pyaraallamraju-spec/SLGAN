@@ -3914,7 +3914,7 @@ private fun OrdersPage(
                     }
                 }
                 Spacer(Modifier.height(5.dp))
-                Text("Track today's orders and revisit your order history.", color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
+                Text("Track orders and revisit.", color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
 
             }
         }
