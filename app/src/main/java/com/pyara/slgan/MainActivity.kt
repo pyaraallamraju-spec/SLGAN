@@ -3016,7 +3016,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         ) {
                             items(signatureProducts, key = { it.id }) { product ->
                                 Card(
-                                    modifier = Modifier.width(184.dp).clickable { onProductClick(product) },
+                                    modifier = Modifier.width(198.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -3069,7 +3069,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 )
                                             }
                                         }
-                                        Spacer(Modifier.height(9.dp))
+                                        Spacer(Modifier.height(6.dp))
                                         Text(
                                             localizedProductName(product.name, LocalAppLanguage.current),
                                             fontSize = 13.sp,
@@ -3079,7 +3079,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             minLines = 2,
                                             overflow = TextOverflow.Ellipsis
                                         )
-                                        Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                        Text(product.subtitle, modifier = Modifier.offset(y = (-2).dp), fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                         Spacer(Modifier.height(4.dp))
                                         ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
                                         Spacer(Modifier.height(3.dp))
