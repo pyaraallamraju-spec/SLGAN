@@ -3838,7 +3838,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                         "lehyas" -> "🫙"
                                         "grutas", "ghritas", "ghrutas" -> "🏺"
                                         "pills" -> "💊"
-                                        "tailas" -> "🪔"
+                                        "tailas" -> "🫙"
                                         "churnas" -> "🌾"
                                         "rasayanas" -> "🪴"
                                         "bhasmas" -> "🪨"
