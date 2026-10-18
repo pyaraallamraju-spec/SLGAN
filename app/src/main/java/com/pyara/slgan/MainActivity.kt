@@ -528,7 +528,8 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val price = data["product_price"]?.toString()?.replace(",", "")?.toDoubleOrNull() ?: 0.0
     val rawCategory = data["product_category"]?.toString()?.trim().orEmpty()
     val category = when (rawCategory.lowercase()) {
-        "rasayoga", "rasayanas", "rasayana" -> "Rasayanas"
+        "rasayoga", "rasayogas" -> "Rasayogas"
+        "rasayanas", "rasayana" -> "Rasayanas"
         "lehya", "lehyam", "lehyas" -> "Lehyas"
         "grutha", "ghrita", "grutas", "gruthas" -> "Grutas"
         "pill", "pills", "vati" -> "Pills"
@@ -543,7 +544,10 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
         "Pills" -> "💊"
         "Tailas" -> "🫙"
         "Churnas" -> "🌾"
-        "Rasayanas" -> if (rawCategory.equals("rasayoga", ignoreCase = true)) "🪷" else "🪴"
+        "Rasayogas" -> "🪷"
+        "Rasayanas" -> "🪴"
+                            "Rasayogas" -> "🪷"
+                                        "Rasayogas" -> "🪷"
         "Bhasmas" -> "🪨"
         else -> "🌿"
     }
@@ -1547,7 +1551,9 @@ private fun AdminProductsScreen(
         "pills" -> "💊"
         "tailas" -> "🫙"
         "churnas" -> "🌾"
-        "rasayanas" -> "🌱"
+        "rasayanas" -> "🪴"
+                                        "rasayogas", "rasayoga" -> "🪷"
+        "rasayogas", "rasayoga" -> "🪷"
         "bhasmas" -> "🪨"
         else -> "🌿"
     }
@@ -1961,7 +1967,8 @@ private fun AdminProductEditor(
                         Triple("pills", "Pills", "💊"),
                         Triple("tailas", "Tailas", "🪔"),
                         Triple("churnas", "Churnas", "🌿"),
-                        Triple("rasayanas", "Rasayanas", "🌱"),
+                        Triple("rasayanas", "Rasayanas", "🪴"),
+                        Triple("rasayogas", "Rasayogas", "🪷"),
                         Triple("bhasmas", "Bhasmas", "🪨")
                     )
                     defaults.forEach { (id, label, emoji) ->
