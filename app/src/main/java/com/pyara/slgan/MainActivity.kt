@@ -300,6 +300,15 @@ class MainActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         setContent { Box(Modifier.fillMaxSize().safeDrawingPadding()) { AyurvedicApp() } }
+
+        // Ask for location access on first launch so map location features can work.
+        val fineLocationGranted = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        val coarseLocationGranted = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (!fineLocationGranted && !coarseLocationGranted) {
+            mapLocationPermissionLauncher.launch(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+            )
+        }
     }
 
     fun requestMapLocationPermission(origin: String, callback: GeolocationPermissions.Callback) {
