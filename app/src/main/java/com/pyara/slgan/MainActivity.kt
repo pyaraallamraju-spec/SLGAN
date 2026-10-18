@@ -5173,7 +5173,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Spacer(Modifier.height(8.dp))
             Button(
                 onClick = {
-                    if (uid == null) languageMessage = "Please sign in again to save your profile."
+                    if (uid == null) Toast.makeText(context, "Please sign in again to save your profile.", Toast.LENGTH_SHORT).show()
                     else {
                         languageSaving = true
                         languageMessage = null
@@ -5182,7 +5182,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             "updatedAt" to System.currentTimeMillis()
                         )) { error ->
                             languageSaving = false
-                            languageMessage = if (error == null) "Language preference saved." else "Couldn't save language. Please try again."
+                            Toast.makeText(context, if (error == null) "Language preference saved." else "Couldn't save language. Please try again.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 },
@@ -5195,10 +5195,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 else Icon(Icons.Default.Save, null)
                 Spacer(Modifier.width(8.dp))
                 Text(tr("Save language preference", appLanguage))
-            }
-            if (languageMessage != null) {
-                Spacer(Modifier.height(6.dp))
-                Text(tr(languageMessage!!, appLanguage), color = if (languageMessage!!.contains("saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
             }
             Spacer(Modifier.height(18.dp))
             Button(
