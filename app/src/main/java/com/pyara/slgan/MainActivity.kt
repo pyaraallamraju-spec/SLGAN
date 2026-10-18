@@ -5505,6 +5505,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         }
                     }
                 )
+                            Spacer(Modifier.height(8.dp))
+                            Text("Drag the pin to fine-tune the location. The address fields will update.", color = Muted, fontSize = 12.sp)
                             Spacer(Modifier.height(10.dp))
                             Button(onClick = { showMapPicker = false }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
                                 Text("Use this location")
