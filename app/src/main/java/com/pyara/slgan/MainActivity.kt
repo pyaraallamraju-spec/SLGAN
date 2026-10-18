@@ -3327,8 +3327,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 Surface(
                                                     shape = RoundedCornerShape(10.dp),
                                                     color = Cream,
-                                                    contentColor = Forest,
-                                                    border = BorderStroke(1.dp, Gold)
+                                                    contentColor = Forest
                                                 ) {
                                                     Text(
                                                         "${signatureCartCount} in cart",
