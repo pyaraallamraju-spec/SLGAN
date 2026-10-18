@@ -840,7 +840,7 @@ private fun SplashScreen() {
 
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize().background(Color(0xFFFFFCF4)),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopStart
     ) {
         // Soft botanical background accents and gently falling leaves.
         Box(
@@ -851,15 +851,14 @@ private fun SplashScreen() {
             )
         )
         // Let every product-category emoji drift down like a falling leaf.
-        val categoryEmojis = listOf("🗂️", "🍯", "🧈", "💊", "🫙", "🌾", "🌱", "🪨")
-        val leafPositions = listOf(0.03f, 0.115f, 0.20f, 0.285f, 0.37f, 0.455f, 0.54f, 0.625f, 0.71f, 0.795f, 0.88f, 0.97f)
-        val leafDurations = listOf(5600, 7200, 6300, 8000, 6700, 7600, 6900, 7400, 6100, 7800, 6500, 7100)
+        val categoryEmojis = listOf("🌿", "🍃", "🌱", "🍂", "🌿", "🍃", "🌾", "🌱", "🗂️", "🍯", "🧈", "💊", "🫙", "🌿", "🍃", "🌱", "🪨", "🍂", "🌿", "🍃", "🌱", "🌾", "🍃", "🌿")
+        val leafPositions = listOf(0.02f, 0.105f, 0.19f, 0.275f, 0.36f, 0.445f, 0.53f, 0.615f, 0.70f, 0.785f, 0.87f, 0.955f, 0.06f, 0.145f, 0.23f, 0.315f, 0.40f, 0.485f, 0.57f, 0.655f, 0.74f, 0.825f, 0.91f, 0.98f)
         leafPositions.forEachIndexed { index, fraction ->
             val fall by motion.animateFloat(
                 initialValue = -80f - (index * 95f),
                 targetValue = maxHeight.value + 100f,
                 animationSpec = infiniteRepeatable(
-                    animation = tween(leafDurations[index], easing = androidx.compose.animation.core.LinearEasing),
+                    animation = tween(5200 + (index % 7) * 450, easing = androidx.compose.animation.core.LinearEasing),
                     repeatMode = RepeatMode.Restart
                 ),
                 label = "fallingLeaf$index"
@@ -884,7 +883,7 @@ private fun SplashScreen() {
 
         // Light, clean center stage for the rotating company logo.
         Column(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 26.dp),
+            modifier = Modifier.align(Alignment.Center).fillMaxWidth().padding(horizontal = 26.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
