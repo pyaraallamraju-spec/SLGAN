@@ -1554,7 +1554,7 @@ private fun AdminProductsScreen(
                 product.id.contains(searchText, ignoreCase = true))
         }.sortedBy { it.name.lowercase() }
     }
-    Column(Modifier.fillMaxSize().background(Cream)) {
+    Column(Modifier.fillMaxSize().background(Color.White)) {
         Column(
             Modifier.fillMaxWidth()
                 .background(Color.White, RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
@@ -2662,7 +2662,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             .contains(search.trim(), ignoreCase = true)
     }
 
-    Column(Modifier.fillMaxSize().background(Cream).padding(top = 8.dp)) {
+    Column(Modifier.fillMaxSize().background(Color.White).padding(top = 8.dp)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
