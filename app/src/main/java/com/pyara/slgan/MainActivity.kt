@@ -1323,10 +1323,10 @@ private fun HomeBannerSlider(
                         modifier = Modifier
                             .align(Alignment.TopCenter)
                             .fillMaxWidth()
-                            .padding(start = 12.dp, end = 12.dp, top = 28.dp, bottom = 18.dp),
+                            .padding(start = 12.dp, end = 12.dp, top = 20.dp, bottom = 18.dp),
                         color = Color(0xFFFFDFA0),
-                        fontSize = 13.sp,
-                        lineHeight = 15.sp,
+                        fontSize = 12.sp,
+                        lineHeight = 14.sp,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 2,
