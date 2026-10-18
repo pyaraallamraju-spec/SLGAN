@@ -1396,7 +1396,7 @@ private fun HomeBannerSlider(
                                 .align(Alignment.TopCenter)
                                 .fillMaxWidth()
                                 .padding(start = 8.dp, end = 8.dp, top = 20.dp, bottom = 18.dp),
-                            color = Color(0xFFFFDFA0),
+                            color = if (Forest == Color(0xFF762A24)) Color(0xFFC62828) else Color(0xFFFFDFA0),
                             fontSize = 10.sp,
                             lineHeight = 12.sp,
                             textAlign = TextAlign.Center,
