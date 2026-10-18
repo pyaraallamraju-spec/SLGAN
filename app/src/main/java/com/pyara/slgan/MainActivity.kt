@@ -1991,7 +1991,16 @@ private fun AdminProductEditor(
                     }
                 }
             }
-            OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity *") }, singleLine = true)
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                OutlinedTextField(
+                    quantity,
+                    { quantity = it; message = null },
+                    modifier = Modifier.weight(1f),
+                    label = { Text("Qty *") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
