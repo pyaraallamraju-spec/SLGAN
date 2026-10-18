@@ -2417,7 +2417,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
     Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
-            Column { Text("HOME PAGE SLIDERS", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
+            Column { Text("🏺 HOME PAGE SLIDERS", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
         Text("Slider 1 stays unchanged. Choose a design and tap Apply. Slider 4 automatically follows the selected app theme.", color = Muted, fontSize = 14.sp)
