@@ -3092,7 +3092,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 2.dp),
             shape = RoundedCornerShape(18.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = Cream),
             elevation = CardDefaults.cardElevation(1.dp)
         ) {
             Column(Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
@@ -3169,7 +3169,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                             Modifier.fillMaxWidth().clickable { expandedOrderId = if (expanded) null else docId },
                             shape = RoundedCornerShape(18.dp),
                             elevation = CardDefaults.cardElevation(2.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White)
+                            colors = CardDefaults.cardColors(containerColor = Cream)
                         ) {
                             Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
