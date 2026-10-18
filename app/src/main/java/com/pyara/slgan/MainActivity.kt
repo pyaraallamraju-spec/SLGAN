@@ -4940,7 +4940,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         label = { Text("Country code", maxLines = 1, softWrap = false) },
                         trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country code", tint = Forest, modifier = Modifier.size(18.dp)) },
                         singleLine = true,
-                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, lineHeight = 20.sp, color = Ink),
+                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, color = Ink),
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Gold,
@@ -4969,7 +4969,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     modifier = Modifier.weight(1f),
                     label = { Text(tr("Mobile number", LocalAppLanguage.current), maxLines = 1, softWrap = false) },
                     singleLine = true,
-                    textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp, lineHeight = 20.sp, color = Ink),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) },
                     shape = RoundedCornerShape(12.dp),
