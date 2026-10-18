@@ -3612,7 +3612,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Column(Modifier.weight(1f)) {
                         Text("Your shopping bag", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
                         Spacer(Modifier.height(5.dp))
-                        Text("Review your medicines before placing order.", fontSize = 13.sp, color = Color(0xFFF4E7D9), lineHeight = 19.sp)
+                        Text("Review medicines before placing order.", fontSize = 13.sp, color = Color(0xFFF4E7D9), lineHeight = 19.sp)
                     }
                     Spacer(Modifier.width(8.dp))
                     Box(Modifier.size(48.dp).background(Color(0x26FFFFFF), CircleShape), contentAlignment = Alignment.Center) {
