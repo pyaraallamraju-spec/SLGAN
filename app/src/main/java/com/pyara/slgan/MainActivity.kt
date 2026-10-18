@@ -2907,6 +2907,9 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                                 IconButton(onClick = { viewingCustomer = customer }) {
                                     Icon(Icons.Default.Visibility, contentDescription = "View customer details", tint = Forest)
                                 }
+                                IconButton(onClick = { editingCustomer = customer }) {
+                                    Icon(Icons.Default.Edit, contentDescription = "Edit customer details", tint = Forest)
+                                }
                             }
                         }
                     }
