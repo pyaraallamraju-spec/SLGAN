@@ -1991,10 +1991,25 @@ private fun AdminProductEditor(
                 }
             }
             OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity *") }, singleLine = true)
-            Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                FilterChip(selected = productStock == 1, onClick = { productStock = 1 }, label = { Text("1 · In stock") })
-                FilterChip(selected = productStock == 0, onClick = { productStock = 0 }, label = { Text("0 · Out of stock") })
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(if (productStock == 1) "In" else "Out", color = if (productStock == 1) Forest else Color(0xFFB3261E), fontWeight = FontWeight.Bold)
+                    Switch(
+                        checked = productStock == 1,
+                        onCheckedChange = { productStock = if (it) 1 else 0 },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = Color.White,
+                            checkedTrackColor = Forest,
+                            uncheckedThumbColor = Color.White,
+                            uncheckedTrackColor = Color(0xFFB3261E)
+                        )
+                    )
+                }
             }
             OutlinedTextField(imageUrl, { imageUrl = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product image URL") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), minLines = 1)
             OutlinedTextField(description, { description = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Description") }, minLines = 3)
