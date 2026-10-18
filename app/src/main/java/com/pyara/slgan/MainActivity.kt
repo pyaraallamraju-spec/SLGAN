@@ -4686,30 +4686,32 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                         fontSize = 14.sp,
                                         maxLines = 1
                                     )
-                                    if (cartQuantity == 0) {
-                                        Button(
-                                            onClick = { onAdd(product.id) },
-                                            enabled = product.price > 0.0,
-                                            contentPadding = PaddingValues(horizontal = 7.dp, vertical = 4.dp),
-                                            colors = ButtonDefaults.buttonColors(containerColor = Forest),
-                                            shape = RoundedCornerShape(9.dp),
-                                            modifier = Modifier.heightIn(min = 32.dp)
-                                        ) {
-                                            Icon(Icons.Default.AddShoppingCart, contentDescription = null, modifier = Modifier.size(13.dp))
-                                            Spacer(Modifier.width(3.dp))
-                                            Text("Add to cart", fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
-                                        }
-                                    } else {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                        ) {
+                                    Box(
+                                        modifier = Modifier.width(116.dp).height(38.dp),
+                                        contentAlignment = Alignment.CenterEnd
+                                    ) {
+                                        if (cartQuantity == 0) {
+                                            Button(
+                                                onClick = { onAdd(product.id) },
+                                                enabled = product.price > 0.0,
+                                                contentPadding = PaddingValues(horizontal = 7.dp, vertical = 0.dp),
+                                                colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                                                shape = RoundedCornerShape(9.dp),
+                                                modifier = Modifier.fillMaxSize()
+                                            ) {
+                                                Icon(Icons.Default.AddShoppingCart, contentDescription = null, modifier = Modifier.size(13.dp))
+                                                Spacer(Modifier.width(3.dp))
+                                                Text("Add to cart", fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                            }
+                                        } else {
                                             Surface(
+                                                modifier = Modifier.fillMaxSize(),
                                                 shape = RoundedCornerShape(10.dp),
                                                 color = Cream,
                                                 border = BorderStroke(1.dp, Gold)
                                             ) {
                                                 Row(
+                                                    modifier = Modifier.fillMaxSize(),
                                                     verticalAlignment = Alignment.CenterVertically,
                                                     horizontalArrangement = Arrangement.Center
                                                 ) {
