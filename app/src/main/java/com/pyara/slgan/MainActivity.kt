@@ -3299,7 +3299,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 2,
                                             minLines = 1,
-                                             lineHeight = 17.sp,
+                                             lineHeight = 15.sp,
                                             overflow = TextOverflow.Ellipsis
                                         )
                                         Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -3471,7 +3471,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 17.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
