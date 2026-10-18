@@ -2297,7 +2297,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
     var message by remember { mutableStateOf<String?>(null) }
     DisposableEffect(Unit) {
         val registration = db.collection("appSettings").document("homeBanner").addSnapshotListener { snap, _ ->
-            activeDesign = (snap?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 3)
+            activeDesign = (snap?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 4)
         }
         onDispose { registration.remove() }
     }
@@ -2307,7 +2307,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
             Column { Text("HOME PAGE SLIDERS", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
-        Text("Slider 1 is your existing banner. It will not be replaced. Choose Slider 2 or 3 and tap Apply.", color = Muted, fontSize = 14.sp)
+        Text("Slider 1 stays unchanged. Choose a design and tap Apply. Slider 4 automatically follows the selected app theme.", color = Muted, fontSize = 14.sp)
         Spacer(Modifier.height(16.dp))
         (1..4).forEach { design ->
             val colors = when (design) { 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
