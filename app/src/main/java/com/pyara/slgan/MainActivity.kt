@@ -79,6 +79,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 import java.util.Locale
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 private val Forest = Color(0xFF762A24)
 private val Leaf = Color(0xFF8A4B2A)
@@ -4759,6 +4763,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var nickname by remember(uid) { mutableStateOf("") }
     var gender by remember(uid) { mutableStateOf("") }
     var mobileNumber by remember(uid) { mutableStateOf("") }
+    var dateOfBirth by remember(uid) { mutableStateOf("") }
+    var showDateOfBirthPicker by remember { mutableStateOf(false) }
     val countryCodes = remember {
         listOf(
             Triple("IN", "🇮🇳", "+91"), Triple("US", "🇺🇸", "+1"), Triple("CA", "🇨🇦", "+1"),
@@ -4813,6 +4819,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         lastName = snapshot.getString("lastName").orEmpty()
                         nickname = snapshot.getString("nickname").orEmpty()
                         gender = snapshot.getString("gender").orEmpty()
+                        dateOfBirth = snapshot.getString("dateOfBirth").orEmpty()
                         val savedPhone = snapshot.getString("mobileNumber").orEmpty()
                         val matchingCountry = countryCodes.sortedByDescending { it.third.length }
                             .firstOrNull { savedPhone.startsWith(it.third) }
@@ -4949,6 +4956,69 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 )
             }
             Spacer(Modifier.height(12.dp))
+            OutlinedTextField(
+                value = dateOfBirth.takeIf { it.isNotBlank() }?.let { saved ->
+                    runCatching { LocalDate.parse(saved).format(DateTimeFormatter.ofPattern("dd MMM yyyy")) }.getOrDefault(saved)
+                }.orEmpty(),
+                onValueChange = {},
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth().clickable { showDateOfBirthPicker = true },
+                label = { Text("Date of birth") },
+                placeholder = { Text("Select date of birth") },
+                leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Forest) },
+                trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = "Choose date", tint = Forest) }
+            )
+            if (showDateOfBirthPicker) {
+                val initialDobMillis = dateOfBirth.takeIf { it.isNotBlank() }?.let { saved ->
+                    runCatching { LocalDate.parse(saved).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli() }.getOrNull()
+                }
+                val datePickerState = rememberDatePickerState(initialSelectedDateMillis = initialDobMillis)
+                DatePickerDialog(
+                    onDismissRequest = { showDateOfBirthPicker = false },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                datePickerState.selectedDateMillis?.let { millis ->
+                                    dateOfBirth = Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate().toString()
+                                    saveMessage = null
+                                }
+                                showDateOfBirthPicker = false
+                            },
+                            colors = ButtonDefaults.textButtonColors(contentColor = Forest)
+                        ) { Text("Select") }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = { showDateOfBirthPicker = false },
+                            colors = ButtonDefaults.textButtonColors(contentColor = Forest)
+                        ) { Text("Cancel") }
+                    },
+                    colors = DatePickerDefaults.colors(containerColor = Cream)
+                ) {
+                    DatePicker(
+                        state = datePickerState,
+                        colors = DatePickerDefaults.colors(
+                            containerColor = Cream,
+                            titleContentColor = Forest,
+                            headlineContentColor = Forest,
+                            weekdayContentColor = Muted,
+                            subheadContentColor = Forest,
+                            navigationContentColor = Forest,
+                            yearContentColor = Ink,
+                            currentYearContentColor = Forest,
+                            selectedYearContainerColor = Forest,
+                            selectedYearContentColor = Color.White,
+                            dayContentColor = Ink,
+                            disabledDayContentColor = Muted,
+                            selectedDayContainerColor = Forest,
+                            selectedDayContentColor = Color.White,
+                            todayContentColor = Forest,
+                            todayDateBorderColor = Gold
+                        )
+                    )
+                }
+            }
+            Spacer(Modifier.height(12.dp))
             Box(Modifier.fillMaxWidth()) {
                 OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Forest) })
                 Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
@@ -5035,7 +5105,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             FirebaseData.saveCustomerProfile(currentUid, mapOf(
                                 "email" to (user.email ?: ""), "firstName" to firstName.trim(),
                                 "lastName" to lastName.trim(), "nickname" to nickname.trim(),
-                                "gender" to gender, "mobileNumber" to (selectedCountry.third + mobileNumber.filter(Char::isDigit)),
+                                "gender" to gender, "dateOfBirth" to dateOfBirth,
+                                "mobileNumber" to (selectedCountry.third + mobileNumber.filter(Char::isDigit)),
                                 "updatedAt" to System.currentTimeMillis()
                             )) { error ->
                                 isSaving = false
