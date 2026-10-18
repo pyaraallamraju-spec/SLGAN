@@ -5628,19 +5628,46 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Spacer(Modifier.width(8.dp)); Text(if (addressSaving) "Saving address…" else "Save address", fontWeight = FontWeight.Bold)
             }
         } else {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(tr("Saved addresses", LocalAppLanguage.current), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-                    Text(tr("Keep delivery locations for future orders.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
-                }
-                Button(onClick = { showAddressForm = true; addressMessage = null }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-                    Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text(tr("Add address", LocalAppLanguage.current))
-                }
-            }
-            Spacer(Modifier.height(14.dp))
             if (addresses.isEmpty()) {
-                EmptyState("📍", "No addresses yet", "Tap Add address to save your first delivery location.")
+                Spacer(Modifier.height(44.dp))
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(76.dp)
+                            .background(PaleGreen, CircleShape)
+                            .border(1.dp, Gold.copy(alpha = 0.75f), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Forest, modifier = Modifier.size(38.dp))
+                    }
+                    Spacer(Modifier.height(18.dp))
+                    Button(
+                        onClick = { showAddressForm = true; addressMessage = null },
+                        modifier = Modifier.fillMaxWidth(0.78f).height(54.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(22.dp))
+                        Spacer(Modifier.width(8.dp))
+                        Text(tr("Add address", LocalAppLanguage.current), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+                Spacer(Modifier.height(24.dp))
             } else {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(tr("Saved addresses", LocalAppLanguage.current), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                        Text(tr("Keep delivery locations for future orders.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
+                    }
+                    Button(onClick = { showAddressForm = true; addressMessage = null }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+                        Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text(tr("Add address", LocalAppLanguage.current))
+                    }
+                }
+                Spacer(Modifier.height(14.dp))
                 addresses.forEach { address ->
                     Card(Modifier.fillMaxWidth().padding(bottom = 10.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(16.dp)) {
                         Column(Modifier.padding(16.dp)) {
