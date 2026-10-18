@@ -3077,7 +3077,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             color = Ink,
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 2,
-                                            minLines = 2,
+                                            minLines = 1,
+                                             lineHeight = 14.sp,
                                             overflow = TextOverflow.Ellipsis
                                         )
                                         Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -3086,8 +3087,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             modifier = Modifier.fillMaxWidth(),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-                                            ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
-                                            Spacer(Modifier.weight(1f))
+                                            ProductRatingLine(product, productRatings[product.id] ?: ProSpacer(Modifier.width(6.dp))                                      Spacer(Modifier.weight(1f))
                                             ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                         }
                                         Spacer(Modifier.height(3.dp))
