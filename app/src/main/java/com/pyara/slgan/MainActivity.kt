@@ -78,6 +78,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
+import java.util.Locale
 
 private val Forest = Color(0xFF762A24)
 private val Leaf = Color(0xFF8A4B2A)
@@ -4758,6 +4759,24 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var nickname by remember(uid) { mutableStateOf("") }
     var gender by remember(uid) { mutableStateOf("") }
     var mobileNumber by remember(uid) { mutableStateOf("") }
+    val countryCodes = remember {
+        listOf(
+            Triple("IN", "🇮🇳", "+91"), Triple("US", "🇺🇸", "+1"), Triple("CA", "🇨🇦", "+1"),
+            Triple("GB", "🇬🇧", "+44"), Triple("AU", "🇦🇺", "+61"), Triple("NZ", "🇳🇿", "+64"),
+            Triple("AE", "🇦🇪", "+971"), Triple("SA", "🇸🇦", "+966"), Triple("SG", "🇸🇬", "+65"),
+            Triple("MY", "🇲🇾", "+60"), Triple("LK", "🇱🇰", "+94"), Triple("NP", "🇳🇵", "+977"),
+            Triple("BD", "🇧🇩", "+880"), Triple("PK", "🇵🇰", "+92"), Triple("ZA", "🇿🇦", "+27"),
+            Triple("DE", "🇩🇪", "+49"), Triple("FR", "🇫🇷", "+33"), Triple("IT", "🇮🇹", "+39"),
+            Triple("ES", "🇪🇸", "+34"), Triple("NL", "🇳🇱", "+31"), Triple("JP", "🇯🇵", "+81"),
+            Triple("CN", "🇨🇳", "+86"), Triple("BR", "🇧🇷", "+55"), Triple("MX", "🇲🇽", "+52"),
+            Triple("PH", "🇵🇭", "+63"), Triple("ID", "🇮🇩", "+62"), Triple("TH", "🇹🇭", "+66"),
+            Triple("NG", "🇳🇬", "+234"), Triple("KE", "🇰🇪", "+254"), Triple("IE", "🇮🇪", "+353")
+        )
+    }
+    var selectedCountry by remember {
+        mutableStateOf(countryCodes.firstOrNull { it.first == Locale.getDefault().country.uppercase(Locale.ROOT) } ?: countryCodes.first())
+    }
+    var countryMenuExpanded by remember { mutableStateOf(false) }
     var genderMenuExpanded by remember { mutableStateOf(false) }
     var languageMenuExpanded by remember { mutableStateOf(false) }
     var languageSaving by remember { mutableStateOf(false) }
@@ -4794,7 +4813,15 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         lastName = snapshot.getString("lastName").orEmpty()
                         nickname = snapshot.getString("nickname").orEmpty()
                         gender = snapshot.getString("gender").orEmpty()
-                        mobileNumber = snapshot.getString("mobileNumber").orEmpty()
+                        val savedPhone = snapshot.getString("mobileNumber").orEmpty()
+                        val matchingCountry = countryCodes.sortedByDescending { it.third.length }
+                            .firstOrNull { savedPhone.startsWith(it.third) }
+                        if (matchingCountry != null) {
+                            selectedCountry = matchingCountry
+                            mobileNumber = savedPhone.removePrefix(matchingCountry.third).filter(Char::isDigit)
+                        } else {
+                            mobileNumber = savedPhone.filter(Char::isDigit)
+                        }
                         snapshot.getString("languagePreference")?.let(onLanguageChange)
                         isLoading = false
                     } else {
@@ -4883,7 +4910,44 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) })
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = mobileNumber, onValueChange = { input -> mobileNumber = input.filter { it.isDigit() || it == '+' }.take(15); saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Mobile number", LocalAppLanguage.current)) }, placeholder = { Text(tr("Enter mobile number", LocalAppLanguage.current)) }, singleLine = true, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) })
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Box {
+                    OutlinedButton(
+                        onClick = { countryMenuExpanded = true },
+                        modifier = Modifier.height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
+                    ) {
+                        Text(selectedCountry.second, fontSize = 20.sp)
+                        Spacer(Modifier.width(4.dp))
+                        Text(selectedCountry.third, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                        Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country code")
+                    }
+                    DropdownMenu(expanded = countryMenuExpanded, onDismissRequest = { countryMenuExpanded = false }) {
+                        countryCodes.forEach { country ->
+                            DropdownMenuItem(
+                                text = { Text("${country.second}  ${country.first}  ${country.third}") },
+                                onClick = {
+                                    selectedCountry = country
+                                    countryMenuExpanded = false
+                                    saveMessage = null
+                                }
+                            )
+                        }
+                    }
+                }
+                OutlinedTextField(
+                    value = mobileNumber,
+                    onValueChange = { input -> mobileNumber = input.filter(Char::isDigit).take(15); saveMessage = null },
+                    modifier = Modifier.weight(1f),
+                    label = { Text(tr("Mobile number", LocalAppLanguage.current)) },
+                    placeholder = { Text(tr("Enter mobile number", LocalAppLanguage.current)) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                    leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) }
+                )
+            }
             Spacer(Modifier.height(12.dp))
             Box(Modifier.fillMaxWidth()) {
                 OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Forest) })
@@ -4971,7 +5035,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             FirebaseData.saveCustomerProfile(currentUid, mapOf(
                                 "email" to (user.email ?: ""), "firstName" to firstName.trim(),
                                 "lastName" to lastName.trim(), "nickname" to nickname.trim(),
-                                "gender" to gender, "mobileNumber" to mobileNumber.trim(),
+                                "gender" to gender, "mobileNumber" to (selectedCountry.third + mobileNumber.filter(Char::isDigit)),
                                 "updatedAt" to System.currentTimeMillis()
                             )) { error ->
                                 isSaving = false
