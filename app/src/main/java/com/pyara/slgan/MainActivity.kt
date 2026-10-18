@@ -3810,10 +3810,10 @@ private fun ProductDetailsPage(
                 fontSize = 14.sp,
                 lineHeight = 22.sp
             )
-            Text(tr("Usage", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.usage.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
             Text(tr("Cures", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(product.cures.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+            Text(tr("Usage", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(product.usage.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
             Text(tr("Major ingredients", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(product.majorIngredients.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
         }
