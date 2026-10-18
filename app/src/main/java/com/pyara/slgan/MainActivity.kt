@@ -2899,23 +2899,13 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                             Spacer(Modifier.height(10.dp))
                             HorizontalDivider(color = PaleGreen)
                             Spacer(Modifier.height(8.dp))
-                            Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                                    if (phone.isNotBlank()) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Icon(Icons.Default.Phone, contentDescription = null, tint = Muted, modifier = Modifier.size(16.dp))
-                                            Spacer(Modifier.width(8.dp))
-                                            Text(phone, color = Ink, fontSize = 13.sp)
-                                        }
-                                    }
-                                    if (gender.isNotBlank()) Text("Gender: " + gender, color = Muted, fontSize = 12.sp)
-                                    Text("Customer ID: " + uid, color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 IconButton(onClick = { viewingCustomer = customer }) {
                                     Icon(Icons.Default.Visibility, contentDescription = "View customer details", tint = Forest)
-                                }
-                                IconButton(onClick = { editingCustomer = customer }) {
-                                    Icon(Icons.Default.Edit, contentDescription = "Edit customer details", tint = Forest)
                                 }
                             }
                         }
