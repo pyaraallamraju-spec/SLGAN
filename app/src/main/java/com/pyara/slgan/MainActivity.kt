@@ -1975,7 +1975,7 @@ private fun AdminDashboardScreen(
         Spacer(Modifier.height(20.dp))
         OutlinedButton(
             onClick = onSignOut,
-            modifier = Modifier.fillMaxWidth().height(50.dp),
+            modifier = Modifier.fillMaxWidth().height(56.dp),
             shape = RoundedCornerShape(14.dp)
         ) {
             Icon(Icons.Default.Logout, contentDescription = null)
@@ -2886,14 +2886,14 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 OutlinedTextField(
                     value = search,
                     onValueChange = onSearchChange,
-                    textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 16.sp),
+                    textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 20.sp),
                     modifier = Modifier.fillMaxWidth().height(50.dp)
                         .border(
                             width = 1.dp,
                             brush = Brush.horizontalGradient(listOf(Gold.copy(alpha = 0.95f), Forest.copy(alpha = 0.72f), Gold.copy(alpha = 0.95f))),
                             shape = RoundedCornerShape(18.dp)
                         ),
-                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 14.sp, lineHeight = 16.sp, color = Muted, maxLines = 1, softWrap = false, overflow = TextOverflow.Clip) },
+                    placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 14.sp, lineHeight = 18.sp, color = Muted, maxLines = 1, softWrap = false, overflow = TextOverflow.Clip) },
                     leadingIcon = {
                         Box(
                             modifier = Modifier.size(30.dp).background(
