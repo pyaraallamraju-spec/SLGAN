@@ -3015,7 +3015,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
                                             Box(
-                                                modifier = Modifier.align(Alignment.TopEnd).padding(5.dp).size(42.dp),
+                                                modifier = Modifier.align(Alignment.TopStart).padding(5.dp).size(42.dp),
                                                 contentAlignment = Alignment.Center
                                             ) {
                                                 Canvas(Modifier.fillMaxSize()) {
