@@ -2631,7 +2631,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
         )
     }
 
-    Column(Modifier.fillMaxSize().background(Cream)) {
+    Column(Modifier.fillMaxSize().background(Color.White)) {
         // Match the Products admin page header: white rounded container, title row,
         // forest-green library card, and search field inside the same header section.
         Column(
