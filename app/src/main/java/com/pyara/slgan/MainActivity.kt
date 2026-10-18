@@ -5409,9 +5409,9 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text("Show map")
             }
             if (showMapPicker) {
-                androidx.compose.ui.window.Dialog(onDismissRequest = { showMapPicker = false }) {
+                androidx.compose.ui.window.Dialog(onDismissRequest = { showMapPicker = false }, properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
                     Card(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(0.94f),
                         shape = RoundedCornerShape(22.dp),
                         colors = CardDefaults.cardColors(containerColor = Cream),
                         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
