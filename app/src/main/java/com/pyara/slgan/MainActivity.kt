@@ -1597,7 +1597,7 @@ private fun AdminProductsScreen(
             onValueChange = { searchText = it },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
             singleLine = true,
-            placeholder = { Text("Name, category or product ID", maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
+            label = { Text("Search product") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search products", tint = Forest) },
             trailingIcon = {
                 if (searchText.isNotEmpty()) IconButton(onClick = { searchText = "" }) {
