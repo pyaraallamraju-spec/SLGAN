@@ -3240,7 +3240,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                             contentColor = Color(0xFFFFF7E8)
                         ) {
                             Row(
-                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
+                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
