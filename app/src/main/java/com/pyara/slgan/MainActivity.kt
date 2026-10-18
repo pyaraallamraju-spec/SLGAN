@@ -302,7 +302,7 @@ class MainActivity : ComponentActivity() {
         }
         FirebaseApp.initializeApp(this)
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        setContent { Box(Modifier.fillMaxSize().safeDrawingPadding()) { AyurvedicApp() } }
+        setContent { Box(Modifier.fillMaxSize().safeDrawingPadding().imePadding()) { AyurvedicApp() } }
 
         // Ask for location access on first launch so map location features can work.
         val fineLocationGranted = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
