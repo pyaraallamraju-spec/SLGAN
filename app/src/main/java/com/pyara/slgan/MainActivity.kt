@@ -3409,8 +3409,9 @@ private fun ProductDetailsPage(
                         }
                     }
                 }
+                Spacer(Modifier.weight(1f))
+                ProductLikeControl(product, likeSummary, { onToggleLike() })
             }
-            ProductLikeControl(product, likeSummary, { onToggleLike() })
             if (product.price > 0.0) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
             } else {
