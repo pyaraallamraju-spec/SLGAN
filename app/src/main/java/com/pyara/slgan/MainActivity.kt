@@ -862,6 +862,12 @@ private fun AyurvedicApp() {
 }
 @Composable
 private fun SplashScreen() {
+    // Keep splash artwork in sync with the currently selected app palette.
+    val botanicalTheme = Forest == Color(0xFF214B35)
+    val splashBackground = if (botanicalTheme) Color(0xFFFFF9E9) else Color(0xFFFFF7E8)
+    val splashTint = if (botanicalTheme) Color(0xFF557A45) else Color(0xFF8A4B2A)
+    val splashHalo = if (botanicalTheme) Color(0xFFB9D5A6) else Color(0xFFE8C7A0)
+    val splashRing = if (botanicalTheme) Color(0xFF9EBB86) else Color(0xFFD9A441)
     val motion = rememberInfiniteTransition(label = "natureSplash")
     val rotation by motion.animateFloat(
         initialValue = 0f,
@@ -883,14 +889,14 @@ private fun SplashScreen() {
     )
 
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize().background(Cream),
+        modifier = Modifier.fillMaxSize().background(splashBackground),
         contentAlignment = Alignment.TopStart
     ) {
         // Soft botanical background accents and gently falling leaves.
         Box(
             Modifier.fillMaxSize().background(
                 Brush.verticalGradient(
-                    listOf(Cream, Color(0xFFF2F7E9), Cream)
+                    if (botanicalTheme) listOf(splashBackground, Color(0xFFE7EBD4), splashBackground) else listOf(splashBackground, Color(0xFFFFEBD0), splashBackground)
                 )
             )
         )
@@ -936,15 +942,15 @@ private fun SplashScreen() {
             ) {
                 Box(
                     Modifier.size(220.dp).graphicsLayer { alpha = halo }
-                        .background(Color(0xFFB9D5A6), CircleShape)
+                        .background(splashHalo, CircleShape)
                 )
                 Box(
                     Modifier.size(202.dp)
-                        .border(1.dp, Color(0xFF9EBB86).copy(alpha = 0.75f), CircleShape)
+                        .border(1.dp, splashRing.copy(alpha = 0.75f), CircleShape)
                 )
                 Box(
                     Modifier.size(178.dp)
-                        .background(Color.White, CircleShape)
+                        .background(splashBackground, CircleShape)
                         .border(2.dp, Gold, CircleShape)
                         .padding(13.dp),
                     contentAlignment = Alignment.Center
@@ -982,7 +988,7 @@ private fun SplashScreen() {
             Spacer(Modifier.height(24.dp))
             CircularProgressIndicator(
                 modifier = Modifier.size(22.dp),
-                color = Leaf,
+                color = splashTint,
                 strokeWidth = 2.dp
             )
             Spacer(Modifier.height(8.dp))
