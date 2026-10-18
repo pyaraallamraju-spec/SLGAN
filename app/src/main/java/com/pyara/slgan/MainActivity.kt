@@ -1846,6 +1846,8 @@ private fun AdminProductEditor(
     val isNew = product == null
     var name by remember(product?.id) { mutableStateOf(product?.name.orEmpty()) }
     var category by remember(product?.id) { mutableStateOf(product?.category ?: "Lehyas") }
+    val categoryOptions = listOf("Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
+    var categoryMenuExpanded by remember { mutableStateOf(false) }
     var price by remember(product?.id) { mutableStateOf(if (product == null || product.price == 0.0) "" else product.price.toString()) }
     var weight by remember(product?.id) { mutableStateOf(product?.subtitle?.filter { it.isDigit() || it == '.' }.orEmpty()) }
     var units by remember(product?.id) { mutableStateOf(product?.subtitle?.filter { it.isLetter() }.orEmpty()) }
@@ -1887,7 +1889,33 @@ private fun AdminProductEditor(
         ) {
             Text("Product information", color = Forest, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, singleLine = true)
-            OutlinedTextField(category, { category = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Category *") }, singleLine = true, supportingText = { Text("Use: Lehyas, Grutas, Pills, Tailas, Churnas, Rasayanas or Bhasmas") })
+            Box(Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = category,
+                    onValueChange = {},
+                    modifier = Modifier.fillMaxWidth().clickable { categoryMenuExpanded = true },
+                    label = { Text("Category *") },
+                    readOnly = true,
+                    singleLine = true,
+                    trailingIcon = {
+                        IconButton(onClick = { categoryMenuExpanded = true }) {
+                            Icon(Icons.Default.ArrowDropDown, contentDescription = "Select category")
+                        }
+                    }
+                )
+                DropdownMenu(
+                    expanded = categoryMenuExpanded,
+                    onDismissRequest = { categoryMenuExpanded = false },
+                    modifier = Modifier.heightIn(max = 320.dp)
+                ) {
+                    categoryOptions.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option) },
+                            onClick = { category = option; message = null; categoryMenuExpanded = false }
+                        )
+                    }
+                }
+            }
             OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight *") }, singleLine = true)
