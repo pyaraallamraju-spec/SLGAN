@@ -1925,7 +1925,8 @@ private fun AdminProductEditor(
                 OutlinedTextField(
                     value = category,
                     onValueChange = {},
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).clickable { categoryMenuExpanded = true },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp),
+                    enabled = false,
                     label = { Text("Category *") },
                     readOnly = true,
                     singleLine = true,
@@ -1934,6 +1935,9 @@ private fun AdminProductEditor(
                             Icon(Icons.Default.ArrowDropDown, contentDescription = "Select category")
                         }
                     }
+                )
+                Box(
+                    modifier = Modifier.matchParentSize().clickable { categoryMenuExpanded = true }
                 )
                 DropdownMenu(
                     expanded = categoryMenuExpanded,
