@@ -1462,7 +1462,7 @@ private fun AdminProductsScreen(
             .sortedBy { it.lowercase() }
     }
     fun categoryEmoji(category: String): String = when (category.trim().lowercase()) {
-        "all" -> "🌿"
+        "all" -> "🗂️"
         "lehyas" -> "🍯"
         "grutas", "ghritas", "ghrutas" -> "🧈"
         "pills" -> "💊"
@@ -2967,7 +2967,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             leadingIcon = {
                                 Text(
                                     text = when (item) {
-                                        "All" -> "🌿"
+                                        "All" -> "🗂️"
                                         "Lehyas" -> "🫙"
                                         "Grutas" -> "🧈"
                                         "Pills" -> "💊"
@@ -3257,7 +3257,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                             ) {
                                 Text(
                                     when (product.category.trim().lowercase()) {
-                                        "all" -> "🌿"
+                                        "all" -> "🗂️"
                                         "lehyas" -> "🫙"
                                         "grutas", "ghritas", "ghrutas" -> "🧈"
                                         "pills" -> "💊"
@@ -4535,7 +4535,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     rowItems.forEach { item ->
                         val emoji = when (item) {
-                            "All" -> "🌳"
+                            "All" -> "🗂️"
                             "Lehyas" -> "🍯"
                             "Grutas" -> "🌼"
                             "Pills" -> "🌱"
