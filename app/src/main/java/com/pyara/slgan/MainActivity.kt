@@ -3642,22 +3642,36 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Spacer(Modifier.height(3.dp))
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
-                                    Text(
-                                        product.subtitle,
-                                        color = Muted,
-                                        fontSize = 11.sp,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                    Spacer(Modifier.width(8.dp))
-                                    Text(
-                                        "₹" + String.format("%.2f", product.price) + " each",
-                                        color = Muted,
-                                        fontSize = 10.sp,
-                                        maxLines = 1
-                                    )
+                                    Surface(
+                                        shape = RoundedCornerShape(8.dp),
+                                        color = PaleGreen,
+                                        contentColor = Forest
+                                    ) {
+                                        Text(
+                                            product.subtitle,
+                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
+                                            fontSize = 10.sp,
+                                            fontWeight = FontWeight.SemiBold,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
+                                    Surface(
+                                        shape = RoundedCornerShape(8.dp),
+                                        color = Color(0xFFFFEBC2),
+                                        contentColor = Color(0xFF762A24)
+                                    ) {
+                                        Text(
+                                            "₹" + String.format("%.2f", product.price) + " each",
+                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
+                                            fontSize = 10.sp,
+                                            fontWeight = FontWeight.SemiBold,
+                                            maxLines = 1
+                                        )
+                                    }
                                 }
                                 Spacer(Modifier.height(6.dp))
                                 Text("₹" + String.format("%.2f", product.price * quantity), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
