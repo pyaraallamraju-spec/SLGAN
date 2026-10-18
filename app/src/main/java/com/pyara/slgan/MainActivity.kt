@@ -1543,7 +1543,7 @@ private fun AdminProductsScreen(
     fun categoryEmoji(category: String): String = when (category.trim().lowercase()) {
         "all" -> "🌿"
         "lehyas" -> "🍯"
-        "grutas", "ghritas", "ghrutas" -> "🏺"
+        "grutas", "ghritas", "ghrutas", "ghrita" -> "🫙"
         "pills" -> "💊"
         "tailas" -> "🫙"
         "churnas" -> "🌾"
@@ -1572,7 +1572,7 @@ private fun AdminProductsScreen(
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = Forest) }
             Column(Modifier.weight(1f)) {
-                Text("Products", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text("🏺 Products", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 Text("${products.size} catalogue items", color = Muted, fontSize = 12.sp)
             }
         }
@@ -2230,7 +2230,7 @@ private fun AdminDashboardScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(Modifier.weight(1f)) {
-                Text("SLGAN ADMIN", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+                Text("🏺 SLGAN ADMIN", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
                 Spacer(Modifier.height(4.dp))
                 Text("Dashboard", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
             }
@@ -2342,7 +2342,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
     Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
-            Column { Text("APP APPEARANCE", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose app theme", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
+            Column { Text("🏺 APP APPEARANCE", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose app theme", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
         Text("Choose a theme and tap Apply. Colors across the app update together, including buttons, cards, backgrounds, icons, emojis accents and text.", color = Muted, fontSize = 14.sp)
@@ -2638,7 +2638,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             ) {
                 IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = Forest) }
                 Column(Modifier.weight(1f)) {
-                    Text("Diseases", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                    Text("🏺 Diseases", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                     Text("${records.size} disease catalogue items", color = Muted, fontSize = 12.sp)
                 }
             }
@@ -2792,7 +2792,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
-                Text("Customers", color = Ink, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                Text("🏺 Customers", color = Ink, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
                 Text("${customers.size} customer accounts", color = Muted, fontSize = 12.sp)
             }
         }
@@ -3046,7 +3046,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
-                Text("Manage Orders", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text("🏺 Manage Orders", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 Text("${filteredOrders.size} of ${orders.size} orders • newest first", color = Ink.copy(alpha = 0.65f), fontSize = 12.sp)
             }
             Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = Forest, modifier = Modifier.size(27.dp))
