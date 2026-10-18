@@ -492,7 +492,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     }
     val emoji = when (category) {
         "Lehyas" -> "🫙"
-        "Grutas" -> "🥣"
+        "Grutas" -> "🧈"
         "Pills" -> "💊"
         "Tailas" -> "🫙"
         "Churnas" -> "🌾"
@@ -1462,7 +1462,7 @@ private fun AdminProductsScreen(
     fun categoryEmoji(category: String): String = when (category.trim().lowercase()) {
         "all" -> "🌿"
         "lehyas" -> "🍯"
-        "grutas", "ghritas", "ghrutas" -> "🫙"
+        "grutas", "ghritas", "ghrutas" -> "🧈"
         "pills" -> "💊"
         "tailas" -> "🫙"
         "churnas" -> "🌾"
@@ -2967,7 +2967,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     text = when (item) {
                                         "All" -> "🌿"
                                         "Lehyas" -> "🫙"
-                                        "Grutas" -> "🥣"
+                                        "Grutas" -> "🧈"
                                         "Pills" -> "💊"
                                         "Tailas" -> "🫙"
                                         "Churnas" -> "🌾"
@@ -3257,7 +3257,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                     when (product.category.trim().lowercase()) {
                                         "all" -> "🌿"
                                         "lehyas" -> "🫙"
-                                        "grutas", "ghritas", "ghrutas" -> "🥣"
+                                        "grutas", "ghritas", "ghrutas" -> "🧈"
                                         "pills" -> "💊"
                                         "tailas" -> "🫙"
                                         "churnas" -> "🌾"
