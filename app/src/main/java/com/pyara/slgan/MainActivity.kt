@@ -5691,7 +5691,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     ) {
                         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(22.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text(tr("Add address", LocalAppLanguage.current), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text("+ Address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     }
                 }
                 Spacer(Modifier.height(24.dp))
@@ -5702,7 +5702,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         Text(tr("Keep delivery locations for future orders.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                     }
                     Button(onClick = { showAddressForm = true; addressMessage = null }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-                        Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text(tr("Add address", LocalAppLanguage.current))
+                        Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text("Address")
                     }
                 }
                 Spacer(Modifier.height(14.dp))
