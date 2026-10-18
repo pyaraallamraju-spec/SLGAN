@@ -2138,7 +2138,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                                         }
                                         .addOnFailureListener { e ->
                                             saving = false
-                                            message = "Theme applied, but could not update its slider: ${e.localizedMessage ?: \"Check Firestore permissions.\"}"
+                                            message = "Theme applied, but could not update its slider: ${e.localizedMessage ?: "Check Firestore permissions."}"
                                         }
                                 }
                                 .addOnFailureListener { e -> saving = false; message = "Could not apply theme: ${e.localizedMessage ?: "Check Firestore permissions."}" }
