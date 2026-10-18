@@ -1574,7 +1574,7 @@ private fun AdminProductsScreen(
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
                     Text("Product library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Manage your Ayurvedic catalogue", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 14.sp)
+                    Text("Manage your Ayurvedic catalogue", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 17.sp)
                 }
                 Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                     Button(
@@ -2396,7 +2396,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
                         Text("Disease library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text("Manage diseases shown in the customer app", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 14.sp)
+                        Text("Manage diseases shown in the customer app", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 17.sp)
                     }
                     Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                         Button(
@@ -2723,7 +2723,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                 Spacer(Modifier.width(13.dp))
                 Column(Modifier.weight(1f)) {
                     Text("Orders library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Review and manage customer orders", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 14.sp)
+                    Text("Review and manage customer orders", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 17.sp)
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(orders.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
@@ -2985,7 +2985,7 @@ private fun ShopScreen(
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, lineHeight = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             IconButton(onClick = { onTabChange("Cart") }) {
                 BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) { Icon(Icons.Default.ShoppingCart, "Cart", tint = Forest) }
@@ -3299,7 +3299,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 2,
                                             minLines = 1,
-                                             lineHeight = 14.sp,
+                                             lineHeight = 17.sp,
                                             overflow = TextOverflow.Ellipsis
                                         )
                                         Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -3471,7 +3471,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 14.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 17.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
