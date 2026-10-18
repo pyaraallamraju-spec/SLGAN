@@ -4597,7 +4597,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             )
         )
         Spacer(Modifier.height(18.dp))
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Icon(Icons.Default.GridView, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
             Text(tr("Shop by category", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.weight(1f))
