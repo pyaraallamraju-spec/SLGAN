@@ -3070,7 +3070,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 )
                                             }
                                         }
-                                        Spacer(Modifier.height(6.dp))
+                                        Spacer(Modifier.height(2.dp))
                                         Text(
                                             localizedProductName(product.name, LocalAppLanguage.current),
                                             fontSize = 13.sp,
@@ -3080,11 +3080,16 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             minLines = 2,
                                             overflow = TextOverflow.Ellipsis
                                         )
-                                        Text(product.subtitle, modifier = Modifier.offset(y = (-2).dp), fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                        Spacer(Modifier.height(4.dp))
-                                        ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
+                                        Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                         Spacer(Modifier.height(3.dp))
-                                        ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
+                                            Spacer(Modifier.weight(1f))
+                                            ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
+                                        }
                                         Spacer(Modifier.height(3.dp))
                                         Row(
                                             modifier = Modifier.fillMaxWidth(),
