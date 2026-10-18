@@ -3042,8 +3042,8 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         if (ts == null) "Date not available" else dateFormat.format(ts.toDate())
     }
 
-    Column(Modifier.fillMaxSize().background(Cream)) {
-        Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+    Column(Modifier.fillMaxSize().background(Color.White)) {
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
                 Text("Manage Orders", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
