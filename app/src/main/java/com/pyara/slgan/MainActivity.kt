@@ -3803,7 +3803,6 @@ private fun ProductDetailsPage(
                 )
             }
             HorizontalDivider(color = Gold.copy(alpha = 0.45f))
-            Text(tr("Product details", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Text(tr("Description", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             Text(
                 product.description.ifBlank { "Information not available." },
