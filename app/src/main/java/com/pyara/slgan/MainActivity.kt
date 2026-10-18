@@ -2939,7 +2939,10 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     )
                 )
                 Spacer(Modifier.height(20.dp))
-                Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                    Icon(Icons.Default.GridView, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
+                    Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                }
                 Spacer(Modifier.height(8.dp))
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     homeCategories.forEach { item ->
@@ -4490,6 +4493,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
         )
         Spacer(Modifier.height(18.dp))
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Default.GridView, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
             Text(tr("Shop by category", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.weight(1f))
             Text("${categoryItems.size} shown", color = Muted, fontSize = 12.sp)
