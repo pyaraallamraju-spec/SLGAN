@@ -2005,7 +2005,8 @@ private fun AdminProductEditor(
                         onCheckedChange = { productStock = if (it) 1 else 0 },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = Color.White,
-                            checkedTrackColor = Forest,
+                            checkedTrackColor = Color(0xFF258348),
+                            checkedBorderColor = Color(0xFF258348),
                             uncheckedThumbColor = Color.White,
                             uncheckedTrackColor = Color(0xFFB3261E)
                         )
