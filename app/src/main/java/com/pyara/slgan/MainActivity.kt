@@ -4921,20 +4921,25 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) })
             Spacer(Modifier.height(12.dp))
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Box {
-                    OutlinedButton(
-                        onClick = { countryMenuExpanded = true },
-                        modifier = Modifier.height(56.dp),
+                    OutlinedTextField(
+                        value = "${selectedCountry.second}  ${selectedCountry.third}",
+                        onValueChange = {},
+                        readOnly = true,
+                        modifier = Modifier.width(124.dp).height(56.dp).clickable { countryMenuExpanded = true },
+                        label = { Text("Country code", maxLines = 1) },
+                        trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country code", tint = Forest) },
+                        singleLine = true,
                         shape = RoundedCornerShape(12.dp),
-                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
-                    ) {
-                        Text(selectedCountry.second, fontSize = 20.sp)
-                        Spacer(Modifier.width(4.dp))
-                        Text(selectedCountry.third, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
-                        Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country code")
-                    }
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Gold,
+                            unfocusedBorderColor = Color(0xFFB7A99A),
+                            focusedLabelColor = Forest,
+                            unfocusedLabelColor = Muted
+                        )
+                    )
+                    Box(Modifier.matchParentSize().clickable { countryMenuExpanded = true })
                     DropdownMenu(expanded = countryMenuExpanded, onDismissRequest = { countryMenuExpanded = false }) {
                         countryCodes.forEach { country ->
                             DropdownMenuItem(
@@ -4951,12 +4956,19 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 OutlinedTextField(
                     value = mobileNumber,
                     onValueChange = { input -> mobileNumber = input.filter(Char::isDigit).take(15); saveMessage = null },
-                    modifier = Modifier.weight(1f),
-                    label = { Text(tr("Mobile number", LocalAppLanguage.current)) },
-                    placeholder = { Text(tr("Enter mobile number", LocalAppLanguage.current)) },
+                    modifier = Modifier.weight(1f).height(56.dp),
+                    label = { Text(tr("Mobile number", LocalAppLanguage.current), maxLines = 1) },
+                    placeholder = { Text(tr("Enter mobile number", LocalAppLanguage.current), maxLines = 1) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) }
+                    leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Gold,
+                        unfocusedBorderColor = Color(0xFFB7A99A),
+                        focusedLabelColor = Forest,
+                        unfocusedLabelColor = Muted
+                    )
                 )
             }
             Spacer(Modifier.height(12.dp))
