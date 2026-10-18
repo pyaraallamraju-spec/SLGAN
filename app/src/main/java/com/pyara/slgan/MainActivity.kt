@@ -4532,10 +4532,14 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 DropdownMenu(
                     expanded = dropdownExpanded && matches.isNotEmpty(),
                     onDismissRequest = { dropdownExpanded = false },
-                    modifier = Modifier.fillMaxWidth(0.94f).heightIn(max = 280.dp)
+                    modifier = Modifier.fillMaxWidth(0.94f)
+                        .heightIn(max = 280.dp)
+                        .background(Cream, RoundedCornerShape(14.dp))
+                        .border(1.dp, Gold.copy(alpha = 0.65f), RoundedCornerShape(14.dp))
                 ) {
                     matches.forEach { disease ->
                         DropdownMenuItem(
+                            colors = MenuDefaults.itemColors(textColor = Ink),
                             text = { Text(disease, color = Ink, fontWeight = FontWeight.Medium) },
                             leadingIcon = { Text(when (disease.trim().lowercase()) { "fever" -> "🤒"; "cough" -> "🦠"; "flu" -> "🫁"; "obesity" -> "⚖️"; "tuberculosis", "tuberculosis (tb)", "tb" -> "🫁"; else -> "🌿" }, fontSize = 20.sp) },
                             onClick = {
