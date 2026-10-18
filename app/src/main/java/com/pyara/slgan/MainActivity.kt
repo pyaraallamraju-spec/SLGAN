@@ -846,6 +846,8 @@ private fun SplashScreen() {
                 )
             )
         )
+        // Let every product-category emoji drift down like a falling leaf.
+        val categoryEmojis = listOf("🗂️", "🍯", "🧈", "💊", "🫙", "🌾", "🌱", "🪨")
         val leafPositions = listOf(0.03f, 0.115f, 0.20f, 0.285f, 0.37f, 0.455f, 0.54f, 0.625f, 0.71f, 0.795f, 0.88f, 0.97f)
         val leafDurations = listOf(5600, 7200, 6300, 8000, 6700, 7600, 6900, 7400, 6100, 7800, 6500, 7100)
         leafPositions.forEachIndexed { index, fraction ->
@@ -868,7 +870,7 @@ private fun SplashScreen() {
                 label = "leafSway$index"
             )
             Text(
-                text = if (index % 2 == 0) "🍃" else "🌿",
+                text = categoryEmojis[index % categoryEmojis.size],
                 modifier = Modifier
                     .offset(x = maxWidth * fraction - 12.dp + sway.dp, y = fall.dp)
                     .graphicsLayer { rotationZ = (fall * 0.8f) % 360f; alpha = 0.82f },
