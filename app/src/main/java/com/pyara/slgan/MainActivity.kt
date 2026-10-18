@@ -1897,7 +1897,7 @@ private fun AdminProductEditor(
                         onValueChange = {},
                         modifier = Modifier.fillMaxWidth().clickable { unitMenuExpanded = true },
                         label = { Text("Weight unit") },
-                        placeholder = { Text("Select unit") },
+                        placeholder = { Text("Units") },
                         readOnly = true,
                         singleLine = true,
                         trailingIcon = {
