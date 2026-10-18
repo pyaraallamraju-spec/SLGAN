@@ -1543,7 +1543,7 @@ private fun AdminProductsScreen(
     fun categoryEmoji(category: String): String = when (category.trim().lowercase()) {
         "all" -> "🌿"
         "lehyas" -> "🍯"
-        "grutas", "ghritas", "ghrutas" -> "🏺"
+        "grutas", "ghritas", "ghrutas" -> "🫙"
         "pills" -> "💊"
         "tailas" -> "🫙"
         "churnas" -> "🌾"
@@ -3829,7 +3829,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                     when (product.category.trim().lowercase()) {
                                         "all" -> "🌿"
                                         "lehyas" -> "🫙"
-                                        "grutas", "ghritas", "ghrutas" -> "🏺"
+                                        "grutas", "ghritas", "ghrutas" -> "🫙"
                                         "pills" -> "💊"
                                         "tailas" -> "🫙"
                                         "churnas" -> "🌾"
