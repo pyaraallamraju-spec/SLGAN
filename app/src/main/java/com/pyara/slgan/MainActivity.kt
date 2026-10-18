@@ -1595,12 +1595,10 @@ private fun AdminProductsScreen(
         OutlinedTextField(
             value = searchText,
             onValueChange = { searchText = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)
-                .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
             singleLine = true,
-            label = { Text("Search product") },
-            placeholder = { Text("Name, category or product ID") },
-            leadingIcon = { Icon(Icons.Default.Search, null, tint = Forest) },
+            placeholder = { Text("Search product name, category or ID", maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search products", tint = Forest) },
             trailingIcon = {
                 if (searchText.isNotEmpty()) IconButton(onClick = { searchText = "" }) {
                     Icon(Icons.Default.Close, "Clear search")
@@ -1609,7 +1607,7 @@ private fun AdminProductsScreen(
             shape = RoundedCornerShape(18.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Forest,
-                unfocusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Gold,
                 focusedContainerColor = Cream,
                 unfocusedContainerColor = Cream,
                 cursorColor = Gold
