@@ -2128,7 +2128,20 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                         Spacer(Modifier.width(4.dp))
                         Button(onClick = { selectedTheme = theme; saving = true; message = null
                             db.collection("appSettings").document("appTheme").set(mapOf("activeTheme" to theme, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
-                                .addOnSuccessListener { applyAppPalette(theme); saving = false; message = if (theme == 1) "Default theme applied across the app." else "Theme 1 applied across the app." }
+                                .addOnSuccessListener {
+                                    applyAppPalette(theme)
+                                    val matchingSlider = if (theme == 1) 1 else 2
+                                    db.collection("appSettings").document("homeBanner")
+                                        .set(mapOf("activeDesign" to matchingSlider, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
+                                        .addOnSuccessListener {
+                                            saving = false
+                                            message = if (theme == 1) "Default theme and Slider 1 applied across the app." else "Theme 1 and Slider 2 applied across the app."
+                                        }
+                                        .addOnFailureListener { e ->
+                                            saving = false
+                                            message = "Theme applied, but could not update its slider: ${e.localizedMessage ?: \"Check Firestore permissions.\"}"
+                                        }
+                                }
                                 .addOnFailureListener { e -> saving = false; message = "Could not apply theme: ${e.localizedMessage ?: "Check Firestore permissions."}" }
                         }, enabled = !saving, colors = ButtonDefaults.buttonColors(containerColor = primary), shape = RoundedCornerShape(12.dp)) {
                             if (saving && selectedTheme == theme) CircularProgressIndicator(Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Check, null)
