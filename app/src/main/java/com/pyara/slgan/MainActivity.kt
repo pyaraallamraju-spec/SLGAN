@@ -846,8 +846,8 @@ private fun SplashScreen() {
                 )
             )
         )
-        val leafPositions = listOf(0.08f, 0.24f, 0.43f, 0.62f, 0.80f, 0.94f)
-        val leafDurations = listOf(5600, 7200, 6300, 8000, 6700, 7600)
+        val leafPositions = listOf(0.04f, 0.15f, 0.27f, 0.39f, 0.51f, 0.63f, 0.75f, 0.87f, 0.97f)
+        val leafDurations = listOf(5600, 7200, 6300, 8000, 6700, 7600, 6900, 7400, 6100)
         leafPositions.forEachIndexed { index, fraction ->
             val fall by motion.animateFloat(
                 initialValue = -80f - (index * 95f),
