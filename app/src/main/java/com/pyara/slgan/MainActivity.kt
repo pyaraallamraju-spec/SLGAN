@@ -5087,6 +5087,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var addresses by remember(uid) { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var addressLabel by remember { mutableStateOf("Home") }
     var recipientName by remember { mutableStateOf("") }
+    var recipientCountryCode by remember { mutableStateOf("+91") }
     var recipientPhone by remember { mutableStateOf("") }
     var addressLine1 by remember { mutableStateOf("") }
     var addressLine2 by remember { mutableStateOf("") }
@@ -5575,7 +5576,28 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(value = recipientName, onValueChange = { recipientName = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Recipient name *", LocalAppLanguage.current)) }, singleLine = true)
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = recipientPhone, onValueChange = { recipientPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(15); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Mobile number *", LocalAppLanguage.current)) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), singleLine = true)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = recipientCountryCode,
+                    onValueChange = { recipientCountryCode = "+" + it.filter(Char::isDigit).take(4); addressMessage = null },
+                    modifier = Modifier.weight(0.30f),
+                    label = { Text("Code *") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                    singleLine = true
+                )
+                OutlinedTextField(
+                    value = recipientPhone,
+                    onValueChange = { recipientPhone = it.filter(Char::isDigit).take(15); addressMessage = null },
+                    modifier = Modifier.weight(0.70f),
+                    label = { Text(tr("Mobile number *", LocalAppLanguage.current)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                    singleLine = true
+                )
+            }
             Spacer(Modifier.height(10.dp))
             OutlinedTextField(value = addressLine1, onValueChange = { addressLine1 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("House / flat, building, street *", LocalAppLanguage.current)) })
             Spacer(Modifier.height(10.dp))
@@ -5603,7 +5625,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         addressMessage = null
                         val newAddress = mapOf<String, Any>(
                             "id" to System.currentTimeMillis().toString(), "label" to addressLabel,
-                            "recipientName" to recipientName.trim(), "phone" to recipientPhone.trim(),
+                            "recipientName" to recipientName.trim(), "phone" to (recipientCountryCode.trim() + recipientPhone.trim()), "countryCode" to recipientCountryCode.trim(),
                             "addressLine1" to addressLine1.trim(), "addressLine2" to addressLine2.trim(),
                             "landmark" to landmark.trim(), "city" to city.trim(), "state" to state.trim(),
                             "pincode" to pincode.trim(), "createdAt" to System.currentTimeMillis()
@@ -5616,7 +5638,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 addressSaving = false
                                 addressMessage = "Address saved successfully."
                                 showAddressForm = false
-                                recipientName = ""; recipientPhone = ""; addressLine1 = ""; addressLine2 = ""
+                                recipientName = ""; recipientCountryCode = "+91"; recipientPhone = ""; addressLine1 = ""; addressLine2 = ""
                                 landmark = ""; city = ""; state = ""; pincode = ""; addressLabel = "Home"
                                 profileSection = "Addresses"
                             }
