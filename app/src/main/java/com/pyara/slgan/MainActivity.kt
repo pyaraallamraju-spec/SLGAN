@@ -540,7 +540,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
         "Pills" -> "💊"
         "Tailas" -> "🫙"
         "Churnas" -> "🌾"
-        "Rasayanas" -> "🪷"
+        "Rasayanas" -> "🪴"
         "Bhasmas" -> "🪨"
         else -> "🌿"
     }
@@ -3189,7 +3189,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         "Pills" -> "💊"
                                         "Tailas" -> "🫙"
                                         "Churnas" -> "🌾"
-                                        "Rasayanas" -> "🪷"
+                                        "Rasayanas" -> "🪴"
                                         "Bhasmas" -> "🪨"
                                         else -> "🌿"
                                     },
@@ -3497,7 +3497,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                         "pills" -> "💊"
                                         "tailas" -> "🫙"
                                         "churnas" -> "🌾"
-                                        "rasayanas" -> "🪷"
+                                        "rasayanas" -> "🪴"
                                         "bhasmas" -> "🪨"
                                         else -> "🌿"
                                     },
@@ -4788,7 +4788,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                             "Pills" -> "🌱"
                             "Tailas" -> "🫙"
                             "Churnas" -> "🌾"
-                            "Rasayanas" -> "🪷"
+                            "Rasayanas" -> "🪴"
                             "Bhasmas" -> "🪨"
                             else -> "🌿"
                         }
