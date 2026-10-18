@@ -1612,7 +1612,7 @@ private fun AdminProductsScreen(
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = Forest,
                         selectedLabelColor = Color.White,
-                        containerColor = Color.White
+                        containerColor = Cream
                     )
                 )
             }
@@ -2033,7 +2033,7 @@ private fun AdminDashboardScreen(
             )
         }
         Spacer(Modifier.height(18.dp))
-        Card(Modifier.fillMaxWidth().clickable(onClick = onBannersClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
+        Card(Modifier.fillMaxWidth().clickable(onClick = onBannersClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Cream), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(PaleGreen), contentAlignment = Alignment.Center) { Icon(Icons.Default.ViewCarousel, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp)) }
                 Spacer(Modifier.width(12.dp))
@@ -2042,7 +2042,7 @@ private fun AdminDashboardScreen(
             }
         }
         Spacer(Modifier.height(12.dp))
-        Card(Modifier.fillMaxWidth().clickable(onClick = onThemesClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
+        Card(Modifier.fillMaxWidth().clickable(onClick = onThemesClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Cream), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(PaleGreen), contentAlignment = Alignment.Center) { Icon(Icons.Default.Palette, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp)) }
                 Spacer(Modifier.width(12.dp))
@@ -2093,7 +2093,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
             val textColor = if (botanical) Color(0xFF20372A) else Color(0xFF38251F)
             Card(Modifier.fillMaxWidth().padding(bottom = 14.dp).clickable { selectedTheme = theme; message = null },
                 shape = RoundedCornerShape(22.dp), border = BorderStroke(if (selectedTheme == theme) 2.dp else 1.dp, if (selectedTheme == theme) accent else Color(0xFFE8DCC7)),
-                colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                colors = CardDefaults.cardColors(containerColor = Cream)) {
                 Column(Modifier.padding(14.dp)) {
                     Box(Modifier.fillMaxWidth().height(132.dp).clip(RoundedCornerShape(16.dp)).background(Brush.linearGradient(if (botanical) listOf(Color(0xFF173D2B), Color(0xFF557A45), Color(0xFFC9A34A)) else listOf(Color(0xFF762A24), Color(0xFF8A4B2A), Color(0xFFD9A441)))).padding(16.dp)) {
                         Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.78f)) {
@@ -2149,7 +2149,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         Spacer(Modifier.height(16.dp))
         (1..3).forEach { design ->
             val colors = when (design) { 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
-            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = Cream)) {
                 Column(Modifier.padding(12.dp)) {
                     Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Brush.linearGradient(colors)).padding(14.dp)) {
                         Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.82f)) {
@@ -2722,7 +2722,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 2.dp),
             shape = RoundedCornerShape(18.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = Cream),
             elevation = CardDefaults.cardElevation(1.dp)
         ) {
             Column(Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
@@ -2799,7 +2799,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                             Modifier.fillMaxWidth().clickable { expandedOrderId = if (expanded) null else docId },
                             shape = RoundedCornerShape(18.dp),
                             elevation = CardDefaults.cardElevation(2.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White)
+                            colors = CardDefaults.cardColors(containerColor = Cream)
                         ) {
                             Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -2903,7 +2903,7 @@ private fun AdminSummaryCard(
     Card(
         modifier = modifier.then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Cream)
     ) {
         Column(Modifier.padding(15.dp)) {
             Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(24.dp))
@@ -2927,7 +2927,7 @@ private fun AdminModuleInfo(
             if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
         ),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = Cream)
     ) {
         Row(Modifier.padding(15.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(
@@ -2965,7 +2965,7 @@ private fun ShopScreen(
             }
         }
     }, bottomBar = {
-        NavigationBar(containerColor = Color.White, contentColor = Forest) {
+        NavigationBar(containerColor = Cream, contentColor = Forest) {
             listOf(Triple("Home", Icons.Default.Home, "Home"), Triple("Categories", Icons.Default.GridView, "Categories"), Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"), Triple("Orders", Icons.Default.ReceiptLong, "Orders"), Triple("Profile", Icons.Default.Person, "Profile")).forEach { (label, icon, route) ->
                 NavigationBarItem(selected = selectedTab == route, onClick = { onTabChange(route) }, icon = { Icon(icon, label) }, label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) }, colors = NavigationBarItemDefaults.colors(selectedIconColor = Forest, selectedTextColor = Forest, indicatorColor = PaleGreen, unselectedIconColor = Muted))
             }
@@ -3169,7 +3169,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     fontSize = 16.sp
                                 )
                             },
-                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Color.White)
+                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Cream)
                         )
                     }
                 }
@@ -3213,7 +3213,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 Card(
                                     modifier = Modifier.width(198.dp).height(265.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
-                                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                                    colors = CardDefaults.cardColors(containerColor = Cream),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                                 ) {
                                     Column(Modifier.padding(10.dp)) {
@@ -3426,7 +3426,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
 
 @Composable
 private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
-    Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
+    Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Cream), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
         Column(Modifier.padding(11.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 Text(product.emoji, fontSize = 42.sp)
@@ -3590,7 +3590,7 @@ private fun ProductDetailsPage(
             Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Cream)) {
                 if (product.imageUrl.isNotBlank()) {
                     AndroidView(
                         modifier = Modifier.fillMaxWidth().height(250.dp),
@@ -3662,7 +3662,7 @@ private fun ProductDetailsPage(
             } else {
                 Text(tr("Price not available yet.", LocalAppLanguage.current), color = Muted, fontSize = 15.sp)
             }
-            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Cream)) {
                 Row(
                     Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -3839,7 +3839,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             Card(
                 modifier = Modifier.fillMaxWidth().weight(1f),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
+                colors = CardDefaults.cardColors(containerColor = Cream)
             ) {
                 Column(
                     Modifier.fillMaxWidth().fillMaxHeight().padding(24.dp),
@@ -3867,7 +3867,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     val quantity = cart[product.id] ?: 0
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        colors = CardDefaults.cardColors(containerColor = Cream),
                         shape = RoundedCornerShape(20.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
@@ -3940,7 +3940,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             Spacer(Modifier.height(10.dp))
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = Cream),
                 shape = RoundedCornerShape(22.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
