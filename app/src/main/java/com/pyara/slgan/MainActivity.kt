@@ -1318,20 +1318,23 @@ private fun HomeBannerSlider(
                             )
                         )
                     }
-                    Text(
-                        "Estd. 1900 by Sri Vidyaraju Allamraju Perraju Sharma",
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, end = 12.dp, top = 20.dp, bottom = 18.dp),
-                        color = Color(0xFFFFDFA0),
-                        fontSize = 12.sp,
-                        lineHeight = 14.sp,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    if (index != 0) {
+                        Text(
+                            "Estd. 1900 by Sri Vidyaraju Allamraju Perraju Sharma",
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .fillMaxWidth()
+                                .padding(start = 8.dp, end = 8.dp, top = 20.dp, bottom = 18.dp),
+                            color = Color(0xFFFFDFA0),
+                            fontSize = 10.sp,
+                            lineHeight = 12.sp,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            softWrap = false,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(0.88f)
