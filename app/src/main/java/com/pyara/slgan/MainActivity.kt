@@ -6,6 +6,10 @@ import android.widget.Toast
 import android.content.Intent
 import android.net.Uri
 import android.speech.RecognizerIntent
+import android.Manifest
+import android.content.pm.PackageManager
+import android.webkit.GeolocationPermissions
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.ui.platform.LocalContext
@@ -270,12 +274,32 @@ private fun tr(text: String, language: String): String {
 }
 
 class MainActivity : ComponentActivity() {
+    private var pendingGeoCallback: GeolocationPermissions.Callback? = null
+    private var pendingGeoOrigin: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
-        // Temporary: allow screenshots and screen recording while testing the app.
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         setContent { Box(Modifier.fillMaxSize().safeDrawingPadding()) { AyurvedicApp() } }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 7401) {
+            val granted = grantResults.isNotEmpty() && grantResults.any { it == PackageManager.PERMISSION_GRANTED }
+            pendingGeoCallback?.invoke(pendingGeoOrigin, granted, false)
+            pendingGeoCallback = null
+            pendingGeoOrigin = null
+        }
+    }
+    fun requestMapLocationPermission(origin: String, callback: GeolocationPermissions.Callback) {
+        val fine = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        val coarse = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (fine || coarse) callback.invoke(origin, true, false)
+        else {
+            pendingGeoOrigin = origin
+            pendingGeoCallback = callback
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 7401)
+        }
     }
 }
 
@@ -5315,7 +5339,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 .search-panel{padding:14px;background:linear-gradient(145deg,#fffdf7,#f3e8d5);border:1px solid #dfc58e;border-radius:18px;box-shadow:0 5px 16px #4b2b1718}
                                 .heading{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:1.25px;color:#762b35;margin:0 0 10px}
                                 .heading:before{content:'📍';font-size:14px}
-                                #search{display:block;width:100%;padding:13px 14px;border:1px solid #d5c5a6;border-radius:12px;background:#fffefa;color:#30251d;font-size:15px;outline:none;box-shadow:inset 0 1px 2px #3e28100a}
+                                #locate{display:block;width:100%;margin:0 0 8px;padding:11px 12px;border:0;border-radius:12px;background:#762b35;color:#fff8e9;font-size:14px;font-weight:700;text-align:left}#locate:active{opacity:.8}
+                                 #search{display:block;width:100%;padding:13px 14px;border:1px solid #d5c5a6;border-radius:12px;background:#fffefa;color:#30251d;font-size:15px;outline:none;box-shadow:inset 0 1px 2px #3e28100a}
                                 #search::placeholder{color:#8d8170}#search:focus{border-color:#9a6b2e;box-shadow:0 0 0 3px #c69a4b25}
                                 #results{max-height:150px;overflow:auto;background:#fffefa;border:1px solid #e7dcc7;border-radius:12px;margin-top:8px}
                                 .result{padding:12px;border-bottom:1px solid #eee4d2;font-size:13px;line-height:1.45;color:#30251d;cursor:pointer}
@@ -5331,17 +5356,19 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 .leaflet-control-attribution a{color:#762b35!important}
                                 .leaflet-container{font:12px Arial,sans-serif}
                                 </style></head>
-                                <body><div class="search-panel"><div class="heading">FIND YOUR DELIVERY LOCATION</div><input id="search" autocomplete="off" placeholder="Search locality, street, landmark or PIN code"><div id="results"></div></div><div id="map-frame"><div id="map"></div><div class="map-caption"><strong>✦ SLGAN DELIVERY MAP</strong><span>Move map · Select a search result</span></div></div><div class="hint">Search for your area and tap a result to auto-fill the address form. Please verify the details before saving. Map © OpenStreetMap contributors · CARTO.</div>
+                                <body><div class="search-panel"><div class="heading">FIND YOUR DELIVERY LOCATION</div><button id="locate" type="button" onclick="locateMe()">◎ Use my current location</button><input id="search" autocomplete="off" placeholder="Search locality, street, landmark or PIN code"><div id="results"></div></div><div id="map-frame"><div id="map"></div><div class="map-caption"><strong>✦ SLGAN DELIVERY MAP</strong><span>Move map · Select a search result</span></div></div><div class="hint">Search for your area and tap a result to auto-fill the address form. Please verify the details before saving. Map © OpenStreetMap contributors · CARTO.</div>
                                 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
-                                const map=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([22.9734,78.6569],5);
+                                const map=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([17.385,78.4867],12);
                                 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap contributors © CARTO',subdomains:'abcd',maxZoom:20}).addTo(map);
                                 const pinIcon=L.divIcon({className:'slgan-pin',html:'<div style="width:24px;height:24px;background:#762b35;border:3px solid #f0c56a;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 3px 8px #0005;position:relative"><span style="position:absolute;width:6px;height:6px;background:#fff2d0;border-radius:50%;left:6px;top:6px"></span></div>',iconSize:[28,34],iconAnchor:[12,30]});
-                                let marker=null;
+                                let marker=null;let currentMarker=null;let currentCircle=null;
+                                 function locateMe(){const btn=document.getElementById('locate');if(!navigator.geolocation){btn.textContent='Location is not supported on this device';return}btn.textContent='Finding your current location…';navigator.geolocation.getCurrentPosition(async pos=>{const lat=pos.coords.latitude,lon=pos.coords.longitude,ll=[lat,lon];map.setView(ll,17);if(currentMarker)map.removeLayer(currentMarker);if(currentCircle)map.removeLayer(currentCircle);currentMarker=L.circleMarker(ll,{radius:9,color:'#ffffff',weight:3,fillColor:'#1687ff',fillOpacity:1}).addTo(map).bindPopup('Your current location').openPopup();currentCircle=L.circle(ll,{radius:Math.max(pos.coords.accuracy||30,25),color:'#1687ff',weight:1,fillColor:'#1687ff',fillOpacity:.12}).addTo(map);if(marker)map.removeLayer(marker);marker=L.marker(ll,{icon:pinIcon,draggable:true}).addTo(map);document.getElementById('search').value='Current location';btn.textContent='✓ Current location found';try{const r=await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lon);if(r.ok){const d=await r.json();applyAddress(d.address||{});document.getElementById('search').value=d.display_name||'Current location'}}catch(e){}marker.on('dragend',async()=>{const p=marker.getLatLng();map.setView(p,Math.max(map.getZoom(),16));try{const r=await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+p.lat+'&lon='+p.lng);if(r.ok){const d=await r.json();applyAddress(d.address||{});document.getElementById('search').value=d.display_name||'Selected map location'}}catch(e){}})},err=>{btn.textContent=err.code===1?'Allow location permission to find you':'Could not get location — tap to retry';},{enableHighAccuracy:true,timeout:15000,maximumAge:60000})}
                                 async function searchPlaces(){const q=document.getElementById('search').value.trim();if(q.length<3)return;const box=document.getElementById('results');box.innerHTML='<div class="result">Searching…</div>';try{const searchQuery=/\\b(india|telangana|andhra pradesh|hyderabad)\\b/i.test(q)?q:(q+', India');const response=await fetch('https://photon.komoot.io/api/?limit=10&lat=17.385&lon=78.4867&q='+encodeURIComponent(searchQuery));if(!response.ok)throw new Error('Search HTTP '+response.status);const data=await response.json();box.innerHTML='';data.features.forEach(p=>{const row=document.createElement('div');row.className='result';row.textContent=p.properties.name?([p.properties.name,p.properties.street,p.properties.city||p.properties.town||p.properties.village,p.properties.state,p.properties.postcode].filter(Boolean).join(', ')):Object.values(p.properties).filter(v=>typeof v==='string').slice(0,5).join(', ');row.onclick=()=>choose(p);box.appendChild(row)});if(!data.features.length)box.innerHTML='<div class="result">No results found in India. Try the full address, locality, Manikonda, Hyderabad, or PIN code.</div>'}catch(e){box.innerHTML='<div class="result">Address search blocked or unavailable. Check internet and try again.</div>'}}
                                 let timer;document.getElementById('search').addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(searchPlaces,900)});
                                 function choose(p){document.getElementById('results').innerHTML='';const lon=Number(p.geometry.coordinates[0]),lat=Number(p.geometry.coordinates[1]);map.setView([lat,lon],16);if(marker)map.removeLayer(marker);marker=L.marker([lat,lon],{icon:pinIcon,draggable:true}).addTo(map);const a=p.properties||{};applyAddress(a);document.getElementById('search').value=rowLabel(a);marker.on('dragend',async()=>{const ll=marker.getLatLng();map.setView(ll,Math.max(map.getZoom(),16));document.getElementById('search').value='Selected map location';try{const r=await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+ll.lat+'&lon='+ll.lng);if(r.ok){const d=await r.json();applyAddress(d.address||{});document.getElementById('search').value=d.display_name||'Selected map location'}}catch(e){}}) }
                                 function applyAddress(a){const line1=[a.house_number||a.housenumber,a.road||a.street].filter(Boolean).join(' ');const line2=[a.suburb||a.neighbourhood||a.district||a.county].filter(Boolean).join(', ');const city=a.city||a.town||a.village||a.municipality||a.city_district||'';const st=a.state||'';const pin=a.postcode||'';const lm=a.amenity||a.name||'';AddressBridge.selectAddress(line1||a.name||'',line2,lm,city,st,pin) }
                                 function rowLabel(a){return [a.name,a.street,a.city||a.town||a.village,a.state,a.postcode].filter(Boolean).join(', ')}
+                                 window.addEventListener('load',()=>setTimeout(locateMe,500));
                                 </script></body></html>
                             """.trimIndent(), "text/html", "UTF-8", null)
                         }
