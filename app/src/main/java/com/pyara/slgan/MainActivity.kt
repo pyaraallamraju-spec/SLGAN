@@ -1323,11 +1323,7 @@ private fun HomeBannerSlider(
                 .height(190.dp)
                 .clip(RoundedCornerShape(22.dp))
                 .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
-                .background(
-                    Brush.linearGradient(
-                        colors = when (selectedDesign) { 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFFC6D6A3)); 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); else -> listOf(Color(0xFF762A24), Color(0xFF5B1C29), Color(0xFF8A3D2B)) }
-                    )
-                )
+                .background(if (selectedDesign == 4) Forest else when (selectedDesign) { 2 -> Color(0xFF173D2B); 3 -> Color(0xFFF8F0DC); else -> Color(0xFF762A24) })
         ) {
             AnimatedContent(
                 modifier = Modifier
@@ -1361,12 +1357,14 @@ private fun HomeBannerSlider(
                 val productImage = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }?.imageUrl.orEmpty()
                 Box(Modifier.fillMaxSize()) {
                     AsyncImage(
-                        model = slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl },
-                        contentDescription = slide.productName,
-                        contentScale = if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
+                        model = if (selectedDesign == 4) "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85" else slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl },
+                        contentDescription = if (selectedDesign == 4) "Botanical herbal leaves background" else slide.productName,
+                        contentScale = if (selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                    if (selectedDesign == 3) {
+                    if (selectedDesign == 4) {
+                        Box(Modifier.fillMaxSize().background(Forest.copy(alpha = 0.68f)))
+                    } else if (selectedDesign == 3) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFFF8F0DC).copy(alpha = 0.97f), Color(0xFFE7EBCB).copy(alpha = 0.86f), Color(0xFFC6D6A3).copy(alpha = 0.42f), Color.Transparent))))
                     } else if (selectedDesign == 2) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF102D20).copy(alpha = 0.98f), Color(0xFF173D2B).copy(alpha = 0.88f), Color(0xFF24523A).copy(alpha = 0.55f), Color.Transparent))))
@@ -1430,7 +1428,7 @@ private fun HomeBannerSlider(
                         Text(
                             if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
-                            color = if (selectedDesign == 3) Color(0xFF23452C) else if (selectedDesign == 2) Color(0xFFFFE8AE) else Color.White,
+                            color = if (selectedDesign == 3) Color(0xFF23452C) else if (selectedDesign == 2 || selectedDesign == 4) Color(0xFFFFE8AE) else Color.White,
                             fontSize = if (slide.isCompanySlide) 23.sp else 25.sp,
                             lineHeight = if (slide.isCompanySlide) 27.sp else 30.sp,
                             fontWeight = FontWeight.ExtraBold,
@@ -1440,7 +1438,7 @@ private fun HomeBannerSlider(
                         Spacer(Modifier.height(6.dp))
                         Text(
                             tr(slide.tagline, LocalAppLanguage.current),
-                            color = if (selectedDesign == 3) Color(0xFF5B3428) else if (selectedDesign == 2) Color(0xFFE8F0D8) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
+                            color = if (selectedDesign == 3) Color(0xFF5B3428) else if (selectedDesign == 2 || selectedDesign == 4) Color(0xFFE8F0D8) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
                             fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight.Medium,
