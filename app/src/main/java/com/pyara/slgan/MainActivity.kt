@@ -1288,7 +1288,7 @@ private fun HomeBannerSlider(
                 .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
                 .background(
                     Brush.linearGradient(
-                        colors = if (selectedDesign == 3) listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFFC6D6A3)) else listOf(Color(0xFF762A24), Color(0xFF5B1C29), Color(0xFF8A3D2B))
+                        colors = when (selectedDesign) { 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFFC6D6A3)); else -> listOf(Color(0xFF762A24), Color(0xFF5B1C29), Color(0xFF8A3D2B)) }
                     )
                 )
         ) {
@@ -1331,6 +1331,9 @@ private fun HomeBannerSlider(
                     )
                     if (selectedDesign == 3) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFFF8F0DC).copy(alpha = 0.97f), Color(0xFFE7EBCB).copy(alpha = 0.86f), Color(0xFFC6D6A3).copy(alpha = 0.42f), Color.Transparent))))
+                    } else if (selectedDesign == 2) {
+                        Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF102D20).copy(alpha = 0.98f), Color(0xFF173D2B).copy(alpha = 0.88f), Color(0xFF24523A).copy(alpha = 0.55f), Color.Transparent))))
+                        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xFF4D100E).copy(alpha = 0.24f)))))
                     } else if (!slide.isCompanySlide) {
                         Box(
                             Modifier.fillMaxSize().background(
@@ -1390,7 +1393,7 @@ private fun HomeBannerSlider(
                         Text(
                             if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
-                            color = if (selectedDesign == 3) Color(0xFF23452C) else Color.White,
+                            color = if (selectedDesign == 3) Color(0xFF23452C) else if (selectedDesign == 2) Color(0xFFFFE8AE) else Color.White,
                             fontSize = if (slide.isCompanySlide) 23.sp else 25.sp,
                             lineHeight = if (slide.isCompanySlide) 27.sp else 30.sp,
                             fontWeight = FontWeight.ExtraBold,
@@ -1400,7 +1403,7 @@ private fun HomeBannerSlider(
                         Spacer(Modifier.height(6.dp))
                         Text(
                             tr(slide.tagline, LocalAppLanguage.current),
-                            color = if (selectedDesign == 3) Color(0xFF5B3428) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
+                            color = if (selectedDesign == 3) Color(0xFF5B3428) else if (selectedDesign == 2) Color(0xFFE8F0D8) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
                             fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight.Medium,
@@ -2053,20 +2056,20 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         Text("Slider 1 is your existing banner. It will not be replaced. Choose Slider 2 or 3 and tap Apply.", color = Muted, fontSize = 14.sp)
         Spacer(Modifier.height(16.dp))
         (1..3).forEach { design ->
-            val colors = when (design) { 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF762A24), Color(0xFF5B1C29), Gold); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
+            val colors = when (design) { 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
             Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = Color.White)) {
                 Column(Modifier.padding(12.dp)) {
                     Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Brush.linearGradient(colors)).padding(14.dp)) {
                         Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.82f)) {
-                            Text(if (design == 3) "PURE AYURVEDA" else "SLGAN · TRUSTED SINCE 1990", color = if (design == 3) Color(0xFF23452C) else Color(0xFFFFDFA0), fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                            Text(if (design == 3) "Pure Ayurveda for Better Living" else "Authentic Ayurvedic Formulations", color = if (design == 3) Color(0xFF23452C) else Color.White, fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.ExtraBold)
-                            Text("Traditional wisdom · Natural wellness", color = if (design == 3) Color(0xFF5B3428) else Color(0xFFFFE9B2), fontSize = 10.sp)
+                            Text(when (design) { 3 -> "PURE AYURVEDA"; 2 -> "BOTANICAL WELLNESS"; else -> "SLGAN · TRUSTED SINCE 1990" }, color = if (design == 3) Color(0xFF23452C) else Color(0xFFFFDFA0), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            Text(when (design) { 3 -> "Pure Ayurveda for Better Living"; 2 -> "Nature’s Goodness"; else -> "Authentic Ayurvedic Formulations" }, color = if (design == 3) Color(0xFF23452C) else if (design == 2) Color(0xFFFFE8AE) else Color.White, fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.ExtraBold)
+                            Text(if (design == 3) "Traditional wisdom · Natural wellness" else if (design == 2) "Herbs · Roots · Everyday wellness" else "Traditional wisdom · Natural wellness", color = if (design == 3) Color(0xFF5B3428) else if (design == 2) Color(0xFFE8F0D8) else Color(0xFFFFE9B2), fontSize = 10.sp)
                         }
                         Icon(if (activeDesign == design) Icons.Default.CheckCircle else Icons.Default.Circle, contentDescription = null, tint = if (design == 3) Color(0xFF35552F) else Gold, modifier = Modifier.align(Alignment.TopEnd).size(24.dp))
                     }
                     Spacer(Modifier.height(10.dp))
-                    Text(when (design) { 1 -> "Slider 1 · Current banner"; 2 -> "Slider 2 · Maroon & Gold"; else -> "Slider 3 · Cream & Green" }, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text(when (design) { 1 -> "Keep the existing look"; 2 -> "Traditional, premium Ayurveda"; else -> "Fresh botanical, natural look" }, color = Muted, fontSize = 12.sp)
+                    Text(when (design) { 1 -> "Slider 1 · Current banner"; 2 -> "Slider 2 · Nature’s Goodness"; else -> "Slider 3 · Cream & Green" }, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(when (design) { 1 -> "Keep the existing look"; 2 -> "Deep botanical green, herbal imagery and gold accents"; else -> "Fresh botanical, natural look" }, color = Muted, fontSize = 12.sp)
                     if (activeDesign == design) Text("SELECTED", color = Forest, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
                 }
             }
