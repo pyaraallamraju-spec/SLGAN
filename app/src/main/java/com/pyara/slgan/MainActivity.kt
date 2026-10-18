@@ -540,7 +540,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
         "Pills" -> "💊"
         "Tailas" -> "🫙"
         "Churnas" -> "🌾"
-        "Rasayanas" -> "🪴"
+        "Rasayanas" -> if (rawCategory.equals("rasayoga", ignoreCase = true)) "🪷" else "🪴"
         "Bhasmas" -> "🪨"
         else -> "🌿"
     }
