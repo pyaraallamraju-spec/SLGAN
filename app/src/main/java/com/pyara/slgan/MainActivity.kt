@@ -5435,23 +5435,30 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Icon(Icons.Default.Logout, null); Spacer(Modifier.width(8.dp)); Text(tr("Sign out", LocalAppLanguage.current))
             }
         } else if (showAddressForm) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(onClick = { showAddressForm = false; addressMessage = null }) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
-                Column {
+                Column(Modifier.weight(1f)) {
                     Text(tr("Add address", LocalAppLanguage.current), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                     Text(tr("Enter delivery details below.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                 }
+                Spacer(Modifier.width(8.dp))
+                OutlinedButton(
+                    onClick = { showMapPicker = true },
+                    modifier = Modifier.widthIn(min = 96.dp, max = 112.dp).height(42.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    border = BorderStroke(1.dp, Gold),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Forest)
+                ) {
+                    Icon(Icons.Default.Map, contentDescription = null, tint = Forest, modifier = Modifier.size(17.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text("Show map", fontSize = 12.sp, maxLines = 1)
+                }
             }
             Spacer(Modifier.height(14.dp))
-            OutlinedButton(
-                onClick = { showMapPicker = true },
-                modifier = Modifier.fillMaxWidth().height(52.dp),
-                shape = RoundedCornerShape(14.dp)
-            ) {
-                Icon(Icons.Default.Map, null, tint = Forest)
-                Spacer(Modifier.width(8.dp))
-                Text("Show map")
-            }
             if (showMapPicker) {
                 androidx.compose.ui.window.Dialog(onDismissRequest = { showMapPicker = false }, properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
                     Card(
