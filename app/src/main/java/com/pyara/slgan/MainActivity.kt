@@ -4821,11 +4821,17 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         gender = snapshot.getString("gender").orEmpty()
                         dateOfBirth = snapshot.getString("dateOfBirth").orEmpty()
                         val savedPhone = snapshot.getString("mobileNumber").orEmpty()
-                        val matchingCountry = countryCodes.sortedByDescending { it.third.length }
-                            .firstOrNull { savedPhone.startsWith(it.third) }
+                        val savedCountryIso = snapshot.getString("countryIso").orEmpty()
+                        val matchingCountry = countryCodes.firstOrNull { it.first == savedCountryIso }
+                            ?: countryCodes.sortedByDescending { it.third.length }
+                                .firstOrNull { savedPhone.startsWith(it.third) }
                         if (matchingCountry != null) {
                             selectedCountry = matchingCountry
-                            mobileNumber = savedPhone.removePrefix(matchingCountry.third).filter(Char::isDigit)
+                            mobileNumber = if (savedPhone.startsWith(matchingCountry.third)) {
+                                savedPhone.removePrefix(matchingCountry.third).filter(Char::isDigit)
+                            } else {
+                                savedPhone.filter(Char::isDigit)
+                            }
                         } else {
                             mobileNumber = savedPhone.filter(Char::isDigit)
                         }
@@ -5108,7 +5114,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             FirebaseData.saveCustomerProfile(currentUid, mapOf(
                                 "email" to (user.email ?: ""), "firstName" to firstName.trim(),
                                 "lastName" to lastName.trim(), "nickname" to nickname.trim(),
-                                "gender" to gender, "dateOfBirth" to dateOfBirth,
+                                "gender" to gender,
+                                "dateOfBirth" to dateOfBirth,
+                                "countryIso" to selectedCountry.first,
+                                "countryFlag" to selectedCountry.second,
+                                "countryDialCode" to selectedCountry.third,
                                 "mobileNumber" to (selectedCountry.third + mobileNumber.filter(Char::isDigit)),
                                 "updatedAt" to System.currentTimeMillis()
                             )) { error ->
