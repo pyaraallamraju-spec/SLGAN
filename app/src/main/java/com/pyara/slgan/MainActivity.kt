@@ -4525,7 +4525,13 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<String?>(null) }
     val selectedProducts = products.filter { selectedCategory == "All" || it.category.equals(selectedCategory, ignoreCase = true) }
-    val categoryItems = categories.filter { it.contains(searchQuery.trim(), ignoreCase = true) }
+    // Build category tiles from live product data returned by Firestore, not a hard-coded list.
+    val backendCategories = products.map { it.category.trim() }
+        .filter { it.isNotBlank() }
+        .distinctBy { it.lowercase() }
+        .sortedBy { it.lowercase() }
+    val categoriesFromBackend = listOf("All") + backendCategories
+    val categoryItems = categoriesFromBackend.filter { it.contains(searchQuery.trim(), ignoreCase = true) }
     val categoryRows = categoryItems.chunked(2)
 
     Column(
@@ -4566,7 +4572,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     Spacer(Modifier.width(14.dp))
                     Icon(Icons.Default.Category, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(7.dp))
-                    Text("${categories.size} collections", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                    Text("${categoriesFromBackend.size} collections", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                 }
             }
         }
