@@ -2311,13 +2311,26 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
             val colors = when (design) { 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
             Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = Cream)) {
                 Column(Modifier.padding(12.dp)) {
-                    Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Brush.linearGradient(colors)).padding(14.dp)) {
+                    Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(if (design == 4) Forest else Brush.linearGradient(colors).let { Color.Transparent }).padding(0.dp)) {
+                        if (design == 4) {
+                            AsyncImage(
+                                model = "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=85",
+                                contentDescription = "Botanical background preview",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            Box(Modifier.fillMaxSize().background(Forest.copy(alpha = 0.68f)))
+                        } else {
+                            Box(Modifier.fillMaxSize().background(Brush.linearGradient(colors)))
+                        }
+                        Box(Modifier.fillMaxSize().padding(14.dp)) {
                         Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.82f)) {
                             Text(when (design) { 4 -> "✦  THEME-ADAPTIVE SIGNATURE"; 3 -> "PURE AYURVEDA"; 2 -> "BOTANICAL WELLNESS"; else -> "SLGAN · TRUSTED SINCE 1990" }, color = if (design == 3) Color(0xFF23452C) else Color(0xFFFFDFA0), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                             Text(when (design) { 4 -> "Wellness, Inspired by Nature"; 3 -> "Pure Ayurveda for Better Living"; 2 -> "Nature’s Goodness"; else -> "Authentic Ayurvedic Formulations" }, color = if (design == 3) Color(0xFF23452C) else if (design == 2) Color(0xFFFFE8AE) else Color.White, fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.ExtraBold)
                             Text(when (design) { 4 -> "Traditional wisdom · Trusted since 1990"; 3 -> "Traditional wisdom · Natural wellness"; 2 -> "Herbs · Roots · Everyday wellness"; else -> "Traditional wisdom · Natural wellness" }, color = if (design == 3) Color(0xFF5B3428) else if (design == 2) Color(0xFFE8F0D8) else Color(0xFFFFE9B2), fontSize = 10.sp)
                         }
                         Icon(if (activeDesign == design) Icons.Default.CheckCircle else Icons.Default.Circle, contentDescription = null, tint = if (design == 3) Color(0xFF35552F) else Gold, modifier = Modifier.align(Alignment.TopEnd).size(24.dp))
+                        }
                     }
                     Spacer(Modifier.height(10.dp))
                     Text(when (design) { 1 -> "Slider 1 · Current banner"; 2 -> "Slider 2 · Nature’s Goodness"; 3 -> "Slider 3 · Cream & Green"; else -> "Slider 4 · Theme-Adaptive Signature" }, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
