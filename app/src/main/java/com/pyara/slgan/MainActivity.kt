@@ -276,21 +276,22 @@ private fun tr(text: String, language: String): String {
 class MainActivity : ComponentActivity() {
     private var pendingGeoCallback: GeolocationPermissions.Callback? = null
     private var pendingGeoOrigin: String? = null
+    private lateinit var mapLocationPermissionLauncher: androidx.activity.result.ActivityResultLauncher<Array<String>>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        setContent { Box(Modifier.fillMaxSize().safeDrawingPadding()) { AyurvedicApp() } }
-    }
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 7401) {
-            val granted = grantResults.isNotEmpty() && grantResults.any { it == PackageManager.PERMISSION_GRANTED }
+        mapLocationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { grants ->
+            val granted = grants[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                grants[Manifest.permission.ACCESS_COARSE_LOCATION] == true
             pendingGeoCallback?.invoke(pendingGeoOrigin, granted, false)
             pendingGeoCallback = null
             pendingGeoOrigin = null
         }
+        FirebaseApp.initializeApp(this)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        setContent { Box(Modifier.fillMaxSize().safeDrawingPadding()) { AyurvedicApp() } }
     }
+
     fun requestMapLocationPermission(origin: String, callback: GeolocationPermissions.Callback) {
         val fine = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
         val coarse = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -298,7 +299,7 @@ class MainActivity : ComponentActivity() {
         else {
             pendingGeoOrigin = origin
             pendingGeoCallback = callback
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 7401)
+            mapLocationPermissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
         }
     }
 }
