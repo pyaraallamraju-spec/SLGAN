@@ -3430,28 +3430,17 @@ private fun ProductDetailsPage(
                     TextButton(onClick = { showReviewDialog = true; ratingMessage = null }) {
                         Text("⭐", fontSize = 18.sp)
                         Spacer(Modifier.width(6.dp))
-                        Text("Add rating", color = Forest, fontWeight = FontWeight.Bold)
+                        Text("Add review", color = Forest, fontWeight = FontWeight.Bold)
                     }
                 }
             }
             if (showReviewDialog) {
                 AlertDialog(
                     onDismissRequest = { if (!ratingSaving) showReviewDialog = false },
-                    title = { Text(if (ratingSummary.myRating > 0) "Rate and review" else "Write a review", color = Ink, fontWeight = FontWeight.ExtraBold) },
+                    title = { Text("Write a review", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold) },
                     text = {
                         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Text(localizedProductName(product.name, currentLanguage), color = Muted, fontSize = 13.sp)
-                            Text("Tap a star to rate this product", color = Ink, fontWeight = FontWeight.SemiBold)
-                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                                (1..5).forEach { star ->
-                                    IconButton(onClick = { selectedRating = star; ratingMessage = null }, modifier = Modifier.size(40.dp)) {
-                                        Icon(if (star <= selectedRating) Icons.Default.Star else Icons.Default.StarBorder,
-                                            contentDescription = "$star star${if (star == 1) "" else "s"}",
-                                            tint = if (star <= selectedRating) Gold else Muted, modifier = Modifier.size(28.dp))
-                                    }
-                                }
-                                if (selectedRating > 0) Text("$selectedRating/5", color = Forest, fontWeight = FontWeight.Bold)
-                            }
+                            Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                             OutlinedTextField(
                                 value = ratingReview,
                                 onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null },
@@ -3469,8 +3458,8 @@ private fun ProductDetailsPage(
                         Button(
                             onClick = {
                                 val user = ratingUser
-                                if (user == null) ratingMessage = "Please sign in to rate this product."
-                                else if (selectedRating !in 1..5) ratingMessage = "Select 1 to 5 stars before saving."
+                                if (user == null) ratingMessage = "Please sign in to submit a review."
+                                else if (ratingReview.trim().isBlank()) ratingMessage = "Please enter your review before saving."
                                 else {
                                     ratingSaving = true
                                     val db = FirebaseFirestore.getInstance()
@@ -3479,13 +3468,13 @@ private fun ProductDetailsPage(
                                         val payload = hashMapOf<String, Any>(
                                             "productId" to product.id, "productName" to product.name, "userId" to user.uid,
                                             "userName" to (user.displayName?.takeIf { it.isNotBlank() } ?: user.email.orEmpty().substringBefore("@")),
-                                            "rating" to selectedRating, "review" to ratingReview.trim(),
+                                            "rating" to (existing.getLong("rating")?.toInt() ?: 0), "review" to ratingReview.trim(),
                                             "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp())
                                         if (!existing.exists()) payload["createdAt"] = com.google.firebase.firestore.FieldValue.serverTimestamp()
                                         ratingRef.set(payload, com.google.firebase.firestore.SetOptions.merge())
                                             .addOnSuccessListener {
                                                 ratingSaving = false
-                                                ratingMessage = "Saved! Thank you for rating this product."
+                                                ratingMessage = "Saved! Thank you for your review."
                                                 showReviewDialog = false
                                                 Toast.makeText(context, "Review saved successfully", Toast.LENGTH_SHORT).show()
                                             }
