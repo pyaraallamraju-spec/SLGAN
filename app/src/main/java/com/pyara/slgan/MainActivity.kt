@@ -4131,7 +4131,7 @@ private fun OrdersPage(
                         Text(
                             "Total: ${previousOrders.size}",
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                            color = Color(0xFF762A24),
+                            color = Forest,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
                         )
