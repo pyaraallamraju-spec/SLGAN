@@ -2972,7 +2972,7 @@ private fun ShopScreen(
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Cream))
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-                Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Color(0xFFC62828), fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, lineHeight = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             IconButton(onClick = { onTabChange("Cart") }) {
