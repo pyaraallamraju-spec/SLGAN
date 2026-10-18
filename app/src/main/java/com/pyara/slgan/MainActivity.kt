@@ -5156,15 +5156,15 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             categoryRows.forEach { rowItems ->
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     rowItems.forEach { item ->
-                        val emoji = when (item) {
-                            "All" -> "🌿"
-                            "Lehyas" -> "🍯"
-                            "Grutas" -> "🏺"
-                            "Pills" -> "🌱"
-                            "Tailas" -> "🫙"
-                            "Churnas" -> "🌾"
-                            "Rasayanas" -> "🪴"
-                            "Bhasmas" -> "🪨"
+                        val emoji = when (item.trim().lowercase()) {
+                            "all" -> "🌿"
+                            "lehyas" -> "🍯"
+                            "grutas", "ghritas", "ghrutas" -> "🏺"
+                            "pills" -> "🌱"
+                            "tailas" -> "🫙"
+                            "churnas" -> "🌾"
+                            "rasayanas" -> "🪴"
+                            "bhasmas" -> "🪨"
                             else -> "🌿"
                         }
                         val count = if (item.equals("All", ignoreCase = true)) products.size else products.count { it.category.equals(item, ignoreCase = true) }
