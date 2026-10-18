@@ -3150,8 +3150,8 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
         horizontalArrangement = Arrangement.spacedBy(1.dp)
     ) {
         (1..5).forEach { star ->
-            IconButton(
-                onClick = {
+            Box(
+                modifier = Modifier.size(20.dp).clickable(enabled = !savingRating) {
                     val user = ratingUser
                     if (user == null) {
                         Toast.makeText(context, "Please sign in to rate this product.", Toast.LENGTH_SHORT).show()
@@ -3186,8 +3186,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
                         }
                     }
                 },
-                enabled = !savingRating,
-                modifier = Modifier.size(19.dp)
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = if (star <= summary.average) Icons.Default.Star else Icons.Default.StarBorder,
