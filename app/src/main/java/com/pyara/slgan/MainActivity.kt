@@ -3569,6 +3569,22 @@ private fun ProductDetailsPage(
     var ratingSaving by remember { mutableStateOf(false) }
     var ratingMessage by remember { mutableStateOf<String?>(null) }
     var showReviewDialog by remember { mutableStateOf(false) }
+    var customerReviews by remember(product.id) { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
+    LaunchedEffect(product.id) {
+        FirebaseFirestore.getInstance().collection("productRatings")
+            .whereEqualTo("productId", product.id)
+            .addSnapshotListener { snapshot, error ->
+                if (error == null && snapshot != null) {
+                    customerReviews = snapshot.documents.mapNotNull { doc ->
+                        val review = doc.getString("review")?.trim().orEmpty()
+                        if (review.isBlank()) null else {
+                            val name = doc.getString("userName")?.trim().takeUnless { it.isNullOrBlank() } ?: "Customer"
+                            name to review
+                        }
+                    }
+                }
+            }
+    }
     LaunchedEffect(product.id, ratingUser?.uid) {
         selectedRating = ratingSummary.myRating
         ratingReview = ""
@@ -3703,6 +3719,23 @@ private fun ProductDetailsPage(
                         Text("⭐", fontSize = 18.sp)
                         Spacer(Modifier.width(6.dp))
                         Text("Add review", color = Forest, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+            if (customerReviews.isNotEmpty()) {
+                Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("Customer reviews", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    customerReviews.forEach { (customerName, reviewText) ->
+                        Card(
+                            Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White)
+                        ) {
+                            Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Text(customerName, color = Forest, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(reviewText, color = Ink, fontSize = 14.sp, lineHeight = 20.sp)
+                            }
+                        }
                     }
                 }
             }
