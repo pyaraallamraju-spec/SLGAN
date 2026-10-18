@@ -3302,7 +3302,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         }
                                         Spacer(Modifier.height(3.dp))
                                         Row(
-                                            modifier = Modifier.fillMaxWidth(),
+                                            modifier = Modifier.fillMaxWidth().height(32.dp),
                                             verticalAlignment = Alignment.CenterVertically,
                                             horizontalArrangement = Arrangement.SpaceBetween
                                         ) {
