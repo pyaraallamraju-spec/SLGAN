@@ -5696,28 +5696,106 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
                 Spacer(Modifier.height(24.dp))
             } else {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Column(Modifier.weight(1f)) {
-                        Text(tr("Saved addresses", LocalAppLanguage.current), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
-                        Text(tr("Keep delivery locations for future orders.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
+                        Text(
+                            tr("Saved addresses", LocalAppLanguage.current),
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = Ink
+                        )
+                        Spacer(Modifier.height(3.dp))
+                        Text(
+                            tr("Keep delivery locations for future orders.", LocalAppLanguage.current),
+                            color = Muted,
+                            fontSize = 12.sp
+                        )
                     }
-                    Button(onClick = { showAddressForm = true; addressMessage = null }, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-                        Icon(Icons.Default.Add, null); Spacer(Modifier.width(4.dp)); Text("Address")
+                    Button(
+                        onClick = { showAddressForm = true; addressMessage = null },
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp)
+                    ) {
+                        Icon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(5.dp))
+                        Text("Address", fontWeight = FontWeight.Bold)
                     }
                 }
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(16.dp))
                 addresses.forEach { address ->
-                    Card(Modifier.fillMaxWidth().padding(bottom = 10.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(16.dp)) {
-                        Column(Modifier.padding(16.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.LocationOn, null, tint = Forest)
-                                Spacer(Modifier.width(8.dp))
-                                Text(address["label"]?.toString() ?: "Address", color = Ink, fontWeight = FontWeight.Bold)
+                    val addressLabelText = address["label"]?.toString()?.takeIf(String::isNotBlank) ?: "Address"
+                    val fullAddress = listOf(
+                        address["addressLine1"], address["addressLine2"],
+                        address["landmark"], address["city"], address["state"], address["pincode"]
+                    ).mapNotNull { it?.toString()?.takeIf(String::isNotBlank) }.joinToString(", ")
+                    Card(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        shape = RoundedCornerShape(20.dp),
+                        border = BorderStroke(1.dp, Gold.copy(alpha = 0.38f)),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    ) {
+                        Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(44.dp)
+                                        .background(PaleGreen, RoundedCornerShape(14.dp))
+                                        .border(1.dp, Gold.copy(alpha = 0.45f), RoundedCornerShape(14.dp)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(Icons.Default.LocationOn, null, tint = Forest, modifier = Modifier.size(24.dp))
+                                }
+                                Spacer(Modifier.width(12.dp))
+                                Column(Modifier.weight(1f)) {
+                                    Text(
+                                        addressLabelText.uppercase(Locale.getDefault()),
+                                        color = Forest,
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.ExtraBold,
+                                        letterSpacing = 0.8.sp
+                                    )
+                                    Spacer(Modifier.height(3.dp))
+                                    Text(
+                                        address["recipientName"]?.toString().orEmpty(),
+                                        color = Ink,
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                                Icon(Icons.Default.CheckCircle, null, tint = Gold, modifier = Modifier.size(21.dp))
                             }
-                            Spacer(Modifier.height(6.dp))
-                            Text(address["recipientName"]?.toString().orEmpty(), color = Ink, fontWeight = FontWeight.SemiBold)
-                            Text(address["phone"]?.toString().orEmpty(), color = Muted, fontSize = 12.sp)
-                            Text(listOf(address["addressLine1"], address["addressLine2"], address["landmark"], address["city"], address["state"], address["pincode"]).mapNotNull { it?.toString()?.takeIf(String::isNotBlank) }.joinToString(", "), color = Ink, fontSize = 13.sp)
+                            Spacer(Modifier.height(14.dp))
+                            HorizontalDivider(color = Gold.copy(alpha = 0.28f), thickness = 1.dp)
+                            Spacer(Modifier.height(12.dp))
+                            Row(verticalAlignment = Alignment.Top) {
+                                Icon(Icons.Default.Call, null, tint = Muted, modifier = Modifier.size(17.dp))
+                                Spacer(Modifier.width(9.dp))
+                                Text(
+                                    address["phone"]?.toString().orEmpty(),
+                                    color = Muted,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            }
+                            Spacer(Modifier.height(9.dp))
+                            Row(verticalAlignment = Alignment.Top) {
+                                Icon(Icons.Default.Home, null, tint = Forest, modifier = Modifier.size(17.dp))
+                                Spacer(Modifier.width(9.dp))
+                                Text(
+                                    fullAddress,
+                                    color = Ink,
+                                    fontSize = 13.sp,
+                                    lineHeight = 19.sp
+                                )
+                            }
                         }
                     }
                 }
