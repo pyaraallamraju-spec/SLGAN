@@ -1597,7 +1597,7 @@ private fun AdminProductsScreen(
         OutlinedTextField(
             value = searchText,
             onValueChange = { searchText = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(72.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
@@ -1925,7 +1925,7 @@ private fun AdminProductEditor(
                 OutlinedTextField(
                     value = category,
                     onValueChange = {},
-                    modifier = Modifier.fillMaxWidth().clickable { categoryMenuExpanded = true },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).clickable { categoryMenuExpanded = true },
                     label = { Text("Category *") },
                     readOnly = true,
                     singleLine = true,
@@ -1955,9 +1955,8 @@ private fun AdminProductEditor(
                     OutlinedTextField(
                         value = units,
                         onValueChange = {},
-                        modifier = Modifier.fillMaxWidth().clickable { unitMenuExpanded = true },
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).clickable { unitMenuExpanded = true },
                         label = { Text("Units *") },
-                        placeholder = { Text("Units") },
                         readOnly = true,
                         singleLine = true,
                         trailingIcon = {
