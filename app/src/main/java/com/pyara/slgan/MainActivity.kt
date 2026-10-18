@@ -4930,17 +4930,17 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) })
             Spacer(Modifier.height(12.dp))
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Box {
                     OutlinedTextField(
                         value = "${selectedCountry.second}  ${selectedCountry.third}",
                         onValueChange = {},
                         readOnly = true,
-                        modifier = Modifier.width(140.dp).height(56.dp).clickable { countryMenuExpanded = true },
+                        modifier = Modifier.width(140.dp).height(64.dp).clickable { countryMenuExpanded = true },
                         label = { Text("Country code", maxLines = 1, softWrap = false) },
                         trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country code", tint = Forest, modifier = Modifier.size(18.dp)) },
                         singleLine = true,
-                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, color = Ink),
+                        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 14.sp, lineHeight = 20.sp, color = Ink),
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Gold,
@@ -4966,9 +4966,10 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 OutlinedTextField(
                     value = mobileNumber,
                     onValueChange = { input -> mobileNumber = input.filter(Char::isDigit).take(15); saveMessage = null },
-                    modifier = Modifier.weight(1f).height(56.dp),
+                    modifier = Modifier.weight(1f).height(64.dp),
                     label = { Text(tr("Mobile number", LocalAppLanguage.current), maxLines = 1, softWrap = false) },
                     singleLine = true,
+                    textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp, lineHeight = 20.sp, color = Ink),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) },
                     shape = RoundedCornerShape(12.dp),
