@@ -1849,6 +1849,23 @@ private fun AdminProductEditor(
     var price by remember(product?.id) { mutableStateOf(if (product == null || product.price == 0.0) "" else product.price.toString()) }
     var weight by remember(product?.id) { mutableStateOf(product?.subtitle?.filter { it.isDigit() || it == '.' }.orEmpty()) }
     var units by remember(product?.id) { mutableStateOf(product?.subtitle?.filter { it.isLetter() }.orEmpty()) }
+    var unitOptions by remember { mutableStateOf<List<String>>(emptyList()) }
+    var unitMenuExpanded by remember { mutableStateOf(false) }
+    DisposableEffect(Unit) {
+        val registration = FirebaseFirestore.getInstance().collection("products")
+            .addSnapshotListener { snapshot, error ->
+                if (error == null && snapshot != null) {
+                    unitOptions = snapshot.documents.mapNotNull { it.getString("product_units")?.trim() }
+                        .filter { it.isNotBlank() }
+                        .distinctBy { it.lowercase() }
+                        .sortedBy { it.lowercase() }
+                    if (units.isNotBlank() && unitOptions.none { it.equals(units, ignoreCase = true) }) {
+                        unitOptions = (unitOptions + units.trim()).distinctBy { it.lowercase() }.sortedBy { it.lowercase() }
+                    }
+                }
+            }
+        onDispose { registration.remove() }
+    }
     var quantity by remember(product?.id) { mutableStateOf(product?.quantity.orEmpty()) }
     var imageUrl by remember(product?.id) { mutableStateOf(product?.imageUrl.orEmpty()) }
     var description by remember(product?.id) { mutableStateOf(product?.description.orEmpty()) }
@@ -1874,7 +1891,42 @@ private fun AdminProductEditor(
             OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Pack weight") }, singleLine = true)
-                OutlinedTextField(units, { units = it; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight units (g/ml)") }, singleLine = true)
+                Box(Modifier.weight(1f)) {
+                    OutlinedTextField(
+                        value = units,
+                        onValueChange = {},
+                        modifier = Modifier.fillMaxWidth().clickable { unitMenuExpanded = true },
+                        label = { Text("Weight unit") },
+                        placeholder = { Text("Select unit") },
+                        readOnly = true,
+                        singleLine = true,
+                        trailingIcon = {
+                            IconButton(onClick = { unitMenuExpanded = true }) {
+                                Icon(Icons.Default.ArrowDropDown, contentDescription = "Select weight unit")
+                            }
+                        }
+                    )
+                    DropdownMenu(
+                        expanded = unitMenuExpanded,
+                        onDismissRequest = { unitMenuExpanded = false },
+                        modifier = Modifier.heightIn(max = 280.dp)
+                    ) {
+                        if (unitOptions.isEmpty()) {
+                            DropdownMenuItem(
+                                text = { Text("No units found in product database") },
+                                onClick = { unitMenuExpanded = false },
+                                enabled = false
+                            )
+                        } else {
+                            unitOptions.forEach { unit ->
+                                DropdownMenuItem(
+                                    text = { Text(unit) },
+                                    onClick = { units = unit; message = null; unitMenuExpanded = false }
+                                )
+                            }
+                        }
+                    }
+                }
             }
             OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity / pack count") }, singleLine = true)
             Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)
