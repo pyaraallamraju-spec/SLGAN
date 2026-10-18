@@ -3016,7 +3016,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         ) {
                             items(signatureProducts, key = { it.id }) { product ->
                                 Card(
-                                    modifier = Modifier.width(198.dp).clickable { onProductClick(product) },
+                                    modifier = Modifier.width(198.dp).height(300.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
