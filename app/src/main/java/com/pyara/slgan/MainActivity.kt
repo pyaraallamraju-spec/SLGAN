@@ -1524,6 +1524,14 @@ private fun AdminProductsScreen(
         )
         return
     }
+    if (viewingProduct != null) {
+        AdminProductDetailsScreen(
+            product = viewingProduct!!,
+            onBack = { viewingProduct = null },
+            onEdit = { product -> editingProduct = product; viewingProduct = null }
+        )
+        return
+    }
     // Build the admin category filters from live product records supplied by Firestore,
     // rather than maintaining a separate hard-coded category list.
     val adminCategories = remember(products) {
@@ -1795,27 +1803,6 @@ private fun AdminProductsScreen(
             }
         }
     }
-    viewingProduct?.let { product ->
-        AlertDialog(
-            onDismissRequest = { viewingProduct = null },
-            containerColor = Cream,
-            title = { Text(product.name, color = Forest, fontWeight = FontWeight.ExtraBold) },
-            text = {
-                Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(16.dp)), contentScale = ContentScale.Crop)
-                    Text("Category: ${product.category}", color = Ink)
-                    Text("Price: " + if (product.price > 0) "₹${product.price}" else "Price not set", color = Forest, fontWeight = FontWeight.Bold)
-                    Text(if (product.productStock == 1) "Availability: In stock" else "Availability: Out of stock", color = if (product.productStock == 1) Color(0xFF258348) else Color(0xFFC5392F), fontWeight = FontWeight.Bold)
-                    Text("Pack size: ${product.subtitle.ifBlank { "Information not available." }}", color = Muted)
-                    Text("Description: ${product.description.ifBlank { "Information not available." }}", color = Ink)
-                    Text("Usage: ${product.usage.ifBlank { "Information not available." }}", color = Ink)
-                    Text("Ingredients: ${product.majorIngredients.ifBlank { "Information not available." }}", color = Ink)
-                }
-            },
-            confirmButton = { TextButton(onClick = { editingProduct = product; viewingProduct = null }) { Text("Edit product", color = Forest) } },
-            dismissButton = { TextButton(onClick = { viewingProduct = null }) { Text("Close", color = Muted) } }
-        )
-    }
     deletingProduct?.let { product ->
         AlertDialog(
             onDismissRequest = { deletingProduct = null },
@@ -1831,6 +1818,121 @@ private fun AdminProductsScreen(
             },
             dismissButton = { TextButton(onClick = { deletingProduct = null }) { Text("Cancel", color = Muted) } }
         )
+    }
+}
+
+
+@Composable
+private fun AdminProductDetailsScreen(
+    product: Product,
+    onBack: () -> Unit,
+    onEdit: (Product) -> Unit
+) {
+    var fields by remember(product.id) { mutableStateOf<Map<String, Any>?>(null) }
+    var loadingDetails by remember(product.id) { mutableStateOf(true) }
+    var detailsError by remember(product.id) { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(product.id) {
+        FirebaseFirestore.getInstance().collection("products").document(product.id).get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    fields = document.data ?: emptyMap()
+                    detailsError = null
+                } else {
+                    detailsError = "Product record was not found in Firestore."
+                }
+                loadingDetails = false
+            }
+            .addOnFailureListener { error ->
+                detailsError = error.localizedMessage ?: "Could not load product details."
+                loadingDetails = false
+            }
+    }
+
+    val data = fields.orEmpty()
+    val hiddenKeys = setOf("image_url", "imageUrl", "product_image", "password", "passwordHash")
+    fun displayLabel(key: String): String = key
+        .replace(Regex("([a-z])([A-Z])"), "$1 $2")
+        .replace('_', ' ')
+        .trim()
+        .split(Regex("\\s+"))
+        .joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
+
+    Column(Modifier.fillMaxSize().background(Cream)) {
+        Row(
+            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to products", tint = Forest) }
+            Column(Modifier.weight(1f)) {
+                Text("View Product", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                Text("Complete catalogue information", color = Muted, fontSize = 12.sp)
+            }
+            TextButton(onClick = { onEdit(product) }) {
+                Icon(Icons.Default.Edit, contentDescription = null, tint = Forest, modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(4.dp))
+                Text("Edit", color = Forest)
+            }
+        }
+        if (loadingDetails) {
+            AppLoader("Loading product details…", compact = true)
+        } else if (detailsError != null && data.isEmpty()) {
+            Text(detailsError.orEmpty(), Modifier.padding(20.dp), color = Color(0xFFB3261E))
+            TextButton(onClick = onBack) { Text("Back to products", color = Forest) }
+        } else {
+            Column(
+                Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Card(
+                    Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(22.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, Gold.copy(alpha = 0.45f))
+                ) {
+                    Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        val image = listOf("product_image_url", "image_url", "imageUrl", "image", "productImage").firstNotNullOfOrNull { key -> data[key]?.toString()?.takeIf { it.startsWith("http") } }.orEmpty()
+                        if (image.isNotBlank()) {
+                            AsyncImage(model = image, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(220.dp).clip(RoundedCornerShape(16.dp)), contentScale = ContentScale.Crop)
+                        } else {
+                            Box(Modifier.fillMaxWidth().height(110.dp).clip(RoundedCornerShape(16.dp)).background(PaleGreen), contentAlignment = Alignment.Center) {
+                                Text(product.emoji, fontSize = 48.sp)
+                            }
+                        }
+                        Text(data["product_name"]?.toString() ?: data["name"]?.toString() ?: product.name, color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(
+                            if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
+                            color = Forest, fontSize = 21.sp, fontWeight = FontWeight.Bold
+                        )
+                        Text(if (product.productStock == 1) "IN STOCK" else "OUT OF STOCK", color = if (product.productStock == 1) Color(0xFF258348) else Color(0xFFC5392F), fontWeight = FontWeight.Bold)
+                    }
+                }
+                Text("PRODUCT INFORMATION", color = Leaf, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
+                if (data.isEmpty()) {
+                    Text("No additional fields are saved for this product.", color = Muted)
+                } else {
+                    data.toSortedMap().filterKeys { key -> key !in hiddenKeys && !key.equals("image", true) && !key.equals("product_image", true) }.forEach { (key, value) ->
+                        val valueText = when (value) {
+                            is Map<*, *> -> value.entries.joinToString("\n") { "${it.key}: ${it.value}" }
+                            is List<*> -> value.joinToString(", ")
+                            else -> value.toString()
+                        }
+                        Card(
+                            Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Gold.copy(alpha = 0.22f))
+                        ) {
+                            Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Text(displayLabel(key), color = Forest, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text(valueText.ifBlank { "—" }, color = Ink, fontSize = 14.sp, lineHeight = 20.sp)
+                            }
+                        }
+                    }
+                }
+                if (detailsError != null) Text("Latest details could not be refreshed: ${detailsError}", color = Muted, fontSize = 12.sp)
+            }
+        }
     }
 }
 
