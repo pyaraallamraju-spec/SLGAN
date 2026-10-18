@@ -5644,6 +5644,15 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         Icon(Icons.Default.LocationOn, contentDescription = null, tint = Forest, modifier = Modifier.size(38.dp))
                     }
                     Spacer(Modifier.height(18.dp))
+                    Text("No addresses yet", fontSize = 18.sp, color = Ink, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        "Tap Add address to save your first delivery location.",
+                        color = Muted,
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(18.dp))
                     Button(
                         onClick = { showAddressForm = true; addressMessage = null },
                         modifier = Modifier.fillMaxWidth(0.78f).height(54.dp),
