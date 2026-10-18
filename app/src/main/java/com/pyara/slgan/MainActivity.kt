@@ -910,7 +910,7 @@ private fun SplashScreen() {
             )
         )
         // Let every product-category emoji drift down like a falling leaf.
-        val categoryEmojis = listOf("🌿", "🍃", "🌱", "🍂", "🌿", "🍃", "🌾", "🌱", "🗂️", "🍯", "🧈", "💊", "🫙", "🌿", "🍃", "🌱", "🪨", "🍂", "🌿", "🍃", "🌱", "🌾", "🍃", "🌿")
+        val categoryEmojis = listOf("🌿", "🍃", "🌱", "🍂", "🌿", "🍃", "🌾", "🌱", "🗂️", "🍯", "🏺", "💊", "🫙", "🌿", "🍃", "🌱", "🪨", "🍂", "🌿", "🍃", "🌱", "🌾", "🍃", "🌿")
         val leafPositions = listOf(0.02f, 0.105f, 0.19f, 0.275f, 0.36f, 0.445f, 0.53f, 0.615f, 0.70f, 0.785f, 0.87f, 0.955f, 0.06f, 0.145f, 0.23f, 0.315f, 0.40f, 0.485f, 0.57f, 0.655f, 0.74f, 0.825f, 0.91f, 0.98f)
         leafPositions.forEachIndexed { index, fraction ->
             val fall by motion.animateFloat(
