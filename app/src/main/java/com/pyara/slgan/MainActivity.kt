@@ -1267,7 +1267,7 @@ private fun HomeBannerSlider(
     var selectedDesign by remember { mutableIntStateOf(1) }
     DisposableEffect(Unit) {
         val registration = FirebaseFirestore.getInstance().collection("appSettings").document("homeBanner")
-            .addSnapshotListener { snapshot, _ -> selectedDesign = (snapshot?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 3) }
+            .addSnapshotListener { snapshot, _ -> selectedDesign = (snapshot?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 4) }
         onDispose { registration.remove() }
     }
     val slides = remember(products) {
@@ -1325,7 +1325,7 @@ private fun HomeBannerSlider(
                 .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
                 .background(
                     Brush.linearGradient(
-                        colors = when (selectedDesign) { 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFFC6D6A3)); else -> listOf(Color(0xFF762A24), Color(0xFF5B1C29), Color(0xFF8A3D2B)) }
+                        colors = when (selectedDesign) { 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFFC6D6A3)); 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); else -> listOf(Color(0xFF762A24), Color(0xFF5B1C29), Color(0xFF8A3D2B)) }
                     )
                 )
         ) {
@@ -2309,21 +2309,21 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         Spacer(Modifier.height(8.dp))
         Text("Slider 1 is your existing banner. It will not be replaced. Choose Slider 2 or 3 and tap Apply.", color = Muted, fontSize = 14.sp)
         Spacer(Modifier.height(16.dp))
-        (1..3).forEach { design ->
-            val colors = when (design) { 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
+        (1..4).forEach { design ->
+            val colors = when (design) { 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
             Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = Cream)) {
                 Column(Modifier.padding(12.dp)) {
                     Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Brush.linearGradient(colors)).padding(14.dp)) {
                         Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.82f)) {
-                            Text(when (design) { 3 -> "PURE AYURVEDA"; 2 -> "BOTANICAL WELLNESS"; else -> "SLGAN · TRUSTED SINCE 1990" }, color = if (design == 3) Color(0xFF23452C) else Color(0xFFFFDFA0), fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                            Text(when (design) { 3 -> "Pure Ayurveda for Better Living"; 2 -> "Nature’s Goodness"; else -> "Authentic Ayurvedic Formulations" }, color = if (design == 3) Color(0xFF23452C) else if (design == 2) Color(0xFFFFE8AE) else Color.White, fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.ExtraBold)
-                            Text(if (design == 3) "Traditional wisdom · Natural wellness" else if (design == 2) "Herbs · Roots · Everyday wellness" else "Traditional wisdom · Natural wellness", color = if (design == 3) Color(0xFF5B3428) else if (design == 2) Color(0xFFE8F0D8) else Color(0xFFFFE9B2), fontSize = 10.sp)
+                            Text(when (design) { 4 -> "✦  THEME-ADAPTIVE SIGNATURE"; 3 -> "PURE AYURVEDA"; 2 -> "BOTANICAL WELLNESS"; else -> "SLGAN · TRUSTED SINCE 1990" }, color = if (design == 3) Color(0xFF23452C) else Color(0xFFFFDFA0), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            Text(when (design) { 4 -> "Wellness, Inspired by Nature"; 3 -> "Pure Ayurveda for Better Living"; 2 -> "Nature’s Goodness"; else -> "Authentic Ayurvedic Formulations" }, color = if (design == 3) Color(0xFF23452C) else if (design == 2) Color(0xFFFFE8AE) else Color.White, fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.ExtraBold)
+                            Text(when (design) { 4 -> "Traditional wisdom · Trusted since 1990"; 3 -> "Traditional wisdom · Natural wellness"; 2 -> "Herbs · Roots · Everyday wellness"; else -> "Traditional wisdom · Natural wellness" }, color = if (design == 3) Color(0xFF5B3428) else if (design == 2) Color(0xFFE8F0D8) else Color(0xFFFFE9B2), fontSize = 10.sp)
                         }
                         Icon(if (activeDesign == design) Icons.Default.CheckCircle else Icons.Default.Circle, contentDescription = null, tint = if (design == 3) Color(0xFF35552F) else Gold, modifier = Modifier.align(Alignment.TopEnd).size(24.dp))
                     }
                     Spacer(Modifier.height(10.dp))
-                    Text(when (design) { 1 -> "Slider 1 · Current banner"; 2 -> "Slider 2 · Nature’s Goodness"; else -> "Slider 3 · Cream & Green" }, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text(when (design) { 1 -> "Keep the existing look"; 2 -> "Deep botanical green, herbal imagery and gold accents"; else -> "Fresh botanical, natural look" }, color = Muted, fontSize = 12.sp)
+                    Text(when (design) { 1 -> "Slider 1 · Current banner"; 2 -> "Slider 2 · Nature’s Goodness"; 3 -> "Slider 3 · Cream & Green"; else -> "Slider 4 · Theme-Adaptive Signature" }, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(when (design) { 1 -> "Keep the existing look"; 2 -> "Deep botanical green, herbal imagery and gold accents"; 3 -> "Fresh botanical, natural look"; else -> "Uses the selected app theme’s Forest and Gold palette, with high-contrast text and button styling." }, color = Muted, fontSize = 12.sp)
                     if (activeDesign == design) Text("SELECTED", color = Forest, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
                 }
             }
