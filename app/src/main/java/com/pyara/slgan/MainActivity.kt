@@ -3011,18 +3011,33 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
-                                            Surface(
-                                                modifier = Modifier.align(Alignment.TopStart).padding(6.dp),
-                                                shape = RoundedCornerShape(50.dp),
-                                                color = Color(0xFF762A24),
-                                                contentColor = Color(0xFFFFF7E8)
+                                            Box(
+                                                modifier = Modifier.align(Alignment.TopEnd).padding(5.dp).size(42.dp),
+                                                contentAlignment = Alignment.Center
                                             ) {
+                                                Canvas(Modifier.fillMaxSize()) {
+                                                    val center = Offset(size.width / 2f, size.height / 2f)
+                                                    val outerRadius = size.minDimension * 0.47f
+                                                    for (i in 0 until 16) {
+                                                        val angle = (i * 22.5f - 90f) * (Math.PI.toFloat() / 180f)
+                                                        val inner = outerRadius * 0.72f
+                                                        val outer = outerRadius
+                                                        drawLine(
+                                                            color = Color(0xFFE4AC37),
+                                                            start = Offset(center.x + kotlin.math.cos(angle) * inner, center.y + kotlin.math.sin(angle) * inner),
+                                                            end = Offset(center.x + kotlin.math.cos(angle) * outer, center.y + kotlin.math.sin(angle) * outer),
+                                                            strokeWidth = 1.8.dp.toPx(),
+                                                            cap = StrokeCap.Round
+                                                        )
+                                                    }
+                                                    drawCircle(color = Color(0xFFE4AC37), radius = outerRadius * 0.72f, center = center)
+                                                    drawCircle(color = Color(0xFF762A24), radius = outerRadius * 0.61f, center = center)
+                                                }
                                                 Text(
-                                                    "SLGANILAYAM",
-                                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                                    "SLG",
                                                     color = Color(0xFFFFE6A3),
-                                                    fontSize = 8.sp,
-                                                    fontWeight = FontWeight.Bold,
+                                                    fontSize = 7.sp,
+                                                    fontWeight = FontWeight.ExtraBold,
                                                     maxLines = 1
                                                 )
                                             }
