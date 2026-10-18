@@ -519,6 +519,7 @@ private fun AyurvedicApp() {
     var adminOrdersOpen by remember { mutableStateOf(false) }
     var adminCustomersOpen by remember { mutableStateOf(false) }
     var adminDiseasesOpen by remember { mutableStateOf(false) }
+    var adminBannersOpen by remember { mutableStateOf(false) }
     var adminRoleResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
@@ -760,6 +761,7 @@ private fun AyurvedicApp() {
             else if (!adminRoleResolved) AppLoader("Checking account permissions…")
             else if (isAdmin && adminCustomersOpen) AdminCustomersScreen(onBack = { adminCustomersOpen = false })
             else if (isAdmin && adminDiseasesOpen) AdminDiseasesScreen(onBack = { adminDiseasesOpen = false })
+            else if (isAdmin && adminBannersOpen) BannerManagementScreen(onBack = { adminBannersOpen = false })
             else if (isAdmin && adminOrdersOpen) AdminOrdersScreen(onBack = { adminOrdersOpen = false })
             else if (isAdmin && adminProductsOpen) AdminProductsScreen(
                 products = liveProducts,
@@ -774,12 +776,14 @@ private fun AyurvedicApp() {
                 onOrdersClick = { adminOrdersOpen = true },
                 onCustomersClick = { adminCustomersOpen = true },
                 onDiseasesClick = { adminDiseasesOpen = true },
+                onBannersClick = { adminBannersOpen = true },
                 onSignOut = {
                     auth.signOut()
                     adminProductsOpen = false
                     adminOrdersOpen = false
                     adminCustomersOpen = false
                     adminDiseasesOpen = false
+                    adminBannersOpen = false
                     selectedTab = "Home"
                     selectedProduct = null
                     cart.clear()
@@ -1199,6 +1203,12 @@ private fun HomeBannerSlider(
     products: List<Product>,
     onViewProduct: (String) -> Unit
 ) {
+    var selectedDesign by remember { mutableIntStateOf(1) }
+    DisposableEffect(Unit) {
+        val registration = FirebaseFirestore.getInstance().collection("appSettings").document("homeBanner")
+            .addSnapshotListener { snapshot, _ -> selectedDesign = (snapshot?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 3) }
+        onDispose { registration.remove() }
+    }
     val slides = remember(products) {
         val signatureSlides = products.filter { it.signature }.map { product ->
             HomeBannerSlide(
@@ -1254,11 +1264,7 @@ private fun HomeBannerSlider(
                 .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
                 .background(
                     Brush.linearGradient(
-                        colors = listOf(
-                            Color(0xFF762A24),
-                            Color(0xFF5B1C29),
-                            Color(0xFF8A3D2B)
-                        )
+                        colors = if (selectedDesign == 3) listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFFC6D6A3)) else listOf(Color(0xFF762A24), Color(0xFF5B1C29), Color(0xFF8A3D2B))
                     )
                 )
         ) {
@@ -1299,7 +1305,9 @@ private fun HomeBannerSlider(
                         contentScale = if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                    if (!slide.isCompanySlide) {
+                    if (selectedDesign == 3) {
+                        Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFFF8F0DC).copy(alpha = 0.97f), Color(0xFFE7EBCB).copy(alpha = 0.86f), Color(0xFFC6D6A3).copy(alpha = 0.42f), Color.Transparent))))
+                    } else if (!slide.isCompanySlide) {
                         Box(
                             Modifier.fillMaxSize().background(
                                 Brush.horizontalGradient(
@@ -1358,7 +1366,7 @@ private fun HomeBannerSlider(
                         Text(
                             if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
-                            color = Color.White,
+                            color = if (selectedDesign == 3) Color(0xFF23452C) else Color.White,
                             fontSize = if (slide.isCompanySlide) 23.sp else 25.sp,
                             lineHeight = if (slide.isCompanySlide) 27.sp else 30.sp,
                             fontWeight = FontWeight.ExtraBold,
@@ -1368,7 +1376,7 @@ private fun HomeBannerSlider(
                         Spacer(Modifier.height(6.dp))
                         Text(
                             tr(slide.tagline, LocalAppLanguage.current),
-                            color = if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
+                            color = if (selectedDesign == 3) Color(0xFF5B3428) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
                             fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight.Medium,
@@ -1881,6 +1889,7 @@ private fun AdminDashboardScreen(
     onOrdersClick: () -> Unit,
     onCustomersClick: () -> Unit,
     onDiseasesClick: () -> Unit,
+    onBannersClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
     var orderCount by remember { mutableIntStateOf(0) }
@@ -1976,7 +1985,15 @@ private fun AdminDashboardScreen(
                 onClick = onCustomersClick
             )
         }
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(18.dp))
+        Card(Modifier.fillMaxWidth().clickable(onClick = onBannersClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
+            Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(PaleGreen), contentAlignment = Alignment.Center) { Icon(Icons.Default.ViewCarousel, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp)) }
+                Spacer(Modifier.width(12.dp))
+                Column(Modifier.weight(1f)) { Text("Home banner sliders", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold); Text("Choose Slider 1, 2 or 3 for the home page", color = Muted, fontSize = 12.sp) }
+                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
+            }
+        }
         Spacer(Modifier.height(20.dp))
         OutlinedButton(
             onClick = onSignOut,
@@ -1990,6 +2007,59 @@ private fun AdminDashboardScreen(
     }
 }
 
+
+@Composable
+private fun BannerManagementScreen(onBack: () -> Unit) {
+    val db = remember { FirebaseFirestore.getInstance() }
+    var activeDesign by remember { mutableIntStateOf(1) }
+    var saving by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf<String?>(null) }
+    DisposableEffect(Unit) {
+        val registration = db.collection("appSettings").document("homeBanner").addSnapshotListener { snap, _ ->
+            activeDesign = (snap?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 3)
+        }
+        onDispose { registration.remove() }
+    }
+    Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            Column { Text("HOME PAGE SLIDERS", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
+        }
+        Spacer(Modifier.height(8.dp))
+        Text("Slider 1 is your existing banner. It will not be replaced. Choose Slider 2 or 3 and tap Apply.", color = Muted, fontSize = 14.sp)
+        Spacer(Modifier.height(16.dp))
+        (1..3).forEach { design ->
+            val colors = when (design) { 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF762A24), Color(0xFF5B1C29), Gold); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
+            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Column(Modifier.padding(12.dp)) {
+                    Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Brush.linearGradient(colors)).padding(14.dp)) {
+                        Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.82f)) {
+                            Text(if (design == 3) "PURE AYURVEDA" else "SLGAN · TRUSTED SINCE 1990", color = if (design == 3) Color(0xFF23452C) else Color(0xFFFFDFA0), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            Text(if (design == 3) "Pure Ayurveda for Better Living" else "Authentic Ayurvedic Formulations", color = if (design == 3) Color(0xFF23452C) else Color.White, fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.ExtraBold)
+                            Text("Traditional wisdom · Natural wellness", color = if (design == 3) Color(0xFF5B3428) else Color(0xFFFFE9B2), fontSize = 10.sp)
+                        }
+                        Icon(if (activeDesign == design) Icons.Default.CheckCircle else Icons.Default.Circle, contentDescription = null, tint = if (design == 3) Color(0xFF35552F) else Gold, modifier = Modifier.align(Alignment.TopEnd).size(24.dp))
+                    }
+                    Spacer(Modifier.height(10.dp))
+                    Text(when (design) { 1 -> "Slider 1 · Current banner"; 2 -> "Slider 2 · Maroon & Gold"; else -> "Slider 3 · Cream & Green" }, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(when (design) { 1 -> "Keep the existing look"; 2 -> "Traditional, premium Ayurveda"; else -> "Fresh botanical, natural look" }, color = Muted, fontSize = 12.sp)
+                    if (activeDesign == design) Text("SELECTED", color = Forest, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
+                }
+            }
+        }
+        Button(onClick = {
+            saving = true; message = null
+            db.collection("appSettings").document("homeBanner")
+                .set(mapOf("activeDesign" to activeDesign, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
+                .addOnSuccessListener { saving = false; message = "Slider $activeDesign applied to the home page." }
+                .addOnFailureListener { e -> saving = false; message = "Could not apply slider: ${e.localizedMessage ?: "Check Firestore permissions."}" }
+        }, enabled = !saving, modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+            if (saving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Check, contentDescription = null)
+            Spacer(Modifier.width(8.dp)); Text(if (saving) "Applying…" else "Apply Slider $activeDesign", fontWeight = FontWeight.Bold)
+        }
+        message?.let { Spacer(Modifier.height(10.dp)); Text(it, color = if (it.startsWith("Could not")) Color(0xFFB3261E) else Forest, fontSize = 13.sp) }
+    }
+}
 
 @Composable
 private fun AdminDiseasesScreen(onBack: () -> Unit) {
