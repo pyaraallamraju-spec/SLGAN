@@ -4645,7 +4645,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                 )
                                 val packSize = product.subtitle.ifBlank { product.quantity }
                                 val cartQuantity = cart[product.id] ?: 0
-                                Spacer(Modifier.height(5.dp))
+                                Spacer(Modifier.height(2.dp))
                                 Row(
                                     Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
@@ -4676,7 +4676,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                     }
                                     ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                 }
-                                Spacer(Modifier.height(5.dp))
+                                Spacer(Modifier.height(2.dp))
                                 Row(
                                     Modifier.fillMaxWidth(),
                                     verticalAlignment = Alignment.CenterVertically,
