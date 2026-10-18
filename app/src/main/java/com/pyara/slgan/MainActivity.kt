@@ -2758,7 +2758,7 @@ private fun ShopScreen(
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage) { onTabChange("Home") }
-            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onCategoryChange) { onTabChange("Home") }
+            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
@@ -4397,7 +4397,7 @@ private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.Image
 }
 
 @Composable
-private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
+private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<String?>(null) }
     val selectedProducts = products.filter { selectedCategory == "All" || it.category.equals(selectedCategory, ignoreCase = true) }
@@ -4668,10 +4668,40 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             Text("Add to cart", fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                                         }
                                     } else {
-                                        Column(horizontalAlignment = Alignment.End) {
-                                            Text("Added · $cartQuantity", color = Forest, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
-                                            TextButton(onClick = { onAdd(product.id) }, contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp)) {
-                                                Text("Add another", fontSize = 10.sp, color = Forest, maxLines = 1)
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                        ) {
+                                            Surface(
+                                                shape = RoundedCornerShape(10.dp),
+                                                color = Cream,
+                                                border = BorderStroke(1.dp, Gold)
+                                            ) {
+                                                Row(
+                                                    verticalAlignment = Alignment.CenterVertically,
+                                                    horizontalArrangement = Arrangement.Center
+                                                ) {
+                                                    IconButton(
+                                                        onClick = { onRemove(product.id) },
+                                                        modifier = Modifier.size(30.dp)
+                                                    ) {
+                                                        Icon(Icons.Default.Remove, contentDescription = "Decrease quantity", tint = Forest, modifier = Modifier.size(16.dp))
+                                                    }
+                                                    Text(
+                                                        cartQuantity.toString(),
+                                                        color = Ink,
+                                                        fontSize = 12.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        modifier = Modifier.widthIn(min = 16.dp),
+                                                        textAlign = TextAlign.Center
+                                                    )
+                                                    IconButton(
+                                                        onClick = { onAdd(product.id) },
+                                                        modifier = Modifier.size(30.dp)
+                                                    ) {
+                                                        Icon(Icons.Default.Add, contentDescription = "Increase quantity", tint = Forest, modifier = Modifier.size(16.dp))
+                                                    }
+                                                }
                                             }
                                         }
                                     }
