@@ -5433,7 +5433,18 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         WebView(ctx).apply {
                             settings.javaScriptEnabled = true
                             settings.domStorageEnabled = true
+                            settings.geolocationEnabled = true
                             webViewClient = WebViewClient()
+                            webChromeClient = object : WebChromeClient() {
+                                override fun onGeolocationPermissionsShowPrompt(
+                                    origin: String?,
+                                    callback: GeolocationPermissions.Callback?
+                                ) {
+                                    val hasFine = ctx.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                                    val hasCoarse = ctx.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                                    callback?.invoke(origin, hasFine || hasCoarse, false)
+                                }
+                            }
                             addJavascriptInterface(object {
                                 @android.webkit.JavascriptInterface
                                 fun selectAddress(line1: String, line2: String, landmarkValue: String, cityValue: String, stateValue: String, pinValue: String) {
@@ -5460,11 +5471,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 #locate{display:block;width:100%;margin:0 0 8px;padding:11px 12px;border:0;border-radius:12px;background:#762b35;color:#fff8e9;font-size:14px;font-weight:700;text-align:left}#locate:active{opacity:.8}
                                  #search{display:block;width:100%;padding:13px 14px;border:1px solid #d5c5a6;border-radius:12px;background:#fffefa;color:#30251d;font-size:15px;outline:none;box-shadow:inset 0 1px 2px #3e28100a}
                                 #search::placeholder{color:#8d8170}#search:focus{border-color:#9a6b2e;box-shadow:0 0 0 3px #c69a4b25}
-                                #results{max-height:150px;overflow:auto;background:#fffefa;border:1px solid #e7dcc7;border-radius:12px;margin-top:8px}
+                                #results{max-height:100px;overflow:auto;background:#fffefa;border:1px solid #e7dcc7;border-radius:12px;margin-top:8px}
                                 .result{padding:12px;border-bottom:1px solid #eee4d2;font-size:13px;line-height:1.45;color:#30251d;cursor:pointer}
                                 .result:last-child{border-bottom:0}.result:active{background:#f5e8ce}
                                 #map-frame{position:relative;margin-top:12px;padding:4px;border:1px solid #b88b43;border-radius:18px;background:linear-gradient(135deg,#f0d18a,#8c542d);box-shadow:0 7px 18px #4b2b1724;overflow:hidden}
-                                #map{height:290px;width:100%;border-radius:14px;overflow:hidden;background:#e9e3d6}
+                                #map{height:220px;width:100%;border-radius:14px;overflow:hidden;background:#e9e3d6}
                                 .map-caption{display:flex;align-items:center;justify-content:space-between;padding:9px 5px 3px;font-size:11px;color:#5b4939}
                                 .map-caption strong{color:#762b35;font-size:11px}
                                 .hint{font-size:11px;line-height:1.5;color:#786957;padding:9px 3px 1px}
@@ -5477,7 +5488,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 <body><div class="search-panel"><div class="heading">FIND YOUR DELIVERY LOCATION</div><button id="locate" type="button" onclick="locateMe()">◎ Use my current location</button><input id="search" autocomplete="off" placeholder="Search locality, street, landmark or PIN code"><div id="results"></div></div><div id="map-frame"><div id="map"></div><div class="map-caption"><strong>✦ SLGAN DELIVERY MAP</strong><span>Move map · Select a search result</span></div></div><div class="hint">Search for your area and tap a result to auto-fill the address form. Please verify the details before saving. Map © OpenStreetMap contributors · CARTO.</div>
                                 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
                                 const map=L.map('map',{zoomControl:true,scrollWheelZoom:true}).setView([17.385,78.4867],12);
-                                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap contributors © CARTO',subdomains:'abcd',maxZoom:20}).addTo(map);
+                                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors',maxZoom:19}).addTo(map);
                                 const pinIcon=L.divIcon({className:'slgan-pin',html:'<div style="width:24px;height:24px;background:#762b35;border:3px solid #f0c56a;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 3px 8px #0005;position:relative"><span style="position:absolute;width:6px;height:6px;background:#fff2d0;border-radius:50%;left:6px;top:6px"></span></div>',iconSize:[28,34],iconAnchor:[12,30]});
                                 let marker=null;let currentMarker=null;let currentCircle=null;
                                  function locateMe(){const btn=document.getElementById('locate');if(!navigator.geolocation){btn.textContent='Location is not supported on this device';return}btn.textContent='Finding your current location…';navigator.geolocation.getCurrentPosition(async pos=>{const lat=pos.coords.latitude,lon=pos.coords.longitude,ll=[lat,lon];map.setView(ll,17);if(currentMarker)map.removeLayer(currentMarker);if(currentCircle)map.removeLayer(currentCircle);currentMarker=L.circleMarker(ll,{radius:9,color:'#ffffff',weight:3,fillColor:'#1687ff',fillOpacity:1}).addTo(map).bindPopup('Your current location').openPopup();currentCircle=L.circle(ll,{radius:Math.max(pos.coords.accuracy||30,25),color:'#1687ff',weight:1,fillColor:'#1687ff',fillOpacity:.12}).addTo(map);if(marker)map.removeLayer(marker);marker=L.marker(ll,{icon:pinIcon,draggable:true}).addTo(map);document.getElementById('search').value='Current location';btn.textContent='✓ Current location found';try{const r=await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lon);if(r.ok){const d=await r.json();applyAddress(d.address||{});document.getElementById('search').value=d.display_name||'Current location'}}catch(e){}marker.on('dragend',async()=>{const p=marker.getLatLng();map.setView(p,Math.max(map.getZoom(),16));try{const r=await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+p.lat+'&lon='+p.lng);if(r.ok){const d=await r.json();applyAddress(d.address||{});document.getElementById('search').value=d.display_name||'Selected map location'}}catch(e){}})},err=>{btn.textContent=err.code===1?'Allow location permission to find you':'Could not get location — tap to retry';},{enableHighAccuracy:true,timeout:15000,maximumAge:60000})}
