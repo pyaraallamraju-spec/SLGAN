@@ -5443,7 +5443,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         WebView(ctx).apply {
                             settings.javaScriptEnabled = true
                             settings.domStorageEnabled = true
-                            settings.geolocationEnabled = true
                             webViewClient = WebViewClient()
                             webChromeClient = object : WebChromeClient() {
                                 override fun onGeolocationPermissionsShowPrompt(
