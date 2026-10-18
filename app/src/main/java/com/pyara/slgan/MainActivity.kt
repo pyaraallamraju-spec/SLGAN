@@ -1890,7 +1890,7 @@ private fun AdminProductEditor(
             OutlinedTextField(category, { category = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Category *") }, singleLine = true, supportingText = { Text("Use: Lehyas, Grutas, Pills, Tailas, Churnas, Rasayanas or Bhasmas") })
             OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Pack weight") }, singleLine = true)
+                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight") }, singleLine = true)
                 Box(Modifier.weight(1f)) {
                     OutlinedTextField(
                         value = units,
