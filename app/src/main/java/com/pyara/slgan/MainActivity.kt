@@ -4936,7 +4936,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         value = "${selectedCountry.second}  ${selectedCountry.third}",
                         onValueChange = {},
                         readOnly = true,
-                        modifier = Modifier.width(140.dp).height(64.dp).clickable { countryMenuExpanded = true },
+                        modifier = Modifier.width(140.dp).clickable { countryMenuExpanded = true },
                         label = { Text("Country code", maxLines = 1, softWrap = false) },
                         trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country code", tint = Forest, modifier = Modifier.size(18.dp)) },
                         singleLine = true,
@@ -4966,7 +4966,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 OutlinedTextField(
                     value = mobileNumber,
                     onValueChange = { input -> mobileNumber = input.filter(Char::isDigit).take(15); saveMessage = null },
-                    modifier = Modifier.weight(1f).height(64.dp),
+                    modifier = Modifier.weight(1f),
                     label = { Text(tr("Mobile number", LocalAppLanguage.current), maxLines = 1, softWrap = false) },
                     singleLine = true,
                     textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp, lineHeight = 20.sp, color = Ink),
