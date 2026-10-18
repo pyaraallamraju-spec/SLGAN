@@ -3411,7 +3411,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
                     imageVector = if (star <= summary.average) Icons.Default.Star else Icons.Default.StarBorder,
                     contentDescription = "Rate ${product.name} ${star} out of 5 stars",
                     tint = if (star <= summary.average) Gold else Muted,
-                    modifier = Modifier.size(if (compact) 14.dp else 17.dp)
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
