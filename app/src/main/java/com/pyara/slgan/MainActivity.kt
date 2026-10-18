@@ -3217,7 +3217,20 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
-                                Text("🌿", fontSize = 9.sp)
+                                Text(
+                                    when (product.category.trim().lowercase()) {
+                                        "all" -> "🌿"
+                                        "lehyas" -> "🫙"
+                                        "grutas", "ghritas", "ghrutas" -> "🥣"
+                                        "pills" -> "💊"
+                                        "tailas" -> "🪔"
+                                        "churnas" -> "🌰"
+                                        "rasayanas" -> "🪷"
+                                        "bhasmas" -> "🪨"
+                                        else -> "🌿"
+                                    },
+                                    fontSize = 9.sp
+                                )
                                 Text(product.category, fontSize = 8.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                         }
