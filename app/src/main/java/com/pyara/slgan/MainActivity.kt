@@ -3936,7 +3936,10 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.background(Cream, RoundedCornerShape(14.dp)).padding(horizontal = 2.dp)
+                                    modifier = Modifier
+                                        .border(1.dp, Gold, RoundedCornerShape(14.dp))
+                                        .background(Cream, RoundedCornerShape(14.dp))
+                                        .padding(horizontal = 2.dp)
                                 ) {
                                     IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(34.dp)) {
                                         Icon(Icons.Default.Remove, contentDescription = "Remove one", tint = Forest, modifier = Modifier.size(17.dp))
