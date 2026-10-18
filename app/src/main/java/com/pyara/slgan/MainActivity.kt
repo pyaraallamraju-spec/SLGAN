@@ -3070,17 +3070,24 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp)
-                .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp).height(72.dp),
             singleLine = true,
-            shape = RoundedCornerShape(18.dp),
-            placeholder = { Text("Search order") },
+            label = { Text("Search order", modifier = Modifier.background(Color.White), color = Forest) },
+            placeholder = { Text("Order ID, customer or mobile") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = Forest) },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) IconButton(onClick = { searchQuery = "" }) {
                     Icon(Icons.Default.Close, contentDescription = "Clear search")
                 }
-            }
+            },
+            shape = RoundedCornerShape(18.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Forest,
+                unfocusedBorderColor = Gold,
+                focusedContainerColor = Cream,
+                unfocusedContainerColor = Cream,
+                cursorColor = Gold
+            )
         )
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 2.dp),
