@@ -4753,6 +4753,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
         }
 }
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit) {
     val user = remember { FirebaseAuth.getInstance().currentUser }
@@ -5002,7 +5003,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             colors = ButtonDefaults.textButtonColors(contentColor = Forest)
                         ) { Text("Cancel") }
                     },
-                    colors = DatePickerDialogDefaults.colors(containerColor = Cream)
                 ) {
                     DatePicker(
                         state = datePickerState,
