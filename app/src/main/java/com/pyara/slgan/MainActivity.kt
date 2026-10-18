@@ -3836,9 +3836,9 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                     when (product.category.trim().lowercase()) {
                                         "all" -> "🌿"
                                         "lehyas" -> "🫙"
-                                        "grutas", "ghritas", "ghrutas" -> "🫙"
+                                        "grutas", "ghritas", "ghrutas" -> "🏺"
                                         "pills" -> "💊"
-                                        "tailas" -> "🫙"
+                                        "tailas" -> "🪔"
                                         "churnas" -> "🌾"
                                         "rasayanas" -> "🪴"
                                         "bhasmas" -> "🪨"
