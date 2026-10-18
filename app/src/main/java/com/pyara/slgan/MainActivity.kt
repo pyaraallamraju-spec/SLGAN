@@ -883,14 +883,14 @@ private fun SplashScreen() {
     )
 
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize().background(Color(0xFFFFFCF4)),
+        modifier = Modifier.fillMaxSize().background(Cream),
         contentAlignment = Alignment.TopStart
     ) {
         // Soft botanical background accents and gently falling leaves.
         Box(
             Modifier.fillMaxSize().background(
                 Brush.verticalGradient(
-                    listOf(Color(0xFFFFFCF4), Color(0xFFF2F7E9), Color(0xFFFFFCF4))
+                    listOf(Cream, Color(0xFFF2F7E9), Cream)
                 )
             )
         )
@@ -1089,7 +1089,7 @@ private fun LoginScreen(
             fontSize = 29.sp,
             lineHeight = 34.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFF8B211B),
+            color = Forest,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Text(
@@ -1120,7 +1120,7 @@ private fun LoginScreen(
             fontSize = 22.sp,
             lineHeight = 26.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF8B211B),
+            color = Forest,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(6.dp))
@@ -1131,17 +1131,17 @@ private fun LoginScreen(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
             label = { Text(tr("Email address", LocalAppLanguage.current)) },
             placeholder = { Text(tr("you@example.com", LocalAppLanguage.current)) },
-            leadingIcon = { Icon(Icons.Default.Email, null, tint = Color(0xFF8B211B)) },
+            leadingIcon = { Icon(Icons.Default.Email, null, tint = Forest) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RoundedCornerShape(20.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFFD2BE9C),
                 unfocusedBorderColor = Color(0xFFD2BE9C),
-                focusedContainerColor = Color(0xFFFFFCF5),
-                unfocusedContainerColor = Color(0xFFFFFCF5),
-                focusedLabelColor = Color(0xFF8B211B),
-                cursorColor = Color(0xFF8B211B)
+                focusedContainerColor = Cream,
+                unfocusedContainerColor = Cream,
+                focusedLabelColor = Forest,
+                cursorColor = Forest
             )
         )
         Spacer(Modifier.height(12.dp))
@@ -1150,13 +1150,13 @@ private fun LoginScreen(
             onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
             label = { Text(tr("Password", LocalAppLanguage.current)) },
-            leadingIcon = { Icon(Icons.Default.Lock, null, tint = Color(0xFF8B211B)) },
+            leadingIcon = { Icon(Icons.Default.Lock, null, tint = Forest) },
             trailingIcon = {
                 IconButton(onClick = { showPassword = !showPassword }) {
                     Icon(
                         if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                         contentDescription = if (showPassword) "Hide password" else "Show password",
-                        tint = Color(0xFF8B211B)
+                        tint = Forest
                     )
                 }
             },
@@ -1167,10 +1167,10 @@ private fun LoginScreen(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFFD2BE9C),
                 unfocusedBorderColor = Color(0xFFD2BE9C),
-                focusedContainerColor = Color(0xFFFFFCF5),
-                unfocusedContainerColor = Color(0xFFFFFCF5),
-                focusedLabelColor = Color(0xFF8B211B),
-                cursorColor = Color(0xFF8B211B)
+                focusedContainerColor = Cream,
+                unfocusedContainerColor = Cream,
+                focusedLabelColor = Forest,
+                cursorColor = Forest
             )
         )
         if (isCreatingAccount) {
@@ -1181,13 +1181,13 @@ private fun LoginScreen(
                 onValueChange = onConfirmPasswordChange,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
                 label = { Text("Confirm password") },
-                leadingIcon = { Icon(Icons.Default.Lock, null, tint = Color(0xFF8B211B)) },
+                leadingIcon = { Icon(Icons.Default.Lock, null, tint = Forest) },
                 trailingIcon = {
                     IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
                         Icon(
                             if (showConfirmPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                             contentDescription = if (showConfirmPassword) "Hide confirm password" else "Show confirm password",
-                            tint = Color(0xFF8B211B)
+                            tint = Forest
                         )
                     }
                 },
@@ -1198,10 +1198,10 @@ private fun LoginScreen(
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFD2BE9C),
                     unfocusedBorderColor = Color(0xFFD2BE9C),
-                    focusedContainerColor = Color(0xFFFFFCF5),
-                    unfocusedContainerColor = Color(0xFFFFFCF5),
-                    focusedLabelColor = Color(0xFF8B211B),
-                    cursorColor = Color(0xFF8B211B)
+                    focusedContainerColor = Cream,
+                    unfocusedContainerColor = Cream,
+                    focusedLabelColor = Forest,
+                    cursorColor = Forest
                 )
             )
         }
@@ -1212,7 +1212,7 @@ private fun LoginScreen(
             enabled = !loading,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(62.dp),
             shape = RoundedCornerShape(20.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8B211B))
+            colors = ButtonDefaults.buttonColors(containerColor = Forest)
         ) {
             Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.width(12.dp))
@@ -1223,11 +1223,11 @@ private fun LoginScreen(
             Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Forest)
         }
         Spacer(Modifier.height(8.dp))
-        Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Color(0xFF56534D), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(4.dp))
         Text(tr("Mobile-number login is not available yet.", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(30.dp))
-        Box(Modifier.fillMaxWidth().height(48.dp).background(Color(0xFF8B211B))) {
+        Box(Modifier.fillMaxWidth().height(48.dp).background(Forest)) {
             Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.TopCenter).background(Gold))
         }
     }
@@ -1352,13 +1352,13 @@ private fun HomeBannerSlider(
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFFF8F0DC).copy(alpha = 0.97f), Color(0xFFE7EBCB).copy(alpha = 0.86f), Color(0xFFC6D6A3).copy(alpha = 0.42f), Color.Transparent))))
                     } else if (selectedDesign == 2) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF102D20).copy(alpha = 0.98f), Color(0xFF173D2B).copy(alpha = 0.88f), Color(0xFF24523A).copy(alpha = 0.55f), Color.Transparent))))
-                        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xFF4D100E).copy(alpha = 0.24f)))))
+                        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Forest.copy(alpha = 0.24f)))))
                     } else if (!slide.isCompanySlide) {
                         Box(
                             Modifier.fillMaxSize().background(
                                 Brush.horizontalGradient(
                                     colors = listOf(
-                                        Color(0xFF4D100E).copy(alpha = 0.97f),
+                                        Forest.copy(alpha = 0.97f),
                                         Forest.copy(alpha = 0.86f),
                                         Forest.copy(alpha = 0.40f),
                                         Color.Transparent
@@ -1369,7 +1369,7 @@ private fun HomeBannerSlider(
                         Box(
                             Modifier.fillMaxSize().background(
                                 Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, Color(0xFF4D100E).copy(alpha = 0.30f))
+                                    colors = listOf(Color.Transparent, Forest.copy(alpha = 0.30f))
                                 )
                             )
                         )
@@ -1447,7 +1447,7 @@ private fun HomeBannerSlider(
                             ) {
                                 Text(
                                     "View product",
-                                    color = Color(0xFF4D100E),
+                                    color = Forest,
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 0.2.sp
@@ -1455,7 +1455,7 @@ private fun HomeBannerSlider(
                                 Icon(
                                     Icons.Default.ArrowForward,
                                     contentDescription = null,
-                                    tint = Color(0xFF4D100E),
+                                    tint = Forest,
                                     modifier = Modifier.size(13.dp)
                                 )
                             }
@@ -1554,7 +1554,7 @@ private fun AdminProductsScreen(
         Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Inventory2, contentDescription = null, tint = Color(0xFF4D100E), modifier = Modifier.size(27.dp))
+                    Icon(Icons.Default.Inventory2, contentDescription = null, tint = Forest, modifier = Modifier.size(27.dp))
                 }
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
@@ -1566,7 +1566,7 @@ private fun AdminProductsScreen(
                         onClick = { addingProduct = true },
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Cream, contentColor = Color(0xFF4D100E), disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Color(0xFF4D100E))
+                        colors = ButtonDefaults.buttonColors(containerColor = Cream, contentColor = Forest, disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Forest)
                     ) {
                         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
                         Spacer(Modifier.width(4.dp))
@@ -1595,8 +1595,8 @@ private fun AdminProductsScreen(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Forest,
                 unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color(0xFFFFFCF5),
-                unfocusedContainerColor = Color(0xFFFFFCF5),
+                focusedContainerColor = Cream,
+                unfocusedContainerColor = Cream,
                 cursorColor = Gold
             )
         )
@@ -1652,7 +1652,7 @@ private fun AdminProductsScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF6)),
+                        colors = CardDefaults.cardColors(containerColor = Cream),
                         border = androidx.compose.foundation.BorderStroke(1.dp, Gold.copy(alpha = 0.48f)),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
@@ -1668,7 +1668,7 @@ private fun AdminProductsScreen(
                                 Box(
                                     Modifier.size(104.dp, 112.dp)
                                         .clip(RoundedCornerShape(18.dp))
-                                        .background(Color(0xFFF2E5CB)),
+                                        .background(PaleGreen),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     if (product.imageUrl.isNotBlank()) {
@@ -1780,7 +1780,7 @@ private fun AdminProductsScreen(
     viewingProduct?.let { product ->
         AlertDialog(
             onDismissRequest = { viewingProduct = null },
-            containerColor = Color(0xFFFFFCF6),
+            containerColor = Cream,
             title = { Text(product.name, color = Forest, fontWeight = FontWeight.ExtraBold) },
             text = {
                 Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -1801,7 +1801,7 @@ private fun AdminProductsScreen(
     deletingProduct?.let { product ->
         AlertDialog(
             onDismissRequest = { deletingProduct = null },
-            containerColor = Color(0xFFFFFCF6),
+            containerColor = Cream,
             title = { Text("Delete product?", color = Forest, fontWeight = FontWeight.Bold) },
             text = { Text("Delete \"${product.name}\" from the catalogue? This cannot be undone.", color = Ink) },
             confirmButton = {
@@ -2235,7 +2235,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
     if (showAddDialog) {
         AlertDialog(
             onDismissRequest = { if (!saving) showAddDialog = false },
-            containerColor = Color(0xFFFFFCF5),
+            containerColor = Cream,
             shape = RoundedCornerShape(24.dp),
             icon = {
                 Box(Modifier.size(54.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
@@ -2364,7 +2364,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Color(0xFF4D100E), modifier = Modifier.size(27.dp))
+                        Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest, modifier = Modifier.size(27.dp))
                     }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
@@ -2376,7 +2376,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                             onClick = { showAddDialog = true },
                             shape = RoundedCornerShape(12.dp),
                             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Cream, contentColor = Color(0xFF4D100E), disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Color(0xFF4D100E))
+                            colors = ButtonDefaults.buttonColors(containerColor = Cream, contentColor = Forest, disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Forest)
                         ) {
                             Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
                             Spacer(Modifier.width(4.dp))
@@ -2404,8 +2404,8 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Forest,
                     unfocusedBorderColor = Forest.copy(alpha = 0.75f),
-                    focusedContainerColor = Color(0xFFFFFCF5),
-                    unfocusedContainerColor = Color(0xFFFFFCF5),
+                    focusedContainerColor = Cream,
+                    unfocusedContainerColor = Cream,
                     cursorColor = Gold
                 )
             )
@@ -2440,7 +2440,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        colors = CardDefaults.cardColors(containerColor = Cream),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                     ) {
                         Row(Modifier.fillMaxWidth().padding(15.dp), verticalAlignment = Alignment.Top) {
@@ -2509,7 +2509,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Groups, contentDescription = null, tint = Color(0xFF4D100E), modifier = Modifier.size(27.dp))
+                    Icon(Icons.Default.Groups, contentDescription = null, tint = Forest, modifier = Modifier.size(27.dp))
                 }
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
@@ -2534,8 +2534,8 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Forest,
                 unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color(0xFFFFFCF5),
-                unfocusedContainerColor = Color(0xFFFFFCF5),
+                focusedContainerColor = Cream,
+                unfocusedContainerColor = Cream,
                 cursorColor = Gold
             )
         )
@@ -2563,7 +2563,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        colors = CardDefaults.cardColors(containerColor = Cream),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                     ) {
                         Column(Modifier.padding(15.dp)) {
@@ -2691,7 +2691,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp).background(Cream, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Color(0xFF4D100E), modifier = Modifier.size(26.dp))
+                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp))
                 }
                 Spacer(Modifier.width(13.dp))
                 Column(Modifier.weight(1f)) {
@@ -3814,17 +3814,17 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
+            colors = CardDefaults.cardColors(containerColor = Forest),
             elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
         ) {
             Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                 Spacer(Modifier.height(6.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
                         Text("Your shopping bag", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
                         Spacer(Modifier.height(5.dp))
-                        Text("Review medicines before placing order.", fontSize = 13.sp, color = Color(0xFFF4E7D9), lineHeight = 19.sp)
+                        Text("Review medicines before placing order.", fontSize = 13.sp, color = PaleGreen, lineHeight = 19.sp)
                     }
                     Spacer(Modifier.width(8.dp))
                     Box(Modifier.size(48.dp).background(Color(0x26FFFFFF), CircleShape), contentAlignment = Alignment.Center) {
@@ -4107,11 +4107,11 @@ private fun OrdersPage(
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
+            colors = CardDefaults.cardColors(containerColor = Forest),
             elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
         ) {
             Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                 Spacer(Modifier.height(6.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -4133,7 +4133,7 @@ private fun OrdersPage(
                     }
                 }
                 Spacer(Modifier.height(5.dp))
-                Text("Track orders and revisit.", color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
+                Text("Track orders and revisit.", color = PaleGreen, fontSize = 13.sp, lineHeight = 19.sp)
 
             }
         }
@@ -4172,13 +4172,13 @@ private fun OrdersPage(
                 Text("Current orders", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text("Placed today · ${today.format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"))}", color = Muted, fontSize = 12.sp)
             }
-            Box(Modifier.background(Color(0xFFF2E5C9), RoundedCornerShape(50.dp)).padding(horizontal = 11.dp, vertical = 7.dp)) {
-                Text(currentOrders.size.toString(), color = Color(0xFF641F2B), fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
+            Box(Modifier.background(PaleGreen, RoundedCornerShape(50.dp)).padding(horizontal = 11.dp, vertical = 7.dp)) {
+                Text(currentOrders.size.toString(), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
             }
         }
         Spacer(Modifier.height(10.dp))
         when {
-            loadingOrders -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5))) {
+            loadingOrders -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Cream)) {
                 Row(Modifier.fillMaxWidth().padding(22.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
                     CircularProgressIndicator(color = Forest, modifier = Modifier.size(22.dp), strokeWidth = 2.dp)
                     Spacer(Modifier.width(12.dp))
@@ -4186,10 +4186,10 @@ private fun OrdersPage(
                 }
             }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
-            currentOrders.isEmpty() -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
+            currentOrders.isEmpty() -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Cream), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
                 Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(Modifier.size(56.dp).background(Color(0xFFF2E5C9), CircleShape), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color(0xFF641F2B), modifier = Modifier.size(26.dp))
+                    Box(Modifier.size(56.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp))
                     }
                     Spacer(Modifier.height(8.dp))
                     Text("No orders placed today", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
@@ -4206,7 +4206,7 @@ private fun OrdersPage(
                 val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
-                Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                Card(colors = CardDefaults.cardColors(containerColor = Cream), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(42.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp)) }
@@ -4218,7 +4218,7 @@ private fun OrdersPage(
                             Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.background(Color(0xFFF2E5C9), RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Color(0xFF641F2B), fontSize = 11.sp, fontWeight = FontWeight.Bold) }
+                            Box(Modifier.background(PaleGreen, RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Forest, fontSize = 11.sp, fontWeight = FontWeight.Bold) }
                             Spacer(Modifier.weight(1f))
                             TextButton(onClick = { selectedOrder = order }) {
                                 Text("View details", color = Forest, fontWeight = FontWeight.Bold)
@@ -4228,9 +4228,9 @@ private fun OrdersPage(
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
-                                    modifier = Modifier.size(38.dp).background(Color(0xFFF2E5C9), CircleShape)
+                                    modifier = Modifier.size(38.dp).background(PaleGreen, CircleShape)
                                 ) {
-                                    Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Color(0xFF641F2B))
+                                    Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Forest)
                                 }
                             }
                         }
@@ -4265,7 +4265,7 @@ private fun OrdersPage(
                 val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
-                Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                Card(colors = CardDefaults.cardColors(containerColor = Cream), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(42.dp).background(Color(0xFFE8EDE4), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp)) }
@@ -4287,9 +4287,9 @@ private fun OrdersPage(
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
-                                    modifier = Modifier.size(38.dp).background(Color(0xFFF2E5C9), CircleShape)
+                                    modifier = Modifier.size(38.dp).background(PaleGreen, CircleShape)
                                 ) {
-                                    Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Color(0xFF641F2B))
+                                    Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Forest)
                                 }
                             }
                         }
@@ -4349,7 +4349,7 @@ private fun OrdersPage(
                             val unitPrice = (item["unitPrice"] as? Number)?.toDouble() ?: (item["price"] as? Number)?.toDouble() ?: 0.0
                             val lineTotal = (item["lineTotal"] as? Number)?.toDouble() ?: (unitPrice * quantity)
                             Card(
-                                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                                colors = CardDefaults.cardColors(containerColor = Cream),
                                 shape = RoundedCornerShape(10.dp)
                             ) {
                                 Column(Modifier.fillMaxWidth().padding(10.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
@@ -4458,11 +4458,11 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
+                colors = CardDefaults.cardColors(containerColor = Forest),
                 elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                    Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                    Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                     Spacer(Modifier.height(6.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -4484,7 +4484,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         }
                     }
                     Spacer(Modifier.height(5.dp))
-                    Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
+                    Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = PaleGreen, fontSize = 13.sp, lineHeight = 19.sp)
                 }
             }
             Spacer(Modifier.height(16.dp))
@@ -4520,8 +4520,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         unfocusedBorderColor = Color.Transparent,
                         disabledBorderColor = Color.Transparent,
                         errorBorderColor = Color.Transparent,
-                        focusedContainerColor = Color(0xFFFFFCF5),
-                        unfocusedContainerColor = Color(0xFFFFFCF5)
+                        focusedContainerColor = Cream,
+                        unfocusedContainerColor = Cream
                     )
                 )
                 DropdownMenu(
@@ -4561,7 +4561,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(22.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                colors = CardDefaults.cardColors(containerColor = Cream),
                 elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(16.dp)) {
@@ -4668,28 +4668,28 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B))
+            colors = CardDefaults.cardColors(containerColor = Forest)
         ) {
             Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                 Spacer(Modifier.height(7.dp))
                 Text(tr("Explore Categories", LocalAppLanguage.current), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(6.dp))
                 Text(
                     tr("Discover Ayurvedic products by collection.", LocalAppLanguage.current),
-                    color = Color(0xFFF4E7D9),
+                    color = PaleGreen,
                     fontSize = 13.sp,
                     lineHeight = 19.sp
                 )
                 Spacer(Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Inventory2, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.Inventory2, contentDescription = null, tint = Gold, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(7.dp))
                     Text("${products.size} products", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                     Spacer(Modifier.width(14.dp))
                     Box(Modifier.width(1.dp).height(16.dp).background(Color(0x66FFFFFF)))
                     Spacer(Modifier.width(14.dp))
-                    Icon(Icons.Default.Category, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.Category, contentDescription = null, tint = Gold, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(7.dp))
                     Text("${categoriesFromBackend.size} collections", color = Color.White, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                 }
@@ -4716,8 +4716,8 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Forest,
                 unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color(0xFFFFFCF5),
-                unfocusedContainerColor = Color(0xFFFFFCF5),
+                focusedContainerColor = Cream,
+                unfocusedContainerColor = Cream,
                 cursorColor = Gold
             )
         )
@@ -4734,7 +4734,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5))
+                colors = CardDefaults.cardColors(containerColor = Cream)
             ) {
                 Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("🔎", fontSize = 30.sp)
@@ -4764,7 +4764,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                 selectedCategory = item
                             },
                             shape = RoundedCornerShape(20.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                            colors = CardDefaults.cardColors(containerColor = Cream),
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
                             Column(Modifier.fillMaxWidth().padding(14.dp)) {
@@ -4788,7 +4788,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                     fontSize = 12.sp
                                 )
                                 Spacer(Modifier.height(10.dp))
-                                Box(Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(3.dp)).background(if (item == "All") Color(0xFFE7C783) else Color(0xFFDCE8D7)))
+                                Box(Modifier.fillMaxWidth().height(3.dp).clip(RoundedCornerShape(3.dp)).background(if (item == "All") Gold else Color(0xFFDCE8D7)))
                             }
                         }
                     }
@@ -4828,7 +4828,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     Card(
                         modifier = Modifier.fillMaxWidth().padding(bottom = 9.dp),
                         shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        colors = CardDefaults.cardColors(containerColor = Cream),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                     ) {
                         Row(
@@ -5089,11 +5089,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF641F2B)),
+            colors = CardDefaults.cardColors(containerColor = Forest),
             elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
         ) {
             Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Text("SRI LAKSHMI GANAPATHI", color = Color(0xFFE7C783), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                 Spacer(Modifier.height(6.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
@@ -5104,14 +5104,14 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 if (profileSection == "Addresses") "Manage your delivery addresses." else "Manage your personal details.",
                                 LocalAppLanguage.current
                             ),
-                            color = Color(0xFFF4E7D9),
+                            color = PaleGreen,
                             fontSize = 13.sp,
                             lineHeight = 19.sp
                         )
                     }
                     Spacer(Modifier.width(8.dp))
                     Box(Modifier.size(48.dp).background(Color(0x26FFFFFF), CircleShape), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.Person, contentDescription = null, tint = Color(0xFFE7C783), modifier = Modifier.size(28.dp))
+                        Icon(Icons.Default.Person, contentDescription = null, tint = Gold, modifier = Modifier.size(28.dp))
                     }
                 }
             }
@@ -5134,7 +5134,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         Spacer(Modifier.height(18.dp))
 
         if (profileSection == "Profile") {
-            Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)), shape = RoundedCornerShape(20.dp)) {
+            Card(colors = CardDefaults.cardColors(containerColor = Cream), shape = RoundedCornerShape(20.dp)) {
                 Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(58.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
                         Icon(Icons.Default.Person, null, tint = Forest, modifier = Modifier.size(30.dp))
@@ -5391,7 +5391,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(22.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF5)),
+                        colors = CardDefaults.cardColors(containerColor = Cream),
                         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
                     ) {
                         Column(Modifier.fillMaxWidth().padding(14.dp)) {
