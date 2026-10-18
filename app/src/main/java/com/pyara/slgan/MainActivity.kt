@@ -2680,7 +2680,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 onValueChange = { search = it },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
                 singleLine = true,
-                label = { Text("Search diseases", modifier = Modifier.background(Cream), color = Forest) },
+                label = { Text("Search diseases", modifier = Modifier.background(Color.White), color = Forest) },
                 placeholder = { Text("Disease name or description") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
                 trailingIcon = {
