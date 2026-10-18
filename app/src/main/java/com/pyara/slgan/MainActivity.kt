@@ -2311,7 +2311,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
             val colors = when (design) { 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
             Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = Cream)) {
                 Column(Modifier.padding(12.dp)) {
-                    Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(if (design == 4) Forest else Brush.linearGradient(colors).let { Color.Transparent }).padding(0.dp)) {
+                    Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Color.Transparent).padding(0.dp)) {
                         if (design == 4) {
                             AsyncImage(
                                 model = "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=85",
