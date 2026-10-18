@@ -4921,7 +4921,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                         modifier = Modifier.weight(1f),
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
+                                        ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary(), compact = true)
                                     }
                                     ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                 }
