@@ -2229,7 +2229,7 @@ private fun AdminDashboardScreen(
         }
     }
     Column(
-        Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(20.dp)
+        Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
         Row(
             Modifier.fillMaxWidth(),
