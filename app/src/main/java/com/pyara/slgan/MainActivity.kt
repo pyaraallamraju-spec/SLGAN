@@ -4956,18 +4956,27 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Button(
                 onClick = {
                     val currentUid = uid
-                    if (currentUid == null) saveMessage = "Please sign in again to save your profile."
-                    else {
-                        isSaving = true
-                        saveMessage = null
-                        FirebaseData.saveCustomerProfile(currentUid, mapOf(
-                            "email" to (user.email ?: ""), "firstName" to firstName.trim(),
-                            "lastName" to lastName.trim(), "nickname" to nickname.trim(),
-                            "gender" to gender, "mobileNumber" to mobileNumber.trim(),
-                            "updatedAt" to System.currentTimeMillis()
-                        )) { error ->
-                            isSaving = false
-                            saveMessage = if (error == null) "Saved successfully." else "Couldn't save profile. Please try again."
+                    when {
+                        firstName.isBlank() && mobileNumber.isBlank() ->
+                            saveMessage = "First name and mobile number are required."
+                        firstName.isBlank() ->
+                            saveMessage = "First name is required."
+                        mobileNumber.isBlank() ->
+                            saveMessage = "Mobile number is required."
+                        currentUid == null ->
+                            saveMessage = "Please sign in again to save your profile."
+                        else -> {
+                            isSaving = true
+                            saveMessage = null
+                            FirebaseData.saveCustomerProfile(currentUid, mapOf(
+                                "email" to (user.email ?: ""), "firstName" to firstName.trim(),
+                                "lastName" to lastName.trim(), "nickname" to nickname.trim(),
+                                "gender" to gender, "mobileNumber" to mobileNumber.trim(),
+                                "updatedAt" to System.currentTimeMillis()
+                            )) { error ->
+                                isSaving = false
+                                saveMessage = if (error == null) "Saved successfully." else "Couldn't save profile. Please try again."
+                            }
                         }
                     }
                 },
