@@ -4980,7 +4980,15 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     Column(Modifier.weight(1f)) {
                         Text(tr("Your account", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
                         Spacer(Modifier.height(5.dp))
-                        Text(tr("Manage your personal details and delivery addresses.", LocalAppLanguage.current), color = Color(0xFFF4E7D9), fontSize = 13.sp, lineHeight = 19.sp)
+                        Text(
+                            tr(
+                                if (profileSection == "Addresses") "Manage your delivery addresses." else "Manage your personal details.",
+                                LocalAppLanguage.current
+                            ),
+                            color = Color(0xFFF4E7D9),
+                            fontSize = 13.sp,
+                            lineHeight = 19.sp
+                        )
                     }
                     Spacer(Modifier.width(8.dp))
                     Box(Modifier.size(48.dp).background(Color(0x26FFFFFF), CircleShape), contentAlignment = Alignment.Center) {
