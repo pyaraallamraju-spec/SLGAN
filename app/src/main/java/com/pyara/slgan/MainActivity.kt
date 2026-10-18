@@ -3004,7 +3004,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                                Icon(Icons.Default.EmojiEvents, contentDescription = null, tint = Gold, modifier = Modifier.size(20.dp))
+                                Icon(Icons.Default.WorkspacePremium, contentDescription = null, tint = Gold, modifier = Modifier.size(20.dp))
                                 Text("Signature Products", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                             }
                             Text("SLGAN", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Leaf)
