@@ -751,7 +751,7 @@ private fun AyurvedicApp() {
         }
     }
     CompositionLocalProvider(LocalAppLanguage provides appLanguage) {
-    MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Color.White, onSurface = Ink)) {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Cream, onSurface = Ink)) {
         Surface(Modifier.fillMaxSize(), color = Cream) {
             if (showSplash || !authResolved) {
                 SplashScreen()
@@ -1136,8 +1136,8 @@ private fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RoundedCornerShape(20.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFFD2BE9C),
-                unfocusedBorderColor = Color(0xFFD2BE9C),
+                focusedBorderColor = Gold.copy(alpha = 0.65f),
+                unfocusedBorderColor = Gold.copy(alpha = 0.65f),
                 focusedContainerColor = Cream,
                 unfocusedContainerColor = Cream,
                 focusedLabelColor = Forest,
@@ -1165,8 +1165,8 @@ private fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             shape = RoundedCornerShape(20.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFFD2BE9C),
-                unfocusedBorderColor = Color(0xFFD2BE9C),
+                focusedBorderColor = Gold.copy(alpha = 0.65f),
+                unfocusedBorderColor = Gold.copy(alpha = 0.65f),
                 focusedContainerColor = Cream,
                 unfocusedContainerColor = Cream,
                 focusedLabelColor = Forest,
@@ -1196,8 +1196,8 @@ private fun LoginScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 shape = RoundedCornerShape(20.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFFD2BE9C),
-                    unfocusedBorderColor = Color(0xFFD2BE9C),
+                    focusedBorderColor = Gold.copy(alpha = 0.65f),
+                    unfocusedBorderColor = Gold.copy(alpha = 0.65f),
                     focusedContainerColor = Cream,
                     unfocusedContainerColor = Cream,
                     focusedLabelColor = Forest,
