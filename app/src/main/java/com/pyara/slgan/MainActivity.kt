@@ -2632,6 +2632,8 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
     var error by remember { mutableStateOf<String?>(null) }
     var search by remember { mutableStateOf("") }
     var updatingIds by remember { mutableStateOf<Set<String>>(emptySet()) }
+    var viewingCustomer by remember { mutableStateOf<Map<String, Any?>?>(null) }
+    var editingCustomer by remember { mutableStateOf<Map<String, Any?>?>(null) }
 
     DisposableEffect(Unit) {
         val registration = FirebaseFirestore.getInstance().collection("customers")
@@ -2690,7 +2692,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                 .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
             singleLine = true,
-            label = { Text("Search name, email or mobile") },
+            label = { Text("Search name, email or mobile", modifier = Modifier.background(Cream), color = Forest) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
             shape = RoundedCornerShape(18.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -2765,21 +2767,95 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                             Spacer(Modifier.height(10.dp))
                             HorizontalDivider(color = PaleGreen)
                             Spacer(Modifier.height(8.dp))
-                            if (phone.isNotBlank()) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(Icons.Default.Phone, contentDescription = null, tint = Muted, modifier = Modifier.size(16.dp))
-                                    Spacer(Modifier.width(8.dp))
-                                    Text(phone, color = Ink, fontSize = 13.sp)
+                            Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                    if (phone.isNotBlank()) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(Icons.Default.Phone, contentDescription = null, tint = Muted, modifier = Modifier.size(16.dp))
+                                            Spacer(Modifier.width(8.dp))
+                                            Text(phone, color = Ink, fontSize = 13.sp)
+                                        }
+                                    }
+                                    if (gender.isNotBlank()) Text("Gender: " + gender, color = Muted, fontSize = 12.sp)
+                                    Text("Customer ID: " + uid, color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 }
-                                Spacer(Modifier.height(5.dp))
+                                IconButton(onClick = { viewingCustomer = customer }) {
+                                    Icon(Icons.Default.Visibility, contentDescription = "View customer details", tint = Forest)
+                                }
+                                IconButton(onClick = { editingCustomer = customer }) {
+                                    Icon(Icons.Default.Edit, contentDescription = "Edit customer details", tint = Forest)
+                                }
                             }
-                            if (gender.isNotBlank()) Text("Gender: " + gender, color = Muted, fontSize = 12.sp)
-                            Text("Customer ID: " + uid, color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                 }
             }
         }
+    }
+
+    viewingCustomer?.let { customer ->
+        val uid = customer["uid"]?.toString().orEmpty()
+        val displayName = listOf(customer["firstName"]?.toString().orEmpty(), customer["lastName"]?.toString().orEmpty())
+            .map { it.trim() }.filter { it.isNotBlank() }.joinToString(" ")
+            .ifBlank { customer["nickname"]?.toString().orEmpty() }.ifBlank { "Customer" }
+        AlertDialog(
+            onDismissRequest = { viewingCustomer = null },
+            containerColor = Cream,
+            title = { Text("Customer details", color = Forest, fontWeight = FontWeight.Bold) },
+            text = {
+                Column(Modifier.heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(displayName, color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                    customer.entries.filter { it.key != "uid" && it.key != "password" && it.key != "passwordHash" && it.value != null && it.value.toString().isNotBlank() }
+                        .sortedBy { it.key }
+                        .forEach { entry ->
+                            Text(entry.key.replace(Regex("([a-z])([A-Z])"), "$1 $2").replaceFirstChar { it.uppercase() } + ": " + entry.value.toString(), color = Muted, fontSize = 13.sp)
+                        }
+                    Text("Customer ID: $uid", color = Muted, fontSize = 12.sp)
+                }
+            },
+            confirmButton = { TextButton(onClick = { viewingCustomer = null }) { Text("Close", color = Forest) } }
+        )
+    }
+
+    editingCustomer?.let { customer ->
+        val uid = customer["uid"]?.toString().orEmpty()
+        var firstName by remember(uid) { mutableStateOf(customer["firstName"]?.toString().orEmpty()) }
+        var lastName by remember(uid) { mutableStateOf(customer["lastName"]?.toString().orEmpty()) }
+        var nickname by remember(uid) { mutableStateOf(customer["nickname"]?.toString().orEmpty()) }
+        var email by remember(uid) { mutableStateOf(customer["email"]?.toString().orEmpty()) }
+        var mobile by remember(uid) { mutableStateOf(customer["mobileNumber"]?.toString().orEmpty()) }
+        var gender by remember(uid) { mutableStateOf(customer["gender"]?.toString().orEmpty()) }
+        var savingCustomer by remember(uid) { mutableStateOf(false) }
+        AlertDialog(
+            onDismissRequest = { if (!savingCustomer) editingCustomer = null },
+            containerColor = Cream,
+            title = { Text("Edit customer", color = Forest, fontWeight = FontWeight.Bold) },
+            text = {
+                Column(Modifier.heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(firstName, { firstName = it }, label = { Text("First name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(lastName, { lastName = it }, label = { Text("Last name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(nickname, { nickname = it }, label = { Text("Nickname") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(email, { email = it }, label = { Text("Email") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(mobile, { mobile = it }, label = { Text("Mobile number") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(gender, { gender = it }, label = { Text("Gender") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                }
+            },
+            confirmButton = {
+                TextButton(enabled = !savingCustomer, onClick = {
+                    savingCustomer = true
+                    FirebaseFirestore.getInstance().collection("customers").document(uid).update(
+                        mapOf("firstName" to firstName.trim(), "lastName" to lastName.trim(), "nickname" to nickname.trim(), "email" to email.trim(), "mobileNumber" to mobile.trim(), "gender" to gender.trim(), "updatedAt" to System.currentTimeMillis())
+                    ).addOnSuccessListener {
+                        Toast.makeText(context, "Customer updated", Toast.LENGTH_SHORT).show()
+                        editingCustomer = null
+                    }.addOnFailureListener { exception ->
+                        savingCustomer = false
+                        Toast.makeText(context, "Could not update customer: " + (exception.localizedMessage ?: "permission denied"), Toast.LENGTH_LONG).show()
+                    }
+                }) { Text(if (savingCustomer) "Saving…" else "Save", color = Forest) }
+            },
+            dismissButton = { TextButton(enabled = !savingCustomer, onClick = { editingCustomer = null }) { Text("Cancel", color = Muted) } }
+        )
     }
 }
 
