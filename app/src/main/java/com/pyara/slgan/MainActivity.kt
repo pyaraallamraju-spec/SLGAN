@@ -3556,8 +3556,6 @@ private fun ProductDetailsPage(
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Forest)
             ) {
-                Icon(Icons.Default.AddShoppingCart, contentDescription = null)
-                Spacer(Modifier.width(8.dp))
                 Text(if (cartCount > 0) "Add another" else "Add to cart", fontWeight = FontWeight.Bold)
             }
         }
