@@ -1890,13 +1890,13 @@ private fun AdminProductEditor(
             OutlinedTextField(category, { category = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Category *") }, singleLine = true, supportingText = { Text("Use: Lehyas, Grutas, Pills, Tailas, Churnas, Rasayanas or Bhasmas") })
             OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight") }, singleLine = true)
+                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight *") }, singleLine = true)
                 Box(Modifier.weight(1f)) {
                     OutlinedTextField(
                         value = units,
                         onValueChange = {},
                         modifier = Modifier.fillMaxWidth().clickable { unitMenuExpanded = true },
-                        label = { Text("Weight unit") },
+                        label = { Text("Weight unit *") },
                         placeholder = { Text("Units") },
                         readOnly = true,
                         singleLine = true,
@@ -1928,7 +1928,7 @@ private fun AdminProductEditor(
                     }
                 }
             }
-            OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity / pack count") }, singleLine = true)
+            OutlinedTextField(quantity, { quantity = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Quantity *") }, singleLine = true)
             Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
                 FilterChip(selected = productStock == 1, onClick = { productStock = 1 }, label = { Text("1 · In stock") })
@@ -1948,8 +1948,8 @@ private fun AdminProductEditor(
         }
         Button(
             onClick = {
-                if (name.isBlank() || category.isBlank() || price.toDoubleOrNull() == null) {
-                    message = "Enter a product name, category and valid price."
+                if (name.isBlank() || category.isBlank() || price.toDoubleOrNull() == null || weight.toDoubleOrNull() == null || weight.toDoubleOrNull()!! <= 0 || units.isBlank() || quantity.toIntOrNull() == null || quantity.toIntOrNull()!! <= 0) {
+                    message = "Enter product name, category, valid price, weight, weight unit and quantity."
                 } else {
                     saving = true
                     message = null
