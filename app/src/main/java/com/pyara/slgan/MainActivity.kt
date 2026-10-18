@@ -3107,8 +3107,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 OutlinedTextField(
                     value = search,
                     onValueChange = onSearchChange,
-                    textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
-                    modifier = Modifier.fillMaxWidth().height(56.dp)
+                    textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
+                    modifier = Modifier.fillMaxWidth().height(64.dp)
                         .border(
                             width = 1.dp,
                             brush = Brush.horizontalGradient(listOf(Gold.copy(alpha = 0.95f), Forest.copy(alpha = 0.72f), Gold.copy(alpha = 0.95f))),
