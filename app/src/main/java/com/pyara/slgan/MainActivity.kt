@@ -4784,7 +4784,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                         val emoji = when (item) {
                             "All" -> "🌿"
                             "Lehyas" -> "🍯"
-                            "Grutas" -> "🌼"
+                            "Grutas" -> "🧈"
                             "Pills" -> "🌱"
                             "Tailas" -> "🫙"
                             "Churnas" -> "🌾"
