@@ -2689,15 +2689,14 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         OutlinedTextField(
             value = search,
             onValueChange = { search = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-                .border(1.dp, Brush.horizontalGradient(listOf(Gold, Forest.copy(alpha = 0.78f), Gold)), RoundedCornerShape(18.dp)),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
             singleLine = true,
             label = { Text("Search name, email or mobile", modifier = Modifier.background(Cream), color = Forest) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
             shape = RoundedCornerShape(18.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Forest,
-                unfocusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Gold,
                 focusedContainerColor = Cream,
                 unfocusedContainerColor = Cream,
                 cursorColor = Gold
