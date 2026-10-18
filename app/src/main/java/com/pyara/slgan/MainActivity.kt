@@ -1846,8 +1846,42 @@ private fun AdminProductEditor(
     val isNew = product == null
     var name by remember(product?.id) { mutableStateOf(product?.name.orEmpty()) }
     var category by remember(product?.id) { mutableStateOf(product?.category ?: "Lehyas") }
-    val categoryOptions = listOf("Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
+    var categoryOptions by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
     var categoryMenuExpanded by remember { mutableStateOf(false) }
+    var categorySeedStarted by remember { mutableStateOf(false) }
+    DisposableEffect(Unit) {
+        val db = FirebaseFirestore.getInstance()
+        val registration = db.collection("categories").addSnapshotListener { snapshot, error ->
+            if (error == null && snapshot != null) {
+                if (snapshot.isEmpty && !categorySeedStarted) {
+                    categorySeedStarted = true
+                    val defaults = listOf(
+                        Triple("lehyas", "Lehyas", "🍯"),
+                        Triple("grutas", "Grutas", "🫙"),
+                        Triple("pills", "Pills", "💊"),
+                        Triple("tailas", "Tailas", "🪔"),
+                        Triple("churnas", "Churnas", "🌿"),
+                        Triple("rasayanas", "Rasayanas", "🌱"),
+                        Triple("bhasmas", "Bhasmas", "🪨")
+                    )
+                    defaults.forEach { (id, label, emoji) ->
+                        db.collection("categories").document(id).set(
+                            mapOf("category_name" to label, "name" to label, "emoji" to emoji)
+                        )
+                    }
+                } else {
+                    categoryOptions = snapshot.documents.mapNotNull { doc ->
+                        val label = (doc.getString("category_name") ?: doc.getString("name") ?: doc.id).trim()
+                        if (label.isBlank()) null else label to doc.getString("emoji").orEmpty()
+                    }.distinctBy { it.first.lowercase() }.sortedBy { it.first.lowercase() }
+                    if (category.isNotBlank() && categoryOptions.none { it.first.equals(category, ignoreCase = true) }) {
+                        categoryOptions = (categoryOptions + (category.trim() to "")).distinctBy { it.first.lowercase() }.sortedBy { it.first.lowercase() }
+                    }
+                }
+            }
+        }
+        onDispose { registration.remove() }
+    }
     var price by remember(product?.id) { mutableStateOf(if (product == null || product.price == 0.0) "" else product.price.toString()) }
     var weight by remember(product?.id) { mutableStateOf(product?.subtitle?.filter { it.isDigit() || it == '.' }.orEmpty()) }
     var units by remember(product?.id) { mutableStateOf(product?.subtitle?.filter { it.isLetter() }.orEmpty()) }
@@ -1910,8 +1944,8 @@ private fun AdminProductEditor(
                 ) {
                     categoryOptions.forEach { option ->
                         DropdownMenuItem(
-                            text = { Text(option) },
-                            onClick = { category = option; message = null; categoryMenuExpanded = false }
+                            text = { Text(listOf(option.second, option.first).filter { it.isNotBlank() }.joinToString(" ")) },
+                            onClick = { category = option.first; message = null; categoryMenuExpanded = false }
                         )
                     }
                 }
