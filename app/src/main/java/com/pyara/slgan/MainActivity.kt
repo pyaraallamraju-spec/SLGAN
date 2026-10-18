@@ -3226,7 +3226,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         Box(
                                             Modifier.fillMaxWidth().height(112.dp)
                                                 .clip(RoundedCornerShape(13.dp))
-                                                .background(Cream),
+                                                .background(PaleGreen),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             if (product.imageUrl.isNotBlank()) {
