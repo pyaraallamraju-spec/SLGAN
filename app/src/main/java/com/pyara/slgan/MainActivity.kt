@@ -3020,7 +3020,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         ) {
                             items(signatureProducts, key = { it.id }) { product ->
                                 Card(
-                                    modifier = Modifier.width(198.dp).height(300.dp).clickable { onProductClick(product) },
+                                    modifier = Modifier.width(198.dp).wrapContentHeight().clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -3073,7 +3073,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 )
                                             }
                                         }
-                                        Spacer(Modifier.height(2.dp))
+                                        Spacer(Modifier.height(8.dp))
                                         Text(
                                             localizedProductName(product.name, LocalAppLanguage.current),
                                             fontSize = 13.sp,
@@ -3085,7 +3085,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             overflow = TextOverflow.Ellipsis
                                         )
                                         Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                        Spacer(Modifier.height(3.dp))
+                                        Spacer(Modifier.height(6.dp))
                                         Row(
                                             modifier = Modifier.fillMaxWidth(),
                                             verticalAlignment = Alignment.CenterVertically
