@@ -3179,22 +3179,40 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 fontSize = 15.sp,
                                                 maxLines = 1
                                             )
-                                            Box(
-                                                modifier = Modifier
-                                                    .size(28.dp)
-                                                    .background(
-                                                        Brush.linearGradient(listOf(Forest, Leaf)),
-                                                        CircleShape
+                                            val signatureCartCount = cart[product.id] ?: 0
+                                            if (signatureCartCount == 0) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .size(28.dp)
+                                                        .background(
+                                                            Brush.linearGradient(listOf(Forest, Leaf)),
+                                                            CircleShape
+                                                        )
+                                                        .then(if (product.price > 0.0) Modifier.clickable { onAdd(product.id) } else Modifier),
+                                                    contentAlignment = Alignment.Center
+                                                ) {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Add,
+                                                        contentDescription = "Add ${product.name} to cart",
+                                                        tint = Color.White,
+                                                        modifier = Modifier.size(15.dp)
                                                     )
-                                                    .then(if (product.price > 0.0) Modifier.clickable { onAdd(product.id) } else Modifier),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Add,
-                                                    contentDescription = "Add ${product.name} to cart",
-                                                    tint = Color.White,
-                                                    modifier = Modifier.size(15.dp)
-                                                )
+                                                }
+                                            } else {
+                                                Surface(
+                                                    shape = RoundedCornerShape(10.dp),
+                                                    color = Cream,
+                                                    contentColor = Forest,
+                                                    border = BorderStroke(1.dp, Gold)
+                                                ) {
+                                                    Text(
+                                                        "${signatureCartCount} in cart",
+                                                        modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp),
+                                                        fontSize = 9.sp,
+                                                        fontWeight = FontWeight.Bold,
+                                                        maxLines = 1
+                                                    )
+                                                }
                                             }
                                         }
 
