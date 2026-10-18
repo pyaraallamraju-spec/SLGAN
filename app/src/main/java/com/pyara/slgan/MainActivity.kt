@@ -3090,7 +3090,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             modifier = Modifier.fillMaxWidth(),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-                                            ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
+                                            ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary(), compact = true)
                                             Spacer(Modifier.width(6.dp))
                                             ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                         }
@@ -3151,7 +3151,7 @@ private fun ProductLikeControl(product: Product, summary: ProductLikeSummary, on
 }
 
 @Composable
-private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, showEmptyLabel: Boolean = false) {
+private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, showEmptyLabel: Boolean = false, compact: Boolean = false) {
     val context = LocalContext.current
     val ratingUser = FirebaseAuth.getInstance().currentUser
     var savingRating by remember(product.id, ratingUser?.uid) { mutableStateOf(false) }
@@ -3161,7 +3161,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
     ) {
         (1..5).forEach { star ->
             Box(
-                modifier = Modifier.size(20.dp).clickable(enabled = !savingRating) {
+                modifier = Modifier.size(if (compact) 15.dp else 20.dp).clickable(enabled = !savingRating) {
                     val user = ratingUser
                     if (user == null) {
                         Toast.makeText(context, "Please sign in to rate this product.", Toast.LENGTH_SHORT).show()
@@ -3202,13 +3202,13 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
                     imageVector = if (star <= summary.average) Icons.Default.Star else Icons.Default.StarBorder,
                     contentDescription = "Rate ${product.name} ${star} out of 5 stars",
                     tint = if (star <= summary.average) Gold else Muted,
-                    modifier = Modifier.size(17.dp)
+                    modifier = Modifier.size(if (compact) 14.dp else 17.dp)
                 )
             }
         }
         if (summary.count > 0) {
-            Text(String.format(java.util.Locale.US, "%.1f", summary.average), color = Ink, fontWeight = FontWeight.Bold, fontSize = 10.sp)
-            Text("(${summary.count})", color = Muted, fontSize = 9.sp)
+            Text(String.format(java.util.Locale.US, "%.1f", summary.average), color = Ink, fontWeight = FontWeight.Bold, fontSize = if (compact) 9.sp else 10.sp, maxLines = 1)
+            Text("(${summary.count})", color = Muted, fontSize = if (compact) 8.sp else 9.sp, maxLines = 1)
         } else if (showEmptyLabel) {
             Text("No ratings", color = Muted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
