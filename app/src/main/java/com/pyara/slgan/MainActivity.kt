@@ -5419,8 +5419,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         Column(Modifier.fillMaxWidth().padding(14.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Column(Modifier.weight(1f)) {
-                                    Text("Choose delivery location", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                                    Text("Search, select a result, or drag the pin.", color = Muted, fontSize = 12.sp)
                                 }
                                 IconButton(onClick = { showMapPicker = false }) {
                                     Icon(Icons.Default.Close, contentDescription = "Close map", tint = Forest)
