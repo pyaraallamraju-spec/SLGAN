@@ -1249,9 +1249,9 @@ private fun HomeBannerSlider(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(220.dp)
-                .clip(RoundedCornerShape(26.dp))
-                .border(1.2.dp, Gold.copy(alpha = 0.88f), RoundedCornerShape(26.dp))
+                .height(190.dp)
+                .clip(RoundedCornerShape(22.dp))
+                .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
                 .background(
                     Brush.linearGradient(
                         colors = listOf(
@@ -1299,25 +1299,14 @@ private fun HomeBannerSlider(
                         contentScale = if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                    if (slide.isCompanySlide) {
-                        Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF4D100E).copy(alpha = 0.20f), Color.Transparent))))
-                        Column(
-                            modifier = Modifier.align(Alignment.CenterEnd).padding(end = 18.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(4.dp)
-                        ) {
-                            Text("🌿", fontSize = 48.sp)
-                            Text("🍃  🌱", fontSize = 24.sp)
-                            Text("NATURE  •  TRADITION", color = Color(0xFFFFDFA0), fontSize = 8.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
-                        }
-                    } else {
+                    if (!slide.isCompanySlide) {
                         Box(
                             Modifier.fillMaxSize().background(
                                 Brush.horizontalGradient(
                                     colors = listOf(
-                                        Color(0xFF351014).copy(alpha = 0.98f),
-                                        Color(0xFF5B1C29).copy(alpha = 0.90f),
-                                        Forest.copy(alpha = 0.62f),
+                                        Color(0xFF4D100E).copy(alpha = 0.97f),
+                                        Forest.copy(alpha = 0.86f),
+                                        Forest.copy(alpha = 0.40f),
                                         Color.Transparent
                                     )
                                 )
@@ -1350,9 +1339,9 @@ private fun HomeBannerSlider(
                     }
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth(if (slide.isCompanySlide) 0.76f else 0.84f)
+                            .fillMaxWidth(0.88f)
                             .align(Alignment.CenterStart)
-                            .padding(start = 20.dp, end = 10.dp, top = 18.dp, bottom = 18.dp),
+                            .padding(horizontal = 18.dp, vertical = 18.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
                         if (slide.isCompanySlide) {
