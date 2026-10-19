@@ -12,7 +12,12 @@
           "package_name": "com.pyara.slgan"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1034428021231-cge5sicjk5mulb5j90p1fmh1lgpifgn8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDZjCjajI25DZMWZUzHBJh_FztS2-r_E9U"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034428021231-cge5sicjk5mulb5j90p1fmh1lgpifgn8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
