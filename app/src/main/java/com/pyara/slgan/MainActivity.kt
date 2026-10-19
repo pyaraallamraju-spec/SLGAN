@@ -5770,18 +5770,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest, modifier = Modifier.size(76.dp))
                         }
                     }
-                    @Composable
-                    fun DiseaseAccordion(title: String, icon: androidx.compose.ui.graphics.vector.ImageVector, expanded: Boolean, onToggle: () -> Unit, content: @Composable () -> Unit) {
-                        Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp)).border(1.dp, Color(0xFFE8EAF0), RoundedCornerShape(15.dp)).background(Color.White)) {
-                            Row(Modifier.fillMaxWidth().clickable(onClick = onToggle).padding(horizontal = 14.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(21.dp))
-                                Spacer(Modifier.width(10.dp))
-                                Text(title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp, modifier = Modifier.weight(1f))
-                                Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = if (expanded) "Collapse $title" else "Expand $title", tint = Ink)
-                            }
-                            if (expanded) Column(Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp, bottom = 14.dp)) { content() }
-                        }
-                    }
                     DiseaseAccordion("Description", Icons.Default.Info, descriptionExpanded, { descriptionExpanded = !descriptionExpanded }) {
                         Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 21.sp)
                     }
@@ -5814,6 +5802,25 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             }
         }
     }
+
+@Composable
+private fun DiseaseAccordion(
+    title: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp)).border(1.dp, Color(0xFFE8EAF0), RoundedCornerShape(15.dp)).background(Color.White)) {
+        Row(Modifier.fillMaxWidth().clickable(onClick = onToggle).padding(horizontal = 14.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(21.dp))
+            Spacer(Modifier.width(10.dp))
+            Text(title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp, modifier = Modifier.weight(1f))
+            Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = if (expanded) "Collapse $title" else "Expand $title", tint = Ink)
+        }
+        if (expanded) Column(Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp, bottom = 14.dp)) { content() }
+    }
+}
 
 @Composable
 private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String) {
