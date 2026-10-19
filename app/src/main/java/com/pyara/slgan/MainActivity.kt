@@ -540,7 +540,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     }
     val emoji = when (category) {
         "Lehyas" -> "🫙"
-        "Grutas" -> "🏺"
+        "Grutas" -> "🫙"
         "Pills" -> "💊"
         "Tailas" -> "🫙"
         "Churnas" -> "🌾"
