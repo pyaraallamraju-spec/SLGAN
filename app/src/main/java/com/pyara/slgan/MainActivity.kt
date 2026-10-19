@@ -3659,8 +3659,94 @@ private fun ShopScreen(
             "AddressBook" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, initialSection = "Addresses")
             "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "About" -> AboutPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
+            "AccountPrivacy" -> AccountPrivacyPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
         }
+    }
+}
+
+@Composable
+private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: () -> Unit) {
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
+    val isEnglish = appLanguage == "English"
+    Column(modifier.fillMaxSize().background(Color.White)) {
+        Row(
+            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
+            Text(if (isEnglish) "Account privacy" else "ఖాతా గోప్యత", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        }
+        Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
+        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 24.dp)) {
+            Text(if (isEnglish) "Account privacy and policy" else "ఖాతా గోప్యత మరియు విధానం", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.height(12.dp))
+            Text(
+                if (isEnglish)
+                    "Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN) respects your privacy. We use account information such as your name, contact details, saved delivery addresses, wishlist, and order information to provide app features and support your purchases. We do not ask you to share your password or one-time verification codes with anyone."
+                else
+                    "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం (SLGAN) మీ గోప్యతను గౌరవిస్తుంది. యాప్ సేవలు, ఆర్డర్ల కోసం మీ పేరు, సంప్రదింపు వివరాలు, డెలివరీ చిరునామాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సమాచారాన్ని ఉపయోగించవచ్చు. మీ పాస్‌వర్డ్ లేదా OTPలను ఎవరితోనూ పంచుకోవద్దు.",
+                color = Color(0xFF667085), fontSize = 16.sp, lineHeight = 23.sp
+            )
+            if (expanded) {
+                Spacer(Modifier.height(14.dp))
+                Text(
+                    if (isEnglish)
+                        "Your information is used to operate account, address, wishlist, and order features. Access to information should be limited to what is needed to provide these services. Please keep your sign-in credentials private and contact SLGAN support if you have questions or believe your account has been accessed without permission. Do not submit sensitive financial information in chat or support messages."
+                    else
+                        "మీ సమాచారాన్ని ఖాతా, చిరునామా, విష్‌లిస్ట్ మరియు ఆర్డర్ సేవలను అందించడానికి ఉపయోగిస్తాము. అవసరమైన సేవలకు మాత్రమే సమాచార ప్రాప్యత పరిమితం చేయాలి. మీ లాగిన్ వివరాలను రహస్యంగా ఉంచండి. మీ ఖాతా గురించి సందేహాలు ఉన్నా లేదా అనధికార ప్రాప్యత అనిపించినా SLGAN సపోర్ట్‌ను సంప్రదించండి. చాట్ లేదా సపోర్ట్ సందేశాల్లో సున్నితమైన ఆర్థిక సమాచారాన్ని పంపవద్దు.",
+                    color = Color(0xFF667085), fontSize = 16.sp, lineHeight = 23.sp
+                )
+            }
+            Spacer(Modifier.height(14.dp))
+            Row(
+                Modifier.clickable { expanded = !expanded }.padding(vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(if (expanded) { if (isEnglish) "Read less" else "తక్కువ చదవండి" } else { if (isEnglish) "Read more" else "మరింత చదవండి" }, color = Color(0xFF27851F), fontSize = 17.sp, fontWeight = FontWeight.Medium)
+                Spacer(Modifier.width(6.dp))
+                Icon(if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, contentDescription = null, tint = Color(0xFF27851F))
+            }
+            Spacer(Modifier.height(32.dp))
+            Row(
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(Color(0xFFF6F7FA)).clickable { showDeleteConfirmation = true }.padding(horizontal = 18.dp, vertical = 18.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink, modifier = Modifier.size(36.dp))
+                Spacer(Modifier.width(18.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(if (isEnglish) "Request to delete account" else "ఖాతా తొలగించమని అభ్యర్థించండి", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(4.dp))
+                    Text(if (isEnglish) "Request to closure of your account" else "మీ ఖాతా మూసివేయడానికి అభ్యర్థించండి", color = Muted, fontSize = 14.sp)
+                }
+                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Ink)
+            }
+        }
+    }
+    if (showDeleteConfirmation) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirmation = false },
+            title = { Text(if (isEnglish) "Request account deletion" else "ఖాతా తొలగింపు అభ్యర్థన") },
+            text = { Text(if (isEnglish) "This will open a request email to SLGAN support. Your account will not be deleted automatically. Do you want to continue?" else "ఇది SLGAN సపోర్ట్‌కు అభ్యర్థన ఇమెయిల్‌ను తెరుస్తుంది. మీ ఖాతా ఆటోమేటిక్‌గా తొలగించబడదు. కొనసాగించాలా?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDeleteConfirmation = false
+                    val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:")
+                        putExtra(Intent.EXTRA_SUBJECT, "SLGAN account deletion request")
+                        putExtra(Intent.EXTRA_TEXT, "Please contact me about my SLGAN account deletion request.\nRegistered account email: ${FirebaseAuth.getInstance().currentUser?.email.orEmpty()}")
+                    }
+                    runCatching { context.startActivity(emailIntent) }.onFailure {
+                        Toast.makeText(context, if (isEnglish) "No email app is available." else "ఇమెయిల్ యాప్ అందుబాటులో లేదు.", Toast.LENGTH_SHORT).show()
+                    }
+                }) { Text(if (isEnglish) "Continue" else "కొనసాగించు") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirmation = false }) { Text(if (isEnglish) "Cancel" else "రద్దు") }
+            }
+        )
     }
 }
 
@@ -6187,13 +6273,7 @@ private fun AccountsPage(
                     context.startActivity(Intent.createChooser(sendIntent, "Share SLGAN"))
                 }
                 AccountMenuRow(Icons.Default.Info, "About us") { onTabChange("About") }
-                AccountMenuRow(Icons.Default.Lock, "Account privacy") {
-                    android.app.AlertDialog.Builder(context)
-                        .setTitle("Account privacy")
-                        .setMessage("Your account profile and saved information are associated with your signed-in account. Keep your password and verification codes private. You can sign out from this page.")
-                        .setPositiveButton("OK", null)
-                        .show()
-                }
+                AccountMenuRow(Icons.Default.Lock, "Account privacy", "Manage your privacy and account data") { onTabChange("AccountPrivacy") }
                 AccountMenuRow(Icons.Default.NotificationsNone, "Notification preferences") {
                     android.app.AlertDialog.Builder(context)
                         .setTitle("Notification preferences")
