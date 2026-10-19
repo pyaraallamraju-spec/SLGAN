@@ -14,7 +14,15 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
-    buildFeatures { compose = true }
+    buildFeatures { compose = true; buildConfig = true }
+    buildTypes {
+        getByName("debug") {
+            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"${project.findProperty("chatbotApiBaseUrl") ?: ""}\"")
+        }
+        getByName("release") {
+            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"${project.findProperty("chatbotApiBaseUrl") ?: ""}\"")
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
