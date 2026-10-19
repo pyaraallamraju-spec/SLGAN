@@ -5537,7 +5537,11 @@ private fun OrdersPage(
                             Spacer(Modifier.height(5.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(orderId, color = Ink, fontSize = 16.sp, modifier = Modifier.weight(1f))
-                                IconButton(onClick = { GenCopy.copy(context, orderId); Toast.makeText(context, "Order ID copied", Toast.LENGTH_SHORT).show() }) { Icon(Icons.Default.ContentCopy, contentDescription = "Copy order ID", tint = Muted) }
+                                IconButton(onClick = {
+                                    val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                                    clipboard.setPrimaryClip(android.content.ClipData.newPlainText("Order ID", orderId))
+                                    Toast.makeText(context, "Order ID copied", Toast.LENGTH_SHORT).show()
+                                }) { Icon(Icons.Default.ContentCopy, contentDescription = "Copy order ID", tint = Muted) }
                             }
                         }
                         Column {
