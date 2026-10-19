@@ -6650,6 +6650,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var saveMessage by remember { mutableStateOf<String?>(null) }
     var profileSection by remember(initialSection) { mutableStateOf(initialSection) }
     var showAddressForm by remember { mutableStateOf(false) }
+    var showAddressLocationSheet by remember { mutableStateOf(false) }
     var showMapPicker by remember { mutableStateOf(false) }
     var addresses by remember(uid) { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var addressLabel by remember { mutableStateOf("Home") }
@@ -7029,7 +7030,93 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
             }
             Spacer(Modifier.height(14.dp))
-            if (showMapPicker) {
+            if (showAddressLocationSheet) {
+        androidx.compose.material3.ModalBottomSheet(
+            onDismissRequest = { showAddressLocationSheet = false },
+            containerColor = Color.White,
+            scrimColor = Color.Black.copy(alpha = 0.68f),
+            dragHandle = null
+        ) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp).padding(top = 14.dp, bottom = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(Modifier.size(42.dp).clip(CircleShape).background(Color(0xFF17171D)).clickable { showAddressLocationSheet = false }, contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White, modifier = Modifier.size(24.dp))
+                }
+                Spacer(Modifier.height(20.dp))
+                Box(Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(16.dp)).background(Color(0xFFF7F7F7)), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFF27851F), modifier = Modifier.size(86.dp))
+                        Text("Choose delivery location", color = Muted, fontSize = 13.sp)
+                    }
+                }
+                Spacer(Modifier.height(22.dp))
+                Text(
+                    if (LocalAppLanguage.current == "English") "Do you want this order at your current location?" else "మీ ప్రస్తుత చిరునామాకు ఆర్డర్ కావాలా?",
+                    color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center, lineHeight = 28.sp
+                )
+                Spacer(Modifier.height(24.dp))
+                OutlinedButton(
+                    onClick = {
+                        showAddressLocationSheet = false
+                        val existing = addresses.firstOrNull()
+                        if (existing != null) {
+                            addressLabel = existing["label"]?.toString() ?: "Home"
+                            recipientName = existing["recipientName"]?.toString().orEmpty()
+                            recipientPhone = existing["phone"]?.toString().orEmpty()
+                            addressLine1 = existing["addressLine1"]?.toString().orEmpty()
+                            addressLine2 = existing["addressLine2"]?.toString().orEmpty()
+                            landmark = existing["landmark"]?.toString().orEmpty()
+                            city = existing["city"]?.toString().orEmpty()
+                            state = existing["state"]?.toString().orEmpty()
+                            pincode = existing["pincode"]?.toString().orEmpty()
+                        }
+                        showAddressForm = true
+                        addressMessage = null
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    border = BorderStroke(1.5.dp, Color(0xFF27851F)),
+                    colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White, contentColor = Color(0xFF27851F))
+                ) {
+                    Icon(Icons.Default.MyLocation, contentDescription = null)
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f).padding(vertical = 8.dp)) {
+                        Text(if (LocalAppLanguage.current == "English") "Yes, deliver at my current location" else "అవును, ప్రస్తుత చిరునామాకు డెలివరీ చేయండి", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        val currentAddressText = addresses.firstOrNull()?.let { row ->
+                            listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
+                                .mapNotNull { key -> row[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
+                                .joinToString(", ")
+                        }.orEmpty()
+                        if (currentAddressText.isNotBlank()) Text(currentAddressText, color = Ink, fontSize = 12.sp, lineHeight = 17.sp)
+                    }
+                }
+                Spacer(Modifier.height(14.dp))
+                OutlinedButton(
+                    onClick = {
+                        showAddressLocationSheet = false
+                        addressLabel = "Home"
+                        recipientName = ""
+                        recipientPhone = ""
+                        addressLine1 = ""
+                        addressLine2 = ""
+                        landmark = ""
+                        city = ""
+                        state = ""
+                        pincode = ""
+                        showAddressForm = true
+                        addressMessage = null
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    border = BorderStroke(1.5.dp, Color(0xFF27851F)),
+                    colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White, contentColor = Color(0xFF27851F))
+                ) {
+                    Text(if (LocalAppLanguage.current == "English") "No, at some other location" else "కాదు, వేరే చిరునామాకు", fontSize = 16.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(vertical = 8.dp))
+                }
+            }
+        }
+    }
+
+    if (showMapPicker) {
                 androidx.compose.ui.window.Dialog(onDismissRequest = { showMapPicker = false }, properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
                     Card(
                         modifier = Modifier.fillMaxWidth(0.94f),
@@ -7275,7 +7362,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     )
                     Spacer(Modifier.height(18.dp))
                     Button(
-                        onClick = { showAddressForm = true; addressMessage = null },
+                        onClick = { showAddressLocationSheet = true; addressMessage = null },
                         modifier = Modifier.fillMaxWidth(0.78f).height(54.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Forest),
@@ -7307,7 +7394,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         )
                     }
                     Button(
-                        onClick = { showAddressForm = true; addressMessage = null },
+                        onClick = { showAddressLocationSheet = true; addressMessage = null },
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Forest),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
