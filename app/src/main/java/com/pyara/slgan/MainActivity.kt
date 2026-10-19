@@ -4584,8 +4584,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 Spacer(Modifier.height(6.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text("Your shopping bag", fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
-                        Spacer(Modifier.height(5.dp))
                         Text("Review medicines before placing order.", fontSize = 13.sp, color = PaleGreen, lineHeight = 19.sp)
                     }
                     Spacer(Modifier.width(8.dp))
