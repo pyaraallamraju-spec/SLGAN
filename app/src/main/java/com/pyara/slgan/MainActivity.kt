@@ -5147,8 +5147,8 @@ private fun OrdersPage(
     latestOrderMessage: String?,
     products: List<Product>,
     onAdd: (String) -> Unit,
-    onHome: () -> Unit,
-    pageTitle: String = "Order History"
+    pageTitle: String = "Order History",
+    onHome: () -> Unit
 ) {
     val user = FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
