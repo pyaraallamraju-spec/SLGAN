@@ -4654,150 +4654,131 @@ private fun ProductDetailsPage(
                 }
         }
     }
-    Column(Modifier.fillMaxSize().background(Cream)) {
-        Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back to products", tint = Forest) }
-            Text(tr("View product", LocalAppLanguage.current), modifier = Modifier.weight(1f), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
-            IconButton(onClick = {
-                val productLink = "https://slgan-a364e.web.app/product?id=${Uri.encode(product.id)}"
-                val shareText = buildString {
-                    append("Check out this product from Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN)\n\n")
-                    append(localizedProductName(product.name, currentLanguage))
-                    if (product.subtitle.isNotBlank()) append("\nPack size: ${product.subtitle}")
-                    if (product.category.isNotBlank()) append("\nCategory: ${product.category}")
-                    if (product.price > 0.0) {
-                        val priceText = if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price)
-                        append("\nPrice: ₹$priceText")
-                    } else append("\nPrice: Not available yet")
-                    if (product.description.isNotBlank()) append("\n\nDescription: ${product.description}")
-                    if (product.usage.isNotBlank()) append("\nUsage: ${product.usage}")
-                    if (product.majorIngredients.isNotBlank()) append("\nMajor ingredients: ${product.majorIngredients}")
-                    append("\n\nView product: $productLink")
-                    append("\n\nShared from SLGAN.")
+    var highlightsExpanded by remember(product.id) { mutableStateOf(false) }
+    var informationExpanded by remember(product.id) { mutableStateOf(false) }
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F3F3))) {
+        Box(Modifier.fillMaxWidth().weight(0.88f)) {
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                Box(Modifier.fillMaxWidth().height(360.dp).background(Color(0xFFF4F4F4))) {
+                    if (product.imageUrl.isNotBlank()) {
+                        AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
+                    } else {
+                        Box(Modifier.fillMaxSize().background(PaleGreen), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 112.sp) }
+                    }
+                    Row(Modifier.fillMaxWidth().align(Alignment.TopCenter).padding(horizontal = 22.dp, vertical = 28.dp), verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = onBack, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.ArrowBack, contentDescription = "Back to products", tint = Color.Black) }
+                        Spacer(Modifier.weight(1f))
+                        IconButton(onClick = { onBack() /* product search remains available on the previous page */ }, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.Search, contentDescription = "Back to product search", tint = Color.Black) }
+                        Spacer(Modifier.width(12.dp))
+                        IconButton(onClick = {
+                            val productLink = "https://slgan-a364e.web.app/product?id=${Uri.encode(product.id)}"
+                            val shareText = buildString {
+                                append("Check out this product from Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN)\n\n")
+                                append(localizedProductName(product.name, currentLanguage))
+                                if (product.subtitle.isNotBlank()) append("\nPack size: ${product.subtitle}")
+                                if (product.price > 0.0) append("\nPrice: ₹${String.format("%.2f", product.price)}")
+                                append("\n\nView product: $productLink")
+                            }
+                            val shareIntent = Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_TEXT, shareText) }
+                            context.startActivity(Intent.createChooser(shareIntent, tr("Share product", currentLanguage)))
+                        }, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.Share, contentDescription = "Share product", tint = Color.Black) }
+                    }
+                    IconButton(onClick = { showReviewDialog = true }, modifier = Modifier.align(Alignment.BottomStart).padding(start = 24.dp, bottom = 22.dp).size(48.dp).background(Color.White, CircleShape)) {
+                        Icon(Icons.Default.Info, contentDescription = "Product information", tint = Ink)
+                    }
+                    Box(Modifier.align(Alignment.BottomCenter).padding(bottom = 18.dp).background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(50.dp)).padding(horizontal = 12.dp, vertical = 5.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                            repeat(5) { dot -> Box(Modifier.size(if (dot == 2) 8.dp else 7.dp).background(if (dot == 2) Ink else Color(0xFFB7BEC9), CircleShape)) }
+                        }
+                    }
+                    IconButton(onClick = onToggleLike, modifier = Modifier.align(Alignment.BottomEnd).padding(end = 24.dp, bottom = 22.dp).size(48.dp).background(Color.White, CircleShape)) {
+                        Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = "Save product", tint = if (likeSummary.likedByMe) Color(0xFFE91E63) else Ink)
+                    }
                 }
-                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_SUBJECT, "SLGAN - ${product.name}")
-                    putExtra(Intent.EXTRA_TEXT, shareText)
+                Column(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                        Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Surface(shape = RoundedCornerShape(30.dp), color = Color(0xFFF0F2F6)) {
+                                    Row(Modifier.padding(horizontal = 10.dp, vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(Icons.Default.Bolt, contentDescription = null, tint = Muted, modifier = Modifier.size(15.dp))
+                                        Spacer(Modifier.width(4.dp))
+                                        Text("Fast delivery", color = Muted, fontSize = 12.sp)
+                                    }
+                                }
+                                Spacer(Modifier.weight(1f))
+                                ProductRatingLine(product, ratingSummary, showEmptyLabel = true)
+                            }
+                            Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.Bold)
+                            Text(if (product.subtitle.isNotBlank()) "Net quantity: ${product.subtitle}" else "Net quantity: See product pack", color = Muted, fontSize = 15.sp)
+                            if (product.price > 0.0) {
+                                Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 5.dp).background(Color(0xFF268A35), RoundedCornerShape(9.dp)).padding(horizontal = 10.dp, vertical = 5.dp))
+                                Text("Price inclusive of applicable taxes", color = Muted, fontSize = 13.sp)
+                            } else Text(tr("Price not available yet.", currentLanguage), color = Muted, fontSize = 15.sp)
+                        }
+                    }
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                        Row(Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Column(Modifier.weight(1f).clip(RoundedCornerShape(20.dp)).background(Color(0xFFF8F8FC)).padding(vertical = 18.dp, horizontal = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(Icons.Default.AssignmentReturn, contentDescription = null, tint = Muted, modifier = Modifier.size(34.dp))
+                                Spacer(Modifier.height(8.dp))
+                                Text("Check return policy", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                            }
+                            Column(Modifier.weight(1f).clip(RoundedCornerShape(20.dp)).background(Color(0xFFF8F8FC)).padding(vertical = 18.dp, horizontal = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(Icons.Default.LocalShipping, contentDescription = null, tint = Muted, modifier = Modifier.size(34.dp))
+                                Spacer(Modifier.height(8.dp))
+                                Text("Fast delivery", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                            }
+                        }
+                    }
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                        Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Color(0xFFF8F8FC)).clickable { highlightsExpanded = !highlightsExpanded }.padding(17.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text("Highlights", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                                Icon(if (highlightsExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = null, tint = Ink)
+                            }
+                            if (highlightsExpanded) {
+                                Text(product.description.ifBlank { "Product details will be updated soon." }, color = Muted, fontSize = 14.sp, lineHeight = 21.sp, modifier = Modifier.padding(horizontal = 8.dp))
+                                if (product.category.isNotBlank()) Text("Category: ${product.category}", color = Muted, fontSize = 14.sp, modifier = Modifier.padding(horizontal = 8.dp))
+                            }
+                            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Color(0xFFF8F8FC)).clickable { informationExpanded = !informationExpanded }.padding(17.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text("Information", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                                Icon(if (informationExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = null, tint = Ink)
+                            }
+                            if (informationExpanded) {
+                                listOf("Usage" to product.usage, "Cures / uses" to product.cures, "Major ingredients" to product.majorIngredients).forEach { (heading, value) ->
+                                    Text(heading, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp))
+                                    Text(value.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 21.sp, modifier = Modifier.padding(horizontal = 8.dp))
+                                }
+                            }
+                            Row(Modifier.fillMaxWidth().clickable { showReviewDialog = true }.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(24.dp))
+                                Spacer(Modifier.width(10.dp))
+                                Text("Customer ratings & reviews", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Muted)
+                            }
+                            if (customerReviews.isNotEmpty()) customerReviews.take(3).forEach { (customerName, reviewText) ->
+                                Column(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
+                                    Text(customerName, color = Forest, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                    Text(reviewText, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                                }
+                            }
+                        }
+                    }
                 }
-                context.startActivity(Intent.createChooser(shareIntent, tr("Share product", currentLanguage)))
-            }) {
-                Icon(Icons.Default.Share, contentDescription = tr("Share product", LocalAppLanguage.current), tint = Forest)
             }
         }
-        Column(
-            Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(18.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
-        ) {
-            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Cream)) {
-                if (product.imageUrl.isNotBlank()) {
-                    AndroidView(
-                        modifier = Modifier.fillMaxWidth().height(250.dp),
-                        factory = { ctx ->
-                            WebView(ctx).apply {
-                                settings.javaScriptEnabled = false
-                                settings.domStorageEnabled = false
-                                webViewClient = WebViewClient()
-                                val safeUrl = product.imageUrl.replace("&", "&amp;").replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
-                                loadDataWithBaseURL(null, "<html><head><meta name='viewport' content='width=device-width, initial-scale=1'></head><body style='margin:0;background:#fff;height:100%;display:flex;align-items:center;justify-content:center'><img src=\"$safeUrl\" style='max-width:100%;max-height:100%;object-fit:contain'/></body></html>", "text/html", "UTF-8", null)
-                            }
-                        }
-                    )
-                } else {
-                    Box(Modifier.fillMaxWidth().height(210.dp).background(PaleGreen), contentAlignment = Alignment.Center) {
-                        Text(product.emoji, fontSize = 82.sp)
-                    }
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Box(Modifier.size(62.dp).border(1.dp, Color(0xFFD5DCE7), RoundedCornerShape(16.dp)).clickable { /* quantity is shown in cart */ }.padding(8.dp), contentAlignment = Alignment.Center) {
+                BadgedBox(badge = { if (cartCount > 0) Badge(containerColor = Color(0xFFF23F73)) { Text(cartCount.toString()) } }) {
+                    Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = Color.Black, modifier = Modifier.size(28.dp))
                 }
             }
-            Text(
-                localizedProductName(product.name, LocalAppLanguage.current),
-                color = Ink,
-                fontSize = 25.sp,
-                lineHeight = 31.sp,
-                fontWeight = FontWeight.ExtraBold
-            )
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (product.category.isNotBlank()) {
-                    Surface(
-                        shape = RoundedCornerShape(10.dp),
-                        color = PaleGreen,
-                        contentColor = Forest
-                    ) {
-                        Row(
-                            Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(5.dp)
-                        ) {
-                            Icon(Icons.Default.Category, contentDescription = null, modifier = Modifier.size(15.dp))
-                            Text(product.category, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
-                        }
-                    }
-                }
-                if (product.subtitle.isNotBlank()) {
-                    Surface(
-                        shape = RoundedCornerShape(10.dp),
-                        color = Color(0xFFFFEBC2),
-                        contentColor = Ink
-                    ) {
-                        Row(
-                            Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(5.dp)
-                        ) {
-                            Icon(Icons.Default.Inventory2, contentDescription = null, modifier = Modifier.size(15.dp))
-                            Text(product.subtitle, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
-                        }
-                    }
-                }
-                Spacer(Modifier.weight(1f))
-                ProductLikeControl(product, likeSummary, { onToggleLike() })
+            Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(66.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF23F73))) {
+                Text(if (product.productStock == 0) "Out of stock" else if (cartCount > 0) "Add another" else "Add to Cart", color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Bold)
             }
-            if (product.price > 0.0) {
-                Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Forest, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
-            } else {
-                Text(tr("Price not available yet.", LocalAppLanguage.current), color = Muted, fontSize = 15.sp)
-            }
-            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Cream)) {
-                Row(
-                    Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Text("Customer rating", color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                        ProductRatingLine(product, ratingSummary, showEmptyLabel = true)
-                    }
-                    TextButton(onClick = { showReviewDialog = true; ratingMessage = null }) {
-                        Text("⭐", fontSize = 18.sp)
-                        Spacer(Modifier.width(6.dp))
-                        Text("Add review", color = Forest, fontWeight = FontWeight.Bold)
-                    }
-                }
-            }
-            if (customerReviews.isNotEmpty()) {
-                Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("Customer reviews", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                    customerReviews.forEach { (customerName, reviewText) ->
-                        Card(
-                            Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(14.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White)
-                        ) {
-                            Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                                Text(customerName, color = Forest, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                                Text(reviewText, color = Ink, fontSize = 14.sp, lineHeight = 20.sp)
-                            }
-                        }
-                    }
-                }
-            }
+        }
+    }
             if (showReviewDialog) {
                 AlertDialog(
                     onDismissRequest = { if (!ratingSaving) showReviewDialog = false },
