@@ -3666,36 +3666,65 @@ private fun ShopScreen(
 
 @Composable
 private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Unit) {
-    Column(modifier.fillMaxSize().background(Cream)) {
+    val context = LocalContext.current
+    val title = if (appLanguage == "English") "About Us" else "మా గురించి"
+    val versionName = remember {
+        runCatching {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "1.0.0"
+        }.getOrDefault("1.0.0")
+    }
+    val paragraphs = if (appLanguage == "English") listOf(
+        "Sri Lakshmi Ganapathi Ayurveda Nilayam brings traditional Ayurvedic products together in one convenient place. Browse our catalogue, explore product details, and find information about ingredients and usage.",
+        "Our aim is to make it easier for customers to explore our products, manage delivery addresses, place orders, and revisit their favourite items. Please read each product's details carefully and consult a qualified healthcare professional for medical advice.",
+        "Sri Lakshmi Ganapathi Ayurveda Nilayam is an independent Ayurvedic business. Product information in this app is provided for general information and is not a substitute for professional medical diagnosis or treatment."
+    ) else listOf(
+        "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం సంప్రదాయ ఆయుర్వేద ఉత్పత్తులను ఒకే చోట అందిస్తుంది. మా ఉత్పత్తుల జాబితాను చూడండి, ఉత్పత్తుల వివరాలు, పదార్థాలు మరియు వినియోగ సమాచారాన్ని తెలుసుకోండి.",
+        "మా ఉద్దేశ్యం ఉత్పత్తులను సులభంగా చూడటం, డెలివరీ చిరునామాలను నిర్వహించడం, ఆర్డర్లు చేయడం మరియు మీకు ఇష్టమైన ఉత్పత్తులను మళ్లీ చూడటం సులభం చేయడం. వైద్య సలహా కోసం అర్హత కలిగిన వైద్య నిపుణుడిని సంప్రదించండి.",
+        "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం స్వతంత్ర ఆయుర్వేద వ్యాపారం. ఈ యాప్‌లోని ఉత్పత్తుల సమాచారం సాధారణ అవగాహన కోసం మాత్రమే; ఇది వైద్య నిర్ధారణ లేదా చికిత్సకు ప్రత్యామ్నాయం కాదు."
+    )
+    Column(modifier.fillMaxSize().background(Color.White)) {
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
-            Text(if (appLanguage == "English") "About us" else "మా గురించి", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
+            Text(title, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
-        Column(
-            Modifier.fillMaxWidth().padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.slgan_screen_logo),
-                contentDescription = "SLGAN logo",
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.size(112.dp).clip(CircleShape).background(Cream)
-            )
-            Spacer(Modifier.height(18.dp))
-            Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Forest, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(8.dp))
-            Text("Traditional Ayurvedic products", color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
-            Spacer(Modifier.height(18.dp))
-            Text(
-                if (appLanguage == "English")
-                    "Explore our product catalogue and view product details, manage your delivery addresses, track orders, and save your favourite products in your wishlist."
-                else
-                    "మా ఆయుర్వేద ఉత్పత్తులను చూడండి, డెలివరీ చిరునామాలను నిర్వహించండి, ఆర్డర్లను ట్రాక్ చేయండి, మీకు ఇష్టమైన ఉత్పత్తులను విష్‌లిస్ట్‌లో సేవ్ చేసుకోండి.",
-                color = Ink, fontSize = 15.sp, lineHeight = 23.sp, textAlign = TextAlign.Center
-            )
+        Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
+        Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp, vertical = 24.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(title, color = Ink, fontSize = 28.sp, fontWeight = FontWeight.Normal)
+                Spacer(Modifier.width(12.dp))
+                Text("v$versionName", color = Muted, fontSize = 17.sp)
+            }
+            Spacer(Modifier.height(34.dp))
+            paragraphs.forEachIndexed { index, paragraph ->
+                Text(paragraph, color = Color(0xFF667085), fontSize = 16.sp, lineHeight = 23.sp)
+                if (index != paragraphs.lastIndex) Spacer(Modifier.height(24.dp))
+            }
+        }
+        Column(Modifier.fillMaxWidth()) {
+            Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
+            Row(
+                Modifier.fillMaxWidth().clickable {
+                    android.app.AlertDialog.Builder(context)
+                        .setTitle(if (appLanguage == "English") "Privacy Policy" else "గోప్యతా విధానం")
+                        .setMessage(if (appLanguage == "English") "SLGAN uses account information to provide sign-in, saved addresses, wishlist, and order features. Keep your password and verification codes private. Contact the business for questions about your account data." else "సైన్-ఇన్, చిరునామాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సేవల కోసం SLGAN ఖాతా సమాచారాన్ని ఉపయోగిస్తుంది. మీ పాస్‌వర్డ్ మరియు OTPలను రహస్యంగా ఉంచండి. ఖాతా సమాచారం గురించి ప్రశ్నల కోసం వ్యాపారాన్ని సంప్రదించండి.")
+                        .setPositiveButton("OK", null).show()
+                }.padding(horizontal = 22.dp, vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) { Text(if (appLanguage == "English") "Privacy Policy" else "గోప్యతా విధానం", color = Ink, fontSize = 19.sp) }
+            Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
+            Row(
+                Modifier.fillMaxWidth().clickable {
+                    android.app.AlertDialog.Builder(context)
+                        .setTitle(if (appLanguage == "English") "Terms & Conditions" else "నిబంధనలు")
+                        .setMessage(if (appLanguage == "English") "Use SLGAN to browse product information, manage your account, and place orders. Product information is general in nature. Order acceptance and delivery depend on confirmation and availability." else "ఉత్పత్తుల వివరాలు చూడటానికి, ఖాతాను నిర్వహించడానికి మరియు ఆర్డర్లు చేయడానికి SLGANను ఉపయోగించండి. ఉత్పత్తుల సమాచారం సాధారణ అవగాహన కోసం మాత్రమే. ఆర్డర్ అంగీకారం మరియు డెలివరీ నిర్ధారణ, లభ్యతపై ఆధారపడి ఉంటాయి.")
+                        .setPositiveButton("OK", null).show()
+                }.padding(horizontal = 22.dp, vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) { Text(if (appLanguage == "English") "Terms & Conditions" else "నిబంధనలు మరియు షరతులు", color = Ink, fontSize = 19.sp) }
+            Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
         }
     }
 }
