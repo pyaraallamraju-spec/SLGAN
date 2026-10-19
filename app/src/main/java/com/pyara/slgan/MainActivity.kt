@@ -1699,8 +1699,9 @@ private fun AdminProductsScreen(
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-            label = { Text("Search product", modifier = Modifier.background(Color.White), color = Forest) },
-            placeholder = { Text("Name, category or product ID", fontSize = 16.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
+            textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
+            label = { Text("Search product", modifier = Modifier.background(Cream), color = Forest, fontSize = 12.sp, maxLines = 1) },
+            placeholder = { Text("Name, category or product ID", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search products", tint = Forest) },
             trailingIcon = {
                 if (searchText.isNotEmpty()) IconButton(onClick = { searchText = "" }) {
@@ -2771,8 +2772,9 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 onValueChange = { search = it },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
                 singleLine = true,
-                label = { Text("Search diseases", modifier = Modifier.background(Color.White), color = Forest) },
-                placeholder = { Text("Disease name or description") },
+                textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
+                label = { Text("Search diseases", modifier = Modifier.background(Cream), color = Forest, fontSize = 12.sp, maxLines = 1) },
+                placeholder = { Text("Disease name or description", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
                 trailingIcon = {
                     if (search.isNotEmpty()) IconButton(onClick = { search = "" }) {
@@ -2908,7 +2910,8 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             onValueChange = { search = it },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
             singleLine = true,
-            label = { Text("Search name, email or mobile", modifier = Modifier.background(Color.White), color = Forest) },
+            textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
+            label = { Text("Search name, email or mobile", modifier = Modifier.background(Cream), color = Forest, fontSize = 12.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
             shape = RoundedCornerShape(18.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -3219,8 +3222,9 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             onValueChange = { searchQuery = it },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp).height(72.dp),
             singleLine = true,
-            label = { Text("Search order", modifier = Modifier.background(Color.White), color = Forest) },
-            placeholder = { Text("Order ID, customer or mobile") },
+            textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
+            label = { Text("Search order", modifier = Modifier.background(Cream), color = Forest, fontSize = 12.sp, maxLines = 1) },
+            placeholder = { Text("Order ID, customer or mobile", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = Forest) },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) IconButton(onClick = { searchQuery = "" }) {
