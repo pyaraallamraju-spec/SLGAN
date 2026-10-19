@@ -1510,7 +1510,7 @@ private fun HomeBannerSlider(
                             ),
                             text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
-                            color = if (selectedDesign == 3) Color(0xFF23452C) else if (selectedDesign == 2 || selectedDesign == 4) Color(0xFFFFE8AE) else Color.White,
+                            color = if (selectedDesign == 4) Color(0xFFFFFCF4) else if (selectedDesign == 3) Color(0xFF23452C) else if (selectedDesign == 2) Color(0xFFFFE8AE) else Color.White,
                             fontSize = if (slide.isCompanySlide) 23.sp else 25.sp,
                             lineHeight = if (slide.isCompanySlide) 27.sp else 30.sp,
                             fontWeight = FontWeight.ExtraBold,
@@ -1524,7 +1524,7 @@ private fun HomeBannerSlider(
                                 enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
                                     slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
                             ),
-                            color = if (selectedDesign == 3) Color(0xFF5B3428) else if (selectedDesign == 2 || selectedDesign == 4) Color(0xFFE8F0D8) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
+                            color = if (selectedDesign == 4) Color(0xFFFFE8C2) else if (selectedDesign == 3) Color(0xFF5B3428) else if (selectedDesign == 2) Color(0xFFE8F0D8) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
                             fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
                             lineHeight = 16.sp,
                             fontWeight = FontWeight.Medium,
