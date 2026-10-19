@@ -4055,9 +4055,16 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
             .take(5)
             .map { it.first }
     }
-    LazyColumn(modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 20.dp)) {
+    // Match the Categories page's two-tone styling: a white home content header
+    // above the same soft-cream product area.
+    LazyColumn(
+        modifier = modifier.fillMaxSize().background(Color(0xFFFFF8EC)),
+        contentPadding = PaddingValues(bottom = 20.dp)
+    ) {
         item {
-            Column(Modifier.padding(horizontal = 18.dp)) {
+            Column(
+                Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 18.dp)
+            ) {
                 Spacer(Modifier.height(4.dp))
                 Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 25.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text(tr("Rooted in Tradition. Inspired by Nature.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
