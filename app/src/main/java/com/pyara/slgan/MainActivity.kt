@@ -2120,7 +2120,7 @@ private fun AdminProductEditor(
                     value = category,
                     onValueChange = {},
                     modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp),
-                    enabled = false,
+                    enabled = true,
                     label = { Text("Category *") },
                     readOnly = true,
                     singleLine = true,
