@@ -3591,7 +3591,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         "All" -> "🌿"
                                         "Lehyas" -> "🫙"
                                         "Grutas" -> "🏺"
-                                        "Pills" -> "💊"
+                                        "Pills" -> "🌱"
                                         "Tailas" -> "🫙"
                                         "Churnas" -> "🌾"
                                         "Rasayogas" -> "🪷"
