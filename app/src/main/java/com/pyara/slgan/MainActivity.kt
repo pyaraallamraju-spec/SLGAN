@@ -4842,40 +4842,6 @@ private fun ProductDetailsPage(
                     containerColor = Cream
                 )
             }
-            HorizontalDivider(color = Gold.copy(alpha = 0.45f))
-            Text(tr("Description", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(
-                product.description.ifBlank { "Information not available." },
-                color = Muted,
-                fontSize = 14.sp,
-                lineHeight = 22.sp
-            )
-            Text(tr("Cures", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.cures.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
-            Text(tr("Usage", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.usage.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
-            Text(tr("Major ingredients", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            Text(product.majorIngredients.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
-        }
-        Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            if (cartCount > 0) {
-                IconButton(onClick = { onRemove(product.id) }) { Icon(Icons.Default.RemoveCircleOutline, contentDescription = "Remove one", tint = Forest) }
-                Text(cartCount.toString(), color = Ink, fontWeight = FontWeight.Bold)
-            }
-            Button(
-                onClick = { if (product.price > 0.0) onAdd(product.id) },
-                enabled = product.price > 0.0,
-                modifier = Modifier.weight(1f).height(52.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Forest)
-            ) {
-                Text(if (cartCount > 0) "Add another" else "Add to cart", fontWeight = FontWeight.Bold)
-            }
-        }
     }
 }
 
