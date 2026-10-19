@@ -3553,7 +3553,13 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
             }
         onDispose { registration.remove() }
     }
-    val homeCategories = if (databaseCategories.isEmpty()) categories else (listOf("All") + databaseCategories).distinctBy { it.lowercase() }
+    // Merge Firestore category documents with categories found on Firestore-backed products.
+    // This keeps categories visible even if a category document is missing or named differently.
+    val homeCategories = remember(databaseCategories, products) {
+        (listOf("All") + databaseCategories + products.map { it.category.trim() }
+            .filter { it.isNotBlank() })
+            .distinctBy { it.lowercase() }
+    }
 
     val context = LocalContext.current
     val currentLanguage = LocalAppLanguage.current
@@ -5336,7 +5342,14 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             }
         onDispose { registration.remove() }
     }
-    val categoriesFromBackend = if (backendCategories.isEmpty()) categories else (listOf("All") + backendCategories).distinctBy { it.lowercase() }
+    // Merge category documents with categories present on database-backed products.
+    // Product categories such as "Rasayogas" remain available even if the categories
+    // collection does not contain a matching document.
+    val categoriesFromBackend = remember(backendCategories, products) {
+        (listOf("All") + backendCategories + products.map { it.category.trim() }
+            .filter { it.isNotBlank() })
+            .distinctBy { it.lowercase() }
+    }
     val categoryItems = categoriesFromBackend.filter { it.contains(searchQuery.trim(), ignoreCase = true) }
     val categoryRows = categoryItems.chunked(2)
 
