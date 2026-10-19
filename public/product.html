@@ -20,7 +20,7 @@ a.button{display:block;text-align:center;background:#762a24;color:#fff;text-deco
 const productId=new URLSearchParams(location.search).get('id')||'';
 const appLink='slgan://product/'+encodeURIComponent(productId);
 document.getElementById('openApp').href=appLink;
-const firebaseConfig={apiKey:"AIzaSyDZjCjajI25DZMWZuzHBJh_FztS2-r_E9U",projectId:"slgan-a364e",appId:"1:1034428021231:android:ebbb53dac3fc87545e9e1a"};
+const firebaseConfig={apiKey:"AIzaSyAWvFFV8C3eMEqiyTe6lKvNtmIZBkJGkUk",projectId:"slgan-a364e",appId:"1:1034428021231:web:997678fda842c7a65e9e1a"};
 function esc(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 firebase.initializeApp(firebaseConfig);const db=firebase.firestore();
 if(!productId){document.getElementById('product').innerHTML='<h2>Product link incomplete</h2><p>Please ask the sender to share the product again.</p>';}
