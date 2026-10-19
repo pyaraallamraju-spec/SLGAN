@@ -3824,6 +3824,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                                     "pills" -> "💊"
                                                                     "tailas" -> "🫙"
                                                                     "churnas" -> "🌾"
+                                                                    "rasayogas", "rasayoga" -> "🪷"
                                                                     "rasayanas" -> "🪴"
                                                                     "bhasmas" -> "🪨"
                                                                     else -> "🌿"
