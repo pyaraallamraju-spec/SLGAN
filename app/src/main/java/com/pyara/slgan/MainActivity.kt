@@ -137,7 +137,7 @@ private fun tr(text: String, language: String): String {
         "Save address" to "చిరునామా సేవ్ చేయండి", "Saving address…" to "చిరునామా సేవ్ అవుతోంది…",
         "Saved addresses" to "సేవ్ చేసిన చిరునామాలు", "Keep delivery locations for future orders." to "భవిష్యత్ ఆర్డర్ల కోసం డెలివరీ చిరునామాలను ఉంచండి.",
         "No addresses yet" to "ఇంకా చిరునామాలు లేవు", "Tap Add address to save your first delivery location." to "మొదటి డెలివరీ చిరునామాను సేవ్ చేయడానికి చిరునామా జోడించండి నొక్కండి.",
-        "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Grutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
+        "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Ghrutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
         "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
         "Voice search" to "వాయిస్ సెర్చ్",
         "Voice search is not available on this device." to "ఈ పరికరంలో వాయిస్ సెర్చ్ అందుబాటులో లేదు.",
@@ -191,7 +191,7 @@ private fun tr(text: String, language: String): String {
         "Category: ${'$' }{product.category}" to "వర్గం: ${'$' }{product.category}",
         "Quantity / stock: ${'$' }{product.quantity}" to "పరిమాణం / నిల్వ: ${'$' }{product.quantity}",
         "Search a place or address below, then tap a result to fill the address fields." to "క్రింద స్థలం లేదా చిరునామాను వెతికి, వివరాలు నింపడానికి ఫలితాన్ని ఎంచుకోండి.",
-        "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Grutas" to "ఘృతాలు", "Pills" to "మాత్రలు", "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
+        "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Ghrutas" to "ఘృతాలు", "Pills" to "మాత్రలు", "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
         "Language" to "భాష", "Select language" to "భాషను ఎంచుకోండి", "Save language preference" to "భాష ప్రాధాన్యతను సేవ్ చేయండి",
         "Email address" to "ఇమెయిల్ చిరునామా", "Password (at least 6 characters)" to "పాస్‌వర్డ్ (కనీసం 6 అక్షరాలు)", "Secure email and password sign-in" to "ఇమెయిల్ మరియు పాస్‌వర్డ్‌తో సురక్షిత లాగిన్",
         "Rooted in Tradition. Inspired by Nature." to "సంప్రదాయంలో పాతుకుపోయి, ప్రకృతి స్ఫూర్తితో.", "ROOTED IN NATURE" to "ప్రకృతిలో వేళ్లూనుకున్నది", "Everyday wellness,\\nwith a herbal touch." to "ప్రతిరోజూ ఆరోగ్యం,\\nమూలికలతో.", "Explore collection  →" to "ఉత్పత్తులను చూడండి  →",
@@ -220,7 +220,7 @@ private fun tr(text: String, language: String): String {
         "Area / village / locality" to "क्षेत्र / गाँव / इलाका", "Landmark (optional)" to "नज़दीकी पहचान (वैकल्पिक)",
         "City / town *" to "शहर / कस्बा *", "State *" to "राज्य *", "PIN code *" to "पिन कोड *",
         "Save address" to "पता सहेजें", "Saved addresses" to "सहेजे गए पते", "Keep delivery locations for future orders." to "भविष्य के ऑर्डर के लिए डिलीवरी पते रखें।",
-        "No addresses yet" to "अभी कोई पता नहीं", "All" to "सभी", "Lehyas" to "लेह्य", "Grutas" to "घृत",
+        "No addresses yet" to "अभी कोई पता नहीं", "All" to "सभी", "Lehyas" to "लेह्य", "Ghrutas" to "घृत",
         "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
         "Voice search" to "वॉइस सर्च",
         "Voice search is not available on this device." to "इस डिवाइस पर वॉइस सर्च उपलब्ध नहीं है।",
@@ -274,7 +274,7 @@ private fun tr(text: String, language: String): String {
         "Category: ${'$' }{product.category}" to "श्रेणी: ${'$' }{product.category}",
         "Quantity / stock: ${'$' }{product.quantity}" to "मात्रा / स्टॉक: ${'$' }{product.quantity}",
         "Search a place or address below, then tap a result to fill the address fields." to "नीचे स्थान या पता खोजें और जानकारी भरने के लिए परिणाम चुनें।",
-        "All" to "सभी", "Lehyas" to "लेह्य", "Grutas" to "घृत", "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
+        "All" to "सभी", "Lehyas" to "लेह्य", "Ghrutas" to "घृत", "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
         "Language" to "भाषा", "Select language" to "भाषा चुनें", "Save language preference" to "भाषा प्राथमिकता सहेजें",
         "Email address" to "ईमेल पता", "Password (at least 6 characters)" to "पासवर्ड (कम से कम 6 अक्षर)", "Secure email and password sign-in" to "ईमेल और पासवर्ड से सुरक्षित साइन-इन",
         "Rooted in Tradition. Inspired by Nature." to "परंपरा में निहित, प्रकृति से प्रेरित।", "ROOTED IN NATURE" to "प्रकृति से जुड़ा", "Everyday wellness,\\nwith a herbal touch." to "हर दिन स्वास्थ्य,\\nजड़ी-बूटियों के साथ।", "Explore collection  →" to "उत्पाद देखें  →",
@@ -517,7 +517,7 @@ private fun localizedProductName(name: String, language: String): String {
 private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1)
 private data class ProductRatingSummary(val average: Double = 0.0, val count: Int = 0, val myRating: Int = 0)
 private data class ProductLikeSummary(val count: Int = 0, val likedByMe: Boolean = false)
-private val categories = listOf("All", "Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
+private val categories = listOf("All", "Lehyas", "Ghrutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
 
 // Offline fallback keeps the disease selector usable until Firestore is populated.
 private val fallbackDiseases = listOf("All Diseases", "Cough", "Fever", "Obesity", "Tuberculosis (TB)")
@@ -537,7 +537,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
         "rasayoga", "rasayogas" -> "Rasayogas"
         "rasayanas", "rasayana" -> "Rasayanas"
         "lehya", "lehyam", "lehyas" -> "Lehyas"
-        "grutha", "ghrita", "grutas", "gruthas" -> "Grutas"
+        "grutha", "ghrita", "grutas", "gruthas" -> "Ghrutas"
         "pill", "pills", "vati" -> "Pills"
         "taila", "tailam", "tailas" -> "Tailas"
         "churna", "churnas" -> "Churnas"
@@ -546,7 +546,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     }
     val emoji = when (category) {
         "Lehyas" -> "🫙"
-        "Grutas" -> "🫙"
+        "Ghrutas" -> "🫙"
         "Pills" -> "💊"
         "Tailas" -> "🫙"
         "Churnas" -> "🌾"
@@ -2047,7 +2047,7 @@ private fun AdminProductEditor(
                     categorySeedStarted = true
                     val defaults = listOf(
                         Triple("lehyas", "Lehyas", "🍯"),
-                        Triple("grutas", "Grutas", "🫙"),
+                        Triple("grutas", "Ghrutas", "🫙"),
                         Triple("pills", "Pills", "💊"),
                         Triple("tailas", "Tailas", "🪔"),
                         Triple("churnas", "Churnas", "🌿"),
@@ -3501,7 +3501,7 @@ private fun ShopScreen(
 
 @Composable
 private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
-    val preferredCategoryOrder = listOf("Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayogas", "Rasayanas", "Bhasmas")
+    val preferredCategoryOrder = listOf("Lehyas", "Ghrutas", "Pills", "Tailas", "Churnas", "Rasayogas", "Rasayanas", "Bhasmas")
     val databaseCategories = products.map { it.category.trim() }
         .filter { it.isNotBlank() }
         .distinctBy { it.lowercase() }
