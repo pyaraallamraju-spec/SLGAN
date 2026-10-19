@@ -5821,17 +5821,18 @@ private fun AccountsPage(
     appLanguage: String
 ) {
     val user = FirebaseAuth.getInstance().currentUser
-    val displayName = user?.displayName?.takeIf { it.isNotBlank() }
-        ?: user?.email?.substringBefore("@")?.replace(".", " ")?.replaceFirstChar { it.uppercase() }
-        ?: "SLGAN Customer"
     val email = user?.email.orEmpty()
     val context = LocalContext.current
+    var nickname by remember(user?.uid) { mutableStateOf("") }
     var profilePic by remember(user?.uid) { mutableStateOf("") }
     var profilePicSaving by remember { mutableStateOf(false) }
     LaunchedEffect(user?.uid) {
         val uid = user?.uid ?: return@LaunchedEffect
         FirebaseFirestore.getInstance().collection("customers").document(uid).get()
-            .addOnSuccessListener { snapshot -> profilePic = snapshot.getString("profile_pic").orEmpty() }
+            .addOnSuccessListener { snapshot ->
+                profilePic = snapshot.getString("profile_pic").orEmpty()
+                nickname = snapshot.getString("nickname")?.trim().orEmpty()
+            }
     }
     val profileImagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri == null || user == null) return@rememberLauncherForActivityResult
@@ -5911,7 +5912,9 @@ private fun AccountsPage(
                 }
             }
             Spacer(Modifier.height(14.dp))
-            Text(displayName.uppercase(), color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
+            if (nickname.isNotBlank()) {
+                Text(nickname, color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
+            }
             if (email.isNotBlank()) {
                 Spacer(Modifier.height(5.dp))
                 Text(email, color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
