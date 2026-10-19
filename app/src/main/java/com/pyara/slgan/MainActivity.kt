@@ -5375,6 +5375,7 @@ private fun OrdersPage(
                 val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
+                val orderItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
                 Card(colors = CardDefaults.cardColors(containerColor = Cream), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
