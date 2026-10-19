@@ -35,7 +35,7 @@ function rateLimit(req, res, next) {
 
 async function requireFirebaseUser(req, res, next) {
   const header = req.get("authorization") || "";
-  const match = header.match(/^Bearer\\s+(.+)$/i);
+  const match = header.match(/^Bearer\s+(.+)$/i);
   if (!match) return res.status(401).json({ error: "Sign-in required." });
   try {
     req.user = await getAuth().verifyIdToken(match[1], true);
@@ -116,7 +116,7 @@ app.post("/chat", requireFirebaseUser, rateLimit, async (req, res) => {
       .flatMap((item) => item.content || [])
       .filter((item) => item.type === "output_text")
       .map((item) => item.text || "")
-      .join("\\n")
+      .join("\n")
       .trim();
     if (!reply) return res.status(502).json({ error: "AI returned an empty reply." });
     return res.json({ reply, remainingToday: Math.max(0, dailyAiLimit - quota.used) });
