@@ -34,6 +34,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -1351,8 +1353,9 @@ private fun HomeBannerSlider(
                     },
                 targetState = activeSlide,
                 transitionSpec = {
-                    (slideInHorizontally(initialOffsetX = { width -> width }) + fadeIn()) togetherWith
-                        (slideOutHorizontally(targetOffsetX = { width -> -width }) + fadeOut())
+                    (fadeIn(animationSpec = tween(durationMillis = 1100, easing = FastOutSlowInEasing)) +
+                        scaleIn(initialScale = 0.94f, animationSpec = tween(durationMillis = 1500, easing = FastOutSlowInEasing))) togetherWith
+                        fadeOut(animationSpec = tween(durationMillis = 850, easing = FastOutSlowInEasing))
                 },
                 label = "homeBannerSlide"
             ) { index ->
@@ -1412,7 +1415,11 @@ private fun HomeBannerSlider(
                             Spacer(Modifier.height(8.dp))
                         }
                         Text(
-                            if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
+                            modifier = Modifier.animateEnterExit(
+                                enter = fadeIn(animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing)) +
+                                    slideInVertically(initialOffsetY = { it / 6 }, animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing))
+                            ),
+                            text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
                             color = if (selectedDesign == 3) Color(0xFF23452C) else if (selectedDesign == 2 || selectedDesign == 4) Color(0xFFFFE8AE) else Color.White,
                             fontSize = if (slide.isCompanySlide) 23.sp else 25.sp,
@@ -1423,7 +1430,11 @@ private fun HomeBannerSlider(
                         )
                         Spacer(Modifier.height(6.dp))
                         Text(
-                            tr(slide.tagline, LocalAppLanguage.current),
+                            text = tr(slide.tagline, LocalAppLanguage.current),
+                            modifier = Modifier.animateEnterExit(
+                                enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
+                                    slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
+                            ),
                             color = if (selectedDesign == 3) Color(0xFF5B3428) else if (selectedDesign == 2 || selectedDesign == 4) Color(0xFFE8F0D8) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
                             fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
                             lineHeight = 16.sp,
