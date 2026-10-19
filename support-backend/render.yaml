@@ -13,5 +13,7 @@ services:
         sync: false
       - key: OPENAI_MODEL
         value: gpt-6-luna
+      - key: DAILY_AI_LIMIT
+        value: "5"
       - key: FIREBASE_SERVICE_ACCOUNT_JSON
         sync: false
