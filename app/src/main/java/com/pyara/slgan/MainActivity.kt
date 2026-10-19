@@ -6933,11 +6933,35 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White, modifier = Modifier.size(24.dp))
                 }
                 Spacer(Modifier.height(20.dp))
-                Box(Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(16.dp)).background(Color(0xFFF7F7F7)), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFF27851F), modifier = Modifier.size(86.dp))
-                        Text("Choose delivery location", color = Muted, fontSize = 13.sp)
+                Box(
+                    Modifier.fillMaxWidth().height(230.dp).clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp)).background(Color(0xFFFCFCFC)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Canvas(Modifier.fillMaxSize()) {
+                        val skyline = Color(0xFFF0F0F0)
+                        val w = size.width
+                        val h = size.height
+                        // Soft city skyline, matching the location-choice illustration.
+                        drawRect(skyline, topLeft = Offset(0f, h * 0.50f), size = Size(w * 0.10f, h * 0.50f))
+                        drawRect(skyline, topLeft = Offset(w * 0.10f, h * 0.37f), size = Size(w * 0.12f, h * 0.63f))
+                        drawRect(skyline, topLeft = Offset(w * 0.23f, h * 0.55f), size = Size(w * 0.08f, h * 0.45f))
+                        drawRect(skyline, topLeft = Offset(w * 0.68f, h * 0.48f), size = Size(w * 0.11f, h * 0.52f))
+                        drawRect(skyline, topLeft = Offset(w * 0.80f, h * 0.39f), size = Size(w * 0.12f, h * 0.61f))
+                        drawRect(skyline, topLeft = Offset(w * 0.93f, h * 0.55f), size = Size(w * 0.07f, h * 0.45f))
+                        for (row in 0..5) for (col in 0..2) {
+                            drawRect(Color(0xFFE1E1E1), Offset(w * (0.115f + col * 0.032f), h * (0.43f + row * 0.075f)), Size(w * 0.012f, h * 0.035f))
+                            drawRect(Color(0xFFE1E1E1), Offset(w * (0.815f + col * 0.032f), h * (0.45f + row * 0.075f)), Size(w * 0.012f, h * 0.035f))
+                        }
+                        val cx = w * 0.50f
+                        val cy = h * 0.62f
+                        val radius = w * 0.135f
+                        drawCircle(Color(0xFFE6E6E6), radius, Offset(cx, cy), style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.dp.toPx()))
+                        for (spoke in 0 until 16) {
+                            val angle = spoke * (2f * Math.PI.toFloat() / 16f)
+                            drawLine(Color(0xFFE6E6E6), Offset(cx, cy), Offset(cx + kotlin.math.cos(angle) * radius, cy + kotlin.math.sin(angle) * radius), strokeWidth = 1.dp.toPx())
+                        }
                     }
+                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFF27851F), modifier = Modifier.size(112.dp).offset(y = 32.dp))
                 }
                 Spacer(Modifier.height(22.dp))
                 Text(
