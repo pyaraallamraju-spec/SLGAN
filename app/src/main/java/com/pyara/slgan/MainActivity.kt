@@ -1453,7 +1453,7 @@ private fun HomeBannerSlider(
                 .height(190.dp)
                 .clip(RoundedCornerShape(22.dp))
                 .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
-                .background(if (selectedDesign == 4) Forest else when (selectedDesign) { 2 -> Color(0xFF173D2B); 3 -> Color(0xFFF8F0DC); else -> Color(0xFF762A24) })
+                .background(if (selectedDesign == 4) Forest else when (selectedDesign) { 2 -> Color(0xFF173D2B); 3 -> Color(0xFFF8F0DC); else -> Color(0xFFF5F0E6) })
         ) {
             AnimatedContent(
                 modifier = Modifier
@@ -1478,9 +1478,9 @@ private fun HomeBannerSlider(
                     },
                 targetState = activeSlide,
                 transitionSpec = {
-                    (fadeIn(animationSpec = tween(durationMillis = 1400, easing = FastOutSlowInEasing)) +
-                        scaleIn(initialScale = 0.94f, animationSpec = tween(durationMillis = 1800, easing = FastOutSlowInEasing))) togetherWith
-                        fadeOut(animationSpec = tween(durationMillis = 1100, easing = FastOutSlowInEasing))
+                    (fadeIn(animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing)) +
+                        scaleIn(initialScale = 0.98f, animationSpec = tween(durationMillis = 900, easing = FastOutSlowInEasing))) togetherWith
+                        fadeOut(animationSpec = tween(durationMillis = 650, easing = FastOutSlowInEasing))
                 },
                 label = "homeBannerSlide"
             ) { index ->
@@ -1511,9 +1511,9 @@ private fun HomeBannerSlider(
                             Modifier.fillMaxSize().background(
                                 Brush.horizontalGradient(
                                     colors = listOf(
-                                        Forest.copy(alpha = 0.97f),
-                                        Forest.copy(alpha = 0.86f),
-                                        Forest.copy(alpha = 0.40f),
+                                        Color(0xFF183D2D).copy(alpha = 0.96f),
+                                        Color(0xFF24523A).copy(alpha = 0.82f),
+                                        Color(0xFF3F6A4A).copy(alpha = 0.36f),
                                         Color.Transparent
                                     )
                                 )
