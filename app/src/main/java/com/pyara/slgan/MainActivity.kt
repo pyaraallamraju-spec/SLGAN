@@ -1482,7 +1482,7 @@ private fun HomeBannerSlider(
                     } else if (selectedDesign == 2) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF102D20).copy(alpha = 0.98f), Color(0xFF173D2B).copy(alpha = 0.88f), Color(0xFF24523A).copy(alpha = 0.55f), Color.Transparent))))
                         Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Forest.copy(alpha = 0.24f)))))
-                    } else if (!slide.isCompanySlide) {
+                    } else if (selectedDesign != 4 && !slide.isCompanySlide) {
                         Box(
                             Modifier.fillMaxSize().background(
                                 Brush.horizontalGradient(
