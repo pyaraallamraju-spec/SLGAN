@@ -3657,7 +3657,83 @@ private fun ShopScreen(
             "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             "AddressBook" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, initialSection = "Addresses")
+            "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
+        }
+    }
+}
+
+@Composable
+private fun WishlistPage(
+    modifier: Modifier,
+    products: List<Product>,
+    productRatings: Map<String, ProductRatingSummary>,
+    productLikes: Map<String, ProductLikeSummary>,
+    cart: Map<String, Int>,
+    onToggleLike: (Product) -> Unit,
+    onAdd: (String) -> Unit,
+    onProductClick: (Product) -> Unit,
+    onBack: () -> Unit,
+    appLanguage: String
+) {
+    val savedProducts = products.filter { productLikes[it.id]?.likedByMe == true }
+    Column(modifier.fillMaxSize().background(Cream)) {
+        Row(
+            modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            Column(Modifier.weight(1f)) {
+                Text(if (appLanguage == "English") "Your wishlist" else "మీ విష్‌లిస్ట్", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                Text(if (appLanguage == "English") "${savedProducts.size} saved products" else "${savedProducts.size} సేవ్ చేసిన ఉత్పత్తులు", color = Muted, fontSize = 12.sp)
+            }
+            Icon(Icons.Default.Favorite, contentDescription = null, tint = Color(0xFFD32F2F), modifier = Modifier.padding(end = 12.dp).size(24.dp))
+        }
+        if (savedProducts.isEmpty()) {
+            Column(
+                modifier = Modifier.fillMaxWidth().weight(1f).padding(28.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Box(
+                    Modifier.size(86.dp).background(Color(0xFFF5E5C8), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.FavoriteBorder, contentDescription = null, tint = Forest, modifier = Modifier.size(42.dp))
+                }
+                Spacer(Modifier.height(18.dp))
+                Text(if (appLanguage == "English") "Your wishlist is empty" else "మీ విష్‌లిస్ట్ ఖాళీగా ఉంది", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    if (appLanguage == "English") "Tap the heart on any product to save it here." else "ఏదైనా ఉత్పత్తిపై ఉన్న హార్ట్ గుర్తును నొక్కితే ఇక్కడ సేవ్ అవుతుంది.",
+                    color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 20.sp
+                )
+                Spacer(Modifier.height(20.dp))
+                Button(onClick = onBack, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+                    Text(if (appLanguage == "English") "Continue shopping" else "షాపింగ్ కొనసాగించండి", color = Color.White, fontWeight = FontWeight.Bold)
+                }
+            }
+        } else {
+            Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(12.dp)) {
+                savedProducts.chunked(2).forEach { pair ->
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        pair.forEach { product ->
+                            ProductCard(
+                                product = product,
+                                count = cart[product.id] ?: 0,
+                                ratingSummary = productRatings[product.id] ?: ProductRatingSummary(),
+                                likeSummary = productLikes[product.id] ?: ProductLikeSummary(),
+                                onToggleLike = onToggleLike,
+                                onAdd = onAdd,
+                                onProductClick = onProductClick,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                        if (pair.size == 1) Spacer(Modifier.weight(1f))
+                    }
+                    Spacer(Modifier.height(10.dp))
+                }
+            }
         }
     }
 }
@@ -5970,7 +6046,7 @@ private fun AccountsPage(
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
                 AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("AddressBook") }
                 AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("Orders") }
-                AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse the product collection") { onTabChange("Home") }
+                AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse your wishlist") { onTabChange("Wishlist") }
                 AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
                 AccountMenuRow(Icons.Default.Language, "Language", appLanguage) { onTabChange("Profile") }
             }
