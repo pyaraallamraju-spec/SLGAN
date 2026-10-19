@@ -1540,6 +1540,45 @@ private fun HomeBannerSlider(
                             )
                         )
                     }
+                    // Shared decorative frame for all six slides: keep the centre clear for copy.
+                    Box(Modifier.fillMaxSize()) {
+                        Box(
+                            Modifier.align(Alignment.TopCenter).fillMaxWidth().height(7.dp)
+                                .background(Brush.horizontalGradient(listOf(Color(0xFF762A24), Gold, Color(0xFF762A24))))
+                        )
+                        Box(
+                            Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(7.dp)
+                                .background(Brush.horizontalGradient(listOf(Color(0xFF762A24), Gold, Color(0xFF762A24))))
+                        )
+                        Row(
+                            Modifier.align(Alignment.TopStart).padding(start = 8.dp, top = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(7.dp)
+                        ) {
+                            Text("🌿", fontSize = 20.sp)
+                            Text("🍃", fontSize = 17.sp)
+                        }
+                        Row(
+                            Modifier.align(Alignment.TopEnd).padding(end = 8.dp, top = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(7.dp)
+                        ) {
+                            Text("🌱", fontSize = 18.sp)
+                            Text("🌿", fontSize = 20.sp)
+                        }
+                        Row(
+                            Modifier.align(Alignment.BottomStart).padding(start = 8.dp, bottom = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(7.dp)
+                        ) {
+                            Text("🪴", fontSize = 18.sp)
+                            Text("🌿", fontSize = 20.sp)
+                        }
+                        Row(
+                            Modifier.align(Alignment.BottomEnd).padding(end = 8.dp, bottom = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(7.dp)
+                        ) {
+                            Text("🍃", fontSize = 18.sp)
+                            Text("🌼", fontSize = 19.sp)
+                        }
+                    }
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(0.88f)
