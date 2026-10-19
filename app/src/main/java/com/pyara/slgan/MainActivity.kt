@@ -1,6 +1,8 @@
 package com.pyara.slgan
 
+import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import androidx.compose.ui.graphics.asImageBitmap
 import java.io.ByteArrayOutputStream
 import android.util.Base64
@@ -76,6 +78,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -86,6 +89,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -580,6 +584,17 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
 @Composable
 private fun AyurvedicApp() {
     val appContext = LocalContext.current
+    // Match the Android system bars to the active app theme without changing inset spacing.
+    val systemBarCream = Cream
+    SideEffect {
+        (appContext as? Activity)?.window?.let { appWindow ->
+            val creamColor = systemBarCream.toArgb()
+            appWindow.statusBarColor = creamColor
+            appWindow.navigationBarColor = creamColor
+            appWindow.decorView.systemUiVisibility = appWindow.decorView.systemUiVisibility or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        }
+    }
     val auth = remember { FirebaseAuth.getInstance() }
     var signedIn by remember { mutableStateOf(auth.currentUser != null) }
     var authResolved by remember { mutableStateOf(false) }
