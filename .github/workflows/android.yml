@@ -23,10 +23,12 @@ jobs:
           gradle-version: "8.9"
       - name: Build debug APK
         run: gradle assembleDebug
+      - name: Rename APK to SLGAN.apk
+        run: cp app/build/outputs/apk/debug/app-debug.apk SLGAN.apk
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: SLGAN-debug-APK
-          path: app/build/outputs/apk/debug/*.apk
+          name: SLGAN-APK
+          path: SLGAN.apk
           if-no-files-found: error
           retention-days: 14
