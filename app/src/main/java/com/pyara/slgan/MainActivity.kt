@@ -2136,11 +2136,11 @@ private fun AdminProductEditor(
                 DropdownMenu(
                     expanded = categoryMenuExpanded,
                     onDismissRequest = { categoryMenuExpanded = false },
-                    modifier = Modifier.heightIn(max = 320.dp)
+                    modifier = Modifier.heightIn(max = 320.dp).background(Cream)
                 ) {
                     categoryOptions.forEach { option ->
                         DropdownMenuItem(
-                            text = { Text(listOf(option.second, option.first).filter { it.isNotBlank() }.joinToString(" ")) },
+                            text = { Text(listOf(option.second, option.first).filter { it.isNotBlank() }.joinToString(" "), color = Ink) },
                             onClick = { category = option.first; message = null; categoryMenuExpanded = false }
                         )
                     }
@@ -2166,18 +2166,18 @@ private fun AdminProductEditor(
                     DropdownMenu(
                         expanded = unitMenuExpanded,
                         onDismissRequest = { unitMenuExpanded = false },
-                        modifier = Modifier.heightIn(max = 280.dp)
+                        modifier = Modifier.heightIn(max = 280.dp).background(Cream)
                     ) {
                         if (unitOptions.isEmpty()) {
                             DropdownMenuItem(
-                                text = { Text("No units found in product database") },
+                                text = { Text("No units found in product database", color = Muted) },
                                 onClick = { unitMenuExpanded = false },
                                 enabled = false
                             )
                         } else {
                             unitOptions.forEach { unit ->
                                 DropdownMenuItem(
-                                    text = { Text(unit) },
+                                    text = { Text(unit, color = Ink) },
                                     onClick = { units = unit; message = null; unitMenuExpanded = false }
                                 )
                             }
