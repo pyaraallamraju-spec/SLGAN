@@ -2205,27 +2205,28 @@ private fun AdminProductEditor(
         ) {
             Text("Product information", color = Forest, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, singleLine = true)
-            Box(Modifier.fillMaxWidth()) {
+            ExposedDropdownMenuBox(
+                expanded = categoryMenuExpanded,
+                onExpandedChange = { categoryMenuExpanded = it },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 OutlinedTextField(
                     value = category,
                     onValueChange = {},
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).menuAnchor(),
                     enabled = true,
                     label = { Text("Category *") },
                     readOnly = true,
                     singleLine = true,
                     trailingIcon = {
-                        IconButton(onClick = { categoryMenuExpanded = true }) {
-                            Icon(Icons.Default.ArrowDropDown, contentDescription = "Select category")
-                        }
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryMenuExpanded)
                     }
                 )
-                // The whole field is a reliable tap target; the trailing arrow is also clickable.
-                Box(Modifier.matchParentSize().clickable { categoryMenuExpanded = true })
-                DropdownMenu(
+                ExposedDropdownMenu(
                     expanded = categoryMenuExpanded,
                     onDismissRequest = { categoryMenuExpanded = false },
-                    modifier = Modifier.heightIn(max = 320.dp).background(Cream)
+                    modifier = Modifier.heightIn(max = 320.dp).background(Cream),
+                    matchAnchorWidth = true
                 ) {
                     categoryOptions.forEach { option ->
                         DropdownMenuItem(
