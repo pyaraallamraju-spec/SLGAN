@@ -7147,7 +7147,32 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     IconButton(onClick = { showAddressDetailsSheet = false }) { Icon(Icons.Default.Close, contentDescription = "Close", tint = Ink) }
                 }
                 Divider(color = Color(0xFFE6E8ED))
+                Spacer(Modifier.height(18.dp))
+                Text("Who you are ordering for?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { orderingForSomeoneElse = false }) {
+                        RadioButton(selected = !orderingForSomeoneElse, onClick = { orderingForSomeoneElse = false }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
+                        Text("Myself", color = Ink)
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { orderingForSomeoneElse = true }) {
+                        RadioButton(selected = orderingForSomeoneElse, onClick = { orderingForSomeoneElse = true }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
+                        Text("Someone else", color = Ink)
+                    }
+                }
                 Spacer(Modifier.height(14.dp))
+                Text("Save address as *", color = Muted, fontSize = 14.sp)
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                    listOf("Home", "Work", "Hotel", "Other").forEach { label ->
+                        FilterChip(
+                            selected = addressLabel == label,
+                            onClick = { addressLabel = label },
+                            label = { Text(when (label) { "Home" -> "🏠 Home"; "Work" -> "🏢 Work"; "Hotel" -> "🏨 Hotel"; else -> "📍 Other" }) },
+                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color(0xFFEFFFF2), selectedLabelColor = Forest)
+                        )
+                    }
+                }
+                Spacer(Modifier.height(12.dp))
                 OutlinedTextField(value = addressLine1, onValueChange = { addressLine1 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("House number *") }, singleLine = true, shape = RoundedCornerShape(12.dp))
                 Spacer(Modifier.height(10.dp))
                 OutlinedTextField(value = addressFloor, onValueChange = { addressFloor = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Floor *") }, singleLine = true, shape = RoundedCornerShape(12.dp))
