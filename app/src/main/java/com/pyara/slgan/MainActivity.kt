@@ -3628,7 +3628,7 @@ private fun ShopScreen(
 ) {
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
-        if (selectedTab != "Orders") {
+        if (selectedTab != "Orders" && selectedTab != "MyOrders") {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Color.White))
             Spacer(Modifier.width(12.dp))
@@ -3680,6 +3680,7 @@ private fun ShopScreen(
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult) { onTabChange("Home") }
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd) { onTabChange("Accounts") }
+            "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders") { onTabChange("Accounts") }
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Accounts" -> AccountsPage(
@@ -5146,7 +5147,8 @@ private fun OrdersPage(
     latestOrderMessage: String?,
     products: List<Product>,
     onAdd: (String) -> Unit,
-    onHome: () -> Unit
+    onHome: () -> Unit,
+    pageTitle: String = "Order History"
 ) {
     val user = FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
@@ -5205,7 +5207,7 @@ private fun OrdersPage(
     Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onHome) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
-            Text("Order History", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(pageTitle, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
         OutlinedTextField(
             value = orderSearch,
@@ -6179,7 +6181,7 @@ private fun AccountsPage(
 
         Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             listOf(
-                Triple("My orders", Icons.Default.Inventory2, "Orders"),
+                Triple("My orders", Icons.Default.Inventory2, "MyOrders"),
                 Triple("My cart", Icons.Default.ShoppingCart, "Cart"),
                 Triple("Need help?", Icons.Default.SupportAgent, "Help")
             ).forEach { (label, icon, route) ->
@@ -6215,7 +6217,7 @@ private fun AccountsPage(
                 Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
                 AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("AddressBook") }
-                AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("Orders") }
+                AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("MyOrders") }
                 AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse your wishlist") { onTabChange("Wishlist") }
                 AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
                 AccountMenuRow(Icons.Default.Language, "Language", appLanguage) { onTabChange("Profile") }
