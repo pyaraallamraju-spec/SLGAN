@@ -6652,6 +6652,10 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var showAddressForm by remember { mutableStateOf(false) }
     var showAddressLocationSheet by remember { mutableStateOf(false) }
     var showMapPicker by remember { mutableStateOf(false) }
+    var showAddressDetailsSheet by remember { mutableStateOf(false) }
+    var addressFloor by remember { mutableStateOf("") }
+    var addressTower by remember { mutableStateOf("") }
+    var orderingForSomeoneElse by remember { mutableStateOf(false) }
     var addresses by remember(uid) { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var addressLabel by remember { mutableStateOf("Home") }
     var recipientName by remember { mutableStateOf("") }
@@ -7117,6 +7121,100 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         }
     }
 
+    if (showAddressDetailsSheet) {
+        androidx.compose.material3.ModalBottomSheet(
+            onDismissRequest = { showAddressDetailsSheet = false },
+            containerColor = Color.White,
+            scrimColor = Color.Black.copy(alpha = 0.62f),
+            dragHandle = null
+        ) {
+            Column(Modifier.fillMaxWidth().heightIn(max = 720.dp).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp).padding(top = 18.dp, bottom = 24.dp)) {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Text("Enter complete address", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+                    IconButton(onClick = { showAddressDetailsSheet = false }) { Icon(Icons.Default.Close, contentDescription = "Close", tint = Ink) }
+                }
+                Divider(color = Color(0xFFE6E8ED))
+                Spacer(Modifier.height(18.dp))
+                Text("Who you are ordering for?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { orderingForSomeoneElse = false }) {
+                        RadioButton(selected = !orderingForSomeoneElse, onClick = { orderingForSomeoneElse = false }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
+                        Text("Myself", color = Ink)
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { orderingForSomeoneElse = true }) {
+                        RadioButton(selected = orderingForSomeoneElse, onClick = { orderingForSomeoneElse = true }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
+                        Text("Someone else", color = Ink)
+                    }
+                }
+                Spacer(Modifier.height(14.dp))
+                Text("Save address as *", color = Muted, fontSize = 14.sp)
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf("Home", "Work", "Hotel", "Other").forEach { label ->
+                        FilterChip(
+                            selected = addressLabel == label,
+                            onClick = { addressLabel = label },
+                            label = { Text(when (label) { "Home" -> "🏠 Home"; "Work" -> "🏢 Work"; "Hotel" -> "🏨 Hotel"; else -> "📍 Other" }) },
+                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color(0xFFEFFFF2), selectedLabelColor = Forest)
+                        )
+                    }
+                }
+                Spacer(Modifier.height(12.dp))
+                OutlinedTextField(value = addressLine1, onValueChange = { addressLine1 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("House number *") }, singleLine = true)
+                Spacer(Modifier.height(10.dp))
+                OutlinedTextField(value = addressFloor, onValueChange = { addressFloor = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Floor *") }, singleLine = true)
+                Spacer(Modifier.height(10.dp))
+                OutlinedTextField(value = addressTower, onValueChange = { addressTower = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Tower / Block (optional)") }, singleLine = true)
+                Spacer(Modifier.height(10.dp))
+                OutlinedTextField(value = landmark, onValueChange = { landmark = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Nearby landmark (optional)") }, singleLine = true)
+                Spacer(Modifier.height(10.dp))
+                OutlinedTextField(value = recipientName, onValueChange = { recipientName = it }, modifier = Modifier.fillMaxWidth(), label = { Text(if (orderingForSomeoneElse) "Recipient name *" else "Your name *") }, singleLine = true)
+                Spacer(Modifier.height(10.dp))
+                OutlinedTextField(value = recipientPhone, onValueChange = { recipientPhone = it.filter(Char::isDigit).take(15) }, modifier = Modifier.fillMaxWidth(), label = { Text("Mobile number *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), singleLine = true)
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(value = city, onValueChange = { city = it }, modifier = Modifier.weight(1f), label = { Text("City *") }, singleLine = true)
+                    OutlinedTextField(value = pincode, onValueChange = { pincode = it.filter(Char::isDigit).take(6) }, modifier = Modifier.weight(1f), label = { Text("PIN code *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true)
+                }
+                if (!addressMessage.isNullOrBlank()) { Spacer(Modifier.height(8.dp)); Text(addressMessage!!, color = Color(0xFFB3261E), fontSize = 13.sp) }
+                Spacer(Modifier.height(18.dp))
+                Button(
+                    onClick = {
+                        if (uid == null) addressMessage = "Please sign in again."
+                        else if (recipientName.isBlank() || recipientPhone.isBlank() || addressLine1.isBlank() || city.isBlank() || state.isBlank() || pincode.length != 6 || addressFloor.isBlank()) {
+                            addressMessage = "Please complete required address details and enter a 6-digit PIN code."
+                        } else {
+                            addressSaving = true
+                            val id = System.currentTimeMillis().toString()
+                            val addressRecord = mapOf<String, Any>(
+                                "id" to id, "label" to addressLabel,
+                                "recipientName" to recipientName.trim(),
+                                "phone" to (recipientCountryCode.trim() + recipientPhone.trim()),
+                                "countryCode" to recipientCountryCode.trim(),
+                                "addressLine1" to addressLine1.trim(),
+                                "addressLine2" to listOf(addressFloor.trim(), addressTower.trim(), addressLine2.trim()).filter { it.isNotBlank() }.joinToString(", "),
+                                "landmark" to landmark.trim(), "city" to city.trim(), "state" to state.trim(),
+                                "pincode" to pincode.trim(), "createdAt" to System.currentTimeMillis(), "userId" to uid
+                            )
+                            FirebaseFirestore.getInstance().collection("addresses").document(id).set(addressRecord)
+                                .addOnSuccessListener {
+                                    addressSaving = false; showAddressDetailsSheet = false; showAddressForm = false
+                                    addressMessage = "Address saved successfully."; profileSection = "Addresses"
+                                    addressFloor = ""; addressTower = ""; recipientName = ""; recipientPhone = ""
+                                    addressLine1 = ""; addressLine2 = ""; landmark = ""; city = ""; state = ""; pincode = ""; addressLabel = "Home"
+                                }
+                                .addOnFailureListener { addressSaving = false; addressMessage = "Couldn't save address. Please try again." }
+                        }
+                    },
+                    enabled = !addressSaving,
+                    modifier = Modifier.fillMaxWidth().height(54.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Forest)
+                ) { Text(if (addressSaving) "Saving address…" else "Save address", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
+            }
+        }
+    }
+
     if (showMapPicker) {
                 androidx.compose.ui.window.Dialog(onDismissRequest = { showMapPicker = false }, properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
                     Card(
@@ -7214,8 +7312,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             Spacer(Modifier.height(8.dp))
                             Text("Drag the pin to fine-tune the location. The address fields will update.", color = Muted, fontSize = 12.sp)
                             Spacer(Modifier.height(10.dp))
-                            Button(onClick = { showMapPicker = false }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-                                Text("Use this location")
+                            Button(onClick = { showMapPicker = false; showAddressDetailsSheet = true }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+                                Text("Add more address details")
                             }
                         }
                     }
