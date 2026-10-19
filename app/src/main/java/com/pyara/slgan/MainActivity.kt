@@ -5955,7 +5955,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                             rowProducts.forEach { product ->
                                 val quantityInCart = cart[product.id] ?: 0
                                 Card(
-                                    modifier = Modifier.weight(1f).padding(bottom = 10.dp),
+                                    modifier = Modifier.weight(1f).height(320.dp).padding(bottom = 10.dp),
                                     shape = RoundedCornerShape(13.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
@@ -5973,6 +5973,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             Text(
                                                 localizedProductName(product.name, LocalAppLanguage.current),
                                                 color = Ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                                                modifier = Modifier.fillMaxWidth().height(48.dp),
                                                 maxLines = 3, overflow = TextOverflow.Ellipsis, lineHeight = 16.sp,
                                                 minLines = 2
                                             )
