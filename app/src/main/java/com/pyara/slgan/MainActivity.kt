@@ -1724,7 +1724,7 @@ private fun AdminProductsScreen(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
             textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
-            label = { Text("Search product", modifier = Modifier.background(Cream), color = Forest, fontSize = 12.sp, maxLines = 1) },
+            label = { Text("Search product", color = Forest, fontSize = 12.sp, maxLines = 1) },
             placeholder = { Text("Name, category or product ID", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search products", tint = Forest) },
             trailingIcon = {
@@ -2797,7 +2797,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
                 singleLine = true,
                 textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
-                label = { Text("Search diseases", modifier = Modifier.background(Cream), color = Forest, fontSize = 12.sp, maxLines = 1) },
+                label = { Text("Search diseases", color = Forest, fontSize = 12.sp, maxLines = 1) },
                 placeholder = { Text("Disease name or description", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
                 trailingIcon = {
@@ -2935,7 +2935,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
             singleLine = true,
             textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
-            label = { Text("Search name, email or mobile", modifier = Modifier.background(Cream), color = Forest, fontSize = 12.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
+            label = { Text("Search name, email or mobile", color = Forest, fontSize = 12.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
             shape = RoundedCornerShape(18.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -3247,7 +3247,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp).height(72.dp),
             singleLine = true,
             textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
-            label = { Text("Search order", modifier = Modifier.background(Cream), color = Forest, fontSize = 12.sp, maxLines = 1) },
+            label = { Text("Search order", color = Forest, fontSize = 12.sp, maxLines = 1) },
             placeholder = { Text("Order ID, customer or mobile", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = Forest) },
             trailingIcon = {
