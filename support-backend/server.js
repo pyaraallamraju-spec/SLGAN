@@ -8,9 +8,10 @@ app.disable("x-powered-by");
 app.use(express.json({ limit: "8kb" }));
 
 const port = Number(process.env.PORT || 8080);
-const apiKey = process.env.OPENAI_API_KEY;
+// Free-only mode: never send requests to a paid AI API.
+const apiKey = "";
 const model = process.env.OPENAI_MODEL || "gpt-6-luna";
-const dailyAiLimit = Math.max(0, Number.parseInt(process.env.DAILY_AI_LIMIT || "5", 10) || 0);
+const dailyAiLimit = 0;
 
 function initFirebaseAdmin() {
   if (getApps().length) return;
