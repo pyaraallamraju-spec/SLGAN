@@ -1459,9 +1459,7 @@ private fun HomeBannerSlider(
                         contentScale = if (selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                    if (selectedDesign == 4) {
-                        Box(Modifier.fillMaxSize().background(Forest.copy(alpha = 0.68f)))
-                    } else if (selectedDesign == 3) {
+                    if (selectedDesign == 3) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFFF8F0DC).copy(alpha = 0.97f), Color(0xFFE7EBCB).copy(alpha = 0.86f), Color(0xFFC6D6A3).copy(alpha = 0.42f), Color.Transparent))))
                     } else if (selectedDesign == 2) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF102D20).copy(alpha = 0.98f), Color(0xFF173D2B).copy(alpha = 0.88f), Color(0xFF24523A).copy(alpha = 0.55f), Color.Transparent))))
