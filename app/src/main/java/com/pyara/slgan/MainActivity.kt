@@ -5935,7 +5935,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp).shadow(3.dp, RoundedCornerShape(14.dp)),
-                placeholder = { Text("Search products", fontSize = 13.sp, maxLines = 1) },
+                placeholder = { Text("Search categories", fontSize = 13.sp, maxLines = 1) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(19.dp)) },
                 trailingIcon = {
                     if (searchQuery.isNotBlank()) IconButton(onClick = { searchQuery = "" }) {
