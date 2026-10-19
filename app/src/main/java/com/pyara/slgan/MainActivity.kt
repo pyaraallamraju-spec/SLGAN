@@ -5879,9 +5879,10 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
         (preferred + available.filterNot { item -> preferred.any { it.equals(item, true) } }.sortedBy { it.lowercase() })
             .distinctBy { it.lowercase() }
     }
-    val visibleCategories = categories.filter { it.contains(searchQuery, ignoreCase = true) }
+    val visibleCategories = categories
     val selectedProducts = products.filter {
-        selectedCategory.equals("All", true) || it.category.equals(selectedCategory, ignoreCase = true)
+        (selectedCategory.equals("All", true) || it.category.equals(selectedCategory, ignoreCase = true)) &&
+            (searchQuery.isBlank() || it.name.contains(searchQuery, ignoreCase = true) || it.subtitle.contains(searchQuery, ignoreCase = true) || it.category.contains(searchQuery, ignoreCase = true))
     }
     val categoryEmojis = mapOf(
         "all" to "🧺", "lehyas" to "🍯", "grutas" to "🏺", "gruta" to "🏺",
@@ -5935,7 +5936,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp).shadow(3.dp, RoundedCornerShape(14.dp)),
-                placeholder = { Text("Search categories", fontSize = 13.sp, maxLines = 1) },
+                placeholder = { Text("Search products", fontSize = 13.sp, maxLines = 1) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(19.dp)) },
                 trailingIcon = {
                     if (searchQuery.isNotBlank()) IconButton(onClick = { searchQuery = "" }) {
