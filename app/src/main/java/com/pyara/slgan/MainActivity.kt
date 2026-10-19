@@ -5171,7 +5171,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         if (chosen == null) emptyList() else products.filter { product ->
             product.cures.split(",", ";", "|", "\n").any { it.trim().equals(chosen, ignoreCase = true) } ||
                 product.cures.contains(chosen, ignoreCase = true)
-        }
+        }.distinctBy { it.name.trim().lowercase(Locale.ROOT) }
     }
 
     LaunchedEffect(selectedDisease) {
@@ -5206,7 +5206,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 is List<*> -> value.mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
                                 else -> null
                             }
-                        }.orEmpty()
+                        }.orEmpty().distinctBy { it.trim().replace(Regex("\\s+"), " ").lowercase(Locale.ROOT) }
                     detailLoading = false
                 }
                 .addOnFailureListener { detailLoading = false }
