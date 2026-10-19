@@ -2948,7 +2948,35 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         var lastName by remember(uid) { mutableStateOf(customer["lastName"]?.toString().orEmpty()) }
         var nickname by remember(uid) { mutableStateOf(customer["nickname"]?.toString().orEmpty()) }
         var email by remember(uid) { mutableStateOf(customer["email"]?.toString().orEmpty()) }
-        var mobile by remember(uid) { mutableStateOf(customer["mobileNumber"]?.toString().orEmpty()) }
+        val adminCountryOptions = remember {
+            listOf(
+                Triple("IN", "🇮🇳", "+91"), Triple("US", "🇺🇸", "+1"), Triple("CA", "🇨🇦", "+1"),
+                Triple("GB", "🇬🇧", "+44"), Triple("AU", "🇦🇺", "+61"), Triple("NZ", "🇳🇿", "+64"),
+                Triple("AE", "🇦🇪", "+971"), Triple("SA", "🇸🇦", "+966"), Triple("SG", "🇸🇬", "+65"),
+                Triple("MY", "🇲🇾", "+60"), Triple("LK", "🇱🇰", "+94"), Triple("NP", "🇳🇵", "+977"),
+                Triple("BD", "🇧🇩", "+880"), Triple("PK", "🇵🇰", "+92"), Triple("ZA", "🇿🇦", "+27"),
+                Triple("DE", "🇩🇪", "+49"), Triple("FR", "🇫🇷", "+33"), Triple("IT", "🇮🇹", "+39"),
+                Triple("ES", "🇪🇸", "+34"), Triple("NL", "🇳🇱", "+31"), Triple("JP", "🇯🇵", "+81"),
+                Triple("CN", "🇨🇳", "+86"), Triple("BR", "🇧🇷", "+55"), Triple("MX", "🇲🇽", "+52"),
+                Triple("PH", "🇵🇭", "+63"), Triple("ID", "🇮🇩", "+62"), Triple("TH", "🇹🇭", "+66"),
+                Triple("NG", "🇳🇬", "+234"), Triple("KE", "🇰🇪", "+254"), Triple("IE", "🇮🇪", "+353")
+            )
+        }
+        val savedMobile = customer["mobileNumber"]?.toString().orEmpty()
+        var adminSelectedCountry by remember(uid) {
+            mutableStateOf(
+                adminCountryOptions.firstOrNull { it.first == customer["countryIso"]?.toString() }
+                    ?: adminCountryOptions.sortedByDescending { it.third.length }.firstOrNull { savedMobile.startsWith(it.third) }
+                    ?: adminCountryOptions.first()
+            )
+        }
+        var adminCountryMenuExpanded by remember(uid) { mutableStateOf(false) }
+        var mobile by remember(uid) {
+            mutableStateOf(
+                if (savedMobile.startsWith(adminSelectedCountry.third)) savedMobile.removePrefix(adminSelectedCountry.third).filter(Char::isDigit)
+                else savedMobile.filter(Char::isDigit)
+            )
+        }
         var gender by remember(uid) { mutableStateOf(customer["gender"]?.toString().orEmpty()) }
         var savingCustomer by remember(uid) { mutableStateOf(false) }
         AlertDialog(
@@ -2961,7 +2989,42 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                     OutlinedTextField(lastName, { lastName = it }, label = { Text("Last name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                     OutlinedTextField(nickname, { nickname = it }, label = { Text("Nickname") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                     OutlinedTextField(email, { email = it }, label = { Text("Email") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-                    OutlinedTextField(mobile, { mobile = it }, label = { Text("Mobile number") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.weight(0.42f)) {
+                            OutlinedButton(
+                                onClick = { adminCountryMenuExpanded = true },
+                                modifier = Modifier.fillMaxWidth().height(56.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                border = BorderStroke(1.dp, Gold),
+                                contentPadding = PaddingValues(horizontal = 8.dp)
+                            ) {
+                                Text("${adminSelectedCountry.second} ${adminSelectedCountry.third} ▾", color = Forest, maxLines = 1, fontSize = 14.sp)
+                            }
+                            DropdownMenu(
+                                expanded = adminCountryMenuExpanded,
+                                onDismissRequest = { adminCountryMenuExpanded = false },
+                                modifier = Modifier.heightIn(max = 300.dp).background(Cream)
+                            ) {
+                                adminCountryOptions.forEach { option ->
+                                    DropdownMenuItem(
+                                        text = { Text("${option.second}  ${option.first}  ${option.third}", color = Ink) },
+                                        onClick = {
+                                            adminSelectedCountry = option
+                                            adminCountryMenuExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                        OutlinedTextField(
+                            value = mobile,
+                            onValueChange = { mobile = it.filter(Char::isDigit).take(15) },
+                            label = { Text("Mobile number") },
+                            modifier = Modifier.weight(0.58f),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+                        )
+                    }
                     OutlinedTextField(gender, { gender = it }, label = { Text("Gender") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 }
             },
@@ -2969,7 +3032,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                 TextButton(enabled = !savingCustomer, onClick = {
                     savingCustomer = true
                     FirebaseFirestore.getInstance().collection("customers").document(uid).update(
-                        mapOf("firstName" to firstName.trim(), "lastName" to lastName.trim(), "nickname" to nickname.trim(), "email" to email.trim(), "mobileNumber" to mobile.trim(), "gender" to gender.trim(), "updatedAt" to System.currentTimeMillis())
+                        mapOf("firstName" to firstName.trim(), "lastName" to lastName.trim(), "nickname" to nickname.trim(), "email" to email.trim(), "mobileNumber" to (adminSelectedCountry.third + mobile.trim()), "countryCode" to adminSelectedCountry.third, "countryIso" to adminSelectedCountry.first, "gender" to gender.trim(), "updatedAt" to System.currentTimeMillis())
                     ).addOnSuccessListener {
                         Toast.makeText(context, "Customer updated", Toast.LENGTH_SHORT).show()
                         editingCustomer = null
