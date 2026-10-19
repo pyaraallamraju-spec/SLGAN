@@ -3708,7 +3708,59 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                              lineHeight = 15.sp,
                                             overflow = TextOverflow.Ellipsis
                                         )
-                                        Text(product.subtitle, fontSize = 10.sp, color = Muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                        if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                if (product.category.isNotBlank()) {
+                                                    Surface(
+                                                        shape = RoundedCornerShape(8.dp),
+                                                        color = Color(0xFF762A24),
+                                                        contentColor = Color(0xFFFFF7E8)
+                                                    ) {
+                                                        Row(
+                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp),
+                                                            verticalAlignment = Alignment.CenterVertically,
+                                                            horizontalArrangement = Arrangement.spacedBy(3.dp)
+                                                        ) {
+                                                            Text(
+                                                                when (product.category.trim().lowercase()) {
+                                                                    "all" -> "🌿"
+                                                                    "lehyas" -> "🫙"
+                                                                    "grutas", "ghritas", "ghrutas" -> "🏺"
+                                                                    "pills" -> "💊"
+                                                                    "tailas" -> "🫙"
+                                                                    "churnas" -> "🌾"
+                                                                    "rasayanas" -> "🪴"
+                                                                    "bhasmas" -> "🪨"
+                                                                    else -> "🌿"
+                                                                },
+                                                                fontSize = 9.sp
+                                                            )
+                                                            Text(product.category, fontSize = 8.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                        }
+                                                    }
+                                                }
+                                                if (product.subtitle.isNotBlank()) {
+                                                    Surface(
+                                                        shape = RoundedCornerShape(8.dp),
+                                                        color = Color(0xFFF5E5C8),
+                                                        contentColor = Color(0xFF762A24)
+                                                    ) {
+                                                        Row(
+                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
+                                                            verticalAlignment = Alignment.CenterVertically,
+                                                            horizontalArrangement = Arrangement.spacedBy(3.dp)
+                                                        ) {
+                                                            Text("⚖", fontSize = 9.sp)
+                                                            Text(product.subtitle.replace(" ", ""), fontSize = 9.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                         Spacer(Modifier.height(6.dp))
                                         Row(
                                             modifier = Modifier.fillMaxWidth(),
