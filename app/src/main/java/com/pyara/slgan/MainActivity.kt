@@ -5326,6 +5326,9 @@ private fun OrdersPage(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.background(PaleGreen, RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Forest, fontSize = 11.sp, fontWeight = FontWeight.Bold) }
                             Spacer(Modifier.weight(1f))
+                            TextButton(onClick = { selectedOrder = order }) {
+                                Text("View order", color = Forest, fontWeight = FontWeight.Bold)
+                            }
                             TextButton(onClick = {
                                 orderItems.forEach { item ->
                                     val productId = item["productId"]?.toString().orEmpty()
@@ -5390,6 +5393,9 @@ private fun OrdersPage(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.background(Color(0xFFE8EDE4), RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Forest, fontSize = 11.sp, fontWeight = FontWeight.Bold) }
                             Spacer(Modifier.weight(1f))
+                            TextButton(onClick = { selectedOrder = order }) {
+                                Text("View order", color = Forest, fontWeight = FontWeight.Bold)
+                            }
                             TextButton(onClick = {
                                 orderItems.forEach { item ->
                                     val productId = item["productId"]?.toString().orEmpty()
