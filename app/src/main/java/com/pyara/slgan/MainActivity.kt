@@ -5912,12 +5912,12 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             }
         }
 
-        Box(Modifier.width(3.dp).fillMaxHeight().background(Color(0xFFE1D4B7)))
+        Box(Modifier.width(3.dp).fillMaxHeight().background(Color(0xFFE1D4B7)).shadow(4.dp))
         Column(Modifier.weight(1f).fillMaxHeight()) {
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp).shadow(3.dp, RoundedCornerShape(14.dp)),
                 placeholder = { Text("Search products", fontSize = 13.sp, maxLines = 1) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(19.dp)) },
                 trailingIcon = {
@@ -5934,7 +5934,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     focusedBorderColor = Forest
                 )
             )
-            Row(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(Modifier.fillMaxWidth().shadow(4.dp).background(Color(0xFFFFF8EC)).padding(horizontal = 10.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(tr(selectedCategory, LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
                     Text("${selectedProducts.size} products", color = Muted, fontSize = 11.sp)
