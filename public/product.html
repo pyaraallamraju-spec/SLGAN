@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SLGAN Product</title>
+<meta name="theme-color" content="#762a24">
+<style>
+:root{color-scheme:light}body{margin:0;background:#fbf6e9;color:#302a25;font:16px system-ui,-apple-system,sans-serif}
+header{background:#762a24;color:#f5d58b;padding:22px 18px;font-weight:800;font-size:20px}
+main{max-width:620px;margin:22px auto;padding:0 16px}.card{background:#fff;border:1px solid #eadbb8;border-radius:18px;padding:18px;box-shadow:0 8px 28px #4b2b1410}
+img{width:100%;max-height:340px;object-fit:contain;border-radius:12px;background:#fff}.price{font-size:22px;font-weight:800;color:#762a24}
+a.button{display:block;text-align:center;background:#762a24;color:#fff;text-decoration:none;border-radius:12px;padding:14px;font-weight:700;margin:18px 0}
+.muted{color:#766d61;line-height:1.6}.label{font-weight:700;margin-top:16px}
+</style>
+</head>
+<body><header>Sri Lakshmi Ganapathi Ayurveda Nilayam</header><main><div class="card" id="product"><p>Loading product details…</p></div><a id="openApp" class="button" href="#">Open in SLGAN app</a><p class="muted">Traditional Ayurvedic products. Please follow the product label and professional advice.</p></main>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+const productId=new URLSearchParams(location.search).get('id')||'';
+const appLink='slgan://product/'+encodeURIComponent(productId);
+document.getElementById('openApp').href=appLink;
+const firebaseConfig={apiKey:"AIzaSyDZjCjajI25DZMWZuzHBJh_FztS2-r_E9U",projectId:"slgan-a364e",appId:"1:1034428021231:android:ebbb53dac3fc87545e9e1a"};
+function esc(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+firebase.initializeApp(firebaseConfig);const db=firebase.firestore();
+if(!productId){document.getElementById('product').innerHTML='<h2>Product link incomplete</h2><p>Please ask the sender to share the product again.</p>';}
+else db.collection('products').doc(productId).get().then(doc=>{
+ if(!doc.exists){document.getElementById('product').innerHTML='<h2>Product not found</h2><p>This product may no longer be available.</p>';return;}
+ const d=doc.data()||{},name=d.product_name||d.name||'Ayurvedic product',price=Number(d.product_price??d.price??0),image=d.product_image||d.image_url||d.image||d.product_image_url||'',desc=d.product_description||d.description||d.product_details||d.details||'',usage=d.product_usage||d.usage||d.how_to_use||'',ingredients=d.product_major_ingredients||d.major_ingredients||d.ingredients||'';
+ document.getElementById('product').innerHTML=(image?'<img src="'+esc(image)+'" alt="'+esc(name)+'">':'')+'<h1>'+esc(name)+'</h1>'+(d.product_quantity||d.quantity?'<p class="muted">'+esc(d.product_quantity||d.quantity)+'</p>':'')+'<p class="price">'+(price>0?'₹'+price.toLocaleString('en-IN'):'Price not available yet')+'</p>'+(desc?'<div class="label">Description</div><p>'+esc(desc)+'</p>':'')+(usage?'<div class="label">Usage</div><p>'+esc(usage)+'</p>':'')+(ingredients?'<div class="label">Major ingredients</div><p>'+esc(ingredients)+'</p>':'');
+}).catch(()=>{document.getElementById('product').innerHTML='<h2>Product details unavailable</h2><p>Please try again later or open SLGAN app.</p>';});
+</script></body></html>
