@@ -1472,7 +1472,15 @@ private fun HomeBannerSlider(
                 val productImage = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }?.imageUrl.orEmpty()
                 Box(Modifier.fillMaxSize()) {
                     AsyncImage(
-                        model = if (selectedDesign == 4) "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85" else slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl },
+                        model = if (selectedDesign == 4) {
+                            when (index % 5) {
+                                0 -> "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85"
+                                1 -> "https://images.unsplash.com/photo-1515586000433-45406d8e6662?auto=format&fit=crop&w=1400&q=85"
+                                2 -> "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=85"
+                                3 -> "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?auto=format&fit=crop&w=1400&q=85"
+                                else -> "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1400&q=85"
+                            }
+                        } else slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl },
                         contentDescription = if (selectedDesign == 4) "Botanical herbal leaves background" else slide.productName,
                         contentScale = if (selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
