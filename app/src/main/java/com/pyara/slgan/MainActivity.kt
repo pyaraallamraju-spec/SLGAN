@@ -3577,11 +3577,6 @@ private fun ShopScreen(
                 Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            IconButton(onClick = { onTabChange("Cart") }) {
-                BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) {
-                    Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Forest)
-                }
-            }
             IconButton(onClick = { onTabChange("Profile") }) {
                 Box(
                     modifier = Modifier.size(34.dp).clip(CircleShape)
@@ -3595,8 +3590,28 @@ private fun ShopScreen(
         }
     }, bottomBar = {
         NavigationBar(containerColor = Cream, contentColor = Forest) {
-            listOf(Triple("Home", Icons.Default.Home, "Home"), Triple("Categories", Icons.Default.GridView, "Categories"), Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"), Triple("Orders", Icons.Default.ReceiptLong, "Orders"), Triple("Profile", Icons.Default.Person, "Profile")).forEach { (label, icon, route) ->
-                NavigationBarItem(selected = selectedTab == route, onClick = { onTabChange(route) }, icon = { Icon(icon, label) }, label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) }, colors = NavigationBarItemDefaults.colors(selectedIconColor = Forest, selectedTextColor = Forest, indicatorColor = PaleGreen, unselectedIconColor = Muted))
+            listOf(
+                Triple("Home", Icons.Default.Home, "Home"),
+                Triple("Categories", Icons.Default.GridView, "Categories"),
+                Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
+                Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
+                Triple("Cart", Icons.Default.ShoppingCart, "Cart")
+            ).forEach { (label, icon, route) ->
+                NavigationBarItem(
+                    selected = selectedTab == route,
+                    onClick = { onTabChange(route) },
+                    icon = {
+                        if (route == "Cart") {
+                            BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) {
+                                Icon(icon, contentDescription = label)
+                            }
+                        } else {
+                            Icon(icon, contentDescription = label)
+                        }
+                    },
+                    label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) },
+                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Forest, selectedTextColor = Forest, indicatorColor = PaleGreen, unselectedIconColor = Muted)
+                )
             }
         }
     }) { padding ->
