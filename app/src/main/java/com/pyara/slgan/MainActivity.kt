@@ -1,6 +1,11 @@
 package com.pyara.slgan
 
 import android.os.Bundle
+import androidx.compose.ui.graphics.asImageBitmap
+import java.io.ByteArrayOutputStream
+import android.util.Base64
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
 import android.view.WindowManager
 import android.widget.Toast
 import android.content.Intent
@@ -5820,7 +5825,59 @@ private fun AccountsPage(
         ?: user?.email?.substringBefore("@")?.replace(".", " ")?.replaceFirstChar { it.uppercase() }
         ?: "SLGAN Customer"
     val email = user?.email.orEmpty()
-
+    val context = LocalContext.current
+    var profilePic by remember(user?.uid) { mutableStateOf("") }
+    var profilePicSaving by remember { mutableStateOf(false) }
+    LaunchedEffect(user?.uid) {
+        val uid = user?.uid ?: return@LaunchedEffect
+        FirebaseFirestore.getInstance().collection("customers").document(uid).get()
+            .addOnSuccessListener { snapshot -> profilePic = snapshot.getString("profile_pic").orEmpty() }
+    }
+    val profileImagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri == null || user == null) return@rememberLauncherForActivityResult
+        profilePicSaving = true
+        try {
+            val bitmap = context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) }
+            if (bitmap == null) {
+                profilePicSaving = false
+                Toast.makeText(context, "Could not open this image. Please choose another.", Toast.LENGTH_SHORT).show()
+            } else {
+                val side = minOf(bitmap.width, bitmap.height)
+                val left = ((bitmap.width - side) / 2).coerceAtLeast(0)
+                val top = ((bitmap.height - side) / 2).coerceAtLeast(0)
+                val square = Bitmap.createBitmap(bitmap, left, top, side, side)
+                val resized = Bitmap.createScaledBitmap(square, 512, 512, true)
+                val output = ByteArrayOutputStream()
+                resized.compress(Bitmap.CompressFormat.JPEG, 78, output)
+                val encoded = Base64.encodeToString(output.toByteArray(), Base64.NO_WRAP)
+                if (square !== bitmap) square.recycle()
+                if (resized !== square && resized !== bitmap) resized.recycle()
+                if (bitmap !== square) bitmap.recycle()
+                FirebaseFirestore.getInstance().collection("customers").document(user.uid)
+                    .update("profile_pic", encoded)
+                    .addOnSuccessListener {
+                        profilePic = encoded
+                        profilePicSaving = false
+                        Toast.makeText(context, "Profile picture updated.", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { error ->
+                        profilePicSaving = false
+                        Toast.makeText(context, "Could not save picture: ${error.localizedMessage ?: "Please try again"}", Toast.LENGTH_LONG).show()
+                    }
+            }
+        } catch (error: Exception) {
+            profilePicSaving = false
+            Toast.makeText(context, "Could not process image. Please choose another.", Toast.LENGTH_SHORT).show()
+        }
+    }
+    val profileBitmap = remember(profilePic) {
+        runCatching {
+            if (profilePic.isBlank()) null else {
+                val bytes = Base64.decode(profilePic, Base64.DEFAULT)
+                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)?.asImageBitmap()
+            }
+        }.getOrNull()
+    }
 
     Column(modifier = modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
         Column(
@@ -5828,8 +5885,30 @@ private fun AccountsPage(
                 .padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(Modifier.size(100.dp).background(Color.White, CircleShape).border(2.dp, Gold.copy(alpha = 0.6f), CircleShape), contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.Person, contentDescription = "Account profile", tint = Muted, modifier = Modifier.size(58.dp))
+            Box(Modifier.size(78.dp), contentAlignment = Alignment.BottomEnd) {
+                Box(
+                    Modifier.fillMaxSize().background(Color.White, CircleShape)
+                        .border(2.dp, Gold.copy(alpha = 0.7f), CircleShape).clip(CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (profileBitmap != null) {
+                        Image(bitmap = profileBitmap!!, contentDescription = "Account profile picture", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+                    } else {
+                        Icon(Icons.Default.Person, contentDescription = "Account profile", tint = Muted, modifier = Modifier.size(44.dp))
+                    }
+                }
+                Surface(
+                    modifier = Modifier.size(25.dp).clickable(enabled = !profilePicSaving) { profileImagePicker.launch("image/*") },
+                    shape = CircleShape,
+                    color = Forest,
+                    border = BorderStroke(1.dp, Color.White),
+                    shadowElevation = 3.dp
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        if (profilePicSaving) CircularProgressIndicator(modifier = Modifier.size(13.dp), color = Color.White, strokeWidth = 2.dp)
+                        else Icon(Icons.Default.Edit, contentDescription = "Edit profile picture", tint = Color.White, modifier = Modifier.size(13.dp))
+                    }
+                }
             }
             Spacer(Modifier.height(14.dp))
             Text(displayName.uppercase(), color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
