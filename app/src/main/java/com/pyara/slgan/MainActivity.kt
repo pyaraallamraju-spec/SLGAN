@@ -2111,13 +2111,28 @@ private fun AdminProductEditor(
     val isNew = product == null
     var name by remember(product?.id) { mutableStateOf(product?.name.orEmpty()) }
     var category by remember(product?.id) { mutableStateOf(product?.category ?: "Lehyas") }
-    var categoryOptions by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
+    // Keep the category selector usable immediately, even before Firestore responds
+    // or when the categories collection is empty/unavailable.
+    val defaultCategoryOptions = listOf(
+        "Lehyas" to "🍯",
+        "Ghrutas" to "🫙",
+        "Pills" to "💊",
+        "Tailas" to "🪔",
+        "Churnas" to "🌿",
+        "Rasayanas" to "🪴",
+        "Rasayogas" to "🪷",
+        "Bhasmas" to "🪨"
+    )
+    var categoryOptions by remember { mutableStateOf(defaultCategoryOptions) }
     var categoryMenuExpanded by remember { mutableStateOf(false) }
     var categorySeedStarted by remember { mutableStateOf(false) }
     DisposableEffect(Unit) {
         val db = FirebaseFirestore.getInstance()
         val registration = db.collection("categories").addSnapshotListener { snapshot, error ->
-            if (error == null && snapshot != null) {
+            if (error != null || snapshot == null) {
+                // Retain built-in options when Firestore cannot be reached.
+                if (categoryOptions.isEmpty()) categoryOptions = defaultCategoryOptions
+            } else {
                 if (snapshot.isEmpty && !categorySeedStarted) {
                     categorySeedStarted = true
                     val defaults = listOf(
@@ -2136,10 +2151,11 @@ private fun AdminProductEditor(
                         )
                     }
                 } else {
-                    categoryOptions = snapshot.documents.mapNotNull { doc ->
+                    val firestoreOptions = snapshot.documents.mapNotNull { doc ->
                         val label = (doc.getString("category_name") ?: doc.getString("name") ?: doc.id).trim()
                         if (label.isBlank()) null else label to doc.getString("emoji").orEmpty()
                     }.distinctBy { it.first.lowercase() }.sortedBy { it.first.lowercase() }
+                    categoryOptions = if (firestoreOptions.isEmpty()) defaultCategoryOptions else firestoreOptions
                     if (category.isNotBlank() && categoryOptions.none { it.first.equals(category, ignoreCase = true) }) {
                         categoryOptions = (categoryOptions + (category.trim() to "")).distinctBy { it.first.lowercase() }.sortedBy { it.first.lowercase() }
                     }
@@ -2193,7 +2209,7 @@ private fun AdminProductEditor(
                 OutlinedTextField(
                     value = category,
                     onValueChange = {},
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).clickable { categoryMenuExpanded = true },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp),
                     enabled = true,
                     label = { Text("Category *") },
                     readOnly = true,
@@ -2204,6 +2220,8 @@ private fun AdminProductEditor(
                         }
                     }
                 )
+                // The whole field is a reliable tap target; the trailing arrow is also clickable.
+                Box(Modifier.matchParentSize().clickable { categoryMenuExpanded = true })
                 DropdownMenu(
                     expanded = categoryMenuExpanded,
                     onDismissRequest = { categoryMenuExpanded = false },
