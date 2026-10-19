@@ -5451,7 +5451,6 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             colors = CardDefaults.cardColors(containerColor = Forest)
         ) {
             Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                 Spacer(Modifier.height(7.dp))
                 Text(tr("Explore Categories", LocalAppLanguage.current), color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(6.dp))
