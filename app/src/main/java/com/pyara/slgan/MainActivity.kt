@@ -5765,6 +5765,31 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
 }
 
 @Composable
+private fun AccountMenuRow(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    subtitle: String? = null,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 15.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(23.dp))
+        Spacer(Modifier.width(16.dp))
+        Column(Modifier.weight(1f)) {
+            Text(title, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            if (!subtitle.isNullOrBlank()) {
+                Spacer(Modifier.height(3.dp))
+                Text(subtitle, color = Muted, fontSize = 12.sp)
+            }
+        }
+        Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Muted)
+    }
+    HorizontalDivider(color = PaleGreen.copy(alpha = 0.65f), thickness = 0.7.dp)
+}
+
+@Composable
 private fun AccountsPage(
     modifier: Modifier,
     onTabChange: (String) -> Unit,
@@ -5777,25 +5802,6 @@ private fun AccountsPage(
         ?: "SLGAN Customer"
     val email = user?.email.orEmpty()
 
-    @Composable
-    fun AccountRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, subtitle: String? = null, onClick: () -> Unit) {
-        Row(
-            modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 15.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(23.dp))
-            Spacer(Modifier.width(16.dp))
-            Column(Modifier.weight(1f)) {
-                Text(title, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
-                if (!subtitle.isNullOrBlank()) {
-                    Spacer(Modifier.height(3.dp))
-                    Text(subtitle, color = Muted, fontSize = 12.sp)
-                }
-            }
-            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Muted)
-        }
-        HorizontalDivider(color = PaleGreen.copy(alpha = 0.65f), thickness = 0.7.dp)
-    }
 
     Column(modifier = modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
         Column(
@@ -5852,7 +5858,7 @@ private fun AccountsPage(
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
             Column {
                 Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                AccountRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
+                AccountMenuRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
                 AccountRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("Profile") }
                 AccountRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("Orders") }
                 AccountRow(Icons.Default.FavoriteBorder, "Saved products", "Browse the product collection") { onTabChange("Home") }
