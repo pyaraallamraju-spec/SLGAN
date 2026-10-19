@@ -3930,20 +3930,26 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                         }
                     }
                     Spacer(Modifier.weight(1f))
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(1.dp)) {
-                        IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(24.dp)) {
-                            Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = if (likeSummary.likedByMe) "Unlike product" else "Like product", tint = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, modifier = Modifier.size(15.dp))
-                        }
-                        Text(likeSummary.count.toString(), color = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                    }
+
                 }
             }
             Spacer(Modifier.height(5.dp))
-            Box(
+            Row(
                 modifier = Modifier.fillMaxWidth().height(48.dp),
-                contentAlignment = Alignment.CenterStart
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                ProductRatingLine(product, ratingSummary)
+                Box(
+                    modifier = Modifier.weight(1f).fillMaxHeight(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    ProductRatingLine(product, ratingSummary)
+                }
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(1.dp)) {
+                    IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(24.dp)) {
+                        Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = if (likeSummary.likedByMe) "Unlike product" else "Like product", tint = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, modifier = Modifier.size(15.dp))
+                    }
+                    Text(likeSummary.count.toString(), color = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                }
             }
             Spacer(Modifier.height(5.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
