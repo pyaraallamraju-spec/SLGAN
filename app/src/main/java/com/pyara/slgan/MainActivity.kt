@@ -5502,12 +5502,16 @@ private fun OrdersPage(
             properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
         ) {
             Column(Modifier.fillMaxSize().background(Color.White)) {
-                Row(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = { selectedOrder = null }) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
+                Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = { selectedOrder = null }, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape)) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back to Order History", tint = Ink)
+                    }
                     Spacer(Modifier.weight(1f))
                     IconButton(onClick = {
                         Toast.makeText(context, "Order deletion is not available here. Contact support for help.", Toast.LENGTH_LONG).show()
-                    }) { Icon(Icons.Default.DeleteOutline, contentDescription = "Delete order", tint = Ink) }
+                    }, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape)) {
+                        Icon(Icons.Default.DeleteOutline, contentDescription = "Delete order", tint = Ink)
+                    }
                 }
                 Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
@@ -5541,10 +5545,11 @@ private fun OrdersPage(
                                 Spacer(Modifier.width(14.dp))
                                 Column(Modifier.weight(1f)) {
                                     Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
-                                    Text("Qty: $quantity", color = Muted, fontSize = 14.sp)
+                                    val packSize = product?.subtitle?.takeIf { it.isNotBlank() }
+                                    Text("${packSize ?: "Item"} × $quantity", color = Muted, fontSize = 14.sp)
                                 }
                                 Column(horizontalAlignment = Alignment.End) {
-                                    Text("₹" + String.format("%.0f", unitPrice * quantity), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                    Text("₹" + String.format("%.0f", (item["lineTotal"] as? Number)?.toDouble() ?: (unitPrice * quantity)), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
                             Divider(color = Color(0xFFF0F1F4))
