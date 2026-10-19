@@ -3416,7 +3416,7 @@ private fun ShopScreen(
 
 @Composable
 private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
-    val preferredCategoryOrder = listOf("Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
+    val preferredCategoryOrder = listOf("Lehyas", "Grutas", "Pills", "Tailas", "Churnas", "Rasayogas", "Rasayanas", "Bhasmas")
     val databaseCategories = products.map { it.category.trim() }
         .filter { it.isNotBlank() }
         .distinctBy { it.lowercase() }
@@ -3594,6 +3594,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         "Pills" -> "💊"
                                         "Tailas" -> "🫙"
                                         "Churnas" -> "🌾"
+                                        "Rasayogas" -> "🪷"
                                         "Rasayanas" -> "🪴"
                                         "Bhasmas" -> "🪨"
                                         else -> "🌿"
@@ -5225,6 +5226,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                             "pills" -> "🌱"
                             "tailas" -> "🫙"
                             "churnas" -> "🌾"
+                            "rasayogas", "rasayoga" -> "🪷"
                             "rasayanas" -> "🪴"
                             "bhasmas" -> "🪨"
                             else -> "🌿"
