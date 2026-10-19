@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1034428021231-m4mpuaf3pot5fhuc2b8f4kpjom4ujmuf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pyara.slgan",
+            "certificate_hash": "be5a0a2b2d413a1a987bcdbc0ae7c4e43fa50424"
+          }
+        },
+        {
           "client_id": "1034428021231-cge5sicjk5mulb5j90p1fmh1lgpifgn8.apps.googleusercontent.com",
           "client_type": 3
         }
