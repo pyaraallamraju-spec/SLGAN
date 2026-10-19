@@ -3678,7 +3678,7 @@ private fun ShopScreen(
         }
     }) { padding ->
         when (selectedTab) {
-            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
+            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult) { onTabChange("Home") }
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd) { onTabChange("Accounts") }
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
@@ -4845,7 +4845,7 @@ private fun ProductDetailsPage(
 }
 
 @Composable
-private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit) {
+private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onBack: () -> Unit) {
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     var showCheckout by remember { mutableStateOf(false) }
@@ -4883,7 +4883,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
 
     Column(modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(42.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape).clickable { onOrderResult("", false, null, "Back to shopping") }, contentAlignment = Alignment.Center) {
+            Box(Modifier.size(42.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape).clickable(onClick = onBack), contentAlignment = Alignment.Center) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
             Spacer(Modifier.width(12.dp))
@@ -5100,6 +5100,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 "email" to email.trim(),
                                 "phone" to phone.trim(),
                                 "shippingAddress" to address.trim(),
+                                "gstin" to gstin.trim(),
+                                "deliveryInstruction" to selectedInstruction,
+                                "rememberDeliveryInstruction" to saveInstructionForAddress,
                                 "items" to itemPayload,
                                 "subtotal" to total,
                                 "grandTotal" to total,
