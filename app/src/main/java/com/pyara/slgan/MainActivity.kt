@@ -834,6 +834,8 @@ private fun AyurvedicApp() {
     var lastBackPressedAt by remember { mutableStateOf(0L) }
     BackHandler(enabled = !showSplash && authResolved) {
         when {
+            isAdmin && adminThemesOpen -> adminThemesOpen = false
+            isAdmin && adminBannersOpen -> adminBannersOpen = false
             isAdmin && adminCustomersOpen -> adminCustomersOpen = false
             isAdmin && adminDiseasesOpen -> adminDiseasesOpen = false
             isAdmin && adminOrdersOpen -> adminOrdersOpen = false
