@@ -1033,14 +1033,14 @@ private fun LoginScreen(
 ) {
     var showPassword by remember { mutableStateOf(false) }
     Column(
-        Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()),
+        Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(bottom = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Traditional maroon-and-gold header band
-        Box(Modifier.fillMaxWidth().height(48.dp).background(Forest.copy(red = 0.47f, green = 0.12f, blue = 0.10f))) {
+        Box(Modifier.fillMaxWidth().height(18.dp).background(Color(0xFF6B1825))) {
             Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.BottomCenter).background(Gold))
         }
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(14.dp))
         val logoScale = remember { Animatable(0.55f) }
         val logoRotation = remember { Animatable(-18f) }
         val logoAlpha = remember { Animatable(0f) }
@@ -1069,25 +1069,25 @@ private fun LoginScreen(
             logoRotation.animateTo(0f, tween(850, easing = FastOutSlowInEasing))
         }
         Box(
-            Modifier.size(168.dp),
+            Modifier.size(128.dp),
             contentAlignment = Alignment.Center
         ) {
             Box(
-                Modifier.size(154.dp)
+                Modifier.size(120.dp)
                     .graphicsLayer { alpha = haloAlpha }
                     .border(2.dp, Gold.copy(alpha = haloAlpha), CircleShape)
             )
             Text(
                 "🍃",
                 modifier = Modifier.align(Alignment.TopStart).graphicsLayer { translationY = leafDrift; rotationZ = -25f },
-                fontSize = 25.sp
+                fontSize = 18.sp
             )
             Text(
                 "🍃",
                 modifier = Modifier.align(Alignment.BottomEnd).graphicsLayer { translationY = -leafDrift; rotationZ = 25f },
                 fontSize = 25.sp
             )
-            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.size(142.dp).clip(CircleShape).background(Cream).graphicsLayer {
+            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.size(108.dp).clip(CircleShape).background(Cream).graphicsLayer {
                     alpha = logoAlpha.value
                     scaleX = logoScale.value
                     scaleY = logoScale.value
@@ -1105,48 +1105,47 @@ private fun LoginScreen(
                     )
             )
         }
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(8.dp))
         Text(
             tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current),
-            fontSize = 29.sp,
-            lineHeight = 34.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Forest,
+            fontSize = 22.sp,
+            lineHeight = 27.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF6B1825),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Text(
             tr("Ayurveda Nilayam", LocalAppLanguage.current),
-            fontSize = 27.sp,
-            lineHeight = 32.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFF245D32),
+            fontSize = 20.sp,
+            lineHeight = 25.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color(0xFF6B1825),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(10.dp))
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
             Box(Modifier.width(54.dp).height(1.dp).background(Gold))
-            Text(tr("  ✦  🌿  ✦  ", LocalAppLanguage.current), color = Gold, fontSize = 16.sp)
+            Text(tr("  ✦  🌿  ✦  ", LocalAppLanguage.current), color = Gold, fontSize = 13.sp)
             Box(Modifier.width(54.dp).height(1.dp).background(Gold))
         }
         Spacer(Modifier.height(6.dp))
         Text(
             tr("Estd. 1900 by Perraju Sharma", LocalAppLanguage.current),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF245D32),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Medium,
+            color = Muted,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(12.dp))
         Text(
             tr("Nature's care,\nrooted in tradition.", LocalAppLanguage.current),
-            fontSize = 22.sp,
-            lineHeight = 26.sp,
-            fontWeight = FontWeight.Bold,
-            color = Forest,
+            fontSize = 15.sp,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight.Medium,
+            color = Muted,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
-        Spacer(Modifier.height(6.dp))
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(8.dp))
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -1156,10 +1155,10 @@ private fun LoginScreen(
             leadingIcon = { Icon(Icons.Default.Email, null, tint = Forest) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(14.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Gold.copy(alpha = 0.65f),
-                unfocusedBorderColor = Gold.copy(alpha = 0.65f),
+                focusedBorderColor = Color(0xFF8A5360),
+                unfocusedBorderColor = Gold.copy(alpha = 0.55f),
                 focusedContainerColor = Cream,
                 unfocusedContainerColor = Cream,
                 focusedLabelColor = Forest,
@@ -1232,24 +1231,24 @@ private fun LoginScreen(
         Button(
             onClick = onContinue,
             enabled = !loading,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(62.dp),
-            shape = RoundedCornerShape(20.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Forest)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(52.dp),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6B1825))
         ) {
-            Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.width(12.dp))
             if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
             else Icon(Icons.Default.ArrowForward, null)
         }
         TextButton(onClick = onToggleMode, modifier = Modifier.padding(top = 2.dp)) {
-            Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Forest)
+            Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Color(0xFF6B1825))
         }
         Spacer(Modifier.height(8.dp))
         Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(4.dp))
         Text(tr("Mobile-number login is not available yet.", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(30.dp))
-        Box(Modifier.fillMaxWidth().height(48.dp).background(Forest)) {
+        Box(Modifier.fillMaxWidth().height(18.dp).background(Color(0xFF6B1825))) {
             Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.TopCenter).background(Gold))
         }
     }
