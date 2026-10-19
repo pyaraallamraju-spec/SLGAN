@@ -4287,7 +4287,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 Spacer(Modifier.height(6.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text("Your shopping bag", fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
+                        Text("Your shopping bag", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
                         Spacer(Modifier.height(5.dp))
                         Text("Review medicines before placing order.", fontSize = 13.sp, color = PaleGreen, lineHeight = 19.sp)
                     }
@@ -4586,7 +4586,7 @@ private fun OrdersPage(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(tr("My Orders", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(tr("My Orders", LocalAppLanguage.current), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                     Surface(
                         shape = RoundedCornerShape(50.dp),
                         color = Color(0xFFFFE7A3)
@@ -4937,7 +4937,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                         Surface(
                             shape = RoundedCornerShape(50.dp),
                             color = Color(0xFFFFE7A3)
@@ -5145,7 +5145,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             Column(Modifier.fillMaxWidth().padding(20.dp)) {
                 Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                 Spacer(Modifier.height(7.dp))
-                Text(tr("Explore Categories", LocalAppLanguage.current), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Explore Categories", LocalAppLanguage.current), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(6.dp))
                 Text(
                     tr("Discover Ayurvedic products by collection.", LocalAppLanguage.current),
@@ -5573,7 +5573,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Spacer(Modifier.height(6.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text(tr("Your account", LocalAppLanguage.current), fontSize = 26.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
+                        Text(tr("Your account", LocalAppLanguage.current), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
                         Spacer(Modifier.height(5.dp))
                         Text(
                             tr(
