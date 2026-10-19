@@ -3649,7 +3649,7 @@ private fun ShopScreen(
         }
         }
     }, bottomBar = {
-        if (selectedTab != "Orders") {
+        if (selectedTab != "Orders" && selectedTab != "MyOrders") {
         NavigationBar(containerColor = Color.White, contentColor = Forest) {
             listOf(
                 Triple("Home", Icons.Default.Home, "Home"),
