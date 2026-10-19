@@ -7,24 +7,24 @@
  * Apply changes:
  *   node scripts/update-pills-units.js --apply
  *
- * Requires firebase-admin and GOOGLE_APPLICATION_CREDENTIALS pointing to a
- * trusted Firebase service-account JSON file with Firestore write permission.
- * Never commit the service-account JSON to GitHub.
+ * Requires firebase-admin and Application Default Credentials with Firestore
+ * access. Never commit service-account credentials to GitHub.
  */
-const admin = require("firebase-admin");
+const { initializeApp, applicationDefault, getApps } = require("firebase-admin/app");
+const { getFirestore } = require("firebase-admin/firestore");
 
 const APPLY = process.argv.includes("--apply");
 const PROJECT_ID = process.env.GCLOUD_PROJECT || "slgan-a364e";
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
+if (getApps().length === 0) {
+  initializeApp({
+    credential: applicationDefault(),
     projectId: PROJECT_ID,
   });
 }
 
 async function main() {
-  const db = admin.firestore();
+  const db = getFirestore();
   const snapshot = await db.collection("products").get();
   const matches = snapshot.docs.filter((doc) => {
     const units = doc.get("product_units");
@@ -46,11 +46,12 @@ async function main() {
   let updated = 0;
   for (let i = 0; i < matches.length; i += 400) {
     const batch = db.batch();
-    for (const doc of matches.slice(i, i + 400)) {
+    const chunk = matches.slice(i, i + 400);
+    for (const doc of chunk) {
       batch.update(doc.ref, { product_units: "pills" });
     }
     await batch.commit();
-    updated += matches.slice(i, i + 400).length;
+    updated += chunk.length;
   }
   console.log(`Updated product_units to "pills" on ${updated} documents. No other fields were changed.`);
 }
