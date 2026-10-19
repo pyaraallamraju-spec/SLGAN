@@ -3590,7 +3590,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     text = when (item) {
                                         "All" -> "🌿"
                                         "Lehyas" -> "🫙"
-                                        "Grutas" -> "🫙"
+                                        "Grutas" -> "🏺"
                                         "Pills" -> "💊"
                                         "Tailas" -> "🫙"
                                         "Churnas" -> "🌾"
