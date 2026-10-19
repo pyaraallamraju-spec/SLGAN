@@ -3656,6 +3656,7 @@ private fun ShopScreen(
             )
             "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
+            "AddressBook" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, initialSection = "Addresses")
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
         }
     }
@@ -5967,7 +5968,7 @@ private fun AccountsPage(
             Column {
                 Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
-                AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("Profile") }
+                AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("AddressBook") }
                 AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("Orders") }
                 AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse the product collection") { onTabChange("Home") }
                 AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
@@ -6156,7 +6157,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
-private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit) {
+private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, initialSection: String = "Profile") {
     val user = remember { FirebaseAuth.getInstance().currentUser }
     val uid = user?.uid
     val context = LocalContext.current
@@ -6192,7 +6193,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var isLoading by remember { mutableStateOf(true) }
     var isSaving by remember { mutableStateOf(false) }
     var saveMessage by remember { mutableStateOf<String?>(null) }
-    var profileSection by remember { mutableStateOf("Profile") }
+    var profileSection by remember(initialSection) { mutableStateOf(initialSection) }
     var showAddressForm by remember { mutableStateOf(false) }
     var showMapPicker by remember { mutableStateOf(false) }
     var addresses by remember(uid) { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
