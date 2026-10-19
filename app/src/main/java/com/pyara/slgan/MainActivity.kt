@@ -96,6 +96,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.google.android.gms.tasks.Tasks
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.Locale
 import java.time.Instant
 import java.time.LocalDate
@@ -3647,7 +3654,7 @@ private fun ShopScreen(
                 onSignOut = onSignOut,
                 appLanguage = appLanguage
             )
-            "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") })
+            "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
         }
@@ -5980,22 +5987,169 @@ private fun AccountsPage(
     }
 }
 
+private data class SupportChatMessage(val text: String, val fromUser: Boolean)
+
+private fun supportFaqReply(question: String, language: String): String {
+    val q = question.lowercase(Locale.ROOT)
+    val telugu = language != "English"
+    return when {
+        listOf("hello", "hi", "namaste", "నమస్కారం", "హాయ్").any { q.contains(it) } ->
+            if (telugu) "నమస్కారం! నేను SLGAN సహాయకుడిని. ఉత్పత్తులు, ఆర్డర్లు లేదా డెలివరీ గురించి అడగండి." else "Hello! I'm the SLGAN assistant. Ask me about products, orders, or delivery."
+        listOf("order", "ఆర్డర్").any { q.contains(it) } ->
+            if (telugu) "మీ ఆర్డర్ వివరాల కోసం Accounts → My Orders తెరవండి. అక్కడ వివరాలు కనిపించకపోతే, మీ ఆర్డర్ IDతో మా support‌ను సంప్రదించండి." else "Open Accounts → My Orders to check your order. If details are missing, contact support with your order ID."
+        listOf("delivery", "shipping", "డెలివరీ", "చేరడానికి").any { q.contains(it) } ->
+            if (telugu) "డెలివరీ వివరాలు ఆర్డర్ నిర్ధారణ తర్వాత అందుబాటులో ఉంటాయి. మీ ఆర్డర్‌ను My Orders‌లో చూడండి." else "Delivery details are available after order confirmation. Check your order in My Orders."
+        listOf("invoice", "bill", "ఇన్వాయిస్", "బిల్లు").any { q.contains(it) } ->
+            if (telugu) "Accounts → My Orders‌లో మీ ఆర్డర్‌ను తెరిచి invoice లింక్ అందుబాటులో ఉందో చూడండి." else "Open your order in Accounts → My Orders and look for the invoice link."
+        listOf("price", "cost", "ధర").any { q.contains(it) } ->
+            if (telugu) "ప్రస్తుత ధరను app‌లోని సంబంధిత product page‌లో చూడండి. ధర కనిపించకపోతే support‌ను సంప్రదించండి." else "Check the product page for the current price. If a price is missing, contact support."
+        listOf("product", "medicine", "మందు", "ఉత్పత్తి").any { q.contains(it) } ->
+            if (telugu) "ఉత్పత్తి వివరాలు, ingredients, usage కోసం product page చూడండి. ఆరోగ్య సమస్యలకు లేదా మందుల మోతాదుకు అర్హత కలిగిన వైద్యుడిని సంప్రదించండి." else "Check the product page for ingredients and usage. For health conditions or dosage, consult a qualified healthcare professional."
+        else -> if (telugu) "ఇది సాధారణ FAQ సహాయం. మీ ప్రశ్నకు సమాధానం దొరకకపోతే, AI support‌ను కనెక్ట్ చేసిన తర్వాత మరింత వివరంగా అడగవచ్చు. ఆర్డర్ లేదా ఉత్పత్తి వివరాలు చెప్పండి." else "This is the FAQ helper. Once AI support is connected, it can handle more detailed questions. Please mention the order or product details."
+    }
+}
+
 @Composable
-private fun HelpPage(modifier: Modifier, onBack: () -> Unit) {
-    Column(modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(20.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String) {
+    val context = LocalContext.current
+    val user = FirebaseAuth.getInstance().currentUser
+    val scope = rememberCoroutineScope()
+    var input by remember { mutableStateOf("") }
+    var sending by remember { mutableStateOf(false) }
+    val messages = remember {
+        mutableStateListOf(
+            SupportChatMessage(
+                if (appLanguage == "English") "Hi! I'm the SLGAN support assistant. Ask me in Telugu or English about products, orders, invoices, or delivery." else "నమస్కారం! నేను SLGAN support assistant‌ను. Products, orders, invoices లేదా delivery గురించి తెలుగులో లేదా English‌లో అడగండి.",
+                false
+            )
+        )
+    }
+    Column(modifier.fillMaxSize().background(Cream)) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
-            Text("Help and support", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-        }
-        Spacer(Modifier.height(16.dp))
-        Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
-            Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Icon(Icons.Default.SupportAgent, contentDescription = null, tint = Forest, modifier = Modifier.size(38.dp))
-                Spacer(Modifier.height(12.dp))
-                Text("How can we help?", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(6.dp))
-                Text("For help with products, orders, or delivery addresses, please contact Sri Lakshmi Ganapathi Ayurveda Nilayam.", color = Muted, fontSize = 14.sp, lineHeight = 21.sp)
+            Column(Modifier.weight(1f)) {
+                Text("SLGAN Assistant", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
+                Text(if (appLanguage == "English") "Help & Support · Telugu + English" else "సహాయం · తెలుగు + English", color = Muted, fontSize = 12.sp)
             }
+            Icon(Icons.Default.AutoAwesome, contentDescription = "AI assistant", tint = Gold, modifier = Modifier.size(27.dp))
+        }
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            shape = RoundedCornerShape(18.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            border = BorderStroke(1.dp, Gold.copy(alpha = 0.4f))
+        ) {
+            Column(Modifier.padding(14.dp)) {
+                Text(if (appLanguage == "English") "How can we help?" else "మీకు ఎలా సహాయం చేయగలం?", color = Forest, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Spacer(Modifier.height(4.dp))
+                Text(if (appLanguage == "English") "Quick answers for products, orders and delivery. AI replies become available when the secure support service is configured." else "Products, orders, delivery కోసం త్వరిత సమాధానాలు. Secure AI service configure చేసిన తర్వాత AI సమాధానాలు కూడా అందుబాటులో ఉంటాయి.", color = Muted, fontSize = 12.sp, lineHeight = 17.sp)
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+        Column(
+            Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            messages.forEach { message ->
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = if (message.fromUser) Arrangement.End else Arrangement.Start) {
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = if (message.fromUser) Forest else Color.White,
+                        border = if (message.fromUser) null else BorderStroke(1.dp, Gold.copy(alpha = 0.25f)),
+                        modifier = Modifier.widthIn(max = 310.dp)
+                    ) {
+                        Text(message.text, modifier = Modifier.padding(horizontal = 14.dp, vertical = 11.dp), color = if (message.fromUser) Color.White else Ink, fontSize = 14.sp, lineHeight = 20.sp)
+                    }
+                }
+            }
+            if (sending) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    CircularProgressIndicator(Modifier.size(16.dp), color = Forest, strokeWidth = 2.dp)
+                    Text(if (appLanguage == "English") "Thinking…" else "సమాధానం సిద్ధం చేస్తోంది…", color = Muted, fontSize = 12.sp)
+                }
+            }
+        }
+        Column(Modifier.fillMaxWidth().background(Color.White).padding(12.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf(
+                    if (appLanguage == "English") "Order status" else "ఆర్డర్ వివరాలు",
+                    if (appLanguage == "English") "Product details" else "ఉత్పత్తి వివరాలు",
+                    if (appLanguage == "English") "Delivery" else "డెలివరీ"
+                ).forEach { suggestion ->
+                    SuggestionChip(
+                        onClick = { input = suggestion },
+                        label = { Text(suggestion, fontSize = 11.sp, maxLines = 1) },
+                        border = SuggestionChipDefaults.suggestionChipBorder(enabled = true, borderColor = Gold.copy(alpha = 0.55f)),
+                        colors = SuggestionChipDefaults.suggestionChipColors(labelColor = Forest)
+                    )
+                }
+            }
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = input,
+                    onValueChange = { input = it.take(1000) },
+                    modifier = Modifier.weight(1f),
+                    placeholder = { Text(if (appLanguage == "English") "Type in Telugu or English…" else "తెలుగు లేదా English‌లో టైప్ చేయండి…", fontSize = 13.sp) },
+                    shape = RoundedCornerShape(16.dp),
+                    maxLines = 4,
+                    enabled = !sending
+                )
+                IconButton(
+                    enabled = input.isNotBlank() && !sending,
+                    onClick = {
+                        val question = input.trim()
+                        if (question.isNotBlank()) {
+                            messages.add(SupportChatMessage(question, true))
+                            input = ""
+                            sending = true
+                            scope.launch {
+                                val answer = withContext(Dispatchers.IO) {
+                                    val endpoint = BuildConfig.CHATBOT_API_BASE_URL.trim().trimEnd('/')
+                                    if (endpoint.isBlank() || user == null) {
+                                        supportFaqReply(question, appLanguage)
+                                    } else {
+                                        runCatching {
+                                            val token = Tasks.await(user.getIdToken(false)).token
+                                                ?: throw IllegalStateException("Unable to verify sign-in")
+                                            val connection = (URL("$endpoint/chat").openConnection() as HttpURLConnection)
+                                            try {
+                                                connection.requestMethod = "POST"
+                                                connection.connectTimeout = 10000
+                                                connection.readTimeout = 25000
+                                                connection.doOutput = true
+                                                connection.setRequestProperty("Content-Type", "application/json")
+                                                connection.setRequestProperty("Authorization", "Bearer $token")
+                                                val payload = JSONObject().put("message", question).put("language", appLanguage).toString()
+                                                connection.outputStream.use { it.write(payload.toByteArray(Charsets.UTF_8)) }
+                                                val code = connection.responseCode
+                                                val stream = if (code in 200..299) connection.inputStream else connection.errorStream
+                                                val body = stream?.bufferedReader()?.use { it.readText() }.orEmpty()
+                                                if (code !in 200..299) throw IllegalStateException("Support service returned $code")
+                                                JSONObject(body).optString("reply").takeIf { it.isNotBlank() }
+                                                    ?: throw IllegalStateException("Empty reply")
+                                            } finally {
+                                                connection.disconnect()
+                                            }
+                                        }.getOrElse { supportFaqReply(question, appLanguage) }
+                                    }
+                                }
+                                messages.add(SupportChatMessage(answer, false))
+                                sending = false
+                            }
+                        }
+                    }
+                ) {
+                    Icon(Icons.Default.Send, contentDescription = "Send message", tint = if (input.isNotBlank() && !sending) Forest else Muted)
+                }
+            }
+            Spacer(Modifier.height(3.dp))
+            Text(
+                if (appLanguage == "English") "AI can make mistakes. For medical advice or dosage, consult a qualified clinician." else "AI సమాధానాల్లో తప్పులు ఉండవచ్చు. వైద్య సలహా లేదా మోతాదు కోసం అర్హత కలిగిన వైద్యుడిని సంప్రదించండి.",
+                color = Muted, fontSize = 10.sp, lineHeight = 14.sp
+            )
         }
     }
 }
