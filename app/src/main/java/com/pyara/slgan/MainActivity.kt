@@ -5447,89 +5447,132 @@ private fun OrdersPage(
         val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
         val invoiceNo = order["invoiceNumber"]?.toString() ?: orderId
         val customerName = order["customerName"]?.toString().orEmpty()
-        val email = order["email"]?.toString().orEmpty()
         val phone = order["phone"]?.toString().orEmpty()
         val address = order["shippingAddress"]?.toString().orEmpty()
         val status = order["orderStatus"]?.toString() ?: "received"
         val paymentStatus = order["paymentStatus"]?.toString() ?: "not_collected"
-        val subtotal = (order["subtotal"] as? Number)?.toDouble() ?: (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
-        val grandTotal = (order["grandTotal"] as? Number)?.toDouble() ?: subtotal
+        val total = (order["grandTotal"] as? Number)?.toDouble() ?: (order["subtotal"] as? Number)?.toDouble() ?: 0.0
+        val subtotal = (order["subtotal"] as? Number)?.toDouble() ?: total
         val invoiceItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
-        val created = (order["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Not available"
-
-        AlertDialog(
+        val created = (order["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available"
+        val invoiceUrl = order["invoiceUrl"]?.toString()
+        androidx.compose.ui.window.Dialog(
             onDismissRequest = { selectedOrder = null },
-            title = {
-                Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                    Text(tr("ORDER INVOICE", LocalAppLanguage.current), fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = Forest)
-                    Text(tr("Sri Lakshmi Ganapathi Ayurveda Nilayam", LocalAppLanguage.current), fontSize = 13.sp, color = Muted)
+            properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
+        ) {
+            Column(Modifier.fillMaxSize().background(Color.White)) {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = { selectedOrder = null }) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
+                    Spacer(Modifier.weight(1f))
+                    IconButton(onClick = {
+                        Toast.makeText(context, "Order deletion is not available here. Contact support for help.", Toast.LENGTH_LONG).show()
+                    }) { Icon(Icons.Default.DeleteOutline, contentDescription = "Delete order", tint = Ink) }
                 }
-            },
-            text = {
-                Column(
-                    Modifier.fillMaxWidth().heightIn(max = 440.dp).verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    HorizontalDivider(color = Gold)
-                    Text("Invoice No: ${'$' }invoiceNo", fontWeight = FontWeight.Bold, color = Ink)
-                    Text("Order ID: ${'$' }orderId", color = Ink, fontSize = 12.sp)
-                    Text("Order date: ${'$' }created", color = Muted, fontSize = 12.sp)
-                    Text(tr("Order status: ", LocalAppLanguage.current) + status.replaceFirstChar { it.uppercase() }, color = Ink)
-                    Text(tr("Payment status: ", LocalAppLanguage.current) + paymentStatus.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Ink)
-                    HorizontalDivider(color = Gold.copy(alpha = 0.7f))
-                    Text(tr("BILL TO", LocalAppLanguage.current), fontWeight = FontWeight.Bold, color = Forest)
-                    Text(customerName.ifBlank { "Customer name not provided" }, color = Ink)
-                    if (phone.isNotBlank()) Text("Phone: $phone", color = Ink)
-                    if (email.isNotBlank()) Text("Email: $email", color = Ink)
-                    if (address.isNotBlank()) Text("Delivery address: $address", color = Ink)
-                    HorizontalDivider(color = Gold.copy(alpha = 0.7f))
-                    Text(tr("ITEM DETAILS", LocalAppLanguage.current), fontWeight = FontWeight.Bold, color = Forest)
-                    if (invoiceItems.isEmpty()) {
-                        Text(tr("No item details were saved with this order.", LocalAppLanguage.current), color = Muted)
-                    } else {
-                        invoiceItems.forEachIndexed { index, item ->
-                            val name = item["productName"]?.toString() ?: item["name"]?.toString() ?: "Item \${index + 1}"
-                            val quantity = (item["quantity"] as? Number)?.toInt() ?: 0
-                            val unitPrice = (item["unitPrice"] as? Number)?.toDouble() ?: (item["price"] as? Number)?.toDouble() ?: 0.0
-                            val lineTotal = (item["lineTotal"] as? Number)?.toDouble() ?: (unitPrice * quantity)
-                            Card(
-                                colors = CardDefaults.cardColors(containerColor = Cream),
-                                shape = RoundedCornerShape(10.dp)
-                            ) {
-                                Column(Modifier.fillMaxWidth().padding(10.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                                    Text(name, fontWeight = FontWeight.SemiBold, color = Ink)
-                                    Text("$quantity × ₹" + String.format("%.2f", unitPrice) + "     Line total: ₹" + String.format("%.2f", lineTotal), color = Muted, fontSize = 12.sp)
-                                }
+                Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
+                        Text("Order summary", color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
+                        Spacer(Modifier.height(6.dp))
+                        Text(if (status.equals("delivered", true) || status.equals("completed", true)) "Arrived at $created" else "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", color = Muted, fontSize = 16.sp)
+                        Spacer(Modifier.height(12.dp))
+                        if (!invoiceUrl.isNullOrBlank()) {
+                            Row(Modifier.clickable { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) } }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text("Download Invoice", color = Forest, fontSize = 17.sp, fontWeight = FontWeight.Medium)
+                                Spacer(Modifier.width(8.dp))
+                                Icon(Icons.Default.FileDownload, contentDescription = null, tint = Forest)
                             }
                         }
                     }
-                    HorizontalDivider(color = Gold.copy(alpha = 0.7f))
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(tr("Subtotal", LocalAppLanguage.current), color = Ink)
-                        Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", subtotal), color = Ink)
+                    Spacer(Modifier.height(24.dp))
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                        Text("${invoiceItems.size} item(s) in this order", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Spacer(Modifier.height(12.dp))
+                        invoiceItems.forEach { item ->
+                            val productId = item["productId"]?.toString().orEmpty()
+                            val product = products.firstOrNull { it.id == productId }
+                            val name = item["productName"]?.toString() ?: item["name"]?.toString() ?: product?.name ?: "Product"
+                            val quantity = (item["quantity"] as? Number)?.toInt() ?: 1
+                            val unitPrice = (item["unitPrice"] as? Number)?.toDouble() ?: (item["price"] as? Number)?.toDouble() ?: 0.0
+                            Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Box(Modifier.size(76.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF6F7FA)), contentAlignment = Alignment.Center) {
+                                    if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = name, modifier = Modifier.fillMaxSize().padding(5.dp), contentScale = ContentScale.Fit)
+                                    else Text(product?.emoji ?: "🌿", fontSize = 28.sp)
+                                }
+                                Spacer(Modifier.width(14.dp))
+                                Column(Modifier.weight(1f)) {
+                                    Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                                    Text("Qty: $quantity", color = Muted, fontSize = 14.sp)
+                                }
+                                Column(horizontalAlignment = Alignment.End) {
+                                    Text("₹" + String.format("%.0f", unitPrice * quantity), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                            Divider(color = Color(0xFFF0F1F4))
+                        }
                     }
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(tr("Delivery / tax", LocalAppLanguage.current), color = Ink)
-                        Text(tr("₹0.00", LocalAppLanguage.current), color = Ink)
+                    Spacer(Modifier.height(12.dp))
+                    Row(Modifier.fillMaxWidth().background(Color(0xFFF5F6FA)).padding(horizontal = 20.dp, vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFF4CC)), contentAlignment = Alignment.Center) {
+                            Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(26.dp))
+                        }
+                        Spacer(Modifier.width(12.dp))
+                        Text("How were your ordered items?", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                        Button(onClick = { rateOrder = order; selectedRating = 5 }, colors = ButtonDefaults.buttonColors(containerColor = Forest), shape = RoundedCornerShape(12.dp)) { Text("Rate now", color = Color.White) }
                     }
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(tr("GRAND TOTAL", LocalAppLanguage.current), fontWeight = FontWeight.ExtraBold, color = Forest)
-                        Text(tr("₹", LocalAppLanguage.current) + String.format("%.2f", grandTotal), fontWeight = FontWeight.ExtraBold, color = Forest)
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp)) {
+                        Text("Bill details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Spacer(Modifier.height(18.dp))
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text("MRP / subtotal", color = Muted); Text("₹" + String.format("%.0f", subtotal), color = Ink) }
+                        Spacer(Modifier.height(12.dp))
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text("Delivery charges", color = Muted); Text("FREE", color = Ink) }
+                        Spacer(Modifier.height(12.dp))
+                        Divider(color = Color(0xFFE5E7EB))
+                        Spacer(Modifier.height(12.dp))
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text("Bill total", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold); Text("₹" + String.format("%.0f", total), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
                     }
-                    Text(tr("Payment has not been collected unless the status above says otherwise.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
+                    Divider(color = Color(0xFFE5E7EB), thickness = 7.dp)
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Text("Order details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Column {
+                            Text("Order ID", color = Muted, fontSize = 14.sp)
+                            Spacer(Modifier.height(5.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(orderId, color = Ink, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                                IconButton(onClick = { GenCopy.copy(context, orderId); Toast.makeText(context, "Order ID copied", Toast.LENGTH_SHORT).show() }) { Icon(Icons.Default.ContentCopy, contentDescription = "Copy order ID", tint = Muted) }
+                            }
+                        }
+                        Column {
+                            Text("Payment", color = Muted, fontSize = 14.sp)
+                            Spacer(Modifier.height(5.dp))
+                            Text(paymentStatus.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Ink, fontSize = 16.sp)
+                        }
+                        if (phone.isNotBlank()) Column { Text("Phone", color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
+                        if (address.isNotBlank()) Column { Text("Deliver to", color = Muted, fontSize = 14.sp); Text(address, color = Ink, fontSize = 16.sp, lineHeight = 23.sp) }
+                        Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
+                    }
                 }
-            },
-            confirmButton = { TextButton(onClick = { selectedOrder = null }) { Text(tr("Close", LocalAppLanguage.current)) } },
-            dismissButton = {
-                val invoiceUrl = order["invoiceUrl"]?.toString()
-                if (!invoiceUrl.isNullOrBlank()) {
-                    TextButton(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) }) {
-                        Text(tr("Open PDF", LocalAppLanguage.current))
+                Column(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 20.dp, vertical = 12.dp)) {
+                    Button(
+                        onClick = {
+                            invoiceItems.forEach { item ->
+                                val productId = item["productId"]?.toString().orEmpty()
+                                val quantity = (item["quantity"] as? Number)?.toInt() ?: 1
+                                if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
+                            }
+                            selectedOrder = null
+                            Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
+                        },
+                        modifier = Modifier.fillMaxWidth().height(58.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Forest)
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Repeat Order", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                            Text("VIEW CART ON NEXT STEP", color = Color.White, fontSize = 11.sp)
+                        }
                     }
                 }
-            },
-            containerColor = Cream
-        )
+            }
+        }
     }
 
 }
