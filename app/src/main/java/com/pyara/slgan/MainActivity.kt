@@ -639,7 +639,16 @@ private fun AyurvedicApp() {
     ) { result ->
         if (result.resultCode != android.app.Activity.RESULT_OK) {
             isLoading = false
-            authError = "Google sign-in was cancelled."
+            val signInFailure = try {
+                GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                    .getResult(com.google.android.gms.common.api.ApiException::class.java)
+                null
+            } catch (error: com.google.android.gms.common.api.ApiException) {
+                "Google sign-in failed (status ${error.statusCode}): ${error.statusMessage ?: error.localizedMessage ?: "unknown error"}"
+            } catch (error: Exception) {
+                error.localizedMessage
+            }
+            authError = signInFailure ?: "Google sign-in was cancelled (result code ${result.resultCode})."
         } else {
             try {
                 val accountTask = GoogleSignIn.getSignedInAccountFromIntent(result.data)
