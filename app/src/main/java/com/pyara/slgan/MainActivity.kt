@@ -3574,7 +3574,7 @@ private fun ShopScreen(
                 Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            IconButton(onClick = { onTabChange("Profile") }) {
+            IconButton(onClick = { onTabChange("Accounts") }) {
                 Box(
                     modifier = Modifier.size(34.dp).clip(CircleShape)
                         .background(PaleGreen)
@@ -3617,6 +3617,13 @@ private fun ShopScreen(
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage) { onTabChange("Home") }
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
+            "Accounts" -> AccountsPage(
+                modifier = Modifier.padding(padding),
+                onTabChange = onTabChange,
+                onSignOut = onSignOut,
+                appLanguage = appLanguage
+            )
+            "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") })
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
         }
@@ -5755,6 +5762,135 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
         Spacer(Modifier.height(12.dp))
     }            }
         }
+}
+
+@Composable
+private fun AccountsPage(
+    modifier: Modifier,
+    onTabChange: (String) -> Unit,
+    onSignOut: () -> Unit,
+    appLanguage: String
+) {
+    val user = FirebaseAuth.getInstance().currentUser
+    val displayName = user?.displayName?.takeIf { it.isNotBlank() }
+        ?: user?.email?.substringBefore("@")?.replace(".", " ")?.replaceFirstChar { it.uppercase() }
+        ?: "SLGAN Customer"
+    val email = user?.email.orEmpty()
+
+    @Composable
+    fun AccountRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, subtitle: String? = null, onClick: () -> Unit) {
+        Row(
+            modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(23.dp))
+            Spacer(Modifier.width(16.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                if (!subtitle.isNullOrBlank()) {
+                    Spacer(Modifier.height(3.dp))
+                    Text(subtitle, color = Muted, fontSize = 12.sp)
+                }
+            }
+            Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Muted)
+        }
+        HorizontalDivider(color = PaleGreen.copy(alpha = 0.65f), thickness = 0.7.dp)
+    }
+
+    Column(modifier = modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
+        Column(
+            Modifier.fillMaxWidth().background(Brush.verticalGradient(listOf(Cream, Color(0xFFF7F4EB), Color(0xFFF4F5FA))))
+                .padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(Modifier.size(100.dp).background(Color.White, CircleShape).border(2.dp, Gold.copy(alpha = 0.6f), CircleShape), contentAlignment = Alignment.Center) {
+                Icon(Icons.Default.Person, contentDescription = "Account profile", tint = Muted, modifier = Modifier.size(58.dp))
+            }
+            Spacer(Modifier.height(14.dp))
+            Text(displayName.uppercase(), color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
+            if (email.isNotBlank()) {
+                Spacer(Modifier.height(5.dp))
+                Text(email, color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
+            }
+            Spacer(Modifier.height(5.dp))
+            Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+        }
+
+        Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            listOf(
+                Triple("My orders", Icons.Default.Inventory2, "Orders"),
+                Triple("My cart", Icons.Default.ShoppingCart, "Cart"),
+                Triple("Need help?", Icons.Default.SupportAgent, "Help")
+            ).forEach { (label, icon, route) ->
+                Card(
+                    modifier = Modifier.weight(1f).height(112.dp).clickable { onTabChange(route) },
+                    shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)
+                ) {
+                    Column(Modifier.fillMaxSize().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                        Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(30.dp))
+                        Spacer(Modifier.height(10.dp))
+                        Text(label, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                    }
+                }
+            }
+        }
+        Spacer(Modifier.height(18.dp))
+        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(44.dp).background(PaleGreen.copy(alpha = 0.55f), RoundedCornerShape(13.dp)), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Spa, contentDescription = null, tint = Forest, modifier = Modifier.size(25.dp))
+                }
+                Spacer(Modifier.width(12.dp))
+                Column(Modifier.weight(1f)) {
+                    Text("Your wellness, rooted in tradition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(4.dp))
+                    Text("Explore our Ayurvedic collection and updates.", color = Muted, fontSize = 12.sp)
+                }
+            }
+        }
+        Spacer(Modifier.height(18.dp))
+        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Column {
+                Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                AccountRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
+                AccountRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("Profile") }
+                AccountRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("Orders") }
+                AccountRow(Icons.Default.FavoriteBorder, "Saved products", "Browse the product collection") { onTabChange("Home") }
+                AccountRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
+                AccountRow(Icons.Default.Language, "Language", appLanguage) { onTabChange("Profile") }
+            }
+        }
+        Spacer(Modifier.height(16.dp))
+        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Column {
+                Text("About and support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                AccountRow(Icons.Default.HelpOutline, "Help and support", "Contact us for assistance") { onTabChange("Help") }
+                AccountRow(Icons.Default.Info, "About SLGAN", "Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("Home") }
+                AccountRow(Icons.Default.Logout, "Sign out") { onSignOut() }
+            }
+        }
+        Spacer(Modifier.height(24.dp))
+    }
+}
+
+@Composable
+private fun HelpPage(modifier: Modifier, onBack: () -> Unit) {
+    Column(modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(20.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            Text("Help and support", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        }
+        Spacer(Modifier.height(16.dp))
+        Card(shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                Icon(Icons.Default.SupportAgent, contentDescription = null, tint = Forest, modifier = Modifier.size(38.dp))
+                Spacer(Modifier.height(12.dp))
+                Text("How can we help?", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(6.dp))
+                Text("For help with products, orders, or delivery addresses, please contact Sri Lakshmi Ganapathi Ayurveda Nilayam.", color = Muted, fontSize = 14.sp, lineHeight = 21.sp)
+            }
+        }
+    }
 }
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
