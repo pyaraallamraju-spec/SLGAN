@@ -5972,7 +5972,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                             rowProducts.forEach { product ->
                                 val quantityInCart = cart[product.id] ?: 0
                                 Card(
-                                    modifier = Modifier.weight(1f).height(320.dp).padding(bottom = 10.dp),
+                                    modifier = Modifier.weight(1f).height(350.dp).padding(bottom = 10.dp),
                                     shape = RoundedCornerShape(13.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
