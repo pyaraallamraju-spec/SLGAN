@@ -5875,7 +5875,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
         "trusted organics" to "🍅", "flowers & leaves" to "💐"
     )
 
-    Row(modifier.fillMaxSize().background(Color(0xFFFFE9B8))) {
+    Row(modifier.fillMaxSize().background(Color(0xFFFFF8EC))) {
         Column(
             Modifier.width(94.dp).fillMaxHeight().background(Color.White).verticalScroll(leftScroll).padding(horizontal = 6.dp, vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
