@@ -5293,7 +5293,12 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                     }
                                     Spacer(Modifier.weight(1f))
                                     ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary(), compact = true)
-                                    ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
+                                    Box(
+                                        modifier = Modifier.width(54.dp),
+                                        contentAlignment = Alignment.CenterEnd
+                                    ) {
+                                        ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
+                                    }
                                 }
                                 Spacer(Modifier.height(2.dp))
                                 Row(
