@@ -7144,22 +7144,23 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     if (showMapPicker) {
                 androidx.compose.ui.window.Dialog(onDismissRequest = { showMapPicker = false }, properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
                     Card(
-                        modifier = Modifier.fillMaxWidth(0.94f),
-                        shape = RoundedCornerShape(22.dp),
+                        modifier = Modifier.fillMaxSize(),
+                        shape = RoundedCornerShape(0.dp),
                         colors = CardDefaults.cardColors(containerColor = Cream),
                         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
                     ) {
-                        Column(Modifier.fillMaxWidth().padding(14.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Column(Modifier.weight(1f)) {
-                                }
+                        Column(Modifier.fillMaxSize().background(Color(0xFFF8F8F8))) {
+                            Row(
+                                Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 IconButton(onClick = { showMapPicker = false }) {
-                                    Icon(Icons.Default.Close, contentDescription = "Close map", tint = Forest)
+                                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
                                 }
+                                Text("Add address", fontSize = 21.sp, fontWeight = FontWeight.Bold, color = Ink)
                             }
-                            Spacer(Modifier.height(8.dp))
                             AndroidView(
-                    modifier = Modifier.fillMaxWidth().height(430.dp).clip(RoundedCornerShape(14.dp)),
+                    modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 0.dp),
                     factory = { ctx ->
                         WebView(ctx).apply {
                             settings.javaScriptEnabled = true
@@ -7235,11 +7236,43 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         }
                     }
                 )
-                            Spacer(Modifier.height(8.dp))
-                            Text("Drag the pin to fine-tune the location. The address fields will update.", color = Muted, fontSize = 12.sp)
-                            Spacer(Modifier.height(10.dp))
-                            Button(onClick = { showMapPicker = false; showAddressDetailsSheet = true }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-                                Text("Add more address details")
+                            Column(
+                                Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 14.dp)
+                            ) {
+                                Text("Delivering your order to", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                                Spacer(Modifier.height(10.dp))
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F6FA)),
+                                    shape = RoundedCornerShape(18.dp),
+                                    border = BorderStroke(1.dp, Color(0xFFE2E5ED))
+                                ) {
+                                    Row(
+                                        Modifier.fillMaxWidth().padding(14.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFF1687FF), modifier = Modifier.size(34.dp))
+                                        Spacer(Modifier.width(12.dp))
+                                        Column(Modifier.weight(1f)) {
+                                            Text(listOf(landmark, addressLine1).firstOrNull { it.isNotBlank() } ?: city.ifBlank { "Selected location" }, color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                                            Text(listOf(addressLine2, city, state, pincode).filter { it.isNotBlank() }.distinct().joinToString(", ").ifBlank { "Move the map pin to select your address" }, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                                        }
+                                        TextButton(onClick = { showAddressDetailsSheet = true }) { Text("Change", color = Color(0xFF27851F)) }
+                                    }
+                                }
+                                Spacer(Modifier.height(14.dp))
+                                Button(
+                                    onClick = { showMapPicker = false; showAddressDetailsSheet = true },
+                                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF27851F))
+                                ) {
+                                    Text("Add more address details  ›", fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                                }
+                                Spacer(Modifier.height(4.dp))
+                                TextButton(onClick = { showMapPicker = false; showAddressDetailsSheet = true }, modifier = Modifier.fillMaxWidth()) {
+                                    Text("I don’t know the exact location on map", color = Color(0xFF27851F), fontWeight = FontWeight.SemiBold)
+                                }
                             }
                         }
                     }
