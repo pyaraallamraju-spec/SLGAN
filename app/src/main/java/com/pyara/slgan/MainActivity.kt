@@ -2101,6 +2101,7 @@ private fun AdminProductDetailsScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AdminProductEditor(
     product: Product?,
@@ -2225,8 +2226,7 @@ private fun AdminProductEditor(
                 ExposedDropdownMenu(
                     expanded = categoryMenuExpanded,
                     onDismissRequest = { categoryMenuExpanded = false },
-                    modifier = Modifier.heightIn(max = 320.dp).background(Cream),
-                    matchAnchorWidth = true
+                    modifier = Modifier.heightIn(max = 320.dp).background(Cream)
                 ) {
                     categoryOptions.forEach { option ->
                         DropdownMenuItem(
