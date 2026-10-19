@@ -5877,20 +5877,20 @@ private fun AccountsPage(
             Column {
                 Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
-                AccountRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("Profile") }
-                AccountRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("Orders") }
-                AccountRow(Icons.Default.FavoriteBorder, "Saved products", "Browse the product collection") { onTabChange("Home") }
-                AccountRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
-                AccountRow(Icons.Default.Language, "Language", appLanguage) { onTabChange("Profile") }
+                AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("Profile") }
+                AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("Orders") }
+                AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse the product collection") { onTabChange("Home") }
+                AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
+                AccountMenuRow(Icons.Default.Language, "Language", appLanguage) { onTabChange("Profile") }
             }
         }
         Spacer(Modifier.height(16.dp))
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
             Column {
                 Text("About and support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                AccountRow(Icons.Default.HelpOutline, "Help and support", "Contact us for assistance") { onTabChange("Help") }
-                AccountRow(Icons.Default.Info, "About SLGAN", "Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("Home") }
-                AccountRow(Icons.Default.Logout, "Sign out") { onSignOut() }
+                AccountMenuRow(Icons.Default.HelpOutline, "Help and support", "Contact us for assistance") { onTabChange("Help") }
+                AccountMenuRow(Icons.Default.Info, "About SLGAN", "Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("Home") }
+                AccountMenuRow(Icons.Default.Logout, "Sign out") { onSignOut() }
             }
         }
         Spacer(Modifier.height(24.dp))
