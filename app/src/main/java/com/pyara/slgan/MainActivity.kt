@@ -3931,9 +3931,10 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             Spacer(Modifier.height(10.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
+                Spacer(Modifier.height(3.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (product.category.isNotBlank()) {
