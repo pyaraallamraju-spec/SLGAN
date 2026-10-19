@@ -198,7 +198,7 @@ private fun tr(text: String, language: String): String {
         "SRI LAKSHMI GANAPATHI" to "శ్రీ లక్ష్మీ గణపతి", "AYURVEDA NILAYAM" to "ఆయుర్వేద నిలయం",
         "TRADITION • TRUST • WELLNESS" to "సంప్రదాయం • నమ్మకం • ఆరోగ్యం", "Preparing your wellness experience" to "మీ ఆరోగ్య అనుభవాన్ని సిద్ధం చేస్తున్నాం",
         "Sri Lakshmi Ganapathi" to "శ్రీ లక్ష్మీ గణపతి", "Ayurveda Nilayam" to "ఆయుర్వేద నిలయం",
-        "Estd. 1900 by Perraju Sharma" to "పెర్రాజు శర్మచే 1900లో స్థాపితం", "Nature's care,\nrooted in tradition." to "ప్రకృతి సంరక్షణ,\nసంప్రదాయ మూలాలతో.", "Sri Lakshmi Ganapathi Ayurveda Nilayam" to "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం",
+        "Estd. 1900 by Vidyaraju Sri Allamraju Perraju Sharma" to "పెర్రాజు శర్మచే 1900లో స్థాపితం", "Nature's care,\nrooted in tradition." to "ప్రకృతి సంరక్షణ,\nసంప్రదాయ మూలాలతో.", "Sri Lakshmi Ganapathi Ayurveda Nilayam" to "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం",
         "OUR HERITAGE" to "మన వారసత్వం", "DISCOVER SLGAN" to "SLGANను తెలుసుకోండి", "SLGAN SIGNATURE PRODUCT" to "SLGAN ప్రత్యేక ఉత్పత్తి",
         "Traditional Ayurvedic care, rooted in nature" to "ప్రకృతిలో పాతుకుపోయిన సంప్రదాయ ఆయుర్వేద సంరక్షణ", "A signature SLGAN product" to "SLGAN ప్రత్యేక ఉత్పత్తి",
         "Search products" to "ఉత్పత్తులను వెతకండి", "Shop by category" to "వర్గాల వారీగా కొనండి", "Could not load products: ${'$' }productsError" to "ఉత్పత్తులను లోడ్ చేయలేకపోయాం: ${'$' }productsError",
@@ -281,7 +281,7 @@ private fun tr(text: String, language: String): String {
         "SRI LAKSHMI GANAPATHI" to "श्री लक्ष्मी गणपति", "AYURVEDA NILAYAM" to "आयुर्वेद निलयम",
         "TRADITION • TRUST • WELLNESS" to "परंपरा • विश्वास • स्वास्थ्य", "Preparing your wellness experience" to "आपके स्वास्थ्य अनुभव की तैयारी हो रही है",
         "Sri Lakshmi Ganapathi" to "श्री लक्ष्मी गणपति", "Ayurveda Nilayam" to "आयुर्वेद निलयम",
-        "Estd. 1900 by Perraju Sharma" to "पेर्राजू शर्मा द्वारा 1900 में स्थापित", "Nature's care,\nrooted in tradition." to "प्रकृति की देखभाल,\nपरंपरा की जड़ों से।", "Sri Lakshmi Ganapathi Ayurveda Nilayam" to "श्री लक्ष्मी गणपति आयुर्वेद निलयम",
+        "Estd. 1900 by Vidyaraju Sri Allamraju Perraju Sharma" to "पेर्राजू शर्मा द्वारा 1900 में स्थापित", "Nature's care,\nrooted in tradition." to "प्रकृति की देखभाल,\nपरंपरा की जड़ों से।", "Sri Lakshmi Ganapathi Ayurveda Nilayam" to "श्री लक्ष्मी गणपति आयुर्वेद निलयम",
         "OUR HERITAGE" to "हमारी विरासत", "DISCOVER SLGAN" to "SLGAN को जानें", "SLGAN SIGNATURE PRODUCT" to "SLGAN विशेष उत्पाद",
         "Traditional Ayurvedic care, rooted in nature" to "प्रकृति से जुड़ी पारंपरिक आयुर्वेदिक देखभाल", "A signature SLGAN product" to "SLGAN विशेष उत्पाद",
         "Search products" to "उत्पाद खोजें", "Shop by category" to "श्रेणी के अनुसार खरीदें", "Could not load products: ${'$' }productsError" to "उत्पाद लोड नहीं हो सके: ${'$' }productsError",
@@ -1203,7 +1203,7 @@ private fun LoginScreen(
         }
         Spacer(Modifier.height(6.dp))
         Text(
-            tr("Estd. 1900 by Perraju Sharma", LocalAppLanguage.current),
+            tr("Estd. 1900 by Vidyaraju Sri Allamraju Perraju Sharma", LocalAppLanguage.current),
             fontSize = 12.sp,
             fontWeight = FontWeight.Medium,
             color = Muted,
