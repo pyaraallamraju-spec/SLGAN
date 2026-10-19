@@ -3501,14 +3501,20 @@ private fun ShopScreen(
 
 @Composable
 private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
-    val preferredCategoryOrder = listOf("Lehyas", "Ghrutas", "Pills", "Tailas", "Churnas", "Rasayogas", "Rasayanas", "Bhasmas")
-    val databaseCategories = products.map { it.category.trim() }
-        .filter { it.isNotBlank() }
-        .distinctBy { it.lowercase() }
-    val homeCategories = listOf("All") +
-        preferredCategoryOrder.filter { preferred -> databaseCategories.any { it.equals(preferred, ignoreCase = true) } } +
-        databaseCategories.filterNot { item -> preferredCategoryOrder.any { it.equals(item, ignoreCase = true) } }
-            .sortedBy { it.lowercase() }
+    var databaseCategories by remember { mutableStateOf<List<String>>(emptyList()) }
+    DisposableEffect(Unit) {
+        val registration = FirebaseFirestore.getInstance().collection("categories")
+            .addSnapshotListener { snapshot, error ->
+                if (error == null && snapshot != null) {
+                    databaseCategories = snapshot.documents.mapNotNull { doc ->
+                        (doc.getString("category_name") ?: doc.getString("name") ?: doc.id)
+                            .trim().takeIf { it.isNotBlank() }
+                    }.distinctBy { it.lowercase() }.sortedBy { it.lowercase() }
+                }
+            }
+        onDispose { registration.remove() }
+    }
+    val homeCategories = listOf("All") + databaseCategories
 
     val context = LocalContext.current
     val currentLanguage = LocalAppLanguage.current
@@ -5260,11 +5266,20 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf<String?>(null) }
     val selectedProducts = products.filter { selectedCategory == "All" || it.category.equals(selectedCategory, ignoreCase = true) }
-    // Build category tiles from live product data returned by Firestore, not a hard-coded list.
-    val backendCategories = products.map { it.category.trim() }
-        .filter { it.isNotBlank() }
-        .distinctBy { it.lowercase() }
-        .sortedBy { it.lowercase() }
+    // Category tiles are sourced directly from the Firestore categories collection.
+    var backendCategories by remember { mutableStateOf<List<String>>(emptyList()) }
+    DisposableEffect(Unit) {
+        val registration = FirebaseFirestore.getInstance().collection("categories")
+            .addSnapshotListener { snapshot, error ->
+                if (error == null && snapshot != null) {
+                    backendCategories = snapshot.documents.mapNotNull { doc ->
+                        (doc.getString("category_name") ?: doc.getString("name") ?: doc.id)
+                            .trim().takeIf { it.isNotBlank() }
+                    }.distinctBy { it.lowercase() }.sortedBy { it.lowercase() }
+                }
+            }
+        onDispose { registration.remove() }
+    }
     val categoriesFromBackend = listOf("All") + backendCategories
     val categoryItems = categoriesFromBackend.filter { it.contains(searchQuery.trim(), ignoreCase = true) }
     val categoryRows = categoryItems.chunked(2)
