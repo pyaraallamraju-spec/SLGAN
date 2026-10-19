@@ -7092,30 +7092,32 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 OutlinedTextField(value = addressTower, onValueChange = { addressTower = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Tower / Block (optional)") }, singleLine = true, shape = RoundedCornerShape(12.dp))
                 Spacer(Modifier.height(10.dp))
                 OutlinedTextField(value = landmark, onValueChange = { landmark = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Nearby landmark (optional)") }, singleLine = true, shape = RoundedCornerShape(12.dp))
-                Spacer(Modifier.height(28.dp))
-                Text("Enter your details for seamless delivery experience", color = Muted, fontSize = 14.sp)
-                Spacer(Modifier.height(10.dp))
-                OutlinedTextField(value = recipientName, onValueChange = { recipientName = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Your name *") }, singleLine = true, shape = RoundedCornerShape(12.dp), trailingIcon = { if (recipientName.isNotBlank()) IconButton(onClick = { recipientName = "" }) { Icon(Icons.Default.Cancel, contentDescription = "Clear name", tint = Muted) } })
-                Spacer(Modifier.height(10.dp))
-                OutlinedTextField(value = (recipientCountryCode + if (recipientPhone.isBlank()) "" else " " + recipientPhone), onValueChange = { value ->
-                    val digits = value.filter(Char::isDigit)
-                    recipientPhone = if (digits.startsWith(recipientCountryCode.filter(Char::isDigit))) digits.drop(recipientCountryCode.filter(Char::isDigit).length).take(15) else digits.take(15)
-                    addressMessage = null
-                }, modifier = Modifier.fillMaxWidth(), label = { Text("Your phone number (optional)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), singleLine = true, shape = RoundedCornerShape(12.dp), trailingIcon = { if (recipientPhone.isNotBlank()) IconButton(onClick = { recipientPhone = "" }) { Icon(Icons.Default.Cancel, contentDescription = "Clear phone", tint = Muted) } })
+                if (orderingForSomeoneElse) {
+                    Spacer(Modifier.height(28.dp))
+                    Text("Enter your details for seamless delivery experience", color = Muted, fontSize = 14.sp)
+                    Spacer(Modifier.height(10.dp))
+                    OutlinedTextField(value = recipientName, onValueChange = { recipientName = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Your name *") }, singleLine = true, shape = RoundedCornerShape(12.dp), trailingIcon = { if (recipientName.isNotBlank()) IconButton(onClick = { recipientName = "" }) { Icon(Icons.Default.Cancel, contentDescription = "Clear name", tint = Muted) } })
+                    Spacer(Modifier.height(10.dp))
+                    OutlinedTextField(value = (recipientCountryCode + if (recipientPhone.isBlank()) "" else " " + recipientPhone), onValueChange = { value ->
+                        val digits = value.filter(Char::isDigit)
+                        recipientPhone = if (digits.startsWith(recipientCountryCode.filter(Char::isDigit))) digits.drop(recipientCountryCode.filter(Char::isDigit).length).take(15) else digits.take(15)
+                        addressMessage = null
+                    }, modifier = Modifier.fillMaxWidth(), label = { Text("Your phone number (optional)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), singleLine = true, shape = RoundedCornerShape(12.dp), trailingIcon = { if (recipientPhone.isNotBlank()) IconButton(onClick = { recipientPhone = "" }) { Icon(Icons.Default.Cancel, contentDescription = "Clear phone", tint = Muted) } })
+                }
                 if (!addressMessage.isNullOrBlank()) { Spacer(Modifier.height(8.dp)); Text(addressMessage!!, color = Color(0xFFB3261E), fontSize = 13.sp) }
                 Spacer(Modifier.height(18.dp))
                 Button(
                     onClick = {
                         if (uid == null) addressMessage = "Please sign in again."
-                        else if (addressLine1.isBlank() || addressFloor.isBlank() || recipientName.isBlank()) {
-                            addressMessage = "Please enter your house number, floor, and name."
+                        else if (addressLine1.isBlank() || addressFloor.isBlank() || (orderingForSomeoneElse && recipientName.isBlank())) {
+                            addressMessage = if (orderingForSomeoneElse) "Please enter your house number, floor, and name." else "Please enter your house number and floor."
                         } else {
                             addressSaving = true
                             val id = System.currentTimeMillis().toString()
                             val addressRecord = mapOf<String, Any>(
                                 "id" to id, "label" to addressLabel,
-                                "recipientName" to recipientName.trim(),
-                                "phone" to (recipientCountryCode.trim() + recipientPhone.trim()),
+                                "recipientName" to (if (orderingForSomeoneElse) recipientName.trim() else listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname.ifBlank { user?.displayName.orEmpty() } }),
+                                "phone" to if (orderingForSomeoneElse) (recipientCountryCode.trim() + recipientPhone.trim()) else (selectedCountry.third + mobileNumber.trim()),
                                 "countryCode" to recipientCountryCode.trim(),
                                 "addressLine1" to addressLine1.trim(),
                                 "addressLine2" to listOf(addressFloor.trim(), addressTower.trim(), addressLine2.trim()).filter { it.isNotBlank() }.joinToString(", "),
