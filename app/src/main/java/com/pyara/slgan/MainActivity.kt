@@ -6110,6 +6110,7 @@ private fun AccountsPage(
     var nickname by remember(user?.uid) { mutableStateOf("") }
     var profilePic by remember(user?.uid) { mutableStateOf("") }
     var profilePicSaving by remember { mutableStateOf(false) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
     LaunchedEffect(user?.uid) {
         val uid = user?.uid ?: return@LaunchedEffect
         FirebaseFirestore.getInstance().collection("customers").document(uid).get()
@@ -6281,10 +6282,49 @@ private fun AccountsPage(
                         .setPositiveButton("OK", null)
                         .show()
                 }
-                AccountMenuRow(Icons.Default.Logout, "Log out") { onSignOut() }
+                AccountMenuRow(Icons.Default.Logout, "Log out") { showLogoutDialog = true }
             }
         }
         Spacer(Modifier.height(24.dp))
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            shape = RoundedCornerShape(20.dp),
+            containerColor = Color.White,
+            title = {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Text("Log out from?", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                }
+            },
+            text = {
+                Column(Modifier.fillMaxWidth()) {
+                    HorizontalDivider(color = Color(0xFFE1E5EB))
+                    Box(
+                        Modifier.fillMaxWidth().clickable {
+                            showLogoutDialog = false
+                            onSignOut()
+                        }.padding(vertical = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text("Current Device", color = Color(0xFF27851F), fontSize = 18.sp, fontWeight = FontWeight.Medium) }
+                    HorizontalDivider(color = Color(0xFFE1E5EB))
+                    Box(
+                        Modifier.fillMaxWidth().clickable {
+                            showLogoutDialog = false
+                            Toast.makeText(context, "This app can sign out this device only. Signing out all devices requires secure server support.", Toast.LENGTH_LONG).show()
+                        }.padding(vertical = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text("All Devices", color = Color(0xFF27851F), fontSize = 18.sp, fontWeight = FontWeight.Medium) }
+                    HorizontalDivider(color = Color(0xFFE1E5EB))
+                    Box(
+                        Modifier.fillMaxWidth().clickable { showLogoutDialog = false }.padding(vertical = 16.dp),
+                        contentAlignment = Alignment.Center
+                    ) { Text("Cancel", color = Color(0xFF27851F), fontSize = 18.sp, fontWeight = FontWeight.Medium) }
+                }
+            },
+            confirmButton = {},
+            dismissButton = {}
+        )
+    }
     }
 }
 
