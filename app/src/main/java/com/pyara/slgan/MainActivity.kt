@@ -5223,7 +5223,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                    Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
                     Spacer(Modifier.height(6.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
