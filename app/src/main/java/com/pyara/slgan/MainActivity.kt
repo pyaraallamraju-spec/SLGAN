@@ -17,12 +17,16 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.functions.FirebaseFunctions
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Canvas
@@ -630,6 +634,71 @@ private fun AyurvedicApp() {
     var isCreatingAccount by remember { mutableStateOf(false) }
     var authError by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(false) }
+    val googleSignInLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode != android.app.Activity.RESULT_OK) {
+            isLoading = false
+            authError = "Google sign-in was cancelled."
+        } else {
+            try {
+                val accountTask = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                val account = accountTask.getResult(com.google.android.gms.common.api.ApiException::class.java)
+                val idToken = account.idToken
+                if (idToken.isNullOrBlank()) {
+                    isLoading = false
+                    authError = "Google sign-in token missing. Check Firebase Google provider setup."
+                } else {
+                    auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken, null))
+                        .addOnCompleteListener { task ->
+                            isLoading = false
+                            if (task.isSuccessful) {
+                                val user = auth.currentUser
+                                if (user != null) {
+                                    val displayName = user.displayName.orEmpty().trim()
+                                    val nameParts = displayName.split(Regex("\\s+")).filter { it.isNotBlank() }
+                                    val profile = mutableMapOf<String, Any>(
+                                        "email" to (user.email ?: account.email.orEmpty()),
+                                        "updatedAt" to System.currentTimeMillis()
+                                    )
+                                    if (nameParts.isNotEmpty()) profile["firstName"] = nameParts.first()
+                                    if (nameParts.size > 1) profile["lastName"] = nameParts.drop(1).joinToString(" ")
+                                    if (!user.photoUrl?.toString().isNullOrBlank()) profile["photoUrl"] = user.photoUrl.toString()
+                                    FirebaseData.saveCustomerProfile(user.uid, profile) { error ->
+                                        if (error != null) android.util.Log.w("SLGAN_AUTH", "Google profile save failed", error)
+                                    }
+                                }
+                                authError = null
+                            } else {
+                                authError = task.exception?.localizedMessage ?: "Google sign-in failed. Please try again."
+                            }
+                        }
+                }
+            } catch (error: Exception) {
+                isLoading = false
+                authError = error.localizedMessage ?: "Google sign-in failed. Please try again."
+            }
+        }
+    }
+    val onGoogleSignIn: () -> Unit = {
+        val webClientIdResource = appContext.resources.getIdentifier("default_web_client_id", "string", appContext.packageName)
+        if (webClientIdResource == 0) {
+            authError = "Google sign-in setup is incomplete. Enable Google in Firebase Authentication and update google-services.json."
+        } else {
+            try {
+                isLoading = true
+                authError = null
+                val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestIdToken(appContext.getString(webClientIdResource))
+                    .build()
+                googleSignInLauncher.launch(GoogleSignIn.getClient(appContext, options).signInIntent)
+            } catch (error: Exception) {
+                isLoading = false
+                authError = error.localizedMessage ?: "Could not start Google sign-in."
+            }
+        }
+    }
     var selectedTab by remember { mutableStateOf("Home") }
     var latestOrderId by remember { mutableStateOf<String?>(null) }
     var latestOrderSuccess by remember { mutableStateOf<Boolean?>(null) }
@@ -784,6 +853,7 @@ private fun AyurvedicApp() {
                 onToggleMode = { isCreatingAccount = !isCreatingAccount; authError = null; confirmPassword = "" },
                 errorMessage = authError,
                 loading = isLoading,
+                onGoogleSignIn = onGoogleSignIn,
                 onContinue = {
                     val email = userInput.trim()
                     if (email.isBlank() || password.length < 6) {
@@ -1031,6 +1101,7 @@ private fun LoginScreen(
     onToggleMode: () -> Unit,
     errorMessage: String?,
     loading: Boolean,
+    onGoogleSignIn: () -> Unit,
     onContinue: () -> Unit
 ) {
     var showPassword by remember { mutableStateOf(false) }
@@ -1242,8 +1313,28 @@ private fun LoginScreen(
             if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
             else Icon(Icons.Default.ArrowForward, null)
         }
-        TextButton(onClick = onToggleMode, modifier = Modifier.padding(top = 2.dp)) {
+        TextButton(onClick = onToggleMode, modifier = Modifier.padding(top = 2.dp), enabled = !loading) {
             Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Color(0xFF6B1825))
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
+            Text("  OR  ", color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
+            Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
+        }
+        OutlinedButton(
+            onClick = onGoogleSignIn,
+            enabled = !loading,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(50.dp),
+            shape = RoundedCornerShape(14.dp),
+            border = BorderStroke(1.dp, Gold.copy(alpha = 0.75f)),
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
+        ) {
+            Text("G", color = Color(0xFF4285F4), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.width(12.dp))
+            Text(if (loading) "Please wait…" else "Continue with Google", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
         }
         Spacer(Modifier.height(8.dp))
         Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
