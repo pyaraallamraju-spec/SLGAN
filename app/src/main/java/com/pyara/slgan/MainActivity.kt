@@ -1540,7 +1540,7 @@ private fun HomeBannerSlider(
                             )
                         )
                     }
-                    // Decorative emoji frame is reserved for Slider 4 only.
+                    // Slider 4's decorative frame appears on every slide while design 4 is active.
                     if (selectedDesign == 4) {
                         Box(Modifier.fillMaxSize()) {
                             Box(Modifier.align(Alignment.TopCenter).fillMaxWidth().height(7.dp)
