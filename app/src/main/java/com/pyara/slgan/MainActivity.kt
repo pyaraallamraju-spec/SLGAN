@@ -1395,7 +1395,7 @@ private fun HomeBannerSlider(
     var activeSlide by remember { mutableIntStateOf(0) }
     LaunchedEffect(slides.size) {
         if (slides.isNotEmpty()) while (true) {
-            delay(5000)
+            delay(6500)
             activeSlide = (activeSlide + 1) % slides.size
         }
     }
@@ -1444,9 +1444,9 @@ private fun HomeBannerSlider(
                     },
                 targetState = activeSlide,
                 transitionSpec = {
-                    (fadeIn(animationSpec = tween(durationMillis = 1100, easing = FastOutSlowInEasing)) +
-                        scaleIn(initialScale = 0.94f, animationSpec = tween(durationMillis = 1500, easing = FastOutSlowInEasing))) togetherWith
-                        fadeOut(animationSpec = tween(durationMillis = 850, easing = FastOutSlowInEasing))
+                    (fadeIn(animationSpec = tween(durationMillis = 1400, easing = FastOutSlowInEasing)) +
+                        scaleIn(initialScale = 0.94f, animationSpec = tween(durationMillis = 1800, easing = FastOutSlowInEasing))) togetherWith
+                        fadeOut(animationSpec = tween(durationMillis = 1100, easing = FastOutSlowInEasing))
                 },
                 label = "homeBannerSlide"
             ) { index ->
