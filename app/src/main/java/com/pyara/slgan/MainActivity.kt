@@ -5958,17 +5958,20 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     Text("${selectedProducts.size} products", color = Muted, fontSize = 11.sp)
                 }
             }
-            Column(
-                Modifier.fillMaxWidth().weight(1f).verticalScroll(rightScroll).padding(horizontal = 9.dp, vertical = 5.dp)
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                contentPadding = PaddingValues(horizontal = 9.dp, vertical = 5.dp)
             ) {
                 if (selectedProducts.isEmpty()) {
-                    Column(Modifier.fillMaxWidth().padding(top = 60.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("🌿", fontSize = 38.sp)
-                        Spacer(Modifier.height(8.dp))
-                        Text("No products in this category", color = Muted, fontSize = 13.sp, textAlign = TextAlign.Center)
+                    item {
+                        Column(Modifier.fillMaxWidth().padding(top = 60.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("🌿", fontSize = 38.sp)
+                            Spacer(Modifier.height(8.dp))
+                            Text("No products in this category", color = Muted, fontSize = 13.sp, textAlign = TextAlign.Center)
+                        }
                     }
                 } else {
-                    selectedProducts.chunked(2).forEach { rowProducts ->
+                    items(selectedProducts.chunked(2), key = { row -> row.joinToString("-") { it.id } }) { rowProducts ->
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             rowProducts.forEach { product ->
                                 val quantityInCart = cart[product.id] ?: 0
