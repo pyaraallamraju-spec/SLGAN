@@ -5584,6 +5584,9 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
     var diseaseImageUrl by remember { mutableStateOf("") }
     var diseasePrecautions by remember { mutableStateOf("") }
     var suggestedMedicineNames by remember { mutableStateOf<List<String>>(emptyList()) }
+    var descriptionExpanded by remember { mutableStateOf(false) }
+    var medicinesExpanded by remember { mutableStateOf(false) }
+    var precautionsExpanded by remember { mutableStateOf(false) }
 
     val relatedMedicines = remember(selectedDisease, products) {
         val chosen = selectedDisease?.takeIf { it != "All Diseases" }
@@ -5638,11 +5641,11 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         if (query.isBlank()) diseases else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
     }
 
-    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
+    Column(modifier = modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
         Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = Forest),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(20.dp)) {
@@ -5652,22 +5655,22 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(tr("Diseases", LocalAppLanguage.current), color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Diseases", LocalAppLanguage.current), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                         Surface(
                             shape = RoundedCornerShape(50.dp),
-                            color = Color(0xFFFFE7A3)
+                            color = Color(0xFFF5F6F8)
                         ) {
                             Text(
                                 "${diseases.size} available",
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                color = Color(0xFF762A24),
+                                color = Forest,
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
                     }
                     Spacer(Modifier.height(5.dp))
-                    Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = PaleGreen, fontSize = 13.sp, lineHeight = 19.sp)
+                    Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                 }
             }
             Spacer(Modifier.height(16.dp))
@@ -5703,8 +5706,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         unfocusedBorderColor = Color.Transparent,
                         disabledBorderColor = Color.Transparent,
                         errorBorderColor = Color.Transparent,
-                        focusedContainerColor = Cream,
-                        unfocusedContainerColor = Cream
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
                     )
                 )
                 DropdownMenu(
@@ -5712,7 +5715,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     onDismissRequest = { dropdownExpanded = false },
                     modifier = Modifier.fillMaxWidth(0.94f)
                         .heightIn(max = 280.dp)
-                        .background(Cream, RoundedCornerShape(14.dp))
+                        .background(Color.White, RoundedCornerShape(14.dp))
                         .border(1.dp, Gold.copy(alpha = 0.65f), RoundedCornerShape(14.dp))
                 ) {
                     matches.forEach { disease ->
@@ -5748,8 +5751,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(22.dp),
-                colors = CardDefaults.cardColors(containerColor = Cream),
-                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(16.dp)) {
                     if (diseaseImageUrl.isNotBlank()) {
@@ -5767,41 +5770,36 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest, modifier = Modifier.size(76.dp))
                         }
                     }
-                    Spacer(Modifier.height(18.dp))
-                    DetailSectionHeading(Icons.Default.Info, "Description")
-                    Spacer(Modifier.height(7.dp))
-                    Text(
-                        when {
-                            detailLoading -> "Loading disease information…"
-                            diseaseDescription.isNotBlank() -> diseaseDescription
-                            else -> tr("Information not available.", LocalAppLanguage.current)
-                        },
-                        color = Muted, fontSize = 14.sp, lineHeight = 21.sp
-                    )
-                    Spacer(Modifier.height(20.dp))
-                    DetailSectionHeading(Icons.Default.MedicalServices, "Suggested medicines")
-                    Spacer(Modifier.height(8.dp))
-                    val displayedSuggestions = if (suggestedMedicineNames.isNotEmpty()) suggestedMedicineNames else relatedMedicines.map { it.name }
-                    if (detailLoading) {
-                        CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp, color = Forest)
-                    } else if (displayedSuggestions.isEmpty()) {
-                        Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
-                    } else {
-                        displayedSuggestions.forEach { medicine ->
-                            Row(Modifier.fillMaxWidth().padding(start = 12.dp, top = 5.dp, bottom = 5.dp), verticalAlignment = Alignment.CenterVertically) {
+                    @Composable
+                    fun DiseaseAccordion(title: String, icon: androidx.compose.ui.graphics.vector.ImageVector, expanded: Boolean, onToggle: () -> Unit, content: @Composable () -> Unit) {
+                        Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp)).border(1.dp, Color(0xFFE8EAF0), RoundedCornerShape(15.dp)).background(Color.White)) {
+                            Row(Modifier.fillMaxWidth().clickable(onClick = onToggle).padding(horizontal = 14.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(21.dp))
+                                Spacer(Modifier.width(10.dp))
+                                Text(title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                                Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = if (expanded) "Collapse $title" else "Expand $title", tint = Ink)
+                            }
+                            if (expanded) Column(Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp, bottom = 14.dp)) { content() }
+                        }
+                    }
+                    DiseaseAccordion("Description", Icons.Default.Info, descriptionExpanded, { descriptionExpanded = !descriptionExpanded }) {
+                        Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 21.sp)
+                    }
+                    DiseaseAccordion("Suggested medicines", Icons.Default.MedicalServices, medicinesExpanded, { medicinesExpanded = !medicinesExpanded }) {
+                        val displayedSuggestions = if (suggestedMedicineNames.isNotEmpty()) suggestedMedicineNames else relatedMedicines.map { it.name }
+                        if (detailLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp, color = Forest)
+                        else if (displayedSuggestions.isEmpty()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
+                        else displayedSuggestions.forEach { medicine ->
+                            Row(Modifier.fillMaxWidth().padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(9.dp))
                                 Text(medicine, color = Ink, fontSize = 14.sp)
                             }
                         }
                     }
-                    Spacer(Modifier.height(20.dp))
-                    DetailSectionHeading(Icons.Default.HealthAndSafety, "Precautions")
-                    Spacer(Modifier.height(7.dp))
-                    if (diseasePrecautions.isBlank()) {
-                        Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
-                    } else {
-                        diseasePrecautions.split("\n").filter { it.isNotBlank() }.forEach { precaution ->
+                    DiseaseAccordion("Precautions", Icons.Default.HealthAndSafety, precautionsExpanded, { precautionsExpanded = !precautionsExpanded }) {
+                        if (diseasePrecautions.isBlank()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
+                        else diseasePrecautions.split("\n").filter { it.isNotBlank() }.forEach { precaution ->
                             Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.Top) {
                                 Text("•", color = Forest, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                                 Spacer(Modifier.width(8.dp))
