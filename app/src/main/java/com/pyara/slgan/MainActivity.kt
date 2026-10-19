@@ -736,6 +736,15 @@ private fun AyurvedicApp() {
         }
     }
     var selectedTab by remember { mutableStateOf("Home") }
+    // Keep a small history of visited bottom-navigation tabs so Back returns to the
+    // immediately previous tab instead of always jumping to Home.
+    val tabHistory = remember { mutableStateListOf("Home") }
+    LaunchedEffect(selectedTab) {
+        if (tabHistory.lastOrNull() != selectedTab) {
+            tabHistory.add(selectedTab)
+            while (tabHistory.size > 20) tabHistory.removeAt(0)
+        }
+    }
     var latestOrderId by remember { mutableStateOf<String?>(null) }
     var latestOrderSuccess by remember { mutableStateOf<Boolean?>(null) }
     var latestOrderInvoiceUrl by remember { mutableStateOf<String?>(null) }
@@ -877,7 +886,11 @@ private fun AyurvedicApp() {
             isAdmin && adminOrdersOpen -> adminOrdersOpen = false
             isAdmin && adminProductsOpen -> adminProductsOpen = false
             selectedProduct != null -> selectedProduct = null
-            signedIn && selectedTab != "Home" -> selectedTab = "Home"
+            tabHistory.size > 1 -> {
+                // Drop the current tab, then restore the preceding tab.
+                if (tabHistory.lastOrNull() == selectedTab) tabHistory.removeAt(tabHistory.lastIndex)
+                selectedTab = tabHistory.lastOrNull() ?: "Home"
+            }
             else -> {
                 val now = System.currentTimeMillis()
                 if (now - lastBackPressedAt < 2000L) {
