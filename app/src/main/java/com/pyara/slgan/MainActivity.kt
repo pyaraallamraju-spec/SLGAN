@@ -4842,7 +4842,6 @@ private fun ProductDetailsPage(
                     containerColor = Cream
                 )
             }
-    }
 }
 
 @Composable
