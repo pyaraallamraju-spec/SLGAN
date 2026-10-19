@@ -1390,11 +1390,16 @@ private fun HomeBannerSlider(
     onViewProduct: (String) -> Unit
 ) {
     var selectedDesign by remember { mutableIntStateOf(1) }
+    var sliderEnabled by remember { mutableStateOf(true) }
     DisposableEffect(Unit) {
         val registration = FirebaseFirestore.getInstance().collection("appSettings").document("homeBanner")
-            .addSnapshotListener { snapshot, _ -> selectedDesign = (snapshot?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 4) }
+            .addSnapshotListener { snapshot, _ ->
+                selectedDesign = (snapshot?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 4)
+                sliderEnabled = snapshot?.getBoolean("enabled") ?: true
+            }
         onDispose { registration.remove() }
     }
+    if (!sliderEnabled) return
     val slides = remember(products) {
         val signatureSlides = products.filter { it.signature }.map { product ->
             HomeBannerSlide(
@@ -2533,11 +2538,13 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
 private fun BannerManagementScreen(onBack: () -> Unit) {
     val db = remember { FirebaseFirestore.getInstance() }
     var activeDesign by remember { mutableIntStateOf(1) }
+    var sliderEnabled by remember { mutableStateOf(true) }
     var saving by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     DisposableEffect(Unit) {
         val registration = db.collection("appSettings").document("homeBanner").addSnapshotListener { snap, _ ->
             activeDesign = (snap?.getLong("activeDesign") ?: 1L).toInt().coerceIn(1, 4)
+            sliderEnabled = snap?.getBoolean("enabled") ?: true
         }
         onDispose { registration.remove() }
     }
@@ -2547,7 +2554,27 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
             Column { Text("HOME PAGE SLIDERS", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
-        Text("Slider 1 stays unchanged. Choose a design and tap Apply. Slider 4 automatically follows the selected app theme.", color = Muted, fontSize = 14.sp)
+        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Gold.copy(alpha = 0.55f))) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("Show slider on Home", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(if (sliderEnabled) "Slider is visible on the home page" else "Slider is hidden from the home page", color = Muted, fontSize = 12.sp)
+                }
+                Switch(checked = sliderEnabled, onCheckedChange = { enabled ->
+                    sliderEnabled = enabled
+                    message = null
+                    db.collection("appSettings").document("homeBanner")
+                        .set(mapOf("enabled" to enabled, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()), com.google.firebase.firestore.SetOptions.merge())
+                        .addOnFailureListener { e ->
+                            sliderEnabled = !enabled
+                            message = "Could not update slider visibility: ${e.localizedMessage ?: "Check Firestore permissions."}"
+                        }
+                        .addOnSuccessListener { message = if (enabled) "Home slider enabled." else "Home slider disabled." }
+                })
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+        Text("Choose a slider design and tap Apply. Slider 4 automatically follows the selected app theme.", color = Muted, fontSize = 14.sp)
         Spacer(Modifier.height(16.dp))
         (1..4).forEach { design ->
             val colors = when (design) { 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
@@ -2584,7 +2611,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         Button(onClick = {
             saving = true; message = null
             db.collection("appSettings").document("homeBanner")
-                .set(mapOf("activeDesign" to activeDesign, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
+                .set(mapOf("activeDesign" to activeDesign, "enabled" to sliderEnabled, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()), com.google.firebase.firestore.SetOptions.merge())
                 .addOnSuccessListener { saving = false; message = "Slider $activeDesign applied to the home page." }
                 .addOnFailureListener { e -> saving = false; message = "Could not apply slider: ${e.localizedMessage ?: "Check Firestore permissions."}" }
         }, enabled = !saving, modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
