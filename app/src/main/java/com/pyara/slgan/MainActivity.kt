@@ -1518,7 +1518,7 @@ private fun HomeBannerSlider(
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFFF8F0DC).copy(alpha = 0.97f), Color(0xFFE7EBCB).copy(alpha = 0.86f), Color(0xFFC6D6A3).copy(alpha = 0.42f), Color.Transparent))))
                     } else if (selectedDesign == 2) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF102D20).copy(alpha = 0.98f), Color(0xFF173D2B).copy(alpha = 0.88f), Color(0xFF24523A).copy(alpha = 0.55f), Color.Transparent))))
-                        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Forest.copy(alpha = 0.24f)))))
+                        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xFF173D2B).copy(alpha = 0.24f)))))
                     } else if (selectedDesign != 4 && !slide.isCompanySlide) {
                         Box(
                             Modifier.fillMaxSize().background(
@@ -1535,7 +1535,7 @@ private fun HomeBannerSlider(
                         Box(
                             Modifier.fillMaxSize().background(
                                 Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, Forest.copy(alpha = 0.30f))
+                                    colors = listOf(Color.Transparent, Color(0xFF173D2B).copy(alpha = 0.30f))
                                 )
                             )
                         )
