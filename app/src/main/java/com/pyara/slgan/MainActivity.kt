@@ -7071,6 +7071,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         }
                         showAddressForm = true
                         addressMessage = null
+                        showMapPicker = true
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(18.dp),
