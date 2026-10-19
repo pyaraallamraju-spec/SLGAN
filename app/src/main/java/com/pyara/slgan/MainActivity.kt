@@ -814,9 +814,15 @@ private fun AyurvedicApp() {
     val cart = remember { mutableStateMapOf<String, Int>() }
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
     val incomingProductId = remember {
-        (appContext as? android.app.Activity)?.intent?.data
-            ?.takeIf { it.scheme == "https" && it.host == "slgan-a364e.web.app" && it.path == "/product" }
-            ?.getQueryParameter("id")
+        (appContext as? android.app.Activity)?.intent?.data?.let { uri ->
+            when {
+                uri.scheme == "https" && uri.host == "slgan-a364e.web.app" && uri.path == "/product" ->
+                    uri.getQueryParameter("id")
+                uri.scheme == "slgan" && uri.host == "product" ->
+                    uri.lastPathSegment
+                else -> null
+            }
+        }
     }
     LaunchedEffect(incomingProductId, liveProducts) {
         if (!incomingProductId.isNullOrBlank()) {
