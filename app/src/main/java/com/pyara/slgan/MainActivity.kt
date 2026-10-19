@@ -3672,16 +3672,16 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             label = { Text(item, fontSize = 11.sp) },
                             leadingIcon = {
                                 Text(
-                                    text = when (item) {
-                                        "All" -> "🌿"
-                                        "Lehyas" -> "🫙"
-                                        "Grutas" -> "🏺"
-                                        "Pills" -> "💊"
-                                        "Tailas" -> "🫙"
-                                        "Churnas" -> "🌾"
-                                        "Rasayogas" -> "🪷"
-                                        "Rasayanas" -> "🪴"
-                                        "Bhasmas" -> "🪨"
+                                    text = when (item.trim().lowercase()) {
+                                        "all" -> "🌿"
+                                        "lehyas" -> "🫙"
+                                        "grutas", "gruta", "ghrita", "ghritas", "ghruta", "ghrutas", "ghrutaa", "ghrutaas", "ghrutam" -> "🏺"
+                                        "pills" -> "💊"
+                                        "tailas" -> "🫙"
+                                        "churnas" -> "🌾"
+                                        "rasayogas", "rasayoga" -> "🪷"
+                                        "rasayanas" -> "🪴"
+                                        "bhasmas" -> "🪨"
                                         else -> "🌿"
                                     },
                                     fontSize = 16.sp
@@ -5366,7 +5366,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                         val emoji = when (item.trim().lowercase()) {
                             "all" -> "🌿"
                             "lehyas" -> "🍯"
-                            "grutas", "ghritas", "ghrutas" -> "🏺"
+                            "grutas", "gruta", "ghrita", "ghritas", "ghruta", "ghrutas", "ghrutaa", "ghrutaas", "ghrutam" -> "🏺"
                             "pills" -> "💊"
                             "tailas" -> "🫙"
                             "churnas" -> "🌾"
