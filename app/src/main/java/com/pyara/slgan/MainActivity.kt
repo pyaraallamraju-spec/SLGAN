@@ -3676,7 +3676,35 @@ private fun WishlistPage(
     onBack: () -> Unit,
     appLanguage: String
 ) {
-    val savedProducts = products.filter { productLikes[it.id]?.likedByMe == true }
+    val currentUid = FirebaseAuth.getInstance().currentUser?.uid
+    var savedProductIds by remember(currentUid) { mutableStateOf<Set<String>>(emptySet()) }
+    var wishlistLoading by remember(currentUid) { mutableStateOf(true) }
+    var wishlistError by remember(currentUid) { mutableStateOf(false) }
+    DisposableEffect(currentUid) {
+        if (currentUid.isNullOrBlank()) {
+            savedProductIds = emptySet()
+            wishlistLoading = false
+            wishlistError = false
+            onDispose { }
+        } else {
+            val registration = FirebaseFirestore.getInstance().collection("productLikes")
+                .whereEqualTo("userId", currentUid)
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        wishlistError = true
+                        wishlistLoading = false
+                    } else if (snapshot != null) {
+                        savedProductIds = snapshot.documents.mapNotNull { doc ->
+                            doc.getString("productId")?.takeIf { it.isNotBlank() }
+                        }.toSet()
+                        wishlistError = false
+                        wishlistLoading = false
+                    }
+                }
+            onDispose { registration.remove() }
+        }
+    }
+    val savedProducts = products.filter { it.id in savedProductIds }
     Column(modifier.fillMaxSize().background(Cream)) {
         Row(
             modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
@@ -3689,7 +3717,27 @@ private fun WishlistPage(
             }
             Icon(Icons.Default.Favorite, contentDescription = null, tint = Color(0xFFD32F2F), modifier = Modifier.padding(end = 12.dp).size(24.dp))
         }
-        if (savedProducts.isEmpty()) {
+        if (wishlistLoading) {
+            Column(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CircularProgressIndicator(color = Forest)
+                Spacer(Modifier.height(12.dp))
+                Text(if (appLanguage == "English") "Loading your wishlist…" else "మీ విష్‌లిస్ట్ లోడ్ అవుతోంది…", color = Muted, fontSize = 13.sp)
+            }
+        } else if (wishlistError) {
+            Column(
+                modifier = Modifier.fillMaxWidth().weight(1f).padding(28.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(if (appLanguage == "English") "Couldn't load your wishlist" else "విష్‌లిస్ట్ లోడ్ కాలేదు", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(8.dp))
+                Text(if (appLanguage == "English") "Please check your connection and try again." else "ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.", color = Muted, textAlign = TextAlign.Center)
+            }
+        } else if (savedProducts.isEmpty()) {
             Column(
                 modifier = Modifier.fillMaxWidth().weight(1f).padding(28.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
