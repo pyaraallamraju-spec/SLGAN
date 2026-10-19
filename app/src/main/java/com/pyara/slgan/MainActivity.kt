@@ -5494,6 +5494,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var addresses by remember(uid) { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var addressLabel by remember { mutableStateOf("Home") }
     var recipientName by remember { mutableStateOf("") }
+    var recipientCountry by remember { mutableStateOf(countryCodes.first { it.first == "IN" }) }
+    var recipientCountryMenuExpanded by remember { mutableStateOf(false) }
     var recipientCountryCode by remember { mutableStateOf("+91") }
     var recipientPhone by remember { mutableStateOf("") }
     var addressLine1 by remember { mutableStateOf("") }
@@ -5988,18 +5990,41 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                OutlinedTextField(
-                    value = recipientCountryCode,
-                    onValueChange = { recipientCountryCode = "+" + it.filter(Char::isDigit).take(4); addressMessage = null },
-                    modifier = Modifier.weight(0.30f),
-                    label = { Text("Code *") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    singleLine = true
-                )
+                ExposedDropdownMenuBox(
+                    expanded = recipientCountryMenuExpanded,
+                    onExpandedChange = { recipientCountryMenuExpanded = !recipientCountryMenuExpanded },
+                    modifier = Modifier.weight(0.38f)
+                ) {
+                    OutlinedTextField(
+                        value = "${recipientCountry.second} ${recipientCountry.third}",
+                        onValueChange = {},
+                        readOnly = true,
+                        modifier = Modifier.menuAnchor(),
+                        label = { Text("Country code") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = recipientCountryMenuExpanded) },
+                        singleLine = true
+                    )
+                    ExposedDropdownMenu(
+                        expanded = recipientCountryMenuExpanded,
+                        onDismissRequest = { recipientCountryMenuExpanded = false }
+                    ) {
+                        countryCodes.forEach { country ->
+                            DropdownMenuItem(
+                                text = { Text("${country.second}  ${country.first}  ${country.third}") },
+                                onClick = {
+                                    recipientCountry = country
+                                    recipientCountryCode = country.third
+                                    recipientCountryMenuExpanded = false
+                                    addressMessage = null
+                                }
+                            )
+                        }
+                    }
+                }
                 OutlinedTextField(
                     value = recipientPhone,
                     onValueChange = { recipientPhone = it.filter(Char::isDigit).take(15); addressMessage = null },
-                    modifier = Modifier.weight(0.70f),
+                    modifier = Modifier.weight(0.62f),
                     label = { Text(tr("Mobile number *", LocalAppLanguage.current)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     singleLine = true
@@ -6045,7 +6070,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 addressSaving = false
                                 addressMessage = "Address saved successfully."
                                 showAddressForm = false
-                                recipientName = ""; recipientCountryCode = "+91"; recipientPhone = ""; addressLine1 = ""; addressLine2 = ""
+                                recipientName = ""; recipientCountry = countryCodes.first { it.first == "IN" }; recipientCountryCode = "+91"; recipientPhone = ""; addressLine1 = ""; addressLine2 = ""
                                 landmark = ""; city = ""; state = ""; pincode = ""; addressLabel = "Home"
                                 profileSection = "Addresses"
                             }
