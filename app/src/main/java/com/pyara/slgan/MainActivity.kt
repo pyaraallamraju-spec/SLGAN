@@ -3645,7 +3645,7 @@ private fun ShopScreen(
     }) { padding ->
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
-            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage) { onTabChange("Home") }
+            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd) { onTabChange("Home") }
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Accounts" -> AccountsPage(
@@ -5137,6 +5137,8 @@ private fun OrdersPage(
     latestOrderSuccess: Boolean?,
     latestInvoiceUrl: String?,
     latestOrderMessage: String?,
+    products: List<Product>,
+    onAdd: (String) -> Unit,
     onHome: () -> Unit
 ) {
     val user = FirebaseAuth.getInstance().currentUser
@@ -5145,6 +5147,9 @@ private fun OrdersPage(
     var loadingOrders by remember(user?.uid) { mutableStateOf(true) }
     var ordersError by remember(user?.uid) { mutableStateOf<String?>(null) }
     var selectedOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
+    var orderSearch by remember { mutableStateOf("") }
+    var rateOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
+    var selectedRating by remember { mutableIntStateOf(5) }
 
     DisposableEffect(user?.uid) {
         var registration: ListenerRegistration? = null
@@ -5177,44 +5182,55 @@ private fun OrdersPage(
         val timestamp = order["createdAt"] as? com.google.firebase.Timestamp ?: return null
         return timestamp.toDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()
     }
-    val currentOrders = previousOrders.filter { orderDate(it) == today }
-    val historicalOrders = previousOrders.filter { orderDate(it)?.isBefore(today) != false }
+    val failedOrders = previousOrders.filter { (it["orderStatus"]?.toString()?.lowercase() ?: "").let { status -> status.contains("fail") || status.contains("reject") || status.contains("cancel") } }
+    val visibleOrders = previousOrders.filter { order ->
+        val q = orderSearch.trim().lowercase()
+        q.isBlank() || listOf(order["orderId"], order["_documentId"], order["orderStatus"], order["grandTotal"])
+            .any { it?.toString()?.lowercase()?.contains(q) == true } ||
+            ((order["items"] as? List<*>)?.any { item ->
+                val row = item as? Map<*, *>
+                row?.get("productName")?.toString()?.lowercase()?.contains(q) == true
+            } == true)
+    }
+    val currentOrders = visibleOrders.filter { orderDate(it) == today }
+    val historicalOrders = visibleOrders.filter { orderDate(it)?.isBefore(today) != false }
 
-    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Forest),
-            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
-        ) {
-            Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Spacer(Modifier.height(6.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(tr("My Orders", LocalAppLanguage.current), color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                    Surface(
-                        shape = RoundedCornerShape(50.dp),
-                        color = Color(0xFFFFE7A3)
-                    ) {
-                        Text(
-                            "Total: ${previousOrders.size}",
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                            color = Forest,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-                Spacer(Modifier.height(5.dp))
-                Text("Track orders and revisit.", color = PaleGreen, fontSize = 13.sp, lineHeight = 19.sp)
-
-            }
+    Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 12.dp)) {
+        Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onHome) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
+            Text("Order History", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
-
+        OutlinedTextField(
+            value = orderSearch,
+            onValueChange = { orderSearch = it },
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text("Search your orders", color = Muted) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
+            singleLine = true,
+            shape = RoundedCornerShape(18.dp),
+            colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White, unfocusedBorderColor = Color(0xFFD9DCE4), focusedBorderColor = Forest)
+        )
         Spacer(Modifier.height(18.dp))
+        if (failedOrders.isNotEmpty() && orderSearch.isBlank()) {
+            Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.ErrorOutline, contentDescription = null, tint = Color(0xFFE76F35), modifier = Modifier.size(38.dp))
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text("Your failed orders", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("${failedOrders.size} order(s)", color = Muted, fontSize = 13.sp)
+                    }
+                    OutlinedButton(onClick = { selectedOrder = failedOrders.firstOrNull() }, shape = RoundedCornerShape(12.dp)) { Text("View", color = Forest) }
+                }
+            }
+            Spacer(Modifier.height(16.dp))
+        }
+        Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(if (orderSearch.isBlank()) "Your orders" else "Search results", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.weight(1f))
+            Text("${visibleOrders.size} orders", color = Muted, fontSize = 13.sp)
+        }
+        Spacer(Modifier.height(10.dp))
         if (latestOrderSuccess != null) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = if (latestOrderSuccess) Color(0xFFE5F4E8) else Color(0xFFFCE8E6)),
@@ -5293,14 +5309,32 @@ private fun OrdersPage(
                             }
                             Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                         }
+                        val orderItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
+                        if (orderItems.isNotEmpty()) {
+                            Spacer(Modifier.height(4.dp))
+                            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                orderItems.forEach { item ->
+                                    val productId = item["productId"]?.toString().orEmpty()
+                                    val product = products.firstOrNull { it.id == productId }
+                                    Box(Modifier.size(82.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF6F7FA)), contentAlignment = Alignment.Center) {
+                                        if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = product?.name ?: item["productName"]?.toString(), modifier = Modifier.fillMaxSize().padding(6.dp), contentScale = ContentScale.Fit)
+                                        else Text(product?.emoji ?: "🌿", fontSize = 28.sp)
+                                    }
+                                }
+                            }
+                        }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.background(PaleGreen, RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Forest, fontSize = 11.sp, fontWeight = FontWeight.Bold) }
                             Spacer(Modifier.weight(1f))
-                            TextButton(onClick = { selectedOrder = order }) {
-                                Text("View details", color = Forest, fontWeight = FontWeight.Bold)
-                                Spacer(Modifier.width(4.dp))
-                                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
-                            }
+                            TextButton(onClick = {
+                                orderItems.forEach { item ->
+                                    val productId = item["productId"]?.toString().orEmpty()
+                                    val quantity = (item["quantity"] as? Number)?.toInt() ?: 1
+                                    if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
+                                }
+                                Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
+                            }) { Text("Reorder", color = Forest, fontWeight = FontWeight.Bold) }
+                            TextButton(onClick = { rateOrder = order; selectedRating = 5 }) { Text("Rate order", color = Forest, fontWeight = FontWeight.Bold) }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
@@ -5355,11 +5389,15 @@ private fun OrdersPage(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.background(Color(0xFFE8EDE4), RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Forest, fontSize = 11.sp, fontWeight = FontWeight.Bold) }
                             Spacer(Modifier.weight(1f))
-                            TextButton(onClick = { selectedOrder = order }) {
-                                Text("View details", color = Forest, fontWeight = FontWeight.Bold)
-                                Spacer(Modifier.width(4.dp))
-                                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
-                            }
+                            TextButton(onClick = {
+                                orderItems.forEach { item ->
+                                    val productId = item["productId"]?.toString().orEmpty()
+                                    val quantity = (item["quantity"] as? Number)?.toInt() ?: 1
+                                    if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
+                                }
+                                Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
+                            }) { Text("Reorder", color = Forest, fontWeight = FontWeight.Bold) }
+                            TextButton(onClick = { rateOrder = order; selectedRating = 5 }) { Text("Rate order", color = Forest, fontWeight = FontWeight.Bold) }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
@@ -5373,6 +5411,29 @@ private fun OrdersPage(
                 }
             }
         }
+    }
+
+    rateOrder?.let { order ->
+        AlertDialog(
+            onDismissRequest = { rateOrder = null },
+            title = { Text("Rate your order", color = Forest, fontWeight = FontWeight.Bold) },
+            text = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("How was your order experience?", color = Muted)
+                    Spacer(Modifier.height(12.dp))
+                    Row(horizontalArrangement = Arrangement.Center) {
+                        (1..5).forEach { star ->
+                            IconButton(onClick = { selectedRating = star }) {
+                                Icon(if (star <= selectedRating) Icons.Default.Star else Icons.Default.StarBorder, contentDescription = "$star stars", tint = Gold, modifier = Modifier.size(30.dp))
+                            }
+                        }
+                    }
+                    Text("$selectedRating out of 5", color = Ink, fontWeight = FontWeight.SemiBold)
+                }
+            },
+            confirmButton = { TextButton(onClick = { rateOrder = null; Toast.makeText(context, "Thanks for your feedback!", Toast.LENGTH_SHORT).show() }) { Text("Submit") } },
+            dismissButton = { TextButton(onClick = { rateOrder = null }) { Text("Cancel") } }
+        )
     }
 
     selectedOrder?.let { order ->
