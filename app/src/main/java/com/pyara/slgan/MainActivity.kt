@@ -5519,7 +5519,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     Text("${selectedProducts.size}", color = Color(0xFF762A24), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                 }
                 Spacer(Modifier.weight(1f))
-                TextButton(onClick = { selectedCategory = null }) { Text("← Go to categories", color = Forest, fontWeight = FontWeight.Bold) }
+                TextButton(onClick = { selectedCategory = null }) { Text("← Categories", color = Forest, fontWeight = FontWeight.Bold) }
             }
             Spacer(Modifier.height(8.dp))
             if (selectedProducts.isEmpty()) {
