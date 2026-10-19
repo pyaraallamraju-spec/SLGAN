@@ -3578,7 +3578,19 @@ private fun ShopScreen(
                 Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             IconButton(onClick = { onTabChange("Cart") }) {
-                BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) { Icon(Icons.Default.ShoppingCart, "Cart", tint = Forest) }
+                BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) {
+                    Icon(Icons.Default.ShoppingCart, contentDescription = "Cart", tint = Forest)
+                }
+            }
+            IconButton(onClick = { onTabChange("Profile") }) {
+                Box(
+                    modifier = Modifier.size(34.dp).clip(CircleShape)
+                        .background(PaleGreen)
+                        .border(1.dp, Gold.copy(alpha = 0.8f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.Person, contentDescription = "Profile", tint = Forest, modifier = Modifier.size(22.dp))
+                }
             }
         }
     }, bottomBar = {
