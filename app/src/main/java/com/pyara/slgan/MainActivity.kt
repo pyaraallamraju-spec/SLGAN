@@ -1501,7 +1501,20 @@ private fun HomeBannerSlider(
                         contentScale = if (selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                    if (selectedDesign == 3) {
+                    if (!slide.isCompanySlide) {
+                        // Consistent dark botanical scrim keeps every signature-product slide readable,
+                        // even when the product image has a bright or busy background.
+                        Box(Modifier.fillMaxSize().background(
+                            Brush.horizontalGradient(
+                                listOf(
+                                    Color(0xF0183528),
+                                    Color(0xD91D402E),
+                                    Color(0x80244835),
+                                    Color.Transparent
+                                )
+                            )
+                        ))
+                    } else if (selectedDesign == 3) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFFF8F0DC).copy(alpha = 0.97f), Color(0xFFE7EBCB).copy(alpha = 0.86f), Color(0xFFC6D6A3).copy(alpha = 0.42f), Color.Transparent))))
                     } else if (selectedDesign == 2) {
                         Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF102D20).copy(alpha = 0.98f), Color(0xFF173D2B).copy(alpha = 0.88f), Color(0xFF24523A).copy(alpha = 0.55f), Color.Transparent))))
@@ -1552,9 +1565,9 @@ private fun HomeBannerSlider(
                             ),
                             text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
-                            color = if (selectedDesign == 4) Color(0xFFFFFCF4) else if (selectedDesign == 3) Color(0xFF23452C) else if (selectedDesign == 2) Color(0xFFFFE8AE) else Color.White,
-                            fontSize = if (slide.isCompanySlide) 23.sp else 25.sp,
-                            lineHeight = if (slide.isCompanySlide) 27.sp else 30.sp,
+                            color = if (slide.isCompanySlide && selectedDesign == 3) Color(0xFF23452C) else if (slide.isCompanySlide && selectedDesign == 2) Color(0xFFFFE8AE) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFFCF4),
+                            fontSize = if (slide.isCompanySlide) 23.sp else 22.sp,
+                            lineHeight = if (slide.isCompanySlide) 27.sp else 26.sp,
                             fontWeight = FontWeight.ExtraBold,
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
@@ -1566,11 +1579,11 @@ private fun HomeBannerSlider(
                                 enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
                                     slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
                             ),
-                            color = if (selectedDesign == 4) Color(0xFFFFE8C2) else if (selectedDesign == 3) Color(0xFF5B3428) else if (selectedDesign == 2) Color(0xFFE8F0D8) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE9B2),
-                            fontSize = if (slide.isCompanySlide) 11.sp else 12.sp,
-                            lineHeight = 16.sp,
+                            color = if (slide.isCompanySlide && selectedDesign == 3) Color(0xFF5B3428) else if (slide.isCompanySlide && selectedDesign == 2) Color(0xFFE8F0D8) else if (slide.isCompanySlide) Color(0xFFFFDFA0) else Color(0xFFFFE8C2),
+                            fontSize = if (slide.isCompanySlide) 11.sp else 11.sp,
+                            lineHeight = 15.sp,
                             fontWeight = FontWeight.Medium,
-                            maxLines = if (slide.isCompanySlide) 3 else 1,
+                            maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
                         if (!slide.isCompanySlide) {
