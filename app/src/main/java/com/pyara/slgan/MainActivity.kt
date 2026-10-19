@@ -3628,6 +3628,7 @@ private fun ShopScreen(
 ) {
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
+        if (selectedTab != "Orders") {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Color.White))
             Spacer(Modifier.width(12.dp))
@@ -3646,7 +3647,9 @@ private fun ShopScreen(
                 }
             }
         }
+        }
     }, bottomBar = {
+        if (selectedTab != "Orders") {
         NavigationBar(containerColor = Color.White, contentColor = Forest) {
             listOf(
                 Triple("Home", Icons.Default.Home, "Home"),
@@ -3672,10 +3675,11 @@ private fun ShopScreen(
                 )
             }
         }
+        }
     }) { padding ->
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult)
-            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd) { onTabChange("Home") }
+            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd) { onTabChange("Accounts") }
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Accounts" -> AccountsPage(
