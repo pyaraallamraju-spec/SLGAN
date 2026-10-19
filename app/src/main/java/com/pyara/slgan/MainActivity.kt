@@ -5978,7 +5978,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 minLines = 2
                                             )
                                             Spacer(Modifier.height(3.dp))
-                                            Text(product.quantity.ifBlank { product.subtitle }.replace(" ", ""), color = Muted, fontSize = 10.sp, maxLines = 1)
+                                            Text(product.subtitle.takeIf { it.isNotBlank() && it != "Traditional Ayurvedic product" } ?: "Pack size not set", color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                             Spacer(Modifier.height(3.dp))
                                             ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary(), compact = true)
                                             Spacer(Modifier.height(4.dp))
