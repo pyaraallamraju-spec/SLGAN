@@ -21,9 +21,9 @@ jobs:
         run: npm install --global firebase-tools
       - name: Deploy Hosting
         env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SLGAN_A364E }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: |
-          test -n "$FIREBASE_SERVICE_ACCOUNT" || (echo "Missing GitHub Actions secret FIREBASE_SERVICE_ACCOUNT_SLGAN_A364E" && exit 1)
+          test -n "$FIREBASE_SERVICE_ACCOUNT" || (echo "Missing GitHub Actions secret FIREBASE_SERVICE_ACCOUNT_JSON" && exit 1)
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-service-account.json"
           firebase deploy --only hosting --project slgan-a364e --non-interactive
