@@ -813,6 +813,18 @@ private fun AyurvedicApp() {
     }
     val cart = remember { mutableStateMapOf<String, Int>() }
     var selectedProduct by remember { mutableStateOf<Product?>(null) }
+    val incomingProductId = remember {
+        (appContext as? android.app.Activity)?.intent?.data
+            ?.takeIf { it.scheme == "https" && it.host == "slgan-a364e.web.app" && it.path == "/product" }
+            ?.getQueryParameter("id")
+    }
+    LaunchedEffect(incomingProductId, liveProducts) {
+        if (!incomingProductId.isNullOrBlank()) {
+            liveProducts.firstOrNull { it.id == incomingProductId }?.let { sharedProduct ->
+                selectedProduct = sharedProduct
+            }
+        }
+    }
     var lastBackPressedAt by remember { mutableStateOf(0L) }
     BackHandler(enabled = !showSplash && authResolved) {
         when {
@@ -4164,6 +4176,7 @@ private fun ProductDetailsPage(
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back to products", tint = Forest) }
             Text(tr("View product", LocalAppLanguage.current), modifier = Modifier.weight(1f), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
             IconButton(onClick = {
+                val productLink = "https://slgan-a364e.web.app/product?id=${Uri.encode(product.id)}"
                 val shareText = buildString {
                     append("Check out this product from Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN)\n\n")
                     append(localizedProductName(product.name, currentLanguage))
@@ -4176,6 +4189,7 @@ private fun ProductDetailsPage(
                     if (product.description.isNotBlank()) append("\n\nDescription: ${product.description}")
                     if (product.usage.isNotBlank()) append("\nUsage: ${product.usage}")
                     if (product.majorIngredients.isNotBlank()) append("\nMajor ingredients: ${product.majorIngredients}")
+                    append("\n\nView product: $productLink")
                     append("\n\nShared from SLGAN.")
                 }
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
