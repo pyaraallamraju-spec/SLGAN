@@ -3598,8 +3598,8 @@ private fun ShopScreen(
 ) {
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
-        Row(Modifier.fillMaxWidth().background(Cream).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Cream))
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Color.White))
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -3617,7 +3617,7 @@ private fun ShopScreen(
             }
         }
     }, bottomBar = {
-        NavigationBar(containerColor = Cream, contentColor = Forest) {
+        NavigationBar(containerColor = Color.White, contentColor = Forest) {
             listOf(
                 Triple("Home", Icons.Default.Home, "Home"),
                 Triple("Categories", Icons.Default.GridView, "Categories"),
