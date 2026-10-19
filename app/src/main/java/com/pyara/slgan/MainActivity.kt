@@ -3658,7 +3658,44 @@ private fun ShopScreen(
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
             "AddressBook" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, initialSection = "Addresses")
             "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
+            "About" -> AboutPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
+        }
+    }
+}
+
+@Composable
+private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Unit) {
+    Column(modifier.fillMaxSize().background(Cream)) {
+        Row(
+            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            Text(if (appLanguage == "English") "About us" else "మా గురించి", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+        }
+        Column(
+            Modifier.fillMaxWidth().padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.slgan_screen_logo),
+                contentDescription = "SLGAN logo",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.size(112.dp).clip(CircleShape).background(Cream)
+            )
+            Spacer(Modifier.height(18.dp))
+            Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Forest, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(8.dp))
+            Text("Traditional Ayurvedic products", color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
+            Spacer(Modifier.height(18.dp))
+            Text(
+                if (appLanguage == "English")
+                    "Explore our product catalogue and view product details, manage your delivery addresses, track orders, and save your favourite products in your wishlist."
+                else
+                    "మా ఆయుర్వేద ఉత్పత్తులను చూడండి, డెలివరీ చిరునామాలను నిర్వహించండి, ఆర్డర్లను ట్రాక్ చేయండి, మీకు ఇష్టమైన ఉత్పత్తులను విష్‌లిస్ట్‌లో సేవ్ చేసుకోండి.",
+                color = Ink, fontSize = 15.sp, lineHeight = 23.sp, textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -6104,8 +6141,38 @@ private fun AccountsPage(
             Column {
                 Text("About and support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.HelpOutline, "Help and support", "Contact us for assistance") { onTabChange("Help") }
-                AccountMenuRow(Icons.Default.Info, "About SLGAN", "Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("Home") }
-                AccountMenuRow(Icons.Default.Logout, "Sign out") { onSignOut() }
+                AccountMenuRow(Icons.Default.Info, "About SLGAN", "Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("About") }
+            }
+        }
+        Spacer(Modifier.height(14.dp))
+        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Column {
+                Text("Other Information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                AccountMenuRow(Icons.Default.Share, "Share the app") {
+                    val shareText = "Try Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN). Browse our Ayurvedic product collection."
+                    val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_SUBJECT, "Sri Lakshmi Ganapathi Ayurveda Nilayam")
+                        putExtra(Intent.EXTRA_TEXT, shareText)
+                    }
+                    context.startActivity(Intent.createChooser(sendIntent, "Share SLGAN"))
+                }
+                AccountMenuRow(Icons.Default.Info, "About us") { onTabChange("About") }
+                AccountMenuRow(Icons.Default.Lock, "Account privacy") {
+                    android.app.AlertDialog.Builder(context)
+                        .setTitle("Account privacy")
+                        .setMessage("Your account profile and saved information are associated with your signed-in account. Keep your password and verification codes private. You can sign out from this page.")
+                        .setPositiveButton("OK", null)
+                        .show()
+                }
+                AccountMenuRow(Icons.Default.NotificationsNone, "Notification preferences") {
+                    android.app.AlertDialog.Builder(context)
+                        .setTitle("Notification preferences")
+                        .setMessage("Notification controls are not connected in this version of SLGAN.")
+                        .setPositiveButton("OK", null)
+                        .show()
+                }
+                AccountMenuRow(Icons.Default.Logout, "Log out") { onSignOut() }
             }
         }
         Spacer(Modifier.height(24.dp))
