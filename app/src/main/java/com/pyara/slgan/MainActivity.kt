@@ -6061,11 +6061,10 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         onClick = { showAddressForm = true; addressMessage = null },
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Forest),
-                        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp)
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
+                        modifier = Modifier.size(44.dp)
                     ) {
-                        Icon(Icons.Default.Add, null, modifier = Modifier.size(18.dp))
-                        Spacer(Modifier.width(5.dp))
-                        Text("Address", fontWeight = FontWeight.Bold)
+                        Icon(Icons.Default.Add, contentDescription = "Add address", modifier = Modifier.size(22.dp))
                     }
                 }
                 Spacer(Modifier.height(16.dp))
