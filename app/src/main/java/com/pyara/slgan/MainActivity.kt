@@ -1569,6 +1569,7 @@ private fun HomeBannerSlider(
                 val isArtworkBanner = isSwaasamrutamBanner || isMahilaPriyaBanner || isJeevasatvamBanner || isMahabalaBanner || isGaneshamruthamBanner
                 Box(Modifier.fillMaxSize()) {
                     val bannerModel: Any = when {
+                        slide.isCompanySlide -> R.drawable.slga_banner
                         isSwaasamrutamBanner -> R.drawable.swaasamrutam_banner
                         isMahilaPriyaBanner -> R.drawable.mahilapriya_banner
                         isJeevasatvamBanner -> R.drawable.jeevasatvam_banner
@@ -1597,7 +1598,7 @@ private fun HomeBannerSlider(
                             selectedDesign == 4 -> "Botanical herbal leaves background"
                             else -> slide.productName
                         },
-                        contentScale = if (isArtworkBanner || selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
+                        contentScale = if (isArtworkBanner || selectedDesign == 4 || slide.isCompanySlide) ContentScale.Crop else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize().then(
                             if (isArtworkBanner) Modifier.clickable { openProduct(slide.productName) } else Modifier
                         )
