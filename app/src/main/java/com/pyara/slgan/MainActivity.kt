@@ -5268,8 +5268,6 @@ private fun OrdersPage(
         }
         Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Text(if (orderSearch.isBlank()) "Your orders" else "Search results", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-            Spacer(Modifier.weight(1f))
-            Text("${visibleOrders.size} orders", color = Muted, fontSize = 13.sp)
         }
         Spacer(Modifier.height(10.dp))
         if (latestOrderSuccess != null) {
