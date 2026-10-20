@@ -2107,7 +2107,7 @@ private fun AdminProductDetailsScreen(
         .split(Regex("\\s+"))
         .joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
 
-    Column(Modifier.fillMaxSize().background(Color.White))
+    Column(Modifier.fillMaxSize().background(Color.White)) {
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
