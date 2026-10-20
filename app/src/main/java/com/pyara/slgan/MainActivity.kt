@@ -926,6 +926,19 @@ private fun AyurvedicApp() {
                 errorMessage = authError,
                 loading = isLoading,
                 onGoogleSignIn = onGoogleSignIn,
+                onForgotPassword = {
+                    val email = userInput.trim()
+                    if (email.isBlank()) {
+                        authError = "Enter your registered email address first."
+                    } else {
+                        isLoading = true
+                        authError = null
+                        auth.sendPasswordResetEmail(email).addOnCompleteListener { result ->
+                            isLoading = false
+                            authError = if (result.isSuccessful) "Password reset email sent. Please check your inbox." else result.exception?.localizedMessage ?: "Could not send password reset email."
+                        }
+                    }
+                },
                 onContinue = {
                     val email = userInput.trim()
                     if (email.isBlank() || password.length < 6) {
@@ -1174,7 +1187,8 @@ private fun LoginScreen(
     errorMessage: String?,
     loading: Boolean,
     onGoogleSignIn: () -> Unit,
-    onContinue: () -> Unit
+    onContinue: () -> Unit,
+    onForgotPassword: () -> Unit
 ) {
     var showPassword by remember { mutableStateOf(false) }
     Column(
@@ -1381,8 +1395,19 @@ private fun LoginScreen(
             if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
             else Icon(Icons.Default.ArrowForward, null)
         }
-        TextButton(onClick = onToggleMode, modifier = Modifier.padding(top = 2.dp), enabled = !loading) {
-            Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Color(0xFF6B1825))
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextButton(onClick = onToggleMode, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
+                Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Color(0xFF6B1825), fontSize = 13.sp)
+            }
+            if (!isCreatingAccount) {
+                TextButton(onClick = onForgotPassword, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
+                    Text("Forgot Password?", color = Color(0xFF6B1825), fontSize = 13.sp)
+                }
+            }
         }
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 8.dp),
