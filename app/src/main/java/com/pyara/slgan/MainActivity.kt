@@ -7353,7 +7353,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 map.on('click',e=>{const ll=e.latlng;if(marker)map.removeLayer(marker);marker=L.marker(ll,{icon:pinIcon,draggable:true}).addTo(map);updateAddress(ll.lat,ll.lng);marker.on('dragend',()=>{const p=marker.getLatLng();updateAddress(p.lat,p.lng)});});
                                 function applyAddress(a){const line1=[a.house_number||a.housenumber,a.road||a.street].filter(Boolean).join(' ');const city=a.city||a.town||a.village||a.municipality||'';const locality=a.neighbourhood||a.suburb||a.quarter||a.residential||a.hamlet||'';const district=a.district||a.county||a.state_district||'';const line2=locality&&locality.toLowerCase()!==city.toLowerCase()?locality:(district&&district.toLowerCase()!==city.toLowerCase()?district:'');const st=a.state||'';const pin=a.postcode||'';const lm=a.amenity||a.name||'';AddressBridge.selectAddress(line1||a.name||'',line2,lm,city,st,pin) }
                                 function rowLabel(a){return [a.name,a.street,a.city||a.town||a.village,a.state,a.postcode].filter(Boolean).join(', ')}
-                                 window.addEventListener('load',()=>setTimeout(locateMe,500));
+                                 // Do not auto-run locateMe on map load: it overwrites the address loaded from the user's saved address. The user can tap 'Use my current location' when they want to move the pin.
                                 </script></body></html>
                             """.trimIndent(), "text/html", "UTF-8", null)
                         }
