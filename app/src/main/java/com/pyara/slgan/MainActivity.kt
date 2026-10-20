@@ -589,7 +589,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
 private fun AyurvedicApp() {
     val appContext = LocalContext.current
     // Match the Android system bars to the active app theme without changing inset spacing.
-    val systemBarCream = Color(0xFFFAFAFA)
+    val systemBarCream = Color.White
     SideEffect {
         (appContext as? Activity)?.window?.let { appWindow ->
             val creamColor = systemBarCream.toArgb()
@@ -1038,7 +1038,7 @@ private fun AyurvedicApp() {
 private fun SplashScreen() {
     // Keep splash artwork in sync with the currently selected app palette.
     val botanicalTheme = Forest == Color(0xFF214B35)
-    val splashBackground = if (botanicalTheme) Color(0xFFFFF9E9) else Color(0xFFFFF7E8)
+    val splashBackground = Color.White
     val splashTint = if (botanicalTheme) Color(0xFF557A45) else Color(0xFF8A4B2A)
     val splashHalo = if (botanicalTheme) Color(0xFFB9D5A6) else Color(0xFFE8C7A0)
     val splashRing = if (botanicalTheme) Color(0xFF9EBB86) else Color(0xFFD9A441)
@@ -1067,13 +1067,7 @@ private fun SplashScreen() {
         contentAlignment = Alignment.TopStart
     ) {
         // Soft botanical background accents and gently falling leaves.
-        Box(
-            Modifier.fillMaxSize().background(
-                Brush.verticalGradient(
-                    if (botanicalTheme) listOf(splashBackground, Color(0xFFE7EBD4), splashBackground) else listOf(splashBackground, Color(0xFFFFEBD0), splashBackground)
-                )
-            )
-        )
+        Box(Modifier.fillMaxSize().background(Color.White))
         // Let every product-category emoji drift down like a falling leaf.
         val categoryEmojis = listOf("🌿", "🍃", "🌱", "🍂", "🌿", "🍃", "🌾", "🌱", "🗂️", "🍯", "🏺", "💊", "🫙", "🌿", "🍃", "🌱", "🪨", "🍂", "🌿", "🍃", "🌱", "🌾", "🍃", "🌿")
         val leafPositions = listOf(0.02f, 0.105f, 0.19f, 0.275f, 0.36f, 0.445f, 0.53f, 0.615f, 0.70f, 0.785f, 0.87f, 0.955f, 0.06f, 0.145f, 0.23f, 0.315f, 0.40f, 0.485f, 0.57f, 0.655f, 0.74f, 0.825f, 0.91f, 0.98f)
