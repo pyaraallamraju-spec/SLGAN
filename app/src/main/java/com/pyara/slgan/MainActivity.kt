@@ -3730,7 +3730,7 @@ private fun ShopScreen(
                         }
                     },
                     label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) },
-                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Color(0xFFB0B0B0), selectedTextColor = Color.Black, indicatorColor = PaleGreen, unselectedIconColor = Color.Black)
+                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.Black, selectedTextColor = Color.Black, indicatorColor = Color(0xFFE6E8EC), unselectedIconColor = Color.Black)
                 )
             }
         }
