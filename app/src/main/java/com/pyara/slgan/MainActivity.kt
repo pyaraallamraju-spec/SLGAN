@@ -4163,7 +4163,14 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     fontSize = 16.sp
                                 )
                             },
-                            colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, containerColor = Cream)
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = Color(0xFFF6F7FA),
+                                selectedLabelColor = Color(0xFF762A24),
+                                selectedLeadingIconColor = Color(0xFF762A24),
+                                containerColor = Color(0xFFF6F7FA),
+                                labelColor = Color(0xFF762A24),
+                                iconColor = Color(0xFF762A24)
+                            )
                         )
                     }
                 }
