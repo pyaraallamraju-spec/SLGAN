@@ -1484,6 +1484,12 @@ private fun HomeBannerSlider(
                 }
             )
         }
+        val sleshamruthamSlide = signatureSlides.firstOrNull {
+            it.productName.contains("sleshamrutham", ignoreCase = true)
+        }
+        val orderedSignatureSlides = if (sleshamruthamSlide != null) {
+            listOf(sleshamruthamSlide) + signatureSlides.filterNot { it == sleshamruthamSlide }
+        } else signatureSlides
         listOf(
             HomeBannerSlide(
                 productName = "Sri Lakshmi Ganapathi Ayurveda Nilayam",
@@ -1491,7 +1497,7 @@ private fun HomeBannerSlider(
                 fallbackImageUrl = "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85",
                 isCompanySlide = true
             )
-        ) + signatureSlides
+        ) + orderedSignatureSlides
     }
     var activeSlide by remember { mutableIntStateOf(0) }
     LaunchedEffect(slides.size) {
@@ -1646,30 +1652,25 @@ private fun HomeBannerSlider(
                             Spacer(Modifier.height(10.dp))
                             Row(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(
-                                        Brush.horizontalGradient(
-                                            colors = listOf(Color(0xFFFFF7E8), Color(0xFFFFE6A3))
-                                        )
-                                    )
-                                    .border(1.dp, Gold, RoundedCornerShape(12.dp))
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(Color.Transparent)
                                     .clickable { openProduct(slide.productName) }
-                                    .padding(horizontal = 14.dp, vertical = 8.dp),
+                                    .padding(horizontal = 2.dp, vertical = 3.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(7.dp)
                             ) {
                                 Text(
-                                    "View product",
-                                    color = Forest,
-                                    fontSize = 11.sp,
+                                    "View Products",
+                                    color = if (selectedDesign == 3) Color(0xFF6B1825) else if (selectedDesign == 2) Color(0xFFFFE8AE) else Color.White,
+                                    fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 0.2.sp
                                 )
                                 Icon(
                                     Icons.Default.ArrowForward,
                                     contentDescription = null,
-                                    tint = Forest,
-                                    modifier = Modifier.size(13.dp)
+                                    tint = if (selectedDesign == 3) Color(0xFF6B1825) else if (selectedDesign == 2) Color(0xFFFFE8AE) else Color.White,
+                                    modifier = Modifier.size(15.dp)
                                 )
                             }
                         }
