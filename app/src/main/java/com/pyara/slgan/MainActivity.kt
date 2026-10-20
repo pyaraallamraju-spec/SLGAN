@@ -1701,7 +1701,7 @@ private fun HomeBannerSlider(
                             horizontalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
                             Box(Modifier.weight(1f).height(1.dp).background(Gold))
-                            Text("🌿", fontSize = 12.sp)
+                            Text("❋", color = Gold, fontSize = 14.sp)
                             Box(Modifier.weight(1f).height(1.dp).background(Gold))
                         }
                         if (!slide.isCompanySlide) {
