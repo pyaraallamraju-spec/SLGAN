@@ -1380,13 +1380,13 @@ private fun LoginScreen(
         Button(
             onClick = onContinue,
             enabled = !loading,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(56.dp),
-            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(50.dp),
+            shape = RoundedCornerShape(14.dp),
             elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 8.dp,
-                pressedElevation = 3.dp,
-                focusedElevation = 8.dp,
-                hoveredElevation = 8.dp,
+                defaultElevation = 3.dp,
+                pressedElevation = 1.dp,
+                focusedElevation = 3.dp,
+                hoveredElevation = 3.dp,
                 disabledElevation = 0.dp
             ),
             colors = ButtonDefaults.buttonColors(
