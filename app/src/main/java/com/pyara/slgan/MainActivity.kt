@@ -5756,39 +5756,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             Surface(shape = RoundedCornerShape(50.dp), color = Color(0xFFF5F5F8)) { Text("${diseases.size} items", modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp), color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 14.sp) }
         }
         Column(Modifier.padding(horizontal = 16.dp, vertical = 18.dp)) {
-        Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
-            ) {
-                Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                    Spacer(Modifier.height(6.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(tr("Diseases", LocalAppLanguage.current), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                        Surface(
-                            shape = RoundedCornerShape(50.dp),
-                            color = Color(0xFFF5F6F8)
-                        ) {
-                            Text(
-                                "${diseases.size} available",
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                color = Forest,
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-                    Spacer(Modifier.height(5.dp))
-                    Text(tr("Find a disease from the available list.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
-                }
-            }
-            Spacer(Modifier.height(16.dp))
-            Box(Modifier.fillMaxWidth()) {
+        Box(Modifier.fillMaxWidth()) {
                 Column(Modifier.fillMaxWidth()) {
                     OutlinedTextField(
                         value = query,
