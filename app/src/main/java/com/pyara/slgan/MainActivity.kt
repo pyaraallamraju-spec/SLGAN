@@ -1561,7 +1561,7 @@ private fun HomeBannerSlider(
                 val slide = slides[index]
                 val productImage = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }?.imageUrl.orEmpty()
                 Box(Modifier.fillMaxSize()) {
-                    val bannerModel = if (selectedDesign == 4) {
+                    val bannerModel: Any = if (index == 2) R.drawable.swaasamrutam_banner else if (selectedDesign == 4) {
                         when (index % 5) {
                             0 -> "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85"
                             1 -> "https://images.unsplash.com/photo-1515586000433-45406d8e6662?auto=format&fit=crop&w=1400&q=85"
@@ -1574,10 +1574,12 @@ private fun HomeBannerSlider(
                     Image(
                         painter = bannerPainter,
                         contentDescription = if (selectedDesign == 4) "Botanical herbal leaves background" else slide.productName,
-                        contentScale = if (selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
+                        contentScale = if (index == 2 || selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize().then(
+                            if (index == 2) Modifier.clickable { openProduct("Swaasamrutam") } else Modifier
+                        )
                     )
-                    if (bannerPainter.state is coil.compose.AsyncImagePainter.State.Loading) {
+                    if (index != 2 && bannerPainter.state is coil.compose.AsyncImagePainter.State.Loading) {
                         Box(
                             Modifier.fillMaxSize().background(Color(0x22FFFFFF)),
                             contentAlignment = Alignment.Center
@@ -1589,6 +1591,7 @@ private fun HomeBannerSlider(
                             )
                         }
                     }
+                    if (index != 2) {
                     // Slider 4's decorative frame appears on every slide while design 4 is active.
                     if (selectedDesign == 4) {
                         Box(Modifier.fillMaxSize()) {
@@ -1678,6 +1681,7 @@ private fun HomeBannerSlider(
                                 )
                             }
                         }
+                    }
                     }
                 }
             }
