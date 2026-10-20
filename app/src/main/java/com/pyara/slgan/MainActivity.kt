@@ -588,7 +588,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
 private fun AyurvedicApp() {
     val appContext = LocalContext.current
     // Match the Android system bars to the active app theme without changing inset spacing.
-    val systemBarCream = Cream
+    val systemBarCream = Color(0xFFFAFAFA)
     SideEffect {
         (appContext as? Activity)?.window?.let { appWindow ->
             val creamColor = systemBarCream.toArgb()
