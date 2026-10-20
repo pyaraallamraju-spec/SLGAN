@@ -4464,7 +4464,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             } else {
                                                 Surface(
                                                     shape = RoundedCornerShape(10.dp),
-                                                    color = Cream,
+                                                    color = Color.White,
                                                     contentColor = Ink
                                                 ) {
                                                     Text(
