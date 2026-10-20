@@ -5045,17 +5045,22 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         Text(product.name, color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
                                         Text(money(product.price), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
                                         Spacer(Modifier.height(5.dp))
-                                        Button(
+                                        Surface(
                                             onClick = { onAdd(product.id) },
                                             enabled = product.price > 0.0 && product.productStock > 0,
-                                            modifier = Modifier.fillMaxWidth().height(28.dp),
-                                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
-                                            shape = RoundedCornerShape(8.dp),
-                                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
-                                            elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 0.dp)
+                                            modifier = Modifier.fillMaxWidth().height(22.dp),
+                                            shape = RoundedCornerShape(6.dp),
+                                            color = Color(0xFFE1E5EC),
+                                            contentColor = Ink
                                         ) {
-                                            Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(15.dp))
-                                            Text("ADD", fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                                            Row(
+                                                modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp),
+                                                horizontalArrangement = Arrangement.Center,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(13.dp))
+                                                Text("ADD", fontWeight = FontWeight.Bold, fontSize = 10.sp)
+                                            }
                                         }
                                     }
                                 }
