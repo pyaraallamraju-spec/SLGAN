@@ -5912,7 +5912,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                         Spacer(Modifier.width(8.dp))
                                         Text("About this condition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
-                                    Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Ink, fontSize = 14.sp, lineHeight = 22.sp)
+                                    Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
                                 }
                                 "Suggested medicines" -> {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -5921,7 +5921,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                     }
                                     val displayedSuggestions = if (suggestedMedicineNames.isNotEmpty()) suggestedMedicineNames else relatedMedicines.map { it.name }
                                     if (detailLoading) CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.dp, color = Forest)
-                                    else if (displayedSuggestions.isEmpty()) Text(tr("Information not available.", LocalAppLanguage.current), color = Ink, fontSize = 13.sp)
+                                    else if (displayedSuggestions.isEmpty()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                                     else displayedSuggestions.forEach { medicine ->
                                         Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                                             Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(18.dp))
@@ -5935,12 +5935,12 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                         Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
                                         Text("Precautions & care", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
-                                    if (diseasePrecautions.isBlank()) Text(tr("Information not available.", LocalAppLanguage.current), color = Ink, fontSize = 13.sp)
+                                    if (diseasePrecautions.isBlank()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                                     else diseasePrecautions.split("\n").filter { it.isNotBlank() }.forEach { precaution ->
                                         Row(Modifier.fillMaxWidth().padding(vertical = 3.dp), verticalAlignment = Alignment.Top) {
                                             Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(17.dp))
                                             Spacer(Modifier.width(9.dp))
-                                            Text(precaution, color = Ink, fontSize = 13.sp, lineHeight = 20.sp)
+                                            Text(precaution, color = Muted, fontSize = 13.sp, lineHeight = 20.sp)
                                         }
                                     }
                                 }
