@@ -6771,7 +6771,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Spacer(Modifier.width(14.dp))
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
                 IconButton(
-                    onClick = { showAddressForm = true; showAddressLocationSheet = true; addressMessage = null },
+                    onClick = { showAddressLocationSheet = true; addressMessage = null },
                     modifier = Modifier.size(48.dp)
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add address", tint = Forest, modifier = Modifier.size(28.dp))
@@ -7543,7 +7543,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     )
                     Spacer(Modifier.height(18.dp))
                     Button(
-                        onClick = { showAddressForm = true; showAddressLocationSheet = true; addressMessage = null },
+                        onClick = { showAddressLocationSheet = true; addressMessage = null },
                         modifier = Modifier.fillMaxWidth(0.78f).height(54.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Forest),
