@@ -6279,7 +6279,7 @@ private fun AccountsPage(
 
     Column(modifier = modifier.fillMaxSize().background(Color(0xFFF3F5FA)).verticalScroll(rememberScrollState())) {
         Column(
-            Modifier.fillMaxWidth().background(Brush.verticalGradient(listOf(Cream, Color(0xFFF7F4EB), Color(0xFFF3F5FA))))
+            Modifier.fillMaxWidth().background(Color(0xFFF3F5FA))
                 .padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
