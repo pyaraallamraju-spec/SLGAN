@@ -7106,11 +7106,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             state = existing["state"]?.toString().orEmpty()
                             pincode = existing["pincode"]?.toString().orEmpty()
                         }
-                        // Open Add address with the saved address prefilled, but don't auto-open
-                        // GPS/map: its reverse-geocoding can replace a correct saved address.
+                        // Open Add address and immediately show the same map screen as "Show map".
+                        // Keep the saved address fields prefilled for verification.
                         showAddressForm = true
                         addressMessage = null
-                        showMapPicker = false
+                        showMapPicker = true
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(18.dp),
