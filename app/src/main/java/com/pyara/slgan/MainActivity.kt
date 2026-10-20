@@ -3625,7 +3625,7 @@ private fun ShopScreen(
     onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit
 ) {
     val cartCount = cart.values.sum()
-    Scaffold(containerColor = Cream, topBar = {
+    Scaffold(containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
         if (selectedTab != "Orders" && selectedTab != "MyOrders") {
         Row(Modifier.fillMaxWidth().shadow(8.dp).background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Color.White))
@@ -3647,7 +3647,6 @@ private fun ShopScreen(
         }
         }
     }, bottomBar = {
-        if (selectedTab != "Orders" && selectedTab != "MyOrders") {
         NavigationBar(modifier = Modifier.fillMaxWidth().shadow(8.dp), containerColor = Color.White, contentColor = Forest) {
             listOf(
                 Triple("Home", Icons.Default.Home, "Home"),
