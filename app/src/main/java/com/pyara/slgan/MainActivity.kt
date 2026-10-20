@@ -5784,14 +5784,14 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             }
                         },
                         singleLine = true,
-                        shape = RectangleShape,
+                        shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            disabledBorderColor = Color.Transparent,
-                            errorBorderColor = Color.Transparent,
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
+                            focusedBorderColor = Ink,
+                            unfocusedBorderColor = Ink,
+                            disabledBorderColor = Ink,
+                            errorBorderColor = Ink,
+                            focusedContainerColor = Color(0xFFE1E5EC),
+                            unfocusedContainerColor = Color(0xFFE1E5EC),
                             focusedLabelColor = Muted,
                             unfocusedLabelColor = Muted,
                             cursorColor = Forest
@@ -5804,8 +5804,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     onDismissRequest = { dropdownExpanded = false },
                     modifier = Modifier.fillMaxWidth(0.94f)
                         .heightIn(max = 280.dp)
-                        .background(Color.White, RoundedCornerShape(14.dp))
-                        .border(1.dp, Gold.copy(alpha = 0.65f), RoundedCornerShape(14.dp))
+                        .background(Color(0xFFE1E5EC), RoundedCornerShape(14.dp))
+                        .border(1.dp, Ink, RoundedCornerShape(14.dp))
                 ) {
                     matches.forEach { disease ->
                         DropdownMenuItem(
