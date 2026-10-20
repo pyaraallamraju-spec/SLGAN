@@ -6769,7 +6769,13 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     }
                 }
                 Spacer(Modifier.width(14.dp))
-                Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
+                Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
+                IconButton(
+                    onClick = { showAddressForm = true; showAddressLocationSheet = true; addressMessage = null },
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add address", tint = Forest, modifier = Modifier.size(28.dp))
+                }
             }
             Spacer(Modifier.height(20.dp))
             Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
@@ -7568,15 +7574,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             fontSize = 12.sp
                         )
                     }
-                    Button(
-                        onClick = { showAddressForm = true; showAddressLocationSheet = true; addressMessage = null },
-                        shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
-                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
-                        modifier = Modifier.size(44.dp)
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = "Add address", modifier = Modifier.size(22.dp))
-                    }
+
                 }
                 Spacer(Modifier.height(16.dp))
                 addresses.forEach { address ->
