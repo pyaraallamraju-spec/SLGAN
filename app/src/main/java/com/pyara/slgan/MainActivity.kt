@@ -6477,9 +6477,9 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
             )
         )
     }
-    Column(modifier.fillMaxSize().background(Cream)) {
+    Column(modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
+            modifier = Modifier.fillMaxWidth().background(Color.White).padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
