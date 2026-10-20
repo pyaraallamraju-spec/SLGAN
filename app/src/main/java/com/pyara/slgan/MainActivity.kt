@@ -4308,7 +4308,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 Icon(Icons.Default.WorkspacePremium, contentDescription = null, tint = Color.Black, modifier = Modifier.size(20.dp))
                                 Text("Signature Products", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                             }
-                            Text("SLGAN", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Leaf)
+                            Text("SLGAN", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Ink)
                         }
                         Spacer(Modifier.height(10.dp))
                         LazyRow(
