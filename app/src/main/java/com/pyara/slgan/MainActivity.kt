@@ -4320,7 +4320,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     modifier = Modifier.width(198.dp).height(265.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                                 ) {
                                     Column(Modifier.padding(10.dp)) {
                                         Box(
