@@ -1560,8 +1560,17 @@ private fun HomeBannerSlider(
             ) { index ->
                 val slide = slides[index]
                 val productImage = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }?.imageUrl.orEmpty()
+                val normalizedBannerName = slide.productName.lowercase().filter { it.isLetterOrDigit() }
+                val isSwaasamrutamBanner = normalizedBannerName.contains("swaasamrutam") || normalizedBannerName.contains("swasaamrutam")
+                val isMahilaPriyaBanner = normalizedBannerName.contains("mahilapriya")
+                val isJeevasatvamBanner = normalizedBannerName.contains("jeevasatvam")
+                val isArtworkBanner = isSwaasamrutamBanner || isMahilaPriyaBanner || isJeevasatvamBanner
                 Box(Modifier.fillMaxSize()) {
-                    val bannerModel: Any = if (index == 2) R.drawable.swaasamrutam_banner else if (selectedDesign == 4) {
+                    val bannerModel: Any = when {
+                        isSwaasamrutamBanner -> R.drawable.swaasamrutam_banner
+                        isMahilaPriyaBanner -> R.drawable.mahilapriya_banner
+                        isJeevasatvamBanner -> R.drawable.jeevasatvam_banner
+                        selectedDesign == 4 -> {
                         when (index % 5) {
                             0 -> "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85"
                             1 -> "https://images.unsplash.com/photo-1515586000433-45406d8e6662?auto=format&fit=crop&w=1400&q=85"
@@ -1569,17 +1578,24 @@ private fun HomeBannerSlider(
                             3 -> "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?auto=format&fit=crop&w=1400&q=85"
                             else -> "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1400&q=85"
                         }
-                    } else slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl.ifBlank { "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85" } }
+                        else -> slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl.ifBlank { "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85" } }
+                    }
                     val bannerPainter = rememberAsyncImagePainter(model = bannerModel)
                     Image(
                         painter = bannerPainter,
-                        contentDescription = if (index == 2) "Swaasamrutam Ayurvedic product banner" else if (selectedDesign == 4) "Botanical herbal leaves background" else slide.productName,
-                        contentScale = if (index == 2 || selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
+                        contentDescription = when {
+                            isSwaasamrutamBanner -> "Swaasamrutam Ayurvedic product banner"
+                            isMahilaPriyaBanner -> "Mahila Priya Ayurvedic product banner"
+                            isJeevasatvamBanner -> "Jeevasatvam Ayurvedic product banner"
+                            selectedDesign == 4 -> "Botanical herbal leaves background"
+                            else -> slide.productName
+                        },
+                        contentScale = if (isArtworkBanner || selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize().then(
-                            if (index == 2) Modifier.clickable { openProduct(slide.productName) } else Modifier
+                            if (isArtworkBanner) Modifier.clickable { openProduct(slide.productName) } else Modifier
                         )
                     )
-                    if (index != 2 && bannerPainter.state is coil.compose.AsyncImagePainter.State.Loading) {
+                    if (!isArtworkBanner && bannerPainter.state is coil.compose.AsyncImagePainter.State.Loading) {
                         Box(
                             Modifier.fillMaxSize().background(Color(0x22FFFFFF)),
                             contentAlignment = Alignment.Center
@@ -1591,7 +1607,7 @@ private fun HomeBannerSlider(
                             )
                         }
                     }
-                    if (index != 2) {
+                    if (!isArtworkBanner) {
                     // Slider 4's decorative frame appears on every slide while design 4 is active.
                     if (selectedDesign == 4) {
                         Box(Modifier.fillMaxSize()) {
