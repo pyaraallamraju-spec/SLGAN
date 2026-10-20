@@ -3675,8 +3675,8 @@ private fun ShopScreen(
     }) { padding ->
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult) { onTabChange("Home") }
-            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd) { onTabChange("Accounts") }
-            "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders") { onTabChange("Accounts") }
+            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") })
+            "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") })
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
             "Accounts" -> AccountsPage(
@@ -5144,7 +5144,8 @@ private fun OrdersPage(
     products: List<Product>,
     onAdd: (String) -> Unit,
     pageTitle: String = "Order History",
-    onHome: () -> Unit
+    onHome: () -> Unit,
+    onCart: () -> Unit
 ) {
     val user = FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
@@ -5337,6 +5338,7 @@ private fun OrdersPage(
                                     if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
                                 }
                                 Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
+                                onCart()
                             }) { Text("Reorder", color = Forest, fontWeight = FontWeight.Bold) }
                             TextButton(onClick = { rateOrder = order; selectedRating = 5 }) { Text("Rate order", color = Forest, fontWeight = FontWeight.Bold) }
                             if (!invoiceUrl.isNullOrBlank()) {
@@ -5411,6 +5413,7 @@ private fun OrdersPage(
                                     if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
                                 }
                                 Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
+                                onCart()
                             }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) { Text("Reorder", color = Forest, fontWeight = FontWeight.Bold) }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
