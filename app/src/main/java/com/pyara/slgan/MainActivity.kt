@@ -1694,8 +1694,18 @@ private fun HomeBannerSlider(
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
+                        Spacer(Modifier.height(2.dp))
+                        Row(
+                            modifier = Modifier.width(150.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
+                            Text("🌿", fontSize = 12.sp)
+                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
+                        }
                         if (!slide.isCompanySlide) {
-                            Spacer(Modifier.height(10.dp))
+                            Spacer(Modifier.height(5.dp))
                             Row(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(4.dp))
