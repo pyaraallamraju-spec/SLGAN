@@ -7106,9 +7106,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             state = existing["state"]?.toString().orEmpty()
                             pincode = existing["pincode"]?.toString().orEmpty()
                         }
-                        showAddressForm = true
+                        // Keep the saved address selected. Do not navigate to the add-address form
+                        // or open the map here, since map/GPS reverse-geocoding can overwrite it.
+                        showAddressForm = false
                         addressMessage = null
-                        showMapPicker = true
+                        showMapPicker = false
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(18.dp),
