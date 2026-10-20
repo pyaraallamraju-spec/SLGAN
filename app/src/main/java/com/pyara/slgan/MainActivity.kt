@@ -5883,8 +5883,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         Column(
                             Modifier.fillMaxWidth()
                                 .clip(RoundedCornerShape(16.dp))
-                                .background(Color(0xFFFFFCF6))
-                                .border(1.dp, Color(0xFFECE5D8), RoundedCornerShape(16.dp))
+                                .background(Color(0xFFF3F5F7))
+                                .border(1.dp, Color(0xFFE1E5EC), RoundedCornerShape(16.dp))
                                 .padding(16.dp),
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
