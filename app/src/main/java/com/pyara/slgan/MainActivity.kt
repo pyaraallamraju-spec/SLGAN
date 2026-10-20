@@ -3752,7 +3752,7 @@ private fun ShopScreen(
                     onClick = { onTabChange(route) },
                     icon = {
                         if (route == "Cart") {
-                            BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) {
+                            BadgedBox(badge = { if (cartCount > 0) Badge(containerColor = Forest, contentColor = Color.White) { Text(cartCount.toString()) } }) {
                                 Icon(icon, contentDescription = label)
                             }
                         } else {
