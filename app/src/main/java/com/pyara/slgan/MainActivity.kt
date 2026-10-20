@@ -1564,7 +1564,7 @@ private fun HomeBannerSlider(
                 val isSwaasamrutamBanner = normalizedBannerName.contains("swaasamrutam") || normalizedBannerName.contains("swasaamrutam")
                 val isMahilaPriyaBanner = normalizedBannerName.contains("mahilapriya")
                 val isJeevasatvamBanner = normalizedBannerName.contains("jeevasatvam")
-                val isMahabalaBanner = normalizedBannerName.contains("mahabala")
+                val isMahabalaBanner = normalizedBannerName.contains("mahabala") || normalizedBannerName.contains("mahaabala")
                 val isGaneshamruthamBanner = normalizedBannerName.contains("ganeshamrutham")
                 val isArtworkBanner = isSwaasamrutamBanner || isMahilaPriyaBanner || isJeevasatvamBanner || isMahabalaBanner || isGaneshamruthamBanner
                 Box(Modifier.fillMaxSize()) {
