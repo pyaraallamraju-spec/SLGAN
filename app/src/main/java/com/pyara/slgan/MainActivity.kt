@@ -5123,13 +5123,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
             }
             Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Home, contentDescription = null, tint = Forest, modifier = Modifier.size(25.dp))
+                Icon(Icons.Default.Home, contentDescription = null, tint = Ink, modifier = Modifier.size(25.dp))
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     Text("Delivering to", color = Muted, fontSize = 11.sp)
                     Text(if (address.isBlank()) "Add delivery address" else address, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
-                TextButton(onClick = { showCheckout = true; errorMessage = null }) { Text(if (address.isBlank()) "Add" else "Change", color = Forest, fontWeight = FontWeight.Bold) }
+                TextButton(onClick = { showCheckout = true; errorMessage = null }) { Text(if (address.isBlank()) "Add" else "Change", color = Ink, fontWeight = FontWeight.Bold) }
             }
             Row(Modifier.fillMaxWidth().background(Color.White).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(0.7f)) {
