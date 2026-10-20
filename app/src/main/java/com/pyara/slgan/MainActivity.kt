@@ -1784,12 +1784,12 @@ private fun AdminProductsScreen(
         OutlinedTextField(
             value = searchText,
             onValueChange = { searchText = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(72.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-            textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
-            label = { Text("Search product", modifier = Modifier.background(Color.Transparent), color = Forest, fontSize = 12.sp, maxLines = 1) },
+            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
+            label = { Text("Search product", modifier = Modifier.background(Color.Transparent), color = Muted, fontSize = 13.sp, maxLines = 1) },
             placeholder = { Text("Name, category or product ID", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search products", tint = Forest) },
             trailingIcon = {
@@ -1808,6 +1808,7 @@ private fun AdminProductsScreen(
                 cursorColor = Forest
             )
         )
+        Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         Row(
             Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -2921,6 +2922,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     cursorColor = Forest
                 )
             )
+            Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         }
         Spacer(Modifier.height(10.dp))
         when {
@@ -3039,20 +3041,23 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         OutlinedTextField(
             value = search,
             onValueChange = { search = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
             singleLine = true,
-            textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
-            label = { Text("Search name, email or mobile", modifier = Modifier.background(Color.Transparent), color = Forest, fontSize = 12.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
-            shape = RoundedCornerShape(18.dp),
+            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
+            label = { Text("Search name, email or mobile", modifier = Modifier.background(Color.Transparent), color = Muted, fontSize = 13.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Muted, modifier = Modifier.size(22.dp)) },
+            shape = RectangleShape,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Forest,
-                unfocusedBorderColor = Gold,
-                focusedContainerColor = Cream,
-                unfocusedContainerColor = Cream,
-                cursorColor = Gold
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedLabelColor = Muted,
+                unfocusedLabelColor = Muted,
+                cursorColor = Forest
             )
         )
+        Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         Spacer(Modifier.height(10.dp))
         when {
             loading -> AppLoader("Loading customers…")
@@ -3362,15 +3367,18 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                     Icon(Icons.Default.Close, contentDescription = "Clear search")
                 }
             },
-            shape = RoundedCornerShape(18.dp),
+            shape = RectangleShape,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Forest,
-                unfocusedBorderColor = Gold,
-                focusedContainerColor = Cream,
-                unfocusedContainerColor = Cream,
-                cursorColor = Gold
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedLabelColor = Muted,
+                unfocusedLabelColor = Muted,
+                cursorColor = Forest
             )
         )
+        Box(Modifier.fillMaxWidth().padding(horizontal = 14.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 2.dp),
             shape = RoundedCornerShape(18.dp),
@@ -5188,13 +5196,15 @@ private fun OrdersPage(
         OutlinedTextField(
             value = orderSearch,
             onValueChange = { orderSearch = it },
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Search your orders", color = Muted) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
+            modifier = Modifier.fillMaxWidth().height(60.dp),
+            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
+            placeholder = { Text("Search your orders", color = Muted, fontSize = 13.sp) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Muted, modifier = Modifier.size(22.dp)) },
             singleLine = true,
-            shape = RoundedCornerShape(18.dp),
-            colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White, unfocusedBorderColor = Color(0xFFD9DCE4), focusedBorderColor = Forest)
+            shape = RectangleShape,
+            colors = OutlinedTextFieldDefaults.colors(focusedContainerColor = Color.Transparent, unfocusedContainerColor = Color.Transparent, focusedBorderColor = Color.Transparent, unfocusedBorderColor = Color.Transparent, cursorColor = Forest)
         )
+        Box(Modifier.fillMaxWidth().height(1.dp).background(Muted.copy(alpha = 0.45f)))
         Spacer(Modifier.height(18.dp))
         if (failedOrders.isNotEmpty() && orderSearch.isBlank()) {
             Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
@@ -5970,23 +5980,26 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp).shadow(3.dp, RoundedCornerShape(14.dp)),
-                placeholder = { Text("Search products", fontSize = 13.sp, maxLines = 1) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(19.dp)) },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp).height(60.dp),
+                textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
+                placeholder = { Text("Search products", fontSize = 13.sp, maxLines = 1, color = Muted) },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(22.dp), tint = Muted) },
                 trailingIcon = {
                     if (searchQuery.isNotBlank()) IconButton(onClick = { searchQuery = "" }) {
                         Icon(Icons.Default.Close, contentDescription = "Clear search")
                     }
                 },
                 singleLine = true,
-                shape = RoundedCornerShape(14.dp),
+                shape = RectangleShape,
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedContainerColor = Color.White,
-                    focusedContainerColor = Color.White,
-                    unfocusedBorderColor = Color(0xFFE1E5EC),
-                    focusedBorderColor = Forest
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedBorderColor = Color.Transparent,
+                    cursorColor = Forest
                 )
             )
+            Box(Modifier.fillMaxWidth().padding(horizontal = 10.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
             Row(Modifier.fillMaxWidth().background(Color(0xFFFFF8EC)).padding(horizontal = 10.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(tr(selectedCategory, LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
                 Spacer(Modifier.weight(1f))
