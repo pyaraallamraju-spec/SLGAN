@@ -1635,6 +1635,7 @@ private fun HomeBannerSlider(
                             }
                         }
                     }
+                    if (slide.isCompanySlide) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -1731,6 +1732,7 @@ private fun HomeBannerSlider(
                                 )
                             }
                         }
+                    }
                     }
                 }
             }
