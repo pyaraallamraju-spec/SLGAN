@@ -4465,10 +4465,10 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 Surface(
                                                     shape = RoundedCornerShape(10.dp),
                                                     color = Cream,
-                                                    contentColor = Forest
+                                                    contentColor = Ink
                                                 ) {
                                                     Text(
-                                                        "${signatureCartCount} in cart",
+                                                        "${signatureCartCount} in cart", color = Ink,
                                                         modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp),
                                                         fontSize = 9.sp,
                                                         fontWeight = FontWeight.Bold,
