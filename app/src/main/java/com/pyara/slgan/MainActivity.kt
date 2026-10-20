@@ -6297,13 +6297,13 @@ private fun AccountsPage(
                 Surface(
                     modifier = Modifier.size(25.dp).clickable(enabled = !profilePicSaving) { profileImagePicker.launch("image/*") },
                     shape = CircleShape,
-                    color = Forest,
+                    color = Color(0xFFF1F2F4),
                     border = BorderStroke(1.dp, Color.White),
                     shadowElevation = 3.dp
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         if (profilePicSaving) CircularProgressIndicator(modifier = Modifier.size(13.dp), color = Color.White, strokeWidth = 2.dp)
-                        else Icon(Icons.Default.Edit, contentDescription = "Edit profile picture", tint = Color.White, modifier = Modifier.size(13.dp))
+                        else Icon(Icons.Default.Edit, contentDescription = "Edit profile picture", tint = Ink, modifier = Modifier.size(13.dp))
                     }
                 }
             }
