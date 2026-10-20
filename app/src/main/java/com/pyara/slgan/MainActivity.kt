@@ -3748,7 +3748,7 @@ private fun ShopScreen(
                 appLanguage = appLanguage
             )
             "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
-            "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange)
+            "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, onBack = { onTabChange("Accounts") })
             "AddressBook" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, initialSection = "Addresses", onBack = { onTabChange("Accounts") })
             "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "About" -> AboutPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
@@ -6725,10 +6725,34 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
 
     Column(
         modifier.fillMaxSize()
-            .background(if (initialSection == "Addresses") Color.White else Cream)
+            .background(if (initialSection == "Addresses") Color.White else Color(0xFFF3F5FA))
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = if (initialSection == "Addresses") 12.dp else 16.dp, vertical = if (initialSection == "Addresses") 0.dp else 18.dp)
+            .padding(horizontal = if (initialSection == "Addresses" || initialSection == "Profile") 0.dp else 16.dp, vertical = if (initialSection == "Addresses" || initialSection == "Profile") 0.dp else 18.dp)
     ) {
+        if (initialSection == "Profile") {
+            Row(
+                modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    modifier = Modifier.size(48.dp).clickable { onBack?.invoke() },
+                    shape = CircleShape,
+                    color = Color.White,
+                    border = BorderStroke(1.dp, Color(0xFFE5E9F0))
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+                    }
+                }
+                Spacer(Modifier.width(14.dp))
+                Text("Personal information", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
+            }
+            Spacer(Modifier.height(20.dp))
+            Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+                Text("Personal details", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Ink)
+                Spacer(Modifier.height(14.dp))
+            }
+        }
         if (initialSection == "Addresses") {
             Row(
                 modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 4.dp, vertical = 12.dp),
@@ -6741,57 +6765,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             }
             Spacer(Modifier.height(16.dp))
         }
-        if (initialSection != "Addresses") {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(containerColor = Forest),
-            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
-        ) {
-            Column(Modifier.fillMaxWidth().padding(20.dp)) {
-                Text("SRI LAKSHMI GANAPATHI", color = Gold, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
-                Spacer(Modifier.height(6.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f)) {
-                        Text(tr("Your account", LocalAppLanguage.current), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
-                        Spacer(Modifier.height(5.dp))
-                        Text(
-                            tr(
-                                if (profileSection == "Addresses") "Manage your delivery addresses." else "Manage your personal details.",
-                                LocalAppLanguage.current
-                            ),
-                            color = PaleGreen,
-                            fontSize = 13.sp,
-                            lineHeight = 19.sp
-                        )
-                    }
-                    Spacer(Modifier.width(8.dp))
-                    Box(Modifier.size(48.dp).background(Color(0x26FFFFFF), CircleShape), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.Person, contentDescription = null, tint = Gold, modifier = Modifier.size(28.dp))
-                    }
-                }
-            }
-        }
-        Spacer(Modifier.height(16.dp))
-        Row(Modifier.fillMaxWidth().background(Color(0xFFF1E5D0), RoundedCornerShape(14.dp)).padding(4.dp)) {
-            listOf("Profile", "Addresses").forEach { section ->
-                val selected = profileSection == section
-                Box(
-                    Modifier.weight(1f).clip(RoundedCornerShape(11.dp))
-                        .background(if (selected) Forest else Color.Transparent)
-                        .clickable { profileSection = section; showAddressForm = false }
-                        .padding(vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(tr(section, LocalAppLanguage.current), color = if (selected) Color.White else Ink, fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                }
-            }
-        }
-        Spacer(Modifier.height(18.dp))
-        }
-
         if (profileSection == "Profile" && initialSection != "Addresses") {
-            Card(colors = CardDefaults.cardColors(containerColor = Cream), shape = RoundedCornerShape(20.dp)) {
+            Card(modifier = Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
                 Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(58.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
                         Icon(Icons.Default.Person, null, tint = Forest, modifier = Modifier.size(30.dp))
