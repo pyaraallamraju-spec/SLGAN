@@ -4270,11 +4270,11 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = Color(0xFFE1E5EC),
-                                selectedLabelColor = Forest,
-                                selectedLeadingIconColor = Forest,
+                                selectedLabelColor = Color.Black,
+                                selectedLeadingIconColor = Color.Black,
                                 containerColor = Color(0xFFF6F7FA),
-                                labelColor = Ink,
-                                iconColor = Forest
+                                labelColor = Color.Black,
+                                iconColor = Color.Black
                             )
                         )
                     }
