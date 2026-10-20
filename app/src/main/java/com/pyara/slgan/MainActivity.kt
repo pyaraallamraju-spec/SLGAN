@@ -5237,7 +5237,10 @@ private fun OrdersPage(
     Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 12.dp)) {
         Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onHome) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
-            Text(pageTitle, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(pageTitle, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Box(Modifier.background(PaleGreen, RoundedCornerShape(50.dp)).padding(horizontal = 12.dp, vertical = 7.dp)) {
+                Text(visibleOrders.size.toString(), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
+            }
         }
         OutlinedTextField(
             value = orderSearch,
@@ -5266,10 +5269,7 @@ private fun OrdersPage(
             }
             Spacer(Modifier.height(16.dp))
         }
-        Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(if (orderSearch.isBlank()) "Your orders" else "Search results", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-        }
-        Spacer(Modifier.height(10.dp))
+
         if (latestOrderSuccess != null) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = if (latestOrderSuccess) Color(0xFFE5F4E8) else Color(0xFFFCE8E6)),
