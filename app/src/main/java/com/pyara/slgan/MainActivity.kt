@@ -1537,9 +1537,8 @@ private fun HomeBannerSlider(
                     },
                 targetState = activeSlide,
                 transitionSpec = {
-                    (fadeIn(animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing)) +
-                        scaleIn(initialScale = 0.98f, animationSpec = tween(durationMillis = 900, easing = FastOutSlowInEasing))) togetherWith
-                        fadeOut(animationSpec = tween(durationMillis = 650, easing = FastOutSlowInEasing))
+                    fadeIn(animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)) togetherWith
+                        fadeOut(animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing))
                 },
                 label = "homeBannerSlide"
             ) { index ->
