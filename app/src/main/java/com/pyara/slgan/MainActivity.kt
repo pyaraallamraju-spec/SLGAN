@@ -4213,8 +4213,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     Column(Modifier.padding(10.dp)) {
                                         Box(
                                             Modifier.fillMaxWidth().height(112.dp)
-                                                .clip(RoundedCornerShape(13.dp))
-                                                .background(PaleGreen),
+                                                 .clip(RoundedCornerShape(13.dp))
+                                                .background(Color(0xFFF6F7FA)),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             if (product.imageUrl.isNotBlank()) {
@@ -4475,7 +4475,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
 private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
     Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Cream), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
         Column(Modifier.padding(11.dp)) {
-            Box(Modifier.fillMaxWidth().height(98.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxWidth().height(98.dp).background(Color(0xFFF6F7FA), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 Text(product.emoji, fontSize = 42.sp)
                 Text(tr("SLGAN", LocalAppLanguage.current), Modifier.align(Alignment.BottomEnd).padding(6.dp), color = Leaf, fontSize = 8.sp, fontWeight = FontWeight.Bold)
                 if (product.signature) {
@@ -4643,7 +4643,7 @@ private fun ProductDetailsPage(
     Column(Modifier.fillMaxSize().background(Color(0xFFF3F3F3))) {
         Box(Modifier.fillMaxWidth().weight(0.88f)) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                Box(Modifier.fillMaxWidth().height(360.dp).background(Color(0xFFF4F4F4))) {
+                Box(Modifier.fillMaxWidth().height(360.dp).background(Color(0xFFF6F7FA))) {
                     if (product.imageUrl.isNotBlank()) {
                         AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
                     } else {
