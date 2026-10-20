@@ -1615,7 +1615,6 @@ private fun HomeBannerSlider(
                             )
                         }
                     }
-                    {
                     // Display readable title, tagline, and product action on every slide.
                     // Slider 4's decorative frame appears on every slide while design 4 is active.
                     if (selectedDesign == 4) {
@@ -1730,7 +1729,6 @@ private fun HomeBannerSlider(
                                 )
                             }
                         }
-                    }
                     }
                 }
             }
