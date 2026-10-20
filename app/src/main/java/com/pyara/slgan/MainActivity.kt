@@ -6731,7 +6731,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     ) {
         if (initialSection == "Profile") {
             Row(
-                modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
+                modifier = Modifier.fillMaxWidth().background(Color.White).padding(start = 0.dp, end = 12.dp, top = 10.dp, bottom = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Surface(
