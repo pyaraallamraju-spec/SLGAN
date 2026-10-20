@@ -4440,7 +4440,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         ) {
                                             Text(
                                                 tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
-                                                color = Forest,
+                                                color = Color.Black,
                                                 fontWeight = FontWeight.ExtraBold,
                                                 fontSize = 15.sp,
                                                 maxLines = 1
@@ -4450,17 +4450,14 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 Box(
                                                     modifier = Modifier
                                                         .size(28.dp)
-                                                        .background(
-                                                            Brush.linearGradient(listOf(Forest, Leaf)),
-                                                            CircleShape
-                                                        )
+                                                        .background(Color(0xFFE1E5EC), CircleShape)
                                                         .then(if (product.price > 0.0) Modifier.clickable { onAdd(product.id) } else Modifier),
                                                     contentAlignment = Alignment.Center
                                                 ) {
                                                     Icon(
                                                         imageVector = Icons.Default.Add,
                                                         contentDescription = "Add ${product.name} to cart",
-                                                        tint = Color.White,
+                                                        tint = Color.Black,
                                                         modifier = Modifier.size(15.dp)
                                                     )
                                                 }
