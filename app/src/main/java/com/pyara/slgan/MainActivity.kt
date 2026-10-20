@@ -1650,17 +1650,16 @@ private fun HomeBannerSlider(
                             .padding(horizontal = 22.dp, vertical = 22.dp),
                         verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        if (slide.isCompanySlide) {
-                            Text(
-                                tr("TRUSTED SINCE 1990", LocalAppLanguage.current),
-                                color = Gold,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 1.3.sp,
-                                maxLines = 1
-                            )
-                            Spacer(Modifier.height(8.dp))
-                        }
+                        Text(
+                            text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
+                                else tr("Authentic Ayurvedic", LocalAppLanguage.current),
+                            color = Color(0xFF2E7D32),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.1.sp,
+                            maxLines = 1
+                        )
+                        Spacer(Modifier.height(4.dp))
                         Text(
                             modifier = Modifier.animateEnterExit(
                                 enter = fadeIn(animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing)) +
@@ -1668,7 +1667,7 @@ private fun HomeBannerSlider(
                             ),
                             text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
-                            color = if (slide.isCompanySlide) Color(0xFF762A24) else if (selectedDesign == 3) Color(0xFF23452C) else if (selectedDesign == 2) Color(0xFFFFE8AE) else if (selectedDesign == 4) Color(0xFFFFF8E8) else Color.White,
+                            color = Color(0xFF762A24),
                             fontSize = if (slide.isCompanySlide) 22.sp else 21.sp,
                             lineHeight = if (slide.isCompanySlide) 26.sp else 25.sp,
                             fontWeight = FontWeight.ExtraBold,
@@ -1682,7 +1681,7 @@ private fun HomeBannerSlider(
                                 enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
                                     slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
                             ),
-                            color = if (slide.isCompanySlide) Color(0xFF806D60) else if (selectedDesign == 3) Color(0xFF5B3428) else if (selectedDesign == 2) Color(0xFFE8F0D8) else if (selectedDesign == 4) Color(0xFFFFE8C2) else Color(0xFFFFE9B2),
+                            color = Color(0xFF5B3428),
                             fontSize = 11.sp,
                             lineHeight = 15.sp,
                             fontWeight = FontWeight.Medium,
@@ -1702,7 +1701,7 @@ private fun HomeBannerSlider(
                             ) {
                                 Text(
                                     "View Products",
-                                    color = if (selectedDesign == 3) Color(0xFF6B1825) else if (selectedDesign == 2) Color(0xFFFFE8AE) else Color.White,
+                                    color = Color(0xFF762A24),
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 0.2.sp
@@ -1710,7 +1709,7 @@ private fun HomeBannerSlider(
                                 Icon(
                                     Icons.Default.ArrowForward,
                                     contentDescription = null,
-                                    tint = if (selectedDesign == 3) Color(0xFF6B1825) else if (selectedDesign == 2) Color(0xFFFFE8AE) else Color.White,
+                                    tint = Color(0xFF762A24),
                                     modifier = Modifier.size(15.dp)
                                 )
                             }
