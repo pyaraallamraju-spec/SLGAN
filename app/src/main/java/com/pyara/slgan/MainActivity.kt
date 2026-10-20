@@ -1512,7 +1512,7 @@ private fun HomeBannerSlider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(190.dp)
-                .background(if (selectedDesign == 4) Forest else when (selectedDesign) { 2 -> Color(0xFF173D2B); 3 -> Color(0xFFF8F0DC); else -> Color(0xFFF5F0E6) })
+                .background(Color.White)
         ) {
             AnimatedContent(
                 modifier = Modifier
@@ -1560,52 +1560,13 @@ private fun HomeBannerSlider(
                         contentScale = if (selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                    if (!slide.isCompanySlide) {
-                        // Consistent dark botanical scrim keeps every signature-product slide readable,
-                        // even when the product image has a bright or busy background.
-                        Box(Modifier.fillMaxSize().background(
-                            Brush.horizontalGradient(
-                                listOf(
-                                    Color(0xF0183528),
-                                    Color(0xD91D402E),
-                                    Color(0x80244835),
-                                    Color.Transparent
-                                )
-                            )
-                        ))
-                    } else if (selectedDesign == 3) {
-                        Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFFF8F0DC).copy(alpha = 0.97f), Color(0xFFE7EBCB).copy(alpha = 0.86f), Color(0xFFC6D6A3).copy(alpha = 0.42f), Color.Transparent))))
-                    } else if (selectedDesign == 2) {
-                        Box(Modifier.fillMaxSize().background(Brush.horizontalGradient(listOf(Color(0xFF102D20).copy(alpha = 0.98f), Color(0xFF173D2B).copy(alpha = 0.88f), Color(0xFF24523A).copy(alpha = 0.55f), Color.Transparent))))
-                        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xFF173D2B).copy(alpha = 0.24f)))))
-                    } else if (selectedDesign != 4 && !slide.isCompanySlide) {
-                        Box(
-                            Modifier.fillMaxSize().background(
-                                Brush.horizontalGradient(
-                                    colors = listOf(
-                                        Color(0xFF183D2D).copy(alpha = 0.96f),
-                                        Color(0xFF24523A).copy(alpha = 0.82f),
-                                        Color(0xFF3F6A4A).copy(alpha = 0.36f),
-                                        Color.Transparent
-                                    )
-                                )
-                            )
-                        )
-                        Box(
-                            Modifier.fillMaxSize().background(
-                                Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, Color(0xFF173D2B).copy(alpha = 0.30f))
-                                )
-                            )
-                        )
-                    }
                     // Slider 4's decorative frame appears on every slide while design 4 is active.
                     if (selectedDesign == 4) {
                         Box(Modifier.fillMaxSize()) {
                             Box(Modifier.align(Alignment.TopCenter).fillMaxWidth().height(7.dp)
-                                .background(Brush.horizontalGradient(listOf(Color(0xFF762A24), Gold, Color(0xFF762A24)))))
+                                .background(Gold))
                             Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(7.dp)
-                                .background(Brush.horizontalGradient(listOf(Color(0xFF762A24), Gold, Color(0xFF762A24)))))
+                                .background(Gold))
                             Row(Modifier.align(Alignment.TopStart).padding(start = 8.dp, top = 8.dp), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                                 Text("🌿", fontSize = 20.sp); Text("🍃", fontSize = 17.sp)
                             }
