@@ -6182,7 +6182,6 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             }
         }
     }
-        }
 }
 
 @Composable
