@@ -5304,7 +5304,7 @@ private fun OrdersPage(
                     .padding(horizontal = 18.dp, vertical = 12.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
                     Text("${visibleOrders.size} orders", color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
                 }
             }
