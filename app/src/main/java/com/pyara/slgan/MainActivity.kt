@@ -5382,8 +5382,8 @@ private fun OrdersPage(
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
                 val orderItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
-                Card(colors = CardDefaults.cardColors(containerColor = Color.Transparent), shape = RoundedCornerShape(0.dp), elevation = CardDefaults.cardElevation(defaultElevation = 0.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
-                    Column(Modifier.fillMaxWidth().padding(vertical = 15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                Card(colors = CardDefaults.cardColors(containerColor = Cream), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                    Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(42.dp).background(Color(0xFFFFF4D6), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp)) }
                             Spacer(Modifier.width(11.dp))
@@ -5394,9 +5394,14 @@ private fun OrdersPage(
                             Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color(0xFF27864A), modifier = Modifier.size(18.dp))
+                            Icon(
+                                if (status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)) Icons.Default.Cancel else Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                tint = if (status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)) Color(0xFFC62828) else Color(0xFF27864A),
+                                modifier = Modifier.size(18.dp)
+                            )
                             Spacer(Modifier.width(5.dp))
-                            Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Color(0xFF27864A), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                            Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = if (status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)) Color(0xFFC62828) else Color(0xFF27864A), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
                             TextButton(onClick = { selectedOrder = order }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) {
                                 Text("View Order", color = Forest, fontWeight = FontWeight.Bold)
