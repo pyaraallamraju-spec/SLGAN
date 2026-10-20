@@ -3760,7 +3760,7 @@ private fun ShopScreen(
                         }
                     },
                     label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) },
-                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Color.Black, selectedTextColor = Color.Black, indicatorColor = Color(0xFFE6E8EC), unselectedIconColor = Color.Black)
+                    colors = NavigationBarItemDefaults.colors(selectedIconColor = Ink, selectedTextColor = Ink, indicatorColor = Color(0xFFE6E8EC), unselectedIconColor = Ink, unselectedTextColor = Ink)
                 )
             }
         }
@@ -4270,11 +4270,11 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = Color(0xFFE1E5EC),
-                                selectedLabelColor = Forest,
-                                selectedLeadingIconColor = Forest,
+                                selectedLabelColor = Ink,
+                                selectedLeadingIconColor = Ink,
                                 containerColor = Color(0xFFF6F7FA),
                                 labelColor = Ink,
-                                iconColor = Forest
+                                iconColor = Ink
                             )
                         )
                     }
@@ -4486,7 +4486,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     }
             }
         }
-        item { Text(tr("Made with care for your everyday rituals.", LocalAppLanguage.current), Modifier.fillMaxWidth().padding(20.dp), color = Muted, fontSize = 12.sp) }
+        item { Text(tr("Made with care for your everyday rituals.", LocalAppLanguage.current), Modifier.fillMaxWidth().padding(20.dp), color = Ink, fontSize = 12.sp) }
     }
 }
 
