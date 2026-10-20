@@ -1641,8 +1641,8 @@ private fun HomeBannerSlider(
                                 enter = fadeIn(animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing)) +
                                     slideInVertically(initialOffsetY = { it / 6 }, animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing))
                             ),
-                            text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
-                            else localizedProductName(slide.productName, LocalAppLanguage.current),
+                            text = if (slide.isCompanySlide) "🌿 ${tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)}"
+                            else "🌿 ${localizedProductName(slide.productName, LocalAppLanguage.current)}",
                             color = Color(0xFF762A24),
                             fontSize = if (slide.isCompanySlide) 22.sp else 21.sp,
                             lineHeight = if (slide.isCompanySlide) 26.sp else 25.sp,
