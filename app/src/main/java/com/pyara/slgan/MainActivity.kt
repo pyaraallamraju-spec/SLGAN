@@ -1493,7 +1493,7 @@ private fun HomeBannerSlider(
             HomeBannerSlide(
                 productName = "Sri Lakshmi Ganapathi Ayurveda Nilayam",
                 tagline = "Estd. 1900 by Sri Vidyaraju Allamraju Perraju Sharma",
-                fallbackImageUrl = "",
+                fallbackImageUrl = "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85",
                 isCompanySlide = true
             )
         ) + signatureSlides
@@ -1565,7 +1565,7 @@ private fun HomeBannerSlider(
                                 3 -> "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?auto=format&fit=crop&w=1400&q=85"
                                 else -> "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1400&q=85"
                             }
-                        } else slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl },
+                        } else slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl.ifBlank { "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85" } },
                         contentDescription = if (selectedDesign == 4) "Botanical herbal leaves background" else slide.productName,
                         contentScale = if (selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
