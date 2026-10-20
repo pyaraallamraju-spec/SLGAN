@@ -4123,7 +4123,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
     // Match the Categories page's two-tone styling: a white home content header
     // above the same soft-cream product area.
     LazyColumn(
-        modifier = modifier.fillMaxSize().background(Color.White),
+        modifier = modifier.fillMaxSize().background(Color(0xFFF3F5FA)),
         contentPadding = PaddingValues(bottom = 20.dp)
     ) {
         item {
