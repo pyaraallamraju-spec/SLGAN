@@ -1797,13 +1797,15 @@ private fun AdminProductsScreen(
                     Icon(Icons.Default.Close, "Clear search")
                 }
             },
-            shape = RoundedCornerShape(18.dp),
+            shape = RectangleShape,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Forest,
-                unfocusedBorderColor = Gold,
-                focusedContainerColor = Cream,
-                unfocusedContainerColor = Cream,
-                cursorColor = Gold
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedLabelColor = Muted,
+                unfocusedLabelColor = Muted,
+                cursorColor = Forest
             )
         )
         Row(
@@ -2897,9 +2899,9 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             OutlinedTextField(
                 value = search,
                 onValueChange = { search = it },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
                 singleLine = true,
-                textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
+                textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
                 label = { Text("Search diseases", modifier = Modifier.background(Color.Transparent), color = Forest, fontSize = 12.sp, maxLines = 1) },
                 placeholder = { Text("Disease name or description", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
@@ -2908,13 +2910,15 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                         Icon(Icons.Default.Close, "Clear search")
                     }
                 },
-                shape = RoundedCornerShape(18.dp),
+                shape = RectangleShape,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Forest,
-                    unfocusedBorderColor = Forest.copy(alpha = 0.75f),
-                    focusedContainerColor = Cream,
-                    unfocusedContainerColor = Cream,
-                    cursorColor = Gold
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedLabelColor = Muted,
+                    unfocusedLabelColor = Muted,
+                    cursorColor = Forest
                 )
             )
         }
@@ -3347,9 +3351,9 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp).height(72.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp).height(60.dp),
             singleLine = true,
-            textStyle = LocalTextStyle.current.copy(fontSize = 14.sp, lineHeight = 18.sp),
+            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
             label = { Text("Search order", modifier = Modifier.background(Color.Transparent), color = Forest, fontSize = 12.sp, maxLines = 1) },
             placeholder = { Text("Order ID, customer or mobile", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = Forest) },
