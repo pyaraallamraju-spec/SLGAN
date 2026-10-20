@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.RectangleShape
 import java.io.ByteArrayOutputStream
 import android.util.Base64
 import android.graphics.BitmapFactory
