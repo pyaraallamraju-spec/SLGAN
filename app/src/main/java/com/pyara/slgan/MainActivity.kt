@@ -5851,7 +5851,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     )
                     Row(
                         Modifier.fillMaxWidth()
-                            .background(Color(0xFFF5F3ED), RoundedCornerShape(16.dp))
+                            .background(Color(0xFFF3F5F7), RoundedCornerShape(16.dp))
                             .padding(5.dp),
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
@@ -5860,14 +5860,14 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             Column(
                                 Modifier.weight(1f)
                                     .clip(RoundedCornerShape(12.dp))
-                                    .background(if (selected) Color(0xFF2E7D32) else Color.Transparent)
+                                    .background(if (selected) Color(0xFFE1E5EC) else Color.Transparent)
                                     .clickable { selectedDetailTab = tab }
                                     .padding(horizontal = 3.dp, vertical = 10.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.spacedBy(5.dp)
                             ) {
-                                Icon(icon, contentDescription = shortLabel, tint = if (selected) Color.White else Muted, modifier = Modifier.size(19.dp))
-                                Text(shortLabel, color = if (selected) Color.White else Muted, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
+                                Icon(icon, contentDescription = shortLabel, tint = if (selected) Ink else Muted, modifier = Modifier.size(19.dp))
+                                Text(shortLabel, color = if (selected) Ink else Muted, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
                             }
                         }
                     }
