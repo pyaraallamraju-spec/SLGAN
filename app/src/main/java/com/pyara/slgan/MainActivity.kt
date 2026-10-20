@@ -3629,7 +3629,7 @@ private fun ShopScreen(
     val cartCount = cart.values.sum()
     Scaffold(containerColor = Cream, topBar = {
         if (selectedTab != "Orders" && selectedTab != "MyOrders") {
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().shadow(6.dp).background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Color.White))
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
@@ -3650,7 +3650,7 @@ private fun ShopScreen(
         }
     }, bottomBar = {
         if (selectedTab != "Orders" && selectedTab != "MyOrders") {
-        NavigationBar(containerColor = Color.White, contentColor = Forest) {
+        NavigationBar(modifier = Modifier.fillMaxWidth().shadow(8.dp), containerColor = Color.White, contentColor = Forest) {
             listOf(
                 Triple("Home", Icons.Default.Home, "Home"),
                 Triple("Categories", Icons.Default.GridView, "Categories"),
@@ -5954,11 +5954,10 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     focusedBorderColor = Forest
                 )
             )
-            Row(Modifier.fillMaxWidth().shadow(4.dp).background(Color(0xFFFFF8EC)).padding(horizontal = 10.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(tr(selectedCategory, LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
-                    Text("${selectedProducts.size} products", color = Muted, fontSize = 11.sp)
-                }
+            Row(Modifier.fillMaxWidth().shadow(6.dp).background(Color(0xFFFFF8EC)).padding(horizontal = 10.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text(tr(selectedCategory, LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
+                Spacer(Modifier.weight(1f))
+                Text("${selectedProducts.size} products", color = Muted, fontSize = 11.sp, maxLines = 1)
             }
             LazyColumn(
                 modifier = Modifier.fillMaxWidth().weight(1f),
