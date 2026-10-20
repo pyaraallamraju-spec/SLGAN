@@ -1531,7 +1531,6 @@ private fun HomeBannerSlider(
                 .fillMaxWidth()
                 .height(190.dp)
                 .clip(RoundedCornerShape(22.dp))
-                .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
                 .background(Color.White)
         ) {
             AnimatedContent(
