@@ -5301,6 +5301,7 @@ private fun OrdersPage(
                 }
             }
         }
+        Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
         OutlinedTextField(
             value = orderSearch,
             onValueChange = { orderSearch = it },
@@ -5675,6 +5676,7 @@ private fun OrdersPage(
                     }
                 }
             }
+        }
         }
     }
 
