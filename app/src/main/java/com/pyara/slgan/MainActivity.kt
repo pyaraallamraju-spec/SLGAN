@@ -1493,8 +1493,6 @@ private fun HomeBannerSlider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(190.dp)
-                .clip(RoundedCornerShape(22.dp))
-                .border(1.dp, Gold.copy(alpha = 0.75f), RoundedCornerShape(22.dp))
                 .background(if (selectedDesign == 4) Forest else when (selectedDesign) { 2 -> Color(0xFF173D2B); 3 -> Color(0xFFF8F0DC); else -> Color(0xFFF5F0E6) })
         ) {
             AnimatedContent(
