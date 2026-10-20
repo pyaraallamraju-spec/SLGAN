@@ -1305,27 +1305,26 @@ private fun LoginScreen(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            label = { Text(tr("Email address", LocalAppLanguage.current)) },
-            placeholder = { Text(tr("you@example.com", LocalAppLanguage.current)) },
+            placeholder = { Text(tr("Email address", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
             leadingIcon = { Icon(Icons.Default.Email, null, tint = Forest) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            shape = RoundedCornerShape(14.dp),
+            shape = RectangleShape,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFF8A5360),
-                unfocusedBorderColor = Gold.copy(alpha = 0.55f),
-                focusedContainerColor = Cream,
-                unfocusedContainerColor = Cream,
-                focusedLabelColor = Forest,
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
                 cursorColor = Forest
             )
         )
+        Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         Spacer(Modifier.height(12.dp))
         OutlinedTextField(
             value = password,
             onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            label = { Text(tr("Password", LocalAppLanguage.current)) },
+            placeholder = { Text(tr("Password", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
             leadingIcon = { Icon(Icons.Default.Lock, null, tint = Forest) },
             trailingIcon = {
                 IconButton(onClick = { showPassword = !showPassword }) {
@@ -1339,16 +1338,16 @@ private fun LoginScreen(
             singleLine = true,
             visualTransformation = if (showPassword) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            shape = RoundedCornerShape(20.dp),
+            shape = RectangleShape,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Gold.copy(alpha = 0.65f),
-                unfocusedBorderColor = Gold.copy(alpha = 0.65f),
-                focusedContainerColor = Cream,
-                unfocusedContainerColor = Cream,
-                focusedLabelColor = Forest,
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
                 cursorColor = Forest
             )
         )
+        Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         if (isCreatingAccount) {
             Spacer(Modifier.height(12.dp))
             var showConfirmPassword by remember { mutableStateOf(false) }
@@ -1356,7 +1355,7 @@ private fun LoginScreen(
                 value = confirmPassword,
                 onValueChange = onConfirmPasswordChange,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-                label = { Text("Confirm password") },
+                placeholder = { Text("Confirm password", color = Muted, fontSize = 15.sp) },
                 leadingIcon = { Icon(Icons.Default.Lock, null, tint = Forest) },
                 trailingIcon = {
                     IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
@@ -1370,16 +1369,16 @@ private fun LoginScreen(
                 singleLine = true,
                 visualTransformation = if (showConfirmPassword) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                shape = RoundedCornerShape(20.dp),
+                shape = RectangleShape,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Gold.copy(alpha = 0.65f),
-                    unfocusedBorderColor = Gold.copy(alpha = 0.65f),
-                    focusedContainerColor = Cream,
-                    unfocusedContainerColor = Cream,
-                    focusedLabelColor = Forest,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
                     cursorColor = Forest
                 )
             )
+            Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         }
         if (errorMessage != null) Text(errorMessage, Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp), color = Color(0xFFB3261E), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
