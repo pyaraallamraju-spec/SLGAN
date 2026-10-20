@@ -1562,10 +1562,6 @@ private fun HomeBannerSlider(
                     // Slider 4's decorative frame appears on every slide while design 4 is active.
                     if (selectedDesign == 4) {
                         Box(Modifier.fillMaxSize()) {
-                            Box(Modifier.align(Alignment.TopCenter).fillMaxWidth().height(7.dp)
-                                .background(Gold))
-                            Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(7.dp)
-                                .background(Gold))
                             Row(Modifier.align(Alignment.TopStart).padding(start = 8.dp, top = 8.dp), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                                 Text("🌿", fontSize = 20.sp); Text("🍃", fontSize = 17.sp)
                             }
