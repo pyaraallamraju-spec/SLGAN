@@ -6725,7 +6725,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
 
     Column(
         modifier.fillMaxSize()
-            .background(if (initialSection == "Addresses") Color.White else Color(0xFFF3F5FA))
+            .background(Color(0xFFF3F5FA))
             .verticalScroll(rememberScrollState())
             .padding(horizontal = if (initialSection == "Addresses" || initialSection == "Profile") 0.dp else 16.dp, vertical = if (initialSection == "Addresses" || initialSection == "Profile") 0.dp else 18.dp)
     ) {
@@ -6755,15 +6755,27 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         }
         if (initialSection == "Addresses") {
             Row(
-                modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 4.dp, vertical = 12.dp),
+                modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { onBack?.invoke() }) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+                Surface(
+                    modifier = Modifier.size(48.dp).clickable { onBack?.invoke() },
+                    shape = CircleShape,
+                    color = Color.White,
+                    border = BorderStroke(1.dp, Color(0xFFE5E9F0))
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+                    }
                 }
-                Text("My addresses", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Ink)
+                Spacer(Modifier.width(14.dp))
+                Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
             }
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(20.dp))
+            Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+                Text("Address details", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Ink)
+                Spacer(Modifier.height(14.dp))
+            }
         }
         if (profileSection == "Profile" && initialSection != "Addresses") {
             Card(modifier = Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
