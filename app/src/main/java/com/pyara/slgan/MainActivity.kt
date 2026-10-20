@@ -1637,6 +1637,15 @@ private fun HomeBannerSlider(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.CenterStart)
+                            .then(
+                                if (slide.isCompanySlide) Modifier
+                                else Modifier
+                                    .background(
+                                        Brush.horizontalGradient(
+                                            listOf(Color(0xCC1C211A), Color(0x661C211A), Color.Transparent)
+                                        )
+                                    )
+                            )
                             .padding(horizontal = 22.dp, vertical = 22.dp),
                         verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
