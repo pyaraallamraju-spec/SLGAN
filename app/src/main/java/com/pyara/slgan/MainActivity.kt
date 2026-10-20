@@ -5785,7 +5785,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             Column(
                                 Modifier.weight(1f)
                                     .clip(RoundedCornerShape(12.dp))
-                                    .background(if (selected) Forest else Color.Transparent)
+                                    .background(if (selected) Color(0xFF2E7D32) else Color.Transparent)
                                     .clickable { selectedDetailTab = tab }
                                     .padding(horizontal = 3.dp, vertical = 10.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally,
