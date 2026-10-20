@@ -553,21 +553,16 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val details = if (cleanWeight.isNotBlank() && units.isNotBlank()) "$cleanWeight$units" else cleanWeight.ifBlank { units }
     val price = data["product_price"]?.toString()?.replace(",", "")?.toDoubleOrNull() ?: 0.0
     val rawCategory = listOf("product_category", "category", "category_name", "productCategory").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    val categoryKey = rawCategory.lowercase()
-        .replace("’", "'")
-        .replace("'", "")
-        .replace("-", "")
-        .replace("_", "")
-        .replace(" ", "")
-    val category = when (categoryKey) {
-        "rasayoga", "rasayogas" -> "Rasayogas"
-        "rasayana", "rasayanas" -> "Rasayanas"
-        "lehya", "lehyam", "lehyas", "lehyams", "lehyaas", "lehyaas" -> "Lehyas"
-        "grutha", "gruthas", "ghrita", "ghritas", "ghrutha", "ghrutas" -> "Ghrutas"
-        "pill", "pills", "vati", "vatis" -> "Pills"
-        "taila", "tailam", "tailas" -> "Tailas"
-        "churna", "churnas" -> "Churnas"
-        "bhasma", "bhasmas" -> "Bhasmas"
+    val categoryKey = rawCategory.lowercase().replace(Regex("[^a-z]"), "")
+    val category = when {
+        categoryKey.contains("lehya") || categoryKey.contains("lehyam") || categoryKey.contains("lehyalu") -> "Lehyas"
+        categoryKey.contains("grutha") || categoryKey.contains("ghrita") || categoryKey.contains("ghrutha") || categoryKey == "ghee" -> "Ghrutas"
+        categoryKey.contains("pill") || categoryKey == "vati" || categoryKey == "vatis" -> "Pills"
+        categoryKey.contains("taila") || categoryKey == "oil" || categoryKey == "oils" -> "Tailas"
+        categoryKey.contains("churna") || categoryKey.contains("choorna") -> "Churnas"
+        categoryKey.contains("rasayana") -> "Rasayanas"
+        categoryKey.contains("rasayoga") -> "Rasayogas"
+        categoryKey.contains("bhasma") -> "Bhasmas"
         else -> rawCategory
     }
     val emoji = when (category) {
@@ -1796,24 +1791,14 @@ private fun AdminProductsScreen(
     // rather than maintaining a separate hard-coded category list.
     val adminCategories = remember(products) {
         val preferredOrder = listOf("Lehyas", "Ghrutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Rasayogas", "Bhasmas")
-        val normalized = products.mapNotNull { product ->
-            val key = product.category.trim().lowercase()
-                .replace("’", "").replace("'", "").replace("-", "").replace("_", "").replace(" ", "")
-            val canonical = when (key) {
-                "lehya", "lehyam", "lehyas", "lehyams", "lehyaas" -> "Lehyas"
-                "grutha", "gruthas", "ghrita", "ghritas", "ghrutha", "ghrutas" -> "Ghrutas"
-                "pill", "pills", "vati", "vatis" -> "Pills"
-                "taila", "tailam", "tailas" -> "Tailas"
-                "churna", "churnas" -> "Churnas"
-                "rasayana", "rasayanas" -> "Rasayanas"
-                "rasayoga", "rasayogas" -> "Rasayogas"
-                "bhasma", "bhasmas" -> "Bhasmas"
-                else -> product.category.trim()
-            }
-            canonical.takeIf { it.isNotBlank() }
-        }.distinctBy { it.lowercase() }
-        listOf("All") + preferredOrder.filter { preferred -> normalized.any { it.equals(preferred, true) } } +
-            normalized.filterNot { item -> preferredOrder.any { it.equals(item, true) } }.sortedBy { it.lowercase() }
+        // Always show all standard category filters; do not hide a category merely
+        // because old product records use a different spelling.
+        val otherCategories = products.map { it.category.trim() }
+            .filter { it.isNotBlank() }
+            .filterNot { value -> preferredOrder.any { it.equals(value, ignoreCase = true) } }
+            .distinctBy { it.lowercase() }
+            .sortedBy { it.lowercase() }
+        listOf("All") + preferredOrder + otherCategories
     }
     fun categoryEmoji(category: String): String = when (category.trim().lowercase()) {
         "all" -> "🌿"
@@ -1830,17 +1815,16 @@ private fun AdminProductsScreen(
     }
     val filtered = remember(products, searchText, selectedAdminCategory) {
         fun normalizedCategory(value: String): String {
-            val key = value.trim().lowercase()
-                .replace("’", "").replace("'", "").replace("-", "").replace("_", "").replace(" ", "")
-            return when (key) {
-                "lehya", "lehyam", "lehyas", "lehyams", "lehyaas" -> "Lehyas"
-                "grutha", "gruthas", "ghrita", "ghritas", "ghrutha", "ghrutas" -> "Ghrutas"
-                "pill", "pills", "vati", "vatis" -> "Pills"
-                "taila", "tailam", "tailas" -> "Tailas"
-                "churna", "churnas" -> "Churnas"
-                "rasayana", "rasayanas" -> "Rasayanas"
-                "rasayoga", "rasayogas" -> "Rasayogas"
-                "bhasma", "bhasmas" -> "Bhasmas"
+            val key = value.trim().lowercase().replace(Regex("[^a-z]"), "")
+            return when {
+                key.contains("lehya") || key.contains("lehyam") || key.contains("lehyalu") -> "Lehyas"
+                key.contains("grutha") || key.contains("ghrita") || key.contains("ghrutha") || key == "ghee" -> "Ghrutas"
+                key.contains("pill") || key == "vati" || key == "vatis" -> "Pills"
+                key.contains("taila") || key == "oil" || key == "oils" -> "Tailas"
+                key.contains("churna") || key.contains("choorna") -> "Churnas"
+                key.contains("rasayana") -> "Rasayanas"
+                key.contains("rasayoga") -> "Rasayogas"
+                key.contains("bhasma") -> "Bhasmas"
                 else -> value.trim()
             }
         }
