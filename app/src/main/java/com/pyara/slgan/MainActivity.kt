@@ -1564,12 +1564,16 @@ private fun HomeBannerSlider(
                 val isSwaasamrutamBanner = normalizedBannerName.contains("swaasamrutam") || normalizedBannerName.contains("swasaamrutam")
                 val isMahilaPriyaBanner = normalizedBannerName.contains("mahilapriya")
                 val isJeevasatvamBanner = normalizedBannerName.contains("jeevasatvam")
-                val isArtworkBanner = isSwaasamrutamBanner || isMahilaPriyaBanner || isJeevasatvamBanner
+                val isMahabalaBanner = normalizedBannerName.contains("mahabala")
+                val isGaneshamruthamBanner = normalizedBannerName.contains("ganeshamrutham")
+                val isArtworkBanner = isSwaasamrutamBanner || isMahilaPriyaBanner || isJeevasatvamBanner || isMahabalaBanner || isGaneshamruthamBanner
                 Box(Modifier.fillMaxSize()) {
                     val bannerModel: Any = when {
                         isSwaasamrutamBanner -> R.drawable.swaasamrutam_banner
                         isMahilaPriyaBanner -> R.drawable.mahilapriya_banner
                         isJeevasatvamBanner -> R.drawable.jeevasatvam_banner
+                        isMahabalaBanner -> R.drawable.mahabala_banner
+                        isGaneshamruthamBanner -> R.drawable.ganeshamrutham_banner
                         selectedDesign == 4 -> {
                         when (index % 5) {
                             0 -> "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85"
@@ -1588,6 +1592,8 @@ private fun HomeBannerSlider(
                             isSwaasamrutamBanner -> "Swaasamrutam Ayurvedic product banner"
                             isMahilaPriyaBanner -> "Mahila Priya Ayurvedic product banner"
                             isJeevasatvamBanner -> "Jeevasatvam Ayurvedic product banner"
+                            isMahabalaBanner -> "Mahabala Ayurvedic product banner"
+                            isGaneshamruthamBanner -> "Ganeshamrutham Ayurvedic product banner"
                             selectedDesign == 4 -> "Botanical herbal leaves background"
                             else -> slide.productName
                         },
