@@ -6636,7 +6636,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
 
     Column(
         modifier.fillMaxSize()
-            .background(if (initialSection == "Addresses") Color(0xFFF3F5FA) else Cream)
+            .background(if (initialSection == "Addresses") Color.White else Cream)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = if (initialSection == "Addresses") 12.dp else 16.dp, vertical = if (initialSection == "Addresses") 0.dp else 18.dp)
     ) {
