@@ -1484,14 +1484,15 @@ private fun HomeBannerSlider(
                 }
             )
         }
-        val sleshamruthamSlide = signatureSlides.firstOrNull {
-            it.productName.contains("sleshamrutham", ignoreCase = true)
+        val swaasamruthamSlide = signatureSlides.firstOrNull {
+            it.productName.contains("swaasamrutham", ignoreCase = true) ||
+                it.productName.contains("swasaamrutam", ignoreCase = true)
         }
-        val orderedSignatureSlides = if (sleshamruthamSlide != null) {
-            val otherSlides = signatureSlides.filterNot { it == sleshamruthamSlide }
+        val orderedSignatureSlides = if (swaasamruthamSlide != null) {
+            val otherSlides = signatureSlides.filterNot { it == swaasamruthamSlide }
             if (otherSlides.isNotEmpty()) {
-                listOf(otherSlides.first(), sleshamruthamSlide) + otherSlides.drop(1)
-            } else listOf(sleshamruthamSlide)
+                listOf(otherSlides.first(), swaasamruthamSlide) + otherSlides.drop(1)
+            } else listOf(swaasamruthamSlide)
         } else signatureSlides
         listOf(
             HomeBannerSlide(
