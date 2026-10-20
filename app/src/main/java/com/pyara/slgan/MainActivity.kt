@@ -4238,7 +4238,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 }
                 Spacer(Modifier.height(20.dp))
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                    Icon(Icons.Default.GridView, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Default.GridView, contentDescription = null, tint = Color.Black, modifier = Modifier.size(20.dp))
                     Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 }
                 Spacer(Modifier.height(8.dp))
@@ -4305,7 +4305,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                                Icon(Icons.Default.WorkspacePremium, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
+                                Icon(Icons.Default.WorkspacePremium, contentDescription = null, tint = Color.Black, modifier = Modifier.size(20.dp))
                                 Text("Signature Products", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                             }
                             Text("SLGAN", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Leaf)
