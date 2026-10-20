@@ -5238,8 +5238,15 @@ private fun OrdersPage(
         Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onHome) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
             Text(pageTitle, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Box(Modifier.background(PaleGreen, RoundedCornerShape(50.dp)).padding(horizontal = 12.dp, vertical = 7.dp)) {
-                Text(visibleOrders.size.toString(), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
+            Box(
+                Modifier
+                    .background(Color(0xFFF5F5F8), RoundedCornerShape(50.dp))
+                    .padding(horizontal = 18.dp, vertical = 12.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
+                    Text("${visibleOrders.size} orders", color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+                }
             }
         }
         OutlinedTextField(
