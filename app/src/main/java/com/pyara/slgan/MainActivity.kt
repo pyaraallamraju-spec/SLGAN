@@ -3747,7 +3747,7 @@ private fun ShopScreen(
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult) { onTabChange("Home") }
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") })
             "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") })
-            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
+            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError, onHome = { onTabChange(previousTab) })
             "Accounts" -> AccountsPage(
                 modifier = Modifier.padding(padding),
@@ -5968,7 +5968,7 @@ private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.Image
 }
 
 @Composable
-private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onCategoryChange: (String) -> Unit, onHome: () -> Unit) {
+private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onCategoryChange: (String) -> Unit, onProductClick: (Product) -> Unit, onHome: () -> Unit) {
     var selectedCategory by remember { mutableStateOf("All") }
     var searchQuery by remember { mutableStateOf("") }
     val leftScroll = rememberScrollState()
@@ -6095,10 +6095,10 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                             rowProducts.forEach { product ->
                                 val quantityInCart = cart[product.id] ?: 0
                                 Card(
-                                    modifier = Modifier.weight(1f).height(350.dp).padding(bottom = 10.dp),
+                                    modifier = Modifier.weight(1f).height(350.dp).padding(bottom = 10.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(13.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                                 ) {
                                     Column(Modifier.fillMaxWidth()) {
                                         Box(Modifier.fillMaxWidth().height(138.dp).background(Color(0xFFF6F7FA)), contentAlignment = Alignment.Center) {
