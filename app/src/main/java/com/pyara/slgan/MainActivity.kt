@@ -5992,7 +5992,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                         Column(Modifier.fillMaxWidth().padding(horizontal = 7.dp, vertical = 7.dp)) {
                                             Text(
                                                 localizedProductName(product.name, LocalAppLanguage.current),
-                                                color = Ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                                                color = Ink, fontSize = 11.sp, fontWeight = FontWeight.SemiBold,
                                                 modifier = Modifier.fillMaxWidth().height(48.dp),
                                                 maxLines = 3, overflow = TextOverflow.Ellipsis, lineHeight = 16.sp,
                                                 minLines = 2
