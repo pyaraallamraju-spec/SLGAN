@@ -3704,7 +3704,7 @@ private fun ShopScreen(
                         .background(Color(0xFFF3F5FA)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.Default.Person, contentDescription = "Profile", tint = Forest, modifier = Modifier.size(22.dp))
+                    Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color.Black, modifier = Modifier.size(22.dp))
                 }
             }
         }
