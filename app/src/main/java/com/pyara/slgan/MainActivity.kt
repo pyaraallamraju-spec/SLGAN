@@ -4718,7 +4718,7 @@ private fun ProductDetailsPage(
     Column(Modifier.fillMaxSize().background(Color(0xFFF4F5FA))) {
         Box(Modifier.fillMaxWidth().weight(0.88f)) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                Box(Modifier.fillMaxWidth().height(360.dp).background(Color(0xFFF4F5FA))) {
+                Box(Modifier.fillMaxWidth().height(360.dp).background(Color(0xFFF1F2F4))) {
                     if (product.imageUrl.isNotBlank()) {
                         AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
                     } else {
