@@ -3672,7 +3672,6 @@ private fun ShopScreen(
                 )
             }
         }
-        }
     }) { padding ->
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult) { onTabChange("Home") }
