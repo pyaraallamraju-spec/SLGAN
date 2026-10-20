@@ -5285,18 +5285,14 @@ private fun OrdersPage(
                 }
             }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
-            currentOrders.isEmpty() -> Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Cream), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
-                Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(Modifier.size(56.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp))
-                    }
-                    Spacer(Modifier.height(8.dp))
-                    Text("No orders placed today", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
-                    Spacer(Modifier.height(4.dp))
-                    Text("Ready to discover your Ayurvedic essentials?", color = Muted, fontSize = 13.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center, lineHeight = 19.sp)
-                    Spacer(Modifier.height(8.dp))
-                    TextButton(onClick = onHome) { Text("Click here to order  →", color = Forest, fontWeight = FontWeight.Bold) }
-
+            currentOrders.isEmpty() -> Row(Modifier.fillMaxWidth().padding(vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(54.dp).background(Color(0xFFFFF4D6), CircleShape), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Gold, modifier = Modifier.size(26.dp))
+                }
+                Spacer(Modifier.width(16.dp))
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Text("No orders placed today", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    TextButton(onClick = onHome, contentPadding = PaddingValues(0.dp)) { Text("Click to order  →", color = Forest, fontWeight = FontWeight.Bold) }
                 }
             }
             else -> currentOrders.forEach { order ->
@@ -5386,10 +5382,10 @@ private fun OrdersPage(
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
                 val orderItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
-                Card(colors = CardDefaults.cardColors(containerColor = Cream), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
-                    Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                Card(colors = CardDefaults.cardColors(containerColor = Color.Transparent), shape = RoundedCornerShape(0.dp), elevation = CardDefaults.cardElevation(defaultElevation = 0.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                    Column(Modifier.fillMaxWidth().padding(vertical = 15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.size(42.dp).background(Color(0xFFE8EDE4), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp)) }
+                            Box(Modifier.size(42.dp).background(Color(0xFFFFF4D6), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp)) }
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
@@ -5398,10 +5394,12 @@ private fun OrdersPage(
                             Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.background(Color(0xFFE8EDE4), RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Forest, fontSize = 11.sp, fontWeight = FontWeight.Bold) }
+                            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color(0xFF27864A), modifier = Modifier.size(18.dp))
+                            Spacer(Modifier.width(5.dp))
+                            Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Color(0xFF27864A), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
-                            TextButton(onClick = { selectedOrder = order }) {
-                                Text("View order", color = Forest, fontWeight = FontWeight.Bold)
+                            TextButton(onClick = { selectedOrder = order }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) {
+                                Text("View Order", color = Forest, fontWeight = FontWeight.Bold)
                             }
                             TextButton(onClick = {
                                 orderItems.forEach { item ->
@@ -5410,8 +5408,7 @@ private fun OrdersPage(
                                     if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
                                 }
                                 Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
-                            }) { Text("Reorder", color = Forest, fontWeight = FontWeight.Bold) }
-                            TextButton(onClick = { rateOrder = order; selectedRating = 5 }) { Text("Rate order", color = Forest, fontWeight = FontWeight.Bold) }
+                            }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) { Text("Reorder", color = Forest, fontWeight = FontWeight.Bold) }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
@@ -5522,14 +5519,6 @@ private fun OrdersPage(
                         }
                     }
                     Spacer(Modifier.height(12.dp))
-                    Row(Modifier.fillMaxWidth().background(Color(0xFFF5F6FA)).padding(horizontal = 20.dp, vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFF4CC)), contentAlignment = Alignment.Center) {
-                            Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(26.dp))
-                        }
-                        Spacer(Modifier.width(12.dp))
-                        Text("How were your ordered items?", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                        Button(onClick = { rateOrder = order; selectedRating = 5 }, colors = ButtonDefaults.buttonColors(containerColor = Forest), shape = RoundedCornerShape(12.dp)) { Text("Rate now", color = Color.White) }
-                    }
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp)) {
                         Text("Bill details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(18.dp))
@@ -5566,7 +5555,7 @@ private fun OrdersPage(
                         Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
                 }
-                Column(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 20.dp, vertical = 12.dp)) {
+                Column(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 20.dp, vertical = 12.dp).padding(bottom = 28.dp)) {
                     Button(
                         onClick = {
                             invoiceItems.forEach { item ->
