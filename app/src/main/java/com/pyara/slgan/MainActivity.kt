@@ -1488,7 +1488,10 @@ private fun HomeBannerSlider(
             it.productName.contains("sleshamrutham", ignoreCase = true)
         }
         val orderedSignatureSlides = if (sleshamruthamSlide != null) {
-            listOf(sleshamruthamSlide) + signatureSlides.filterNot { it == sleshamruthamSlide }
+            val otherSlides = signatureSlides.filterNot { it == sleshamruthamSlide }
+            if (otherSlides.isNotEmpty()) {
+                listOf(otherSlides.first(), sleshamruthamSlide) + otherSlides.drop(1)
+            } else listOf(sleshamruthamSlide)
         } else signatureSlides
         listOf(
             HomeBannerSlide(
