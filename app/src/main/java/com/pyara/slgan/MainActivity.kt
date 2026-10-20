@@ -5259,7 +5259,7 @@ private fun OrdersPage(
     val historicalOrders = visibleOrders.filter { orderDate(it)?.isBefore(today) != false }
 
     Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(start = 0.dp, end = 16.dp, top = 16.dp, bottom = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             Surface(onClick = onHome, shape = CircleShape, color = Color.White, border = BorderStroke(1.dp, Color(0xFFE5E8EF)), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
             Spacer(Modifier.width(16.dp))
             Text(pageTitle, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
