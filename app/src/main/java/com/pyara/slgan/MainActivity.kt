@@ -1573,10 +1573,10 @@ private fun HomeBannerSlider(
                     val bannerPainter = rememberAsyncImagePainter(model = bannerModel)
                     Image(
                         painter = bannerPainter,
-                        contentDescription = if (selectedDesign == 4) "Botanical herbal leaves background" else slide.productName,
+                        contentDescription = if (index == 2) "Swaasamrutam Ayurvedic product banner" else if (selectedDesign == 4) "Botanical herbal leaves background" else slide.productName,
                         contentScale = if (index == 2 || selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize().then(
-                            if (index == 2) Modifier.clickable { openProduct("Swaasamrutam") } else Modifier
+                            if (index == 2) Modifier.clickable { openProduct(slide.productName) } else Modifier
                         )
                     )
                     if (index != 2 && bannerPainter.state is coil.compose.AsyncImagePainter.State.Loading) {
