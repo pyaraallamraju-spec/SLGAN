@@ -4408,8 +4408,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 if (product.subtitle.isNotBlank()) {
                                                     Surface(
                                                         shape = RoundedCornerShape(8.dp),
-                                                        color = Color(0xFFF5E5C8),
-                                                        contentColor = Color(0xFF762A24)
+                                                        color = Color(0xFFE1E5EC),
+                                                        contentColor = Ink
                                                     ) {
                                                         Row(
                                                             modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
