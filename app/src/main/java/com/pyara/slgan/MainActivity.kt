@@ -4241,7 +4241,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                     .graphicsLayer { rotationZ = -8f }
                                                     .width(82.dp)
                                                     .height(30.dp)
-                                                    .background(Color(0xFF2E7D32), RoundedCornerShape(8.dp)),
+                                                    .background(Color(0xFFE4AC37), RoundedCornerShape(8.dp)),
                                                 contentAlignment = Alignment.Center
                                             ) {
                                                 Text(
