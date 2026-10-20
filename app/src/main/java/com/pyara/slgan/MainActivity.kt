@@ -553,12 +553,18 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val details = if (cleanWeight.isNotBlank() && units.isNotBlank()) "$cleanWeight$units" else cleanWeight.ifBlank { units }
     val price = data["product_price"]?.toString()?.replace(",", "")?.toDoubleOrNull() ?: 0.0
     val rawCategory = data["product_category"]?.toString()?.trim().orEmpty()
-    val category = when (rawCategory.lowercase()) {
+    val categoryKey = rawCategory.lowercase()
+        .replace("’", "'")
+        .replace("'", "")
+        .replace("-", "")
+        .replace("_", "")
+        .replace(" ", "")
+    val category = when (categoryKey) {
         "rasayoga", "rasayogas" -> "Rasayogas"
-        "rasayanas", "rasayana" -> "Rasayanas"
-        "lehya", "lehyam", "lehyas" -> "Lehyas"
-        "grutha", "ghrita", "grutas", "gruthas" -> "Ghrutas"
-        "pill", "pills", "vati" -> "Pills"
+        "rasayana", "rasayanas" -> "Rasayanas"
+        "lehya", "lehyam", "lehyas", "lehyams", "lehyaas", "lehyaas" -> "Lehyas"
+        "grutha", "gruthas", "ghrita", "ghritas", "ghrutha", "ghrutas" -> "Ghrutas"
+        "pill", "pills", "vati", "vatis" -> "Pills"
         "taila", "tailam", "tailas" -> "Tailas"
         "churna", "churnas" -> "Churnas"
         "bhasma", "bhasmas" -> "Bhasmas"
@@ -1789,10 +1795,25 @@ private fun AdminProductsScreen(
     // Build the admin category filters from live product records supplied by Firestore,
     // rather than maintaining a separate hard-coded category list.
     val adminCategories = remember(products) {
-        listOf("All") + products.map { it.category.trim() }
-            .filter { it.isNotBlank() }
-            .distinctBy { it.lowercase() }
-            .sortedBy { it.lowercase() }
+        val preferredOrder = listOf("Lehyas", "Ghrutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Rasayogas", "Bhasmas")
+        val normalized = products.mapNotNull { product ->
+            val key = product.category.trim().lowercase()
+                .replace("’", "").replace("'", "").replace("-", "").replace("_", "").replace(" ", "")
+            val canonical = when (key) {
+                "lehya", "lehyam", "lehyas", "lehyams", "lehyaas" -> "Lehyas"
+                "grutha", "gruthas", "ghrita", "ghritas", "ghrutha", "ghrutas" -> "Ghrutas"
+                "pill", "pills", "vati", "vatis" -> "Pills"
+                "taila", "tailam", "tailas" -> "Tailas"
+                "churna", "churnas" -> "Churnas"
+                "rasayana", "rasayanas" -> "Rasayanas"
+                "rasayoga", "rasayogas" -> "Rasayogas"
+                "bhasma", "bhasmas" -> "Bhasmas"
+                else -> product.category.trim()
+            }
+            canonical.takeIf { it.isNotBlank() }
+        }.distinctBy { it.lowercase() }
+        listOf("All") + preferredOrder.filter { preferred -> normalized.any { it.equals(preferred, true) } } +
+            normalized.filterNot { item -> preferredOrder.any { it.equals(item, true) } }.sortedBy { it.lowercase() }
     }
     fun categoryEmoji(category: String): String = when (category.trim().lowercase()) {
         "all" -> "🌿"
@@ -1808,8 +1829,23 @@ private fun AdminProductsScreen(
         else -> "🌿"
     }
     val filtered = remember(products, searchText, selectedAdminCategory) {
+        fun normalizedCategory(value: String): String {
+            val key = value.trim().lowercase()
+                .replace("’", "").replace("'", "").replace("-", "").replace("_", "").replace(" ", "")
+            return when (key) {
+                "lehya", "lehyam", "lehyas", "lehyams", "lehyaas" -> "Lehyas"
+                "grutha", "gruthas", "ghrita", "ghritas", "ghrutha", "ghrutas" -> "Ghrutas"
+                "pill", "pills", "vati", "vatis" -> "Pills"
+                "taila", "tailam", "tailas" -> "Tailas"
+                "churna", "churnas" -> "Churnas"
+                "rasayana", "rasayanas" -> "Rasayanas"
+                "rasayoga", "rasayogas" -> "Rasayogas"
+                "bhasma", "bhasmas" -> "Bhasmas"
+                else -> value.trim()
+            }
+        }
         products.filter { product ->
-            (selectedAdminCategory == "All" || product.category.equals(selectedAdminCategory, ignoreCase = true)) &&
+            (selectedAdminCategory == "All" || normalizedCategory(product.category).equals(normalizedCategory(selectedAdminCategory), ignoreCase = true)) &&
             (searchText.isBlank() ||
                 product.name.contains(searchText, ignoreCase = true) ||
                 product.category.contains(searchText, ignoreCase = true) ||
