@@ -3725,7 +3725,7 @@ private fun ShopScreen(
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Ink, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             IconButton(onClick = { onTabChange("Accounts") }) {
                 Box(
@@ -3734,7 +3734,7 @@ private fun ShopScreen(
                         .background(Color(0xFFF3F5FA)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color.Black, modifier = Modifier.size(22.dp))
+                    Icon(Icons.Default.Person, contentDescription = "Profile", tint = Ink, modifier = Modifier.size(22.dp))
                 }
             }
         }
