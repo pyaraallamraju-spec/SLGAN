@@ -4277,7 +4277,6 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 labelColor = Ink,
                                 iconColor = Ink
                             ),
-                            border = null
                         )
                     }
                 }
