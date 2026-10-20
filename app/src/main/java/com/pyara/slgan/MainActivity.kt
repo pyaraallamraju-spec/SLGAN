@@ -4971,7 +4971,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             Text("Checkout", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
             Surface(shape = RoundedCornerShape(24.dp), color = Color(0xFFF6F7FA)) {
                 Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Forest, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color(0xFF27864A), modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
                     Text("$itemCount items", color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                 }
