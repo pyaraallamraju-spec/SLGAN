@@ -5844,21 +5844,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(16.dp)) {
-                    if (diseaseImageUrl.isNotBlank()) {
-                        AsyncImage(
-                            model = diseaseImageUrl,
-                            contentDescription = selectedDisease,
-                            modifier = Modifier.fillMaxWidth().height(190.dp).clip(RoundedCornerShape(16.dp)),
-                            contentScale = ContentScale.Crop
-                        )
-                    } else {
-                        Box(
-                            Modifier.fillMaxWidth().height(150.dp).background(Brush.verticalGradient(listOf(PaleGreen, Cream)), RoundedCornerShape(16.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest, modifier = Modifier.size(76.dp))
-                        }
-                    }
                     val detailTabs = listOf(
                         Triple("Description", Icons.Default.Info, "About"),
                         Triple("Suggested medicines", Icons.Default.MedicalServices, "Medicines"),
