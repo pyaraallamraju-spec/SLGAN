@@ -6047,7 +6047,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             }
         }
 
-        Box(Modifier.width(3.dp).fillMaxHeight().background(Color(0xFFE1D4B7)).shadow(4.dp))
+        Box(Modifier.width(3.dp).fillMaxHeight().background(Color(0xFFE5E7EB)).shadow(2.dp))
         Column(Modifier.weight(1f).fillMaxHeight().background(Color(0xFFF3F5FA))) {
             OutlinedTextField(
                 value = searchQuery,
