@@ -3699,9 +3699,9 @@ private fun ShopScreen(
             }
             IconButton(onClick = { onTabChange("Accounts") }) {
                 Box(
-                    modifier = Modifier.size(34.dp).clip(CircleShape)
-                        .background(PaleGreen)
-                        .border(1.dp, Gold.copy(alpha = 0.8f), CircleShape),
+                    modifier = Modifier.size(34.dp).shadow(5.dp, CircleShape)
+                        .clip(CircleShape)
+                        .background(Color(0xFFF3F5FA)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(Icons.Default.Person, contentDescription = "Profile", tint = Forest, modifier = Modifier.size(22.dp))
