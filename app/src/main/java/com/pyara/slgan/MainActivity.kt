@@ -5956,6 +5956,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             }
         }
     }
+}
 
 @Composable
 private fun DiseaseAccordion(
