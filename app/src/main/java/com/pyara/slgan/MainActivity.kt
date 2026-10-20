@@ -6032,7 +6032,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                             }
                                         }
-                                        Column(Modifier.fillMaxWidth().padding(horizontal = 7.dp, vertical = 7.dp)) {
+                                        Column(Modifier.fillMaxWidth().padding(horizontal = 7.dp, vertical = 5.dp)) {
                                             Text(
                                                 localizedProductName(product.name, LocalAppLanguage.current),
                                                 color = Ink, fontSize = 11.sp, fontWeight = FontWeight.SemiBold,
