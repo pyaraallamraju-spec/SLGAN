@@ -6313,10 +6313,10 @@ private fun AccountsPage(
             }
             if (email.isNotBlank()) {
                 Spacer(Modifier.height(5.dp))
-                Text(email, color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
+                Text(email, color = Ink, fontSize = 14.sp, textAlign = TextAlign.Center)
             }
             Spacer(Modifier.height(5.dp))
-            Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+            Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
         }
 
         Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
