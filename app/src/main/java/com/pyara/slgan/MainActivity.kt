@@ -552,7 +552,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val cleanWeight = weight.removeSuffix(units).trim().removeSuffix(".").trim()
     val details = if (cleanWeight.isNotBlank() && units.isNotBlank()) "$cleanWeight$units" else cleanWeight.ifBlank { units }
     val price = data["product_price"]?.toString()?.replace(",", "")?.toDoubleOrNull() ?: 0.0
-    val rawCategory = data["product_category"]?.toString()?.trim().orEmpty()
+    val rawCategory = listOf("product_category", "category", "category_name", "productCategory").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val categoryKey = rawCategory.lowercase()
         .replace("’", "'")
         .replace("'", "")
