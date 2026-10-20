@@ -5866,8 +5866,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.spacedBy(5.dp)
                             ) {
-                                Icon(icon, contentDescription = shortLabel, tint = if (selected) Ink else Muted, modifier = Modifier.size(19.dp))
-                                Text(shortLabel, color = if (selected) Ink else Muted, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
+                                Icon(icon, contentDescription = shortLabel, tint = Ink, modifier = Modifier.size(19.dp))
+                                Text(shortLabel, color = Ink, fontSize = 11.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
                             }
                         }
                     }
