@@ -6330,7 +6330,7 @@ private fun AccountsPage(
                     shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)
                 ) {
                     Column(Modifier.fillMaxSize().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(30.dp))
+                        Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(30.dp))
                         Spacer(Modifier.height(10.dp))
                         Text(label, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                     }
