@@ -4270,10 +4270,10 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 )
                             },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = Color(0xFFE1E5EC),
+                                selectedContainerColor = Color.Transparent,
                                 selectedLabelColor = Ink,
                                 selectedLeadingIconColor = Ink,
-                                containerColor = Color(0xFFF6F7FA),
+                                containerColor = Color.Transparent,
                                 labelColor = Ink,
                                 iconColor = Ink
                             ),
