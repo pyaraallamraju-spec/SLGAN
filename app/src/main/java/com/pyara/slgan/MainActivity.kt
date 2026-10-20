@@ -3739,7 +3739,7 @@ private fun ShopScreen(
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") })
             "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") })
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange) { onTabChange("Home") }
-            "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError)
+            "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError, onHome = { onTabChange("Accounts") })
             "Accounts" -> AccountsPage(
                 modifier = Modifier.padding(padding),
                 onTabChange = onTabChange,
@@ -5257,9 +5257,10 @@ private fun OrdersPage(
     val currentOrders = visibleOrders.filter { orderDate(it) == today }
     val historicalOrders = visibleOrders.filter { orderDate(it)?.isBefore(today) != false }
 
-    Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 12.dp)) {
-        Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onHome) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
+    Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Surface(onClick = onHome, shape = CircleShape, color = Color.White, border = BorderStroke(1.dp, Color(0xFFE5E8EF)), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
+            Spacer(Modifier.width(16.dp))
             Text(pageTitle, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
             Box(
                 Modifier
@@ -5652,7 +5653,7 @@ private fun OrdersPage(
 }
 
 @Composable
-private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: List<Product>, loading: Boolean, error: String?) {
+private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: List<Product>, loading: Boolean, error: String?, onHome: () -> Unit) {
     var query by remember { mutableStateOf("") }
     var selectedDisease by remember { mutableStateOf<String?>(null) }
     var dropdownExpanded by remember { mutableStateOf(false) }
@@ -5719,7 +5720,14 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         if (query.isBlank()) diseases else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
     }
 
-    Column(modifier = modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 18.dp)) {
+    Column(modifier = modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Surface(onClick = onHome, shape = CircleShape, color = Color.White, border = BorderStroke(1.dp, Color(0xFFE5E8EF)), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
+            Spacer(Modifier.width(16.dp))
+            Text(tr("Diseases", LocalAppLanguage.current), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Surface(shape = RoundedCornerShape(50.dp), color = Color(0xFFF5F5F8)) { Text("${diseases.size} items", modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp), color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 14.sp) }
+        }
+        Column(Modifier.padding(horizontal = 16.dp, vertical = 18.dp)) {
         Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(24.dp),
@@ -6172,6 +6180,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             }
         }
     }
+        }
 }
 
 @Composable
