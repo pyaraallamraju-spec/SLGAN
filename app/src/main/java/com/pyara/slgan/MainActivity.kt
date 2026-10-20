@@ -6175,18 +6175,19 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             Spacer(Modifier.height(4.dp))
                                             Text(
                                                 if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
-                                                color = Forest, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1
+                                                color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1
                                             )
                                             Spacer(Modifier.height(6.dp))
                                             if (quantityInCart == 0) {
                                                 OutlinedButton(
                                                     onClick = { onAdd(product.id) },
                                                     enabled = product.price > 0.0 && product.productStock > 0,
-                                                    modifier = Modifier.fillMaxWidth().height(34.dp),
+                                                    modifier = Modifier.fillMaxWidth().height(34.dp).background(Color(0xFFE1E5EC), RoundedCornerShape(9.dp)),
                                                     contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
                                                     shape = RoundedCornerShape(9.dp),
-                                                    border = BorderStroke(1.dp, Forest)
-                                                ) { Text("ADD", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
+                                                    colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
+                                                    border = BorderStroke(1.dp, Color(0xFFE1E5EC))
+                                                ) { Text("ADD", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
                                             } else {
                                                 Row(
                                                     Modifier.fillMaxWidth().height(34.dp).border(1.dp, Forest, RoundedCornerShape(9.dp)),
