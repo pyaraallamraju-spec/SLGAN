@@ -6186,7 +6186,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
                                                     shape = RoundedCornerShape(9.dp),
                                                     colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
-                                                    border = BorderStroke(1.dp, Color(0xFFE1E5EC))
+                                                    border = BorderStroke(1.dp, Ink)
                                                 ) { Text("ADD", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
                                             } else {
                                                 Row(
