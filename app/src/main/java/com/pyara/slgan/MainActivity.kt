@@ -2286,11 +2286,30 @@ private fun AdminProductEditor(
                     val firestoreOptions = snapshot.documents.mapNotNull { doc ->
                         val label = (doc.getString("category_name") ?: doc.getString("name") ?: doc.id).trim()
                         if (label.isBlank()) null else label to doc.getString("emoji").orEmpty()
-                    }.distinctBy { it.first.lowercase() }.sortedBy { it.first.lowercase() }
-                    categoryOptions = if (firestoreOptions.isEmpty()) defaultCategoryOptions else firestoreOptions
-                    if (category.isNotBlank() && categoryOptions.none { it.first.equals(category, ignoreCase = true) }) {
-                        categoryOptions = (categoryOptions + (category.trim() to "")).distinctBy { it.first.lowercase() }.sortedBy { it.first.lowercase() }
                     }
+                    // Always retain the built-in category choices, even if Firestore
+                    // contains an incomplete/legacy categories collection.
+                    val mergedOptions = (defaultCategoryOptions + firestoreOptions)
+                        .map { (label, emoji) ->
+                            val key = label.lowercase().replace(Regex("[^a-z]"), "")
+                            val canonical = when (key) {
+                                "lehya", "lehyam", "lehyas", "lehyalu" -> "Lehyas"
+                                "grutha", "gruthas", "ghrita", "ghritas", "ghrutha", "ghrutas" -> "Ghrutas"
+                                "pill", "pills", "vati", "vatis" -> "Pills"
+                                "taila", "tailam", "tailas" -> "Tailas"
+                                "churna", "churnas", "choorna", "choornas" -> "Churnas"
+                                "rasayana", "rasayanas" -> "Rasayanas"
+                                "rasayoga", "rasayogas" -> "Rasayogas"
+                                "bhasma", "bhasmas" -> "Bhasmas"
+                                else -> label
+                            }
+                            val fallbackEmoji = defaultCategoryOptions.firstOrNull { it.first == canonical }?.second.orEmpty()
+                            canonical to emoji.ifBlank { fallbackEmoji }
+                        }
+                        .distinctBy { it.first.lowercase() }
+                    categoryOptions = if (category.isNotBlank() && mergedOptions.none { it.first.equals(category, ignoreCase = true) }) {
+                        mergedOptions + (category.trim() to "")
+                    } else mergedOptions
                 }
             }
         }
