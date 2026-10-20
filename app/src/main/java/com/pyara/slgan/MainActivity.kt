@@ -1385,13 +1385,25 @@ private fun LoginScreen(
         Button(
             onClick = onContinue,
             enabled = !loading,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(52.dp),
-            shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6B1825))
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(56.dp),
+            shape = RoundedCornerShape(20.dp),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 8.dp,
+                pressedElevation = 3.dp,
+                focusedElevation = 8.dp,
+                hoveredElevation = 8.dp,
+                disabledElevation = 0.dp
+            ),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color(0xFF2E7D32),
+                disabledContainerColor = Color.White,
+                disabledContentColor = Color(0xFF2E7D32).copy(alpha = 0.6f)
+            )
         ) {
             Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.width(12.dp))
-            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color(0xFF2E7D32), strokeWidth = 2.dp)
             else Icon(Icons.Default.ArrowForward, null)
         }
         Row(
