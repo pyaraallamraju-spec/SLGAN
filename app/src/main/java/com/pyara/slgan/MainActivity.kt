@@ -6048,7 +6048,12 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             Spacer(Modifier.height(3.dp))
                                             Text(product.subtitle.takeIf { it.isNotBlank() && it != "Traditional Ayurvedic product" } ?: "Pack size not set", color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                             Spacer(Modifier.height(3.dp))
-                                            ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary(), compact = true)
+                                            Box(
+                                                modifier = Modifier.fillMaxWidth().height(22.dp),
+                                                contentAlignment = Alignment.CenterStart
+                                            ) {
+                                                ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary(), compact = true)
+                                            }
                                             Spacer(Modifier.height(4.dp))
                                             Text(
                                                 if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
