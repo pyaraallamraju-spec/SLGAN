@@ -7106,9 +7106,9 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             state = existing["state"]?.toString().orEmpty()
                             pincode = existing["pincode"]?.toString().orEmpty()
                         }
-                        // Open Add address and immediately show the same map screen as "Show map".
-                        // Keep the saved address fields prefilled for verification.
-                        showAddressForm = true
+                        // Go straight to the same map screen opened by "Show map".
+                        // Do not navigate to the Add address form.
+                        showAddressForm = false
                         addressMessage = null
                         showMapPicker = true
                     },
