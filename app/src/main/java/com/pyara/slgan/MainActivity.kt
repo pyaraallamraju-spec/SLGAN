@@ -5018,10 +5018,10 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 }
                                 Spacer(Modifier.width(6.dp))
                                 Column(horizontalAlignment = Alignment.End) {
-                                    Row(Modifier.background(Forest, RoundedCornerShape(10.dp)).padding(horizontal = 2.dp), verticalAlignment = Alignment.CenterVertically) {
-                                        IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = "Decrease quantity", tint = Color.White, modifier = Modifier.size(16.dp)) }
-                                        Text(quantity.toString(), color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                                        IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = "Increase quantity", tint = Color.White, modifier = Modifier.size(16.dp)) }
+                                    Row(Modifier.background(Color(0xFFF1F2F4), RoundedCornerShape(10.dp)).padding(horizontal = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+                                        IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = "Decrease quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
+                                        Text(quantity.toString(), color = Ink, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                        IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = "Increase quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
                                     }
                                     Spacer(Modifier.height(10.dp))
                                     Text(money(product.price * quantity), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
