@@ -5890,16 +5890,17 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         ) {
                             when (activeTab) {
                                 "Description" -> {
-                                    Row(
-                                        Modifier.fillMaxWidth()
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .background(Color.Black)
-                                            .padding(horizontal = 10.dp, vertical = 8.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(Icons.Default.Info, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Box(
+                                            Modifier.size(30.dp)
+                                                .clip(CircleShape)
+                                                .background(Color.Black),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Icon(Icons.Default.Info, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
+                                        }
                                         Spacer(Modifier.width(8.dp))
-                                        Text("About this condition", color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                        Text("About this condition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
                                 }
