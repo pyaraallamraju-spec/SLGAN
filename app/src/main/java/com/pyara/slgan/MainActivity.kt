@@ -5920,7 +5920,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     Text(
                         tr(category, LocalAppLanguage.current),
                         color = if (selected) Forest else Muted,
-                        fontSize = 11.sp,
+                        fontSize = 13.sp,
                         fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.Medium,
                         textAlign = TextAlign.Center,
                         lineHeight = 14.sp
