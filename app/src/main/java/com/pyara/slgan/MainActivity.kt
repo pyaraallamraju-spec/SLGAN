@@ -1738,7 +1738,7 @@ private fun HomeBannerSlider(
                         .padding(horizontal = 4.dp)
                         .size(width = if (selected) 22.dp else 7.dp, height = 7.dp)
                         .clip(CircleShape)
-                        .background(if (selected) Forest else Gold.copy(alpha = 0.65f))
+                        .background(if (selected) Color.Black else Color(0xFFE1E5EC))
                         .clickable { activeSlide = index }
                 )
             }
