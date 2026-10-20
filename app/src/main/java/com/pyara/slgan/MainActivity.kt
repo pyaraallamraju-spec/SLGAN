@@ -102,6 +102,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -1556,20 +1557,34 @@ private fun HomeBannerSlider(
                 val slide = slides[index]
                 val productImage = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }?.imageUrl.orEmpty()
                 Box(Modifier.fillMaxSize()) {
-                    AsyncImage(
-                        model = if (selectedDesign == 4) {
-                            when (index % 5) {
-                                0 -> "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85"
-                                1 -> "https://images.unsplash.com/photo-1515586000433-45406d8e6662?auto=format&fit=crop&w=1400&q=85"
-                                2 -> "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=85"
-                                3 -> "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?auto=format&fit=crop&w=1400&q=85"
-                                else -> "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1400&q=85"
-                            }
-                        } else slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl.ifBlank { "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85" } },
+                    val bannerModel = if (selectedDesign == 4) {
+                        when (index % 5) {
+                            0 -> "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85"
+                            1 -> "https://images.unsplash.com/photo-1515586000433-45406d8e6662?auto=format&fit=crop&w=1400&q=85"
+                            2 -> "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=85"
+                            3 -> "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?auto=format&fit=crop&w=1400&q=85"
+                            else -> "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1400&q=85"
+                        }
+                    } else slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl.ifBlank { "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85" } }
+                    val bannerPainter = rememberAsyncImagePainter(model = bannerModel)
+                    Image(
+                        painter = bannerPainter,
                         contentDescription = if (selectedDesign == 4) "Botanical herbal leaves background" else slide.productName,
                         contentScale = if (selectedDesign == 4) ContentScale.Crop else if (slide.isCompanySlide) ContentScale.Fit else ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
+                    if (bannerPainter.state is coil.compose.AsyncImagePainter.State.Loading) {
+                        Box(
+                            Modifier.fillMaxSize().background(Color(0x22FFFFFF)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(30.dp),
+                                color = Forest,
+                                strokeWidth = 3.dp
+                            )
+                        }
+                    }
                     // Slider 4's decorative frame appears on every slide while design 4 is active.
                     if (selectedDesign == 4) {
                         Box(Modifier.fillMaxSize()) {
