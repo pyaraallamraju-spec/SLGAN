@@ -543,7 +543,7 @@ private val categories = listOf("All", "Lehyas", "Ghrutas", "Pills", "Tailas", "
 private val fallbackDiseases = listOf("All Diseases", "Cough", "Fever", "Obesity", "Tuberculosis (TB)")
 
 private fun productFromFirestore(data: Map<String, Any?>): Product? {
-    val name = data["product_name"]?.toString()?.trim().orEmpty()
+    val name = listOf("product_name", "name", "productName", "product_title", "title", "medicine_name").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     if (name.isBlank()) return null
     // Show only the pack weight beneath the product name, e.g. "5g".
     // Quantity is intentionally hidden; avoid separators such as "1 · 5 · g".
@@ -552,7 +552,7 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     val cleanWeight = weight.removeSuffix(units).trim().removeSuffix(".").trim()
     val details = if (cleanWeight.isNotBlank() && units.isNotBlank()) "$cleanWeight$units" else cleanWeight.ifBlank { units }
     val price = data["product_price"]?.toString()?.replace(",", "")?.toDoubleOrNull() ?: 0.0
-    val rawCategory = listOf("product_category", "category", "category_name", "productCategory").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    val rawCategory = listOf("product_category", "category", "category_name", "productCategory", "categoryName", "product_type", "productType", "type", "product_category_name").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val categoryKey = rawCategory.lowercase().replace(Regex("[^a-z]"), "")
     val category = when {
         categoryKey.contains("lehya") || categoryKey.contains("lehyam") || categoryKey.contains("lehyalu") -> "Lehyas"
