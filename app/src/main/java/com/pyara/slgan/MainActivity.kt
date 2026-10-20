@@ -5371,8 +5371,8 @@ private fun OrdersPage(
                 Text("Current orders", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text("Placed today · ${today.format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"))}", color = Muted, fontSize = 12.sp)
             }
-            Box(Modifier.background(PaleGreen, RoundedCornerShape(50.dp)).padding(horizontal = 11.dp, vertical = 7.dp)) {
-                Text(currentOrders.size.toString(), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
+            Box(Modifier.background(Color.White, RoundedCornerShape(50.dp)).padding(horizontal = 11.dp, vertical = 7.dp)) {
+                Text(currentOrders.size.toString(), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
             }
         }
         Spacer(Modifier.height(10.dp))
@@ -5462,8 +5462,8 @@ private fun OrdersPage(
                 Text("Previous orders", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text("Your order history", color = Muted, fontSize = 12.sp)
             }
-            Box(Modifier.background(Color(0xFFE8EDE4), RoundedCornerShape(50.dp)).padding(horizontal = 11.dp, vertical = 7.dp)) {
-                Text(historicalOrders.size.toString(), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
+            Box(Modifier.background(Color.White, RoundedCornerShape(50.dp)).padding(horizontal = 11.dp, vertical = 7.dp)) {
+                Text(historicalOrders.size.toString(), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
             }
         }
         Spacer(Modifier.height(10.dp))
