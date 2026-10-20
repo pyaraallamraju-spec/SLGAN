@@ -5835,7 +5835,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             Spacer(Modifier.height(14.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("DISEASE DETAILS", color = Leaf, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
+                    Text("DISEASE DETAILS", color = Ink, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
                     Text(selectedDisease!!, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 }
                 IconButton(onClick = {
