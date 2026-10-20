@@ -3650,7 +3650,7 @@ private fun ShopScreen(
         }
     }, bottomBar = {
         if (selectedTab != "Orders" && selectedTab != "MyOrders") {
-        NavigationBar(modifier = Modifier.fillMaxWidth().shadow(10.dp), containerColor = Color.White, contentColor = Forest) {
+        NavigationBar(modifier = Modifier.fillMaxWidth().shadow(8.dp), containerColor = Color.White, contentColor = Forest) {
             listOf(
                 Triple("Home", Icons.Default.Home, "Home"),
                 Triple("Categories", Icons.Default.GridView, "Categories"),
