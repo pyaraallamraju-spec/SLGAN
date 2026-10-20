@@ -1578,6 +1578,7 @@ private fun HomeBannerSlider(
                             3 -> "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?auto=format&fit=crop&w=1400&q=85"
                             else -> "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1400&q=85"
                         }
+                        }
                         else -> slide.drawableResId ?: productImage.ifBlank { slide.fallbackImageUrl.ifBlank { "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1400&q=85" } }
                     }
                     val bannerPainter = rememberAsyncImagePainter(model = bannerModel)
