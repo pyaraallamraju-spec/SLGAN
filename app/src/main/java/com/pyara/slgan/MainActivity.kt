@@ -5048,12 +5048,15 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         OutlinedButton(
                                             onClick = { onAdd(product.id) },
                                             enabled = product.price > 0.0 && product.productStock > 0,
-                                            modifier = Modifier.fillMaxWidth().height(34.dp).background(Color(0xFFE1E5EC), RoundedCornerShape(9.dp)),
-                                            contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
-                                            shape = RoundedCornerShape(9.dp),
+                                            modifier = Modifier.fillMaxWidth().background(Color(0xFFE1E5EC), RoundedCornerShape(10.dp)),
+                                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp),
+                                            shape = RoundedCornerShape(10.dp),
                                             colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
                                             border = BorderStroke(1.dp, Ink)
-                                        ) { Text("ADD", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
+                                        ) {
+                                            Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(15.dp))
+                                            Text("ADD", fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                                        }
                                     }
                                 }
                             }
