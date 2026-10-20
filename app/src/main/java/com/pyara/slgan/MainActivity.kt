@@ -4121,7 +4121,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         value = search,
                         onValueChange = onSearchChange,
                         textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-                        modifier = Modifier.fillMaxWidth().height(60.dp),
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp).defaultMinSize(minHeight = 60.dp),
                         label = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 13.sp, color = Muted) },
                         leadingIcon = {
                             Icon(
