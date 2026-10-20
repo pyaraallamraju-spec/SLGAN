@@ -7461,7 +7461,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     )
                     Spacer(Modifier.height(18.dp))
                     Button(
-                        onClick = { showAddressLocationSheet = true; addressMessage = null },
+                        onClick = { showAddressForm = true; showAddressLocationSheet = true; addressMessage = null },
                         modifier = Modifier.fillMaxWidth(0.78f).height(54.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Forest),
@@ -7493,7 +7493,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         )
                     }
                     Button(
-                        onClick = { showAddressLocationSheet = true; addressMessage = null },
+                        onClick = { showAddressForm = true; showAddressLocationSheet = true; addressMessage = null },
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Forest),
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 10.dp),
