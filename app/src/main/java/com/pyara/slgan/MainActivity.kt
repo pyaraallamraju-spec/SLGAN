@@ -1650,15 +1650,21 @@ private fun HomeBannerSlider(
                             .padding(horizontal = 22.dp, vertical = 22.dp),
                         verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        Text(
-                            text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
-                                else tr("Authentic Ayurvedic", LocalAppLanguage.current),
-                            color = Color(0xFF2E7D32),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 1.1.sp,
-                            maxLines = 1
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Text("🌿", fontSize = 15.sp)
+                            Text(
+                                text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
+                                    else tr("Authentic Ayurvedic", LocalAppLanguage.current),
+                                color = Color(0xFF2E7D32),
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.1.sp,
+                                maxLines = 1
+                            )
+                        }
                         Spacer(Modifier.height(4.dp))
                         Text(
                             modifier = Modifier.animateEnterExit(
