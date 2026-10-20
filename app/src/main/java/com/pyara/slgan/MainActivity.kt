@@ -1178,13 +1178,9 @@ private fun LoginScreen(
 ) {
     var showPassword by remember { mutableStateOf(false) }
     Column(
-        Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(bottom = 12.dp),
+        Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).padding(bottom = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Traditional maroon-and-gold header band
-        Box(Modifier.fillMaxWidth().height(18.dp).background(Color(0xFF6B1825))) {
-            Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.BottomCenter).background(Gold))
-        }
         Spacer(Modifier.height(14.dp))
         val logoScale = remember { Animatable(0.55f) }
         val logoRotation = remember { Animatable(-18f) }
@@ -1413,9 +1409,6 @@ private fun LoginScreen(
         Spacer(Modifier.height(4.dp))
         Text(tr("Mobile-number login is not available yet.", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(30.dp))
-        Box(Modifier.fillMaxWidth().height(18.dp).background(Color(0xFF6B1825))) {
-            Box(Modifier.fillMaxWidth().height(4.dp).align(Alignment.TopCenter).background(Gold))
-        }
     }
 }
 
