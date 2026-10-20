@@ -6038,7 +6038,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { searchQuery = it },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, top = 2.dp, bottom = 0.dp).height(60.dp),
+                modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp, top = 2.dp, bottom = 0.dp).height(60.dp),
                 textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
                 placeholder = { Text("Search products", fontSize = 13.sp, maxLines = 1, color = Muted) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(22.dp), tint = Muted) },
