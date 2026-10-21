@@ -7669,7 +7669,16 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
-                                Icon(Icons.Default.CheckCircle, null, tint = Gold, modifier = Modifier.size(21.dp))
+                                Surface(
+                                    modifier = Modifier.size(30.dp),
+                                    shape = CircleShape,
+                                    color = Color(0xFFE3F3E7),
+                                    shadowElevation = 3.dp
+                                ) {
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Icon(Icons.Default.CheckCircle, null, tint = Color(0xFF278548), modifier = Modifier.size(20.dp))
+                                    }
+                                }
                             }
                             Spacer(Modifier.height(14.dp))
                             HorizontalDivider(color = Gold.copy(alpha = 0.28f), thickness = 1.dp)
