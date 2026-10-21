@@ -2004,7 +2004,7 @@ private fun AdminProductsScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(containerColor = AdminSurface)),
+                        colors = CardDefaults.cardColors(containerColor = AdminSurface),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
                         Column {
