@@ -7046,7 +7046,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         runCatching { LocalDate.parse(it) }.getOrNull()
                     }
                     val mobileDigits = mobileNumber.filter(Char::isDigit)
-                    val countryCodeValid = selectedCountry.third.matches(Regex("^\\\\+[1-9]\\\\d{0,3}$"))
+                    val countryCodeValid = selectedCountry.third.matches(Regex("^\\+[1-9]\\d{0,3}$"))
                     val mobileValid = when (selectedCountry.first) {
                         "IN" -> mobileDigits.length == 10 && mobileDigits.firstOrNull() in '6'..'9'
                         "US", "CA" -> mobileDigits.length == 10
