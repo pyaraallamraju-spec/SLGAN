@@ -1723,17 +1723,7 @@ private fun HomeBannerSlider(
                             )
                         }
                         Spacer(Modifier.height(2.dp))
-                        Spacer(Modifier.height(4.dp))
-                        Row(
-                            modifier = Modifier.width(150.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(5.dp)
-                        ) {
-                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
-                            Text("❋", color = Gold, fontSize = 14.sp)
-                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
-                        }
-                        Spacer(Modifier.height(3.dp))
+                        Spacer(Modifier.height(7.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(5.dp)
