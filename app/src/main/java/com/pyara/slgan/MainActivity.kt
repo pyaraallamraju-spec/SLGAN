@@ -6691,9 +6691,14 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                 ).forEach { suggestion ->
                     SuggestionChip(
                         onClick = { input = suggestion },
-                        label = { Text(suggestion, fontSize = 11.sp, maxLines = 1) },
-                        border = SuggestionChipDefaults.suggestionChipBorder(enabled = true, borderColor = Gold.copy(alpha = 0.55f)),
-                        colors = SuggestionChipDefaults.suggestionChipColors(labelColor = Forest)
+                        label = { Text(suggestion, fontSize = 11.sp, maxLines = 1, color = Ink) },
+                        border = null,
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.shadow(3.dp, RoundedCornerShape(12.dp)),
+                        colors = SuggestionChipDefaults.suggestionChipColors(
+                            containerColor = Color.White,
+                            labelColor = Ink
+                        )
                     )
                 }
             }
