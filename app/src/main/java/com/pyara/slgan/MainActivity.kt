@@ -5875,7 +5875,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     query = ""
                     dropdownExpanded = false
                 }) {
-                    Icon(Icons.Default.Close, contentDescription = "Close disease details and clear search", tint = Forest)
+                    Icon(Icons.Default.Close, contentDescription = "Close disease details and clear search", tint = Ink)
                 }
             }
             Spacer(Modifier.height(12.dp))
