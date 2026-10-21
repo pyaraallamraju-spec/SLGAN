@@ -5807,7 +5807,8 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     onDismissRequest = { dropdownExpanded = false },
                     modifier = Modifier.fillMaxWidth(0.94f)
                         .heightIn(max = 280.dp)
-                        .background(Color.White, RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color.White)
                         .border(1.dp, Color(0xFFE5E8EF), RoundedCornerShape(12.dp))
                 ) {
                     matches.forEach { disease ->
