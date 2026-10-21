@@ -5451,7 +5451,7 @@ private fun OrdersPage(
                 }
             }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
-            currentOrders.isEmpty() -> Row(Modifier.fillMaxWidth().padding(vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
+            currentOrders.isEmpty() -> Row(Modifier.fillMaxWidth().background(Color(0xFFF4F5FA)).padding(horizontal = 0.dp, vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(54.dp).shadow(4.dp, CircleShape).background(Color.White, CircleShape), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Ink, modifier = Modifier.size(26.dp))
                 }
