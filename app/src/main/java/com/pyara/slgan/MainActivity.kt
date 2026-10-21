@@ -7814,14 +7814,15 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(44.dp)
-                                        .background(PaleGreen, RoundedCornerShape(14.dp))
-                                        .border(1.dp, Gold.copy(alpha = 0.45f), RoundedCornerShape(14.dp)),
-                                    contentAlignment = Alignment.Center
+                                Surface(
+                                    modifier = Modifier.size(44.dp),
+                                    shape = RoundedCornerShape(14.dp),
+                                    color = Color(0xFFE1E5EC),
+                                    shadowElevation = 4.dp
                                 ) {
-                                    Icon(Icons.Default.LocationOn, null, tint = Forest, modifier = Modifier.size(24.dp))
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Icon(Icons.Default.LocationOn, null, tint = Ink, modifier = Modifier.size(24.dp))
+                                    }
                                 }
                                 Spacer(Modifier.width(12.dp))
                                 Column(Modifier.weight(1f)) {
