@@ -4760,6 +4760,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ProductDetailsPage(
     product: Product,
