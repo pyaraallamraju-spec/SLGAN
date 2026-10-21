@@ -1648,20 +1648,22 @@ private fun HomeBannerSlider(
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
-                        Spacer(Modifier.height(1.dp))
-                        Text(
-                            text = tr(slide.tagline, LocalAppLanguage.current),
-                            modifier = Modifier.animateEnterExit(
-                                enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
-                                    slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
-                            ),
-                            color = Color(0xFF5B3428),
-                            fontSize = 11.sp,
-                            lineHeight = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            maxLines = if (slide.isCompanySlide) 3 else 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                        if (!slide.isCompanySlide) {
+                            Spacer(Modifier.height(1.dp))
+                            Text(
+                                text = tr(slide.tagline, LocalAppLanguage.current),
+                                modifier = Modifier.animateEnterExit(
+                                    enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
+                                        slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
+                                ),
+                                color = Color(0xFF5B3428),
+                                fontSize = 11.sp,
+                                lineHeight = 15.sp,
+                                fontWeight = FontWeight.Medium,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
                         Spacer(Modifier.height(9.dp))
                         Row(
                             modifier = Modifier.width(150.dp),
