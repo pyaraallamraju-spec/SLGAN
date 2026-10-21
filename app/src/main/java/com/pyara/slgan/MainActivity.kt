@@ -6029,7 +6029,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 val selected = category.equals(selectedCategory, true)
                 Column(
                     Modifier.fillMaxWidth().padding(bottom = 8.dp).clip(RoundedCornerShape(14.dp))
-                        .background(if (selected) Color(0xFFEAF8E9) else Color.White)
+                        .background(if (selected) Color(0xFFE8E9ED) else Color.White)
                         .clickable {
                             selectedCategory = category
                             onCategoryChange(category)
@@ -6038,7 +6038,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 ) {
                     Box(
                         Modifier.size(54.dp).clip(CircleShape)
-                            .background(if (selected) Color(0xFFE7F9E7) else Color(0xFFF5F7FA)),
+                            .background(if (selected) Color(0xFFE8E9ED) else Color(0xFFF5F7FA)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(categoryEmojis[category.lowercase()] ?: "🌿", fontSize = 27.sp)
@@ -6046,7 +6046,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     Spacer(Modifier.height(5.dp))
                     Text(
                         tr(category, LocalAppLanguage.current),
-                        color = if (selected) Forest else Muted,
+                        color = if (selected) Ink else Muted,
                         fontSize = 13.sp,
                         fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.Medium,
                         textAlign = TextAlign.Center,
