@@ -6825,7 +6825,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     onClick = { showAddressLocationSheet = true; addressMessage = null },
                     modifier = Modifier.size(48.dp)
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add address", tint = Forest, modifier = Modifier.size(28.dp))
+                    Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
                 }
             }
             Spacer(Modifier.height(20.dp))
