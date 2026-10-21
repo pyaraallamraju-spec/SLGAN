@@ -6886,7 +6886,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         singleLine = true
                     )
                     Box(Modifier.matchParentSize().clickable { countryMenuExpanded = true })
-                    DropdownMenu(expanded = countryMenuExpanded, onDismissRequest = { countryMenuExpanded = false }) {
+                    DropdownMenu(expanded = countryMenuExpanded, onDismissRequest = { countryMenuExpanded = false }, containerColor = Color.White) {
                         countryCodes.forEach { country ->
                             DropdownMenuItem(
                                 text = { Text("${country.second}  ${country.first}  ${country.third}") },
@@ -6980,7 +6980,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Box(Modifier.fillMaxWidth()) {
                 OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Ink) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
                 Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
-                DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }) {
+                DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }, containerColor = Color.White) {
                     listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
                         DropdownMenuItem(text = { Text(tr(option, LocalAppLanguage.current)) }, onClick = { gender = option; genderMenuExpanded = false; saveMessage = null })
                     }
@@ -7001,7 +7001,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     leadingIcon = { Icon(Icons.Default.Language, null, tint = Ink) }
                 )
                 Box(Modifier.matchParentSize().clickable { languageMenuExpanded = true })
-                DropdownMenu(expanded = languageMenuExpanded, onDismissRequest = { languageMenuExpanded = false }) {
+                DropdownMenu(expanded = languageMenuExpanded, onDismissRequest = { languageMenuExpanded = false }, containerColor = Color.White) {
                     listOf("English", "Telugu", "Hindi").forEach { option ->
                         DropdownMenuItem(text = { Text(tr(option, appLanguage)) }, onClick = {
                             onLanguageChange(option)
