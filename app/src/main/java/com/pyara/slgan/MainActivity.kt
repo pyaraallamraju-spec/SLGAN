@@ -4621,7 +4621,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
             }
         }
         if (summary.count > 0) {
-            Text("(${summary.count})", color = Muted, fontSize = if (compact) 8.sp else 9.sp, maxLines = 1)
+            Text("(${summary.count})", modifier = Modifier.offset(y = (-1).dp), color = Muted, fontSize = if (compact) 8.sp else 9.sp, maxLines = 1)
         } else if (showEmptyLabel) {
             Text("No ratings", color = Muted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
