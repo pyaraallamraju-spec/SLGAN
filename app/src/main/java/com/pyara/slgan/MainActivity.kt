@@ -1671,6 +1671,7 @@ private fun HomeBannerSlider(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
+                            Text(text = "🌿", fontSize = 13.sp)
                             Text(
                                 text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
                                     else tr("Authentic Ayurvedic", LocalAppLanguage.current),
@@ -1680,7 +1681,6 @@ private fun HomeBannerSlider(
                                 letterSpacing = 1.1.sp,
                                 maxLines = 1
                             )
-                            Text(text = "🌿", fontSize = 13.sp)
                         }
                         Spacer(Modifier.height(2.dp))
                         if (!slide.isCompanySlide) {
