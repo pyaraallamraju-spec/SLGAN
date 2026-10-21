@@ -4606,9 +4606,19 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
             }
         }
         if (summary.count > 0) {
-            Text("(${summary.count})", modifier = if (countBaselineFix) Modifier.offset(y = (-1).dp) else Modifier, color = Muted, fontSize = if (compact) 8.sp else 9.sp, maxLines = 1)
+            Box(
+                modifier = Modifier.height(if (compact) 12.dp else 20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("(${summary.count})", color = Muted, fontSize = if (compact) 8.sp else 9.sp, maxLines = 1, lineHeight = if (compact) 12.sp else 20.sp)
+            }
         } else if (showEmptyLabel) {
-            Text("No ratings", color = Muted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Box(
+                modifier = Modifier.height(if (compact) 12.dp else 20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("No ratings", color = Muted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
         }
     }
 }
