@@ -7711,7 +7711,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                     shadowElevation = 4.dp
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
-                                        Icon(Icons.Default.Home, null, tint = Ink, modifier = Modifier.size(19.dp))
+                                        Icon(Icons.Default.Home, null, tint = Ink, modifier = Modifier.size(18.dp))
                                     }
                                 }
                                 Spacer(Modifier.width(9.dp))
