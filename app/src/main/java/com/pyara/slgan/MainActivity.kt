@@ -6822,7 +6822,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Spacer(Modifier.width(14.dp))
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
                 IconButton(
-                    onClick = { showAddressLocationSheet = true; addressMessage = null },
+                    onClick = {
+                        showAddressForm = true
+                        showAddressLocationSheet = true
+                        addressMessage = null
+                    },
                     modifier = Modifier.size(48.dp)
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
