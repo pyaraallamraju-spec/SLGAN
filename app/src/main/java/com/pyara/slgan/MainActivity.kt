@@ -1814,7 +1814,7 @@ private fun AdminProductsScreen(
                 product.id.contains(searchText, ignoreCase = true))
         }.sortedBy { it.name.lowercase() }
     }
-    Column(Modifier.fillMaxSize().background(Color.White)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
         Column(
             Modifier.fillMaxWidth()
                 .background(Color.White, RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
@@ -1872,12 +1872,12 @@ private fun AdminProductsScreen(
                     Icon(Icons.Default.Close, "Clear search")
                 }
             },
-            shape = RectangleShape,
+            shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
+                focusedBorderColor = Gold,
+                unfocusedBorderColor = Gold.copy(alpha = 0.45f),
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
                 focusedLabelColor = Muted,
                 unfocusedLabelColor = Muted,
                 cursorColor = Forest
@@ -1936,7 +1936,7 @@ private fun AdminProductsScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(containerColor = Cream),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
                         border = androidx.compose.foundation.BorderStroke(1.dp, Gold.copy(alpha = 0.48f)),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
@@ -2116,7 +2116,7 @@ private fun AdminProductDetailsScreen(
         .split(Regex("\\s+"))
         .joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
 
-    Column(Modifier.fillMaxSize().background(Color.White)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -2307,7 +2307,7 @@ private fun AdminProductEditor(
     var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
     var saving by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
-    Column(Modifier.fillMaxSize().background(Color.White)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack, enabled = !saving) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
             Text(if (isNew) "Add product" else "Edit product", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
@@ -2516,7 +2516,7 @@ private fun AdminDashboardScreen(
         }
     }
     Column(
-        Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).padding(20.dp)
+        Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
         Row(
             Modifier.fillMaxWidth(),
@@ -2633,7 +2633,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
         }
         onDispose { listener.remove() }
     }
-    Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(onClick = onBack, shape = CircleShape, color = Color.White, border = BorderStroke(1.dp, Color(0xFFE5E8EF)), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
             Spacer(Modifier.width(16.dp))
@@ -2711,7 +2711,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         }
         onDispose { registration.remove() }
     }
-    Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
             Column { Text("HOME PAGE SLIDERS", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
@@ -2941,7 +2941,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
         )
     }
 
-    Column(Modifier.fillMaxSize().background(Color.White)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
         // Match the Products admin page header: white rounded container, title row,
         // forest-green library card, and search field inside the same header section.
         Column(
@@ -3049,7 +3049,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = Cream),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                     ) {
                         Row(Modifier.fillMaxWidth().padding(15.dp), verticalAlignment = Alignment.Top) {
@@ -3109,7 +3109,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             .contains(search.trim(), ignoreCase = true)
     }
 
-    Column(Modifier.fillMaxSize().background(Color.White).padding(top = 8.dp)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).padding(top = 8.dp)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
@@ -3141,12 +3141,12 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
             label = { Text("Search name, email or mobile", modifier = Modifier.background(Color.Transparent), color = Muted, fontSize = 13.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Muted, modifier = Modifier.size(22.dp)) },
-            shape = RectangleShape,
+            shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
+                focusedBorderColor = Gold,
+                unfocusedBorderColor = Gold.copy(alpha = 0.45f),
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
                 focusedLabelColor = Muted,
                 unfocusedLabelColor = Muted,
                 cursorColor = Forest
@@ -3177,7 +3177,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = Cream),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                     ) {
                         Column(Modifier.padding(15.dp)) {
@@ -3423,7 +3423,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         if (ts == null) "Date not available" else dateFormat.format(ts.toDate())
     }
 
-    Column(Modifier.fillMaxSize().background(Color.White)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
@@ -3462,12 +3462,12 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                     Icon(Icons.Default.Close, contentDescription = "Clear search")
                 }
             },
-            shape = RectangleShape,
+            shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
+                focusedBorderColor = Gold,
+                unfocusedBorderColor = Gold.copy(alpha = 0.45f),
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
                 focusedLabelColor = Muted,
                 unfocusedLabelColor = Muted,
                 cursorColor = Forest
@@ -3477,7 +3477,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 2.dp),
             shape = RoundedCornerShape(18.dp),
-            colors = CardDefaults.cardColors(containerColor = Cream),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
             elevation = CardDefaults.cardElevation(1.dp)
         ) {
             Column(Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
