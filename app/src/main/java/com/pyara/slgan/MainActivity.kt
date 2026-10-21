@@ -5137,7 +5137,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Text(money(total), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                     Text("TOTAL", color = Muted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 }
-                Button(onClick = { showCheckout = true; errorMessage = null }, modifier = Modifier.weight(1.3f).height(58.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF1F2F4), contentColor = Ink)) {
+                Button(onClick = { showCheckout = true; errorMessage = null }, modifier = Modifier.weight(1.3f).height(58.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)) {
                     Text("Place order  ›", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Ink)
                 }
             }
