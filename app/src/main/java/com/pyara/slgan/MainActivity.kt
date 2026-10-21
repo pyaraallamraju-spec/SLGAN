@@ -6290,9 +6290,9 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     verticalAlignment = Alignment.CenterVertically,
                                                     horizontalArrangement = Arrangement.SpaceEvenly
                                                 ) {
-                                                    IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = "Decrease quantity", tint = Forest, modifier = Modifier.size(16.dp)) }
+                                                    IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = "Decrease quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
                                                     Text(quantityInCart.toString(), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                                    IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = "Increase quantity", tint = Forest, modifier = Modifier.size(16.dp)) }
+                                                    IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = "Increase quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
                                                 }
                                             }
                                         }
