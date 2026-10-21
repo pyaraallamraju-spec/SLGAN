@@ -4933,28 +4933,29 @@ private fun ProductDetailsPage(
         }
     }
             if (showReviewDialog) {
-                AlertDialog(
+                ModalBottomSheet(
                     onDismissRequest = { if (!ratingSaving) showReviewDialog = false },
-                    title = { Text("Write a review", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold) },
-                    text = {
-                        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                            OutlinedTextField(
-                                value = ratingReview,
-                                onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null },
-                                modifier = Modifier.fillMaxWidth(),
-                                label = { Text("Your review (optional)") },
-                                placeholder = { Text("Share your experience with this product") },
-                                minLines = 3, maxLines = 5, shape = RoundedCornerShape(12.dp)
-                            )
-                            ratingMessage?.let {
-                                Text(it, color = if (it.startsWith("Saved")) Forest else Color(0xFFB3261E), fontSize = 12.sp)
+                    containerColor = Color.White,
+                    contentColor = Ink,
+                    scrimColor = Color.Black.copy(alpha = 0.62f),
+                    shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+                    dragHandle = { Box(Modifier.padding(top = 10.dp, bottom = 8.dp).size(width = 38.dp, height = 4.dp).background(Color(0xFFD7D9DE), CircleShape)) }
+                ) {
+                    Column(Modifier.fillMaxWidth().navigationBarsPadding().imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp).padding(top = 8.dp, bottom = 28.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f)) {
+                                Text("Write a review", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                                Spacer(Modifier.height(6.dp))
+                                Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                             }
+                            IconButton(onClick = { if (!ratingSaving) showReviewDialog = false }) { Icon(Icons.Default.Close, contentDescription = "Close review", tint = Muted) }
                         }
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
+                        OutlinedTextField(value = ratingReview, onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Your review (optional)") }, placeholder = { Text("Share your experience with this product") }, minLines = 4, maxLines = 6, shape = RoundedCornerShape(16.dp))
+                        ratingMessage?.let { Text(it, color = if (it.startsWith("Saved")) Forest else Color(0xFFB3261E), fontSize = 12.sp) }
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
+                            TextButton(onClick = { if (!ratingSaving) showReviewDialog = false }, enabled = !ratingSaving) { Text("Cancel", color = Muted) }
+                            Spacer(Modifier.width(8.dp))
+                            Button(onClick = {
                                 val user = ratingUser
                                 if (user == null) ratingMessage = "Please sign in to submit a review."
                                 else if (ratingReview.trim().isBlank()) ratingMessage = "Please enter your review before saving."
@@ -4970,30 +4971,16 @@ private fun ProductDetailsPage(
                                             "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp())
                                         if (!existing.exists()) payload["createdAt"] = com.google.firebase.firestore.FieldValue.serverTimestamp()
                                         ratingRef.set(payload, com.google.firebase.firestore.SetOptions.merge())
-                                            .addOnSuccessListener {
-                                                ratingSaving = false
-                                                ratingMessage = "Saved! Thank you for your review."
-                                                showReviewDialog = false
-                                                Toast.makeText(context, "Review saved successfully", Toast.LENGTH_SHORT).show()
-                                            }
+                                            .addOnSuccessListener { ratingSaving = false; ratingMessage = "Saved! Thank you for your review."; showReviewDialog = false; Toast.makeText(context, "Review saved successfully", Toast.LENGTH_SHORT).show() }
                                             .addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
                                     }.addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
                                 }
-                            },
-                            enabled = !ratingSaving,
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Forest)
-                        ) {
-                            if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
-                            else Text("Save", fontWeight = FontWeight.Bold)
+                            }, enabled = !ratingSaving, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+                                if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp) else Text("Save", fontWeight = FontWeight.Bold)
+                            }
                         }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showReviewDialog = false }, enabled = !ratingSaving) { Text("Cancel", color = Muted) }
-                    },
-                    shape = RoundedCornerShape(22.dp),
-                    containerColor = Cream
-                )
+                    }
+                }
             }
 }
 
