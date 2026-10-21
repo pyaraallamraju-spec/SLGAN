@@ -6229,7 +6229,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                             rowProducts.forEach { product ->
                                 val quantityInCart = cart[product.id] ?: 0
                                 Card(
-                                    modifier = Modifier.weight(1f).height(310.dp).padding(bottom = 10.dp).clickable { onProductClick(product) },
+                                    modifier = Modifier.weight(1f).height(285.dp).padding(bottom = 6.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -6253,11 +6253,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 Text(product.emoji.ifBlank { "🌿" }, fontSize = 38.sp)
                                             }
                                             Box(
-                                                Modifier.align(Alignment.TopEnd)
-                                                    .padding(5.dp)
-                                                    .clip(RoundedCornerShape(20.dp))
-                                                    .background(Color.White.copy(alpha = 0.96f))
-                                                    .shadow(2.dp, RoundedCornerShape(20.dp))
+                                                Modifier.align(Alignment.TopEnd).padding(5.dp)
                                             ) {
                                                 ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                             }
@@ -6291,7 +6287,8 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     ProductRatingLine(
                                                         product,
                                                         productRatings[product.id] ?: ProductRatingSummary(),
-                                                        compact = true
+                                                        compact = true,
+                                                        countBaselineFix = true
                                                     )
                                                 }
                                             }
