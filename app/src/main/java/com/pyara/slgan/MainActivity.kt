@@ -4160,8 +4160,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
             Column(
                 Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 18.dp)
             ) {
-                Spacer(Modifier.height(4.dp))
-                Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 21.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Spacer(Modifier.height(12.dp))
+                Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 19.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text(tr("Rooted in Tradition. Inspired by Nature.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                 Spacer(Modifier.height(18.dp))
                 HomeBannerSlider(products = products, onViewProduct = { productName ->
