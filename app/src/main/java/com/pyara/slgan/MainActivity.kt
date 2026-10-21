@@ -4731,7 +4731,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(1.dp)) {
                     IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(24.dp)) {
-                        Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = if (likeSummary.likedByMe) "Unlike product" else "Like product", tint = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, modifier = Modifier.size(15.dp))
+                        Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = if (likeSummary.likedByMe) "Unlike product" else "Like product", tint = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Ink, modifier = Modifier.size(15.dp))
                     }
                     Text(likeSummary.count.toString(), color = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
                 }
