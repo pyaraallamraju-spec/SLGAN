@@ -4564,7 +4564,7 @@ private fun ProductLikeControl(product: Product, summary: ProductLikeSummary, on
 }
 
 @Composable
-private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, showEmptyLabel: Boolean = false, compact: Boolean = false) {
+private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, showEmptyLabel: Boolean = false, compact: Boolean = false, countBaselineFix: Boolean = false) {
     val context = LocalContext.current
     val ratingUser = FirebaseAuth.getInstance().currentUser
     var savingRating by remember(product.id, ratingUser?.uid) { mutableStateOf(false) }
@@ -4621,7 +4621,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
             }
         }
         if (summary.count > 0) {
-            Text("(${summary.count})", color = Muted, fontSize = if (compact) 8.sp else 9.sp, maxLines = 1)
+            Text("(${summary.count})", modifier = if (countBaselineFix) Modifier.offset(y = (-1).dp) else Modifier, color = Muted, fontSize = if (compact) 8.sp else 9.sp, maxLines = 1)
         } else if (showEmptyLabel) {
             Text("No ratings", color = Muted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
@@ -4727,7 +4727,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     modifier = Modifier.weight(1f).fillMaxHeight(),
                     contentAlignment = Alignment.CenterStart
                 ) {
-                    ProductRatingLine(product, ratingSummary)
+                    ProductRatingLine(product, ratingSummary, countBaselineFix = true)
                 }
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(1.dp)) {
                     IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(24.dp)) {
