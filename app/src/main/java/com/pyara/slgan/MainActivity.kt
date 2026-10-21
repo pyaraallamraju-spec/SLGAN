@@ -5099,11 +5099,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Text(instruction, color = Ink, fontSize = 14.sp, modifier = Modifier.weight(1f))
                             }
                         }
-                        Row(Modifier.fillMaxWidth().clickable { saveInstructionForAddress = !saveInstructionForAddress }.padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(if (saveInstructionForAddress) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank, contentDescription = null, tint = if (saveInstructionForAddress) Color(0xFF7B818A) else Color(0xFFD1D5DB))
-                            Spacer(Modifier.width(10.dp))
-                            Text("Remember this instruction", color = Muted, fontSize = 13.sp)
-                        }
                     }
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
