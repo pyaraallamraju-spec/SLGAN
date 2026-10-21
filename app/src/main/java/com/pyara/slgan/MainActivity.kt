@@ -6650,10 +6650,10 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             shape = RoundedCornerShape(18.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            border = BorderStroke(1.dp, Gold.copy(alpha = 0.4f))
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(Modifier.padding(14.dp)) {
-                Text(if (appLanguage == "English") "How can we help?" else "మీకు ఎలా సహాయం చేయగలం?", color = Forest, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(if (appLanguage == "English") "How can we help?" else "మీకు ఎలా సహాయం చేయగలం?", color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Spacer(Modifier.height(4.dp))
                 Text(if (appLanguage == "English") "Quick answers for products, orders and delivery. AI replies become available when the secure support service is configured." else "Products, orders, delivery కోసం త్వరిత సమాధానాలు. Secure AI service configure చేసిన తర్వాత AI సమాధానాలు కూడా అందుబాటులో ఉంటాయి.", color = Muted, fontSize = 12.sp, lineHeight = 17.sp)
             }
@@ -6668,7 +6668,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                     Surface(
                         shape = RoundedCornerShape(16.dp),
                         color = if (message.fromUser) Forest else Color.White,
-                        border = if (message.fromUser) null else BorderStroke(1.dp, Gold.copy(alpha = 0.25f)),
+                        shadowElevation = 3.dp,
                         modifier = Modifier.widthIn(max = 310.dp)
                     ) {
                         Text(message.text, modifier = Modifier.padding(horizontal = 14.dp, vertical = 11.dp), color = if (message.fromUser) Color.White else Ink, fontSize = 14.sp, lineHeight = 20.sp)
