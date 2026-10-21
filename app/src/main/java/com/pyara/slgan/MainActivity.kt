@@ -1627,22 +1627,7 @@ private fun HomeBannerSlider(
                             .padding(horizontal = 22.dp, vertical = 22.dp),
                         verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        // Reordered copy: tagline first, trust label second, product title third.
-                        Text(
-                            text = tr(slide.tagline, LocalAppLanguage.current),
-                            modifier = Modifier.animateEnterExit(
-                                enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
-                                    slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
-                            ),
-                            color = Color(0xFF5B3428),
-                            fontSize = 11.sp,
-                            lineHeight = 15.sp,
-                            fontWeight = FontWeight.Medium,
-                            maxLines = if (slide.isCompanySlide) 3 else 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Spacer(Modifier.height(4.dp))
+                        // Keep product name at the top, signature tagline below, and trust line separated beneath it.
                         Text(
                             modifier = Modifier.animateEnterExit(
                                 enter = fadeIn(animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing)) +
@@ -1657,6 +1642,47 @@ private fun HomeBannerSlider(
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
+                        Spacer(Modifier.height(5.dp))
+                        Text(
+                            text = tr(slide.tagline, LocalAppLanguage.current),
+                            modifier = Modifier.animateEnterExit(
+                                enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
+                                    slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
+                            ),
+                            color = Color(0xFF5B3428),
+                            fontSize = 11.sp,
+                            lineHeight = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            maxLines = if (slide.isCompanySlide) 3 else 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(Modifier.height(9.dp))
+                        Row(
+                            modifier = Modifier.width(150.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
+                            Text("❋", color = Gold, fontSize = 14.sp)
+                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
+                        }
+                        Spacer(Modifier.height(7.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Text(text = "🌿", fontSize = 13.sp)
+                            Text(
+                                text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
+                                    else tr("Authentic Ayurvedic", LocalAppLanguage.current),
+                                color = Color(0xFF2E7D32),
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.1.sp,
+                                maxLines = 1
+                            )
+                        }
+                        Spacer(Modifier.height(2.dp))
                         Spacer(Modifier.height(4.dp))
                         Row(
                             modifier = Modifier.width(150.dp),
