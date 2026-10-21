@@ -6223,7 +6223,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                     Column(Modifier.fillMaxWidth()) {
                                         Box(
                                             Modifier.fillMaxWidth()
-                                                .height(116.dp)
+                                                .height(128.dp)
                                                 .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
                                                 .background(Color.White),
                                             contentAlignment = Alignment.Center
@@ -6232,14 +6232,14 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 AsyncImage(
                                                     model = product.imageUrl,
                                                     contentDescription = product.name,
-                                                    modifier = Modifier.fillMaxSize().padding(5.dp).clip(RoundedCornerShape(10.dp)),
+                                                    modifier = Modifier.fillMaxSize().padding(start = 5.dp, end = 5.dp, top = 18.dp, bottom = 5.dp).clip(RoundedCornerShape(10.dp)),
                                                     contentScale = ContentScale.Fit
                                                 )
                                             } else {
                                                 Text(product.emoji.ifBlank { "🌿" }, fontSize = 38.sp)
                                             }
                                             Box(
-                                                Modifier.align(Alignment.TopEnd).padding(5.dp)
+                                                Modifier.align(Alignment.TopEnd).padding(top = 2.dp, end = 7.dp)
                                             ) {
                                                 ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                             }
