@@ -6126,7 +6126,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             }
             LazyColumn(
                 modifier = Modifier.fillMaxWidth().weight(1f),
-                contentPadding = PaddingValues(horizontal = 9.dp, vertical = 5.dp)
+                contentPadding = PaddingValues(horizontal = 9.dp, vertical = 8.dp)
             ) {
                 if (selectedProducts.isEmpty()) {
                     item {
@@ -6142,16 +6142,16 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                             rowProducts.forEach { product ->
                                 val quantityInCart = cart[product.id] ?: 0
                                 Card(
-                                    modifier = Modifier.weight(1f).height(350.dp).padding(bottom = 10.dp).clickable { onProductClick(product) },
-                                    shape = RoundedCornerShape(13.dp),
+                                    modifier = Modifier.weight(1f).height(310.dp).padding(bottom = 10.dp).clickable { onProductClick(product) },
+                                    shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
-                                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                                 ) {
                                     Column(Modifier.fillMaxWidth()) {
                                         Box(
                                             Modifier.fillMaxWidth()
-                                                .height(138.dp)
-                                                .clip(RoundedCornerShape(13.dp))
+                                                .height(116.dp)
+                                                .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
                                                 .background(Color.White),
                                             contentAlignment = Alignment.Center
                                         ) {
@@ -6178,14 +6178,14 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                         Column(Modifier.fillMaxWidth().padding(horizontal = 7.dp, vertical = 5.dp)) {
                                             Text(
                                                 localizedProductName(product.name, LocalAppLanguage.current),
-                                                color = Ink, fontSize = 11.sp, fontWeight = FontWeight.SemiBold,
-                                                modifier = Modifier.fillMaxWidth().height(48.dp),
+                                                color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
+                                                modifier = Modifier.fillMaxWidth().height(42.dp),
                                                 maxLines = 3, overflow = TextOverflow.Ellipsis, lineHeight = 16.sp,
                                                 minLines = 2
                                             )
                                             Spacer(Modifier.height(3.dp))
                                             Row(
-                                                modifier = Modifier.fillMaxWidth().height(22.dp),
+                                                modifier = Modifier.fillMaxWidth().height(20.dp),
                                                 verticalAlignment = Alignment.CenterVertically,
                                                 horizontalArrangement = Arrangement.SpaceBetween
                                             ) {
@@ -6218,15 +6218,15 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 Button(
                                                     onClick = { onAdd(product.id) },
                                                     enabled = product.price > 0.0 && product.productStock > 0,
-                                                    modifier = Modifier.fillMaxWidth().height(34.dp),
+                                                    modifier = Modifier.fillMaxWidth().height(38.dp),
                                                     contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
-                                                    shape = RoundedCornerShape(9.dp),
+                                                    shape = RoundedCornerShape(12.dp),
                                                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink, disabledContainerColor = Color(0xFFE1E5EC), disabledContentColor = Muted),
                                                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 0.dp)
                                                 ) { Text("ADD", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
                                             } else {
                                                 Row(
-                                                    Modifier.fillMaxWidth().height(34.dp).clip(RoundedCornerShape(9.dp)).background(Color(0xFFE1E5EC)),
+                                                    Modifier.fillMaxWidth().height(38.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF0E5D8)),
                                                     verticalAlignment = Alignment.CenterVertically,
                                                     horizontalArrangement = Arrangement.SpaceEvenly
                                                 ) {
