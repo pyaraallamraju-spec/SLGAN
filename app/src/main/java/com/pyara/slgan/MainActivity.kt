@@ -4220,7 +4220,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Spacer(Modifier.height(8.dp))
                 Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 19.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 Text(tr("Rooted in Tradition. Inspired by Nature.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
-                Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(8.dp))
                 HomeBannerSlider(products = products, onViewProduct = { productName ->
                     val normalize: (String) -> String = { value -> value.lowercase().filter { it.isLetterOrDigit() } }
                     val match = products.firstOrNull { normalize(it.name) == normalize(productName) }
@@ -4231,7 +4231,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         Toast.makeText(context, "Product details are not available in the database yet.", Toast.LENGTH_SHORT).show()
                     }
                 })
-                Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(6.dp))
                 Column(Modifier.fillMaxWidth()) {
                     OutlinedTextField(
                         value = search,
