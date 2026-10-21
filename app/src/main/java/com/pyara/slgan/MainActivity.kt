@@ -1708,20 +1708,6 @@ private fun HomeBannerSlider(
                             Box(Modifier.weight(1f).height(1.dp).background(Gold))
                         }
                         Spacer(Modifier.height(7.dp))
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(5.dp)
-                        ) {
-                            Text(text = "🌿", fontSize = 13.sp)
-                            Text(
-                                text = tr("Authentic Ayurvedic", LocalAppLanguage.current),
-                                color = Color(0xFF2E7D32),
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 1.1.sp,
-                                maxLines = 1
-                            )
-                        }
                         Spacer(Modifier.height(2.dp))
                         Spacer(Modifier.height(7.dp))
                         Row(
