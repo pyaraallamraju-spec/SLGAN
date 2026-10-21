@@ -5487,15 +5487,23 @@ private fun OrdersPage(
                         Row(
                             modifier = Modifier.fillMaxWidth()
                                 .clip(RoundedCornerShape(16.dp))
-                                .background(Color(0xFFE5F3DE))
+                                .background(Color(0xFFF0F4FA))
+                                .border(1.dp, Color(0xFFDCE5F1), RoundedCornerShape(16.dp))
                                 .padding(horizontal = 13.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.Top
                         ) {
-                            Icon(Icons.Default.Email, contentDescription = null, tint = successGreen, modifier = Modifier.size(23.dp))
+                            Box(
+                                modifier = Modifier.size(38.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(0xFFDDE9F8)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(Icons.Default.Email, contentDescription = null, tint = Color(0xFF34445D), modifier = Modifier.size(21.dp))
+                            }
                             Spacer(Modifier.width(10.dp))
                             Text(
                                 tr("Your order is saved. The invoice is not available here yet; please check your email or contact the shop.", LocalAppLanguage.current),
-                                color = Color(0xFF245D36),
+                                color = Color(0xFF596579),
                                 fontSize = 13.sp,
                                 lineHeight = 20.sp,
                                 modifier = Modifier.weight(1f)
