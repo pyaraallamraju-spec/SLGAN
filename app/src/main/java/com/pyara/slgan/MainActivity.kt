@@ -4810,6 +4810,13 @@ private fun ProductDetailsPage(
                 Box(Modifier.fillMaxWidth().height(360.dp).background(Color.White)) {
                     if (product.imageUrl.isNotBlank()) {
                         AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
+                    } else if (product.name.contains("Vykranta Bhasmam", ignoreCase = true)) {
+                        Image(
+                            painter = painterResource(id = R.drawable.vykranta_bhasmam_product),
+                            contentDescription = product.name,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Fit
+                        )
                     } else {
                         Box(Modifier.fillMaxSize().background(PaleGreen), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 112.sp) }
                     }
