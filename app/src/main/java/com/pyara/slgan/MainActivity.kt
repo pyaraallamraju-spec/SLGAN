@@ -4501,7 +4501,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
         horizontalArrangement = Arrangement.spacedBy(1.dp)
     ) {
         (1..5).forEach { star ->
-            val starSize = if (compact) 15.dp else 20.dp
+            val starSize = if (compact) 12.dp else 20.dp
             Box(
                 modifier = Modifier.requiredSize(starSize).clickable(enabled = !savingRating) {
                     val user = ratingUser
@@ -6149,7 +6149,8 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             Spacer(Modifier.height(3.dp))
                                             Row(
                                                 modifier = Modifier.fillMaxWidth().height(22.dp),
-                                                verticalAlignment = Alignment.CenterVertically
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.SpaceBetween
                                             ) {
                                                 Text(
                                                     product.subtitle.takeIf { it.isNotBlank() && it != "Traditional Ayurvedic product" } ?: "Pack size not set",
@@ -6159,11 +6160,16 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     overflow = TextOverflow.Ellipsis,
                                                     modifier = Modifier.weight(1f)
                                                 )
-                                                ProductRatingLine(
-                                                    product,
-                                                    productRatings[product.id] ?: ProductRatingSummary(),
-                                                    compact = true
-                                                )
+                                                Box(
+                                                    modifier = Modifier.wrapContentWidth(Alignment.End),
+                                                    contentAlignment = Alignment.CenterEnd
+                                                ) {
+                                                    ProductRatingLine(
+                                                        product,
+                                                        productRatings[product.id] ?: ProductRatingSummary(),
+                                                        compact = true
+                                                    )
+                                                }
                                             }
                                             Spacer(Modifier.height(4.dp))
                                             Text(
