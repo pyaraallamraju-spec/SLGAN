@@ -7029,10 +7029,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 },
                 enabled = !languageSaving,
                 modifier = Modifier.fillMaxWidth().height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF1F1F1), contentColor = Ink),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                if (languageSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                if (languageSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Ink, strokeWidth = 2.dp)
                 else Icon(Icons.Default.Save, null)
                 Spacer(Modifier.width(8.dp))
                 Text(tr("Save language preference", appLanguage))
@@ -7079,9 +7080,10 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 enabled = !isSaving && !isLoading,
                 modifier = Modifier.fillMaxWidth().height(52.dp),
                 shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Forest)
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF1F1F1), contentColor = Ink),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
             ) {
-                if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null)
+                if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null)
                 Spacer(Modifier.width(8.dp))
                 Text(if (isLoading) "Loading profile…" else if (isSaving) "Saving…" else "Save profile", fontWeight = FontWeight.Bold)
             }
