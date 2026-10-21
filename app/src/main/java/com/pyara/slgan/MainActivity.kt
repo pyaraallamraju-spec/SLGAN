@@ -6829,10 +6829,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
             }
             Spacer(Modifier.height(20.dp))
-            Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-                Text("Address details", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Ink)
-                Spacer(Modifier.height(14.dp))
-            }
         }
         if (profileSection == "Profile" && initialSection != "Addresses") {
             Card(modifier = Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
