@@ -6128,13 +6128,23 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 minLines = 2
                                             )
                                             Spacer(Modifier.height(3.dp))
-                                            Text(product.subtitle.takeIf { it.isNotBlank() && it != "Traditional Ayurvedic product" } ?: "Pack size not set", color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                            Spacer(Modifier.height(3.dp))
-                                            Box(
+                                            Row(
                                                 modifier = Modifier.fillMaxWidth().height(22.dp),
-                                                contentAlignment = Alignment.CenterStart
+                                                verticalAlignment = Alignment.CenterVertically
                                             ) {
-                                                ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary(), compact = true)
+                                                Text(
+                                                    product.subtitle.takeIf { it.isNotBlank() && it != "Traditional Ayurvedic product" } ?: "Pack size not set",
+                                                    color = Muted,
+                                                    fontSize = 10.sp,
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis,
+                                                    modifier = Modifier.weight(1f)
+                                                )
+                                                ProductRatingLine(
+                                                    product,
+                                                    productRatings[product.id] ?: ProductRatingSummary(),
+                                                    compact = true
+                                                )
                                             }
                                             Spacer(Modifier.height(4.dp))
                                             Text(
