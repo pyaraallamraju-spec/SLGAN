@@ -1200,7 +1200,7 @@ private fun LoginScreen(
             painter = painterResource(R.drawable.slgan_login_background),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Fit
         )
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 12.dp),
@@ -4627,7 +4627,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
 private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
     Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
-            Box(Modifier.fillMaxWidth().height(98.dp).background(Color(0xFFF1F2F4), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxWidth().height(98.dp).background(Color.White, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 if (product.imageUrl.isNotBlank()) {
                     AsyncImage(
                         model = product.imageUrl,
