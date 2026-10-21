@@ -1973,7 +1973,7 @@ private fun AdminProductsScreen(
                                     .background(Brush.horizontalGradient(listOf(Forest, Gold, Forest)))
                             )
                             Row(
-                                Modifier.fillMaxWidth().padding(12.dp),
+                                Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Box(
@@ -1994,7 +1994,7 @@ private fun AdminProductsScreen(
                                     }
                                 }
                                 Spacer(Modifier.width(14.dp))
-                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                     Text(
                                         product.category.uppercase(),
                                         color = Leaf,
