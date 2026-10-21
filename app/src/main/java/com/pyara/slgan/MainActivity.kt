@@ -7683,8 +7683,17 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             Spacer(Modifier.height(14.dp))
                             HorizontalDivider(color = Gold.copy(alpha = 0.28f), thickness = 1.dp)
                             Spacer(Modifier.height(12.dp))
-                            Row(verticalAlignment = Alignment.Top) {
-                                Icon(Icons.Default.Call, null, tint = Muted, modifier = Modifier.size(17.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Surface(
+                                    modifier = Modifier.size(36.dp),
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = Color(0xFFF1F1F1),
+                                    shadowElevation = 4.dp
+                                ) {
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Icon(Icons.Default.Call, null, tint = Ink, modifier = Modifier.size(18.dp))
+                                    }
+                                }
                                 Spacer(Modifier.width(9.dp))
                                 Text(
                                     address["phone"]?.toString().orEmpty(),
