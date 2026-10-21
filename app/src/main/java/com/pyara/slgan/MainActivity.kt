@@ -1016,6 +1016,7 @@ private fun AyurvedicApp() {
                 onToggleLike = { toggleProductLike(selectedProduct!!) },
                 cartCount = cart[selectedProduct!!.id] ?: 0,
                 onBack = { selectedProduct = null },
+                onCartClick = { selectedProduct = null; previousTab = selectedTab; selectedTab = "Cart" },
                 onAdd = { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 onRemove = { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 }
             )
@@ -4705,6 +4706,7 @@ private fun ProductDetailsPage(
     onToggleLike: () -> Unit,
     cartCount: Int,
     onBack: () -> Unit,
+    onCartClick: () -> Unit,
     onAdd: (String) -> Unit,
     onRemove: (String) -> Unit
 ) {
@@ -4859,7 +4861,7 @@ private fun ProductDetailsPage(
             }
         }
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Box(Modifier.size(62.dp).border(1.dp, Color(0xFFD5DCE7), RoundedCornerShape(16.dp)).clickable { /* quantity is shown in cart */ }.padding(8.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier.size(62.dp).border(1.dp, Color(0xFFD5DCE7), RoundedCornerShape(16.dp)).clickable(onClick = onCartClick).padding(8.dp), contentAlignment = Alignment.Center) {
                 BadgedBox(badge = { if (cartCount > 0) Badge(containerColor = Color(0xFF2E7D32), contentColor = Color.White) { Text(cartCount.toString(), color = Color.White) } }) {
                     Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = Color.Black, modifier = Modifier.size(28.dp))
                 }
