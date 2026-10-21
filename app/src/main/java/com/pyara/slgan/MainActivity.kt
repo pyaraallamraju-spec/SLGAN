@@ -4866,7 +4866,7 @@ private fun ProductDetailsPage(
                     Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = Color.Black, modifier = Modifier.size(28.dp))
                 }
             }
-            Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(66.dp), shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, Color(0xFFD5DCE7)), colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Ink, disabledContainerColor = Color.White, disabledContentColor = Ink)) {
+            Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(62.dp), shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, Color(0xFFD5DCE7)), colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Ink, disabledContainerColor = Color.White, disabledContentColor = Ink)) {
                 Text(if (product.productStock == 0) "Out of stock" else if (cartCount > 0) "Add another" else "Add to Cart", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
             }
         }
