@@ -1815,7 +1815,7 @@ private fun AdminProductsScreen(
                 product.id.contains(searchText, ignoreCase = true))
         }.sortedBy { it.name.lowercase() }
     }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
+    Column(Modifier.fillMaxSize().background(Cream)) {
         Column(
             Modifier.fillMaxWidth()
                 .background(Color.White, RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
@@ -2117,7 +2117,7 @@ private fun AdminProductDetailsScreen(
         .split(Regex("\\s+"))
         .joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
 
-    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
+    Column(Modifier.fillMaxSize().background(Cream)) {
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -2308,7 +2308,7 @@ private fun AdminProductEditor(
     var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
     var saving by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
+    Column(Modifier.fillMaxSize().background(Cream)) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack, enabled = !saving) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
             Text(if (isNew) "Add product" else "Edit product", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
@@ -2517,7 +2517,7 @@ private fun AdminDashboardScreen(
         }
     }
     Column(
-        Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).verticalScroll(rememberScrollState()).padding(20.dp)
+        Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
         Row(
             Modifier.fillMaxWidth(),
@@ -2635,7 +2635,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
         }
         onDispose { listener.remove() }
     }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).verticalScroll(rememberScrollState()).padding(18.dp)) {
+    Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(onClick = onBack, shape = CircleShape, color = Color.White, border = BorderStroke(1.dp, Color(0xFFE5E8EF)), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
             Spacer(Modifier.width(16.dp))
@@ -2735,7 +2735,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         }
         onDispose { registration.remove() }
     }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).verticalScroll(rememberScrollState()).padding(18.dp)) {
+    Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
                 modifier = Modifier.size(48.dp).clickable { onBack() },
@@ -2974,7 +2974,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
         )
     }
 
-    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
+    Column(Modifier.fillMaxSize().background(Cream)) {
         // Match the Products admin page header: white rounded container, title row,
         // forest-green library card, and search field inside the same header section.
         Column(
@@ -3142,7 +3142,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             .contains(search.trim(), ignoreCase = true)
     }
 
-    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).padding(top = 8.dp)) {
+    Column(Modifier.fillMaxSize().background(Cream).padding(top = 8.dp)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
@@ -3456,7 +3456,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         if (ts == null) "Date not available" else dateFormat.format(ts.toDate())
     }
 
-    Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
+    Column(Modifier.fillMaxSize().background(Cream)) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
