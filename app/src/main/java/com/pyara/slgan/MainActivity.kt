@@ -4409,7 +4409,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                                 },
                                                                 fontSize = 9.sp
                                                             )
-                                                            Text(product.category, color = Color.Black, fontSize = 8.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(product.category, color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
@@ -4618,7 +4618,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                             contentColor = Ink
                         ) {
                             Row(
-                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp),
+                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
