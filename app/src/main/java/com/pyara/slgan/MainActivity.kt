@@ -6867,16 +6867,17 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
             }
             Spacer(Modifier.height(20.dp))
-            OutlinedTextField(value = firstName, onValueChange = { firstName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("First name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Ink) })
+            OutlinedTextField(value = firstName, onValueChange = { firstName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("First name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = lastName, onValueChange = { lastName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Last name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Badge, null, tint = Ink) })
+            OutlinedTextField(value = lastName, onValueChange = { lastName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Last name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Badge, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Ink) })
+            OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
             Spacer(Modifier.height(12.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Box {
                     OutlinedTextField(
                         value = "${selectedCountry.second}  ${selectedCountry.third}",
+                        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
                         onValueChange = {},
                         readOnly = true,
                         modifier = Modifier.width(140.dp).clickable { countryMenuExpanded = true },
@@ -6900,6 +6901,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
                 OutlinedTextField(
                     value = mobileNumber,
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
                     onValueChange = { input -> mobileNumber = input.filter(Char::isDigit).take(15); saveMessage = null },
                     modifier = Modifier.weight(1f),
                     label = { Text(tr("Mobile number", LocalAppLanguage.current), maxLines = 1, softWrap = false) },
@@ -6917,6 +6919,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     onValueChange = {},
                     readOnly = true,
                     modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
                     label = { Text("Date of birth") },
                     placeholder = { Text("Select date of birth") },
                     leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Ink) },
@@ -6975,7 +6978,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             }
             Spacer(Modifier.height(12.dp))
             Box(Modifier.fillMaxWidth()) {
-                OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Ink) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Ink) })
+                OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Ink) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
                 Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
                 DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }) {
                     listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
@@ -6989,11 +6992,12 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Box(Modifier.fillMaxWidth()) {
                 OutlinedTextField(
                     value = tr(appLanguage, appLanguage),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
                     onValueChange = {},
                     readOnly = true,
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(tr("Select language", appLanguage)) },
-                    trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) },
+                    trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Ink) },
                     leadingIcon = { Icon(Icons.Default.Language, null, tint = Ink) }
                 )
                 Box(Modifier.matchParentSize().clickable { languageMenuExpanded = true })
