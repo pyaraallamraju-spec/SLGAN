@@ -7869,7 +7869,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 Spacer(Modifier.width(9.dp))
                                 Text(
                                     address["phone"]?.toString().orEmpty(),
-                                    color = Muted,
+                                    color = Ink,
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Medium
                                 )
