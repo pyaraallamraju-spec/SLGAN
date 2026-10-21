@@ -7026,10 +7026,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
                 IconButton(
                     onClick = {
-                        // Open the location popup over the My addresses page without navigating to the form.
                         showAddressForm = false
-                        showAddressLocationSheet = true
+                        showMapPicker = false
+                        showAddressDetailsSheet = false
                         addressMessage = null
+                        showAddressLocationSheet = true
                     },
                     modifier = Modifier.size(48.dp)
                 ) {
