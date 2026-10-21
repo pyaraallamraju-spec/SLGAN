@@ -7039,11 +7039,23 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
                 IconButton(
                     onClick = {
-                        showAddressForm = false
+                        // Open the address form directly. The location-choice sheet is
+                        // rendered inside the address-form branch, so setting only its
+                        // visibility while showAddressForm is false prevents it from appearing.
+                        showAddressLocationSheet = false
                         showMapPicker = false
                         showAddressDetailsSheet = false
+                        addressLabel = "Home"
+                        recipientName = ""
+                        recipientPhone = ""
+                        addressLine1 = ""
+                        addressLine2 = ""
+                        landmark = ""
+                        city = ""
+                        state = ""
+                        pincode = ""
                         addressMessage = null
-                        showAddressLocationSheet = true
+                        showAddressForm = true
                     },
                     modifier = Modifier.size(48.dp)
                 ) {
