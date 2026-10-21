@@ -4840,8 +4840,8 @@ private fun ProductDetailsPage(
         }
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Box(Modifier.size(62.dp).border(1.dp, Color(0xFFD5DCE7), RoundedCornerShape(16.dp)).clickable { /* quantity is shown in cart */ }.padding(8.dp), contentAlignment = Alignment.Center) {
-                BadgedBox(badge = { if (cartCount > 0) Badge(containerColor = Color(0xFFF23F73)) { Text(cartCount.toString()) } }) {
-                    Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = Color.Black, modifier = Modifier.size(28.dp))
+                BadgedBox(badge = { if (cartCount > 0) Badge(containerColor = Color(0xFF2E7D32), contentColor = Color.White) { Text(cartCount.toString(), color = Color.White) } }) {
+                    Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = Color.White, modifier = Modifier.size(28.dp))
                 }
             }
             Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(66.dp), shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, Color(0xFFD5DCE7)), colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Ink, disabledContainerColor = Color.White, disabledContentColor = Ink)) {
