@@ -4699,7 +4699,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                 horizontalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
                                 Text("⚖", color = Color.Black, fontSize = 9.sp)
-                                Text(product.subtitle.replace(" ", ""), color = Muted, fontSize = 9.sp, fontWeight = FontWeight.Normal, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                         }
                     }
