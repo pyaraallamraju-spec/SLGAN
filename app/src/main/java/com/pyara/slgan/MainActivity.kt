@@ -7686,7 +7686,16 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             }
                             Spacer(Modifier.height(9.dp))
                             Row(verticalAlignment = Alignment.Top) {
-                                Icon(Icons.Default.Home, null, tint = Forest, modifier = Modifier.size(17.dp))
+                                Surface(
+                                    modifier = Modifier.size(36.dp),
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = Color(0xFFF1F1F1),
+                                    shadowElevation = 4.dp
+                                ) {
+                                    Box(contentAlignment = Alignment.Center) {
+                                        Icon(Icons.Default.Home, null, tint = Ink, modifier = Modifier.size(19.dp))
+                                    }
+                                }
                                 Spacer(Modifier.width(9.dp))
                                 Text(
                                     fullAddress,
