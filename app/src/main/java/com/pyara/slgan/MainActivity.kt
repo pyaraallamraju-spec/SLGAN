@@ -1626,6 +1626,21 @@ private fun HomeBannerSlider(
                             .padding(horizontal = 22.dp, vertical = 22.dp),
                         verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
+                        // Reordered copy: tagline first, trust label second, product title third.
+                        Text(
+                            text = tr(slide.tagline, LocalAppLanguage.current),
+                            modifier = Modifier.animateEnterExit(
+                                enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
+                                    slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
+                            ),
+                            color = Color(0xFF5B3428),
+                            fontSize = 11.sp,
+                            lineHeight = 15.sp,
+                            fontWeight = FontWeight.Medium,
+                            maxLines = if (slide.isCompanySlide) 3 else 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(Modifier.height(4.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -1656,20 +1671,6 @@ private fun HomeBannerSlider(
                             fontSize = if (slide.isCompanySlide) 22.sp else 21.sp,
                             lineHeight = if (slide.isCompanySlide) 26.sp else 25.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            maxLines = if (slide.isCompanySlide) 3 else 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(Modifier.height(6.dp))
-                        Text(
-                            text = tr(slide.tagline, LocalAppLanguage.current),
-                            modifier = Modifier.animateEnterExit(
-                                enter = fadeIn(animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing)) +
-                                    slideInVertically(initialOffsetY = { it / 7 }, animationSpec = tween(1000, delayMillis = 480, easing = FastOutSlowInEasing))
-                            ),
-                            color = Color(0xFF5B3428),
-                            fontSize = 11.sp,
-                            lineHeight = 15.sp,
-                            fontWeight = FontWeight.Medium,
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
