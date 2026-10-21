@@ -5925,7 +5925,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                     else if (displayedSuggestions.isEmpty()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                                     else displayedSuggestions.forEach { medicine ->
                                         Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                                            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(18.dp))
+                                            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color(0xFF6F625A), modifier = Modifier.size(18.dp))
                                             Spacer(Modifier.width(10.dp))
                                             Text(medicine, color = Ink, fontSize = 14.sp, lineHeight = 20.sp)
                                         }
