@@ -4631,7 +4631,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
 @Composable
 private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
     Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
-        Column(Modifier.padding(11.dp)) {
+        Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(Color(0xFFF6F7FA), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 Text(product.emoji, fontSize = 42.sp)
                 if (product.signature) {
@@ -4660,7 +4660,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     }
                 }
             }
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(5.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
                 Spacer(Modifier.height(3.dp))
@@ -4720,7 +4720,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             }
             Spacer(Modifier.height(5.dp))
             Row(
-                modifier = Modifier.fillMaxWidth().height(48.dp),
+                modifier = Modifier.fillMaxWidth().height(40.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -4736,7 +4736,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     Text(likeSummary.count.toString(), color = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
                 }
             }
-            Spacer(Modifier.height(5.dp))
+            Spacer(Modifier.height(1.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Color.Black, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
                 if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(width = 28.dp, height = 22.dp), shape = RoundedCornerShape(6.dp), colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFF2E7D32), contentColor = Color.White)) { Icon(Icons.Default.Add, "Add " + product.name, tint = Color.White, modifier = Modifier.size(15.dp)) }
@@ -5080,7 +5080,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 }
                                 Spacer(Modifier.width(6.dp))
                                 Column(horizontalAlignment = Alignment.End) {
-                                    Row(Modifier.background(Color(0xFFF1F2F4), RoundedCornerShape(10.dp)).padding(horizontal = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Row(Modifier.background(Color(0xFFE1E5EC), RoundedCornerShape(10.dp)).padding(horizontal = 2.dp), verticalAlignment = Alignment.CenterVertically) {
                                         IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = "Decrease quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
                                         Text(quantity.toString(), color = Ink, fontWeight = FontWeight.Bold, fontSize = 14.sp)
                                         IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = "Increase quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
