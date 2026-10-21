@@ -6697,7 +6697,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                         modifier = Modifier.shadow(3.dp, RoundedCornerShape(12.dp)),
                         colors = SuggestionChipDefaults.suggestionChipColors(
                             containerColor = Color.White,
-                            labelColor = Ink
+                            labelContentColor = Ink
                         )
                     )
                 }
