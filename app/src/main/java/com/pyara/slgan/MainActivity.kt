@@ -2610,7 +2610,7 @@ private fun AdminDashboardScreen(
             )
         }
         Spacer(Modifier.height(18.dp))
-        Card(Modifier.fillMaxWidth().clickable(onClick = onBannersClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
+        Card(Modifier.fillMaxWidth().shadow(5.dp, RoundedCornerShape(18.dp)).clickable(onClick = onBannersClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)) {
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) { Icon(Icons.Default.ViewCarousel, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp)) }
                 Spacer(Modifier.width(12.dp))
@@ -2619,7 +2619,7 @@ private fun AdminDashboardScreen(
             }
         }
         Spacer(Modifier.height(12.dp))
-        Card(Modifier.fillMaxWidth().clickable(onClick = onThemesClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
+        Card(Modifier.fillMaxWidth().shadow(5.dp, RoundedCornerShape(18.dp)).clickable(onClick = onThemesClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)) {
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) { Icon(Icons.Default.Palette, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp)) }
                 Spacer(Modifier.width(12.dp))
@@ -3711,7 +3711,8 @@ private fun AdminSummaryCard(
     Card(
         modifier = modifier.then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = AdminSurface)
+        colors = CardDefaults.cardColors(containerColor = AdminSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(Modifier.padding(15.dp)) {
             Icon(icon, contentDescription = null, tint = AdminInk, modifier = Modifier.size(24.dp))
@@ -3735,7 +3736,8 @@ private fun AdminModuleInfo(
             if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
         ),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = AdminSurface)
+        colors = CardDefaults.cardColors(containerColor = AdminSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(Modifier.padding(15.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(
