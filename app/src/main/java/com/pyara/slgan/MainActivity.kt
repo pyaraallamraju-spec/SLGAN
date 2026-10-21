@@ -619,7 +619,7 @@ private fun AyurvedicApp() {
     var adminRoleResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
-        delay(10000)
+        delay(6000)
         showSplash = false
     }
     DisposableEffect(Unit) {
