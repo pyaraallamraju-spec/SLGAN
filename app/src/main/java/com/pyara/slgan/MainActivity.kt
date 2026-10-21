@@ -4453,7 +4453,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                                 },
                                                                 fontSize = 9.sp
                                                             )
-                                                            Text(product.category, color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.Normal, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(product.category, color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
@@ -4469,7 +4469,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                                                         ) {
                                                             Text("⚖", color = Muted, fontSize = 9.sp, fontWeight = FontWeight.Normal)
-                                                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.Normal, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
