@@ -5674,7 +5674,14 @@ private fun OrdersPage(
                         Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
                 }
-                Column(Modifier.fillMaxWidth().background(Color.White).navigationBarsPadding().padding(horizontal = 20.dp, vertical = 12.dp).padding(bottom = 12.dp)) {
+                Column(
+                    Modifier.fillMaxWidth()
+                        .background(Color.White)
+                        .navigationBarsPadding()
+                        .imePadding()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 10.dp, bottom = 16.dp)
+                ) {
                     Button(
                         onClick = {
                             invoiceItems.forEach { item ->
