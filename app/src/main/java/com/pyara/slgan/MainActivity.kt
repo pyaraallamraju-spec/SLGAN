@@ -1236,7 +1236,7 @@ private fun LoginScreen(
             Box(
                 Modifier.size(120.dp)
                     .graphicsLayer { alpha = haloAlpha }
-                    .border(2.dp, Gold.copy(alpha = haloAlpha), CircleShape)
+                    .border(2.dp, Color(0xFF2E7D32).copy(alpha = haloAlpha), CircleShape)
             )
             Text(
                 "🍃",
@@ -1248,7 +1248,7 @@ private fun LoginScreen(
                 modifier = Modifier.align(Alignment.BottomEnd).graphicsLayer { translationY = -leafDrift; rotationZ = 25f },
                 fontSize = 25.sp
             )
-            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.size(108.dp).clip(CircleShape).background(Cream).graphicsLayer {
+            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam logo", contentScale = ContentScale.Fit, modifier = Modifier.size(108.dp).clip(CircleShape).background(Color.White).graphicsLayer {
                     alpha = logoAlpha.value
                     scaleX = logoScale.value
                     scaleY = logoScale.value
@@ -1272,7 +1272,7 @@ private fun LoginScreen(
             fontSize = 22.sp,
             lineHeight = 27.sp,
             fontWeight = FontWeight.Bold,
-            color = Ink,
+            color = Color(0xFF174D32),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Text(
@@ -1280,7 +1280,7 @@ private fun LoginScreen(
             fontSize = 20.sp,
             lineHeight = 25.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Ink,
+            color = Color(0xFF174D32),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(10.dp))
@@ -1294,7 +1294,7 @@ private fun LoginScreen(
             tr("Estd. 1900 by Vidyaraju Sri Allamraju Perraju Sharma", LocalAppLanguage.current),
             fontSize = 12.sp,
             fontWeight = FontWeight.Medium,
-            color = Muted,
+            color = Color(0xFF7A887D),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(12.dp))
@@ -1303,7 +1303,7 @@ private fun LoginScreen(
             fontSize = 15.sp,
             lineHeight = 20.sp,
             fontWeight = FontWeight.Medium,
-            color = Color(0xFF2E7D32),
+            color = Color(0xFF16713B),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(8.dp))
@@ -1311,17 +1311,17 @@ private fun LoginScreen(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            placeholder = { Text(tr("Email address", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
+            placeholder = { Text(tr("Email address", LocalAppLanguage.current), color = Color(0xFF7A887D), fontSize = 15.sp) },
             leadingIcon = { Icon(Icons.Default.Email, null, tint = Ink) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            shape = RectangleShape,
+            shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                cursorColor = Forest
+                focusedBorderColor = Color(0xFF3F914B),
+                unfocusedBorderColor = Color(0xFFD5E4D4),
+                focusedContainerColor = Color(0xFFFAFDF9),
+                unfocusedContainerColor = Color.White,
+                cursorColor = Color(0xFF287A3F)
             )
         )
         Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
@@ -1330,7 +1330,7 @@ private fun LoginScreen(
             value = password,
             onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            placeholder = { Text(tr("Password", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
+            placeholder = { Text(tr("Password", LocalAppLanguage.current), color = Color(0xFF7A887D), fontSize = 15.sp) },
             leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
             trailingIcon = {
                 IconButton(onClick = { showPassword = !showPassword }) {
@@ -1344,13 +1344,13 @@ private fun LoginScreen(
             singleLine = true,
             visualTransformation = if (showPassword) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            shape = RectangleShape,
+            shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                cursorColor = Forest
+                focusedBorderColor = Color(0xFF3F914B),
+                unfocusedBorderColor = Color(0xFFD5E4D4),
+                focusedContainerColor = Color(0xFFFAFDF9),
+                unfocusedContainerColor = Color.White,
+                cursorColor = Color(0xFF287A3F)
             )
         )
         Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
@@ -1361,7 +1361,7 @@ private fun LoginScreen(
                 value = confirmPassword,
                 onValueChange = onConfirmPasswordChange,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-                placeholder = { Text("Confirm password", color = Muted, fontSize = 15.sp) },
+                placeholder = { Text("Confirm password", color = Color(0xFF7A887D), fontSize = 15.sp) },
                 leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
                 trailingIcon = {
                     IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
@@ -1375,7 +1375,7 @@ private fun LoginScreen(
                 singleLine = true,
                 visualTransformation = if (showConfirmPassword) androidx.compose.ui.text.input.VisualTransformation.None else androidx.compose.ui.text.input.PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                shape = RectangleShape,
+                shape = RoundedCornerShape(16.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color.Transparent,
                     unfocusedBorderColor = Color.Transparent,
@@ -1401,15 +1401,15 @@ private fun LoginScreen(
                 disabledElevation = 0.dp
             ),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFF1F2F4),
-                contentColor = Ink,
-                disabledContainerColor = Color(0xFFF1F2F4),
-                disabledContentColor = Ink.copy(alpha = 0.6f)
+                containerColor = Color(0xFF087443),
+                contentColor = Color.White,
+                disabledContainerColor = Color(0xFF9ABFA8),
+                disabledContentColor = Color.White.copy(alpha = 0.8f)
             )
         ) {
             Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.width(12.dp))
-            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp)
+            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
             else Icon(Icons.Default.ArrowForward, null)
         }
         Row(
@@ -1418,11 +1418,11 @@ private fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextButton(onClick = onToggleMode, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
-                Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Muted, fontSize = 13.sp)
+                Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Color(0xFF7A887D), fontSize = 13.sp)
             }
             if (!isCreatingAccount) {
                 TextButton(onClick = onForgotPassword, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
-                    Text("Forgot Password?", color = Muted, fontSize = 13.sp)
+                    Text("Forgot Password?", color = Color(0xFF7A887D), fontSize = 13.sp)
                 }
             }
         }
@@ -1431,7 +1431,7 @@ private fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
-            Text("  OR  ", color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
+            Text("  OR  ", color = Color(0xFF7A887D), fontSize = 11.sp, fontWeight = FontWeight.Medium)
             Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
         }
         OutlinedButton(
@@ -1439,17 +1439,17 @@ private fun LoginScreen(
             enabled = !loading,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(50.dp),
             shape = RoundedCornerShape(14.dp),
-            border = BorderStroke(1.dp, Gold.copy(alpha = 0.75f)),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
+            border = BorderStroke(1.dp, Color(0xFFB8D4A3)),
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF174D32))
         ) {
             Text("G", color = Color(0xFF4285F4), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.width(12.dp))
             Text(if (loading) "Please wait…" else "Continue with Google", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
         }
         Spacer(Modifier.height(8.dp))
-        Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Color(0xFF7A887D), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(4.dp))
-        Text(tr("Mobile-number login is not available yet.", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text(tr("Mobile-number login is not available yet.", LocalAppLanguage.current), fontSize = 12.sp, color = Color(0xFF7A887D), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(30.dp))
     }
 }
