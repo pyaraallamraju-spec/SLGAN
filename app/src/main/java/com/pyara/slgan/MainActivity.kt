@@ -4242,7 +4242,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 Text(
                                     text = when (item.trim().lowercase()) {
                                         "all" -> "🌿"
-                                        "lehyas" -> "🫙"
+                                        "lehyas" -> "🍯"
                                         "grutas", "gruta", "ghrita", "ghritas", "ghruta", "ghrutas", "ghrutaa", "ghrutaas", "ghrutam" -> "🏺"
                                         "pills" -> "💊"
                                         "tailas" -> "🫙"
