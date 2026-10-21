@@ -5094,13 +5094,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Spacer(Modifier.height(10.dp))
                         listOf("Call before delivery", "Avoid calling", "Do not ring the bell").forEach { instruction ->
                             Row(Modifier.fillMaxWidth().clickable { selectedInstruction = if (selectedInstruction == instruction) "" else instruction }.padding(vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Icon(if (selectedInstruction == instruction) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank, contentDescription = null, tint = if (selectedInstruction == instruction) Color(0xFFF1F2F4) else Color(0xFFD1D5DB))
+                                Icon(if (selectedInstruction == instruction) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank, contentDescription = null, tint = if (selectedInstruction == instruction) Forest else Color(0xFFD1D5DB))
                                 Spacer(Modifier.width(10.dp))
                                 Text(instruction, color = Ink, fontSize = 14.sp, modifier = Modifier.weight(1f))
                             }
                         }
                         Row(Modifier.fillMaxWidth().clickable { saveInstructionForAddress = !saveInstructionForAddress }.padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(if (saveInstructionForAddress) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank, contentDescription = null, tint = if (saveInstructionForAddress) Color(0xFFF1F2F4) else Color(0xFFD1D5DB))
+                            Icon(if (saveInstructionForAddress) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank, contentDescription = null, tint = if (saveInstructionForAddress) Forest else Color(0xFFD1D5DB))
                             Spacer(Modifier.width(10.dp))
                             Text("Remember this instruction", color = Muted, fontSize = 13.sp)
                         }
