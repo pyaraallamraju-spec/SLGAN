@@ -5406,27 +5406,101 @@ private fun OrdersPage(
         }
 
         if (latestOrderSuccess != null) {
+            val successGreen = Color(0xFF237344)
+            val successTint = Color(0xFFF1FAEC)
             Card(
-                colors = CardDefaults.cardColors(containerColor = if (latestOrderSuccess) Color(0xFFE5F4E8) else Color(0xFFFCE8E6)),
-                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (latestOrderSuccess) successTint else Color(0xFFFCE8E6)
+                ),
+                shape = RoundedCornerShape(24.dp),
+                border = if (latestOrderSuccess) BorderStroke(1.dp, Color(0xFFBFE3AE)) else null,
+                elevation = CardDefaults.cardElevation(defaultElevation = if (latestOrderSuccess) 4.dp else 1.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(
+                    Modifier.fillMaxWidth().padding(18.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(if (latestOrderSuccess) Icons.Default.CheckCircle else Icons.Default.Error, contentDescription = null, tint = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E))
-                        Spacer(Modifier.width(8.dp))
-                        Text(if (latestOrderSuccess) "Order successful" else "Order failed", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = if (latestOrderSuccess) Color(0xFF237344) else Color(0xFFB3261E))
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .shadow(if (latestOrderSuccess) 3.dp else 0.dp, CircleShape)
+                                .background(if (latestOrderSuccess) successGreen else Color(0xFFB3261E), CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                if (latestOrderSuccess) Icons.Default.Check else Icons.Default.Error,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(29.dp)
+                            )
+                        }
+                        Spacer(Modifier.width(12.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                if (latestOrderSuccess) "Order successful" else "Order failed",
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 20.sp,
+                                color = if (latestOrderSuccess) successGreen else Color(0xFFB3261E)
+                            )
+                            Text(
+                                if (latestOrderSuccess) "Your order has been saved" else "Please review your order",
+                                fontSize = 12.sp,
+                                color = Muted
+                            )
+                        }
+                        if (latestOrderSuccess) {
+                            Icon(Icons.Default.Spa, contentDescription = null, tint = Color(0xFFB8DCA8), modifier = Modifier.size(30.dp))
+                        }
                     }
-                    latestOrderId?.let { Text(tr("Order ID: ", LocalAppLanguage.current) + it, color = Ink, fontWeight = FontWeight.SemiBold) }
-                    Text(latestOrderMessage ?: if (latestOrderSuccess) "Your order was saved." else "Your order could not be placed.", color = Ink)
+                    if (latestOrderId != null) {
+                        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text("ORDER ID", color = Muted, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                            Text(
+                                latestOrderId!!,
+                                color = Ink,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                        }
+                    }
+                    HorizontalDivider(color = if (latestOrderSuccess) Color(0xFFD5E5CF) else Color(0xFFE8C9C7), thickness = 1.dp)
+                    Text(
+                        latestOrderMessage ?: if (latestOrderSuccess) "Your order was saved." else "Your order could not be placed.",
+                        color = Ink,
+                        fontSize = 15.sp,
+                        lineHeight = 22.sp
+                    )
                     if (latestOrderSuccess && !latestInvoiceUrl.isNullOrBlank()) {
-                        Button(onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(latestInvoiceUrl))) }, modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
+                        Button(
+                            onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(latestInvoiceUrl))) },
+                            modifier = Modifier.fillMaxWidth().height(48.dp),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Forest)
+                        ) {
                             Icon(Icons.Default.PictureAsPdf, contentDescription = null)
                             Spacer(Modifier.width(8.dp))
-                            Text(tr("View / Download Invoice", LocalAppLanguage.current))
+                            Text(tr("View / Download Invoice", LocalAppLanguage.current), fontWeight = FontWeight.Bold)
                         }
                     } else if (latestOrderSuccess) {
-                        Text(tr("Your order is saved. The invoice is not available here yet; please check your email or contact the shop.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color(0xFFE5F3DE))
+                                .padding(horizontal = 13.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.Top
+                        ) {
+                            Icon(Icons.Default.Email, contentDescription = null, tint = successGreen, modifier = Modifier.size(23.dp))
+                            Spacer(Modifier.width(10.dp))
+                            Text(
+                                tr("Your order is saved. The invoice is not available here yet; please check your email or contact the shop.", LocalAppLanguage.current),
+                                color = Color(0xFF245D36),
+                                fontSize = 13.sp,
+                                lineHeight = 20.sp,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
                     }
                 }
             }
