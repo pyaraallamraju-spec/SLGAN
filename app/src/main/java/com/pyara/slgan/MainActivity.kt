@@ -4479,12 +4479,12 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                         contentColor = Ink
                                                     ) {
                                                         Row(
-                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
+                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp),
                                                             verticalAlignment = Alignment.CenterVertically,
                                                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                                                         ) {
                                                             Text("⚖", color = Color.Black, fontSize = 9.sp)
-                                                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.Normal, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
