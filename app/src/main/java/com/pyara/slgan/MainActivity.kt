@@ -5430,7 +5430,7 @@ private fun OrdersPage(
 
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Current orders", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Text("Current orders", fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
                 Text("Placed today · ${today.format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"))}", color = Muted, fontSize = 12.sp)
             }
             Box(
@@ -5530,7 +5530,7 @@ private fun OrdersPage(
         Spacer(Modifier.height(22.dp))
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Previous orders", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                Text("Previous orders", fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
                 Text("Your order history", color = Muted, fontSize = 12.sp)
             }
             Box(
