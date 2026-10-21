@@ -2627,15 +2627,6 @@ private fun AdminDashboardScreen(
             )
         }
         Spacer(Modifier.height(18.dp))
-        Card(Modifier.fillMaxWidth().shadow(5.dp, RoundedCornerShape(18.dp)).clickable(onClick = onBannersClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)) {
-            Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) { Icon(Icons.Default.ViewCarousel, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp)) }
-                Spacer(Modifier.width(12.dp))
-                Column(Modifier.weight(1f)) { Text("Home banner sliders", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold); Text("Choose Slider 1, 2 or 3 for the home page", color = AdminMuted, fontSize = 12.sp) }
-                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = AdminInk)
-            }
-        }
-        Spacer(Modifier.height(12.dp))
         Card(Modifier.fillMaxWidth().shadow(5.dp, RoundedCornerShape(18.dp)).clickable(onClick = onThemesClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)) {
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) { Icon(Icons.Default.Palette, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp)) }
@@ -2644,20 +2635,8 @@ private fun AdminDashboardScreen(
                 Icon(Icons.Default.ChevronRight, contentDescription = null, tint = AdminInk)
             }
         }
-        Spacer(Modifier.height(20.dp))
-        OutlinedButton(
-            onClick = onSignOut,
-            modifier = Modifier.fillMaxWidth().height(56.dp),
-            shape = RoundedCornerShape(14.dp)
-        ) {
-            Icon(Icons.Default.Logout, contentDescription = null)
-            Spacer(Modifier.width(8.dp))
-            Text("Sign out")
-        }
     }
 }
-
-
 
 @Composable
 private fun ThemeManagementScreen(onBack: () -> Unit) {
