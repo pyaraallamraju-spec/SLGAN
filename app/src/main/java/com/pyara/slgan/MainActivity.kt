@@ -1668,6 +1668,24 @@ private fun HomeBannerSlider(
                             )
                         }
                     }
+                    // Keep the trust line anchored near the bottom of every banner slide.
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(start = 22.dp, end = 22.dp, bottom = 18.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        Text(text = "🌿", fontSize = 13.sp)
+                        Text(
+                            text = tr("TRUSTED SINCE 1990", LocalAppLanguage.current),
+                            color = Color(0xFF2E7D32),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.1.sp,
+                            maxLines = 1
+                        )
+                    }
                     // Display readable title, tagline, and product action on every slide.
                     Column(
                         modifier = Modifier
@@ -1720,21 +1738,6 @@ private fun HomeBannerSlider(
                         Spacer(Modifier.height(7.dp))
                         Spacer(Modifier.height(2.dp))
                         Spacer(Modifier.height(7.dp))
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(5.dp)
-                        ) {
-                            Text(text = "🌿", fontSize = 13.sp)
-                            Text(
-                                text = tr("TRUSTED SINCE 1990", LocalAppLanguage.current),
-                                color = Color(0xFF2E7D32),
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 1.1.sp,
-                                maxLines = 1
-                            )
-                        }
-                        Spacer(Modifier.height(2.dp))
                         if (!slide.isCompanySlide) {
                             Spacer(Modifier.height(5.dp))
                             Row(
