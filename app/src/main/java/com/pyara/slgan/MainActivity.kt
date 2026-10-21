@@ -6846,7 +6846,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Spacer(Modifier.height(20.dp))
         }
         if (profileSection == "Profile" && initialSection != "Addresses") {
-            Card(modifier = Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp)) {
+            Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
                 Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(58.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
                         Icon(Icons.Default.Person, null, tint = Forest, modifier = Modifier.size(30.dp))
@@ -7079,6 +7080,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Spacer(Modifier.height(12.dp))
             OutlinedButton(onClick = onSignOut, modifier = Modifier.fillMaxWidth().height(50.dp), shape = RoundedCornerShape(14.dp)) {
                 Icon(Icons.Default.Logout, null); Spacer(Modifier.width(8.dp)); Text(tr("Sign out", LocalAppLanguage.current))
+            }
             }
         } else if (showAddressForm) {
             Row(
