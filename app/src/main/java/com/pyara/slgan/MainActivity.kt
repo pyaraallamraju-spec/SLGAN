@@ -6954,7 +6954,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
                 IconButton(
                     onClick = {
-                        showAddressForm = true
+                        showAddressForm = false
                         showAddressLocationSheet = true
                         addressMessage = null
                     },
