@@ -5895,21 +5895,29 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 "Description" -> {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Box(
-                                            Modifier.size(30.dp)
-                                                .clip(CircleShape)
-                                                .background(Color.Black),
+                                            Modifier.size(34.dp)
+                                                .clip(RoundedCornerShape(11.dp))
+                                                .background(Color(0xFFE3E6EC)),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            Icon(Icons.Default.Info, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
+                                            Icon(Icons.Default.Info, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
                                         }
-                                        Spacer(Modifier.width(8.dp))
+                                        Spacer(Modifier.width(10.dp))
                                         Text("About this condition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
                                 }
                                 "Suggested medicines" -> {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
+                                        Box(
+                                            Modifier.size(34.dp)
+                                                .clip(RoundedCornerShape(11.dp))
+                                                .background(Color(0xFFE3E6EC)),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
+                                        }
+                                        Spacer(Modifier.width(10.dp))
                                         Text("Suggested medicines", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     val displayedSuggestions = if (suggestedMedicineNames.isNotEmpty()) suggestedMedicineNames else relatedMedicines.map { it.name }
@@ -5925,7 +5933,15 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 }
                                 else -> {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Forest, modifier = Modifier.size(20.dp))
+                                        Box(
+                                            Modifier.size(34.dp)
+                                                .clip(RoundedCornerShape(11.dp))
+                                                .background(Color(0xFFE3E6EC)),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
+                                        }
+                                        Spacer(Modifier.width(10.dp))
                                         Text("Precautions & care", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     if (diseasePrecautions.isBlank()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
