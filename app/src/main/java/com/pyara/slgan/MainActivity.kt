@@ -7042,6 +7042,17 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Button(
                 onClick = {
                     val currentUid = uid
+                    val parsedDob = dateOfBirth.takeIf { it.isNotBlank() }?.let {
+                        runCatching { LocalDate.parse(it) }.getOrNull()
+                    }
+                    val mobileDigits = mobileNumber.filter(Char::isDigit)
+                    val countryCodeValid = selectedCountry.third.matches(Regex("^\\\\+[1-9]\\\\d{0,3}$"))
+                    val mobileValid = when (selectedCountry.first) {
+                        "IN" -> mobileDigits.length == 10 && mobileDigits.firstOrNull() in '6'..'9'
+                        "US", "CA" -> mobileDigits.length == 10
+                        else -> mobileDigits.length in 7..15
+                    }
+                    val today = LocalDate.now()
                     when {
                         firstName.isBlank() && mobileNumber.isBlank() ->
                             saveMessage = "First name and mobile number are required."
@@ -7049,6 +7060,20 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             saveMessage = "First name is required."
                         mobileNumber.isBlank() ->
                             saveMessage = "Mobile number is required."
+                        !countryCodeValid ->
+                            saveMessage = "Please select a valid country calling code."
+                        !mobileValid ->
+                            saveMessage = if (selectedCountry.first == "IN") "Enter a valid 10-digit Indian mobile number starting with 6–9."
+                                else if (selectedCountry.first in listOf("US", "CA")) "Enter a valid 10-digit mobile number."
+                                else "Enter a valid mobile number containing 7–15 digits."
+                        dateOfBirth.isBlank() ->
+                            saveMessage = "Date of birth is required."
+                        parsedDob == null ->
+                            saveMessage = "Please select a valid date of birth."
+                        parsedDob.isAfter(today) ->
+                            saveMessage = "Date of birth cannot be in the future."
+                        parsedDob.isBefore(today.minusYears(120)) ->
+                            saveMessage = "Please enter a valid date of birth."
                         currentUid == null ->
                             saveMessage = "Please sign in again to save your profile."
                         else -> {
