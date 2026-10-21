@@ -6144,18 +6144,18 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             )
                                             Spacer(Modifier.height(6.dp))
                                             if (quantityInCart == 0) {
-                                                OutlinedButton(
+                                                Button(
                                                     onClick = { onAdd(product.id) },
                                                     enabled = product.price > 0.0 && product.productStock > 0,
-                                                    modifier = Modifier.fillMaxWidth().height(34.dp).background(Color(0xFFE1E5EC), RoundedCornerShape(9.dp)),
+                                                    modifier = Modifier.fillMaxWidth().height(34.dp),
                                                     contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
                                                     shape = RoundedCornerShape(9.dp),
-                                                    colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
-                                                    border = BorderStroke(1.dp, Ink)
+                                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink, disabledContainerColor = Color(0xFFE1E5EC), disabledContentColor = Muted),
+                                                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 0.dp)
                                                 ) { Text("ADD", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
                                             } else {
                                                 Row(
-                                                    Modifier.fillMaxWidth().height(34.dp).border(1.dp, Forest, RoundedCornerShape(9.dp)),
+                                                    Modifier.fillMaxWidth().height(34.dp).clip(RoundedCornerShape(9.dp)).background(Color(0xFFE1E5EC)),
                                                     verticalAlignment = Alignment.CenterVertically,
                                                     horizontalArrangement = Arrangement.SpaceEvenly
                                                 ) {
