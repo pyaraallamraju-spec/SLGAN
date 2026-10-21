@@ -1757,7 +1757,7 @@ private fun HomeBannerSlider(
                                     Icons.Default.ArrowForward,
                                     contentDescription = null,
                                     tint = Color(0xFF762A24),
-                                    modifier = Modifier.size(15.dp)
+                                    modifier = Modifier.size(15.dp).align(Alignment.CenterVertically)
                                 )
                             }
                         }
