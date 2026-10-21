@@ -125,6 +125,12 @@ private var Ink by mutableStateOf(Color(0xFF38251F))
 private var Muted by mutableStateOf(Color(0xFF806D60))
 private var Gold by mutableStateOf(Color(0xFFD9A441))
 
+private val AdminBackground = Color(0xFFF1F2F4)
+private val AdminLightGray = Color(0xFFF8F9FA)
+private val AdminSurface = Color.White
+private val AdminInk = Color(0xFF25282D)
+private val AdminMuted = Color(0xFF707780)
+
 private fun applyAppPalette(themeId: Int) {
     if (themeId == 2) {
         Forest = Color(0xFF214B35); Leaf = Color(0xFF557A45); Cream = Color(0xFFFFF9E9)
@@ -1839,7 +1845,7 @@ private fun AdminProductsScreen(
                 product.id.contains(searchText, ignoreCase = true))
         }.sortedBy { it.name.lowercase() }
     }
-    Column(Modifier.fillMaxSize().background(Cream)) {
+    Column(Modifier.fillMaxSize().background(AdminBackground)) {
         Column(
             Modifier.fillMaxWidth()
                 .background(Color.White, RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
@@ -1849,16 +1855,16 @@ private fun AdminProductsScreen(
             Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = Forest) }
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = AdminInk) }
             Column(Modifier.weight(1f)) {
                 Text("Products", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                Text("${products.size} catalogue items", color = Muted, fontSize = 12.sp)
+                Text("${products.size} catalogue items", color = AdminMuted, fontSize = 12.sp)
             }
         }
         Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Inventory2, contentDescription = null, tint = Forest, modifier = Modifier.size(27.dp))
+                    Icon(Icons.Default.Inventory2, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
                 }
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
@@ -1870,7 +1876,7 @@ private fun AdminProductsScreen(
                         onClick = { addingProduct = true },
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Cream, contentColor = Forest, disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Forest)
+                        colors = ButtonDefaults.buttonColors(containerColor = AdminSurface, contentColor = Forest, disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Forest)
                     ) {
                         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
                         Spacer(Modifier.width(4.dp))
@@ -1889,9 +1895,9 @@ private fun AdminProductsScreen(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
             textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-            label = { Text("Search product", modifier = Modifier.background(Color.Transparent), color = Muted, fontSize = 13.sp, maxLines = 1) },
-            placeholder = { Text("Name, category or product ID", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search products", tint = Forest) },
+            label = { Text("Search product", modifier = Modifier.background(Color.Transparent), color = AdminMuted, fontSize = 13.sp, maxLines = 1) },
+            placeholder = { Text("Name, category or product ID", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = AdminMuted) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search products", tint = AdminInk) },
             trailingIcon = {
                 if (searchText.isNotEmpty()) IconButton(onClick = { searchText = "" }) {
                     Icon(Icons.Default.Close, "Clear search")
@@ -1921,7 +1927,7 @@ private fun AdminProductsScreen(
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = Forest,
                         selectedLabelColor = Color.White,
-                        containerColor = Cream
+                        containerColor = AdminSurface
                     )
                 )
             }
@@ -1961,7 +1967,7 @@ private fun AdminProductsScreen(
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        colors = CardDefaults.cardColors(containerColor = AdminSurface),
                         border = androidx.compose.foundation.BorderStroke(1.dp, Gold.copy(alpha = 0.48f)),
                         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                     ) {
@@ -2047,7 +2053,7 @@ private fun AdminProductsScreen(
                                     }
                                     Text(
                                         if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
-                                        color = Forest,
+                                        color = AdminInk,
                                         fontWeight = FontWeight.ExtraBold,
                                         fontSize = 18.sp
                                     )
@@ -2059,22 +2065,22 @@ private fun AdminProductsScreen(
                                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("PRODUCT DETAILS", Modifier.weight(1f), color = Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
+                                Text("PRODUCT DETAILS", Modifier.weight(1f), color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
                                 TextButton(
                                     onClick = { viewingProduct = product },
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                                 ) {
-                                    Icon(Icons.Default.Visibility, contentDescription = "View ${product.name}", modifier = Modifier.size(16.dp), tint = Forest)
+                                    Icon(Icons.Default.Visibility, contentDescription = "View ${product.name}", modifier = Modifier.size(16.dp), tint = AdminInk)
                                     Spacer(Modifier.width(4.dp))
-                                    Text("View", color = Forest, fontSize = 11.sp)
+                                    Text("View", color = AdminInk, fontSize = 11.sp)
                                 }
                                 TextButton(
                                     onClick = { editingProduct = product },
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
                                 ) {
-                                    Icon(Icons.Default.Edit, contentDescription = "Edit ${product.name}", modifier = Modifier.size(16.dp), tint = Forest)
+                                    Icon(Icons.Default.Edit, contentDescription = "Edit ${product.name}", modifier = Modifier.size(16.dp), tint = AdminInk)
                                     Spacer(Modifier.width(4.dp))
-                                    Text("Edit", color = Forest, fontSize = 11.sp)
+                                    Text("Edit", color = AdminInk, fontSize = 11.sp)
                                 }
                                 IconButton(onClick = { deletingProduct = product }, modifier = Modifier.size(34.dp)) {
                                     Icon(Icons.Default.DeleteOutline, contentDescription = "Delete ${product.name}", tint = Color(0xFFB3261E), modifier = Modifier.size(19.dp))
@@ -2089,8 +2095,8 @@ private fun AdminProductsScreen(
     deletingProduct?.let { product ->
         AlertDialog(
             onDismissRequest = { deletingProduct = null },
-            containerColor = Cream,
-            title = { Text("Delete product?", color = Forest, fontWeight = FontWeight.Bold) },
+            containerColor = AdminSurface,
+            title = { Text("Delete product?", color = AdminInk, fontWeight = FontWeight.Bold) },
             text = { Text("Delete \"${product.name}\" from the catalogue? This cannot be undone.", color = Ink) },
             confirmButton = {
                 TextButton(onClick = {
@@ -2099,7 +2105,7 @@ private fun AdminProductsScreen(
                     deletingProduct = null
                 }) { Text("Delete", color = Color(0xFFB3261E)) }
             },
-            dismissButton = { TextButton(onClick = { deletingProduct = null }) { Text("Cancel", color = Muted) } }
+            dismissButton = { TextButton(onClick = { deletingProduct = null }) { Text("Cancel", color = AdminMuted) } }
         )
     }
 }
@@ -2141,27 +2147,27 @@ private fun AdminProductDetailsScreen(
         .split(Regex("\\s+"))
         .joinToString(" ") { word -> word.replaceFirstChar { it.uppercase() } }
 
-    Column(Modifier.fillMaxSize().background(Cream)) {
+    Column(Modifier.fillMaxSize().background(AdminBackground)) {
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to products", tint = Forest) }
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to products", tint = AdminInk) }
             Column(Modifier.weight(1f)) {
                 Text("View Product", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
-                Text("Complete catalogue information", color = Muted, fontSize = 12.sp)
+                Text("Complete catalogue information", color = AdminMuted, fontSize = 12.sp)
             }
             TextButton(onClick = { onEdit(product) }) {
-                Icon(Icons.Default.Edit, contentDescription = null, tint = Forest, modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.Edit, contentDescription = null, tint = AdminInk, modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(4.dp))
-                Text("Edit", color = Forest)
+                Text("Edit", color = AdminInk)
             }
         }
         if (loadingDetails) {
             AppLoader("Loading product details…", compact = true)
         } else if (detailsError != null && data.isEmpty()) {
             Text(detailsError.orEmpty(), Modifier.padding(20.dp), color = Color(0xFFB3261E))
-            TextButton(onClick = onBack) { Text("Back to products", color = Forest) }
+            TextButton(onClick = onBack) { Text("Back to products", color = AdminInk) }
         } else {
             Column(
                 Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(16.dp),
@@ -2170,7 +2176,7 @@ private fun AdminProductDetailsScreen(
                 Card(
                     Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(22.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = AdminSurface),
                     border = androidx.compose.foundation.BorderStroke(1.dp, Gold.copy(alpha = 0.45f))
                 ) {
                     Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -2182,17 +2188,17 @@ private fun AdminProductDetailsScreen(
                                 Text(product.emoji, fontSize = 48.sp)
                             }
                         }
-                        Text(data["product_name"]?.toString() ?: data["name"]?.toString() ?: product.name, color = Forest, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(data["product_name"]?.toString() ?: data["name"]?.toString() ?: product.name, color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
                         Text(
                             if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
-                            color = Forest, fontSize = 21.sp, fontWeight = FontWeight.Bold
+                            color = AdminInk, fontSize = 21.sp, fontWeight = FontWeight.Bold
                         )
                         Text(if (product.productStock == 1) "IN STOCK" else "OUT OF STOCK", color = if (product.productStock == 1) Color(0xFF258348) else Color(0xFFC5392F), fontWeight = FontWeight.Bold)
                     }
                 }
                 Text("PRODUCT INFORMATION", color = Leaf, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
                 if (data.isEmpty()) {
-                    Text("No additional fields are saved for this product.", color = Muted)
+                    Text("No additional fields are saved for this product.", color = AdminMuted)
                 } else {
                     data.toSortedMap().filterKeys { key -> key !in hiddenKeys && !key.equals("image", true) && !key.equals("product_image", true) }.forEach { (key, value) ->
                         val valueText = when (value) {
@@ -2203,17 +2209,17 @@ private fun AdminProductDetailsScreen(
                         Card(
                             Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(14.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            colors = CardDefaults.cardColors(containerColor = AdminSurface),
                             border = androidx.compose.foundation.BorderStroke(1.dp, Gold.copy(alpha = 0.22f))
                         ) {
                             Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                                Text(displayLabel(key), color = Forest, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text(displayLabel(key), color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                                 Text(valueText.ifBlank { "—" }, color = Ink, fontSize = 14.sp, lineHeight = 20.sp)
                             }
                         }
                     }
                 }
-                if (detailsError != null) Text("Latest details could not be refreshed: ${detailsError}", color = Muted, fontSize = 12.sp)
+                if (detailsError != null) Text("Latest details could not be refreshed: ${detailsError}", color = AdminMuted, fontSize = 12.sp)
             }
         }
     }
@@ -2332,16 +2338,16 @@ private fun AdminProductEditor(
     var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
     var saving by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
-    Column(Modifier.fillMaxSize().background(Cream)) {
+    Column(Modifier.fillMaxSize().background(AdminBackground)) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack, enabled = !saving) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
+            IconButton(onClick = onBack, enabled = !saving) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
             Text(if (isNew) "Add product" else "Edit product", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
         }
         Column(
             Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text("Product information", color = Forest, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text("Product information", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, singleLine = true)
             ExposedDropdownMenuBox(
                 expanded = categoryMenuExpanded,
@@ -2363,7 +2369,7 @@ private fun AdminProductEditor(
                 ExposedDropdownMenu(
                     expanded = categoryMenuExpanded,
                     onDismissRequest = { categoryMenuExpanded = false },
-                    modifier = Modifier.heightIn(max = 320.dp).background(Cream)
+                    modifier = Modifier.heightIn(max = 320.dp).background(AdminBackground)
                 ) {
                     categoryOptions.forEach { option ->
                         DropdownMenuItem(
@@ -2393,11 +2399,11 @@ private fun AdminProductEditor(
                     DropdownMenu(
                         expanded = unitMenuExpanded,
                         onDismissRequest = { unitMenuExpanded = false },
-                        modifier = Modifier.heightIn(max = 280.dp).background(Cream)
+                        modifier = Modifier.heightIn(max = 280.dp).background(AdminBackground)
                     ) {
                         if (unitOptions.isEmpty()) {
                             DropdownMenuItem(
-                                text = { Text("No units found in product database", color = Muted) },
+                                text = { Text("No units found in product database", color = AdminMuted) },
                                 onClick = { unitMenuExpanded = false },
                                 enabled = false
                             )
@@ -2427,7 +2433,7 @@ private fun AdminProductEditor(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Product availability", color = Forest, fontWeight = FontWeight.SemiBold)
+                Text("Product availability", color = AdminInk, fontWeight = FontWeight.SemiBold)
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(if (productStock == 1) "IN" else "OUT", color = if (productStock == 1) Forest else Color(0xFFB3261E), fontWeight = FontWeight.Bold)
                     Switch(
@@ -2541,7 +2547,7 @@ private fun AdminDashboardScreen(
         }
     }
     Column(
-        Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(20.dp)
+        Modifier.fillMaxSize().background(AdminBackground).verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
         Row(
             Modifier.fillMaxWidth(),
@@ -2549,16 +2555,16 @@ private fun AdminDashboardScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(Modifier.weight(1f)) {
-                Text("SLGAN ADMIN", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+                Text("SLGAN ADMIN", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
                 Spacer(Modifier.height(4.dp))
                 Text("Dashboard", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
             }
             IconButton(onClick = onSignOut) {
-                Icon(Icons.Default.Logout, contentDescription = "Sign out", tint = Forest)
+                Icon(Icons.Default.Logout, contentDescription = "Sign out", tint = AdminInk)
             }
         }
         Spacer(Modifier.height(8.dp))
-        Text("Welcome back", color = Muted, fontSize = 15.sp)
+        Text("Welcome back", color = AdminMuted, fontSize = 15.sp)
         Text(email.ifBlank { "Administrator" }, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(22.dp))
         Card(
@@ -2574,7 +2580,7 @@ private fun AdminDashboardScreen(
             }
         }
         Spacer(Modifier.height(20.dp))
-        Text("OVERVIEW", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
+        Text("OVERVIEW", color = AdminMuted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             AdminSummaryCard(
@@ -2614,21 +2620,21 @@ private fun AdminDashboardScreen(
             )
         }
         Spacer(Modifier.height(18.dp))
-        Card(Modifier.fillMaxWidth().clickable(onClick = onBannersClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Cream), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
+        Card(Modifier.fillMaxWidth().clickable(onClick = onBannersClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(PaleGreen), contentAlignment = Alignment.Center) { Icon(Icons.Default.ViewCarousel, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp)) }
+                Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) { Icon(Icons.Default.ViewCarousel, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp)) }
                 Spacer(Modifier.width(12.dp))
-                Column(Modifier.weight(1f)) { Text("Home banner sliders", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold); Text("Choose Slider 1, 2 or 3 for the home page", color = Muted, fontSize = 12.sp) }
-                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
+                Column(Modifier.weight(1f)) { Text("Home banner sliders", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold); Text("Choose Slider 1, 2 or 3 for the home page", color = AdminMuted, fontSize = 12.sp) }
+                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = AdminInk)
             }
         }
         Spacer(Modifier.height(12.dp))
-        Card(Modifier.fillMaxWidth().clickable(onClick = onThemesClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Cream), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
+        Card(Modifier.fillMaxWidth().clickable(onClick = onThemesClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), border = BorderStroke(1.dp, Gold.copy(alpha = 0.65f))) {
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(PaleGreen), contentAlignment = Alignment.Center) { Icon(Icons.Default.Palette, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp)) }
+                Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) { Icon(Icons.Default.Palette, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp)) }
                 Spacer(Modifier.width(12.dp))
-                Column(Modifier.weight(1f)) { Text("App themes", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold); Text("Apply Default or Theme 1 across the app", color = Muted, fontSize = 12.sp) }
-                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Forest)
+                Column(Modifier.weight(1f)) { Text("App themes", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold); Text("Apply Default or Theme 1 across the app", color = AdminMuted, fontSize = 12.sp) }
+                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = AdminInk)
             }
         }
         Spacer(Modifier.height(20.dp))
@@ -2659,20 +2665,20 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
         }
         onDispose { listener.remove() }
     }
-    Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
+    Column(Modifier.fillMaxSize().background(AdminBackground).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(onClick = onBack, shape = CircleShape, color = Color.White, border = BorderStroke(1.dp, Color(0xFFE5E8EF)), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
             Spacer(Modifier.width(16.dp))
-            Column { Text("APP APPEARANCE", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose app theme", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
+            Column { Text("APP APPEARANCE", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose app theme", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
-        Text("Manage the app-wide appearance, including colors, backgrounds, buttons, icons and text.", color = Muted, fontSize = 14.sp)
+        Text("Manage the app-wide appearance, including colors, backgrounds, buttons, icons and text.", color = AdminMuted, fontSize = 14.sp)
         Spacer(Modifier.height(14.dp))
-        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Color(0xFFE5E8EF))) {
+        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), border = BorderStroke(1.dp, Color(0xFFE5E8EF))) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("Light Theme", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(if (lightThemeEnabled) "Enabled for the customer app" else "Disabled — default classic palette is used", color = Muted, fontSize = 12.sp)
+                    Text(if (lightThemeEnabled) "Enabled for the customer app" else "Disabled — default classic palette is used", color = AdminMuted, fontSize = 12.sp)
                 }
                 Switch(checked = lightThemeEnabled, onCheckedChange = { enabled ->
                     lightThemeEnabled = enabled
@@ -2698,7 +2704,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
             val textColor = if (botanical) Color(0xFF20372A) else Color(0xFF38251F)
             Card(Modifier.fillMaxWidth().padding(bottom = 14.dp).clickable { selectedTheme = theme; message = null },
                 shape = RoundedCornerShape(22.dp), border = BorderStroke(if (selectedTheme == theme) 2.dp else 1.dp, if (selectedTheme == theme) accent else Color(0xFFE8DCC7)),
-                colors = CardDefaults.cardColors(containerColor = Cream)) {
+                colors = CardDefaults.cardColors(containerColor = AdminSurface)) {
                 Column(Modifier.padding(14.dp)) {
                     Box(Modifier.fillMaxWidth().height(132.dp).clip(RoundedCornerShape(16.dp)).background(Brush.linearGradient(if (botanical) listOf(Color(0xFF173D2B), Color(0xFF557A45), Color(0xFFC9A34A)) else listOf(Color(0xFF762A24), Color(0xFF8A4B2A), Color(0xFFD9A441)))).padding(16.dp)) {
                         Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.78f)) {
@@ -2711,7 +2717,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                     }
                     Spacer(Modifier.height(12.dp))
                     Text(if (botanical) "Botanical Heritage" else "Light Theme", color = textColor, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(if (botanical) "Forest green, antique gold, ivory surfaces and botanical accents." else "The current main-module style: maroon, terracotta, gold, warm cream, existing backgrounds, icons and text colors.", color = Muted, fontSize = 13.sp)
+                    Text(if (botanical) "Forest green, antique gold, ivory surfaces and botanical accents." else "The current main-module style: maroon, terracotta, gold, warm cream, existing backgrounds, icons and text colors.", color = AdminMuted, fontSize = 13.sp)
                     Spacer(Modifier.height(10.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                         listOf(primary, accent, background, textColor).forEach { swatch -> Box(Modifier.size(24.dp).clip(CircleShape).background(swatch).border(1.dp, Color.LightGray, CircleShape)) }
@@ -2759,7 +2765,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         }
         onDispose { registration.remove() }
     }
-    Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
+    Column(Modifier.fillMaxSize().background(AdminBackground).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
                 modifier = Modifier.size(48.dp).clickable { onBack() },
@@ -2771,14 +2777,14 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(24.dp))
                 }
             }
-            Column { Text("HOME PAGE SLIDERS", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
+            Column { Text("HOME PAGE SLIDERS", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
-        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Gold.copy(alpha = 0.55f))) {
+        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), border = BorderStroke(1.dp, Gold.copy(alpha = 0.55f))) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("Show slider on Home", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text(if (sliderEnabled) "Slider is visible on the home page" else "Slider is hidden from the home page", color = Muted, fontSize = 12.sp)
+                    Text(if (sliderEnabled) "Slider is visible on the home page" else "Slider is hidden from the home page", color = AdminMuted, fontSize = 12.sp)
                 }
                 Switch(checked = sliderEnabled, onCheckedChange = { enabled ->
                     sliderEnabled = enabled
@@ -2794,11 +2800,11 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
             }
         }
         Spacer(Modifier.height(12.dp))
-        Text("Choose a slider design and tap Apply. Slider 4 automatically follows the selected app theme.", color = Muted, fontSize = 14.sp)
+        Text("Choose a slider design and tap Apply. Slider 4 automatically follows the selected app theme.", color = AdminMuted, fontSize = 14.sp)
         Spacer(Modifier.height(16.dp))
         (1..4).forEach { design ->
             val colors = when (design) { 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
-            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = Cream)) {
+            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = AdminSurface)) {
                 Column(Modifier.padding(12.dp)) {
                     Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Color.Transparent).padding(0.dp)) {
                         if (design == 4) {
@@ -2823,8 +2829,8 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                     }
                     Spacer(Modifier.height(10.dp))
                     Text(when (design) { 1 -> "Slider 1 · Current banner"; 2 -> "Slider 2 · Nature’s Goodness"; 3 -> "Slider 3 · Cream & Green"; else -> "Slider 4 · Theme-Adaptive Signature" }, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text(when (design) { 1 -> "Keep the existing look"; 2 -> "Deep botanical green, herbal imagery and gold accents"; 3 -> "Fresh botanical, natural look"; else -> "Uses the selected app theme’s Forest and Gold palette, with high-contrast text and button styling." }, color = Muted, fontSize = 12.sp)
-                    if (activeDesign == design) Text("SELECTED", color = Forest, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(when (design) { 1 -> "Keep the existing look"; 2 -> "Deep botanical green, herbal imagery and gold accents"; 3 -> "Fresh botanical, natural look"; else -> "Uses the selected app theme’s Forest and Gold palette, with high-contrast text and button styling." }, color = AdminMuted, fontSize = 12.sp)
+                    if (activeDesign == design) Text("SELECTED", color = AdminInk, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
                 }
             }
         }
@@ -2897,17 +2903,17 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
     if (showAddDialog) {
         AlertDialog(
             onDismissRequest = { if (!saving) showAddDialog = false },
-            containerColor = Cream,
+            containerColor = AdminSurface,
             shape = RoundedCornerShape(24.dp),
             icon = {
-                Box(Modifier.size(54.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest, modifier = Modifier.size(28.dp))
+                Box(Modifier.size(54.dp).background(AdminLightGray, CircleShape), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.MedicalServices, contentDescription = null, tint = AdminInk, modifier = Modifier.size(28.dp))
                 }
             },
             title = { Text("Add disease", color = Ink, fontWeight = FontWeight.ExtraBold) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("Add a disease to the app catalogue.", color = Muted, fontSize = 13.sp)
+                    Text("Add a disease to the app catalogue.", color = AdminMuted, fontSize = 13.sp)
                     OutlinedTextField(
                         value = diseaseName,
                         onValueChange = { diseaseName = it },
@@ -2993,12 +2999,12 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 ) { if (saving) CircularProgressIndicator(Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp) else Text("Save disease") }
             },
             dismissButton = {
-                TextButton(enabled = !saving, onClick = { showAddDialog = false }) { Text("Cancel", color = Muted) }
+                TextButton(enabled = !saving, onClick = { showAddDialog = false }) { Text("Cancel", color = AdminMuted) }
             }
         )
     }
 
-    Column(Modifier.fillMaxSize().background(Cream)) {
+    Column(Modifier.fillMaxSize().background(AdminBackground)) {
         // Match the Products admin page header: white rounded container, title row,
         // forest-green library card, and search field inside the same header section.
         Column(
@@ -3010,10 +3016,10 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = Forest) }
+                IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = AdminInk) }
                 Column(Modifier.weight(1f)) {
                     Text("Diseases", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("${records.size} disease catalogue items", color = Muted, fontSize = 12.sp)
+                    Text("${records.size} disease catalogue items", color = AdminMuted, fontSize = 12.sp)
                 }
             }
             Card(
@@ -3026,7 +3032,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Forest, modifier = Modifier.size(27.dp))
+                        Icon(Icons.Default.MedicalServices, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
                     }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
@@ -3038,7 +3044,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                             onClick = { showAddDialog = true },
                             shape = RoundedCornerShape(12.dp),
                             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Cream, contentColor = Forest, disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Forest)
+                            colors = ButtonDefaults.buttonColors(containerColor = AdminSurface, contentColor = Forest, disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Forest)
                         ) {
                             Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
                             Spacer(Modifier.width(4.dp))
@@ -3055,9 +3061,9 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
                 singleLine = true,
                 textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-                label = { Text("Search diseases", modifier = Modifier.background(Color.Transparent), color = Forest, fontSize = 12.sp, maxLines = 1) },
-                placeholder = { Text("Disease name or description", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                label = { Text("Search diseases", modifier = Modifier.background(Color.Transparent), color = AdminInk, fontSize = 12.sp, maxLines = 1) },
+                placeholder = { Text("Disease name or description", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = AdminMuted) },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = AdminInk) },
                 trailingIcon = {
                     if (search.isNotEmpty()) IconButton(onClick = { search = "" }) {
                         Icon(Icons.Default.Close, "Clear search")
@@ -3084,7 +3090,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 Spacer(Modifier.height(8.dp))
                 Text("Could not load diseases", color = Ink, fontWeight = FontWeight.Bold)
                 Text(loadError.orEmpty(), color = Color(0xFFB3261E), fontSize = 12.sp)
-                Text("Check that the latest Firestore rules are published.", color = Muted, fontSize = 12.sp)
+                Text("Check that the latest Firestore rules are published.", color = AdminMuted, fontSize = 12.sp)
             }
             filtered.isEmpty() -> EmptyState("🌿", if (search.isBlank()) "No diseases added yet" else "No matching diseases", "Use Add to create your first disease entry.")
             else -> LazyColumn(
@@ -3106,18 +3112,18 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        colors = CardDefaults.cardColors(containerColor = AdminSurface),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                     ) {
                         Row(Modifier.fillMaxWidth().padding(15.dp), verticalAlignment = Alignment.Top) {
-                            Box(Modifier.size(44.dp).background(PaleGreen, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+                            Box(Modifier.size(44.dp).background(AdminLightGray, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                                 Text(diseaseEmoji, fontSize = 24.sp)
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                                 Spacer(Modifier.height(5.dp))
-                                Text(description, color = Muted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 4, overflow = TextOverflow.Ellipsis)
+                                Text(description, color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 4, overflow = TextOverflow.Ellipsis)
                                 Spacer(Modifier.height(8.dp))
                             }
                         }
@@ -3166,18 +3172,18 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             .contains(search.trim(), ignoreCase = true)
     }
 
-    Column(Modifier.fillMaxSize().background(Cream).padding(top = 8.dp)) {
+    Column(Modifier.fillMaxSize().background(AdminBackground).padding(top = 8.dp)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = AdminInk) }
             Column(Modifier.weight(1f)) {
                 Text("Customers", color = Ink, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                Text("${customers.size} customer accounts", color = Muted, fontSize = 12.sp)
+                Text("${customers.size} customer accounts", color = AdminMuted, fontSize = 12.sp)
             }
         }
         Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Groups, contentDescription = null, tint = Forest, modifier = Modifier.size(27.dp))
+                    Icon(Icons.Default.Groups, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
                 }
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
@@ -3196,7 +3202,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
             singleLine = true,
             textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-            label = { Text("Search name, email or mobile", modifier = Modifier.background(Color.Transparent), color = Muted, fontSize = 13.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
+            label = { Text("Search name, email or mobile", modifier = Modifier.background(Color.Transparent), color = AdminMuted, fontSize = 13.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Muted, modifier = Modifier.size(22.dp)) },
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -3234,18 +3240,18 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        colors = CardDefaults.cardColors(containerColor = AdminSurface),
                         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                     ) {
                         Column(Modifier.padding(15.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(Modifier.size(44.dp).background(PaleGreen, CircleShape), contentAlignment = Alignment.Center) {
-                                    Icon(Icons.Default.Person, contentDescription = null, tint = Forest)
+                                Box(Modifier.size(44.dp).background(AdminLightGray, CircleShape), contentAlignment = Alignment.Center) {
+                                    Icon(Icons.Default.Person, contentDescription = null, tint = AdminInk)
                                 }
                                 Spacer(Modifier.width(11.dp))
                                 Column(Modifier.weight(1f)) {
                                     Text(name, color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                                    Text(email.ifBlank { "Email not provided" }, color = Muted, fontSize = 12.sp)
+                                    Text(email.ifBlank { "Email not provided" }, color = AdminMuted, fontSize = 12.sp)
                                 }
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Switch(
@@ -3280,10 +3286,10 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 IconButton(onClick = { viewingCustomer = customer }) {
-                                    Icon(Icons.Default.Visibility, contentDescription = "View customer details", tint = Forest)
+                                    Icon(Icons.Default.Visibility, contentDescription = "View customer details", tint = AdminInk)
                                 }
                                 IconButton(onClick = { editingCustomer = customer }) {
-                                    Icon(Icons.Default.Edit, contentDescription = "Edit customer details", tint = Forest)
+                                    Icon(Icons.Default.Edit, contentDescription = "Edit customer details", tint = AdminInk)
                                 }
                             }
                         }
@@ -3300,20 +3306,20 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             .ifBlank { customer["nickname"]?.toString().orEmpty() }.ifBlank { "Customer" }
         AlertDialog(
             onDismissRequest = { viewingCustomer = null },
-            containerColor = Cream,
-            title = { Text("Customer details", color = Forest, fontWeight = FontWeight.Bold) },
+            containerColor = AdminSurface,
+            title = { Text("Customer details", color = AdminInk, fontWeight = FontWeight.Bold) },
             text = {
                 Column(Modifier.heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(displayName, color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
                     customer.entries.filter { it.key != "uid" && it.key != "password" && it.key != "passwordHash" && it.value != null && it.value.toString().isNotBlank() }
                         .sortedBy { it.key }
                         .forEach { entry ->
-                            Text(entry.key.replace(Regex("([a-z])([A-Z])"), "$1 $2").replaceFirstChar { it.uppercase() } + ": " + entry.value.toString(), color = Muted, fontSize = 13.sp)
+                            Text(entry.key.replace(Regex("([a-z])([A-Z])"), "$1 $2").replaceFirstChar { it.uppercase() } + ": " + entry.value.toString(), color = AdminMuted, fontSize = 13.sp)
                         }
-                    Text("Customer ID: $uid", color = Muted, fontSize = 12.sp)
+                    Text("Customer ID: $uid", color = AdminMuted, fontSize = 12.sp)
                 }
             },
-            confirmButton = { TextButton(onClick = { viewingCustomer = null }) { Text("Close", color = Forest) } }
+            confirmButton = { TextButton(onClick = { viewingCustomer = null }) { Text("Close", color = AdminInk) } }
         )
     }
 
@@ -3356,8 +3362,8 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         var savingCustomer by remember(uid) { mutableStateOf(false) }
         AlertDialog(
             onDismissRequest = { if (!savingCustomer) editingCustomer = null },
-            containerColor = Cream,
-            title = { Text("Edit customer", color = Forest, fontWeight = FontWeight.Bold) },
+            containerColor = AdminSurface,
+            title = { Text("Edit customer", color = AdminInk, fontWeight = FontWeight.Bold) },
             text = {
                 Column(Modifier.heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedTextField(firstName, { firstName = it }, label = { Text("First name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
@@ -3373,12 +3379,12 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                                 border = BorderStroke(1.dp, Gold),
                                 contentPadding = PaddingValues(horizontal = 8.dp)
                             ) {
-                                Text("${adminSelectedCountry.second} ${adminSelectedCountry.third} ▾", color = Forest, maxLines = 1, fontSize = 14.sp)
+                                Text("${adminSelectedCountry.second} ${adminSelectedCountry.third} ▾", color = AdminInk, maxLines = 1, fontSize = 14.sp)
                             }
                             DropdownMenu(
                                 expanded = adminCountryMenuExpanded,
                                 onDismissRequest = { adminCountryMenuExpanded = false },
-                                modifier = Modifier.heightIn(max = 300.dp).background(Cream)
+                                modifier = Modifier.heightIn(max = 300.dp).background(AdminBackground)
                             ) {
                                 adminCountryOptions.forEach { option ->
                                     DropdownMenuItem(
@@ -3415,9 +3421,9 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                         savingCustomer = false
                         Toast.makeText(context, "Could not update customer: " + (exception.localizedMessage ?: "permission denied"), Toast.LENGTH_LONG).show()
                     }
-                }) { Text(if (savingCustomer) "Saving…" else "Save", color = Forest) }
+                }) { Text(if (savingCustomer) "Saving…" else "Save", color = AdminInk) }
             },
-            dismissButton = { TextButton(enabled = !savingCustomer, onClick = { editingCustomer = null }) { Text("Cancel", color = Muted) } }
+            dismissButton = { TextButton(enabled = !savingCustomer, onClick = { editingCustomer = null }) { Text("Cancel", color = AdminMuted) } }
         )
     }
 }
@@ -3480,19 +3486,19 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         if (ts == null) "Date not available" else dateFormat.format(ts.toDate())
     }
 
-    Column(Modifier.fillMaxSize().background(Cream)) {
+    Column(Modifier.fillMaxSize().background(AdminBackground)) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
             Column(Modifier.weight(1f)) {
                 Text("Manage Orders", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 Text("${filteredOrders.size} of ${orders.size} orders • newest first", color = Ink.copy(alpha = 0.65f), fontSize = 12.sp)
             }
-            Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = Forest, modifier = Modifier.size(27.dp))
+            Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = AdminInk, modifier = Modifier.size(27.dp))
         }
         Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp).background(Cream, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Forest, modifier = Modifier.size(26.dp))
+                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp))
                 }
                 Spacer(Modifier.width(13.dp))
                 Column(Modifier.weight(1f)) {
@@ -3511,9 +3517,9 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp).height(60.dp),
             singleLine = true,
             textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-            label = { Text("Search order", modifier = Modifier.background(Color.Transparent), color = Forest, fontSize = 12.sp, maxLines = 1) },
-            placeholder = { Text("Order ID, customer or mobile", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = Muted) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = Forest) },
+            label = { Text("Search order", modifier = Modifier.background(Color.Transparent), color = AdminInk, fontSize = 12.sp, maxLines = 1) },
+            placeholder = { Text("Order ID, customer or mobile", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = AdminMuted) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = AdminInk) },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) IconButton(onClick = { searchQuery = "" }) {
                     Icon(Icons.Default.Close, contentDescription = "Clear search")
@@ -3534,12 +3540,12 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 2.dp),
             shape = RoundedCornerShape(18.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = AdminSurface),
             elevation = CardDefaults.cardElevation(1.dp)
         ) {
             Column(Modifier.padding(horizontal = 12.dp, vertical = 10.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.FilterList, contentDescription = null, tint = Forest, modifier = Modifier.size(18.dp))
+                    Icon(Icons.Default.FilterList, contentDescription = null, tint = AdminInk, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(7.dp))
                     Text("Filter orders by status", color = Ink, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                 }
@@ -3581,20 +3587,20 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             }
         }
         when {
-            loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Forest) }
+            loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = AdminInk) }
             error != null -> Text("Could not load orders: " + error, color = Color(0xFFB3261E), modifier = Modifier.padding(20.dp))
-            orders.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("No orders yet", color = Muted, fontSize = 18.sp) }
+            orders.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("No orders yet", color = AdminMuted, fontSize = 18.sp) }
             filteredOrders.isEmpty() -> Box(Modifier.fillMaxSize().padding(20.dp), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(Icons.Default.Search, contentDescription = null, tint = Muted, modifier = Modifier.size(42.dp))
                     Spacer(Modifier.height(8.dp))
-                    Text("No orders match your search", color = Muted, fontSize = 16.sp)
+                    Text("No orders match your search", color = AdminMuted, fontSize = 16.sp)
                 }
             }
             else -> LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(start = 14.dp, end = 14.dp, bottom = 18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 grouped.forEach { (date, rows) ->
                     item(key = "date-" + date) {
-                        Text(date + " • " + rows.size + " orders", color = Forest, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 8.dp))
+                        Text(date + " • " + rows.size + " orders", color = AdminInk, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 8.dp))
                     }
                     items(rows, key = { it["_documentId"]?.toString().orEmpty() }) { order ->
                         val docId = order["_documentId"]?.toString().orEmpty()
@@ -3611,33 +3617,33 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                             Modifier.fillMaxWidth().clickable { expandedOrderId = if (expanded) null else docId },
                             shape = RoundedCornerShape(18.dp),
                             elevation = CardDefaults.cardElevation(2.dp),
-                            colors = CardDefaults.cardColors(containerColor = Cream)
+                            colors = CardDefaults.cardColors(containerColor = AdminSurface)
                         ) {
                             Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Column(Modifier.weight(1f)) {
                                         Text(order["customerName"]?.toString().orEmpty().ifBlank { "Customer" }, color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
-                                        Text("Order #" + displayId.takeLast(12) + " • " + time, color = Muted, fontSize = 11.sp)
-                                        Text(order["phone"]?.toString().orEmpty().ifBlank { "Phone not provided" }, color = Muted, fontSize = 12.sp)
+                                        Text("Order #" + displayId.takeLast(12) + " • " + time, color = AdminMuted, fontSize = 11.sp)
+                                        Text(order["phone"]?.toString().orEmpty().ifBlank { "Phone not provided" }, color = AdminMuted, fontSize = 12.sp)
                                     }
                                     Column(horizontalAlignment = Alignment.End) {
-                                        Text("₹" + String.format(java.util.Locale.US, "%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
+                                        Text("₹" + String.format(java.util.Locale.US, "%.2f", total), color = AdminInk, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
                                         Text(status.replace("_", " ").replaceFirstChar { it.uppercase() }, color = if (status == "accepted") Color(0xFF206B3A) else if (status == "rejected") Color(0xFFB3261E) else Forest, fontWeight = FontWeight.Bold, fontSize = 11.sp)
-                                        Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = if (expanded) "Collapse order" else "Expand order", tint = Forest)
+                                        Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = if (expanded) "Collapse order" else "Expand order", tint = AdminInk)
                                     }
                                 }
                                 if (expanded) {
                                     HorizontalDivider(color = PaleGreen)
-                                    Text("Order details", color = Forest, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold)
+                                    Text("Order details", color = AdminInk, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold)
                                     Text("Order ID: " + displayId, color = Ink, fontSize = 12.sp)
                                     Text("Customer: " + (order["customerName"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
                                     Text("Email: " + (order["email"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
                                     Text("Phone: " + (order["phone"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
                                     Text("Delivery address: " + (order["shippingAddress"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
-                                    Text("Order time: " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Information not available"), color = Muted, fontSize = 12.sp)
-                                    Text("Items", color = Forest, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                    Text("Order time: " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Information not available"), color = AdminMuted, fontSize = 12.sp)
+                                    Text("Items", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                     if (itemRows.isEmpty()) {
-                                        Text("No item details were saved with this order.", color = Muted, fontSize = 12.sp)
+                                        Text("No item details were saved with this order.", color = AdminMuted, fontSize = 12.sp)
                                     } else {
                                         itemRows.forEachIndexed { index, raw ->
                                             val item = raw as? Map<*, *>
@@ -3650,13 +3656,13 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                                     "${index + 1}. ${name} × ${qty}" +
                                                         (if (price != null) " • ₹" + String.format(java.util.Locale.US, "%.2f", price) + " each" else "") +
                                                         (if (lineTotal != null) " • ₹" + String.format(java.util.Locale.US, "%.2f", lineTotal) else ""),
-                                                    color = Muted, fontSize = 12.sp
+                                                    color = AdminMuted, fontSize = 12.sp
                                                 )
                                             }
                                         }
                                     }
                                     HorizontalDivider(color = PaleGreen)
-                                    Text("Order total: ₹" + String.format(java.util.Locale.US, "%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                                    Text("Order total: ₹" + String.format(java.util.Locale.US, "%.2f", total), color = AdminInk, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                                     if (pending) {
                                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                                             OutlinedButton(
@@ -3689,10 +3695,10 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                             }
                                         }
                                     } else {
-                                        Text("This order has already been ${status.replace("_", " ")}.", color = Muted, fontSize = 12.sp)
+                                        Text("This order has already been ${status.replace("_", " ")}.", color = AdminMuted, fontSize = 12.sp)
                                     }
                                 } else {
-                                    Text("Tap to view order details", color = Muted, fontSize = 11.sp)
+                                    Text("Tap to view order details", color = AdminMuted, fontSize = 11.sp)
                                 }
                             }
                         }
@@ -3715,14 +3721,14 @@ private fun AdminSummaryCard(
     Card(
         modifier = modifier.then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = Cream)
+        colors = CardDefaults.cardColors(containerColor = AdminSurface)
     ) {
         Column(Modifier.padding(15.dp)) {
-            Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(24.dp))
+            Icon(icon, contentDescription = null, tint = AdminInk, modifier = Modifier.size(24.dp))
             Spacer(Modifier.height(12.dp))
             Text(value, color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
             Text(title, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-            Text(subtitle, color = Muted, fontSize = 11.sp)
+            Text(subtitle, color = AdminMuted, fontSize = 11.sp)
         }
     }
 }
@@ -3739,19 +3745,19 @@ private fun AdminModuleInfo(
             if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
         ),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Cream)
+        colors = CardDefaults.cardColors(containerColor = AdminSurface)
     ) {
         Row(Modifier.padding(15.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(
-                Modifier.size(44.dp).clip(RoundedCornerShape(13.dp)).background(PaleGreen),
+                Modifier.size(44.dp).clip(RoundedCornerShape(13.dp)).background(AdminLightGray),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(icon, contentDescription = null, tint = Forest)
+                Icon(icon, contentDescription = null, tint = AdminInk)
             }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Text(title, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                Text(subtitle, color = Muted, fontSize = 12.sp)
+                Text(subtitle, color = AdminMuted, fontSize = 12.sp)
             }
         }
     }
