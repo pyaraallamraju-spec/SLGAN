@@ -7633,7 +7633,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         address["landmark"], address["city"], address["state"], address["pincode"]
                     ).mapNotNull { it?.toString()?.takeIf(String::isNotBlank) }.joinToString(", ")
                     Card(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 12.dp),
                         colors = CardDefaults.cardColors(containerColor = if (initialSection == "Addresses") Color.White else Color(0xFFFFFCF5)),
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, Gold.copy(alpha = 0.38f)),
