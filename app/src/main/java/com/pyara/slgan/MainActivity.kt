@@ -6678,7 +6678,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var firstName by remember(uid) { mutableStateOf("") }
     var lastName by remember(uid) { mutableStateOf("") }
     var nickname by remember(uid) { mutableStateOf("") }
-    var gender by remember(uid) { mutableStateOf("") }
+    var gender by remember(uid) { mutableStateOf("Prefer not to say") }
     var mobileNumber by remember(uid) { mutableStateOf("") }
     var dateOfBirth by remember(uid) { mutableStateOf("") }
     var showDateOfBirthPicker by remember { mutableStateOf(false) }
@@ -6743,7 +6743,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         firstName = snapshot.getString("firstName").orEmpty()
                         lastName = snapshot.getString("lastName").orEmpty()
                         nickname = snapshot.getString("nickname").orEmpty()
-                        gender = snapshot.getString("gender").orEmpty()
+                        gender = snapshot.getString("gender")?.takeIf { it.isNotBlank() } ?: "Prefer not to say"
                         dateOfBirth = snapshot.getString("dateOfBirth").orEmpty()
                         val savedPhone = snapshot.getString("mobileNumber").orEmpty()
                         val savedCountryIso = snapshot.getString("countryIso").orEmpty()
