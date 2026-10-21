@@ -6634,7 +6634,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
             )
         )
     }
-    Column(modifier.fillMaxSize().background(Color(0xFFF3F5FA))) {
+    Column(modifier.fillMaxSize().background(Color(0xFFF1F2F6))) {
         Row(
             modifier = Modifier.fillMaxWidth().background(Color.White).padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -6644,7 +6644,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                 Text("SLGAN Assistant", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
                 Text(if (appLanguage == "English") "Help & Support · Telugu + English" else "సహాయం · తెలుగు + English", color = Muted, fontSize = 12.sp)
             }
-            Icon(Icons.Default.AutoAwesome, contentDescription = "AI assistant", tint = Gold, modifier = Modifier.size(27.dp))
+            Surface(shape = RoundedCornerShape(14.dp), color = Color(0xFFF1F1F1), modifier = Modifier.size(44.dp), border = BorderStroke(1.dp, Color(0xFFE5E8EF))) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.SupportAgent, contentDescription = "SLGAN support assistant", tint = Ink, modifier = Modifier.size(27.dp)) } }
         }
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
