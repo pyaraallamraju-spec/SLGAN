@@ -914,7 +914,7 @@ private fun AyurvedicApp() {
     }
     CompositionLocalProvider(LocalAppLanguage provides appLanguage) {
     MaterialTheme(colorScheme = lightColorScheme(primary = Forest, onPrimary = Color.White, secondary = Leaf, background = Cream, surface = Cream, onSurface = Ink)) {
-        Surface(Modifier.fillMaxSize(), color = Cream) {
+        Surface(Modifier.fillMaxSize(), color = if (showSplash || !authResolved) Color.White else Cream) {
             if (showSplash || !authResolved) {
                 SplashScreen()
             } else if (!signedIn) LoginScreen(
