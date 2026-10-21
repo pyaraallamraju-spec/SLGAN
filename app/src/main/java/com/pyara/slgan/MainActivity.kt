@@ -7672,11 +7672,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 Surface(
                                     modifier = Modifier.size(30.dp),
                                     shape = CircleShape,
-                                    color = Color(0xFFE3F3E7),
+                                    color = Color(0xFF278548),
                                     shadowElevation = 3.dp
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
-                                        Icon(Icons.Default.CheckCircle, null, tint = Color(0xFF278548), modifier = Modifier.size(20.dp))
+                                        Icon(Icons.Default.CheckCircle, null, tint = Color.White, modifier = Modifier.size(20.dp))
                                     }
                                 }
                             }
