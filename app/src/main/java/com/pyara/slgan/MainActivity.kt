@@ -1631,7 +1631,7 @@ private fun HomeBannerSlider(
                             .fillMaxWidth()
                             .align(Alignment.CenterStart)
                             .padding(horizontal = 22.dp, vertical = 22.dp),
-                        verticalArrangement = Arrangement.spacedBy(5.dp)
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         // Keep product name at the top, signature tagline below, and trust line separated beneath it.
                         Text(
@@ -1648,7 +1648,7 @@ private fun HomeBannerSlider(
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
-                        Spacer(Modifier.height(5.dp))
+                        Spacer(Modifier.height(1.dp))
                         Text(
                             text = tr(slide.tagline, LocalAppLanguage.current),
                             modifier = Modifier.animateEnterExit(
