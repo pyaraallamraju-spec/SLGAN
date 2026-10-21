@@ -6943,7 +6943,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 }
                                 showDateOfBirthPicker = false
                             },
-                            colors = ButtonDefaults.textButtonColors(contentColor = Forest)
+                            colors = ButtonDefaults.textButtonColors(contentColor = Ink)
                         ) { Text("Select") }
                     },
                     dismissButton = {
@@ -6956,22 +6956,22 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     DatePicker(
                         state = datePickerState,
                         colors = DatePickerDefaults.colors(
-                            containerColor = Cream,
-                            titleContentColor = Forest,
-                            headlineContentColor = Forest,
+                            containerColor = Color.White,
+                            titleContentColor = Ink,
+                            headlineContentColor = Ink,
                             weekdayContentColor = Muted,
-                            subheadContentColor = Forest,
-                            navigationContentColor = Forest,
+                            subheadContentColor = Ink,
+                            navigationContentColor = Ink,
                             yearContentColor = Ink,
-                            currentYearContentColor = Forest,
-                            selectedYearContainerColor = Forest,
+                            currentYearContentColor = Ink,
+                            selectedYearContainerColor = Ink,
                             selectedYearContentColor = Color.White,
                             dayContentColor = Ink,
                             disabledDayContentColor = Muted,
-                            selectedDayContainerColor = Forest,
+                            selectedDayContainerColor = Ink,
                             selectedDayContentColor = Color.White,
-                            todayContentColor = Forest,
-                            todayDateBorderColor = Gold
+                            todayContentColor = Ink,
+                            todayDateBorderColor = Ink
                         )
                     )
                 }
