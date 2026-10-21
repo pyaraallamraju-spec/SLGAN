@@ -3763,7 +3763,8 @@ private fun ShopScreen(
                 modifier = Modifier.padding(padding),
                 onTabChange = onTabChange,
                 onSignOut = onSignOut,
-                appLanguage = appLanguage
+                appLanguage = appLanguage,
+                onLanguageChange = onLanguageChange
             )
             "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, onBack = { onTabChange("Accounts") })
@@ -6272,12 +6273,14 @@ private fun AccountMenuRow(
     HorizontalDivider(color = PaleGreen.copy(alpha = 0.65f), thickness = 0.7.dp)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AccountsPage(
     modifier: Modifier,
     onTabChange: (String) -> Unit,
     onSignOut: () -> Unit,
-    appLanguage: String
+    appLanguage: String,
+    onLanguageChange: (String) -> Unit
 ) {
     val user = FirebaseAuth.getInstance().currentUser
     val email = user?.email.orEmpty()
