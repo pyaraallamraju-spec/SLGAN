@@ -1263,7 +1263,7 @@ private fun LoginScreen(
             fontSize = 22.sp,
             lineHeight = 27.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF6B1825),
+            color = Ink,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Text(
@@ -1271,7 +1271,7 @@ private fun LoginScreen(
             fontSize = 20.sp,
             lineHeight = 25.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF6B1825),
+            color = Ink,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(10.dp))
