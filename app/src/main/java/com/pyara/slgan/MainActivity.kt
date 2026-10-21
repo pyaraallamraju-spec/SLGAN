@@ -1641,7 +1641,22 @@ private fun HomeBannerSlider(
                             overflow = TextOverflow.Ellipsis
                         )
                         Spacer(Modifier.height(4.dp))
-                        Row(
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            modifier = Modifier.animateEnterExit(
+                                enter = fadeIn(animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing)) +
+                                    slideInVertically(initialOffsetY = { it / 6 }, animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing))
+                            ),
+                            text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
+                            else localizedProductName(slide.productName, LocalAppLanguage.current),
+                            color = Color(0xFF1F1B16),
+                            fontSize = if (slide.isCompanySlide) 22.sp else 21.sp,
+                            lineHeight = if (slide.isCompanySlide) 26.sp else 25.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            maxLines = if (slide.isCompanySlide) 3 else 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(Modifier.height(2.dp))                        Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
@@ -1659,21 +1674,6 @@ private fun HomeBannerSlider(
                                 maxLines = 1
                             )
                         }
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            modifier = Modifier.animateEnterExit(
-                                enter = fadeIn(animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing)) +
-                                    slideInVertically(initialOffsetY = { it / 6 }, animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing))
-                            ),
-                            text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
-                            else localizedProductName(slide.productName, LocalAppLanguage.current),
-                            color = Color(0xFF1F1B16),
-                            fontSize = if (slide.isCompanySlide) 22.sp else 21.sp,
-                            lineHeight = if (slide.isCompanySlide) 26.sp else 25.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            maxLines = if (slide.isCompanySlide) 3 else 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
                         Spacer(Modifier.height(2.dp))
                         Row(
                             modifier = Modifier.width(150.dp),
