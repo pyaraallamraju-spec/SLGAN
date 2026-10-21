@@ -1312,7 +1312,7 @@ private fun LoginScreen(
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
             placeholder = { Text(tr("Email address", LocalAppLanguage.current), color = Color(0xFF7A887D), fontSize = 15.sp) },
-            leadingIcon = { Icon(Icons.Default.Email, null, tint = Ink) },
+            leadingIcon = { Icon(Icons.Default.Email, null, tint = Color(0xFF287A3F)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RoundedCornerShape(16.dp),
@@ -1324,20 +1324,20 @@ private fun LoginScreen(
                 cursorColor = Color(0xFF287A3F)
             )
         )
-        Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
+        Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Color(0xFFD5E4D4)))
         Spacer(Modifier.height(12.dp))
         OutlinedTextField(
             value = password,
             onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
             placeholder = { Text(tr("Password", LocalAppLanguage.current), color = Color(0xFF7A887D), fontSize = 15.sp) },
-            leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
+            leadingIcon = { Icon(Icons.Default.Lock, null, tint = Color(0xFF287A3F)) },
             trailingIcon = {
                 IconButton(onClick = { showPassword = !showPassword }) {
                     Icon(
                         if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                         contentDescription = if (showPassword) "Hide password" else "Show password",
-                        tint = Ink
+                        tint = Color(0xFF174D32)
                     )
                 }
             },
@@ -1362,13 +1362,13 @@ private fun LoginScreen(
                 onValueChange = onConfirmPasswordChange,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
                 placeholder = { Text("Confirm password", color = Color(0xFF7A887D), fontSize = 15.sp) },
-                leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
+                leadingIcon = { Icon(Icons.Default.Lock, null, tint = Color(0xFF287A3F)) },
                 trailingIcon = {
                     IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
                         Icon(
                             if (showConfirmPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                             contentDescription = if (showConfirmPassword) "Hide confirm password" else "Show confirm password",
-                            tint = Ink
+                            tint = Color(0xFF174D32)
                         )
                     }
                 },
@@ -1377,11 +1377,11 @@ private fun LoginScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 shape = RoundedCornerShape(16.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    cursorColor = Forest
+                    focusedBorderColor = Color(0xFF3F914B),
+                    unfocusedBorderColor = Color(0xFFD5E4D4),
+                    focusedContainerColor = Color(0xFFFAFDF9),
+                    unfocusedContainerColor = Color.White,
+                    cursorColor = Color(0xFF287A3F)
                 )
             )
             Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
@@ -1418,7 +1418,7 @@ private fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextButton(onClick = onToggleMode, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
-                Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Color(0xFF7A887D), fontSize = 13.sp)
+                Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Color(0xFF287A3F), fontSize = 13.sp)
             }
             if (!isCreatingAccount) {
                 TextButton(onClick = onForgotPassword, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
