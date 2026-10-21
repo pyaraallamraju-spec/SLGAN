@@ -1735,11 +1735,8 @@ private fun HomeBannerSlider(
                             Text("❋", color = Gold, fontSize = 14.sp)
                             Box(Modifier.weight(1f).height(1.dp).background(Gold))
                         }
-                        Spacer(Modifier.height(7.dp))
-                        Spacer(Modifier.height(2.dp))
-                        Spacer(Modifier.height(7.dp))
+                        Spacer(Modifier.height(6.dp))
                         if (!slide.isCompanySlide) {
-                            Spacer(Modifier.height(5.dp))
                             Row(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(4.dp))
