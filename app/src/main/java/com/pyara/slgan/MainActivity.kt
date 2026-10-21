@@ -7143,57 +7143,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
             }
             Spacer(Modifier.height(16.dp))
-            Text(tr("Language", appLanguage), fontWeight = FontWeight.Bold, color = Ink)
-            Spacer(Modifier.height(8.dp))
-            Box(Modifier.fillMaxWidth()) {
-                OutlinedTextField(
-                    value = tr(appLanguage, appLanguage),
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
-                    onValueChange = {},
-                    readOnly = true,
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(tr("Select language", appLanguage)) },
-                    trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Ink) },
-                    leadingIcon = { Icon(Icons.Default.Language, null, tint = Ink) }
-                )
-                Box(Modifier.matchParentSize().clickable { languageMenuExpanded = true })
-                DropdownMenu(expanded = languageMenuExpanded, onDismissRequest = { languageMenuExpanded = false }, containerColor = Color.White) {
-                    listOf("English", "Telugu", "Hindi").forEach { option ->
-                        DropdownMenuItem(text = { Text(tr(option, appLanguage)) }, onClick = {
-                            onLanguageChange(option)
-                            languageMenuExpanded = false
-                            languageMessage = null
-                        })
-                    }
-                }
-            }
-            Spacer(Modifier.height(8.dp))
-            Button(
-                onClick = {
-                    if (uid == null) Toast.makeText(context, "Please sign in again to save your profile.", Toast.LENGTH_SHORT).show()
-                    else {
-                        languageSaving = true
-                        languageMessage = null
-                        FirebaseData.saveCustomerProfile(uid, mapOf(
-                            "languagePreference" to appLanguage,
-                            "updatedAt" to System.currentTimeMillis()
-                        )) { error ->
-                            languageSaving = false
-                            Toast.makeText(context, if (error == null) "Language preference saved." else "Couldn't save language. Please try again.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                },
-                enabled = !languageSaving,
-                modifier = Modifier.fillMaxWidth().height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF1F1F1), contentColor = Ink),
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                if (languageSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Ink, strokeWidth = 2.dp)
-                else Icon(Icons.Default.Save, null)
-                Spacer(Modifier.width(8.dp))
-                Text(tr("Save language preference", appLanguage))
-            }
             Spacer(Modifier.height(18.dp))
             Button(
                 onClick = {
