@@ -5678,11 +5678,12 @@ private fun OrdersPage(
                         },
                         modifier = Modifier.fillMaxWidth().height(58.dp),
                         shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Forest)
+                        border = null,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Repeat Order", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                            Text("VIEW CART ON NEXT STEP", color = Color.White, fontSize = 11.sp)
+                            Text("Repeat Order", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                            Text("VIEW CART ON NEXT STEP", color = Ink, fontSize = 11.sp)
                         }
                     }
                 }
