@@ -4575,7 +4575,6 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
         Column(Modifier.padding(11.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(Color(0xFFF6F7FA), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 Text(product.emoji, fontSize = 42.sp)
-                Text(tr("SLGAN", LocalAppLanguage.current), Modifier.align(Alignment.BottomEnd).padding(6.dp), color = Leaf, fontSize = 8.sp, fontWeight = FontWeight.Bold)
                 if (product.signature) {
                     Box(
                         modifier = Modifier.align(Alignment.TopStart).padding(5.dp).size(42.dp),
