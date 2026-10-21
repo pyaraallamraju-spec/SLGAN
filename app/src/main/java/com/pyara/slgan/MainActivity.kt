@@ -7046,7 +7046,9 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
                 IconButton(
                     onClick = {
-                        showAddressForm = false
+                        // The location sheet is currently hosted inside the address-form branch.
+                        // Keep that branch composed so the modal can open when + is tapped.
+                        showAddressForm = true
                         showAddressLocationSheet = true
                         addressMessage = null
                     },
