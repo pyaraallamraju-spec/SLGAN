@@ -5399,7 +5399,7 @@ private fun OrdersPage(
                 }
                 Spacer(Modifier.width(16.dp))
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
-                    Text("No orders placed today", color = Muted, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text("No orders placed today", color = Color(0xFF4A4A4A), fontSize = 16.sp, fontWeight = FontWeight.Medium)
                     TextButton(onClick = onHome, contentPadding = PaddingValues(0.dp)) { Text("Click to order  →", color = Ink, fontWeight = FontWeight.Bold) }
                 }
             }
