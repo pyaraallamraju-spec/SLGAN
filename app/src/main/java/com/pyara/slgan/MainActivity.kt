@@ -6532,7 +6532,23 @@ private fun AccountsPage(
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink),
                             contentPadding = PaddingValues(horizontal = 14.dp)
                         ) {
-                            Icon(Icons.Default.Language, contentDescription = "Language", tint = Ink, modifier = Modifier.size(20.dp))
+                            Box(
+                                modifier = Modifier.size(24.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = when (selectedLanguage) {
+                                        "Telugu" -> "అ"
+                                        "Hindi" -> "अ"
+                                        else -> "A"
+                                    },
+                                    color = Ink,
+                                    fontSize = if (selectedLanguage == "English") 18.sp else 20.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1
+                                )
+                            }
                             Spacer(Modifier.width(10.dp))
                             Text(tr(selectedLanguage, appLanguage), modifier = Modifier.weight(1f), textAlign = TextAlign.Start, maxLines = 1)
                             Icon(Icons.Default.ExpandMore, contentDescription = "Choose language", tint = Ink)
