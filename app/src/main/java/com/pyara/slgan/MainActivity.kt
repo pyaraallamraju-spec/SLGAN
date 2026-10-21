@@ -618,7 +618,7 @@ private fun AyurvedicApp() {
     }
     DisposableEffect(Unit) {
         val themeRegistration = FirebaseFirestore.getInstance().collection("appSettings").document("appTheme")
-            .addSnapshotListener { snapshot, error -> if (error == null) applyAppPalette((snapshot?.getLong("activeTheme") ?: 1L).toInt().coerceIn(1, 2)) }
+            .addSnapshotListener { snapshot, error -> if (error == null) { val settings = snapshot; val lightThemeEnabled = settings?.getBoolean("lightThemeEnabled") ?: true; val activeTheme = if (lightThemeEnabled) (settings?.getLong("activeTheme") ?: 1L).toInt().coerceIn(1, 2) else 1; applyAppPalette(activeTheme) } }
         onDispose { themeRegistration.remove() }
     }
     DisposableEffect(auth) {
@@ -2626,11 +2626,12 @@ private fun AdminDashboardScreen(
 private fun ThemeManagementScreen(onBack: () -> Unit) {
     val db = remember { FirebaseFirestore.getInstance() }
     var selectedTheme by remember { mutableIntStateOf(1) }
+    var lightThemeEnabled by remember { mutableStateOf(true) }
     var saving by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     DisposableEffect(Unit) {
         val listener = db.collection("appSettings").document("appTheme").addSnapshotListener { snap, error ->
-            if (error == null) selectedTheme = (snap?.getLong("activeTheme") ?: 1L).toInt().coerceIn(1, 2)
+            if (error == null) { selectedTheme = (snap?.getLong("activeTheme") ?: 1L).toInt().coerceIn(1, 2); lightThemeEnabled = snap?.getBoolean("lightThemeEnabled") ?: true }
         }
         onDispose { listener.remove() }
     }
@@ -2641,7 +2642,29 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
             Column { Text("APP APPEARANCE", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose app theme", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
-        Text("Choose a theme and tap Apply. Colors across the app update together, including buttons, cards, backgrounds, icons, emojis accents and text.", color = Muted, fontSize = 14.sp)
+        Text("Manage the app-wide appearance, including colors, backgrounds, buttons, icons and text.", color = Muted, fontSize = 14.sp)
+        Spacer(Modifier.height(14.dp))
+        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Color(0xFFE5E8EF))) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("Light Theme", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(if (lightThemeEnabled) "Enabled for the customer app" else "Disabled — default classic palette is used", color = Muted, fontSize = 12.sp)
+                }
+                Switch(checked = lightThemeEnabled, onCheckedChange = { enabled ->
+                    lightThemeEnabled = enabled
+                    saving = true
+                    message = null
+                    db.collection("appSettings").document("appTheme")
+                        .set(mapOf("lightThemeEnabled" to enabled, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()), com.google.firebase.firestore.SetOptions.merge())
+                        .addOnSuccessListener {
+                            saving = false
+                            applyAppPalette(if (enabled) selectedTheme else 1)
+                            message = if (enabled) "Light Theme enabled." else "Light Theme disabled; default classic palette is active."
+                        }
+                        .addOnFailureListener { e -> saving = false; lightThemeEnabled = !enabled; message = "Could not update Light Theme: ${e.localizedMessage ?: "Check Firestore permissions."}" }
+                }, enabled = !saving)
+            }
+        }
         Spacer(Modifier.height(18.dp))
         (1..2).forEach { theme ->
             val botanical = theme == 2
@@ -2663,14 +2686,14 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                         if (selectedTheme == theme) Icon(Icons.Default.CheckCircle, null, tint = accent, modifier = Modifier.align(Alignment.TopEnd).size(26.dp))
                     }
                     Spacer(Modifier.height(12.dp))
-                    Text(if (botanical) "Theme 1 · Botanical Heritage" else "Default · SLGAN Classic", color = textColor, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(if (botanical) "Logo-inspired forest green and antique gold with ivory surfaces and botanical accents." else "The app’s current maroon, terracotta, gold and cream appearance. No visual change.", color = Muted, fontSize = 13.sp)
+                    Text(if (botanical) "Botanical Heritage" else "Light Theme", color = textColor, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(if (botanical) "Forest green, antique gold, ivory surfaces and botanical accents." else "The current main-module style: maroon, terracotta, gold, warm cream, existing backgrounds, icons and text colors.", color = Muted, fontSize = 13.sp)
                     Spacer(Modifier.height(10.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                         listOf(primary, accent, background, textColor).forEach { swatch -> Box(Modifier.size(24.dp).clip(CircleShape).background(swatch).border(1.dp, Color.LightGray, CircleShape)) }
                         Spacer(Modifier.width(4.dp))
                         Button(onClick = { selectedTheme = theme; saving = true; message = null
-                            db.collection("appSettings").document("appTheme").set(mapOf("activeTheme" to theme, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
+                            db.collection("appSettings").document("appTheme").set(mapOf("activeTheme" to theme, "lightThemeEnabled" to true, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
                                 .addOnSuccessListener {
                                     applyAppPalette(theme)
                                     val matchingSlider = if (theme == 1) 1 else 2
@@ -2678,7 +2701,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                                         .set(mapOf("activeDesign" to matchingSlider, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
                                         .addOnSuccessListener {
                                             saving = false
-                                            message = if (theme == 1) "Default theme and Slider 1 applied across the app." else "Theme 1 and Slider 2 applied across the app."
+                                            message = if (theme == 1) "Light Theme and Slider 1 applied across the app." else "Botanical theme and Slider 2 applied across the app."
                                         }
                                         .addOnFailureListener { e ->
                                             saving = false
@@ -2688,7 +2711,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                                 .addOnFailureListener { e -> saving = false; message = "Could not apply theme: ${e.localizedMessage ?: "Check Firestore permissions."}" }
                         }, enabled = !saving, colors = ButtonDefaults.buttonColors(containerColor = primary), shape = RoundedCornerShape(12.dp)) {
                             if (saving && selectedTheme == theme) CircularProgressIndicator(Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Check, null)
-                            Spacer(Modifier.width(6.dp)); Text(if (theme == 1) "Apply Default" else "Apply Theme 1")
+                            Spacer(Modifier.width(6.dp)); Text(if (theme == 1) "Apply Light Theme" else "Apply Botanical")
                         }
                     }
                 }
