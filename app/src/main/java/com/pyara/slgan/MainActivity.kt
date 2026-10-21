@@ -5442,13 +5442,18 @@ private fun OrdersPage(
                                 Text("View order", color = Forest, fontWeight = FontWeight.Bold)
                             }
                             TextButton(onClick = {
+                                var addedCount = 0
                                 orderItems.forEach { item ->
-                                    val productId = item["productId"]?.toString().orEmpty()
-                                    val quantity = (item["quantity"] as? Number)?.toInt() ?: 1
-                                    if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
+                                    val savedId = (item["productId"] ?: item["product_id"] ?: item["id"])?.toString().orEmpty()
+                                    val savedName = (item["productName"] ?: item["name"] ?: item["title"])?.toString().orEmpty()
+                                    val product = products.firstOrNull { it.id == savedId }
+                                        ?: products.firstOrNull { savedName.isNotBlank() && it.name.equals(savedName, ignoreCase = true) }
+                                    val productId = product?.id ?: savedId.takeIf { id -> id.isNotBlank() && products.any { it.id == id } }.orEmpty()
+                                    val quantity = ((item["quantity"] as? Number)?.toInt() ?: 1).coerceIn(1, 20)
+                                    if (productId.isNotBlank()) repeat(quantity) { onAdd(productId); addedCount++ }
                                 }
-                                Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
-                                onCart()
+                                Toast.makeText(context, if (addedCount > 0) "$addedCount item(s) added to cart" else "These products are no longer available to reorder.", Toast.LENGTH_LONG).show()
+                                if (addedCount > 0) onCart()
                             }) { Text("Reorder", color = Forest, fontWeight = FontWeight.Bold) }
                             TextButton(onClick = { rateOrder = order; selectedRating = 5 }) { Text("Rate order", color = Forest, fontWeight = FontWeight.Bold) }
                             if (!invoiceUrl.isNullOrBlank()) {
@@ -5685,13 +5690,19 @@ private fun OrdersPage(
                 ) {
                     Button(
                         onClick = {
+                            var addedCount = 0
                             invoiceItems.forEach { item ->
-                                val productId = item["productId"]?.toString().orEmpty()
-                                val quantity = (item["quantity"] as? Number)?.toInt() ?: 1
-                                if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
+                                val savedId = (item["productId"] ?: item["product_id"] ?: item["id"])?.toString().orEmpty()
+                                val savedName = (item["productName"] ?: item["name"] ?: item["title"])?.toString().orEmpty()
+                                val product = products.firstOrNull { it.id == savedId }
+                                    ?: products.firstOrNull { savedName.isNotBlank() && it.name.equals(savedName, ignoreCase = true) }
+                                val productId = product?.id ?: savedId.takeIf { id -> id.isNotBlank() && products.any { it.id == id } }.orEmpty()
+                                val quantity = ((item["quantity"] as? Number)?.toInt() ?: 1).coerceIn(1, 20)
+                                if (productId.isNotBlank()) repeat(quantity) { onAdd(productId); addedCount++ }
                             }
                             selectedOrder = null
-                            Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, if (addedCount > 0) "$addedCount item(s) added to cart" else "These products are no longer available to reorder.", Toast.LENGTH_LONG).show()
+                            if (addedCount > 0) onCart()
                         },
                         modifier = Modifier.fillMaxWidth().height(58.dp),
                         shape = RoundedCornerShape(14.dp),
