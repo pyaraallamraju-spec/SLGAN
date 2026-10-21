@@ -2245,8 +2245,8 @@ private fun AdminProductDetailsScreen(
                         Card(
                             Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(14.dp),
-                            colors = CardDefaults.cardColors(containerColor = AdminSurface))
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                            colors = CardDefaults.cardColors(containerColor = AdminSurface),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                         ) {
                             Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                                 Text(displayLabel(key), color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.Bold)
