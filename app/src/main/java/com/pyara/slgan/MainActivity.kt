@@ -686,7 +686,12 @@ private fun AyurvedicApp() {
             } catch (error: Exception) {
                 error.localizedMessage
             }
-            authError = signInFailure ?: "Google sign-in was cancelled (result code ${result.resultCode})."
+            // Google status 12501 means the account chooser was cancelled; do not show it as an authentication error.
+            authError = if (signInFailure?.contains("status 12501") == true) {
+                null
+            } else {
+                signInFailure ?: "Google sign-in was cancelled (result code ${result.resultCode})."
+            }
         } else {
             try {
                 val accountTask = GoogleSignIn.getSignedInAccountFromIntent(result.data)
