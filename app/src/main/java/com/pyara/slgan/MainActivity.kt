@@ -1200,7 +1200,7 @@ private fun LoginScreen(
             painter = painterResource(R.drawable.slgan_login_background),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Fit
+            contentScale = ContentScale.Crop
         )
         Column(
             Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 12.dp),
@@ -4378,7 +4378,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         Box(
                                             Modifier.fillMaxWidth().height(112.dp)
                                                  .clip(RoundedCornerShape(13.dp))
-                                                .background(Color(0xFFF1F2F4)),
+                                                .background(Color.White),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             if (product.imageUrl.isNotBlank()) {
@@ -4386,7 +4386,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                     model = product.imageUrl,
                                                     contentDescription = product.name,
                                                     modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(13.dp)),
-                                                    contentScale = ContentScale.Crop
+                                                    contentScale = ContentScale.Fit
                                                 )
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
@@ -4633,7 +4633,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                         model = product.imageUrl,
                         contentDescription = product.name,
                         modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(14.dp)).padding(4.dp),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Fit
                     )
                 } else {
                     Text(product.emoji, fontSize = 42.sp)
