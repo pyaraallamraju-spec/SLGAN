@@ -325,6 +325,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var mapLocationPermissionLauncher: androidx.activity.result.ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         mapLocationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { grants ->
             val granted = grants[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
