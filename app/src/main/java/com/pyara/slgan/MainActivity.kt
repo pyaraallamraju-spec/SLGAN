@@ -4549,7 +4549,6 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
             }
         }
         if (summary.count > 0) {
-            Text(String.format(java.util.Locale.US, "%.1f", summary.average), color = Ink, fontWeight = FontWeight.Bold, fontSize = if (compact) 9.sp else 10.sp, maxLines = 1)
             Text("(${summary.count})", color = Muted, fontSize = if (compact) 8.sp else 9.sp, maxLines = 1)
         } else if (showEmptyLabel) {
             Text("No ratings", color = Muted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
