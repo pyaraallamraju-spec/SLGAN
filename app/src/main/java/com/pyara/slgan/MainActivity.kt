@@ -7843,8 +7843,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 Surface(
                                     modifier = Modifier.size(44.dp),
                                     shape = RoundedCornerShape(14.dp),
-                                    color = Color(0xFFE1E5EC),
-                                    shadowElevation = 4.dp
+                                    color = Color.Transparent,
+                                    shadowElevation = 0.dp
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
                                         Icon(Icons.Default.LocationOn, null, tint = Ink, modifier = Modifier.size(24.dp))
@@ -7885,8 +7885,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 Surface(
                                     modifier = Modifier.size(36.dp),
                                     shape = RoundedCornerShape(10.dp),
-                                    color = Color(0xFFF1F1F1),
-                                    shadowElevation = 4.dp
+                                    color = Color.Transparent,
+                                    shadowElevation = 0.dp
                                 ) {
                                     Box(contentAlignment = Alignment.Center) {
                                         Icon(Icons.Default.Call, null, tint = Ink, modifier = Modifier.size(18.dp))
