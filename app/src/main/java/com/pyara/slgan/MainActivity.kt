@@ -4255,11 +4255,19 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     fontSize = 16.sp
                                 )
                             },
+                            border = FilterChipDefaults.filterChipBorder(
+                                enabled = true,
+                                selected = category == item,
+                                borderColor = Color(0xFFE2E2E2),
+                                selectedBorderColor = Color(0xFFBDBDBD),
+                                borderWidth = 1.dp,
+                                selectedBorderWidth = 1.dp
+                            ),
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = Color.Transparent,
+                                selectedContainerColor = Color(0xFFF1F1F1),
                                 selectedLabelColor = Ink,
                                 selectedLeadingIconColor = Ink,
-                                containerColor = Color.Transparent,
+                                containerColor = Color(0xFFF7F7F7),
                                 labelColor = Ink,
                                 iconColor = Ink
                             ),
