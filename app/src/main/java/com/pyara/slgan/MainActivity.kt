@@ -7634,10 +7634,9 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     ).mapNotNull { it?.toString()?.takeIf(String::isNotBlank) }.joinToString(", ")
                     Card(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 12.dp),
-                        colors = CardDefaults.cardColors(containerColor = if (initialSection == "Addresses") Color.White else Color(0xFFFFFCF5)),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
                         shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(1.dp, Gold.copy(alpha = 0.38f)),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
                     ) {
                         Column(Modifier.fillMaxWidth().padding(16.dp)) {
                             Row(
