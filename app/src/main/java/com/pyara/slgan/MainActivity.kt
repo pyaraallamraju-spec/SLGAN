@@ -4409,7 +4409,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                                 },
                                                                 fontSize = 9.sp
                                                             )
-                                                            Text(product.category, color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(product.category, color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.Normal, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
