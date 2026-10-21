@@ -4436,8 +4436,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             if (signatureCartCount == 0) {
                                                 Box(
                                                     modifier = Modifier
-                                                        .size(28.dp)
-                                                        .background(Color(0xFF2E7D32), CircleShape)
+                                                        .size(width = 28.dp, height = 22.dp)
+                                                        .background(Color(0xFF2E7D32), RoundedCornerShape(6.dp))
                                                         .then(if (product.price > 0.0) Modifier.clickable { onAdd(product.id) } else Modifier),
                                                     contentAlignment = Alignment.Center
                                                 ) {
@@ -4449,19 +4449,13 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                     )
                                                 }
                                             } else {
-                                                Surface(
-                                                    shape = RoundedCornerShape(10.dp),
-                                                    color = Color(0xFFE8F5E9),
-                                                    contentColor = Color(0xFF2E7D32)
-                                                ) {
-                                                    Text(
-                                                        "${signatureCartCount} in cart", color = Color(0xFF2E7D32),
-                                                        modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp),
-                                                        fontSize = 9.sp,
-                                                        fontWeight = FontWeight.Bold,
-                                                        maxLines = 1
-                                                    )
-                                                }
+                                                Text(
+                                                    "${signatureCartCount} in cart",
+                                                    color = Color(0xFF2E7D32),
+                                                    fontSize = 10.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    maxLines = 1
+                                                )
                                             }
                                         }
 
