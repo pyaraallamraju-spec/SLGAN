@@ -4810,15 +4810,13 @@ private fun ProductDetailsPage(
                 Box(Modifier.fillMaxWidth().height(360.dp).background(Color.White)) {
                     if (product.imageUrl.isNotBlank()) {
                         AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
-                    } else if (product.name.contains("Vykranta Bhasmam", ignoreCase = true)) {
-                        Image(
-                            painter = painterResource(id = R.drawable.vykranta_bhasmam_product),
-                            contentDescription = product.name,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
-                        )
                     } else {
-                        Box(Modifier.fillMaxSize().background(PaleGreen), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 112.sp) }
+                        Box(
+                            Modifier.fillMaxSize().background(Color(0xFFFFF8F0)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(product.emoji, fontSize = 112.sp)
+                        }
                     }
                     Row(Modifier.fillMaxWidth().align(Alignment.TopCenter).padding(horizontal = 22.dp, vertical = 28.dp), verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = onBack, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.ArrowBack, contentDescription = "Back to products", tint = Color.Black) }
