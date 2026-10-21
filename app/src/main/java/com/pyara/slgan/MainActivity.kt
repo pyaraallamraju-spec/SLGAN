@@ -5296,10 +5296,12 @@ private fun OrdersPage(
                     .background(Color(0xFFF5F5F8), RoundedCornerShape(50.dp))
                     .padding(horizontal = 18.dp, vertical = 12.dp)
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
-                    Text("${visibleOrders.size} orders", color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
-                }
+                Text(
+                    "${visibleOrders.size} ${if (visibleOrders.size == 1) "order" else "orders"}",
+                    color = Ink,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp
+                )
             }
         }
         Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
