@@ -2569,18 +2569,6 @@ private fun AdminDashboardScreen(
         Text("Welcome back", color = AdminMuted, fontSize = 15.sp)
         Text(email.ifBlank { "Administrator" }, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(22.dp))
-        Card(
-            Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(22.dp),
-            colors = CardDefaults.cardColors(containerColor = Forest)
-        ) {
-            Column(Modifier.padding(20.dp)) {
-                Text("Sri Lakshmi Ganapathi", color = Color.White.copy(alpha = 0.82f), fontSize = 13.sp)
-                Text("Ayurvedic Nilayam", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
-                Spacer(Modifier.height(12.dp))
-                Text("Manage your store from one place.", color = Cream, fontSize = 13.sp)
-            }
-        }
         Spacer(Modifier.height(20.dp))
         Text("OVERVIEW", color = AdminMuted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
         Spacer(Modifier.height(10.dp))
