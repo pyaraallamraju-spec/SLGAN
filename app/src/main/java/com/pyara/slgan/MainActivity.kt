@@ -6716,8 +6716,13 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                         onClick = { input = suggestion },
                         label = { Text(suggestion, fontSize = 11.sp, maxLines = 1, color = Ink) },
                         border = null,
-                        shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.shadow(3.dp, RoundedCornerShape(12.dp)),
+                        shape = RoundedCornerShape(14.dp),
+                        modifier = Modifier.shadow(
+                            elevation = 2.dp,
+                            shape = RoundedCornerShape(14.dp),
+                            ambientColor = Ink.copy(alpha = 0.10f),
+                            spotColor = Ink.copy(alpha = 0.14f)
+                        ),
                         colors = SuggestionChipDefaults.suggestionChipColors(
                             containerColor = Color.White,
                             labelColor = Ink
