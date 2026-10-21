@@ -6682,7 +6682,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                 }
             }
         }
-        Column(Modifier.fillMaxWidth().background(Color.White).padding(12.dp)) {
+        Column(Modifier.fillMaxWidth().background(Color(0xFFF1F2F6)).padding(12.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf(
                     if (appLanguage == "English") "Order status" else "ఆర్డర్ వివరాలు",
