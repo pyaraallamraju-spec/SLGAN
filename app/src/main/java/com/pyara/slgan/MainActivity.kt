@@ -4990,8 +4990,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(0.dp)) {
                     Column {
                         Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.size(42.dp).background(Color(0xFF237344), RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
-                                Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(25.dp))
+                            Box(Modifier.size(42.dp).background(Color(0xFFE1E5EC), RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
+                                Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color(0xFF237344), modifier = Modifier.size(25.dp))
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
