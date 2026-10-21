@@ -7717,6 +7717,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 Spacer(Modifier.width(9.dp))
                                 Text(
                                     fullAddress,
+                                    modifier = Modifier.weight(1f),
                                     color = Ink,
                                     fontSize = 13.sp,
                                     lineHeight = 19.sp
