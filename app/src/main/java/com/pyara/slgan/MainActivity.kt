@@ -7606,14 +7606,14 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Spacer(Modifier.height(24.dp))
             } else {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(Modifier.weight(1f)) {
                         Text(
                             tr("Saved addresses", LocalAppLanguage.current),
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
                             color = Ink
                         )
                         Spacer(Modifier.height(3.dp))
