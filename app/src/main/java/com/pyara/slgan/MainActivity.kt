@@ -4746,8 +4746,8 @@ private fun ProductDetailsPage(
     }
     var highlightsExpanded by remember(product.id) { mutableStateOf(false) }
     var informationExpanded by remember(product.id) { mutableStateOf(false) }
-    Column(Modifier.fillMaxSize().background(Color.White)) {
-        Box(Modifier.fillMaxWidth().weight(0.88f).background(Color.White)) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF4F5FA))) {
+        Box(Modifier.fillMaxWidth().weight(0.88f)) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 Box(Modifier.fillMaxWidth().height(360.dp).background(Color.White)) {
                     if (product.imageUrl.isNotBlank()) {
