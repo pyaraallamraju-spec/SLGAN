@@ -6111,11 +6111,30 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                                 ) {
                                     Column(Modifier.fillMaxWidth()) {
-                                        Box(Modifier.fillMaxWidth().height(138.dp).background(Color.White), contentAlignment = Alignment.Center) {
+                                        Box(
+                                            Modifier.fillMaxWidth()
+                                                .height(138.dp)
+                                                .clip(RoundedCornerShape(13.dp))
+                                                .background(Color.White),
+                                            contentAlignment = Alignment.Center
+                                        ) {
                                             if (product.imageUrl.isNotBlank()) {
-                                                AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize().padding(5.dp), contentScale = ContentScale.Fit)
-                                            } else Text(product.emoji.ifBlank { "🌿" }, fontSize = 38.sp)
-                                            Box(Modifier.align(Alignment.TopEnd).padding(3.dp)) {
+                                                AsyncImage(
+                                                    model = product.imageUrl,
+                                                    contentDescription = product.name,
+                                                    modifier = Modifier.fillMaxSize().padding(5.dp).clip(RoundedCornerShape(10.dp)),
+                                                    contentScale = ContentScale.Fit
+                                                )
+                                            } else {
+                                                Text(product.emoji.ifBlank { "🌿" }, fontSize = 38.sp)
+                                            }
+                                            Box(
+                                                Modifier.align(Alignment.TopEnd)
+                                                    .padding(5.dp)
+                                                    .clip(RoundedCornerShape(20.dp))
+                                                    .background(Color.White.copy(alpha = 0.96f))
+                                                    .shadow(2.dp, RoundedCornerShape(20.dp))
+                                            ) {
                                                 ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
                                             }
                                         }
