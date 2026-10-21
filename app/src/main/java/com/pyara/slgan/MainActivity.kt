@@ -4429,7 +4429,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 )
                                             }
                                         }
-                                        Spacer(Modifier.height(3.dp))
+                                        Spacer(Modifier.height(8.dp))
                                         Text(
                                             localizedProductName(product.name, LocalAppLanguage.current),
                                             fontSize = 13.sp,
