@@ -2635,7 +2635,8 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
     }
     Column(Modifier.fillMaxSize().background(Cream).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            Surface(onClick = onBack, shape = CircleShape, color = Color.White, border = BorderStroke(1.dp, Color(0xFFE5E8EF)), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
+            Spacer(Modifier.width(16.dp))
             Column { Text("APP APPEARANCE", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose app theme", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
