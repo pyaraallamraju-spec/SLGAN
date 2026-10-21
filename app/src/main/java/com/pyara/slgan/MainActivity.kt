@@ -3967,7 +3967,7 @@ private fun WishlistPage(
         }
     }
     val savedProducts = products.filter { it.id in savedProductIds }
-    Column(modifier.fillMaxSize().background(Cream)) {
+    Column(modifier.fillMaxSize().background(Color(0xFFF1F2F5))) {
         Row(
             modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
