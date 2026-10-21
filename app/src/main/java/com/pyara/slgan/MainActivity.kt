@@ -6285,6 +6285,10 @@ private fun AccountsPage(
     var profilePic by remember(user?.uid) { mutableStateOf("") }
     var profilePicSaving by remember { mutableStateOf(false) }
     var showLogoutDialog by remember { mutableStateOf(false) }
+    var showLanguageSheet by remember { mutableStateOf(false) }
+    var selectedLanguage by remember(appLanguage) { mutableStateOf(appLanguage) }
+    var languageDropdownExpanded by remember { mutableStateOf(false) }
+    var languageSaving by remember { mutableStateOf(false) }
     LaunchedEffect(user?.uid) {
         val uid = user?.uid ?: return@LaunchedEffect
         FirebaseFirestore.getInstance().collection("customers").document(uid).get()
@@ -6423,7 +6427,10 @@ private fun AccountsPage(
                 AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("MyOrders") }
                 AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse your wishlist") { onTabChange("Wishlist") }
                 AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
-                AccountMenuRow(Icons.Default.Language, "Language", appLanguage) { onTabChange("Profile") }
+                AccountMenuRow(Icons.Default.Language, "Language", appLanguage) {
+                    selectedLanguage = appLanguage
+                    showLanguageSheet = true
+                }
             }
         }
         Spacer(Modifier.height(16.dp))
@@ -6460,6 +6467,93 @@ private fun AccountsPage(
             }
         }
         Spacer(Modifier.height(24.dp))
+    if (showLanguageSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showLanguageSheet = false; languageDropdownExpanded = false },
+            containerColor = Color.White,
+            contentColor = Ink,
+            shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+            dragHandle = {
+                Box(Modifier.padding(top = 10.dp, bottom = 6.dp).size(width = 38.dp, height = 4.dp).background(Color(0xFFD7D9DE), CircleShape))
+            }
+        ) {
+            Column(
+                Modifier.fillMaxWidth().navigationBarsPadding().padding(start = 22.dp, end = 22.dp, top = 8.dp, bottom = 28.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(Modifier.size(58.dp).background(Color(0xFFF1F1F1), CircleShape), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Language, contentDescription = null, tint = Ink, modifier = Modifier.size(28.dp))
+                }
+                Spacer(Modifier.height(12.dp))
+                Text("Choose your language", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                Spacer(Modifier.height(6.dp))
+                Text("Select the language you want to use in SLGAN.", color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
+                Spacer(Modifier.height(22.dp))
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Box(Modifier.weight(0.73f)) {
+                        OutlinedButton(
+                            onClick = { languageDropdownExpanded = true },
+                            modifier = Modifier.fillMaxWidth().height(54.dp),
+                            shape = RoundedCornerShape(14.dp),
+                            border = BorderStroke(1.dp, Color(0xFFD9DCE2)),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink),
+                            contentPadding = PaddingValues(horizontal = 14.dp)
+                        ) {
+                            Icon(Icons.Default.Translate, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
+                            Spacer(Modifier.width(10.dp))
+                            Text(tr(selectedLanguage, appLanguage), modifier = Modifier.weight(1f), textAlign = TextAlign.Start, maxLines = 1)
+                            Icon(Icons.Default.ExpandMore, contentDescription = "Choose language", tint = Ink)
+                        }
+                        DropdownMenu(
+                            expanded = languageDropdownExpanded,
+                            onDismissRequest = { languageDropdownExpanded = false },
+                            modifier = Modifier.background(Color.White),
+                        ) {
+                            listOf("English", "Telugu", "Hindi").forEach { option ->
+                                DropdownMenuItem(
+                                    leadingIcon = { if (selectedLanguage == option) Icon(Icons.Default.Check, null, tint = Ink) },
+                                    text = { Text(tr(option, appLanguage), color = Ink) },
+                                    onClick = { selectedLanguage = option; languageDropdownExpanded = false }
+                                )
+                            }
+                        }
+                    }
+                    Button(
+                        onClick = {
+                            val uid = user?.uid
+                            if (uid == null) {
+                                Toast.makeText(context, "Please sign in again to save your language.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                languageSaving = true
+                                FirebaseData.saveCustomerProfile(uid, mapOf(
+                                    "languagePreference" to selectedLanguage,
+                                    "updatedAt" to System.currentTimeMillis()
+                                )) { error ->
+                                    languageSaving = false
+                                    if (error == null) {
+                                        onLanguageChange(selectedLanguage)
+                                        showLanguageSheet = false
+                                        Toast.makeText(context, "Language preference saved.", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(context, "Couldn't save language. Please try again.", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
+                        },
+                        enabled = !languageSaving,
+                        modifier = Modifier.weight(0.27f).height(54.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Ink, contentColor = Color.White),
+                        contentPadding = PaddingValues(horizontal = 8.dp)
+                    ) {
+                        if (languageSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                        else Text("Select", fontWeight = FontWeight.Bold, maxLines = 1)
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+        }
+    }
     if (showLogoutDialog) {
         AlertDialog(
             onDismissRequest = { showLogoutDialog = false },
