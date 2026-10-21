@@ -3706,7 +3706,7 @@ private fun ShopScreen(
     search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, diseases: List<String>, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
     onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit
 ) {
-    val cartCount = cart.values.sum()
+    val cartCount = products.sumOf { product -> (cart[product.id] ?: 0).coerceAtLeast(0) }
     Scaffold(containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
         Row(Modifier.fillMaxWidth().shadow(8.dp).background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Color.White))
