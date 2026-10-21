@@ -2212,8 +2212,8 @@ private fun AdminProductDetailsScreen(
                 Card(
                     Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(22.dp),
-                    colors = CardDefaults.cardColors(containerColor = AdminSurface))
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    colors = CardDefaults.cardColors(containerColor = AdminSurface),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
                     Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         val image = listOf("product_image_url", "image_url", "imageUrl", "image", "productImage").firstNotNullOfOrNull { key -> data[key]?.toString()?.takeIf { it.startsWith("http") } }.orEmpty()
@@ -2776,7 +2776,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
             Surface(
                 modifier = Modifier.size(48.dp).clickable { onBack() },
                 shape = CircleShape,
-                color = Color.White)
+                color = Color.White
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(24.dp))
