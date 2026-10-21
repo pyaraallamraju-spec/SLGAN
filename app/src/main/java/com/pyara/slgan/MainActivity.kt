@@ -1626,23 +1626,32 @@ private fun HomeBannerSlider(
                             .padding(horizontal = 22.dp, vertical = 22.dp),
                         verticalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
-                        Text(
-                            text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
-                                else tr("Authentic Ayurvedic", LocalAppLanguage.current),
-                            color = Color(0xFF2E7D32),
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 1.1.sp,
-                            maxLines = 1
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Text(
+                                text = "🍃",
+                                fontSize = 13.sp
+                            )
+                            Text(
+                                text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
+                                    else tr("Authentic Ayurvedic", LocalAppLanguage.current),
+                                color = Color(0xFF2E7D32),
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.1.sp,
+                                maxLines = 1
+                            )
+                        }
                         Spacer(Modifier.height(4.dp))
                         Text(
                             modifier = Modifier.animateEnterExit(
                                 enter = fadeIn(animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing)) +
                                     slideInVertically(initialOffsetY = { it / 6 }, animationSpec = tween(950, delayMillis = 220, easing = FastOutSlowInEasing))
                             ),
-                            text = if (slide.isCompanySlide) "🌿 ${tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)}"
-                            else "🌿 ${localizedProductName(slide.productName, LocalAppLanguage.current)}",
+                            text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
+                            else localizedProductName(slide.productName, LocalAppLanguage.current),
                             color = Color(0xFF762A24),
                             fontSize = if (slide.isCompanySlide) 22.sp else 21.sp,
                             lineHeight = if (slide.isCompanySlide) 26.sp else 25.sp,
