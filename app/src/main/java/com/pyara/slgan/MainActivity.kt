@@ -1195,10 +1195,17 @@ private fun LoginScreen(
     onForgotPassword: () -> Unit
 ) {
     var showPassword by remember { mutableStateOf(false) }
-    Column(
-        Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).padding(bottom = 12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Box(Modifier.fillMaxSize().background(Color.White)) {
+        Image(
+            painter = painterResource(R.drawable.slgan_login_background),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+        Column(
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
         Spacer(Modifier.height(14.dp))
         val logoScale = remember { Animatable(0.55f) }
         val logoRotation = remember { Animatable(-18f) }
@@ -1466,6 +1473,7 @@ private fun LoginScreen(
         Spacer(Modifier.height(4.dp))
         Text(tr("Mobile-number login is not available yet.", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(30.dp))
+        }
     }
 }
 
