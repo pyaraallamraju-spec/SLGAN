@@ -5748,7 +5748,7 @@ private fun OrdersPage(
                         .navigationBarsPadding()
                         .imePadding()
                         .padding(horizontal = 20.dp)
-                        .padding(top = 10.dp, bottom = 60.dp)
+                        .padding(top = 10.dp, bottom = 70.dp)
                 ) {
                     Button(
                         onClick = {
