@@ -5307,20 +5307,19 @@ private fun OrdersPage(
     val historicalOrders = visibleOrders.filter { orderDate(it)?.isBefore(today) != false }
 
     Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Surface(onClick = onHome, shape = CircleShape, color = Color.White, border = BorderStroke(1.dp, Color(0xFFE5E8EF)), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
-            Spacer(Modifier.width(16.dp))
-            Text(pageTitle, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Box(
-                Modifier
-                    .background(Color(0xFFF5F5F8), RoundedCornerShape(50.dp))
-                    .padding(horizontal = 18.dp, vertical = 12.dp)
-            ) {
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.size(42.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape).clickable(onClick = onHome), contentAlignment = Alignment.Center) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+            }
+            Spacer(Modifier.width(12.dp))
+            Text(pageTitle, color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Surface(shape = RoundedCornerShape(24.dp), color = Color(0xFFF6F7FA)) {
                 Text(
                     "${visibleOrders.size} ${if (visibleOrders.size == 1) "order" else "orders"}",
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                     color = Ink,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp
+                    fontSize = 12.sp
                 )
             }
         }
