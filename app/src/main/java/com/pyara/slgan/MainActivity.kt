@@ -1425,14 +1425,24 @@ private fun LoginScreen(
             ),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            Text("🌿", fontSize = 19.sp)
-            Spacer(Modifier.width(12.dp))
-            Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4A3028))
-            Spacer(Modifier.width(12.dp))
-            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color(0xFFB88A36), strokeWidth = 2.dp)
-            else Icon(Icons.Default.ArrowForward, null, tint = Color(0xFFB88A36))
-            Spacer(Modifier.width(12.dp))
-            Text("🌿", fontSize = 19.sp)
+            if (loading) {
+                CircularProgressIndicator(modifier = Modifier.size(22.dp), color = Color(0xFFB88A36), strokeWidth = 2.dp)
+            } else if (isCreatingAccount) {
+                Text("🌿", fontSize = 19.sp)
+                Spacer(Modifier.width(12.dp))
+                Text("Create account", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4A3028))
+                Spacer(Modifier.width(12.dp))
+                Icon(Icons.Default.ArrowForward, null, tint = Color(0xFFB88A36))
+                Spacer(Modifier.width(12.dp))
+                Text("🌿", fontSize = 19.sp)
+            } else {
+                Image(
+                    painter = painterResource(R.drawable.slgan_sign_in_button),
+                    contentDescription = "Sign in",
+                    modifier = Modifier.fillMaxWidth().height(58.dp),
+                    contentScale = ContentScale.FillBounds
+                )
+            }
         }
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 2.dp),
