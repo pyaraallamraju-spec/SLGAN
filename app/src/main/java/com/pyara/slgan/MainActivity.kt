@@ -1977,7 +1977,7 @@ private fun AdminProductsScreen(
                                 Box(
                                     Modifier.size(104.dp, 112.dp)
                                         .clip(RoundedCornerShape(18.dp))
-                                        .background(PaleGreen),
+                                        .background(Color(0xFFFFF8F0)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     if (product.imageUrl.isNotBlank()) {
@@ -2178,7 +2178,7 @@ private fun AdminProductDetailsScreen(
                         if (image.isNotBlank()) {
                             AsyncImage(model = image, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(220.dp).clip(RoundedCornerShape(16.dp)), contentScale = ContentScale.Crop)
                         } else {
-                            Box(Modifier.fillMaxWidth().height(110.dp).clip(RoundedCornerShape(16.dp)).background(PaleGreen), contentAlignment = Alignment.Center) {
+                            Box(Modifier.fillMaxWidth().height(110.dp).clip(RoundedCornerShape(16.dp)).background(Color(0xFFFFF8F0)), contentAlignment = Alignment.Center) {
                                 Text(product.emoji, fontSize = 48.sp)
                             }
                         }
@@ -4391,7 +4391,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         Box(
                                             Modifier.fillMaxWidth().height(112.dp)
                                                  .clip(RoundedCornerShape(13.dp))
-                                                .background(Color(0xFFF6F7FA)),
+                                                .background(Color(0xFFFFF8F0)),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             if (product.imageUrl.isNotBlank()) {
@@ -4630,7 +4630,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
 private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
     Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
-            Box(Modifier.fillMaxWidth().height(98.dp).background(Color(0xFFF6F7FA), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxWidth().height(98.dp).background(Color(0xFFFFF8F0), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 if (product.imageUrl.isNotBlank()) {
                     AsyncImage(
                         model = product.imageUrl,
@@ -5080,7 +5080,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 if (product.imageUrl.isNotBlank()) {
                                     AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.size(86.dp).clip(RoundedCornerShape(16.dp)).background(Color(0xFFF6F7FA)), contentScale = ContentScale.Crop)
                                 } else {
-                                    Box(Modifier.size(86.dp).clip(RoundedCornerShape(16.dp)).background(Color(0xFFF6F7FA)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 34.sp) }
+                                    Box(Modifier.size(86.dp).clip(RoundedCornerShape(16.dp)).background(Color(0xFFFFF8F0)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 34.sp) }
                                 }
                                 Spacer(Modifier.width(12.dp))
                                 Column(Modifier.weight(1f)) {
@@ -5114,7 +5114,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 recommendations.take(3).forEach { product ->
                                     Column(Modifier.weight(1f).clickable { onProductClick(product) }) {
                                         if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF5F6FA)), contentScale = ContentScale.Crop)
-                                        else Box(Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF5F6FA)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 35.sp) }
+                                        else Box(Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFFFF8F0)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 35.sp) }
                                         Spacer(Modifier.height(7.dp))
                                         Text(product.name, color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
                                         Text(money(product.price), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
