@@ -1303,7 +1303,7 @@ private fun LoginScreen(
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
             placeholder = { Text(tr("Email address", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
-            leadingIcon = { Icon(Icons.Default.Email, null, tint = Forest) },
+            leadingIcon = { Icon(Icons.Default.Email, null, tint = Ink) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RectangleShape,
@@ -1322,13 +1322,13 @@ private fun LoginScreen(
             onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
             placeholder = { Text(tr("Password", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
-            leadingIcon = { Icon(Icons.Default.Lock, null, tint = Forest) },
+            leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
             trailingIcon = {
                 IconButton(onClick = { showPassword = !showPassword }) {
                     Icon(
                         if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                         contentDescription = if (showPassword) "Hide password" else "Show password",
-                        tint = Forest
+                        tint = Ink
                     )
                 }
             },
@@ -1353,13 +1353,13 @@ private fun LoginScreen(
                 onValueChange = onConfirmPasswordChange,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
                 placeholder = { Text("Confirm password", color = Muted, fontSize = 15.sp) },
-                leadingIcon = { Icon(Icons.Default.Lock, null, tint = Forest) },
+                leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
                 trailingIcon = {
                     IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
                         Icon(
                             if (showConfirmPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                             contentDescription = if (showConfirmPassword) "Hide confirm password" else "Show confirm password",
-                            tint = Forest
+                            tint = Ink
                         )
                     }
                 },
