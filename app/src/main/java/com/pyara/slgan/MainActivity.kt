@@ -5389,9 +5389,9 @@ private fun OrdersPage(
                     Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Ink, modifier = Modifier.size(26.dp))
                 }
                 Spacer(Modifier.width(16.dp))
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                    Text("No orders placed today", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    TextButton(onClick = onHome, contentPadding = PaddingValues(0.dp)) { Text("Click to order  →", color = Muted, fontWeight = FontWeight.Bold) }
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
+                    Text("No orders placed today", color = Muted, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    TextButton(onClick = onHome, contentPadding = PaddingValues(0.dp)) { Text("Click to order  →", color = Ink, fontWeight = FontWeight.Bold) }
                 }
             }
             else -> currentOrders.forEach { order ->
