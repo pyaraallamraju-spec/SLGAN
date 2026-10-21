@@ -1656,14 +1656,22 @@ private fun HomeBannerSlider(
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
-                        Spacer(Modifier.height(2.dp))                        Row(
+                        Spacer(Modifier.height(4.dp))
+                        Row(
+                            modifier = Modifier.width(150.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(5.dp)
                         ) {
-                            Text(
-                                text = "🍃",
-                                fontSize = 13.sp
-                            )
+                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
+                            Text("❋", color = Gold, fontSize = 14.sp)
+                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
+                        }
+                        Spacer(Modifier.height(3.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Text(text = "🍃", fontSize = 13.sp)
                             Text(
                                 text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
                                     else tr("Authentic Ayurvedic", LocalAppLanguage.current),
@@ -1675,15 +1683,6 @@ private fun HomeBannerSlider(
                             )
                         }
                         Spacer(Modifier.height(2.dp))
-                        Row(
-                            modifier = Modifier.width(150.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(5.dp)
-                        ) {
-                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
-                            Text("❋", color = Gold, fontSize = 14.sp)
-                            Box(Modifier.weight(1f).height(1.dp).background(Gold))
-                        }
                         if (!slide.isCompanySlide) {
                             Spacer(Modifier.height(5.dp))
                             Row(
