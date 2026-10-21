@@ -5036,18 +5036,19 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         Surface(
                                             onClick = { onAdd(product.id) },
                                             enabled = product.price > 0.0 && product.productStock > 0,
-                                            modifier = Modifier.fillMaxWidth().height(22.dp),
-                                            shape = RoundedCornerShape(6.dp),
+                                            modifier = Modifier.fillMaxWidth().height(36.dp),
+                                            shape = RoundedCornerShape(8.dp),
                                             color = Color(0xFFE1E5EC),
                                             contentColor = Ink
                                         ) {
                                             Row(
-                                                modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp),
+                                                modifier = Modifier.fillMaxSize().padding(horizontal = 6.dp),
                                                 horizontalArrangement = Arrangement.Center,
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
-                                                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(13.dp))
-                                                Text("ADD", fontWeight = FontWeight.Bold, fontSize = 10.sp)
+                                                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                                                Spacer(Modifier.width(2.dp))
+                                                Text("ADD", fontWeight = FontWeight.Bold, fontSize = 12.sp)
                                             }
                                         }
                                     }
