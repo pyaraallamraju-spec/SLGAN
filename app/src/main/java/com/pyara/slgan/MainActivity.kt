@@ -5571,33 +5571,99 @@ private fun OrdersPage(
                                 }
                             }
                         }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.background(PaleGreen, RoundedCornerShape(50.dp)).padding(horizontal = 10.dp, vertical = 5.dp)) { Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Forest, fontSize = 11.sp, fontWeight = FontWeight.Bold) }
-                            Spacer(Modifier.weight(1f))
-                            TextButton(onClick = { selectedOrder = order }) {
-                                Text("View order", color = Forest, fontWeight = FontWeight.Bold)
-                            }
-                            TextButton(onClick = {
-                                var addedCount = 0
-                                orderItems.forEach { item ->
-                                    val savedId = (item["productId"] ?: item["product_id"] ?: item["id"])?.toString().orEmpty()
-                                    val savedName = (item["productName"] ?: item["name"] ?: item["title"])?.toString().orEmpty()
-                                    val product = products.firstOrNull { it.id == savedId }
-                                        ?: products.firstOrNull { savedName.isNotBlank() && it.name.equals(savedName, ignoreCase = true) }
-                                    val productId = product?.id ?: savedId.takeIf { id -> id.isNotBlank() && products.any { it.id == id } }.orEmpty()
-                                    val quantity = ((item["quantity"] as? Number)?.toInt() ?: 1).coerceIn(1, 20)
-                                    if (productId.isNotBlank()) repeat(quantity) { onAdd(productId); addedCount++ }
-                                }
-                                Toast.makeText(context, if (addedCount > 0) "$addedCount item(s) added to cart" else "These products are no longer available to reorder.", Toast.LENGTH_LONG).show()
-                                if (addedCount > 0) onCart()
-                            }) { Text("Reorder", color = Forest, fontWeight = FontWeight.Bold) }
-                            TextButton(onClick = { rateOrder = order; selectedRating = 5 }) { Text("Rate order", color = Forest, fontWeight = FontWeight.Bold) }
-                            if (!invoiceUrl.isNullOrBlank()) {
-                                IconButton(
-                                    onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
-                                    modifier = Modifier.size(38.dp).background(PaleGreen, CircleShape)
+                        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                val isPending = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
+                                val statusColor = if (isPending) Color(0xFF8A5A12) else Forest
+                                val statusBackground = if (isPending) Color(0xFFFFF0D5) else PaleGreen
+                                Row(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(50.dp))
+                                        .background(statusBackground)
+                                        .border(1.dp, statusColor.copy(alpha = 0.18f), RoundedCornerShape(50.dp))
+                                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
-                                    Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Forest)
+                                    Icon(
+                                        if (isPending) Icons.Default.Schedule else Icons.Default.CheckCircle,
+                                        contentDescription = null,
+                                        tint = statusColor,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Text(
+                                        if (isPending) "Pending verification" else status.replace('_', ' ').replaceFirstChar { it.uppercase() },
+                                        color = statusColor,
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                                Spacer(Modifier.weight(1f))
+                                if (!invoiceUrl.isNullOrBlank()) {
+                                    IconButton(
+                                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
+                                        modifier = Modifier.size(40.dp).background(PaleGreen, CircleShape)
+                                    ) {
+                                        Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Forest)
+                                    }
+                                }
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                OutlinedButton(
+                                    onClick = { selectedOrder = order },
+                                    modifier = Modifier.weight(1f).height(46.dp),
+                                    shape = RoundedCornerShape(14.dp),
+                                    border = BorderStroke(1.dp, Forest.copy(alpha = 0.55f)),
+                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+                                ) {
+                                    Icon(Icons.Default.ReceiptLong, contentDescription = null, modifier = Modifier.size(18.dp))
+                                    Spacer(Modifier.width(6.dp))
+                                    Text("View order", color = Forest, fontWeight = FontWeight.Bold, maxLines = 1)
+                                }
+                                Button(
+                                    onClick = {
+                                        var addedCount = 0
+                                        orderItems.forEach { item ->
+                                            val savedId = (item["productId"] ?: item["product_id"] ?: item["id"])?.toString().orEmpty()
+                                            val savedName = (item["productName"] ?: item["name"] ?: item["title"])?.toString().orEmpty()
+                                            val product = products.firstOrNull { it.id == savedId }
+                                                ?: products.firstOrNull { savedName.isNotBlank() && it.name.equals(savedName, ignoreCase = true) }
+                                            val productId = product?.id ?: savedId.takeIf { id -> id.isNotBlank() && products.any { it.id == id } }.orEmpty()
+                                            val quantity = ((item["quantity"] as? Number)?.toInt() ?: 1).coerceIn(1, 20)
+                                            if (productId.isNotBlank()) repeat(quantity) { onAdd(productId); addedCount++ }
+                                        }
+                                        Toast.makeText(context, if (addedCount > 0) "$addedCount item(s) added to cart" else "These products are no longer available to reorder.", Toast.LENGTH_LONG).show()
+                                        if (addedCount > 0) onCart()
+                                    },
+                                    modifier = Modifier.weight(1f).height(46.dp),
+                                    shape = RoundedCornerShape(14.dp),
+                                    colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+                                ) {
+                                    Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
+                                    Spacer(Modifier.width(6.dp))
+                                    Text("Reorder", color = Color.White, fontWeight = FontWeight.Bold, maxLines = 1)
+                                }
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                TextButton(
+                                    onClick = { rateOrder = order; selectedRating = 5 },
+                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(18.dp))
+                                    Spacer(Modifier.width(5.dp))
+                                    Text("Rate order", color = Forest, fontWeight = FontWeight.SemiBold)
                                 }
                             }
                         }
