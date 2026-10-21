@@ -2713,7 +2713,16 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
     }
     Column(Modifier.fillMaxSize().background(Color(0xFFF3F5FA)).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
+            Surface(
+                modifier = Modifier.size(48.dp).clickable { onBack() },
+                shape = CircleShape,
+                color = Color.White,
+                border = BorderStroke(1.dp, Color(0xFFE5E9F0))
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(24.dp))
+                }
+            }
             Column { Text("HOME PAGE SLIDERS", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
