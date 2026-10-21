@@ -3753,7 +3753,7 @@ private fun ShopScreen(
         }
     }) { padding ->
         when (selectedTab) {
-            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult) { onTabChange("Home") }
+            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick) { onTabChange("Home") }
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") })
             "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") })
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
@@ -4914,7 +4914,7 @@ private fun ProductDetailsPage(
 }
 
 @Composable
-private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onBack: () -> Unit) {
+private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onBack: () -> Unit) {
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     var showCheckout by remember { mutableStateOf(false) }
@@ -5026,7 +5026,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             Spacer(Modifier.height(12.dp))
                             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                                 recommendations.take(3).forEach { product ->
-                                    Column(Modifier.weight(1f)) {
+                                    Column(Modifier.weight(1f).clickable { onProductClick(product) }) {
                                         if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF5F6FA)), contentScale = ContentScale.Crop)
                                         else Box(Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF5F6FA)), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 35.sp) }
                                         Spacer(Modifier.height(7.dp))
