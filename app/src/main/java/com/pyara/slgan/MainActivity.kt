@@ -6810,10 +6810,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text("Personal information", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
             }
             Spacer(Modifier.height(20.dp))
-            Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-                Text("Personal details", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Ink)
-                Spacer(Modifier.height(14.dp))
-            }
+
         }
         if (initialSection == "Addresses") {
             Row(
