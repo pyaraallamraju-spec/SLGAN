@@ -3755,8 +3755,8 @@ private fun ShopScreen(
     }) { padding ->
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick, onAddressClick = { onTabChange("AddressBook") }) { onTabChange("Home") }
-            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") })
-            "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") })
+            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") }, onCategories = { onTabChange("Categories") })
+            "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") }, onCategories = { onTabChange("Categories") })
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError, onHome = { onTabChange(previousTab) })
             "Accounts" -> AccountsPage(
@@ -5239,7 +5239,8 @@ private fun OrdersPage(
     onAdd: (String) -> Unit,
     pageTitle: String = "Order History",
     onHome: () -> Unit,
-    onCart: () -> Unit
+    onCart: () -> Unit,
+    onCategories: () -> Unit
 ) {
     val user = FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
@@ -5400,7 +5401,7 @@ private fun OrdersPage(
                 Spacer(Modifier.width(16.dp))
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
                     Text("No orders placed today", color = Color(0xFF4A4A4A), fontSize = 16.sp, fontWeight = FontWeight.Medium)
-                    TextButton(onClick = onHome, contentPadding = PaddingValues(0.dp)) { Text("Click to order  →", color = Ink, fontWeight = FontWeight.Bold) }
+                    TextButton(onClick = onCategories, contentPadding = PaddingValues(0.dp)) { Text("Click to order  →", color = Ink, fontWeight = FontWeight.Bold) }
                 }
             }
             else -> currentOrders.forEach { order ->
