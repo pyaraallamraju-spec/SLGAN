@@ -7407,13 +7407,21 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     }
 
     if (showAddressLocationSheet) {
-        androidx.compose.material3.ModalBottomSheet(
+        androidx.compose.ui.window.Dialog(
             onDismissRequest = { showAddressLocationSheet = false },
-            containerColor = Color.White,
-            scrimColor = Color.Black.copy(alpha = 0.68f),
-            dragHandle = null
+            properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)
         ) {
-            Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp).padding(top = 14.dp, bottom = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(
+                Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.58f)),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Column(
+                    Modifier.fillMaxWidth()
+                        .clip(RoundedCornerShape(topStart = 26.dp, topEnd = 26.dp))
+                        .background(Color.White)
+                        .padding(horizontal = 20.dp).padding(top = 14.dp, bottom = 24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                 Box(Modifier.size(42.dp).clip(CircleShape).background(Color(0xFF17171D)).clickable { showAddressLocationSheet = false }, contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Close, contentDescription = "Close", tint = Color.White, modifier = Modifier.size(24.dp))
                 }
@@ -7514,6 +7522,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White, contentColor = Color(0xFF27851F))
                 ) {
                     Text(if (LocalAppLanguage.current == "English") "No, at some other location" else "కాదు, వేరే చిరునామాకు", fontSize = 16.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(vertical = 8.dp))
+                }
                 }
             }
         }
