@@ -5068,7 +5068,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Spacer(Modifier.height(12.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             Text("Delivery charge", color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                            Text("Confirmed at order", color = Forest, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                            Text("Confirmed at order", color = Muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
                         }
                         Spacer(Modifier.height(12.dp))
                         Divider(color = Color(0xFFEFF1F5))
