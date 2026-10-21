@@ -4642,7 +4642,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                         model = product.imageUrl,
                         contentDescription = product.name,
                         modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(14.dp)).padding(4.dp),
-                        contentScale = ContentScale.Fit
+                        contentScale = ContentScale.Crop
                     )
                 } else {
                     Text(product.emoji, fontSize = 42.sp)
