@@ -6192,7 +6192,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 )
             )
             Box(Modifier.fillMaxWidth().padding(horizontal = 10.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
-            Row(Modifier.fillMaxWidth().background(Color(0xFFF1F2F4)).padding(horizontal = 10.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(Modifier.fillMaxWidth().background(Color(0xFFF3F5FA)).padding(horizontal = 10.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(tr(selectedCategory, LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
                 Spacer(Modifier.weight(1f))
                 Text("${selectedProducts.size} products", color = Muted, fontSize = 11.sp, maxLines = 1)
