@@ -7304,7 +7304,9 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
             }
             Spacer(Modifier.height(14.dp))
-            if (showAddressLocationSheet) {
+
+
+    if (showAddressLocationSheet) {
         androidx.compose.material3.ModalBottomSheet(
             onDismissRequest = { showAddressLocationSheet = false },
             containerColor = Color.White,
