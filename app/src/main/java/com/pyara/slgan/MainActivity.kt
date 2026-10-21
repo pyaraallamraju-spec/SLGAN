@@ -7656,7 +7656,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 Column(Modifier.weight(1f)) {
                                     Text(
                                         addressLabelText.uppercase(Locale.getDefault()),
-                                        color = Forest,
+                                        color = Ink,
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.ExtraBold,
                                         letterSpacing = 0.8.sp
@@ -7664,7 +7664,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                     Spacer(Modifier.height(3.dp))
                                     Text(
                                         address["recipientName"]?.toString().orEmpty(),
-                                        color = Ink,
+                                        color = Muted,
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold
                                     )
