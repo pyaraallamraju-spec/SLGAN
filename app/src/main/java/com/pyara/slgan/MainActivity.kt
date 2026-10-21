@@ -6867,11 +6867,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
             }
             Spacer(Modifier.height(20.dp))
-            OutlinedTextField(value = firstName, onValueChange = { firstName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("First name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Forest) })
+            OutlinedTextField(value = firstName, onValueChange = { firstName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("First name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Ink) })
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = lastName, onValueChange = { lastName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Last name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Badge, null, tint = Forest) })
+            OutlinedTextField(value = lastName, onValueChange = { lastName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Last name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Badge, null, tint = Ink) })
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Forest) })
+            OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Ink) })
             Spacer(Modifier.height(12.dp))
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Box {
@@ -6881,7 +6881,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         readOnly = true,
                         modifier = Modifier.width(140.dp).clickable { countryMenuExpanded = true },
                         label = { Text("Country", maxLines = 1, softWrap = false) },
-                        trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country", tint = Forest, modifier = Modifier.size(18.dp)) },
+                        trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country", tint = Ink, modifier = Modifier.size(18.dp)) },
                         singleLine = true
                     )
                     Box(Modifier.matchParentSize().clickable { countryMenuExpanded = true })
@@ -6905,7 +6905,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     label = { Text(tr("Mobile number", LocalAppLanguage.current), maxLines = 1, softWrap = false) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    leadingIcon = { Icon(Icons.Default.Phone, null, tint = Forest) }
+                    leadingIcon = { Icon(Icons.Default.Phone, null, tint = Ink) }
                 )
             }
             Spacer(Modifier.height(12.dp))
@@ -6919,8 +6919,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text("Date of birth") },
                     placeholder = { Text("Select date of birth") },
-                    leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Forest) },
-                    trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = "Choose date", tint = Forest) }
+                    leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Ink) },
+                    trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = "Choose date", tint = Ink) }
                 )
                 Box(Modifier.matchParentSize().clickable { showDateOfBirthPicker = true })
             }
@@ -6975,7 +6975,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             }
             Spacer(Modifier.height(12.dp))
             Box(Modifier.fillMaxWidth()) {
-                OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Forest) })
+                OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Ink) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Ink) })
                 Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
                 DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }) {
                     listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
@@ -6994,7 +6994,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(tr("Select language", appLanguage)) },
                     trailingIcon = { Icon(Icons.Default.ArrowDropDown, null) },
-                    leadingIcon = { Icon(Icons.Default.Language, null, tint = Forest) }
+                    leadingIcon = { Icon(Icons.Default.Language, null, tint = Ink) }
                 )
                 Box(Modifier.matchParentSize().clickable { languageMenuExpanded = true })
                 DropdownMenu(expanded = languageMenuExpanded, onDismissRequest = { languageMenuExpanded = false }) {
