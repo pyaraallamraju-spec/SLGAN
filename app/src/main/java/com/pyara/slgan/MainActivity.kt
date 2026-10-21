@@ -6523,7 +6523,7 @@ private fun AccountsPage(
                 Text("Select the language you want to use in SLGAN.", color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(22.dp))
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Box(Modifier.weight(0.73f)) {
+                    BoxWithConstraints(Modifier.weight(0.73f)) {
                         OutlinedButton(
                             onClick = { languageDropdownExpanded = true },
                             modifier = Modifier.fillMaxWidth().height(54.dp),
@@ -6532,7 +6532,7 @@ private fun AccountsPage(
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink),
                             contentPadding = PaddingValues(horizontal = 14.dp)
                         ) {
-                            Icon(Icons.Default.Translate, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Language, contentDescription = "Language", tint = Ink, modifier = Modifier.size(20.dp))
                             Spacer(Modifier.width(10.dp))
                             Text(tr(selectedLanguage, appLanguage), modifier = Modifier.weight(1f), textAlign = TextAlign.Start, maxLines = 1)
                             Icon(Icons.Default.ExpandMore, contentDescription = "Choose language", tint = Ink)
@@ -6540,10 +6540,11 @@ private fun AccountsPage(
                         DropdownMenu(
                             expanded = languageDropdownExpanded,
                             onDismissRequest = { languageDropdownExpanded = false },
-                            modifier = Modifier.background(Color.White),
+                            modifier = Modifier.width(maxWidth).background(Color.White),
                         ) {
                             listOf("English", "Telugu", "Hindi").forEach { option ->
                                 DropdownMenuItem(
+                                    modifier = Modifier.fillMaxWidth(),
                                     leadingIcon = { if (selectedLanguage == option) Icon(Icons.Default.Check, null, tint = Ink) },
                                     text = { Text(tr(option, appLanguage), color = Ink) },
                                     onClick = { selectedLanguage = option; languageDropdownExpanded = false }
