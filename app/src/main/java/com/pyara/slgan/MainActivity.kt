@@ -1673,8 +1673,7 @@ private fun HomeBannerSlider(
                         ) {
                             Text(text = "🌿", fontSize = 13.sp)
                             Text(
-                                text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
-                                    else tr("Authentic Ayurvedic", LocalAppLanguage.current),
+                                text = tr("Authentic Ayurvedic", LocalAppLanguage.current),
                                 color = Color(0xFF2E7D32),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
@@ -1700,8 +1699,7 @@ private fun HomeBannerSlider(
                         ) {
                             Text(text = "🌿", fontSize = 13.sp)
                             Text(
-                                text = if (slide.isCompanySlide) tr("TRUSTED SINCE 1990", LocalAppLanguage.current)
-                                    else tr("Authentic Ayurvedic", LocalAppLanguage.current),
+                                text = tr("TRUSTED SINCE 1990", LocalAppLanguage.current),
                                 color = Color(0xFF2E7D32),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
