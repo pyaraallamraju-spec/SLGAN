@@ -5639,7 +5639,7 @@ private fun OrdersPage(
         val invoiceUrl = order["invoiceUrl"]?.toString()
         androidx.compose.ui.window.Dialog(
             onDismissRequest = { selectedOrder = null },
-            properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
+            properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = true)
         ) {
             Column(Modifier.fillMaxSize().background(Color.White)) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
