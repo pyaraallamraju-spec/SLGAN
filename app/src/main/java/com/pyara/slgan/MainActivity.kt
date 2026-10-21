@@ -975,7 +975,7 @@ private fun AyurvedicApp() {
                     }
                 }
             )
-            else if (!adminRoleResolved) AppLoader("Checking account permissions…")
+            else if (!adminRoleResolved) Box(Modifier.fillMaxSize().background(Color.White), contentAlignment = Alignment.Center) { AppLoader("Checking account permissions…") }
             else if (isAdmin && adminCustomersOpen) AdminCustomersScreen(onBack = { adminCustomersOpen = false })
             else if (isAdmin && adminDiseasesOpen) AdminDiseasesScreen(onBack = { adminDiseasesOpen = false })
             else if (isAdmin && adminBannersOpen) BannerManagementScreen(onBack = { adminBannersOpen = false })
