@@ -1386,29 +1386,46 @@ private fun LoginScreen(
         }
         if (errorMessage != null) Text(errorMessage, Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp), color = Color(0xFFB3261E), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
+        val signInShape = RoundedCornerShape(50)
         Button(
             onClick = onContinue,
             enabled = !loading,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(50.dp),
-            shape = RoundedCornerShape(14.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp)
+                .height(58.dp)
+                .shadow(7.dp, signInShape, ambientColor = Gold.copy(alpha = 0.20f), spotColor = Gold.copy(alpha = 0.28f))
+                .background(
+                    Brush.horizontalGradient(
+                        listOf(Color(0xFFFFFEFB), Color(0xFFF8F6F0), Color(0xFFFFFEFB))
+                    ),
+                    signInShape
+                )
+                .border(BorderStroke(1.5.dp, Brush.horizontalGradient(listOf(Color(0xFFB88A36), Color(0xFFF3D58A), Color(0xFFB88A36)))), signInShape),
+            shape = signInShape,
             elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 3.dp,
-                pressedElevation = 1.dp,
-                focusedElevation = 3.dp,
-                hoveredElevation = 3.dp,
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp,
+                focusedElevation = 0.dp,
+                hoveredElevation = 0.dp,
                 disabledElevation = 0.dp
             ),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFF1F2F4),
-                contentColor = Ink,
-                disabledContainerColor = Color(0xFFF1F2F4),
-                disabledContentColor = Ink.copy(alpha = 0.6f)
-            )
+                containerColor = Color.Transparent,
+                contentColor = Color(0xFF4A3028),
+                disabledContainerColor = Color.Transparent,
+                disabledContentColor = Color(0xFF4A3028).copy(alpha = 0.6f)
+            ),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
-            Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+            Text("🌿", fontSize = 19.sp)
             Spacer(Modifier.width(12.dp))
-            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp)
-            else Icon(Icons.Default.ArrowForward, null)
+            Text(if (loading) "Please wait…" else if (isCreatingAccount) "Create account" else "Sign in", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4A3028))
+            Spacer(Modifier.width(12.dp))
+            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color(0xFFB88A36), strokeWidth = 2.dp)
+            else Icon(Icons.Default.ArrowForward, null, tint = Color(0xFFB88A36))
+            Spacer(Modifier.width(12.dp))
+            Text("🌿", fontSize = 19.sp)
         }
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 2.dp),
