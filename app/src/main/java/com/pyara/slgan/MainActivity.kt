@@ -1880,8 +1880,7 @@ private fun AdminProductsScreen(
                 Text("${products.size} catalogue items", color = AdminMuted, fontSize = 12.sp)
             }
         }
-        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Inventory2, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
@@ -2653,15 +2652,14 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
     }
     Column(Modifier.fillMaxSize().background(AdminBackground).verticalScroll(rememberScrollState()).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Surface(onClick = onBack, shape = CircleShape, color = Color.White), modifier = Modifier.size(56.dp)) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
+            Surface(onClick = onBack, modifier = Modifier.size(56.dp), shape = CircleShape, color = Color.White) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp)) } }
             Spacer(Modifier.width(16.dp))
             Column { Text("APP APPEARANCE", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose app theme", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
         Text("Manage the app-wide appearance, including colors, backgrounds, buttons, icons and text.", color = AdminMuted, fontSize = 14.sp)
         Spacer(Modifier.height(14.dp))
-        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface))
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),) {
+        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("Light Theme", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
@@ -2690,9 +2688,11 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
             val background = if (botanical) Color(0xFFFFF9E9) else Color(0xFFFFF7E8)
             val textColor = if (botanical) Color(0xFF20372A) else Color(0xFF38251F)
             Card(Modifier.fillMaxWidth().padding(bottom = 14.dp).clickable { selectedTheme = theme; message = null },
-                shape = RoundedCornerShape(22.dp) 2.dp else 1.dp, if (selectedTheme == theme) accent else Color(0xFFE8DCC7)),
-                colors = CardDefaults.cardColors(containerColor = AdminSurface)
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),) {
+                shape = RoundedCornerShape(22.dp),
+                border = BorderStroke(if (selectedTheme == theme) 2.dp else 1.dp, if (selectedTheme == theme) accent else Color(0xFFE8DCC7)),
+                colors = CardDefaults.cardColors(containerColor = AdminSurface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
                 Column(Modifier.padding(14.dp)) {
                     Box(Modifier.fillMaxWidth().height(132.dp).clip(RoundedCornerShape(16.dp)).background(Brush.linearGradient(if (botanical) listOf(Color(0xFF173D2B), Color(0xFF557A45), Color(0xFFC9A34A)) else listOf(Color(0xFF762A24), Color(0xFF8A4B2A), Color(0xFFD9A441)))).padding(16.dp)) {
                         Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.78f)) {
@@ -2767,8 +2767,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
             Column { Text("HOME PAGE SLIDERS", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
-        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface))
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),) {
+        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("Show slider on Home", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -2792,8 +2791,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         Spacer(Modifier.height(16.dp))
         (1..4).forEach { design ->
             val colors = when (design) { 4 -> listOf(Forest, Forest.copy(alpha = 0.92f), Gold, Forest); 3 -> listOf(Color(0xFFF8F0DC), Color(0xFFE6EBCB), Color(0xFF6B8B52)); 2 -> listOf(Color(0xFF173D2B), Color(0xFF24523A), Color(0xFF762A24)); else -> listOf(Color(0xFF762A24), Color(0xFF8A3D2B), Gold) }
-            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = AdminSurface)
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),) {
+            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) Gold else Color(0xFFE8DCC7)), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
                 Column(Modifier.padding(12.dp)) {
                     Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Color.Transparent).padding(0.dp)) {
                         if (design == 4) {
@@ -3014,8 +3012,8 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             Card(
                 Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
                 shape = RoundedCornerShape(22.dp),
-                colors = CardDefaults.cardColors(containerColor = Forest)
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                colors = CardDefaults.cardColors(containerColor = Forest),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Row(
                     Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp),
@@ -3170,8 +3168,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                 Text("${customers.size} customer accounts", color = AdminMuted, fontSize = 12.sp)
             }
         }
-        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Groups, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
@@ -3485,8 +3482,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             }
             Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = AdminInk, modifier = Modifier.size(27.dp))
         }
-        Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest)
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(48.dp).background(Cream, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp))
