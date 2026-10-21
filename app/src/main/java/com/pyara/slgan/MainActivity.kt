@@ -1400,15 +1400,7 @@ private fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 22.dp)
-                .height(58.dp)
-                .shadow(7.dp, signInShape, ambientColor = Gold.copy(alpha = 0.20f), spotColor = Gold.copy(alpha = 0.28f))
-                .background(
-                    Brush.horizontalGradient(
-                        listOf(Color(0xFFFFFEFB), Color(0xFFF8F6F0), Color(0xFFFFFEFB))
-                    ),
-                    signInShape
-                )
-                .border(BorderStroke(1.5.dp, Brush.horizontalGradient(listOf(Color(0xFFB88A36), Color(0xFFF3D58A), Color(0xFFB88A36)))), signInShape),
+                .height(58.dp),
             shape = signInShape,
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 0.dp,
@@ -1423,18 +1415,24 @@ private fun LoginScreen(
                 disabledContainerColor = Color.Transparent,
                 disabledContentColor = Color(0xFF4A3028).copy(alpha = 0.6f)
             ),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+            contentPadding = PaddingValues(0.dp)
         ) {
             if (loading) {
                 CircularProgressIndicator(modifier = Modifier.size(22.dp), color = Color(0xFFB88A36), strokeWidth = 2.dp)
             } else if (isCreatingAccount) {
-                Text("🌿", fontSize = 19.sp)
-                Spacer(Modifier.width(12.dp))
-                Text("Create account", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4A3028))
-                Spacer(Modifier.width(12.dp))
-                Icon(Icons.Default.ArrowForward, null, tint = Color(0xFFB88A36))
-                Spacer(Modifier.width(12.dp))
-                Text("🌿", fontSize = 19.sp)
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(58.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("🌿", fontSize = 19.sp)
+                    Spacer(Modifier.width(12.dp))
+                    Text("Create account", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4A3028))
+                    Spacer(Modifier.width(12.dp))
+                    Icon(Icons.Default.ArrowForward, null, tint = Color(0xFFB88A36))
+                    Spacer(Modifier.width(12.dp))
+                    Text("🌿", fontSize = 19.sp)
+                }
             } else {
                 Image(
                     painter = painterResource(R.drawable.slgan_sign_in_button),
