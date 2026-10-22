@@ -1183,7 +1183,7 @@ private fun SplashScreen() {
                 tr("AYURVEDA NILAYAM", LocalAppLanguage.current),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Leaf,
+                color = Ink,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 letterSpacing = 1.8.sp
             )
