@@ -1545,8 +1545,8 @@ private fun LoginScreen(
                     // the right decorative edge cannot be cropped on narrow screens.
                     // Add a small inset around the decorative PNG so its outer gold
                     // border and curved right tip remain inside the visible button bounds.
-                    modifier = Modifier.fillMaxWidth().height(58.dp).padding(horizontal = 5.dp, vertical = 2.dp),
-                    contentScale = ContentScale.FillBounds
+                    modifier = Modifier.fillMaxWidth().height(58.dp).padding(horizontal = 10.dp, vertical = 3.dp),
+                    contentScale = ContentScale.Fit
                 )
             }
         }
