@@ -7575,26 +7575,24 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Row(
                 modifier = Modifier.fillMaxWidth()
                     .background(Color.White)
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { showAddressForm = false; addressMessage = null }) { Icon(Icons.Default.ArrowBack, "Back", tint = Forest) }
+                IconButton(onClick = { showAddressForm = false; addressMessage = null }) { Icon(Icons.Default.ArrowBack, "Back", tint = Ink) }
                 Column(Modifier.weight(1f)) {
                     Text(tr("Add address", LocalAppLanguage.current), fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                     Text(tr("Enter delivery details below.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                 }
                 Spacer(Modifier.width(8.dp))
-                OutlinedButton(
+                TextButton(
                     onClick = { showMapPicker = true },
-                    modifier = Modifier.widthIn(min = 96.dp, max = 112.dp).height(42.dp),
+                    modifier = Modifier.height(42.dp),
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    border = BorderStroke(1.dp, Gold),
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Forest)
+                    colors = ButtonDefaults.textButtonColors(contentColor = Ink)
                 ) {
-                    Icon(Icons.Default.Map, contentDescription = null, tint = Forest, modifier = Modifier.size(17.dp))
+                    Icon(Icons.Default.Map, contentDescription = null, tint = Ink, modifier = Modifier.size(17.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Show map", fontSize = 12.sp, maxLines = 1)
+                    Text("Show map", fontSize = 12.sp, maxLines = 1, color = Ink)
                 }
             }
             Spacer(Modifier.height(14.dp))
