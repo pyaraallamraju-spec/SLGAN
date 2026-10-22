@@ -4770,17 +4770,18 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 Spacer(Modifier.height(3.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (product.category.isNotBlank()) {
                         Surface(
+                            modifier = Modifier.weight(1f, fill = false),
                             shape = RoundedCornerShape(8.dp),
                             color = Color(0xFFE1E5EC),
                             contentColor = Ink
                         ) {
                             Row(
-                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
@@ -4798,12 +4799,40 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                     },
                                     fontSize = 9.sp
                                 )
-                                Text(product.category, color = Color.Black, fontSize = 8.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(
+                                    product.category,
+                                    color = Color.Black,
+                                    fontSize = 8.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                             }
                         }
                     }
-                    Spacer(Modifier.weight(1f))
-
+                    if (product.subtitle.isNotBlank()) {
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = Color(0xFFE1E5EC),
+                            contentColor = Ink
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 4.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(2.dp)
+                            ) {
+                                Text("⚖", color = Color.Black, fontSize = 9.sp)
+                                Text(
+                                    product.subtitle.replace(" ", ""),
+                                    color = Color.Black,
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
                 }
             }
             Spacer(Modifier.height(5.dp))
@@ -4814,14 +4843,6 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             ) {
                 Box(modifier = Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.CenterStart) {
                     ProductRatingLine(product, ratingSummary, countBaselineFix = true)
-                }
-                if (product.subtitle.isNotBlank()) {
-                    Surface(shape = RoundedCornerShape(8.dp), color = Color(0xFFE1E5EC), contentColor = Ink) {
-                        Row(modifier = Modifier.padding(horizontal = 5.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                            Text("⚖", color = Color.Black, fontSize = 9.sp)
-                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                        }
-                    }
                 }
             }
             Spacer(Modifier.height(5.dp))
