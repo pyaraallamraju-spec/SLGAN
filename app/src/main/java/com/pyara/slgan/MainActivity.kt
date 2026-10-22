@@ -4675,7 +4675,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
                 modifier = Modifier.height(if (compact) 12.dp else 20.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("(${summary.count})", color = Muted, fontSize = if (compact) 10.sp else 12.sp, maxLines = 1, lineHeight = if (compact) 12.sp else 20.sp, modifier = Modifier.align(Alignment.CenterVertically))
+                Text("(${summary.count})", color = Muted, fontSize = if (compact) 10.sp else 12.sp, maxLines = 1, lineHeight = if (compact) 12.sp else 20.sp)
             }
         } else if (showEmptyLabel) {
             Box(
