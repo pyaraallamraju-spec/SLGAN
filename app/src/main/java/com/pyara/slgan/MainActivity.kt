@@ -1735,7 +1735,7 @@ private fun HomeBannerSlider(
                             Text("❋", color = Gold, fontSize = 14.sp)
                             Box(Modifier.weight(1f).height(1.dp).background(Gold))
                         }
-                        Spacer(Modifier.height(6.dp))
+                        Spacer(Modifier.height(2.dp))
                         if (!slide.isCompanySlide) {
                             Row(
                                 modifier = Modifier
@@ -1748,7 +1748,7 @@ private fun HomeBannerSlider(
                             ) {
                                 Text(
                                     "View Products",
-                                    color = Color(0xFF762A24),
+                                    color = Ink,
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 0.2.sp
@@ -1756,7 +1756,7 @@ private fun HomeBannerSlider(
                                 Icon(
                                     Icons.Default.ArrowForward,
                                     contentDescription = null,
-                                    tint = Color(0xFF762A24),
+                                    tint = Ink,
                                     modifier = Modifier.size(15.dp).align(Alignment.CenterVertically)
                                 )
                             }
