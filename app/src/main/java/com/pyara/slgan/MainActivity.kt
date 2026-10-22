@@ -5483,20 +5483,45 @@ private fun OrdersPage(
         val normalizedProducts = products.associateBy { product ->
             product.name.lowercase(Locale.ROOT).filter { it.isLetterOrDigit() }
         }
+        fun normalized(value: Any?): String =
+            value?.toString()?.lowercase(Locale.ROOT)?.filter { it.isLetterOrDigit() }.orEmpty()
+
         orderItems.forEach { item ->
-            val savedId = listOf("productId", "product_id", "productID", "id", "productDocumentId")
-                .firstNotNullOfOrNull { key -> item[key]?.toString()?.trim()?.takeIf { it.isNotEmpty() } }.orEmpty()
-            val savedName = listOf("productName", "product_name", "name", "title", "medicine_name")
-                .firstNotNullOfOrNull { key -> item[key]?.toString()?.trim()?.takeIf { it.isNotEmpty() } }.orEmpty()
-            val normalizedName = savedName.lowercase(Locale.ROOT).filter { it.isLetterOrDigit() }
+            // Older web orders use different field names and may store product details
+            // inside a nested product object. Read all known legacy shapes.
+            val nestedProduct = (item["product"] as? Map<*, *>)
+                ?: (item["productDetails"] as? Map<*, *>)
+                ?: (item["medicine"] as? Map<*, *>)
+                ?: emptyMap<Any?, Any?>()
+            val savedId = listOf("productId", "product_id", "productID", "id", "productDocumentId", "medicineId", "medicine_id")
+                .firstNotNullOfOrNull { key -> (item[key] ?: nestedProduct[key])?.toString()?.trim()?.takeIf { it.isNotEmpty() } }.orEmpty()
+            val savedName = listOf(
+                "productName", "product_name", "name", "title", "medicine_name",
+                "medicineName", "productTitle", "product_title", "itemName", "item_name"
+            ).firstNotNullOfOrNull { key ->
+                (item[key] ?: nestedProduct[key])?.toString()?.trim()?.takeIf { it.isNotEmpty() }
+            }.orEmpty()
+            val normalizedName = normalized(savedName)
+            val normalizedId = normalized(savedId)
+
             val product = products.firstOrNull { it.id == savedId }
+                ?: products.firstOrNull { normalized(it.id) == normalizedId && normalizedId.isNotBlank() }
                 ?: normalizedProducts[normalizedName]
-                ?: products.firstOrNull {
-                    normalizedName.isNotBlank() &&
-                        (it.name.lowercase(Locale.ROOT).filter { ch -> ch.isLetterOrDigit() }.contains(normalizedName) ||
-                         normalizedName.contains(it.name.lowercase(Locale.ROOT).filter { ch -> ch.isLetterOrDigit() }))
+                ?: products.firstOrNull { candidate ->
+                    val candidateName = normalized(candidate.name)
+                    normalizedName.isNotBlank() && candidateName.isNotBlank() &&
+                        (candidateName.contains(normalizedName) || normalizedName.contains(candidateName))
                 }
-            val quantityValue = item["quantity"]
+                // Some older orders stored a product name in the ID field.
+                ?: normalizedProducts[normalizedId]
+                // Final conservative match for legacy spelling/punctuation differences.
+                ?: products.firstOrNull { candidate ->
+                    val candidateTokens = normalized(candidate.name).split(Regex("(?<=.{4})")).filter { it.length >= 4 }.toSet()
+                    val savedTokens = normalizedName.split(Regex("(?<=.{4})")).filter { it.length >= 4 }.toSet()
+                    savedTokens.isNotEmpty() && candidateTokens.intersect(savedTokens).size >= 2
+                }
+
+            val quantityValue = item["quantity"] ?: item["qty"] ?: item["count"]
             val quantity = ((quantityValue as? Number)?.toInt()
                 ?: quantityValue?.toString()?.toIntOrNull()
                 ?: 1).coerceIn(1, 20)
@@ -5506,8 +5531,6 @@ private fun OrdersPage(
         }
         return addedCount
     }
-
-    if (selectedOrder == null) {
     Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(42.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape).clickable(onClick = onHome), contentAlignment = Alignment.Center) {
