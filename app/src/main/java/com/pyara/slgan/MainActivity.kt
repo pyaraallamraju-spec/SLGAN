@@ -6144,6 +6144,9 @@ private fun OrdersPage(
                         .background(Color.White)
                         // Keep the action area compact and above the system navigation bar.
                         .navigationBarsPadding()
+                        // The order detail is rendered inside the main Scaffold, whose app
+                        // navigation bar remains visible. Reserve space so Repeat Order sits above it.
+                        .padding(bottom = 76.dp)
                         .padding(horizontal = 16.dp)
                         .padding(top = 8.dp, bottom = 12.dp)
                 ) {
