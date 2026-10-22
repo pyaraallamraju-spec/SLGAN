@@ -5170,6 +5170,7 @@ private fun ProductDetailsPage(
 
 @Composable
 private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onAddressClick: () -> Unit, onBack: () -> Unit) {
+    val context = LocalContext.current
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     var showCheckout by remember { mutableStateOf(false) }
