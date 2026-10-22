@@ -1703,9 +1703,9 @@ private fun HomeBannerSlider(
                             text = if (slide.isCompanySlide) tr("Authentic Ayurvedic Formulations", LocalAppLanguage.current)
                             else localizedProductName(slide.productName, LocalAppLanguage.current),
                             color = Color(0xFF1F1B16),
-                            fontSize = if (slide.isCompanySlide) 22.sp else 21.sp,
-                            lineHeight = if (slide.isCompanySlide) 26.sp else 25.sp,
-                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = if (slide.isCompanySlide) 20.sp else 19.sp,
+                            lineHeight = if (slide.isCompanySlide) 24.sp else 23.sp,
+                            fontWeight = FontWeight.Bold,
                             maxLines = if (slide.isCompanySlide) 3 else 2,
                             overflow = TextOverflow.Ellipsis
                         )
