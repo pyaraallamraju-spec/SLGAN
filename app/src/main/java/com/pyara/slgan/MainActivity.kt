@@ -4595,7 +4595,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                         contentColor = Ink
                                                     ) {
                                                         Row(
-                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp),
+                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 1.dp),
                                                             verticalAlignment = Alignment.CenterVertically,
                                                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                                                         ) {
@@ -4861,7 +4861,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                             contentColor = Ink
                         ) {
                             Row(
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(3.dp)
                             ) {
@@ -4897,7 +4897,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                             contentColor = Ink
                         ) {
                             Row(
-                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp),
+                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(2.dp)
                             ) {
