@@ -4103,7 +4103,8 @@ private fun WishlistPage(
                                 onToggleLike = onToggleLike,
                                 onAdd = onAdd,
                                 onProductClick = onProductClick,
-                                modifier = Modifier.weight(1f)
+                                // Keep every wishlist card the same height regardless of cart state or product name.
+                                modifier = Modifier.weight(1f).height(290.dp)
                             )
                         }
                         if (pair.size == 1) Spacer(Modifier.weight(1f))
