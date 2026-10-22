@@ -3285,7 +3285,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                                             }
                                         },
                                         enabled = !isUpdating,
-                                        colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Forest)
+                                        colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Color(0xFF258348), checkedBorderColor = Color(0xFF258348))
                                     )
                                     Text(if (enabled) "Enabled" else "Disabled", color = if (enabled) Forest else Color(0xFFB3261E), fontSize = 10.sp, fontWeight = FontWeight.Bold)
                                 }
