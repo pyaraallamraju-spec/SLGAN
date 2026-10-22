@@ -5586,8 +5586,8 @@ private fun OrdersPage(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 val isPending = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
-                                val statusColor = if (isPending) Color(0xFF8A5A12) else Forest
-                                val statusBackground = if (isPending) Color(0xFFFFF0D5) else PaleGreen
+                                val statusColor = if (isPending) Color(0xFF334155) else Color(0xFF237344)
+                                val statusBackground = if (isPending) Color(0xFFE9EEF5) else Color(0xFFE5F4E8)
                                 Row(
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(50.dp))
@@ -5629,12 +5629,13 @@ private fun OrdersPage(
                                     onClick = { selectedOrder = order },
                                     modifier = Modifier.weight(1f).height(46.dp),
                                     shape = RoundedCornerShape(14.dp),
-                                    border = BorderStroke(1.dp, Forest.copy(alpha = 0.55f)),
+                                    border = BorderStroke(1.dp, Color(0xFFB8C2D0)),
+                                    colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White, contentColor = Color(0xFF26364D)),
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
                                 ) {
-                                    Icon(Icons.Default.ReceiptLong, contentDescription = null, modifier = Modifier.size(18.dp))
+                                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Color(0xFF26364D), modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
-                                    Text("View order", color = Forest, fontWeight = FontWeight.Bold, maxLines = 1)
+                                    Text("View order", color = Color(0xFF26364D), fontWeight = FontWeight.Bold, maxLines = 1)
                                 }
                                 Button(
                                     onClick = {
@@ -5653,10 +5654,10 @@ private fun OrdersPage(
                                     },
                                     modifier = Modifier.weight(1f).height(46.dp),
                                     shape = RoundedCornerShape(14.dp),
-                                    colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2F76D2), contentColor = Color.White),
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
                                 ) {
-                                    Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
+                                    Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
                                     Text("Reorder", color = Color.White, fontWeight = FontWeight.Bold, maxLines = 1)
                                 }
