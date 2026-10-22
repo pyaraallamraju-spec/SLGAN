@@ -1926,8 +1926,8 @@ private fun AdminProductsScreen(
             },
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Gold,
-                unfocusedBorderColor = Gold.copy(alpha = 0.45f),
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
                 focusedLabelColor = Muted,
@@ -3572,7 +3572,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                         onClick = { statusFilter = "All" },
                         label = { Text("All  ${orders.size}") },
                         leadingIcon = { Icon(Icons.Default.ListAlt, null, modifier = Modifier.size(16.dp)) },
-                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Forest, selectedLabelColor = Color.White, selectedLeadingIconColor = Color.White)
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = AdminLightGray, selectedLabelColor = Ink, selectedLeadingIconColor = Ink)
                     )
                     FilterChip(
                         selected = statusFilter == "Pending",
