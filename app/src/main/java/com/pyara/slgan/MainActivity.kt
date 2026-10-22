@@ -1447,7 +1447,7 @@ private fun LoginScreen(
                 Image(
                     painter = painterResource(R.drawable.slgan_sign_in_button),
                     contentDescription = "Sign in",
-                    modifier = Modifier.fillMaxWidth().height(58.dp).padding(horizontal = 4.dp),
+                    modifier = Modifier.fillMaxWidth().height(58.dp).padding(horizontal = 12.dp),
                     contentScale = ContentScale.Fit
                 )
             }
