@@ -1375,7 +1375,7 @@ private fun LoginScreen(
         }
         Spacer(Modifier.height(8.dp))
         Text(
-            tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current),
+            tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current).uppercase(),
             fontSize = 22.sp,
             lineHeight = 27.sp,
             fontWeight = FontWeight.Bold,
