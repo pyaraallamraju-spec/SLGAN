@@ -73,7 +73,9 @@ service cloud.firestore {
         && (isAdmin() || resource.data.customerId == request.auth.uid);
       allow create: if request.auth != null
         && request.resource.data.customerId == request.auth.uid
-        && request.resource.data.orderId == orderId
+        && request.resource.data.orderId is string
+        && request.resource.data.orderId.size() > 0
+        && request.resource.data.orderId.size() <= 40
         && request.resource.data.orderStatus == 'pending_verification'
         && request.resource.data.paymentStatus == 'not_collected'
         && request.resource.data.invoiceStatus == 'not_generated'
