@@ -7271,11 +7271,19 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
                 IconButton(
                     onClick = {
-                        // Open the same location-choice bottom sheet as the empty-state button.
-                        showAddressForm = false
+                        showAddressLocationSheet = false
                         showMapPicker = false
                         showAddressDetailsSheet = false
-                        showAddressLocationSheet = true
+                        addressLabel = "Home"
+                        recipientName = ""
+                        recipientPhone = ""
+                        addressLine1 = ""
+                        addressLine2 = ""
+                        landmark = ""
+                        city = ""
+                        state = ""
+                        pincode = ""
+                        showAddressForm = true
                         addressMessage = null
                     },
                     modifier = Modifier.size(48.dp)
@@ -7284,7 +7292,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
                 IconButton(
                     onClick = {
-                        // Reuse the same current-location / map-choice bottom sheet shown in the reference.
                         showAddressForm = false
                         showMapPicker = false
                         showAddressDetailsSheet = false
