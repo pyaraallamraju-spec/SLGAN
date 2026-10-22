@@ -7967,8 +7967,28 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             } else {
                 Spacer(Modifier.height(14.dp))
             }
-            Text(tr("Address type", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 18.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(1.dp, Color(0xFFE5E9F0)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(Modifier.fillMaxWidth().padding(18.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(modifier = Modifier.size(42.dp), shape = RoundedCornerShape(12.dp), color = Color(0xFFF1F1F1)) {
+                            Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink, modifier = Modifier.size(23.dp)) }
+                        }
+                        Spacer(Modifier.width(12.dp))
+                        Column {
+                            Text("Delivery details", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            Text("Enter your address information", color = Muted, fontSize = 12.sp)
+                        }
+                    }
+                    Spacer(Modifier.height(18.dp))
+                    Text(tr("Address type", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(8.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 listOf("Home", "Work", "Other").forEach { label ->
                     FilterChip(selected = addressLabel == label, onClick = { addressLabel = label }, label = { Text(tr(label, LocalAppLanguage.current)) }, colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color(0xFFEFEFEF), selectedLabelColor = Ink, selectedLeadingIconColor = Ink, containerColor = Color(0xFFF7F7F7), labelColor = Ink))
                 }
@@ -8078,6 +8098,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             ) {
                 if (addressSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null)
                 Spacer(Modifier.width(8.dp)); Text(if (addressSaving) "Saving address…" else "Save address", fontWeight = FontWeight.Bold)
+                    }
+                }
             }
         } else {
             if (addresses.isEmpty()) {
