@@ -7257,6 +7257,19 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
                 }
+                IconButton(
+                    onClick = {
+                        // Reuse the same current-location / map-choice bottom sheet shown in the reference.
+                        showAddressForm = false
+                        showMapPicker = false
+                        showAddressDetailsSheet = false
+                        showAddressLocationSheet = true
+                        addressMessage = null
+                    },
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(Icons.Default.Map, contentDescription = "Choose address on map", tint = Ink, modifier = Modifier.size(26.dp))
+                }
             }
             Spacer(Modifier.height(20.dp))
         }
