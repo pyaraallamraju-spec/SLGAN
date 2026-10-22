@@ -6004,49 +6004,19 @@ private fun OrdersPage(
                             Toast.makeText(context, if (addedCount > 0) "$addedCount item(s) added to cart" else "These products are no longer available to reorder.", Toast.LENGTH_LONG).show()
                             if (addedCount > 0) onCart()
                         },
-                        modifier = Modifier.fillMaxWidth().height(58.dp),
+                        modifier = Modifier.fillMaxWidth().height(76.dp),
                         shape = RoundedCornerShape(14.dp),
                         border = null,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Repeat Order", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                            Text("VIEW CART ON NEXT STEP", color = Ink, fontSize = 11.sp)
+                            Text("Repeat Order", color = Ink, fontSize = 20.sp, lineHeight = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                            Spacer(Modifier.height(3.dp))
+                            Text("VIEW CART ON NEXT STEP", color = Ink, fontSize = 11.sp, lineHeight = 14.sp, maxLines = 1)
                         }
                     }
                 }
-                if (onTabChange != null) {
-                    NavigationBar(
-                        modifier = Modifier.fillMaxWidth().shadow(8.dp).navigationBarsPadding(),
-                        containerColor = Color.White,
-                        contentColor = Ink
-                    ) {
-                        listOf(
-                            Triple("Home", Icons.Default.Home, "Home"),
-                            Triple("Categories", Icons.Default.GridView, "Categories"),
-                            Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
-                            Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
-                            Triple("Cart", Icons.Default.ShoppingCart, "Cart")
-                        ).forEach { (label, icon, route) ->
-                            NavigationBarItem(
-                                selected = route == "Orders",
-                                onClick = {
-                                    selectedOrder = null
-                                    onTabChange(route)
-                                },
-                                icon = { Icon(icon, contentDescription = label) },
-                                label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) },
-                                colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = Ink,
-                                    selectedTextColor = Ink,
-                                    indicatorColor = Color(0xFFE6E8EC),
-                                    unselectedIconColor = Ink,
-                                    unselectedTextColor = Ink
-                                )
-                            )
-                        }
-                    }
-                }
+
             }
         }
         }
