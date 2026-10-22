@@ -3834,7 +3834,7 @@ private fun ShopScreen(
                     }
                     Box(
                         modifier = Modifier.align(Alignment.TopEnd)
-                            .offset(x = (-5).dp, y = 5.dp)
+                            .offset(x = (-9).dp, y = 9.dp)
                             .size(12.dp)
                             .background(Color(0xFF258348), CircleShape)
                             .border(1.5.dp, Color.White, CircleShape)
