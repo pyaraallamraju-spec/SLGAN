@@ -3193,19 +3193,19 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                 Text("${customers.size} customer accounts", color = AdminMuted, fontSize = 12.sp)
             }
         }
-        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(50.dp).background(AdminLightGray, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Groups, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
                 }
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Customer library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Registered customer accounts", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp)
+                    Text("Customer library", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("Registered customer accounts", color = AdminMuted, fontSize = 12.sp)
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text(customers.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                    Text(customers.size.toString(), color = Ink, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                    Text("TOTAL", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                 }
             }
         }
@@ -3219,8 +3219,8 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Muted, modifier = Modifier.size(22.dp)) },
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Gold,
-                unfocusedBorderColor = Gold.copy(alpha = 0.45f),
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
                 focusedContainerColor = Color.White,
                 unfocusedContainerColor = Color.White,
                 focusedLabelColor = Muted,
