@@ -1383,7 +1383,7 @@ private fun LoginScreen(
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Text(
-            tr("Ayurveda Nilayam", LocalAppLanguage.current),
+            tr("Ayurveda Nilayam", LocalAppLanguage.current).uppercase(),
             fontSize = 20.sp,
             lineHeight = 25.sp,
             fontWeight = FontWeight.SemiBold,
