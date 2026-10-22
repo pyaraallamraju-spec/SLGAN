@@ -5834,7 +5834,7 @@ private fun OrdersPage(
                                 orderItems.forEach { item ->
                                     val productId = item["productId"]?.toString().orEmpty()
                                     val product = products.firstOrNull { it.id == productId }
-                                    Box(Modifier.size(82.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF6F7FA)), contentAlignment = Alignment.Center) {
+                                    Box(Modifier.size(82.dp).shadow(4.dp, RoundedCornerShape(14.dp)).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF6F7FA)), contentAlignment = Alignment.Center) {
                                         if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = product?.name ?: item["productName"]?.toString(), modifier = Modifier.fillMaxSize().padding(6.dp), contentScale = ContentScale.Fit)
                                         else Text(product?.emoji ?: "🌿", fontSize = 28.sp)
                                     }
