@@ -5922,10 +5922,9 @@ private fun OrdersPage(
         val invoiceItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
         val created = (order["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available"
         val invoiceUrl = order["invoiceUrl"]?.toString()
-        androidx.compose.ui.window.Dialog(
-            onDismissRequest = { selectedOrder = null },
-            properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
-        ) {
+        // Render order summary as a full-screen in-app page instead of a Dialog.
+        // This gives the page its own header, scrollable content, and bottom action area.
+        Box(Modifier.fillMaxSize().background(Color.White)) {
             Column(Modifier.fillMaxSize().background(Color.White)) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { selectedOrder = null }, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape)) {
