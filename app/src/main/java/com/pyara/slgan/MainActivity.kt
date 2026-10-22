@@ -2569,23 +2569,27 @@ private fun AdminDashboardScreen(
     Column(
         Modifier.fillMaxSize().background(AdminBackground).verticalScroll(rememberScrollState()).padding(20.dp)
     ) {
-        Row(
-            Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            Modifier.fillMaxWidth().background(Color.White).padding(20.dp)
         ) {
-            Column(Modifier.weight(1f)) {
-                Text("SLGAN ADMIN", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
-                Spacer(Modifier.height(4.dp))
-                Text("Dashboard", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text("SLGAN ADMIN", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+                    Spacer(Modifier.height(4.dp))
+                    Text("Dashboard", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+                }
+                IconButton(onClick = onSignOut) {
+                    Icon(Icons.Default.Logout, contentDescription = "Sign out", tint = AdminInk)
+                }
             }
-            IconButton(onClick = onSignOut) {
-                Icon(Icons.Default.Logout, contentDescription = "Sign out", tint = AdminInk)
-            }
+            Spacer(Modifier.height(8.dp))
+            Text("Welcome back", color = AdminMuted, fontSize = 15.sp)
+            Text(email.ifBlank { "Administrator" }, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         }
-        Spacer(Modifier.height(8.dp))
-        Text("Welcome back", color = AdminMuted, fontSize = 15.sp)
-        Text(email.ifBlank { "Administrator" }, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         Spacer(Modifier.height(22.dp))
         Spacer(Modifier.height(20.dp))
         Text("OVERVIEW", color = AdminMuted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
