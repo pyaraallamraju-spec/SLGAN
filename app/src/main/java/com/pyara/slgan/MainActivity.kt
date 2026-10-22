@@ -3515,10 +3515,10 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             val matchesQuery = query.isBlank() ||
                 listOf("orderId", "_documentId", "customerName", "phone", "email", "shippingAddress", "orderStatus")
                     .any { key -> order[key]?.toString()?.lowercase()?.contains(query) == true } ||
-                (((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.any { raw ->
+                listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> }?.any { raw ->
                     val item = raw as? Map<*, *>
                     item?.values?.any { it?.toString()?.lowercase()?.contains(query) == true } == true
-                } == true)
+                } == true
             matchesStatus && matchesQuery
         }
     }
@@ -5469,10 +5469,10 @@ private fun OrdersPage(
         val q = orderSearch.trim().lowercase()
         q.isBlank() || listOf(order["orderId"], order["_documentId"], order["orderStatus"], order["grandTotal"])
             .any { it?.toString()?.lowercase()?.contains(q) == true } ||
-            (((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.any { item ->
+            listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> }?.any { item ->
                 val row = item as? Map<*, *>
-                row?.get("productName")?.toString()?.lowercase()?.contains(q) == true
-            } == true)
+                row?.values?.any { it?.toString()?.lowercase()?.contains(q) == true } == true
+            } == true
     }
     val currentOrders = visibleOrders.filter { orderDate(it) == today }
     val historicalOrders = visibleOrders.filter { orderDate(it)?.isBefore(today) != false }
