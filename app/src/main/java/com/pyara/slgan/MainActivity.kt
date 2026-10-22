@@ -5826,7 +5826,7 @@ private fun OrdersPage(
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
                                 Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
                             }
-                            Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                            Text("₹" + String.format("%.2f", total), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                         }
                         val orderItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
                         if (orderItems.isNotEmpty()) {
