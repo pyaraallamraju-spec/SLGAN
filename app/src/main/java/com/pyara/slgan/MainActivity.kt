@@ -1433,7 +1433,7 @@ private fun LoginScreen(
             enabled = !loading,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 16.dp)
                 .height(58.dp),
             shape = signInShape,
             elevation = ButtonDefaults.buttonElevation(
