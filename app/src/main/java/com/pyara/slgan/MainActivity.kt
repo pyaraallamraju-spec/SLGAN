@@ -4379,14 +4379,14 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         ) {
                             items(signatureProducts, key = { it.id }) { product ->
                                 Card(
-                                    modifier = Modifier.width(198.dp).height(265.dp).clickable { onProductClick(product) },
+                                    modifier = Modifier.width(198.dp).height(285.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
                                     colors = CardDefaults.cardColors(containerColor = Color.White),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                                 ) {
                                     Column(Modifier.padding(10.dp)) {
                                         Box(
-                                            Modifier.fillMaxWidth().height(112.dp)
+                                            Modifier.fillMaxWidth().height(98.dp)
                                                  .clip(RoundedCornerShape(13.dp))
                                                 .background(Color.White),
                                             contentAlignment = Alignment.Center
@@ -4419,16 +4419,36 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                     maxLines = 1
                                                 )
                                             }
+                                            Row(
+                                                modifier = Modifier
+                                                    .align(Alignment.TopEnd)
+                                                    .padding(4.dp)
+                                                    .background(Color.White.copy(alpha = 0.94f), RoundedCornerShape(18.dp))
+                                                    .padding(horizontal = 3.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(1.dp)
+                                            ) {
+                                                val signatureLike = productLikes[product.id] ?: ProductLikeSummary()
+                                                IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(26.dp)) {
+                                                    Icon(
+                                                        if (signatureLike.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                                        contentDescription = if (signatureLike.likedByMe) "Unlike product" else "Like product",
+                                                        tint = if (signatureLike.likedByMe) Color(0xFFD32F2F) else Ink,
+                                                        modifier = Modifier.size(16.dp)
+                                                    )
+                                                }
+                                                Text(signatureLike.count.toString(), color = if (signatureLike.likedByMe) Color(0xFFD32F2F) else Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 4.dp))
+                                            }
                                         }
-                                        Spacer(Modifier.height(8.dp))
+                                        Spacer(Modifier.height(10.dp))
                                         Text(
                                             localizedProductName(product.name, LocalAppLanguage.current),
                                             fontSize = 13.sp,
                                             color = Ink,
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 2,
-                                            minLines = 1,
-                                             lineHeight = 15.sp,
+                                            minLines = 2,
+                                            lineHeight = 15.sp,
                                             overflow = TextOverflow.Ellipsis
                                         )
                                         if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
@@ -4444,7 +4464,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                         contentColor = Ink
                                                     ) {
                                                         Row(
-                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 2.dp),
+                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
                                                             verticalAlignment = Alignment.CenterVertically,
                                                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                                                         ) {
@@ -4490,9 +4510,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             modifier = Modifier.fillMaxWidth(),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
-                                            ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary(), compact = true)
-                                            Spacer(Modifier.width(6.dp))
-                                            ProductLikeControl(product, productLikes[product.id] ?: ProductLikeSummary(), onToggleLike)
+                                            ProductRatingLine(product, productRatings[product.id] ?: ProductRatingSummary())
                                         }
                                         Spacer(Modifier.height(3.dp))
                                         Row(
