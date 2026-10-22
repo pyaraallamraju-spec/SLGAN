@@ -6087,8 +6087,6 @@ private fun OrdersPage(
         }
     }
 
-}
-
 @Composable
 private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: List<Product>, loading: Boolean, error: String?, onHome: () -> Unit) {
     var query by remember { mutableStateOf("") }
