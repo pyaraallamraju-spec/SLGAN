@@ -4394,7 +4394,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 selectedBorderWidth = 1.dp
                             ),
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = Color(0xFFF1F1F1),
+                                selectedContainerColor = Color(0xFFE2E2E2),
                                 selectedLabelColor = Ink,
                                 selectedLeadingIconColor = Ink,
                                 containerColor = Color(0xFFF7F7F7),
