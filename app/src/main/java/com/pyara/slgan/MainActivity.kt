@@ -21,6 +21,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.firebase.FirebaseApp
@@ -674,7 +675,10 @@ private fun AyurvedicApp() {
     SideEffect {
         (appContext as? Activity)?.window?.let { appWindow ->
             val creamColor = systemBarCream.toArgb()
-            appWindow.statusBarColor = creamColor
+            // Keep the camera/status-bar cutout area owned by the system bars and white,
+            // rather than allowing edge-to-edge app content to draw behind it.
+            WindowCompat.setDecorFitsSystemWindows(appWindow, true)
+            appWindow.statusBarColor = Color.White.toArgb()
             appWindow.navigationBarColor = creamColor
             appWindow.decorView.systemUiVisibility = appWindow.decorView.systemUiVisibility or
                 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
