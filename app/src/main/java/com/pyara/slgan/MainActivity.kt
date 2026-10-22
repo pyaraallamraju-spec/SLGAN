@@ -3809,8 +3809,8 @@ private fun ShopScreen(
     }) { padding ->
         when (selectedTab) {
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick, onAddressClick = { onTabChange("AddressBook") }) { onTabChange("Home") }
-            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") }, onCategories = { onCategoryChange("All"); onTabChange("Categories") })
-            "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") }, onCategories = { onTabChange("Categories") })
+            "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") }, onCategories = { onCategoryChange("All"); onTabChange("Categories") }, onTabChange = onTabChange)
+            "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") }, onCategories = { onTabChange("Categories") }, onTabChange = onTabChange)
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError, onHome = { onTabChange(previousTab) })
             "Accounts" -> AccountsPage(
@@ -5303,7 +5303,8 @@ private fun OrdersPage(
     pageTitle: String = "Order History",
     onHome: () -> Unit,
     onCart: () -> Unit,
-    onCategories: () -> Unit
+    onCategories: () -> Unit,
+    onTabChange: ((String) -> Unit)? = null
 ) {
     val user = FirebaseAuth.getInstance().currentUser
     val context = LocalContext.current
@@ -5922,6 +5923,38 @@ private fun OrdersPage(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("Repeat Order", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                             Text("VIEW CART ON NEXT STEP", color = Ink, fontSize = 11.sp)
+                        }
+                    }
+                }
+                if (onTabChange != null) {
+                    NavigationBar(
+                        modifier = Modifier.fillMaxWidth().shadow(8.dp),
+                        containerColor = Color.White,
+                        contentColor = Ink
+                    ) {
+                        listOf(
+                            Triple("Home", Icons.Default.Home, "Home"),
+                            Triple("Categories", Icons.Default.GridView, "Categories"),
+                            Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
+                            Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
+                            Triple("Cart", Icons.Default.ShoppingCart, "Cart")
+                        ).forEach { (label, icon, route) ->
+                            NavigationBarItem(
+                                selected = route == "Orders",
+                                onClick = {
+                                    selectedOrder = null
+                                    onTabChange(route)
+                                },
+                                icon = { Icon(icon, contentDescription = label) },
+                                label = { Text(tr(label, LocalAppLanguage.current), fontSize = 10.sp) },
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = Ink,
+                                    selectedTextColor = Ink,
+                                    indicatorColor = Color(0xFFE6E8EC),
+                                    unselectedIconColor = Ink,
+                                    unselectedTextColor = Ink
+                                )
+                            )
                         }
                     }
                 }
