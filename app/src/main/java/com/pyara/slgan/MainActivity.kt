@@ -7456,10 +7456,18 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
                 }
                 IconButton(
-                    onClick = { showMapActionSheet = true },
+                    onClick = {
+                        // Open the interactive map directly; avoid an intermediate sheet
+                        // that can fail to appear above the address screen.
+                        showMapActionSheet = false
+                        showAddressLocationSheet = false
+                        showAddressForm = false
+                        showAddressDetailsSheet = false
+                        showMapPicker = true
+                    },
                     modifier = Modifier.size(48.dp)
                 ) {
-                    Icon(Icons.Default.Map, contentDescription = "Address options", tint = Ink, modifier = Modifier.size(26.dp))
+                    Icon(Icons.Default.Map, contentDescription = "Choose location on map", tint = Ink, modifier = Modifier.size(26.dp))
                 }
             }
             Spacer(Modifier.height(20.dp))
