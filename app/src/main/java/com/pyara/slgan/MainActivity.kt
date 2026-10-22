@@ -3809,7 +3809,7 @@ private fun ShopScreen(
                         modifier = Modifier.align(Alignment.TopEnd)
                             .offset(x = (-1).dp, y = 1.dp)
                             .size(11.dp)
-                            .background(Color(0xFF8A2D2D), CircleShape)
+                            .background(Color(0xFF258348), CircleShape)
                             .border(1.5.dp, Color.White, CircleShape)
                     )
                 }
