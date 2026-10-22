@@ -6700,9 +6700,9 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     modifier = Modifier.fillMaxWidth().height(38.dp),
                                                     contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
                                                     shape = RoundedCornerShape(12.dp),
-                                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink, disabledContainerColor = Color(0xFFE1E5EC), disabledContentColor = Muted),
+                                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Color.Black, disabledContainerColor = Color(0xFFE2E2E2), disabledContentColor = Color.Black),
                                                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 0.dp)
-                                                ) { Text("ADD", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
+                                                ) { Text("ADD", color = Color.Black, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
                                             } else {
                                                 Row(
                                                     Modifier.fillMaxWidth().height(38.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFE1E5EC)),
