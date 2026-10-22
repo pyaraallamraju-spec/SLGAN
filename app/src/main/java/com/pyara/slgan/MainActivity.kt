@@ -5507,6 +5507,7 @@ private fun OrdersPage(
         return addedCount
     }
 
+    if (selectedOrder == null) {
     Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(42.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape).clickable(onClick = onHome), contentAlignment = Alignment.Center) {
@@ -5887,6 +5888,8 @@ private fun OrdersPage(
                 }
             }
         }
+    }
+
     }
 
     rateOrder?.let { order ->
