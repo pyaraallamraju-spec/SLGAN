@@ -5587,12 +5587,12 @@ private fun OrdersPage(
                             ) {
                                 val isPending = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
                                 val statusColor = if (isPending) Color(0xFF334155) else Color(0xFF237344)
-                                val statusBackground = if (isPending) Color(0xFFE9EEF5) else Color(0xFFE5F4E8)
+                                val statusBackground = Color.White
                                 Row(
                                     modifier = Modifier
+                                        .shadow(3.dp, RoundedCornerShape(50.dp))
                                         .clip(RoundedCornerShape(50.dp))
                                         .background(statusBackground)
-                                        .border(1.dp, statusColor.copy(alpha = 0.18f), RoundedCornerShape(50.dp))
                                         .padding(horizontal = 12.dp, vertical = 8.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(6.dp)
