@@ -1882,15 +1882,15 @@ private fun AdminProductsScreen(
                 Text("${products.size} catalogue items", color = AdminMuted, fontSize = 12.sp)
             }
         }
-        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(50.dp).background(AdminLightGray, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Inventory2, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
                 }
                 Spacer(Modifier.width(14.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Product library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Manage your Ayurvedic catalogue", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 17.sp)
+                    Text("Product library", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("Manage your Ayurvedic catalogue", color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp)
                 }
                 Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                     Button(
@@ -1904,7 +1904,7 @@ private fun AdminProductsScreen(
                         Text("Add product", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                     }
                     Spacer(Modifier.height(5.dp))
-                    Text("${products.size} TOTAL", color = Cream.copy(alpha = 0.9f), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    Text("${products.size} TOTAL", color = AdminMuted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -1946,8 +1946,8 @@ private fun AdminProductsScreen(
                     onClick = { selectedAdminCategory = item },
                     label = { Text("${categoryEmoji(item)} $item", fontSize = 12.sp) },
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = Forest,
-                        selectedLabelColor = Color.White,
+                        selectedContainerColor = AdminLightGray,
+                        selectedLabelColor = Ink,
                         containerColor = AdminSurface
                     )
                 )
@@ -1961,7 +1961,7 @@ private fun AdminProductsScreen(
         ) {
             Column(Modifier.weight(1f)) {
                 Text(if (selectedAdminCategory == "All") "PRODUCT CATALOGUE" else selectedAdminCategory.uppercase(),
-                    color = Leaf, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.4.sp)
+                    color = Ink, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.4.sp)
                 Text("${filtered.size} products", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
             if (searchText.isNotBlank() || selectedAdminCategory != "All") {
@@ -1994,7 +1994,7 @@ private fun AdminProductsScreen(
                         Column {
                             Box(
                                 Modifier.fillMaxWidth().height(5.dp)
-                                    .background(Brush.horizontalGradient(listOf(Forest, Gold, Forest)))
+                                    .background(AdminSurface)
                             )
                             Row(
                                 Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
@@ -2021,7 +2021,7 @@ private fun AdminProductsScreen(
                                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                     Text(
                                         product.category.uppercase(),
-                                        color = Leaf,
+                                        color = Ink,
                                         fontSize = 9.sp,
                                         fontWeight = FontWeight.ExtraBold,
                                         letterSpacing = 1.2.sp
@@ -2042,7 +2042,7 @@ private fun AdminProductsScreen(
                                         if (product.subtitle.isNotBlank()) {
                                             Surface(
                                                 shape = RoundedCornerShape(8.dp),
-                                                color = Color(0xFFFFEBC2),
+                                                color = AdminLightGray,
                                                 contentColor = Ink
                                             ) {
                                                 Text(
@@ -2079,7 +2079,7 @@ private fun AdminProductsScreen(
                                     )
                                 }
                             }
-                            HorizontalDivider(color = Gold.copy(alpha = 0.28f))
+                            HorizontalDivider(color = AdminLightGray)
                             Row(
                                 Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp),
