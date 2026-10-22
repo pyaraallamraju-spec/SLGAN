@@ -119,9 +119,15 @@ import java.time.format.DateTimeFormatter
 
 private const val SLGAN_ORDER_EMAIL_WEB_APP_URL = "https://script.google.com/macros/s/AKfycby1zrs1-PSgLzdz7r2fhmFFTNgF9PHHQPb1oN8o8TRRUxxAW_-NYEy6acqlkGAVG8mpkA/exec"
 
-private fun requestSlganOrderEmail(idToken: String, orderId: String) {
+private fun requestSlganOrderEmail(
+    idToken: String,
+    orderId: String,
+    onResult: (success: Boolean, message: String) -> Unit
+) {
     Thread {
         var connection: HttpURLConnection? = null
+        var success = false
+        var message = "Email service could not be reached."
         try {
             val payload = JSONObject()
                 .put("idToken", idToken)
@@ -130,19 +136,47 @@ private fun requestSlganOrderEmail(idToken: String, orderId: String) {
             connection = (URL(SLGAN_ORDER_EMAIL_WEB_APP_URL).openConnection() as HttpURLConnection).apply {
                 requestMethod = "POST"
                 connectTimeout = 15000
-                readTimeout = 20000
+                readTimeout = 25000
                 doOutput = true
+                instanceFollowRedirects = true
                 setRequestProperty("Content-Type", "text/plain; charset=UTF-8")
+                setRequestProperty("Accept", "application/json")
             }
             connection.outputStream.use { it.write(payload.toString().toByteArray(Charsets.UTF_8)) }
             val status = connection.responseCode
-            val stream = if (status in 200..399) connection.inputStream else connection.errorStream
-            stream?.use { while (it.read() != -1) { /* drain response */ } }
-            android.util.Log.i("SLGANOrderEmail", "Notification request completed with HTTP $status for $orderId")
+            val stream = if (status in 200..299) connection.inputStream else connection.errorStream
+            val responseBody = stream?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }?.take(3000).orEmpty()
+            val responseJson = runCatching { JSONObject(responseBody) }.getOrNull()
+            val responseMessage = responseJson?.optString("message")
+                ?.takeIf { it.isNotBlank() }
+                ?: responseJson?.optString("error")?.takeIf { it.isNotBlank() }
+            val explicitSuccess = responseJson?.optBoolean("success", false) == true ||
+                responseJson?.optBoolean("ok", false) == true ||
+                responseJson?.optString("status")?.equals("sent", ignoreCase = true) == true
+            success = status in 200..299 && (
+                explicitSuccess ||
+                    (responseJson == null && responseBody.contains("success", ignoreCase = true) &&
+                        responseBody.contains("sent", ignoreCase = true))
+                )
+            message = responseMessage ?: when {
+                status !in 200..299 -> "Email service returned HTTP $status."
+                success -> "Email service confirmed the request."
+                responseBody.isBlank() -> "Email service returned an empty response."
+                else -> "Email service did not confirm sending. Response: " + responseBody.take(350)
+            }
+            if (success) {
+                android.util.Log.i("SLGANOrderEmail", "Email service confirmed order $orderId: $message")
+            } else {
+                android.util.Log.e("SLGANOrderEmail", "Email service failed for $orderId (HTTP $status): $message")
+            }
         } catch (error: Exception) {
-            android.util.Log.e("SLGANOrderEmail", "Notification request failed for $orderId", error)
+            message = error.localizedMessage ?: error.javaClass.simpleName
+            android.util.Log.e("SLGANOrderEmail", "Email request failed for $orderId: $message", error)
         } finally {
             connection?.disconnect()
+            android.os.Handler(android.os.Looper.getMainLooper()).post {
+                onResult(success, message)
+            }
         }
     }.start()
 }
@@ -5425,13 +5459,27 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         .addOnSuccessListener { tokenResult ->
                                             val idToken = tokenResult.token
                                             if (!idToken.isNullOrBlank()) {
-                                                requestSlganOrderEmail(idToken, orderId)
+                                                requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
+                                                    if (emailSent) {
+                                                        orderMessage = "Order saved: $orderId. Email service confirmed the request."
+                                                        Toast.makeText(context, "Order saved. Email service confirmed.", Toast.LENGTH_LONG).show()
+                                                    } else {
+                                                        orderMessage = "Order saved: $orderId. Email failed: $detail"
+                                                        Toast.makeText(context, "Order saved, but email failed. " + detail.take(160), Toast.LENGTH_LONG).show()
+                                                    }
+                                                }
                                             } else {
-                                                android.util.Log.e("SLGANOrderEmail", "Firebase returned an empty ID token for $orderId")
+                                                val detail = "Firebase returned an empty ID token."
+                                                android.util.Log.e("SLGANOrderEmail", "$detail Order: $orderId")
+                                                orderMessage = "Order saved: $orderId. Email failed: $detail"
+                                                Toast.makeText(context, detail, Toast.LENGTH_LONG).show()
                                             }
                                         }
                                         .addOnFailureListener { error ->
+                                            val detail = error.localizedMessage ?: "Could not get Firebase ID token."
                                             android.util.Log.e("SLGANOrderEmail", "Could not get Firebase ID token for $orderId", error)
+                                            orderMessage = "Order saved: $orderId. Email failed: $detail"
+                                            Toast.makeText(context, "Order saved, but email failed: " + detail.take(160), Toast.LENGTH_LONG).show()
                                         }
                                     onOrderResult(orderId, true, null, "Order saved. Payment has not been collected; the shop must verify the order.")
                                 }
