@@ -585,7 +585,17 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
         else -> "🌿"
     }
     val description = listOf("product_description", "description", "product_details", "details").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    val imageUrl = listOf("product_image", "image_url", "imageUrl", "image", "product_image_url").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.startsWith("https://") || it.startsWith("http://") } }.orEmpty()
+    val remoteImageUrl = listOf("product_image", "image_url", "imageUrl", "image", "product_image_url").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.startsWith("https://") || it.startsWith("http://") } }.orEmpty()
+    // Local product artwork bundled under app/src/main/assets/drawable/products/.
+    // Coil can load Android asset URLs, so local artwork works even when Firestore has no image URL.
+    val normalizedProductName = name.lowercase().replace(Regex("[^a-z0-9]"), "")
+    val localProductImage = when {
+        normalizedProductName.contains("taaleesaadi") || normalizedProductName.contains("taleesaadi") -> "file:///android_asset/drawable/products/taaleesaadi_product.png"
+        normalizedProductName.contains("sitophaladi") || normalizedProductName.contains("sitaphaladi") -> "file:///android_asset/drawable/products/sitophaladi_product.png"
+        normalizedProductName.contains("chyavanaprasha") || normalizedProductName.contains("chyawanprasha") -> "file:///android_asset/drawable/products/chyavanaprasha_product.png"
+        else -> ""
+    }
+    val imageUrl = remoteImageUrl.ifBlank { localProductImage }
     val quantity = listOf("product_quantity", "quantity", "stock").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
