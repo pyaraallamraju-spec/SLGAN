@@ -1107,7 +1107,8 @@ private fun SplashScreen() {
             painter = painterResource(R.drawable.slgan_login_background),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            // Preserve the complete approved artwork; Crop can cut off its right-side border.
+            contentScale = ContentScale.FillBounds
         )
         Box(Modifier.fillMaxSize().background(Color.White.copy(alpha = 0.42f)))
         // Let every product-category emoji drift down like a falling leaf.
