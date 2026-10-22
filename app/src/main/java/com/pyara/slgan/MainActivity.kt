@@ -5855,25 +5855,47 @@ private fun OrdersPage(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clip(RoundedCornerShape(16.dp))
+                                        .clip(RoundedCornerShape(18.dp))
                                         .background(statusBackground)
-                                        .border(1.dp, if (isPending) Color(0xFFE8C96A) else Color(0xFFD4EAD8), RoundedCornerShape(16.dp))
-                                        .padding(horizontal = 14.dp, vertical = 13.dp),
+                                        .border(1.dp, if (isPending) Color(0xFFE8C96A) else Color(0xFFD4EAD8), RoundedCornerShape(18.dp))
+                                        .padding(horizontal = 16.dp, vertical = 14.dp),
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
-                                    Icon(
-                                        if (isPending) Icons.Default.Schedule else Icons.Default.CheckCircle,
-                                        contentDescription = null,
-                                        tint = statusColor,
-                                        modifier = Modifier.size(16.dp)
-                                    )
-                                    Text(
-                                        if (isPending) "Pending verification" else status.replace('_', ' ').replaceFirstChar { it.uppercase() },
-                                        color = statusColor,
-                                        fontSize = 12.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
+                                    Box(
+                                        modifier = Modifier
+                                            .size(38.dp)
+                                            .clip(CircleShape)
+                                            .background(if (isPending) Color(0xFFFFE9A8) else Color(0xFFDDF1E2)),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            if (isPending) Icons.Default.Schedule else Icons.Default.CheckCircle,
+                                            contentDescription = null,
+                                            tint = statusColor,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                    }
+                                    Column(
+                                        modifier = Modifier.weight(1f),
+                                        verticalArrangement = Arrangement.spacedBy(3.dp)
+                                    ) {
+                                        Text(
+                                            "ORDER STATUS",
+                                            color = statusColor.copy(alpha = 0.78f),
+                                            fontSize = 9.sp,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            letterSpacing = 1.1.sp
+                                        )
+                                        Text(
+                                            if (isPending) "Pending verification" else status.replace('_', ' ').replaceFirstChar { it.uppercase() },
+                                            color = statusColor,
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
                                 }
                                 Spacer(Modifier.weight(1f))
                                 if (!invoiceUrl.isNullOrBlank()) {
