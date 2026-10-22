@@ -4978,8 +4978,8 @@ private fun ProductDetailsPage(
                                             .addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
                                     }.addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
                                 }
-                            }, enabled = !ratingSaving, shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-                                if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp) else Text("Save", fontWeight = FontWeight.Bold)
+                            }, enabled = !ratingSaving, modifier = Modifier.height(58.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)) {
+                                if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Ink, strokeWidth = 2.dp) else Text("Save", color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                             }
                         }
                     }
