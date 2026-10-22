@@ -4648,6 +4648,31 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 } else {
                     Text(product.emoji, fontSize = 42.sp)
                 }
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(4.dp)
+                        .background(Color.White.copy(alpha = 0.94f), RoundedCornerShape(18.dp))
+                        .padding(horizontal = 3.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(1.dp)
+                ) {
+                    IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(26.dp)) {
+                        Icon(
+                            if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = if (likeSummary.likedByMe) "Unlike product" else "Like product",
+                            tint = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Ink,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    Text(
+                        likeSummary.count.toString(),
+                        color = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted,
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(end = 4.dp)
+                    )
+                }
                 if (product.signature) {
                     Box(
                         modifier = Modifier
@@ -4738,12 +4763,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 ) {
                     ProductRatingLine(product, ratingSummary, countBaselineFix = true)
                 }
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(1.dp)) {
-                    IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(24.dp)) {
-                        Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = if (likeSummary.likedByMe) "Unlike product" else "Like product", tint = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Ink, modifier = Modifier.size(15.dp))
-                    }
-                    Text(likeSummary.count.toString(), color = if (likeSummary.likedByMe) Color(0xFFD32F2F) else Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                }
+
             }
             Spacer(Modifier.height(5.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
