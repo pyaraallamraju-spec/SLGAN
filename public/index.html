@@ -124,5 +124,20 @@ var slganLoadFinished=false;
 function showLoadError(message){$("main").innerHTML='<div class="panel"><h2>SLGAN catalogue could not load</h2><p>'+esc(message)+'</p><p>Check your internet connection. If it continues, the Firebase connection or Firestore access needs attention.</p><button onclick="location.reload()">Try again</button></div>'}
 var slganLoadWatchdog=setTimeout(function(){if(!slganLoadFinished)showLoadError("Connection to Firebase is taking too long. Tap Try again, or send us this message so we can diagnose the connection.")},12000);
 if(!window.firebase||!firebase.auth||!firebase.firestore){slganLoadFinished=true;clearTimeout(slganLoadWatchdog);showLoadError("Firebase scripts did not load. Check your internet connection or browser content blocking.");}
-else auth.onAuthStateChanged(async function(u){user=u;try{await Promise.race([(async function(){await profileLoad();await Promise.all([loadProducts(),loadDiseases(),loadOrders(),loadCustomers()])})(),new Promise(function(_,reject){setTimeout(function(){reject(new Error("Firebase request timed out after 20 seconds."))},20000)})]);slganLoadFinished=true;clearTimeout(slganLoadWatchdog);$("signin").classList.toggle("hidden",!!u);render()}catch(e){slganLoadFinished=true;clearTimeout(slganLoadWatchdog);showLoadError(e&&e.message?e.message:String(e))}});await Promise.all([loadProducts(),loadDiseases(),loadOrders(),loadCustomers()]);$("signin").classList.toggle("hidden",!!u);render()}catch(e){$("main").innerHTML='<div class="panel"><h2>Could not load SLGAN data</h2><p>'+esc(e.message)+'</p><p>Verify Firebase Web App configuration, Authentication authorized domains, and Firestore rules.</p></div>'}});
+else {
+  auth.onAuthStateChanged(async function(u){
+    user=u;
+    try {
+      await Promise.race([
+        (async function(){await profileLoad();await Promise.all([loadProducts(),loadDiseases(),loadOrders(),loadCustomers()]);})(),
+        new Promise(function(_,reject){setTimeout(function(){reject(new Error("Firebase request timed out after 20 seconds."))},20000)})
+      ]);
+      slganLoadFinished=true;clearTimeout(slganLoadWatchdog);
+      $("signin").classList.toggle("hidden",!!u);render();
+    } catch(e) {
+      slganLoadFinished=true;clearTimeout(slganLoadWatchdog);
+      showLoadError(e&&e.message?e.message:String(e));
+    }
+  });
+}
 </script></body></html>
