@@ -7219,6 +7219,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     var profileSection by remember(initialSection) { mutableStateOf(initialSection) }
     var showAddressForm by remember { mutableStateOf(false) }
     var showAddressLocationSheet by remember { mutableStateOf(false) }
+    var showMapActionSheet by remember { mutableStateOf(false) }
     var showMapPicker by remember { mutableStateOf(false) }
     var showAddressDetailsSheet by remember { mutableStateOf(false) }
     var addressFloor by remember { mutableStateOf("") }
@@ -7360,16 +7361,10 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
                 }
                 IconButton(
-                    onClick = {
-                        // Show the location-choice bottom sheet first, as expected from the My Addresses map action.
-                        showMapPicker = false
-                        showAddressForm = false
-                        showAddressDetailsSheet = false
-                        showAddressLocationSheet = true
-                    },
+                    onClick = { showMapActionSheet = true },
                     modifier = Modifier.size(48.dp)
                 ) {
-                    Icon(Icons.Default.Map, contentDescription = "Choose address on map", tint = Ink, modifier = Modifier.size(26.dp))
+                    Icon(Icons.Default.Map, contentDescription = "Address options", tint = Ink, modifier = Modifier.size(26.dp))
                 }
             }
             Spacer(Modifier.height(20.dp))
@@ -7849,6 +7844,72 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         }
     }
 
+
+    if (showMapActionSheet) {
+        androidx.compose.material3.ModalBottomSheet(
+            onDismissRequest = { showMapActionSheet = false },
+            containerColor = Color.White,
+            scrimColor = Color.Black.copy(alpha = 0.55f),
+            dragHandle = null
+        ) {
+            Column(
+                Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 22.dp).padding(top = 12.dp, bottom = 28.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Text("Address options", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                    IconButton(onClick = { showMapActionSheet = false }) {
+                        Icon(Icons.Default.Close, contentDescription = "Close", tint = Ink)
+                    }
+                }
+                Text("Choose how you want to set your delivery address.", color = Muted, fontSize = 14.sp, modifier = Modifier.fillMaxWidth().padding(bottom = 18.dp))
+                Button(
+                    onClick = {
+                        showMapActionSheet = false
+                        showAddressLocationSheet = false
+                        showAddressForm = false
+                        showAddressDetailsSheet = false
+                        showMapPicker = true
+                    },
+                    modifier = Modifier.fillMaxWidth().height(54.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Forest, contentColor = Color.White)
+                ) {
+                    Icon(Icons.Default.Map, contentDescription = null)
+                    Spacer(Modifier.width(10.dp))
+                    Text("Choose location on map", fontWeight = FontWeight.Bold)
+                }
+                Spacer(Modifier.height(10.dp))
+                OutlinedButton(
+                    onClick = {
+                        showMapActionSheet = false
+                        showAddressLocationSheet = false
+                        showMapPicker = false
+                        showAddressDetailsSheet = false
+                        addressLabel = "Home"
+                        recipientName = ""
+                        recipientPhone = ""
+                        addressLine1 = ""
+                        addressLine2 = ""
+                        landmark = ""
+                        city = ""
+                        state = ""
+                        pincode = ""
+                        showAddressForm = true
+                        addressMessage = null
+                    },
+                    modifier = Modifier.fillMaxWidth().height(54.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    border = BorderStroke(1.dp, Color(0xFFE3D6C5)),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
+                ) {
+                    Icon(Icons.Default.EditLocationAlt, contentDescription = null)
+                    Spacer(Modifier.width(10.dp))
+                    Text("Enter address manually", fontWeight = FontWeight.SemiBold)
+                }
+            }
+        }
+    }
 
     if (showMapPicker) {
                 androidx.compose.ui.window.Dialog(onDismissRequest = { showMapPicker = false }, properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)) {
