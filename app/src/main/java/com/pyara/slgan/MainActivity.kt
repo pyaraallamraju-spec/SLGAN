@@ -4718,7 +4718,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
         horizontalArrangement = Arrangement.spacedBy(1.dp)
     ) {
         (1..5).forEach { star ->
-            val starSize = if (compact) 12.dp else 20.dp
+            val starSize = if (compact) 10.dp else 20.dp
             Box(
                 modifier = Modifier.requiredSize(starSize).clickable(enabled = !savingRating) {
                     val user = ratingUser
