@@ -1543,8 +1543,10 @@ private fun LoginScreen(
                     contentDescription = "Sign in",
                     // Fit the complete sign-in artwork inside the button bounds so
                     // the right decorative edge cannot be cropped on narrow screens.
-                    modifier = Modifier.fillMaxWidth().height(58.dp),
-                    contentScale = ContentScale.Fit
+                    // Add a small inset around the decorative PNG so its outer gold
+                    // border and curved right tip remain inside the visible button bounds.
+                    modifier = Modifier.fillMaxWidth().height(58.dp).padding(horizontal = 5.dp, vertical = 2.dp),
+                    contentScale = ContentScale.FillBounds
                 )
             }
         }
