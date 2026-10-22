@@ -1897,7 +1897,7 @@ private fun AdminProductsScreen(
                         onClick = { addingProduct = true },
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = AdminSurface, contentColor = Forest, disabledContainerColor = Cream.copy(alpha = 0.7f), disabledContentColor = Forest)
+                        colors = ButtonDefaults.buttonColors(containerColor = AdminLightGray, contentColor = Ink, disabledContainerColor = AdminLightGray, disabledContentColor = Ink)
                     ) {
                         Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(17.dp))
                         Spacer(Modifier.width(4.dp))
@@ -3037,20 +3037,20 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             Card(
                 Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
                 shape = RoundedCornerShape(22.dp),
-                colors = CardDefaults.cardColors(containerColor = Forest),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Row(
                     Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(Modifier.size(50.dp).background(Cream, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
+                    Box(Modifier.size(50.dp).background(AdminLightGray, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
                         Icon(Icons.Default.MedicalServices, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
                     }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
-                        Text("Disease library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text("Manage diseases shown in the customer app", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 17.sp)
+                        Text("Disease library", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("Manage diseases shown in the customer app", color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp)
                     }
                     Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                         Button(
@@ -3064,7 +3064,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                             Text("Add disease", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                         }
                         Spacer(Modifier.height(5.dp))
-                        Text("${if (loading) "—" else records.size.toString()} TOTAL", color = Cream.copy(alpha = 0.9f), fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                        Text("${if (loading) "—" else records.size.toString()} TOTAL", color = AdminMuted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }
