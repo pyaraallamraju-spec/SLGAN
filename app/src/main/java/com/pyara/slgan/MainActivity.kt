@@ -4766,10 +4766,13 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
 
             }
             Spacer(Modifier.height(5.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth().height(44.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Color.Black, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
                 if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(44.dp), shape = CircleShape, colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFF2E7D32), contentColor = Color.White)) { Icon(Icons.Default.Add, "Add " + product.name, tint = Color.White, modifier = Modifier.size(24.dp)) }
-                else Text(count.toString() + " in cart", fontSize = 10.sp, color = Color(0xFF2E7D32), fontWeight = FontWeight.Bold)
+                else Text(count.toString() + " in cart", fontSize = 10.sp, color = Color(0xFF2E7D32), fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterVertically))
             }
         }
     }
