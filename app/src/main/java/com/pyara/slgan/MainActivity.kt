@@ -1150,7 +1150,7 @@ private fun SplashScreen() {
                 tr("SRI LAKSHMI GANAPATHI", LocalAppLanguage.current),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = Forest,
+                color = Ink,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 letterSpacing = 0.8.sp
             )
