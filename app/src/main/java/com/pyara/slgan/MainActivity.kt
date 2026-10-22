@@ -4359,61 +4359,57 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 })
                 Spacer(Modifier.height(12.dp))
                 Column(Modifier.fillMaxWidth()) {
-                    OutlinedTextField(
-                        value = search,
-                        onValueChange = onSearchChange,
-                        textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp).defaultMinSize(minHeight = 60.dp),
-                        label = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 13.sp, color = Muted) },
-                        leadingIcon = {
-                            Icon(
-                                Icons.Default.Search,
-                                contentDescription = tr("Search products", LocalAppLanguage.current),
-                                modifier = Modifier.size(22.dp),
-                                tint = Muted
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = {
-                                try {
-                                    val voiceIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                                        putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                                        putExtra(RecognizerIntent.EXTRA_LANGUAGE, when (currentLanguage) {
-                                            "Telugu" -> "te-IN"
-                                            "Hindi" -> "hi-IN"
-                                            else -> "en-IN"
-                                        })
-                                        putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, when (currentLanguage) {
-                                            "Telugu" -> "te-IN"
-                                            "Hindi" -> "hi-IN"
-                                            else -> "en-IN"
-                                        })
-                                        putExtra(RecognizerIntent.EXTRA_PROMPT, when (currentLanguage) {
-                                            "Telugu" -> "ఉత్పత్తి పేరు చెప్పండి"
-                                            "Hindi" -> "उत्पाद का नाम बोलें"
-                                            else -> "Speak a product name"
-                                        })
-                                    }
-                                    voiceSearchLauncher.launch(voiceIntent)
-                                } catch (_: android.content.ActivityNotFoundException) {
-                                    Toast.makeText(context, tr("Voice search is not available on this device.", currentLanguage), Toast.LENGTH_LONG).show()
-                                }
-                            }) {
-                                Icon(Icons.Default.Mic, contentDescription = tr("Voice search", LocalAppLanguage.current), tint = Muted)
-                            }
-                        },
-                        singleLine = true,
-                        shape = RectangleShape,
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            focusedLabelColor = Muted,
-                            unfocusedLabelColor = Muted,
-                            cursorColor = Forest
+                    Row(
+                        Modifier.fillMaxWidth().heightIn(min = 52.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.Search,
+                            contentDescription = tr("Search products", LocalAppLanguage.current),
+                            modifier = Modifier.padding(start = 4.dp, end = 10.dp).size(22.dp),
+                            tint = Muted
                         )
-                    )
+                        Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                            if (search.isBlank()) {
+                                Text(tr("Search products", LocalAppLanguage.current), fontSize = 15.sp, color = Muted, maxLines = 1)
+                            }
+                            androidx.compose.foundation.text.BasicTextField(
+                                value = search,
+                                onValueChange = onSearchChange,
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                                textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp, color = Ink),
+                                cursorBrush = androidx.compose.ui.graphics.SolidColor(Forest)
+                            )
+                        }
+                        IconButton(onClick = {
+                            try {
+                                val voiceIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                                    putExtra(RecognizerIntent.EXTRA_LANGUAGE, when (currentLanguage) {
+                                        "Telugu" -> "te-IN"
+                                        "Hindi" -> "hi-IN"
+                                        else -> "en-IN"
+                                    })
+                                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, when (currentLanguage) {
+                                        "Telugu" -> "te-IN"
+                                        "Hindi" -> "hi-IN"
+                                        else -> "en-IN"
+                                    })
+                                    putExtra(RecognizerIntent.EXTRA_PROMPT, when (currentLanguage) {
+                                        "Telugu" -> "ఉత్పత్తి పేరు చెప్పండి"
+                                        "Hindi" -> "उत्पाद का नाम बोलें"
+                                        else -> "Speak a product name"
+                                    })
+                                }
+                                voiceSearchLauncher.launch(voiceIntent)
+                            } catch (_: android.content.ActivityNotFoundException) {
+                                Toast.makeText(context, tr("Voice search is not available on this device.", currentLanguage), Toast.LENGTH_LONG).show()
+                            }
+                        }) {
+                            Icon(Icons.Default.Mic, contentDescription = tr("Voice search", LocalAppLanguage.current), tint = Muted)
+                        }
+                    }
                     Box(
                         Modifier.fillMaxWidth().height(1.dp)
                             .background(Muted.copy(alpha = 0.45f))
