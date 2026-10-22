@@ -4511,8 +4511,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             if (signatureCartCount == 0) {
                                                 Box(
                                                     modifier = Modifier
-                                                        .size(width = 28.dp, height = 22.dp)
-                                                        .background(Color(0xFF2E7D32), RoundedCornerShape(6.dp))
+                                                        .size(38.dp)
+                                                        .background(Color(0xFF2E7D32), RoundedCornerShape(50))
                                                         .then(if (product.price > 0.0) Modifier.clickable { onAdd(product.id) } else Modifier),
                                                     contentAlignment = Alignment.Center
                                                 ) {
@@ -4520,7 +4520,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                         imageVector = Icons.Default.Add,
                                                         contentDescription = "Add ${product.name} to cart",
                                                         tint = Color.White,
-                                                        modifier = Modifier.size(15.dp)
+                                                        modifier = Modifier.size(21.dp)
                                                     )
                                                 }
                                             } else {
@@ -4768,7 +4768,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             Spacer(Modifier.height(5.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Color.Black, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
-                if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(width = 28.dp, height = 22.dp), shape = RoundedCornerShape(6.dp), colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFF2E7D32), contentColor = Color.White)) { Icon(Icons.Default.Add, "Add " + product.name, tint = Color.White, modifier = Modifier.size(15.dp)) }
+                if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(38.dp), shape = CircleShape, colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFF2E7D32), contentColor = Color.White)) { Icon(Icons.Default.Add, "Add " + product.name, tint = Color.White, modifier = Modifier.size(21.dp)) }
                 else Text(count.toString() + " in cart", fontSize = 10.sp, color = Color(0xFF2E7D32), fontWeight = FontWeight.Bold)
             }
         }
