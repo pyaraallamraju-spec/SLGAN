@@ -7414,7 +7414,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Spacer(Modifier.height(20.dp))
 
         }
-        if (initialSection == "Addresses") {
+        if (initialSection == "Addresses" && !showAddressForm) {
             Row(
                 modifier = Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -8305,7 +8305,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     )
                     Spacer(Modifier.height(18.dp))
                     Button(
-                        onClick = { showAddressLocationSheet = true; addressMessage = null },
+                        onClick = { showAddressForm = true; addressMessage = null },
                         modifier = Modifier.fillMaxWidth(0.78f).height(54.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Forest),
