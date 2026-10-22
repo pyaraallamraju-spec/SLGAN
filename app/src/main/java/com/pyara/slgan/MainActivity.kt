@@ -3515,7 +3515,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             val matchesQuery = query.isBlank() ||
                 listOf("orderId", "_documentId", "customerName", "phone", "email", "shippingAddress", "orderStatus")
                     .any { key -> order[key]?.toString()?.lowercase()?.contains(query) == true } ||
-                ((order["items"] as? List<*>)?.any { raw ->
+                (((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.any { raw ->
                     val item = raw as? Map<*, *>
                     item?.values?.any { it?.toString()?.lowercase()?.contains(query) == true } == true
                 } == true)
@@ -5469,7 +5469,7 @@ private fun OrdersPage(
         val q = orderSearch.trim().lowercase()
         q.isBlank() || listOf(order["orderId"], order["_documentId"], order["orderStatus"], order["grandTotal"])
             .any { it?.toString()?.lowercase()?.contains(q) == true } ||
-            ((order["items"] as? List<*>)?.any { item ->
+            (((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.any { item ->
                 val row = item as? Map<*, *>
                 row?.get("productName")?.toString()?.lowercase()?.contains(q) == true
             } == true)
@@ -5737,7 +5737,7 @@ private fun OrdersPage(
                             }
                             Text("₹" + String.format("%.2f", total), color = Forest, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                         }
-                        val orderItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
+                        val orderItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
                         if (orderItems.isNotEmpty()) {
                             Spacer(Modifier.height(4.dp))
                             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -5864,7 +5864,7 @@ private fun OrdersPage(
                 val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
-                val orderItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
+                val orderItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
                 Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFF8F8F9)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -5948,7 +5948,7 @@ private fun OrdersPage(
         val paymentStatus = order["paymentStatus"]?.toString() ?: "not_collected"
         val total = (order["grandTotal"] as? Number)?.toDouble() ?: (order["subtotal"] as? Number)?.toDouble() ?: 0.0
         val subtotal = (order["subtotal"] as? Number)?.toDouble() ?: total
-        val invoiceItems = (order["items"] as? List<*>)?.mapNotNull { it as? Map<*, *> }.orEmpty()
+        val invoiceItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
         val created = (order["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available"
         val invoiceUrl = order["invoiceUrl"]?.toString()
         // Render order summary as a full-screen in-app page instead of a Dialog.
