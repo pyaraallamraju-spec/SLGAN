@@ -4782,22 +4782,6 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                             }
                         }
                     }
-                    if (product.subtitle.isNotBlank()) {
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFFE1E5EC),
-                            contentColor = Ink
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(3.dp)
-                            ) {
-                                Text("⚖", color = Color.Black, fontSize = 9.sp)
-                                Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                            }
-                        }
-                    }
                     Spacer(Modifier.weight(1f))
 
                 }
@@ -4805,15 +4789,20 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             Spacer(Modifier.height(5.dp))
             Row(
                 modifier = Modifier.fillMaxWidth().height(48.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Box(
-                    modifier = Modifier.weight(1f).fillMaxHeight(),
-                    contentAlignment = Alignment.CenterStart
-                ) {
+                Box(modifier = Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.CenterStart) {
                     ProductRatingLine(product, ratingSummary, countBaselineFix = true)
                 }
-
+                if (product.subtitle.isNotBlank()) {
+                    Surface(shape = RoundedCornerShape(8.dp), color = Color(0xFFE1E5EC), contentColor = Ink) {
+                        Row(modifier = Modifier.padding(horizontal = 5.dp, vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text("⚖", color = Color.Black, fontSize = 9.sp)
+                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
+                }
             }
             Spacer(Modifier.height(5.dp))
             Row(
