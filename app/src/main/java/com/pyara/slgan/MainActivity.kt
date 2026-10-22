@@ -1427,7 +1427,9 @@ private fun LoginScreen(
         }
         if (errorMessage != null) Text(errorMessage, Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp), color = Color(0xFFB3261E), fontSize = 12.sp)
         Spacer(Modifier.height(18.dp))
-        val signInShape = RoundedCornerShape(50)
+        // The PNG already contains the pill-shaped artwork. Keep the Material
+        // button from clipping that artwork at its rounded bounds.
+        val signInShape = RectangleShape
         Button(
             onClick = onContinue,
             enabled = !loading,
