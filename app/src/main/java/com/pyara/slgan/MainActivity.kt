@@ -955,9 +955,20 @@ private fun AyurvedicApp() {
                 },
                 onContinue = {
                     val email = userInput.trim()
-                    if (email.isBlank() || password.length < 6) {
-                        authError = "Enter an email and a password with at least 6 characters."
-                    } else if (isCreatingAccount && password != confirmPassword) {
+                    when {
+                        email.isBlank() -> {
+                            authError = "Enter your email address to sign in."
+                        }
+                        !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                            authError = "Enter a valid email address (for example, name@example.com)."
+                        }
+                        password.isBlank() -> {
+                            authError = "Enter your password to sign in."
+                        }
+                        password.length < 6 -> {
+                            authError = "Your password must contain at least 6 characters."
+                        }
+                        isCreatingAccount && password != confirmPassword -> {
                         authError = "Password and confirm password do not match."
                     } else {
                         isLoading = true
