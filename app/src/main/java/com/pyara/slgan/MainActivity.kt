@@ -2523,13 +2523,13 @@ private fun AdminProductEditor(
                 }
             },
             enabled = !saving,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 16.dp).height(52.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 16.dp).height(58.dp),
             shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Forest)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)
         ) {
-            if (saving) CircularProgressIndicator(Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
-            else Icon(Icons.Default.Save, null)
-            Spacer(Modifier.width(8.dp)); Text(if (saving) "Saving…" else "Save product", fontWeight = FontWeight.Bold)
+            if (saving) CircularProgressIndicator(Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp)
+            else Icon(Icons.Default.Save, null, tint = Ink)
+            Spacer(Modifier.width(8.dp)); Text(if (saving) "Saving…" else "Save product", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Ink)
         }
     }
 }
