@@ -117,6 +117,36 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
+private const val SLGAN_ORDER_EMAIL_WEB_APP_URL = "https://script.google.com/macros/s/AKfycby1zrs1-PSgLzdz7r2fhmFFTNgF9PHHQPb1oN8o8TRRUxxAW_-NYEy6acqlkGAVG8mpkA/exec"
+
+private fun requestSlganOrderEmail(idToken: String, orderId: String) {
+    Thread {
+        var connection: HttpURLConnection? = null
+        try {
+            val payload = JSONObject()
+                .put("idToken", idToken)
+                .put("orderId", orderId)
+                .put("documentId", orderId)
+            connection = (URL(SLGAN_ORDER_EMAIL_WEB_APP_URL).openConnection() as HttpURLConnection).apply {
+                requestMethod = "POST"
+                connectTimeout = 15000
+                readTimeout = 20000
+                doOutput = true
+                setRequestProperty("Content-Type", "text/plain; charset=UTF-8")
+            }
+            connection.outputStream.use { it.write(payload.toString().toByteArray(Charsets.UTF_8)) }
+            val status = connection.responseCode
+            val stream = if (status in 200..399) connection.inputStream else connection.errorStream
+            stream?.use { while (it.read() != -1) { /* drain response */ } }
+            android.util.Log.i("SLGANOrderEmail", "Notification request completed with HTTP $status for $orderId")
+        } catch (error: Exception) {
+            android.util.Log.e("SLGANOrderEmail", "Notification request failed for $orderId", error)
+        } finally {
+            connection?.disconnect()
+        }
+    }.start()
+}
+
 private var Forest by mutableStateOf(Color(0xFF762A24))
 private var Leaf by mutableStateOf(Color(0xFF8A4B2A))
 private var Cream by mutableStateOf(Color(0xFFFFF7E8))
@@ -5391,6 +5421,18 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     orderMessage = "Order saved: " + orderId
                                     submitting = false
                                     showCheckout = false
+                                    user.getIdToken(false)
+                                        .addOnSuccessListener { tokenResult ->
+                                            val idToken = tokenResult.token
+                                            if (!idToken.isNullOrBlank()) {
+                                                requestSlganOrderEmail(idToken, orderId)
+                                            } else {
+                                                android.util.Log.e("SLGANOrderEmail", "Firebase returned an empty ID token for $orderId")
+                                            }
+                                        }
+                                        .addOnFailureListener { error ->
+                                            android.util.Log.e("SLGANOrderEmail", "Could not get Firebase ID token for $orderId", error)
+                                        }
                                     onOrderResult(orderId, true, null, "Order saved. Payment has not been collected; the shop must verify the order.")
                                 }
                                 .addOnFailureListener { err ->
