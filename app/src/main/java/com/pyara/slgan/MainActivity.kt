@@ -5816,7 +5816,7 @@ private fun OrdersPage(
                 val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
-                Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F2F4)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 3.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(42.dp).shadow(4.dp, CircleShape).background(Color(0xFFE9EEF5), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp)) }
@@ -5848,15 +5848,16 @@ private fun OrdersPage(
                             ) {
                                 val isPending = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
                                 val statusColor = if (isPending) Color(0xFF334155) else Color(0xFF237344)
-                                val statusBackground = Color.White
+                                val statusBackground = if (isPending) Color(0xFFF0F5FC) else Color(0xFFEEF8F0)
                                 Row(
                                     modifier = Modifier
-                                        .shadow(3.dp, RoundedCornerShape(50.dp))
-                                        .clip(RoundedCornerShape(50.dp))
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(16.dp))
                                         .background(statusBackground)
-                                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                                        .border(1.dp, if (isPending) Color(0xFFD9E5F5) else Color(0xFFD4EAD8), RoundedCornerShape(16.dp))
+                                        .padding(horizontal = 14.dp, vertical = 13.dp),
                                     verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
                                     Icon(
                                         if (isPending) Icons.Default.Schedule else Icons.Default.CheckCircle,
@@ -5888,7 +5889,7 @@ private fun OrdersPage(
                             ) {
                                 OutlinedButton(
                                     onClick = { selectedOrder = order },
-                                    modifier = Modifier.weight(1f).height(46.dp),
+                                    modifier = Modifier.weight(1f).height(46.dp).shadow(4.dp, RoundedCornerShape(14.dp)),
                                     shape = RoundedCornerShape(14.dp),
                                     border = BorderStroke(1.dp, Color(0xFFB8C2D0)),
                                     colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White, contentColor = Color(0xFF26364D)),
@@ -5908,14 +5909,14 @@ private fun OrdersPage(
                                         ).show()
                                         if (addedCount > 0) onCart()
                                     },
-                                    modifier = Modifier.weight(1f).height(46.dp),
+                                    modifier = Modifier.weight(1f).height(46.dp).shadow(4.dp, RoundedCornerShape(14.dp)),
                                     shape = RoundedCornerShape(14.dp),
-                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2F76D2), contentColor = Color.White),
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
                                 ) {
-                                    Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))
+                                    Icon(Icons.Default.Refresh, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
-                                    Text("Reorder", color = Color.White, fontWeight = FontWeight.Bold, maxLines = 1)
+                                    Text("Reorder", color = Ink, fontWeight = FontWeight.Bold, maxLines = 1)
                                 }
                             }
                         }
@@ -5955,7 +5956,7 @@ private fun OrdersPage(
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
                 val orderItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
-                Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFF8F8F9)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 3.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(42.dp).background(Color.White, CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp)) }
