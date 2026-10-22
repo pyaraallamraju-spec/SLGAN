@@ -7334,29 +7334,14 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
                 IconButton(
                     onClick = {
-                        // Open the map picker directly from the map icon. The old flow
-                        // opened an extra location-confirmation sheet first, which made
-                        // the map action appear unresponsive to users.
-                        showAddressLocationSheet = false
+                        // Show the location-choice bottom sheet first, as expected from the My Addresses map action.
+                        showMapPicker = false
                         showAddressForm = false
                         showAddressDetailsSheet = false
-                        val existing = addresses.firstOrNull()
-                        if (existing != null) {
-                            addressLabel = existing["label"]?.toString() ?: "Home"
-                            recipientName = existing["recipientName"]?.toString().orEmpty()
-                            recipientPhone = existing["phone"]?.toString().orEmpty()
-                            addressLine1 = existing["addressLine1"]?.toString().orEmpty()
-                            addressLine2 = existing["addressLine2"]?.toString().orEmpty()
-                            landmark = existing["landmark"]?.toString().orEmpty()
-                            city = existing["city"]?.toString().orEmpty()
-                            state = existing["state"]?.toString().orEmpty()
-                            pincode = existing["pincode"]?.toString().orEmpty()
-                        }
-                        addressMessage = null
-                        showMapPicker = true
+                        showAddressLocationSheet = true
                     },
                     modifier = Modifier.size(48.dp)
-                ) {
+                ) {{
                     Icon(Icons.Default.Map, contentDescription = "Choose address on map", tint = Ink, modifier = Modifier.size(26.dp))
                 }
             }
