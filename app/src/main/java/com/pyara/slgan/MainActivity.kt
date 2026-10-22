@@ -7994,7 +7994,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
             }
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = recipientName, onValueChange = { recipientName = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Recipient name *", LocalAppLanguage.current)) }, singleLine = true)
+            OutlinedTextField(value = recipientName, onValueChange = { recipientName = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Recipient name *", LocalAppLanguage.current)) }, singleLine = true, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink, cursorColor = Ink, focusedTextColor = Ink, unfocusedTextColor = Ink, unfocusedBorderColor = Color(0xFFD7DCE5), unfocusedLabelColor = Muted, focusedContainerColor = Color.White, unfocusedContainerColor = Color.White))
             Spacer(Modifier.height(10.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -8042,17 +8042,17 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 )
             }
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = addressLine1, onValueChange = { addressLine1 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("House / flat, building, street *", LocalAppLanguage.current)) })
+            OutlinedTextField(value = addressLine1, onValueChange = { addressLine1 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("House / flat, building, street *", LocalAppLanguage.current)) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink, cursorColor = Ink, focusedTextColor = Ink, unfocusedTextColor = Ink, unfocusedBorderColor = Color(0xFFD7DCE5), unfocusedLabelColor = Muted, focusedContainerColor = Color.White, unfocusedContainerColor = Color.White))
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = addressLine2, onValueChange = { addressLine2 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Area / village / locality", LocalAppLanguage.current)) })
+            OutlinedTextField(value = addressLine2, onValueChange = { addressLine2 = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Area / village / locality", LocalAppLanguage.current)) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink, cursorColor = Ink, focusedTextColor = Ink, unfocusedTextColor = Ink, unfocusedBorderColor = Color(0xFFD7DCE5), unfocusedLabelColor = Muted, focusedContainerColor = Color.White, unfocusedContainerColor = Color.White))
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = landmark, onValueChange = { landmark = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Landmark (optional)", LocalAppLanguage.current)) })
+            OutlinedTextField(value = landmark, onValueChange = { landmark = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Landmark (optional)", LocalAppLanguage.current)) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink, cursorColor = Ink, focusedTextColor = Ink, unfocusedTextColor = Ink, unfocusedBorderColor = Color(0xFFD7DCE5), unfocusedLabelColor = Muted, focusedContainerColor = Color.White, unfocusedContainerColor = Color.White))
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = city, onValueChange = { city = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("City / town *", LocalAppLanguage.current)) }, singleLine = true)
+            OutlinedTextField(value = city, onValueChange = { city = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("City / town *", LocalAppLanguage.current)) }, singleLine = true, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink, cursorColor = Ink, focusedTextColor = Ink, unfocusedTextColor = Ink, unfocusedBorderColor = Color(0xFFD7DCE5), unfocusedLabelColor = Muted, focusedContainerColor = Color.White, unfocusedContainerColor = Color.White))
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = state, onValueChange = { state = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("State *", LocalAppLanguage.current)) }, singleLine = true)
+            OutlinedTextField(value = state, onValueChange = { state = it; addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("State *", LocalAppLanguage.current)) }, singleLine = true, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink, cursorColor = Ink, focusedTextColor = Ink, unfocusedTextColor = Ink, unfocusedBorderColor = Color(0xFFD7DCE5), unfocusedLabelColor = Muted, focusedContainerColor = Color.White, unfocusedContainerColor = Color.White))
             Spacer(Modifier.height(10.dp))
-            OutlinedTextField(value = pincode, onValueChange = { pincode = it.filter(Char::isDigit).take(6); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("PIN code *", LocalAppLanguage.current)) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true)
+            OutlinedTextField(value = pincode, onValueChange = { pincode = it.filter(Char::isDigit).take(6); addressMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("PIN code *", LocalAppLanguage.current)) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink, cursorColor = Ink, focusedTextColor = Ink, unfocusedTextColor = Ink, unfocusedBorderColor = Color(0xFFD7DCE5), unfocusedLabelColor = Muted, focusedContainerColor = Color.White, unfocusedContainerColor = Color.White))
             if (addressMessage != null) {
                 Spacer(Modifier.height(10.dp))
                 Text(addressMessage!!, color = if (addressMessage!!.startsWith("Address saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
