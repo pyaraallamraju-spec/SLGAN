@@ -7260,7 +7260,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         modifier.fillMaxSize()
             .background(Color(0xFFF3F5FA))
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = if (initialSection == "Addresses" || initialSection == "Profile") 0.dp else 16.dp, vertical = if (initialSection == "Addresses" || initialSection == "Profile") 0.dp else 18.dp)
+            .padding(horizontal = if (initialSection == "Addresses" && showAddressForm) 16.dp else if (initialSection == "Addresses" || initialSection == "Profile") 0.dp else 16.dp, vertical = if (initialSection == "Addresses" || initialSection == "Profile") 0.dp else 18.dp)
     ) {
         if (initialSection == "Profile") {
             Row(
