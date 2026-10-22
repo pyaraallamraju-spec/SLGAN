@@ -1409,7 +1409,7 @@ private fun LoginScreen(
             enabled = !loading,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 24.dp)
                 .height(58.dp),
             shape = signInShape,
             elevation = ButtonDefaults.buttonElevation(
@@ -1447,7 +1447,7 @@ private fun LoginScreen(
                 Image(
                     painter = painterResource(R.drawable.slgan_sign_in_button),
                     contentDescription = "Sign in",
-                    modifier = Modifier.fillMaxWidth().height(54.dp).padding(horizontal = 4.dp),
+                    modifier = Modifier.fillMaxWidth().height(54.dp).padding(horizontal = 12.dp),
                     contentScale = ContentScale.Fit
                 )
             }
