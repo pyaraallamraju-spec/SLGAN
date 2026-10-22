@@ -2216,7 +2216,7 @@ private fun AdminProductDetailsScreen(
                         Text(if (product.productStock == 1) "IN STOCK" else "OUT OF STOCK", color = if (product.productStock == 1) Color(0xFF258348) else Color(0xFFC5392F), fontWeight = FontWeight.Bold)
                     }
                 }
-                Text("PRODUCT INFORMATION", color = Leaf, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
+                Text("PRODUCT INFORMATION", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
                 if (data.isEmpty()) {
                     Text("No additional fields are saved for this product.", color = AdminMuted)
                 } else {
