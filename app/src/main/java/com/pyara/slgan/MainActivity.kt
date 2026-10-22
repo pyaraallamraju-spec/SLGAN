@@ -1717,7 +1717,8 @@ private fun HomeBannerSlider(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.CenterStart)
-                            .padding(start = 22.dp, end = 22.dp, top = 16.dp, bottom = 22.dp),
+                            // Nudge the banner title and View Products link upward slightly.
+                            .padding(start = 22.dp, end = 22.dp, top = 6.dp, bottom = 32.dp),
                         verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         // Keep product name at the top, signature tagline below, and trust line separated beneath it.
