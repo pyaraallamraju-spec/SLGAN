@@ -6140,12 +6140,10 @@ private fun OrdersPage(
                 Column(
                     Modifier.fillMaxWidth()
                         .background(Color.White)
-                        // This Dialog draws edge-to-edge; reserve the real system navigation-bar inset
-                        // here so the Repeat Order button stays fully above Android's bottom bar.
+                        // Keep the action area compact and above the system navigation bar.
                         .navigationBarsPadding()
-                        .imePadding()
                         .padding(horizontal = 16.dp)
-                        .padding(top = 10.dp, bottom = 8.dp)
+                        .padding(top = 8.dp, bottom = 12.dp)
                 ) {
                     Button(
                         onClick = {
@@ -6161,7 +6159,7 @@ private fun OrdersPage(
                             ).show()
                             if (addedCount > 0) onCart()
                         },
-                        modifier = Modifier.fillMaxWidth().height(76.dp),
+                        modifier = Modifier.fillMaxWidth().height(60.dp),
                         shape = RoundedCornerShape(14.dp),
                         border = null,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)
