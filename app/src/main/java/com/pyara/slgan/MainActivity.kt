@@ -3771,12 +3771,19 @@ private fun ShopScreen(
             }
             IconButton(onClick = { onTabChange("Accounts") }) {
                 Box(
-                    modifier = Modifier.size(34.dp).shadow(5.dp, CircleShape)
+                    modifier = Modifier.size(42.dp).shadow(3.dp, CircleShape)
                         .clip(CircleShape)
-                        .background(Color(0xFFF3F5FA)),
+                        .background(Color(0xFFE9EDF2)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.Default.Person, contentDescription = "Profile", tint = Ink, modifier = Modifier.size(22.dp))
+                    Icon(Icons.Default.Person, contentDescription = "Profile", tint = Ink, modifier = Modifier.size(24.dp))
+                    Box(
+                        modifier = Modifier.align(Alignment.TopEnd)
+                            .offset(x = (-1).dp, y = 1.dp)
+                            .size(11.dp)
+                            .background(Forest, CircleShape)
+                            .border(1.5.dp, Color.White, CircleShape)
+                    )
                 }
             }
         }
