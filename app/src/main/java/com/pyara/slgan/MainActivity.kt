@@ -1672,7 +1672,7 @@ private fun HomeBannerSlider(
                     Row(
                         modifier = Modifier
                             .align(Alignment.BottomStart)
-                            .padding(start = 22.dp, end = 22.dp, bottom = 6.dp),
+                            .padding(start = 22.dp, end = 22.dp, bottom = 2.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(5.dp)
                     ) {
