@@ -6028,18 +6028,16 @@ private fun OrdersPage(
                 ) {
                     Button(
                         onClick = {
-                            var addedCount = 0
-                            invoiceItems.forEach { item ->
-                                val savedId = (item["productId"] ?: item["product_id"] ?: item["id"])?.toString().orEmpty()
-                                val savedName = (item["productName"] ?: item["name"] ?: item["title"])?.toString().orEmpty()
-                                val product = products.firstOrNull { it.id == savedId }
-                                    ?: products.firstOrNull { savedName.isNotBlank() && it.name.equals(savedName, ignoreCase = true) }
-                                val productId = product?.id ?: savedId.takeIf { id -> id.isNotBlank() && products.any { it.id == id } }.orEmpty()
-                                val quantity = ((item["quantity"] as? Number)?.toInt() ?: 1).coerceIn(1, 20)
-                                if (productId.isNotBlank()) repeat(quantity) { onAdd(productId); addedCount++ }
-                            }
+                            // Use the same tolerant catalogue matching as the order-history Reorder action.
+                            // Historical order IDs can differ from current Firestore product IDs.
+                            val addedCount = addOrderItemsToCart(invoiceItems)
                             selectedOrder = null
-                            Toast.makeText(context, if (addedCount > 0) "$addedCount item(s) added to cart" else "These products are no longer available to reorder.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                context,
+                                if (addedCount > 0) "$addedCount item(s) added to cart"
+                                else "No ordered products matched the current catalogue. Please refresh products and try again.",
+                                Toast.LENGTH_LONG
+                            ).show()
                             if (addedCount > 0) onCart()
                         },
                         modifier = Modifier.fillMaxWidth().height(76.dp),
