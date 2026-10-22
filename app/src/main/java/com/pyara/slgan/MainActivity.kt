@@ -5895,7 +5895,7 @@ private fun OrdersPage(
                         .background(Color.White)
                         .navigationBarsPadding()
                         .imePadding()
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 16.dp)
                         .padding(top = 10.dp, bottom = 100.dp)
                 ) {
                     Button(
