@@ -72,6 +72,34 @@ nav button.active,nav button:hover{background:#fff0d2;color:var(--m)}
 <header class="top"><div class="brand"><span class="brand-mark">🌿</span><span>Sri Lakshmi Ganapathi<small>AYURVEDA NILAYAM · ESTD. 1900</small></span></div><div class="top-actions"><button id="accountBtn" class="avatar-btn" aria-label="Profile">♙</button></div></header>
 <div id="signin" class="panel signin hidden"><h1>Welcome to SLGAN</h1><p class="muted">Sign in with your registered email and password.</p><div id="authMsg" class="notice hidden"></div><label>Email address</label><input id="email" type="email" autocomplete="email"><label>Password</label><input id="password" type="password" autocomplete="current-password"><div class="actions"><button id="signInBtn">Sign in</button><button id="registerBtn" class="secondary">Create account</button></div></div>
 <div id="shell" class="layout"><aside><nav id="sideNav"></nav><p class="foot">Traditional Ayurvedic products. Follow product labels and qualified professional advice.</p></aside><main id="main" class="main"><div class="empty">Loading SLGAN catalogue…</div></main></div><nav id="bottomNav" class="bottom-nav"></nav>
+<script>
+(function(){
+  function escDiag(value){
+    return String(value == null ? "Unknown startup error" : value).replace(/[&<>"]/g,function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
+    });
+  }
+  function report(message){
+    var main=document.getElementById("main");
+    if(!main)return;
+    main.innerHTML='<div class="panel"><h2>SLGAN startup error</h2><p>'+escDiag(message)+'</p><p>Please share this exact message so the problem can be fixed.</p><button onclick="location.reload()">Try again</button></div>';
+  }
+  window.addEventListener("error",function(e){
+    var msg=e.message || (e.target && e.target.src ? "Failed to load script: "+e.target.src : "");
+    if(msg)report(msg+(e.filename ? " ("+e.filename+":"+e.lineno+")" : ""));
+  },true);
+  window.addEventListener("unhandledrejection",function(e){
+    var reason=e.reason;
+    report("Request error: "+(reason && reason.message ? reason.message : reason || "Unknown error"));
+  });
+  setTimeout(function(){
+    var main=document.getElementById("main");
+    if(main && main.textContent.indexOf("Loading SLGAN catalogue")>=0){
+      report("Startup did not finish within 10 seconds. Firebase scripts may be blocked, or the page script may contain an error.");
+    }
+  },10000);
+})();
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
 var config={apiKey:"AIzaSyAWvFFV8C3eMEqiyTe6lKvNtmIZBkJGkUk",authDomain:"slgan-a364e.firebaseapp.com",projectId:"slgan-a364e",storageBucket:"slgan-a364e.firebasestorage.app",messagingSenderId:"1034428021231",appId:"1:1034428021231:web:997678fda842c7a65e9e1a"};
@@ -143,4 +171,5 @@ else {
     }
   });
 }
+if(window.slganStartupDiagnosticReady !== true) window.slganStartupDiagnosticReady = true;
 </script></body></html>
