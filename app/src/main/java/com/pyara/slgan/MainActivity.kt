@@ -6445,9 +6445,9 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             )
                                             Spacer(Modifier.height(3.dp))
                                             Row(
-                                                modifier = Modifier.fillMaxWidth().height(20.dp),
+                                                modifier = Modifier.fillMaxWidth().height(24.dp),
                                                 verticalAlignment = Alignment.CenterVertically,
-                                                horizontalArrangement = Arrangement.SpaceBetween
+                                                horizontalArrangement = Arrangement.spacedBy(4.dp)
                                             ) {
                                                 Text(
                                                     product.subtitle.takeIf { it.isNotBlank() && it != "Traditional Ayurvedic product" } ?: "Pack size not set",
@@ -6455,10 +6455,11 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     fontSize = 10.sp,
                                                     maxLines = 1,
                                                     overflow = TextOverflow.Ellipsis,
-                                                    modifier = Modifier.weight(1f)
+                                                    modifier = Modifier.weight(1f),
+                                                    softWrap = false
                                                 )
                                                 Box(
-                                                    modifier = Modifier.wrapContentWidth(Alignment.End),
+                                                    modifier = Modifier.wrapContentWidth(Alignment.End).align(Alignment.CenterVertically),
                                                     contentAlignment = Alignment.CenterEnd
                                                 ) {
                                                     ProductRatingLine(
