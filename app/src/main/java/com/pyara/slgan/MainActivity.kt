@@ -3507,19 +3507,19 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             }
             Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = AdminInk, modifier = Modifier.size(27.dp))
         }
-        Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Forest), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 4.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(48.dp).background(Cream, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
+                Box(Modifier.size(48.dp).background(AdminLightGray, RoundedCornerShape(15.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp))
                 }
                 Spacer(Modifier.width(13.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Orders library", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Review and manage customer orders", color = Cream.copy(alpha = 0.88f), fontSize = 12.sp, lineHeight = 17.sp)
+                    Text("Orders library", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("Review and manage customer orders", color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp)
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text(orders.size.toString(), color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("TOTAL", color = Cream.copy(alpha = 0.8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                    Text(orders.size.toString(), color = Ink, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+                    Text("TOTAL", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                 }
             }
         }
