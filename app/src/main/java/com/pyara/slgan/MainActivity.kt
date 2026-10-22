@@ -7342,7 +7342,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         showAddressLocationSheet = true
                     },
                     modifier = Modifier.size(48.dp)
-                ) {{
+                ) {
                     Icon(Icons.Default.Map, contentDescription = "Choose address on map", tint = Ink, modifier = Modifier.size(26.dp))
                 }
             }
