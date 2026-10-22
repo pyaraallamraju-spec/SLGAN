@@ -6020,6 +6020,9 @@ private fun OrdersPage(
                 Column(
                     Modifier.fillMaxWidth()
                         .background(Color.White)
+                        // This Dialog draws edge-to-edge; reserve the real system navigation-bar inset
+                        // here so the Repeat Order button stays fully above Android's bottom bar.
+                        .navigationBarsPadding()
                         .imePadding()
                         .padding(horizontal = 16.dp)
                         .padding(top = 10.dp, bottom = 8.dp)
