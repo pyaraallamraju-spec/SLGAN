@@ -5,6 +5,7 @@ on:
     paths:
       - "public/**"
       - "firebase.json"
+      - "firestore.rules"
       - ".github/workflows/firebase-hosting.yml"
   workflow_dispatch:
 jobs:
@@ -26,4 +27,4 @@ jobs:
           test -n "$FIREBASE_SERVICE_ACCOUNT" || (echo "Missing GitHub Actions secret FIREBASE_SERVICE_ACCOUNT_JSON" && exit 1)
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
           export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/firebase-service-account.json"
-          firebase deploy --only hosting --project slgan-a364e --non-interactive
+          firebase deploy --only hosting,firestore:rules --project slgan-a364e --non-interactive
