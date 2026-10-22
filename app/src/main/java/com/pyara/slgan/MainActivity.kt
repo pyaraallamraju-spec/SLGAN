@@ -1444,24 +1444,12 @@ private fun LoginScreen(
                     Text("🌿", fontSize = 19.sp)
                 }
             } else {
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(58.dp).padding(horizontal = 5.dp)
-                        .clip(signInShape).background(Color.White, signInShape)
-                        .border(1.5.dp, Color(0xFFD9A441), signInShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text("🌿", fontSize = 19.sp)
-                        Spacer(Modifier.width(12.dp))
-                        Text("Sign in", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4A3028), maxLines = 1)
-                        Spacer(Modifier.width(12.dp))
-                        Icon(Icons.Default.ArrowForward, contentDescription = null, tint = Color(0xFFB88A36), modifier = Modifier.size(25.dp))
-                    }
-                }
+                Image(
+                    painter = painterResource(R.drawable.slgan_sign_in_button),
+                    contentDescription = "Sign in",
+                    modifier = Modifier.fillMaxWidth().height(58.dp).padding(horizontal = 4.dp),
+                    contentScale = ContentScale.Fit
+                )
             }
         }
         Row(
