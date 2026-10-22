@@ -5462,6 +5462,36 @@ private fun OrdersPage(
     }
     val currentOrders = visibleOrders.filter { orderDate(it) == today }
     val historicalOrders = visibleOrders.filter { orderDate(it)?.isBefore(today) != false }
+    // Rebuild the cart using current catalogue IDs. Historical orders may contain
+    // legacy product IDs, so fall back to normalized product names before giving up.
+    fun addOrderItemsToCart(orderItems: List<Map<*, *>>): Int {
+        var addedCount = 0
+        val normalizedProducts = products.associateBy { product ->
+            product.name.lowercase(Locale.ROOT).filter { it.isLetterOrDigit() }
+        }
+        orderItems.forEach { item ->
+            val savedId = listOf("productId", "product_id", "productID", "id", "productDocumentId")
+                .firstNotNullOfOrNull { key -> item[key]?.toString()?.trim()?.takeIf { it.isNotEmpty() } }.orEmpty()
+            val savedName = listOf("productName", "product_name", "name", "title", "medicine_name")
+                .firstNotNullOfOrNull { key -> item[key]?.toString()?.trim()?.takeIf { it.isNotEmpty() } }.orEmpty()
+            val normalizedName = savedName.lowercase(Locale.ROOT).filter { it.isLetterOrDigit() }
+            val product = products.firstOrNull { it.id == savedId }
+                ?: normalizedProducts[normalizedName]
+                ?: products.firstOrNull {
+                    normalizedName.isNotBlank() &&
+                        (it.name.lowercase(Locale.ROOT).filter { ch -> ch.isLetterOrDigit() }.contains(normalizedName) ||
+                         normalizedName.contains(it.name.lowercase(Locale.ROOT).filter { ch -> ch.isLetterOrDigit() }))
+                }
+            val quantityValue = item["quantity"]
+            val quantity = ((quantityValue as? Number)?.toInt()
+                ?: quantityValue?.toString()?.toIntOrNull()
+                ?: 1).coerceIn(1, 20)
+            if (product != null) {
+                repeat(quantity) { onAdd(product.id); addedCount++ }
+            }
+        }
+        return addedCount
+    }
 
     Column(modifier.fillMaxSize().background(Color(0xFFF4F5FA)).verticalScroll(rememberScrollState())) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -5742,17 +5772,12 @@ private fun OrdersPage(
                                 }
                                 Button(
                                     onClick = {
-                                        var addedCount = 0
-                                        orderItems.forEach { item ->
-                                            val savedId = (item["productId"] ?: item["product_id"] ?: item["id"])?.toString().orEmpty()
-                                            val savedName = (item["productName"] ?: item["name"] ?: item["title"])?.toString().orEmpty()
-                                            val product = products.firstOrNull { it.id == savedId }
-                                                ?: products.firstOrNull { savedName.isNotBlank() && it.name.equals(savedName, ignoreCase = true) }
-                                            val productId = product?.id ?: savedId.takeIf { id -> id.isNotBlank() && products.any { it.id == id } }.orEmpty()
-                                            val quantity = ((item["quantity"] as? Number)?.toInt() ?: 1).coerceIn(1, 20)
-                                            if (productId.isNotBlank()) repeat(quantity) { onAdd(productId); addedCount++ }
-                                        }
-                                        Toast.makeText(context, if (addedCount > 0) "$addedCount item(s) added to cart" else "These products are no longer available to reorder.", Toast.LENGTH_LONG).show()
+                                        val addedCount = addOrderItemsToCart(orderItems)
+                                        Toast.makeText(
+                                            context,
+                                            if (addedCount > 0) "$addedCount item(s) added to cart" else "No ordered products matched the current catalogue. Please refresh products and try again.",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                         if (addedCount > 0) onCart()
                                     },
                                     modifier = Modifier.weight(1f).height(46.dp),
@@ -5827,13 +5852,13 @@ private fun OrdersPage(
                                 Text("View Order", color = Ink, fontWeight = FontWeight.Bold)
                             }
                             TextButton(onClick = {
-                                orderItems.forEach { item ->
-                                    val productId = item["productId"]?.toString().orEmpty()
-                                    val quantity = (item["quantity"] as? Number)?.toInt() ?: 1
-                                    if (productId.isNotBlank()) repeat(quantity.coerceIn(1, 20)) { onAdd(productId) }
-                                }
-                                Toast.makeText(context, "Items added to cart", Toast.LENGTH_SHORT).show()
-                                onCart()
+                                val addedCount = addOrderItemsToCart(orderItems)
+                                Toast.makeText(
+                                    context,
+                                    if (addedCount > 0) "$addedCount item(s) added to cart" else "No ordered products matched the current catalogue. Please refresh products and try again.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                if (addedCount > 0) onCart()
                             }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) { Text("Reorder", color = Ink, fontWeight = FontWeight.Bold) }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
