@@ -969,29 +969,31 @@ private fun AyurvedicApp() {
                             authError = "Your password must contain at least 6 characters."
                         }
                         isCreatingAccount && password != confirmPassword -> {
-                        authError = "Password and confirm password do not match."
-                    } else {
-                        isLoading = true
-                        authError = null
-                        val task = if (isCreatingAccount) auth.createUserWithEmailAndPassword(email, password)
-                                   else auth.signInWithEmailAndPassword(email, password)
-                        task.addOnCompleteListener { result ->
-                            isLoading = false
-                            if (result.isSuccessful) {
-                                // Let FirebaseAuth.AuthStateListener be the single source of truth
-                                // for navigation. Avoid switching screens before currentUser is ready.
-                                auth.currentUser?.uid?.let { uid ->
-                                    FirebaseData.saveCustomerProfile(
-                                        uid,
-                                        mapOf("email" to email, "updatedAt" to System.currentTimeMillis())
-                                    ) { error ->
-                                        if (error != null) {
-                                            android.util.Log.w("SLGAN_AUTH", "Profile save failed after sign-in", error)
+                            authError = "Password and confirm password do not match."
+                        }
+                        else -> {
+                            isLoading = true
+                            authError = null
+                            val task = if (isCreatingAccount) auth.createUserWithEmailAndPassword(email, password)
+                                       else auth.signInWithEmailAndPassword(email, password)
+                            task.addOnCompleteListener { result ->
+                                isLoading = false
+                                if (result.isSuccessful) {
+                                    // Let FirebaseAuth.AuthStateListener be the single source of truth
+                                    // for navigation. Avoid switching screens before currentUser is ready.
+                                    auth.currentUser?.uid?.let { uid ->
+                                        FirebaseData.saveCustomerProfile(
+                                            uid,
+                                            mapOf("email" to email, "updatedAt" to System.currentTimeMillis())
+                                        ) { error ->
+                                            if (error != null) {
+                                                android.util.Log.w("SLGAN_AUTH", "Profile save failed after sign-in", error)
+                                            }
                                         }
                                     }
+                                } else {
+                                    authError = result.exception?.localizedMessage ?: "Sign-in failed. Please try again."
                                 }
-                            } else {
-                                authError = result.exception?.localizedMessage ?: "Sign-in failed. Please try again."
                             }
                         }
                     }
