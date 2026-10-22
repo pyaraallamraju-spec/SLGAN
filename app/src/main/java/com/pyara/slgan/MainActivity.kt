@@ -5914,12 +5914,13 @@ private fun OrdersPage(
                                     },
                                     modifier = Modifier.weight(1f).height(46.dp).shadow(4.dp, RoundedCornerShape(14.dp)),
                                     shape = RoundedCornerShape(14.dp),
-                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
+                                    border = BorderStroke(1.dp, Color(0xFFB8C2D0)),
+                                     colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Color(0xFF26364D)),
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
                                 ) {
-                                    Icon(Icons.Default.Refresh, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
+                                    Icon(Icons.Default.Refresh, contentDescription = null, tint = Color(0xFF26364D), modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
-                                    Text("Reorder", color = Ink, fontWeight = FontWeight.Bold, maxLines = 1)
+                                    Text("Reorder", color = Color(0xFF26364D), fontWeight = FontWeight.Bold, maxLines = 1)
                                 }
                             }
                         }
