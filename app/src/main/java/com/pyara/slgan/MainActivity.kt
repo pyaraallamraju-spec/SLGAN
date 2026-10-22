@@ -5849,7 +5849,7 @@ private fun OrdersPage(
             onDismissRequest = { selectedOrder = null },
             properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
         ) {
-            Column(Modifier.fillMaxSize().background(Color.White).navigationBarsPadding()) {
+            Column(Modifier.fillMaxSize().background(Color.White)) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { selectedOrder = null }, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape)) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back to Order History", tint = Ink)
@@ -5976,7 +5976,7 @@ private fun OrdersPage(
                 }
                 if (onTabChange != null) {
                     NavigationBar(
-                        modifier = Modifier.fillMaxWidth().shadow(8.dp),
+                        modifier = Modifier.fillMaxWidth().shadow(8.dp).navigationBarsPadding(),
                         containerColor = Color.White,
                         contentColor = Ink
                     ) {
