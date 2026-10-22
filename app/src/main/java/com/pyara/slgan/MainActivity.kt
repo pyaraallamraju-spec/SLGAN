@@ -5662,20 +5662,6 @@ private fun OrdersPage(
                                     Text("Reorder", color = Color.White, fontWeight = FontWeight.Bold, maxLines = 1)
                                 }
                             }
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                TextButton(
-                                    onClick = { rateOrder = order; selectedRating = 5 },
-                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
-                                ) {
-                                    Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(18.dp))
-                                    Spacer(Modifier.width(5.dp))
-                                    Text("Rate order", color = Forest, fontWeight = FontWeight.SemiBold)
-                                }
-                            }
                         }
                     }
                 }
