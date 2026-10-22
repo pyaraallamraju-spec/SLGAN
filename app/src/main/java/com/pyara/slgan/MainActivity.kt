@@ -4496,16 +4496,16 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         }
                                         Spacer(Modifier.height(3.dp))
                                         Row(
-                                            modifier = Modifier.fillMaxWidth().height(32.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.SpaceBetween
+                                            modifier = Modifier.fillMaxWidth().height(44.dp),
+                                            verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Text(
                                                 tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
                                                 color = Color.Black,
                                                 fontWeight = FontWeight.ExtraBold,
                                                 fontSize = 15.sp,
-                                                maxLines = 1
+                                                maxLines = 1,
+                                                modifier = Modifier.weight(1f)
                                             )
                                             val signatureCartCount = cart[product.id] ?: 0
                                             if (signatureCartCount == 0) {
@@ -4529,7 +4529,8 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                     color = Color(0xFF2E7D32),
                                                     fontSize = 10.sp,
                                                     fontWeight = FontWeight.Bold,
-                                                    maxLines = 1
+                                                    maxLines = 1,
+                                                    modifier = Modifier.clickable { }
                                                 )
                                             }
                                         }
