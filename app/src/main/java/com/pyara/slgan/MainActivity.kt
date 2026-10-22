@@ -1725,7 +1725,7 @@ private fun HomeBannerSlider(
                                 overflow = TextOverflow.Ellipsis
                             )
                         }
-                        Spacer(Modifier.height(9.dp))
+                        Spacer(Modifier.height(4.dp))
                         Row(
                             modifier = Modifier.width(150.dp),
                             verticalAlignment = Alignment.CenterVertically,
