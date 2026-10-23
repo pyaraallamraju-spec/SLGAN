@@ -7504,61 +7504,128 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     val addressId = address["_id"]?.toString().orEmpty()
                     val isSelected = selectedAddressId == addressId
                     Card(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp).clickable {
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable {
                             selectedAddressId = addressId
                         },
-                        shape = RoundedCornerShape(24.dp),
+                        shape = RoundedCornerShape(20.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 7.dp)
+                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
                     ) {
-                        Column(Modifier.fillMaxWidth().padding(18.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(Modifier.size(54.dp).shadow(5.dp, RoundedCornerShape(18.dp)).background(Color(0xFFE4E8F0), RoundedCornerShape(18.dp)), contentAlignment = Alignment.Center) {
-                                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink, modifier = Modifier.size(28.dp))
-                                }
-                                Spacer(Modifier.width(14.dp))
-                                Column(Modifier.weight(1f)) {
-                                    Text(label.uppercase(), color = Muted, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                                    Spacer(Modifier.height(4.dp))
-                                    Text(name, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                                }
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Checkbox(
-                                        checked = isSelected,
-                                        onCheckedChange = { checked ->
-                                            if (checked) selectedAddressId = addressId
-                                        },
-                                        colors = CheckboxDefaults.colors(
-                                            checkedColor = Forest,
-                                            uncheckedColor = Muted,
-                                            checkmarkColor = Color.White
-                                        )
-                                    )
-                                    if (isDefault) {
-                                        Text("Default", color = Forest, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                                    }
-                                }
+                        Row(
+                            Modifier.fillMaxWidth().padding(14.dp),
+                            verticalAlignment = Alignment.Top
+                        ) {
+                            Column(
+                                Modifier.width(66.dp).border(1.dp, Color(0xFFD9DDE7), RoundedCornerShape(14.dp))
+                                    .background(Color.White, RoundedCornerShape(14.dp)).padding(vertical = 8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    when (label.lowercase()) {
+                                        "home" -> Icons.Default.Home
+                                        "work" -> Icons.Default.Work
+                                        "hotel" -> Icons.Default.Business
+                                        else -> Icons.Default.People
+                                    },
+                                    contentDescription = null,
+                                    tint = Color(0xFFB5B5B5),
+                                    modifier = Modifier.size(28.dp)
+                                )
+                                Spacer(Modifier.height(5.dp))
+                                Text(
+                                    if (isSelected) "Selected" else if (isDefault) "Default" else "Address",
+                                    color = Muted,
+                                    fontSize = 10.sp,
+                                    maxLines = 1
+                                )
                             }
-                            Spacer(Modifier.height(18.dp))
-                            HorizontalDivider(color = Color(0xFFF0E2C9))
-                            Spacer(Modifier.height(14.dp))
-                            if (phone.isNotBlank()) {
+                            Spacer(Modifier.width(14.dp))
+                            Column(Modifier.weight(1f)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Box(Modifier.size(44.dp).shadow(4.dp, RoundedCornerShape(14.dp)).background(Color(0xFFF2F3F6), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
-                                        Icon(Icons.Default.Call, contentDescription = null, tint = Ink)
+                                    Text(
+                                        label.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
+                                        modifier = Modifier.weight(1f),
+                                        color = Ink,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    IconButton(
+                                        onClick = { selectedAddressId = addressId },
+                                        modifier = Modifier.size(30.dp)
+                                    ) {
+                                        Icon(
+                                            if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                            contentDescription = if (isSelected) "Selected address" else "Select address",
+                                            tint = if (isSelected) Ink else Muted,
+                                            modifier = Modifier.size(20.dp)
+                                        )
                                     }
-                                    Spacer(Modifier.width(14.dp))
-                                    Text(phone, color = Ink, fontSize = 16.sp)
                                 }
-                                Spacer(Modifier.height(12.dp))
-                            }
-                            if (addressText.isNotBlank()) {
-                                Row(verticalAlignment = Alignment.Top) {
-                                    Box(Modifier.size(44.dp).shadow(4.dp, RoundedCornerShape(14.dp)).background(Color(0xFFF2F3F6), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
-                                        Icon(Icons.Default.Home, contentDescription = null, tint = Ink)
+                                if (addressText.isNotBlank()) {
+                                    Text(
+                                        addressText,
+                                        color = Muted,
+                                        fontSize = 14.sp,
+                                        lineHeight = 20.sp,
+                                        maxLines = 3,
+                                        overflow = TextOverflow.Ellipsis,
+                                        modifier = Modifier.padding(top = 2.dp)
+                                    )
+                                }
+                                if (phone.isNotBlank()) {
+                                    Text(
+                                        buildAnnotatedString {
+                                            append("Phone number: ")
+                                            pushStyle(SpanStyle(fontWeight = FontWeight.Bold, color = Ink))
+                                            append(phone)
+                                            pop()
+                                        },
+                                        color = Muted,
+                                        fontSize = 14.sp,
+                                        modifier = Modifier.padding(top = 8.dp)
+                                    )
+                                }
+                                Row(
+                                    Modifier.padding(top = 8.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Surface(
+                                        onClick = { selectedAddressId = addressId },
+                                        shape = CircleShape,
+                                        color = Color.White,
+                                        border = BorderStroke(1.dp, Color(0xFFE2E2E2))
+                                    ) {
+                                        Icon(
+                                            Icons.Default.MoreHoriz,
+                                            contentDescription = "Address options",
+                                            tint = Ink,
+                                            modifier = Modifier.padding(7.dp).size(18.dp)
+                                        )
                                     }
-                                    Spacer(Modifier.width(14.dp))
-                                    Text(addressText, color = Ink, fontSize = 16.sp, lineHeight = 23.sp, modifier = Modifier.weight(1f))
+                                    Surface(
+                                        onClick = {
+                                            val shareText = listOf(label, addressText, phone.takeIf { it.isNotBlank() }?.let { "Phone number: $it" })
+                                                .filterNotNull().filter { it.isNotBlank() }.joinToString("\n")
+                                            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                                                type = "text/plain"
+                                                putExtra(Intent.EXTRA_TEXT, shareText)
+                                            }
+                                            context.startActivity(Intent.createChooser(sendIntent, "Share address"))
+                                        },
+                                        shape = CircleShape,
+                                        color = Color.White,
+                                        border = BorderStroke(1.dp, Color(0xFFE2E2E2))
+                                    ) {
+                                        Icon(
+                                            Icons.Default.Share,
+                                            contentDescription = "Share address",
+                                            tint = Ink,
+                                            modifier = Modifier.padding(7.dp).size(18.dp)
+                                        )
+                                    }
                                 }
                             }
                         }
