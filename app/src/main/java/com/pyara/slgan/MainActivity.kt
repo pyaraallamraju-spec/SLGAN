@@ -3905,7 +3905,7 @@ private fun ShopScreen(
                         Icon(Icons.Default.Person, contentDescription = "Profile", tint = Ink, modifier = Modifier.size(24.dp))
                     Box(
                         modifier = Modifier.align(Alignment.TopEnd)
-                            .offset(x = (-5).dp, y = 4.dp)
+                            .offset(x = (-6).dp, y = 2.dp)
                             .size(12.dp)
                             .background(Color(0xFF258348), CircleShape)
                             .border(1.5.dp, Color.White, CircleShape)
