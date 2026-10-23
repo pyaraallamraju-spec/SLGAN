@@ -5938,12 +5938,13 @@ private fun OrdersPage(
                                     }
                                     Column(
                                         modifier = Modifier.weight(1f),
-                                        verticalArrangement = Arrangement.spacedBy(1.dp)
+                                        verticalArrangement = Arrangement.spacedBy(0.dp)
                                     ) {
                                         Text(
                                             "ORDER STATUS",
                                             color = statusColor.copy(alpha = 0.78f),
                                             fontSize = 9.sp,
+                                            lineHeight = 10.sp,
                                             fontWeight = FontWeight.ExtraBold,
                                             letterSpacing = 1.1.sp
                                         )
@@ -5951,6 +5952,7 @@ private fun OrdersPage(
                                             if (isPending) "Pending verification" else status.replace('_', ' ').replaceFirstChar { it.uppercase() },
                                             color = statusColor,
                                             fontSize = 14.sp,
+                                            lineHeight = 16.sp,
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis
