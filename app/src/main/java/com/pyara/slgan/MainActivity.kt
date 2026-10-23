@@ -5974,9 +5974,9 @@ private fun OrdersPage(
                             ) {
                                 OutlinedButton(
                                     onClick = { selectedOrder = order },
-                                    modifier = Modifier.weight(1f).height(46.dp).shadow(4.dp, RoundedCornerShape(14.dp)),
+                                    modifier = Modifier.weight(1f).height(46.dp).shadow(1.dp, RoundedCornerShape(14.dp)),
                                     shape = RoundedCornerShape(14.dp),
-                                    border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                                    border = null,
                                     colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink),
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
                                 ) {
