@@ -7351,6 +7351,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     val context = LocalContext.current
     val authUser = FirebaseAuth.getInstance().currentUser
     var addresses by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    var selectedAddressId by remember(authUser?.uid) { mutableStateOf<String?>(null) }
     var loading by remember { mutableStateOf(true) }
 
     LaunchedEffect(authUser?.uid) {
@@ -7366,6 +7367,12 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     addresses = snapshot.documents.map { doc ->
                         doc.data.orEmpty() + ("_id" to doc.id)
                     }
+                    selectedAddressId = addresses.firstOrNull {
+                        it["label"]?.toString().equals("home", ignoreCase = true)
+                    }?.get("_id")?.toString()
+                        ?: addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
+                            ?.get("_id")?.toString()
+                        ?: addresses.firstOrNull()?.get("_id")?.toString()
                     loading = false
                 }
                 .addOnFailureListener { loading = false }
@@ -7418,7 +7425,12 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                         .joinToString(", ")
                         .ifBlank { address["address"]?.toString().orEmpty() }
                     val isDefault = address["isDefault"] == true || address["default"] == true
+                    val addressId = address["_id"]?.toString().orEmpty()
+                    val isSelected = selectedAddressId == addressId
                     Card(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp).clickable {
+                            selectedAddressId = addressId
+                        },
                         Modifier.fillMaxWidth().padding(bottom = 16.dp),
                         shape = RoundedCornerShape(24.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -7435,9 +7447,20 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     Spacer(Modifier.height(4.dp))
                                     Text(name, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                                 }
-                                if (isDefault) {
-                                    Box(Modifier.size(42.dp).shadow(4.dp, CircleShape).background(Color(0xFF25864D), CircleShape), contentAlignment = Alignment.Center) {
-                                        Icon(Icons.Default.Check, contentDescription = "Default address", tint = Color.White, modifier = Modifier.size(27.dp))
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Checkbox(
+                                        checked = isSelected,
+                                        onCheckedChange = { checked ->
+                                            if (checked) selectedAddressId = addressId
+                                        },
+                                        colors = CheckboxDefaults.colors(
+                                            checkedColor = Forest,
+                                            uncheckedColor = Muted,
+                                            checkmarkColor = Color.White
+                                        )
+                                    )
+                                    if (isDefault) {
+                                        Text("Default", color = Forest, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                                     }
                                 }
                             }
