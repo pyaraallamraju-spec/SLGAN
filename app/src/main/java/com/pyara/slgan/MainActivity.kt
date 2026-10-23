@@ -7456,37 +7456,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 }
                 Spacer(Modifier.width(14.dp))
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
-                IconButton(
-                    onClick = {
-                        showAddressLocationSheet = false
-                        showMapPicker = false
-                        showAddressDetailsSheet = false
-                        addressLabel = "Home"
-                        recipientName = ""
-                        recipientPhone = ""
-                        addressLine1 = ""
-                        addressLine2 = ""
-                        landmark = ""
-                        city = ""
-                        state = ""
-                        pincode = ""
-                        showAddressForm = false
-                        addressMessage = null
-                    },
-                    modifier = Modifier.size(48.dp)
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
-                }
-                IconButton(
-                    onClick = {
-                        // Open the interactive map directly; avoid an intermediate sheet
-                        // that can fail to appear above the address screen.
-                        showMapActionSheet = false
-                        showAddressLocationSheet = false
-                        showAddressForm = false
-                        showAddressDetailsSheet = false
-                        showMapPicker = true
-                    },
                     modifier = Modifier.size(48.dp)
                 ) {
                     Icon(Icons.Default.Map, contentDescription = "Choose location on map", tint = Ink, modifier = Modifier.size(26.dp))
@@ -8331,14 +8300,12 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     Text("No addresses yet", fontSize = 18.sp, color = Ink, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        "Tap Add address to save your first delivery location.",
+                        "Saved addresses will appear here.",
                         color = Muted,
                         fontSize = 13.sp,
                         textAlign = TextAlign.Center
                     )
                     Spacer(Modifier.height(18.dp))
-                    Button(
-                        onClick = { showAddressForm = false; addressMessage = null },
                         modifier = Modifier.fillMaxWidth(0.78f).height(54.dp),
                         shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Forest),
