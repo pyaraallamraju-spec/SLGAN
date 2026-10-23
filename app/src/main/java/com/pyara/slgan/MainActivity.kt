@@ -1591,7 +1591,7 @@ private fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .height(88.dp),
+                .height(76.dp),
             shape = signInShape,
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 0.dp,
@@ -1628,10 +1628,10 @@ private fun LoginScreen(
                 Image(
                     painter = painterResource(R.drawable.slgan_sign_in_button),
                     contentDescription = "Sign in",
-                    // Give the full-width artwork a taller drawing area so its
-                    // text and decorative border remain legible on phone screens.
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(vertical = 2.dp),
-                    contentScale = ContentScale.FillBounds
+                    // Preserve the source artwork's wide aspect ratio; avoid stretching
+                    // the lettering and gold border to fill the button's height.
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                    contentScale = ContentScale.Fit
                 )
             }
         }
