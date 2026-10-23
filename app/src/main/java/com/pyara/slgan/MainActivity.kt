@@ -7080,10 +7080,24 @@ private fun AccountsPage(
                             modifier = Modifier.width(maxWidth).background(Color.White),
                         ) {
                             listOf("English", "Telugu", "Hindi").forEach { option ->
+                                val isSelected = selectedLanguage == option
                                 DropdownMenuItem(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    leadingIcon = { if (selectedLanguage == option) Icon(Icons.Default.Check, null, tint = Ink) },
-                                    text = { Text(tr(option, appLanguage), color = Ink) },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .then(if (isSelected) Modifier.background(Forest, RoundedCornerShape(10.dp)) else Modifier),
+                                    leadingIcon = {
+                                        if (isSelected) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(24.dp)
+                                                    .background(Color(0xFF21834A), CircleShape),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Icon(Icons.Default.Check, contentDescription = "Selected", tint = Color.White, modifier = Modifier.size(17.dp))
+                                            }
+                                        }
+                                    },
+                                    text = { Text(tr(option, appLanguage), color = if (isSelected) Color.White else Ink) },
                                     onClick = { selectedLanguage = option; languageDropdownExpanded = false }
                                 )
                             }
