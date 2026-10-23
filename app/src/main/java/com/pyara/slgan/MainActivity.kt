@@ -3903,6 +3903,7 @@ private fun ShopScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(Icons.Default.Person, contentDescription = "Profile", tint = Ink, modifier = Modifier.size(24.dp))
+                    }
                     Box(
                         modifier = Modifier.align(Alignment.TopEnd)
                             .offset(x = (-6).dp, y = 2.dp)
