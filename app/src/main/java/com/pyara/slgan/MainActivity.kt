@@ -7714,7 +7714,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Text(if (isLoading) "Loading profile…" else if (isSaving) "Saving…" else "Save profile", fontWeight = FontWeight.Bold)
             }
             }
-        } else if (showAddressForm) {
+        } else if (showAddressForm && initialSection != "Addresses") {
             Row(
                 modifier = Modifier.fillMaxWidth()
                     .background(Color.White)
