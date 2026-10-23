@@ -7561,7 +7561,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
             }
         }
     }
-    if (showAddAddressSheet) {
+    if (showAddAddressSheet && !showAddAddressPage) {
         ModalBottomSheet(
             onDismissRequest = { showAddAddressSheet = false },
             containerColor = Color.White,
