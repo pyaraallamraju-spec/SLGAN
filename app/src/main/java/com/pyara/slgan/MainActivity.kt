@@ -7627,7 +7627,7 @@ private fun AddAddressDetailsPage(
                             onClick = { areaMenu = true },
                             modifier = Modifier.fillMaxWidth().height(76.dp),
                             shape = RoundedCornerShape(16.dp),
-                            border = BorderStroke(1.dp, if (areaError) Color(0xFFE53945) else Color(0xFFD7DCE6),
+                            border = BorderStroke(1.dp, if (areaError) Color(0xFFE53945) else Color(0xFFD7DCE6)),
                             contentPadding = PaddingValues(horizontal = 14.dp)
                         ) {
                             Icon(Icons.Default.Place, contentDescription = null, tint = Ink)
