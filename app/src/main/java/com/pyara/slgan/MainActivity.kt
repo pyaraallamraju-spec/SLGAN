@@ -7656,6 +7656,7 @@ private fun AddAddressDetailsPage(
     var nameError by remember { mutableStateOf(false) }
     var phoneError by remember { mutableStateOf(false) }
     var showReview by remember { mutableStateOf(false) }
+    var showExitConfirmation by remember { mutableStateOf(false) }
     var cityMenu by remember { mutableStateOf(false) }
     var areaMenu by remember { mutableStateOf(false) }
     var citySearch by remember { mutableStateOf("") }
@@ -7764,12 +7765,52 @@ private fun AddAddressDetailsPage(
         return
     }
 
+    BackHandler(enabled = true) {
+        if (showExitConfirmation) showExitConfirmation = false
+        else showExitConfirmation = true
+    }
+
+    if (showExitConfirmation) {
+        AlertDialog(
+            onDismissRequest = { showExitConfirmation = false },
+            title = {
+                Text("Are you sure?", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.ExtraBold)
+            },
+            text = {
+                Text(
+                    "Any changes on this screen may be lost if you continue",
+                    textAlign = TextAlign.Center,
+                    color = Muted
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showExitConfirmation = false
+                        onBack()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                    shape = RoundedCornerShape(12.dp)
+                ) { Text("Yes", color = Color.White) }
+            },
+            dismissButton = {
+                OutlinedButton(
+                    onClick = { showExitConfirmation = false },
+                    border = BorderStroke(1.dp, Forest),
+                    shape = RoundedCornerShape(12.dp)
+                ) { Text("No", color = Forest) }
+            },
+            shape = RoundedCornerShape(22.dp),
+            containerColor = Color.White
+        )
+    }
+
     Column(Modifier.fillMaxSize().background(Color(0xFFF2F4FA))) {
         Row(
             Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onBack, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE1E6EF), CircleShape)) {
+            IconButton(onClick = { showExitConfirmation = true }, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE1E6EF), CircleShape)) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
             Text("Add address details", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
