@@ -18,8 +18,11 @@ import android.view.WindowManager
 import android.widget.Toast
 import android.content.Intent
 import android.net.Uri
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.speech.RecognizerIntent
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.WindowCompat
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.google.firebase.FirebaseApp
@@ -7651,6 +7654,7 @@ private fun AddAddressDetailsPage(
     var addressError by remember { mutableStateOf(false) }
     var nameError by remember { mutableStateOf(false) }
     var phoneError by remember { mutableStateOf(false) }
+    var showReview by remember { mutableStateOf(false) }
     var cityMenu by remember { mutableStateOf(false) }
     var areaMenu by remember { mutableStateOf(false) }
     val cities = listOf("Hyderabad", "Visakhapatnam", "Kakinada", "Vijayawada", "Rajahmundry", "Other")
@@ -7691,6 +7695,56 @@ private fun AddAddressDetailsPage(
         } else {
             Toast.makeText(context, "Couldn't detect your location. Please enter the address manually.", Toast.LENGTH_LONG).show()
         }
+    }
+
+    if (showReview) {
+        ReviewAddressPage(
+            city = city,
+            area = area,
+            fullAddress = fullAddress,
+            receiverName = receiverName,
+            receiverPhone = receiverPhone,
+            onEdit = { showReview = false },
+            onSave = {
+                cityError = city.isBlank()
+                areaError = area.isBlank()
+                addressError = fullAddress.isBlank()
+                nameError = receiverName.isBlank()
+                phoneError = receiverPhone.filter(Char::isDigit).length < 10
+                if (cityError || areaError || addressError || nameError || phoneError) {
+                    showReview = false
+                    return@ReviewAddressPage
+                }
+                if (user == null) {
+                    Toast.makeText(context, "Please sign in to save an address.", Toast.LENGTH_LONG).show()
+                    return@ReviewAddressPage
+                }
+                saving = true
+                val data = hashMapOf<String, Any>(
+                    "userId" to user.uid,
+                    "city" to city.trim(),
+                    "area" to area.trim(),
+                    "address" to fullAddress.trim(),
+                    "addressText" to fullAddress.trim(),
+                    "googleMapsLink" to mapLink.trim(),
+                    "name" to receiverName.trim(),
+                    "phone" to receiverPhone.trim(),
+                    "label" to label.trim().ifBlank { "Other" },
+                    "isDefault" to false,
+                    "createdAt" to com.google.firebase.Timestamp.now()
+                )
+                FirebaseFirestore.getInstance().collection("addresses").add(data)
+                    .addOnSuccessListener { doc ->
+                        saving = false
+                        onSaved(data + ("_id" to doc.id))
+                    }
+                    .addOnFailureListener {
+                        saving = false
+                        Toast.makeText(context, "Couldn't save address. Please try again.", Toast.LENGTH_LONG).show()
+                    }
+            }
+        )
+        return
     }
 
     Column(Modifier.fillMaxSize().background(Color(0xFFF2F4FA))) {
@@ -7797,33 +7851,7 @@ private fun AddAddressDetailsPage(
                     nameError = receiverName.isBlank()
                     phoneError = receiverPhone.filter(Char::isDigit).length < 10
                     if (cityError || areaError || addressError || nameError || phoneError) return@Button
-                    if (user == null) {
-                        Toast.makeText(context, "Please sign in to save an address.", Toast.LENGTH_LONG).show()
-                        return@Button
-                    }
-                    saving = true
-                    val data = hashMapOf<String, Any>(
-                        "userId" to user.uid,
-                        "city" to city.trim(),
-                        "area" to area.trim(),
-                        "address" to fullAddress.trim(),
-                        "addressText" to fullAddress.trim(),
-                        "googleMapsLink" to mapLink.trim(),
-                        "name" to receiverName.trim(),
-                        "phone" to receiverPhone.trim(),
-                        "label" to label.trim().ifBlank { "Other" },
-                        "isDefault" to false,
-                        "createdAt" to com.google.firebase.Timestamp.now()
-                    )
-                    FirebaseFirestore.getInstance().collection("addresses").add(data)
-                        .addOnSuccessListener { doc ->
-                            saving = false
-                            onSaved(data + ("_id" to doc.id))
-                        }
-                        .addOnFailureListener {
-                            saving = false
-                            Toast.makeText(context, "Couldn't save address. Please try again.", Toast.LENGTH_LONG).show()
-                        }
+                    showReview = true
                 },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 14.dp).height(58.dp),
                 enabled = !saving, colors = ButtonDefaults.buttonColors(containerColor = Forest),
@@ -7832,6 +7860,84 @@ private fun AddAddressDetailsPage(
                 if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = Color.White, strokeWidth = 2.dp)
                 else Text("Next", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             }
+        }
+    }
+}
+
+
+@Composable
+private fun ReviewAddressPage(
+    city: String,
+    area: String,
+    fullAddress: String,
+    receiverName: String,
+    receiverPhone: String,
+    onEdit: () -> Unit,
+    onSave: () -> Unit
+) {
+    val context = LocalContext.current
+    val query = Uri.encode(listOf(fullAddress, area, city).filter { it.isNotBlank() }.joinToString(", "))
+    Column(Modifier.fillMaxSize().background(Color.White)) {
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onEdit, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE1E6EF), CircleShape)) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back to address details", tint = Ink)
+            }
+            Text("Review your delivery pin", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        }
+        AndroidView(
+            modifier = Modifier.fillMaxWidth().weight(1f).heightIn(min = 280.dp),
+            factory = { ctx ->
+                WebView(ctx).apply {
+                    webViewClient = WebViewClient()
+                    settings.javaScriptEnabled = true
+                    settings.domStorageEnabled = true
+                    loadUrl("https://maps.google.com/maps?q=$query&output=embed")
+                }
+            },
+            update = { view ->
+                val nextUrl = "https://maps.google.com/maps?q=$query&output=embed"
+                if (view.tag != nextUrl) {
+                    view.tag = nextUrl
+                    view.loadUrl(nextUrl)
+                }
+            }
+        )
+        Row(
+            Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Your address details", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            TextButton(onClick = onEdit) { Text("Edit", color = Forest, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
+        }
+        Divider(color = Color(0xFFE6E8EE))
+        Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(verticalAlignment = Alignment.Top) {
+                Icon(Icons.Default.Home, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Text("  Address  :  $fullAddress", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+            }
+            Row(verticalAlignment = Alignment.Top) {
+                Icon(Icons.Default.Place, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Text("  Area  :  $area", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+            }
+            Row(verticalAlignment = Alignment.Top) {
+                Icon(Icons.Default.LocationCity, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Text("  City  :  $city", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+            }
+            Row(verticalAlignment = Alignment.Top) {
+                Icon(Icons.Default.People, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Text("  Receiver  :  $receiverName, $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+            }
+        }
+        Button(
+            onClick = onSave,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp).height(60.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Forest),
+            shape = RoundedCornerShape(18.dp)
+        ) {
+            Text("Save Address", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
