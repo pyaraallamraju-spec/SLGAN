@@ -3721,7 +3721,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         orders.filter { order ->
             val matchesStatus = statusFilter == "All" || orderStatusForFilter(order) == statusFilter.lowercase()
             val matchesQuery = query.isBlank() ||
-                listOf("orderId", "_documentId", "customerName", "phone", "email", "shippingAddress", "orderStatus")
+                listOf("orderId", "_documentId", "customerName", "phone", "email", "orderStatus")
                     .any { key -> order[key]?.toString()?.lowercase()?.contains(query) == true } ||
                 listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> }?.any { raw ->
                     val item = raw as? Map<*, *>
@@ -3888,7 +3888,6 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                     Text("Customer: " + (order["customerName"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
                                     Text("Email: " + (order["email"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
                                     Text("Phone: " + (order["phone"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
-                                    Text("Delivery address: " + (order["shippingAddress"]?.toString().orEmpty().ifBlank { "Information not available" }), color = Ink, fontSize = 12.sp)
                                     Text("Order time: " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Information not available"), color = AdminMuted, fontSize = 12.sp)
                                     Text("Items", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                                     if (itemRows.isEmpty()) {
@@ -6120,7 +6119,6 @@ private fun OrdersPage(
         val invoiceNo = order["invoiceNumber"]?.toString() ?: orderId
         val customerName = order["customerName"]?.toString().orEmpty()
         val phone = order["phone"]?.toString().orEmpty()
-        val address = order["shippingAddress"]?.toString().orEmpty()
         val status = order["orderStatus"]?.toString() ?: "received"
         val paymentStatus = order["paymentStatus"]?.toString() ?: "not_collected"
         val total = (order["grandTotal"] as? Number)?.toDouble() ?: (order["subtotal"] as? Number)?.toDouble() ?: 0.0
