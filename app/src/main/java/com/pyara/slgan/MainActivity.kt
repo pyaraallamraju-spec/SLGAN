@@ -4083,6 +4083,7 @@ private fun ShopScreen(
             )
             "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, onBack = { onTabChange("Accounts") })
+            "AddressBook" -> AddressBookPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") })
             "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "About" -> AboutPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "AccountPrivacy" -> AccountPrivacyPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
@@ -6976,7 +6977,7 @@ private fun AccountsPage(
             Column {
                 Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
-                AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { Toast.makeText(context, "Address book is not available yet.", Toast.LENGTH_SHORT).show() }
+                AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("AddressBook") }
                 AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("MyOrders") }
                 AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse your wishlist") { onTabChange("Wishlist") }
                 AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
@@ -7345,6 +7346,131 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
+@Composable
+private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
+    val context = LocalContext.current
+    val authUser = FirebaseAuth.getInstance().currentUser
+    var addresses by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    var loading by remember { mutableStateOf(true) }
+
+    LaunchedEffect(authUser?.uid) {
+        val uid = authUser?.uid
+        if (uid == null) {
+            addresses = emptyList()
+            loading = false
+        } else {
+            FirebaseFirestore.getInstance().collection("addresses")
+                .whereEqualTo("userId", uid)
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    addresses = snapshot.documents.map { doc ->
+                        doc.data.orEmpty() + ("_id" to doc.id)
+                    }
+                    loading = false
+                }
+                .addOnFailureListener { loading = false }
+        }
+    }
+
+    Column(modifier.fillMaxSize().background(Color(0xFFF2F4FA))) {
+        Row(
+            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE1E6EF), CircleShape)) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+            }
+            Text("Address book", modifier = Modifier.weight(1f).padding(start = 14.dp), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+            IconButton(onClick = { Toast.makeText(context, "To add an address, address entry fields need to be configured.", Toast.LENGTH_SHORT).show() }) {
+                Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(30.dp))
+            }
+        }
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 18.dp, vertical = 22.dp)) {
+            Text("Saved addresses", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.height(6.dp))
+            Text("Keep delivery locations for future orders.", color = Muted, fontSize = 14.sp)
+            Spacer(Modifier.height(20.dp))
+            if (loading) {
+                Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = Forest)
+                }
+            } else if (addresses.isEmpty()) {
+                Card(
+                    Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+                ) {
+                    Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Muted, modifier = Modifier.size(38.dp))
+                        Spacer(Modifier.height(10.dp))
+                        Text("No saved addresses yet", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("Your saved delivery addresses will appear here.", color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
+                    }
+                }
+            } else {
+                addresses.forEach { address ->
+                    val name = address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { "Delivery address" }
+                    val label = address["label"]?.toString().orEmpty().ifBlank { "HOME" }
+                    val phone = address["phone"]?.toString().orEmpty()
+                    val addressText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
+                        .mapNotNull { key -> address[key]?.toString()?.takeIf { it.isNotBlank() } }
+                        .joinToString(", ")
+                        .ifBlank { address["address"]?.toString().orEmpty() }
+                    val isDefault = address["isDefault"] == true || address["default"] == true
+                    Card(
+                        Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                        shape = RoundedCornerShape(24.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 7.dp)
+                    ) {
+                        Column(Modifier.fillMaxWidth().padding(18.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(Modifier.size(54.dp).shadow(5.dp, RoundedCornerShape(18.dp)).background(Color(0xFFE4E8F0), RoundedCornerShape(18.dp)), contentAlignment = Alignment.Center) {
+                                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink, modifier = Modifier.size(28.dp))
+                                }
+                                Spacer(Modifier.width(14.dp))
+                                Column(Modifier.weight(1f)) {
+                                    Text(label.uppercase(), color = Muted, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                    Spacer(Modifier.height(4.dp))
+                                    Text(name, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                }
+                                if (isDefault) {
+                                    Box(Modifier.size(42.dp).shadow(4.dp, CircleShape).background(Color(0xFF25864D), CircleShape), contentAlignment = Alignment.Center) {
+                                        Icon(Icons.Default.Check, contentDescription = "Default address", tint = Color.White, modifier = Modifier.size(27.dp))
+                                    }
+                                }
+                            }
+                            Spacer(Modifier.height(18.dp))
+                            HorizontalDivider(color = Color(0xFFF0E2C9))
+                            Spacer(Modifier.height(14.dp))
+                            if (phone.isNotBlank()) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(Modifier.size(44.dp).shadow(4.dp, RoundedCornerShape(14.dp)).background(Color(0xFFF2F3F6), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+                                        Icon(Icons.Default.Call, contentDescription = null, tint = Ink)
+                                    }
+                                    Spacer(Modifier.width(14.dp))
+                                    Text(phone, color = Ink, fontSize = 16.sp)
+                                }
+                                Spacer(Modifier.height(12.dp))
+                            }
+                            if (addressText.isNotBlank()) {
+                                Row(verticalAlignment = Alignment.Top) {
+                                    Box(Modifier.size(44.dp).shadow(4.dp, RoundedCornerShape(14.dp)).background(Color(0xFFF2F3F6), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+                                        Icon(Icons.Default.Home, contentDescription = null, tint = Ink)
+                                    }
+                                    Spacer(Modifier.width(14.dp))
+                                    Text(addressText, color = Ink, fontSize = 16.sp, lineHeight = 23.sp, modifier = Modifier.weight(1f))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, initialSection: String = "Profile", onBack: (() -> Unit)? = null) {
     val user = remember { FirebaseAuth.getInstance().currentUser }
     val uid = user?.uid
