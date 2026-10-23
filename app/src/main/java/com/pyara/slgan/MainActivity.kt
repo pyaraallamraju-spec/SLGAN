@@ -1976,6 +1976,7 @@ private fun HomeBannerSlider(
                         if (!slide.isCompanySlide) {
                             Row(
                                 modifier = Modifier
+                                    .offset(x = 4.dp)
                                     .clip(RoundedCornerShape(4.dp))
                                     .background(Color.Transparent)
                                     .clickable { openProduct(slide.productName) }
