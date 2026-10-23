@@ -5125,7 +5125,7 @@ private fun ProductDetailsPage(
                             Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.Bold)
                             Text(if (product.subtitle.isNotBlank()) "Net quantity: ${product.subtitle}" else "Net quantity: See product pack", color = Muted, fontSize = 15.sp)
                             if (product.price > 0.0) {
-                                Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Color.White, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 5.dp).background(Color(0xFF268A35), RoundedCornerShape(9.dp)).padding(horizontal = 10.dp, vertical = 5.dp))
+                                Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 5.dp).background(Color(0xFFE2E2E2), RoundedCornerShape(9.dp)).padding(horizontal = 10.dp, vertical = 5.dp))
                                 Text("Price inclusive of applicable taxes", color = Muted, fontSize = 13.sp)
                             } else Text(tr("Price not available yet.", currentLanguage), color = Muted, fontSize = 15.sp)
                         }
