@@ -1774,11 +1774,17 @@ private fun LoginScreen(
                 shape = RectangleShape
             )
         }
-        Button(
+        OutlinedButton(
             onClick = if (otpSent) onVerifyPhoneOtp else onSendPhoneOtp,
             enabled = !loading,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 8.dp).height(48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Forest),
+            border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = Color(0xFFE2E2E2),
+                contentColor = Ink,
+                disabledContainerColor = Color(0xFFE2E2E2),
+                disabledContentColor = Ink.copy(alpha = 0.6f)
+            ),
             shape = RoundedCornerShape(12.dp)
         ) {
             if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
