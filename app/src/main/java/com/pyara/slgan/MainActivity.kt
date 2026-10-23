@@ -8128,11 +8128,11 @@ private fun AddAddressDetailsPage(
                     showReview = true
                 },
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).height(50.dp),
-                enabled = !saving, colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                enabled = !saving, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink, disabledContainerColor = Color(0xFFE2E2E2), disabledContentColor = Ink),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = Color.White, strokeWidth = 2.dp)
-                else Text("Next", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = Ink, strokeWidth = 2.dp)
+                else Text("Next", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
