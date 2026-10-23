@@ -6050,32 +6050,18 @@ private fun OrdersPage(
                             Spacer(Modifier.width(5.dp))
                             Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = if (status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)) Color(0xFFC62828) else Color(0xFF27864A), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
-                            OutlinedButton(
-                                onClick = { selectedOrder = order },
-                                shape = RoundedCornerShape(10.dp),
-                                border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
-                                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFE2E2E2), contentColor = Color(0xFF000000)),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 5.dp)
-                            ) {
-                                Text("View Order", color = Color(0xFF000000), fontWeight = FontWeight.Bold, maxLines = 1)
+                            TextButton(onClick = { selectedOrder = order }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) {
+                                Text("View Order", color = Ink, fontWeight = FontWeight.Bold)
                             }
-                            OutlinedButton(
-                                onClick = {
-                                    val addedCount = addOrderItemsToCart(orderItems)
-                                    Toast.makeText(
-                                        context,
-                                        if (addedCount > 0) "$addedCount item(s) added to cart" else "No ordered products matched the current catalogue. Please refresh products and try again.",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    if (addedCount > 0) onCart()
-                                },
-                                shape = RoundedCornerShape(10.dp),
-                                border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
-                                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFE2E2E2), contentColor = Color(0xFF000000)),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 5.dp)
-                            ) {
-                                Text("Reorder", color = Color(0xFF000000), fontWeight = FontWeight.Bold, maxLines = 1)
-                            }
+                            TextButton(onClick = {
+                                val addedCount = addOrderItemsToCart(orderItems)
+                                Toast.makeText(
+                                    context,
+                                    if (addedCount > 0) "$addedCount item(s) added to cart" else "No ordered products matched the current catalogue. Please refresh products and try again.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                if (addedCount > 0) onCart()
+                            }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) { Text("Reorder", color = Ink, fontWeight = FontWeight.Bold) }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
