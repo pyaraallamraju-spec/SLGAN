@@ -7360,7 +7360,6 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
-@Composable
 private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     val context = LocalContext.current
     val authUser = FirebaseAuth.getInstance().currentUser
@@ -7445,7 +7444,6 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp).clickable {
                             selectedAddressId = addressId
                         },
-                        Modifier.fillMaxWidth().padding(bottom = 16.dp),
                         shape = RoundedCornerShape(24.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White),
                         elevation = CardDefaults.cardElevation(defaultElevation = 7.dp)
