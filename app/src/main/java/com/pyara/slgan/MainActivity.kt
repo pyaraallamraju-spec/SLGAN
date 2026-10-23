@@ -8330,7 +8330,9 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 if (addressSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null, tint = Ink)
                 Spacer(Modifier.width(8.dp)); Text(if (addressSaving) "Saving address…" else "Save address", color = Ink, fontWeight = FontWeight.Bold)
             }
-        } else {
+            }
+        }
+    } else {
             if (addresses.isEmpty()) {
                 Spacer(Modifier.height(44.dp))
                 Column(
