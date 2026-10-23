@@ -27,6 +27,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.auth.PhoneAuthCredential
+import java.util.concurrent.TimeUnit
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.firestore.FirebaseFirestore
@@ -746,6 +749,11 @@ private fun AyurvedicApp() {
     }
     var userInput by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("+91") }
+    var phoneOtpCode by remember { mutableStateOf("") }
+    var phoneOtpSent by remember { mutableStateOf(false) }
+    var phoneVerificationId by remember { mutableStateOf<String?>(null) }
+    var phoneResendToken by remember { mutableStateOf<PhoneAuthProvider.ForceResendingToken?>(null) }
     var confirmPassword by remember { mutableStateOf("") }
     var isCreatingAccount by remember { mutableStateOf(false) }
     var authError by remember { mutableStateOf<String?>(null) }
@@ -1018,6 +1026,61 @@ private fun AyurvedicApp() {
                 errorMessage = authError,
                 loading = isLoading,
                 onGoogleSignIn = onGoogleSignIn,
+                phoneNumber = phoneNumber,
+                onPhoneNumberChange = { phoneNumber = it },
+                otpCode = phoneOtpCode,
+                onOtpCodeChange = { phoneOtpCode = it.filter(Char::isDigit).take(6) },
+                otpSent = phoneOtpSent,
+                onSendPhoneOtp = {
+                    val number = phoneNumber.trim().replace(" ", "")
+                    val activity = appContext as? Activity
+                    if (activity == null || !number.matches(Regex("^\\+[1-9]\\d{7,14}$"))) {
+                        authError = "Enter a valid phone number with country code, e.g. +919876543210."
+                    } else {
+                        isLoading = true
+                        authError = null
+                        val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                                auth.signInWithCredential(credential).addOnCompleteListener { task ->
+                                    isLoading = false
+                                    if (!task.isSuccessful) authError = task.exception?.localizedMessage ?: "Phone verification failed."
+                                }
+                            }
+                            override fun onVerificationFailed(error: com.google.firebase.FirebaseException) {
+                                isLoading = false
+                                authError = error.localizedMessage ?: "Could not send SMS. Check Firebase phone-auth settings."
+                            }
+                            override fun onCodeSent(id: String, token: PhoneAuthProvider.ForceResendingToken) {
+                                isLoading = false
+                                phoneVerificationId = id
+                                phoneResendToken = token
+                                phoneOtpSent = true
+                                authError = "Verification code sent by SMS."
+                            }
+                        }
+                        val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
+                            .setPhoneNumber(number)
+                            .setTimeout(60L, TimeUnit.SECONDS)
+                            .setActivity(activity)
+                            .setCallbacks(callbacks)
+                        phoneResendToken?.let { optionsBuilder.setForceResendingToken(it) }
+                        PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
+                    }
+                },
+                onVerifyPhoneOtp = {
+                    val id = phoneVerificationId
+                    if (id.isNullOrBlank() || phoneOtpCode.length != 6) {
+                        authError = "Enter the 6-digit SMS code first."
+                    } else {
+                        isLoading = true
+                        authError = null
+                        val credential = PhoneAuthProvider.getCredential(id, phoneOtpCode)
+                        auth.signInWithCredential(credential).addOnCompleteListener { task ->
+                            isLoading = false
+                            if (!task.isSuccessful) authError = task.exception?.localizedMessage ?: "Incorrect or expired SMS code."
+                        }
+                    }
+                },
                 onForgotPassword = {
                     val email = userInput.trim()
                     if (email.isBlank()) {
@@ -1294,7 +1357,14 @@ private fun LoginScreen(
     loading: Boolean,
     onGoogleSignIn: () -> Unit,
     onContinue: () -> Unit,
-    onForgotPassword: () -> Unit
+    onForgotPassword: () -> Unit,
+    phoneNumber: String,
+    onPhoneNumberChange: (String) -> Unit,
+    otpCode: String,
+    onOtpCodeChange: (String) -> Unit,
+    otpSent: Boolean,
+    onSendPhoneOtp: () -> Unit,
+    onVerifyPhoneOtp: () -> Unit
 ) {
     var showPassword by remember { mutableStateOf(false) }
     Box(Modifier.fillMaxSize().background(Color.White)) {
@@ -1586,9 +1656,48 @@ private fun LoginScreen(
         }
         Spacer(Modifier.height(8.dp))
         Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(4.dp))
-        Text(tr("Mobile-number login is not available yet.", LocalAppLanguage.current), fontSize = 12.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(30.dp))
+        Spacer(Modifier.height(12.dp))
+        Row(Modifier.fillMaxWidth().padding(horizontal = 22.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
+            Text("  OR PHONE OTP  ", color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
+            Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
+        }
+        Spacer(Modifier.height(8.dp))
+        OutlinedTextField(
+            value = phoneNumber,
+            onValueChange = onPhoneNumberChange,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
+            placeholder = { Text("Phone number, e.g. +919876543210", color = Muted, fontSize = 14.sp) },
+            leadingIcon = { Icon(Icons.Default.Phone, null, tint = Ink) },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            shape = RectangleShape,
+            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Gold, unfocusedBorderColor = Muted.copy(alpha = 0.45f), cursorColor = Forest)
+        )
+        if (otpSent) {
+            Spacer(Modifier.height(8.dp))
+            OutlinedTextField(
+                value = otpCode,
+                onValueChange = onOtpCodeChange,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
+                placeholder = { Text("6-digit SMS code", color = Muted, fontSize = 14.sp) },
+                leadingIcon = { Icon(Icons.Default.Password, null, tint = Ink) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                shape = RectangleShape
+            )
+        }
+        Button(
+            onClick = if (otpSent) onVerifyPhoneOtp else onSendPhoneOtp,
+            enabled = !loading,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 8.dp).height(48.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Forest),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+            else Text(if (otpSent) "Verify OTP and sign in" else "Send SMS OTP", fontWeight = FontWeight.SemiBold)
+        }
+        Spacer(Modifier.height(24.dp))
         }
     }
 }
