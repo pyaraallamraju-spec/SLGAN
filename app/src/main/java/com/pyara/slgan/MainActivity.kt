@@ -7885,7 +7885,7 @@ private fun ReviewAddressPage(
             IconButton(onClick = onEdit, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE1E6EF), CircleShape)) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back to address details", tint = Ink)
             }
-            Text("Review your delivery pin", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text("Review address", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
         AndroidView(
             modifier = Modifier.fillMaxWidth().weight(1f).heightIn(min = 280.dp),
