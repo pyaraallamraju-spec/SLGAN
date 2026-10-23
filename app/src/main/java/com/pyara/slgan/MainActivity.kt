@@ -6193,9 +6193,9 @@ private fun OrdersPage(
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink)
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Repeat Order", color = Ink, fontSize = 20.sp, lineHeight = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                            Text("Repeat Order", color = Color(0xFF000000), fontSize = 20.sp, lineHeight = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                             Spacer(Modifier.height(3.dp))
-                            Text("VIEW CART ON NEXT STEP", color = Ink, fontSize = 11.sp, lineHeight = 14.sp, maxLines = 1)
+                            Text("VIEW CART ON NEXT STEP", color = Color(0xFF000000), fontSize = 11.sp, lineHeight = 14.sp, maxLines = 1)
                         }
                     }
                 }
