@@ -1591,7 +1591,7 @@ private fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .height(64.dp),
+                .height(88.dp),
             shape = signInShape,
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 0.dp,
@@ -1612,7 +1612,7 @@ private fun LoginScreen(
                 CircularProgressIndicator(modifier = Modifier.size(22.dp), color = Color(0xFFB88A36), strokeWidth = 2.dp)
             } else if (isCreatingAccount) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().height(64.dp),
+                    modifier = Modifier.fillMaxWidth().height(88.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -1628,9 +1628,9 @@ private fun LoginScreen(
                 Image(
                     painter = painterResource(R.drawable.slgan_sign_in_button),
                     contentDescription = "Sign in",
-                    // Let the artwork occupy the full button area so it stays
-                    // horizontally aligned with the login form instead of appearing tiny.
-                    modifier = Modifier.fillMaxSize(),
+                    // Give the full-width artwork a taller drawing area so its
+                    // text and decorative border remain legible on phone screens.
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(vertical = 2.dp),
                     contentScale = ContentScale.FillBounds
                 )
             }
