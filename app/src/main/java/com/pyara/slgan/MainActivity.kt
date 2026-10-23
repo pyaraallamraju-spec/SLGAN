@@ -7457,7 +7457,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Spacer(Modifier.width(14.dp))
                 Text("My addresses", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.weight(1f))
                 IconButton(
-                    onClick = { /* Address details page will be connected later. */ },
+                    onClick = { showAddressLocationSheet = true },
                     modifier = Modifier.size(48.dp)
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
@@ -7927,8 +7927,9 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         city = ""
                         state = ""
                         pincode = ""
-                        showAddressForm = true
+                        showAddressForm = false
                         addressMessage = null
+                        showMapPicker = true
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(18.dp),
