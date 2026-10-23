@@ -7657,8 +7657,23 @@ private fun AddAddressDetailsPage(
     var showReview by remember { mutableStateOf(false) }
     var cityMenu by remember { mutableStateOf(false) }
     var areaMenu by remember { mutableStateOf(false) }
-    val cities = listOf("Hyderabad", "Visakhapatnam", "Kakinada", "Vijayawada", "Rajahmundry", "Other")
-    val areas = listOf("Manikonda", "Gachibowli", "Kondapur", "Pappulaguda", "Kukatpally", "Malkajgiri", "Other")
+    var citySearch by remember { mutableStateOf("") }
+    val cities = listOf(
+        "Abohar", "Adoni", "Agartala", "Agra", "Ahmedabad", "Ahmednagar", "Aizawl", "Ajmer",
+        "Akola", "Alappuzha", "Aligarh", "Allahabad", "Alwar", "Amravati", "Amritsar", "Anantapur",
+        "Arrah", "Asansol", "Aurangabad", "Bengaluru", "Berhampur", "Bhilai", "Bhopal", "Bhubaneswar",
+        "Bikaner", "Bilaspur", "Chandigarh", "Chennai", "Coimbatore", "Cuttack", "Dehradun", "Delhi",
+        "Dhanbad", "Dibrugarh", "Durgapur", "Faridabad", "Gandhinagar", "Ghaziabad", "Guntur", "Gurugram",
+        "Guwahati", "Gwalior", "Hyderabad", "Imphal", "Indore", "Jabalpur", "Jaipur", "Jalandhar",
+        "Jammu", "Jamnagar", "Jamshedpur", "Jhansi", "Jodhpur", "Kakinada", "Kannur", "Kanpur",
+        "Kochi", "Kolhapur", "Kolkata", "Kollam", "Kota", "Kozhikode", "Kurnool", "Lucknow",
+        "Ludhiana", "Madurai", "Mangaluru", "Meerut", "Mumbai", "Mysuru", "Nagpur", "Nanded",
+        "Nashik", "Nellore", "New Delhi", "Noida", "Ongole", "Palakkad", "Panaji", "Patna",
+        "Pondicherry", "Prayagraj", "Pune", "Raipur", "Rajahmundry", "Ranchi", "Rourkela", "Salem",
+        "Sangli", "Shimla", "Siliguri", "Srinagar", "Surat", "Thane", "Thiruvananthapuram", "Tirupati",
+        "Udaipur", "Ujjain", "Vadodara", "Varanasi", "Vellore", "Vijayawada", "Visakhapatnam", "Warangal",
+        "Yadadri Bhuvanagiri"
+    ).distinct().sorted()
 
     LaunchedEffect(useCurrentLocation) {
         if (!useCurrentLocation) return@LaunchedEffect
@@ -7766,7 +7781,7 @@ private fun AddAddressDetailsPage(
                     Text("Address details", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                     Box {
                         OutlinedButton(
-                            onClick = { cityMenu = true },
+                            onClick = { citySearch = ""; cityMenu = true },
                             modifier = Modifier.fillMaxWidth().height(76.dp),
                             shape = RoundedCornerShape(16.dp),
                             border = BorderStroke(1.dp, if (cityError) Color(0xFFE53945) else Color(0xFFD7DCE6)),
@@ -7776,8 +7791,75 @@ private fun AddAddressDetailsPage(
                             Text(city.ifBlank { "Select a city" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 17.sp)
                             Text("Select", color = Forest, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
-                        DropdownMenu(expanded = cityMenu, onDismissRequest = { cityMenu = false }) {
-                            cities.forEach { item -> DropdownMenuItem(text = { Text(item) }, onClick = { city = item; cityError = false; cityMenu = false }) }
+                        if (cityMenu) {
+                            ModalBottomSheet(
+                                onDismissRequest = { cityMenu = false },
+                                containerColor = Color(0xFFF2F4FA),
+                                contentColor = Ink,
+                                shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+                                dragHandle = {
+                                    Box(Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 4.dp), contentAlignment = Alignment.Center) {
+                                        Box(Modifier.width(44.dp).height(4.dp).background(Color(0xFFD2D6DF), CircleShape))
+                                    }
+                                }
+                            ) {
+                                Column(Modifier.fillMaxWidth().fillMaxHeight(0.92f).padding(horizontal = 20.dp)) {
+                                    Text("Select a city", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 18.dp))
+                                    OutlinedTextField(
+                                        value = citySearch,
+                                        onValueChange = { citySearch = it },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        placeholder = { Text("Search for a city") },
+                                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                                        singleLine = true,
+                                        shape = RoundedCornerShape(18.dp),
+                                        colors = OutlinedTextFieldDefaults.colors(
+                                            focusedBorderColor = Color(0xFFD7DCE6),
+                                            unfocusedBorderColor = Color(0xFFD7DCE6),
+                                            cursorColor = Forest
+                                        )
+                                    )
+                                    Text("Top cities", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 18.dp, bottom = 12.dp))
+                                    val topCities = listOf("New Delhi", "Mumbai", "Bengaluru", "Kolkata", "Hyderabad", "Ahmedabad")
+                                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                                        topCities.take(3).forEach { item ->
+                                            Surface(
+                                                modifier = Modifier.weight(1f).clickable { city = item; cityError = false; cityMenu = false },
+                                                shape = RoundedCornerShape(16.dp), color = Color.White
+                                            ) {
+                                                Column(Modifier.padding(vertical = 18.dp, horizontal = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                                    Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink, modifier = Modifier.size(32.dp))
+                                                    Text(item, color = Ink, fontSize = 12.sp, textAlign = TextAlign.Center, maxLines = 2)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth().padding(top = 10.dp)) {
+                                        topCities.drop(3).forEach { item ->
+                                            Surface(
+                                                modifier = Modifier.weight(1f).clickable { city = item; cityError = false; cityMenu = false },
+                                                shape = RoundedCornerShape(16.dp), color = Color.White
+                                            ) {
+                                                Column(Modifier.padding(vertical = 18.dp, horizontal = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                                    Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink, modifier = Modifier.size(32.dp))
+                                                    Text(item, color = Ink, fontSize = 12.sp, textAlign = TextAlign.Center, maxLines = 2)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    Text(if (citySearch.isBlank()) "Other cities" else "Search results", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 18.dp, bottom = 10.dp))
+                                    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)) {
+                                        items(cities.filter { it.contains(citySearch.trim(), ignoreCase = true) }) { item ->
+                                            Surface(
+                                                modifier = Modifier.fillMaxWidth().clickable { city = item; cityError = false; cityMenu = false },
+                                                shape = RoundedCornerShape(14.dp), color = Color.White
+                                            ) {
+                                                Text(item, modifier = Modifier.padding(horizontal = 18.dp, vertical = 16.dp), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     if (cityError) Text("Please select a city", color = Color(0xFFE53945), fontSize = 13.sp)
