@@ -7991,28 +7991,83 @@ private fun AddAddressDetailsPage(
                 Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text("Contact details", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(22.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { forSomeoneElse = false }) {
-                            RadioButton(selected = !forSomeoneElse, onClick = { forSomeoneElse = false }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
+                            forSomeoneElse = false
+                            receiverName = user?.displayName.orEmpty().ifBlank { receiverName }
+                            receiverPhone = user?.phoneNumber.orEmpty().ifBlank { receiverPhone }
+                            nameError = false
+                            phoneError = false
+                        }) {
+                            RadioButton(selected = !forSomeoneElse, onClick = {
+                                forSomeoneElse = false
+                                receiverName = user?.displayName.orEmpty().ifBlank { receiverName }
+                                receiverPhone = user?.phoneNumber.orEmpty().ifBlank { receiverPhone }
+                                nameError = false
+                                phoneError = false
+                            }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
                             Text("Myself", color = Ink)
                         }
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { forSomeoneElse = true }) {
-                            RadioButton(selected = forSomeoneElse, onClick = { forSomeoneElse = true }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
+                            forSomeoneElse = true
+                            receiverName = ""
+                            receiverPhone = ""
+                            nameError = false
+                            phoneError = false
+                        }) {
+                            RadioButton(selected = forSomeoneElse, onClick = {
+                                forSomeoneElse = true
+                                receiverName = ""
+                                receiverPhone = ""
+                                nameError = false
+                                phoneError = false
+                            }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
                             Text("Someone else", color = Ink)
                         }
                     }
                     OutlinedTextField(
                         value = receiverName, onValueChange = { receiverName = it; nameError = false },
-                        modifier = Modifier.fillMaxWidth(), placeholder = { Text(if (forSomeoneElse) "Receiver's name*" else "Your name*") },
-                        isError = nameError, singleLine = true, shape = RoundedCornerShape(14.dp)
+                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) "Receiver's name*" else "Your name*") },
+                        isError = nameError, singleLine = true, shape = RoundedCornerShape(14.dp),
+                        trailingIcon = {
+                            if (receiverName.isNotEmpty()) IconButton(onClick = { receiverName = ""; nameError = false }) {
+                                Icon(Icons.Default.Cancel, contentDescription = "Clear name", tint = Muted)
+                            }
+                        }
                     )
                     if (nameError) Text("Please enter receiver's name", color = Color(0xFFE53945), fontSize = 13.sp)
                     OutlinedTextField(
                         value = receiverPhone, onValueChange = { receiverPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(16); phoneError = false },
-                        modifier = Modifier.fillMaxWidth(), placeholder = { Text(if (forSomeoneElse) "Receiver's phone number*" else "Your phone number*") },
-                        isError = phoneError, singleLine = true, shape = RoundedCornerShape(14.dp)
+                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) "Receiver's phone number*" else "Your phone number*") },
+                        isError = phoneError, singleLine = true, shape = RoundedCornerShape(14.dp),
+                        leadingIcon = { Text("+91", color = Ink, fontWeight = FontWeight.SemiBold) },
+                        trailingIcon = { Icon(Icons.Default.ContactPhone, contentDescription = "Phone number", tint = Muted) }
                     )
                     if (phoneError) Text("Please enter a valid phone number", color = Color(0xFFE53945), fontSize = 13.sp)
-                    OutlinedTextField(value = label, onValueChange = { label = it }, modifier = Modifier.fillMaxWidth(), placeholder = { Text("Save as address (optional), e.g. Home") }, singleLine = true, shape = RoundedCornerShape(14.dp))
+                    Text("Save address as", color = Muted, fontSize = 15.sp)
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        listOf("Home", "Work", "Hotel", "Other").forEach { option ->
+                            val selected = label.equals(option, ignoreCase = true)
+                            Surface(
+                                modifier = Modifier.weight(1f).clickable { label = option },
+                                shape = RoundedCornerShape(14.dp),
+                                color = if (selected) Color(0xFFEAFBEA) else Color.White,
+                                border = BorderStroke(1.dp, if (selected) Forest else Color(0xFFE1E6EF))
+                            ) {
+                                Row(Modifier.padding(vertical = 12.dp, horizontal = 5.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = when (option) {
+                                            "Home" -> Icons.Default.Home
+                                            "Work" -> Icons.Default.Work
+                                            "Hotel" -> Icons.Default.Business
+                                            else -> Icons.Default.People
+                                        },
+                                        contentDescription = null, tint = Color(0xFFFFC83D), modifier = Modifier.size(18.dp)
+                                    )
+                                    Text(option, color = Ink, fontSize = 13.sp, modifier = Modifier.padding(start = 5.dp), maxLines = 1)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
