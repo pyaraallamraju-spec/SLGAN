@@ -753,6 +753,8 @@ private fun AyurvedicApp() {
     var phoneNumber by remember { mutableStateOf("+91") }
     var phoneOtpCode by remember { mutableStateOf("") }
     var phoneOtpSent by remember { mutableStateOf(false) }
+    var emailOtpCode by remember { mutableStateOf("") }
+    var emailOtpSent by remember { mutableStateOf(false) }
     var phoneVerificationId by remember { mutableStateOf<String?>(null) }
     var phoneResendToken by remember { mutableStateOf<PhoneAuthProvider.ForceResendingToken?>(null) }
     var confirmPassword by remember { mutableStateOf("") }
@@ -1027,6 +1029,50 @@ private fun AyurvedicApp() {
                 errorMessage = authError,
                 loading = isLoading,
                 onGoogleSignIn = onGoogleSignIn,
+                emailOtpCode = emailOtpCode,
+                onEmailOtpCodeChange = { emailOtpCode = it.filter(Char::isDigit).take(6) },
+                emailOtpSent = emailOtpSent,
+                onSendEmailOtp = {
+                    val email = userInput.trim().lowercase()
+                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                        authError = "Enter a valid email address first."
+                    } else {
+                        isLoading = true
+                        authError = null
+                        requestEmailOtp(email, "send") { ok, message, _ ->
+                            isLoading = false
+                            authError = message
+                            if (ok) { emailOtpSent = true; emailOtpCode = "" }
+                        }
+                    }
+                },
+                onVerifyEmailOtp = {
+                    val email = userInput.trim().lowercase()
+                    if (emailOtpCode.length != 6) {
+                        authError = "Enter the 6-digit email code."
+                    } else {
+                        isLoading = true
+                        authError = null
+                        requestEmailOtp(email, "verify", emailOtpCode) { ok, message, customToken ->
+                            if (!ok || customToken.isNullOrBlank()) {
+                                isLoading = false
+                                authError = message.ifBlank { "Email verification did not return a Firebase sign-in token. Update the Apps Script deployment." }
+                            } else {
+                                auth.signInWithCustomToken(customToken).addOnCompleteListener { task ->
+                                    isLoading = false
+                                    if (task.isSuccessful) {
+                                        authError = null
+                                        auth.currentUser?.uid?.let { uid ->
+                                            FirebaseData.saveCustomerProfile(uid, mapOf("email" to email, "updatedAt" to System.currentTimeMillis())) { error ->
+                                                if (error != null) android.util.Log.w("SLGAN_AUTH", "Email OTP profile save failed", error)
+                                            }
+                                        }
+                                    } else authError = task.exception?.localizedMessage ?: "Could not create a Firebase session for this email."
+                                }
+                            }
+                        }
+                    }
+                },
                 phoneNumber = phoneNumber,
                 onPhoneNumberChange = { phoneNumber = it },
                 otpCode = phoneOtpCode,
@@ -1357,6 +1403,11 @@ private fun LoginScreen(
     errorMessage: String?,
     loading: Boolean,
     onGoogleSignIn: () -> Unit,
+    emailOtpCode: String,
+    onEmailOtpCodeChange: (String) -> Unit,
+    emailOtpSent: Boolean,
+    onSendEmailOtp: () -> Unit,
+    onVerifyEmailOtp: () -> Unit,
     onContinue: () -> Unit,
     onForgotPassword: () -> Unit,
     phoneNumber: String,
@@ -1658,6 +1709,35 @@ private fun LoginScreen(
         Spacer(Modifier.height(8.dp))
         Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(12.dp))
+        Row(Modifier.fillMaxWidth().padding(horizontal = 22.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
+            Text("  OR EMAIL OTP  ", color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
+            Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
+        }
+        Spacer(Modifier.height(8.dp))
+        if (emailOtpSent) {
+            OutlinedTextField(
+                value = emailOtpCode,
+                onValueChange = onEmailOtpCodeChange,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
+                placeholder = { Text("6-digit email code", color = Muted, fontSize = 14.sp) },
+                leadingIcon = { Icon(Icons.Default.Password, null, tint = Ink) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                shape = RectangleShape
+            )
+        }
+        Button(
+            onClick = if (emailOtpSent) onVerifyEmailOtp else onSendEmailOtp,
+            enabled = !loading,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 4.dp).height(46.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Forest),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            if (loading) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+            else Text(if (emailOtpSent) "Verify Email OTP and sign in" else "Send Email OTP", fontWeight = FontWeight.SemiBold)
+        }
+        Spacer(Modifier.height(10.dp))
         Row(Modifier.fillMaxWidth().padding(horizontal = 22.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
             Text("  OR PHONE OTP  ", color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
