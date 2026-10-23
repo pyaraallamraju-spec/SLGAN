@@ -3904,14 +3904,6 @@ private fun ShopScreen(
                     ) {
                         Icon(Icons.Default.Person, contentDescription = "Profile", tint = Ink, modifier = Modifier.size(24.dp))
                     }
-                    Box(
-                        modifier = Modifier.align(Alignment.TopEnd)
-                            .offset(x = (-9).dp, y = 9.dp)
-                            .size(12.dp)
-                            .background(Color(0xFF258348), CircleShape)
-                            .border(1.5.dp, Color.White, CircleShape)
-                    )
-                }
             }
         }
     }, bottomBar = {
