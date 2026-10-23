@@ -1620,8 +1620,8 @@ private fun LoginScreen(
                     // Add a small inset around the decorative PNG so its outer gold
                     // border and curved right tip remain inside the visible button bounds.
                     // Keep the complete button artwork away from the Material button's outer edge.
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp, vertical = 2.dp).height(60.dp),
-                    contentScale = ContentScale.FillBounds
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 2.dp),
+                    contentScale = ContentScale.Fit
                 )
             }
         }
