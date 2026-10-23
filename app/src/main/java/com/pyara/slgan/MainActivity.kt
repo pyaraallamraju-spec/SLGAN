@@ -7366,6 +7366,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     var addresses by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var selectedAddressId by remember(authUser?.uid) { mutableStateOf<String?>(null) }
     var loading by remember { mutableStateOf(true) }
+    var showAddAddressSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(authUser?.uid) {
         val uid = authUser?.uid
@@ -7401,8 +7402,8 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
             Text("Address book", modifier = Modifier.weight(1f).padding(start = 14.dp), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
-            IconButton(onClick = { Toast.makeText(context, "To add an address, address entry fields need to be configured.", Toast.LENGTH_SHORT).show() }) {
-                Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(30.dp))
+            Box(Modifier.size(44.dp).shadow(5.dp, CircleShape).background(Color(0xFFB2B2B2), CircleShape).clickable { showAddAddressSheet = true }, contentAlignment = Alignment.Center) {
+                Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
             }
         }
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 18.dp, vertical = 22.dp)) {
@@ -7500,6 +7501,61 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+    if (showAddAddressSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showAddAddressSheet = false },
+            containerColor = Color.White,
+            contentColor = Ink,
+            shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
+            dragHandle = {
+                Box(Modifier.padding(top = 10.dp, bottom = 6.dp).size(width = 38.dp, height = 4.dp).background(Color(0xFFD7D9DE), CircleShape))
+            }
+        ) {
+            Column(
+                Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 22.dp).padding(bottom = 28.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(Modifier.size(54.dp).shadow(5.dp, CircleShape).background(Color(0xFFB2B2B2), CircleShape), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Default.Close, contentDescription = "Close", tint = Ink, modifier = Modifier.size(27.dp).clickable { showAddAddressSheet = false })
+                }
+                Spacer(Modifier.height(24.dp))
+                Box(Modifier.fillMaxWidth().height(220.dp).background(Color(0xFFFAFAFA), RoundedCornerShape(22.dp)), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color(0xFF21852A), modifier = Modifier.size(100.dp))
+                        Text("DELIVERY LOCATION", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                    }
+                }
+                Spacer(Modifier.height(26.dp))
+                Text("Do you want this order at your current location?", color = Ink, fontSize = 22.sp, lineHeight = 29.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
+                Spacer(Modifier.height(22.dp))
+                OutlinedButton(
+                    onClick = {
+                        showAddAddressSheet = false
+                        Toast.makeText(context, "Current-location lookup needs location permission and address form setup.", Toast.LENGTH_LONG).show()
+                    },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 76.dp),
+                    shape = RoundedCornerShape(22.dp),
+                    border = BorderStroke(2.dp, Color(0xFF21852A)),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF21852A)),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+                ) {
+                    Icon(Icons.Default.MyLocation, contentDescription = null, modifier = Modifier.size(24.dp))
+                    Spacer(Modifier.width(12.dp))
+                    Column(horizontalAlignment = Alignment.Start) {
+                        Text("Yes, deliver at my current location", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                        Text("Use device location for delivery", color = Muted, fontSize = 12.sp)
+                    }
+                }
+                Spacer(Modifier.height(12.dp))
+                TextButton(onClick = {
+                    showAddAddressSheet = false
+                    Toast.makeText(context, "Manual address entry is not configured yet.", Toast.LENGTH_SHORT).show()
+                }) {
+                    Text("Enter address manually", color = Ink, fontWeight = FontWeight.SemiBold)
                 }
             }
         }
