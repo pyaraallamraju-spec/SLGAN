@@ -6728,7 +6728,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 ) { Text("ADD", color = Color.Black, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
                                             } else {
                                                 Row(
-                                                    Modifier.fillMaxWidth().height(38.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFE1E5EC)),
+                                                    Modifier.fillMaxWidth().height(38.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFE2E2E2)),
                                                     verticalAlignment = Alignment.CenterVertically,
                                                     horizontalArrangement = Arrangement.SpaceEvenly
                                                 ) {
