@@ -1424,10 +1424,11 @@ private fun LoginScreen(
             painter = painterResource(R.drawable.slgan_login_background),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            // Show the entire background artwork on every screen size; do not crop its edges.
+            contentScale = ContentScale.FillBounds
         )
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 12.dp),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 4.dp, vertical = 4.dp).padding(bottom = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
         Spacer(Modifier.height(14.dp))
@@ -1626,7 +1627,7 @@ private fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .height(58.dp),
+                .height(64.dp),
             shape = signInShape,
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 0.dp,
@@ -1647,7 +1648,7 @@ private fun LoginScreen(
                 CircularProgressIndicator(modifier = Modifier.size(22.dp), color = Color(0xFFB88A36), strokeWidth = 2.dp)
             } else if (isCreatingAccount) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().height(58.dp),
+                    modifier = Modifier.fillMaxWidth().height(64.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -1667,7 +1668,8 @@ private fun LoginScreen(
                     // the right decorative edge cannot be cropped on narrow screens.
                     // Add a small inset around the decorative PNG so its outer gold
                     // border and curved right tip remain inside the visible button bounds.
-                    modifier = Modifier.fillMaxWidth(1f).height(58.dp),
+                    // Keep the complete button artwork away from the Material button's outer edge.
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp, vertical = 2.dp).height(60.dp),
                     contentScale = ContentScale.FillBounds
                 )
             }
