@@ -210,22 +210,14 @@ private fun tr(text: String, language: String): String {
     val te = mapOf(
         "Home" to "హోమ్", "Categories" to "వర్గాలు", "Cart" to "కార్ట్", "Profile" to "ప్రొఫైల్",
         "Your account" to "మీ ఖాతా", "Manage your personal details and delivery addresses." to "మీ వ్యక్తిగత వివరాలు, డెలివరీ చిరునామాలను నిర్వహించండి.",
-        "Profile" to "ప్రొఫైల్", "Addresses" to "చిరునామాలు", "First name" to "పేరు", "Last name" to "ఇంటి పేరు",
+        "Profile" to "ప్రొఫైల్", "First name" to "పేరు", "Last name" to "ఇంటి పేరు",
         "Nickname" to "ముద్దుపేరు", "Mobile number" to "మొబైల్ నంబర్", "Enter mobile number" to "మొబైల్ నంబర్ నమోదు చేయండి",
         "Gender" to "లింగం", "Select gender" to "లింగాన్ని ఎంచుకోండి", "Female" to "స్త్రీ", "Male" to "పురుషుడు",
         "Non-binary" to "నాన్-బైనరీ", "Prefer not to say" to "చెప్పదలచుకోలేదు", "Save profile" to "ప్రొఫైల్ సేవ్ చేయండి",
         "Saved successfully." to "విజయవంతంగా సేవ్ అయింది.", "Saving…" to "సేవ్ అవుతోంది…", "Loading profile…" to "ప్రొఫైల్ లోడ్ అవుతోంది…",
-        "Sign out" to "సైన్ అవుట్", "Add address" to "చిరునామా జోడించండి", "Enter delivery details below." to "డెలివరీ వివరాలను క్రింద నమోదు చేయండి.",
-        "Choose / check location on Google Maps" to "Google Maps లో లొకేషన్ ఎంచుకోండి / చూడండి",
-        "Google Maps opens separately. Please copy the address details into the fields below." to "Google Maps వేరుగా తెరుచుకుంటుంది. చిరునామా వివరాలను క్రింది ఫీల్డ్స్‌లో నమోదు చేయండి.",
-        "Address type" to "చిరునామా రకం", "Home" to "ఇల్లు", "Work" to "పని", "Other" to "ఇతర",
-        "Recipient name *" to "పొందేవారి పేరు *", "House / flat, building, street *" to "ఇల్లు / ఫ్లాట్, భవనం, వీధి *",
-        "Area / village / locality" to "ప్రాంతం / గ్రామం / కాలనీ", "Landmark (optional)" to "గుర్తింపు స్థలం (ఐచ్ఛికం)",
-        "City / town *" to "నగరం / పట్టణం *", "State *" to "రాష్ట్రం *", "PIN code *" to "పిన్ కోడ్ *",
-        "Save address" to "చిరునామా సేవ్ చేయండి", "Saving address…" to "చిరునామా సేవ్ అవుతోంది…",
-        "Saved addresses" to "సేవ్ చేసిన చిరునామాలు", "Keep delivery locations for future orders." to "భవిష్యత్ ఆర్డర్ల కోసం డెలివరీ చిరునామాలను ఉంచండి.",
-        "No addresses yet" to "ఇంకా చిరునామాలు లేవు", "Tap Add address to save your first delivery location." to "మొదటి డెలివరీ చిరునామాను సేవ్ చేయడానికి చిరునామా జోడించండి నొక్కండి.",
-        "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Ghrutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
+        "Sign out" to "సైన్ అవుట్", "Enter delivery details below." to "డెలివరీ వివరాలను క్రింద నమోదు చేయండి.",
+                        "Home" to "ఇల్లు", "Work" to "పని", "Other" to "ఇతర",
+                                                        "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Ghrutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
         "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
         "Voice search" to "వాయిస్ సెర్చ్",
         "Voice search is not available on this device." to "ఈ పరికరంలో వాయిస్ సెర్చ్ అందుబాటులో లేదు.",
@@ -243,8 +235,7 @@ private fun tr(text: String, language: String): String {
         "Customer name *" to "కస్టమర్ పేరు *",
         "Email for invoice *" to "ఇన్‌వాయిస్ కోసం ఇమెయిల్ *",
         "Phone number" to "ఫోన్ నంబర్",
-        "Full delivery address *" to "పూర్తి డెలివరీ చిరునామా *",
-        "Payment: none. This order request does not collect payment." to "చెల్లింపు లేదు. ఈ ఆర్డర్ అభ్యర్థనలో డబ్బు వసూలు చేయబడదు.",
+                "Payment: none. This order request does not collect payment." to "చెల్లింపు లేదు. ఈ ఆర్డర్ అభ్యర్థనలో డబ్బు వసూలు చేయబడదు.",
         "Cancel" to "రద్దు చేయండి",
         "My Orders" to "నా ఆర్డర్లు",
         "You have no previous orders yet." to "మీకు ఇంకా పాత ఆర్డర్లు లేవు.",
@@ -302,13 +293,12 @@ private fun tr(text: String, language: String): String {
         "Female" to "महिला", "Male" to "पुरुष", "Non-binary" to "नॉन-बाइनरी", "Prefer not to say" to "बताना नहीं चाहते",
         "Save profile" to "प्रोफ़ाइल सहेजें", "Saved successfully." to "सफलतापूर्वक सहेजा गया।",
         "Saving…" to "सहेज रहे हैं…", "Loading profile…" to "प्रोफ़ाइल लोड हो रही है…", "Sign out" to "साइन आउट",
-        "Add address" to "पता जोड़ें", "Enter delivery details below." to "नीचे डिलीवरी विवरण दर्ज करें।",
-        "Address type" to "पते का प्रकार", "Home" to "घर", "Work" to "काम", "Other" to "अन्य",
+        "Enter delivery details below." to "नीचे डिलीवरी विवरण दर्ज करें।",
+        "Home" to "घर", "Work" to "काम", "Other" to "अन्य",
         "Recipient name *" to "प्राप्तकर्ता का नाम *", "House / flat, building, street *" to "मकान / फ्लैट, भवन, सड़क *",
         "Area / village / locality" to "क्षेत्र / गाँव / इलाका", "Landmark (optional)" to "नज़दीकी पहचान (वैकल्पिक)",
         "City / town *" to "शहर / कस्बा *", "State *" to "राज्य *", "PIN code *" to "पिन कोड *",
-        "Save address" to "पता सहेजें", "Saved addresses" to "सहेजे गए पते", "Keep delivery locations for future orders." to "भविष्य के ऑर्डर के लिए डिलीवरी पते रखें।",
-        "No addresses yet" to "अभी कोई पता नहीं", "All" to "सभी", "Lehyas" to "लेह्य", "Ghrutas" to "घृत",
+                "No addresses yet" to "अभी कोई पता नहीं", "All" to "सभी", "Lehyas" to "लेह्य", "Ghrutas" to "घृत",
         "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
         "Voice search" to "वॉइस सर्च",
         "Voice search is not available on this device." to "इस डिवाइस पर वॉइस सर्च उपलब्ध नहीं है।",
@@ -326,8 +316,7 @@ private fun tr(text: String, language: String): String {
         "Customer name *" to "ग्राहक का नाम *",
         "Email for invoice *" to "इनवॉइस के लिए ईमेल *",
         "Phone number" to "फ़ोन नंबर",
-        "Full delivery address *" to "पूरा डिलीवरी पता *",
-        "Payment: none. This order request does not collect payment." to "कोई भुगतान नहीं। इस ऑर्डर अनुरोध में पैसे नहीं लिए जाते।",
+                "Payment: none. This order request does not collect payment." to "कोई भुगतान नहीं। इस ऑर्डर अनुरोध में पैसे नहीं लिए जाते।",
         "Cancel" to "रद्द करें",
         "My Orders" to "मेरे ऑर्डर",
         "You have no previous orders yet." to "आपके अभी तक कोई पुराने ऑर्डर नहीं हैं।",
@@ -4122,7 +4111,7 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
             Spacer(Modifier.height(12.dp))
             Text(
                 if (isEnglish)
-                    "Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN) respects your privacy. We use account information such as your name, contact details, saved delivery addresses, wishlist, and order information to provide app features and support your purchases. We do not ask you to share your password or one-time verification codes with anyone."
+                    "Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN) respects your privacy. We use account information such as your name, contact details, wishlist, and order information to provide app features and support your purchases. We do not ask you to share your password or one-time verification codes with anyone."
                 else
                     "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం (SLGAN) మీ గోప్యతను గౌరవిస్తుంది. యాప్ సేవలు, ఆర్డర్ల కోసం మీ పేరు, సంప్రదింపు వివరాలు, డెలివరీ చిరునామాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సమాచారాన్ని ఉపయోగించవచ్చు. మీ పాస్‌వర్డ్ లేదా OTPలను ఎవరితోనూ పంచుకోవద్దు.",
                 color = Color(0xFF667085), fontSize = 16.sp, lineHeight = 23.sp
@@ -4198,7 +4187,7 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
     }
     val paragraphs = if (appLanguage == "English") listOf(
         "Sri Lakshmi Ganapathi Ayurveda Nilayam brings traditional Ayurvedic products together in one convenient place. Browse our catalogue, explore product details, and find information about ingredients and usage.",
-        "Our aim is to make it easier for customers to explore our products, manage delivery addresses, place orders, and revisit their favourite items. Please read each product's details carefully and consult a qualified healthcare professional for medical advice.",
+        "Our aim is to make it easier for customers to explore our products, place orders, and revisit their favourite items. Please read each product's details carefully and consult a qualified healthcare professional for medical advice.",
         "Sri Lakshmi Ganapathi Ayurveda Nilayam is an independent Ayurvedic business. Product information in this app is provided for general information and is not a substitute for professional medical diagnosis or treatment."
     ) else listOf(
         "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం సంప్రదాయ ఆయుర్వేద ఉత్పత్తులను ఒకే చోట అందిస్తుంది. మా ఉత్పత్తుల జాబితాను చూడండి, ఉత్పత్తుల వివరాలు, పదార్థాలు మరియు వినియోగ సమాచారాన్ని తెలుసుకోండి.",
@@ -4232,7 +4221,7 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                 Modifier.fillMaxWidth().clickable {
                     android.app.AlertDialog.Builder(context)
                         .setTitle(if (appLanguage == "English") "Privacy Policy" else "గోప్యతా విధానం")
-                        .setMessage(if (appLanguage == "English") "SLGAN uses account information to provide sign-in, saved addresses, wishlist, and order features. Keep your password and verification codes private. Contact the business for questions about your account data." else "సైన్-ఇన్, చిరునామాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సేవల కోసం SLGAN ఖాతా సమాచారాన్ని ఉపయోగిస్తుంది. మీ పాస్‌వర్డ్ మరియు OTPలను రహస్యంగా ఉంచండి. ఖాతా సమాచారం గురించి ప్రశ్నల కోసం వ్యాపారాన్ని సంప్రదించండి.")
+                        .setMessage(if (appLanguage == "English") "SLGAN uses account information to provide sign-in, wishlist, and order features. Keep your password and verification codes private. Contact the business for questions about your account data." else "సైన్-ఇన్, చిరునామాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సేవల కోసం SLGAN ఖాతా సమాచారాన్ని ఉపయోగిస్తుంది. మీ పాస్‌వర్డ్ మరియు OTPలను రహస్యంగా ఉంచండి. ఖాతా సమాచారం గురించి ప్రశ్నల కోసం వ్యాపారాన్ని సంప్రదించండి.")
                         .setPositiveButton("OK", null).show()
                 }.padding(horizontal = 22.dp, vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
