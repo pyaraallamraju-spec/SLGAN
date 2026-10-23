@@ -5201,7 +5201,7 @@ private fun ProductDetailsPage(
                     shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
                     dragHandle = { Box(Modifier.padding(top = 10.dp, bottom = 8.dp).size(width = 38.dp, height = 4.dp).background(Color(0xFFD7D9DE), CircleShape)) }
                 ) {
-                    Column(Modifier.fillMaxWidth().navigationBarsPadding().imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp).padding(top = 8.dp, bottom = 28.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(Modifier.fillMaxWidth().navigationBarsPadding().imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp).padding(top = 6.dp, bottom = 20.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 Text("Write a review", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
@@ -5235,7 +5235,7 @@ private fun ProductDetailsPage(
                                             .addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
                                     }.addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
                                 }
-                            }, enabled = !ratingSaving, modifier = Modifier.height(58.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)) {
+                            }, enabled = !ratingSaving, modifier = Modifier.height(44.dp), contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)) {
                                 if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Ink, strokeWidth = 2.dp) else Text("Save", color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                             }
                         }
