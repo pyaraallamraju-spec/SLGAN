@@ -381,42 +381,11 @@ private fun tr(text: String, language: String): String {
 }
 
 class MainActivity : ComponentActivity() {
-    private var pendingGeoCallback: GeolocationPermissions.Callback? = null
-    private var pendingGeoOrigin: String? = null
-    private lateinit var mapLocationPermissionLauncher: androidx.activity.result.ActivityResultLauncher<Array<String>>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mapLocationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { grants ->
-            val granted = grants[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
-                grants[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-            pendingGeoCallback?.invoke(pendingGeoOrigin, granted, false)
-            pendingGeoCallback = null
-            pendingGeoOrigin = null
-        }
         FirebaseApp.initializeApp(this)
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         setContent { Box(Modifier.fillMaxSize().safeDrawingPadding().imePadding()) { AyurvedicApp() } }
-
-        // Ask for location access on first launch so map location features can work.
-        val fineLocationGranted = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        val coarseLocationGranted = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        if (!fineLocationGranted && !coarseLocationGranted) {
-            mapLocationPermissionLauncher.launch(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-            )
-        }
-    }
-
-    fun requestMapLocationPermission(origin: String, callback: GeolocationPermissions.Callback) {
-        val fine = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        val coarse = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        if (fine || coarse) callback.invoke(origin, true, false)
-        else {
-            pendingGeoOrigin = origin
-            pendingGeoCallback = callback
-            mapLocationPermissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
-        }
     }
 }
 
