@@ -7374,6 +7374,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     var selectedAddressId by remember(authUser?.uid) { mutableStateOf<String?>(null) }
     var loading by remember { mutableStateOf(true) }
     var showAddAddressPage by remember { mutableStateOf(false) }
+    var useCurrentLocationForAddress by remember { mutableStateOf(false) }
     var showAddAddressSheet by remember { mutableStateOf(false) }
     var currentLocationAddress by remember { mutableStateOf("Detecting your current address…") }
     var locationLookupStarted by remember { mutableStateOf(false) }
@@ -7441,11 +7442,13 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
 
     if (showAddAddressPage) {
         AddAddressDetailsPage(
+            useCurrentLocation = useCurrentLocationForAddress,
             onBack = { showAddAddressPage = false },
             onSaved = { saved ->
                 addresses = listOf(saved) + addresses
                 selectedAddressId = saved["_id"]?.toString()
                 showAddAddressPage = false
+                useCurrentLocationForAddress = false
             }
         )
     } else {
@@ -7591,7 +7594,8 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 OutlinedButton(
                     onClick = {
                         showAddAddressSheet = false
-                        Toast.makeText(context, "Current-location lookup needs location permission and address form setup.", Toast.LENGTH_LONG).show()
+                        showAddAddressPage = true
+                        useCurrentLocationForAddress = true
                     },
                     modifier = Modifier.fillMaxWidth().heightIn(min = 76.dp),
                     shape = RoundedCornerShape(22.dp),
@@ -7627,6 +7631,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
 }
 @Composable
 private fun AddAddressDetailsPage(
+    useCurrentLocation: Boolean = false,
     onBack: () -> Unit,
     onSaved: (Map<String, Any>) -> Unit
 ) {
@@ -7650,6 +7655,43 @@ private fun AddAddressDetailsPage(
     var areaMenu by remember { mutableStateOf(false) }
     val cities = listOf("Hyderabad", "Visakhapatnam", "Kakinada", "Vijayawada", "Rajahmundry", "Other")
     val areas = listOf("Manikonda", "Gachibowli", "Kondapur", "Pappulaguda", "Kukatpally", "Malkajgiri", "Other")
+
+    LaunchedEffect(useCurrentLocation) {
+        if (!useCurrentLocation) return@LaunchedEffect
+        val detected = withContext(Dispatchers.IO) {
+            try {
+                val fine = context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                val coarse = context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                if (!fine && !coarse) return@withContext null
+                val manager = context.getSystemService(android.content.Context.LOCATION_SERVICE) as LocationManager
+                val location = listOf(LocationManager.NETWORK_PROVIDER, LocationManager.GPS_PROVIDER)
+                    .asSequence()
+                    .filter { runCatching { manager.isProviderEnabled(it) }.getOrDefault(false) }
+                    .mapNotNull { runCatching { manager.getLastKnownLocation(it) }.getOrNull() }
+                    .maxByOrNull { it.time } ?: return@withContext null
+                val geocoder = Geocoder(context, Locale.getDefault())
+                val results = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    kotlinx.coroutines.suspendCancellableCoroutine<List<android.location.Address>?> { continuation ->
+                        geocoder.getFromLocation(location.latitude, location.longitude, 1) { list ->
+                            if (continuation.isActive) continuation.resume(list)
+                        }
+                    }
+                } else {
+                    @Suppress("DEPRECATION")
+                    geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                }
+                results?.firstOrNull()
+            } catch (_: Exception) { null }
+        }
+        if (detected != null) {
+            city = detected.locality ?: detected.subAdminArea ?: detected.adminArea ?: city
+            area = detected.subLocality ?: detected.thoroughfare ?: detected.featureName ?: area
+            fullAddress = detected.getAddressLine(0).orEmpty()
+                .split(",").drop(2).joinToString(",").trim().ifBlank { detected.getAddressLine(0).orEmpty() }
+        } else {
+            Toast.makeText(context, "Couldn't detect your location. Please enter the address manually.", Toast.LENGTH_LONG).show()
+        }
+    }
 
     Column(Modifier.fillMaxSize().background(Color(0xFFF2F4FA))) {
         Row(
