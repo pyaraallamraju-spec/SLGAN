@@ -7464,7 +7464,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
             Text("Address book", modifier = Modifier.weight(1f).padding(start = 14.dp), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
-            Box(Modifier.size(44.dp).shadow(5.dp, RoundedCornerShape(12.dp)).background(Color(0xFFF2F4FA), RoundedCornerShape(12.dp)).border(1.dp, Color(0xFFE1E6EF), RoundedCornerShape(12.dp)).clickable { showAddAddressPage = true }, contentAlignment = Alignment.Center) {
+            Box(Modifier.size(44.dp).shadow(5.dp, RoundedCornerShape(12.dp)).background(Color(0xFFF2F4FA), RoundedCornerShape(12.dp)).border(1.dp, Color(0xFFE1E6EF), RoundedCornerShape(12.dp)).clickable { showAddAddressSheet = true }, contentAlignment = Alignment.Center) {
                 Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
             }
         }
