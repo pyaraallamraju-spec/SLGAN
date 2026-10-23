@@ -7632,6 +7632,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     }
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddAddressDetailsPage(
     useCurrentLocation: Boolean = false,
