@@ -8492,6 +8492,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     }
 }
 
+}
+
 @Composable
 private fun AppLoader(message: String, compact: Boolean = false, messageColor: Color = Forest) {
     val leafMotion = rememberInfiniteTransition(label = "herbalLeafLoader")
