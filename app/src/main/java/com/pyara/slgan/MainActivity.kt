@@ -6189,8 +6189,8 @@ private fun OrdersPage(
                         },
                         modifier = Modifier.fillMaxWidth().height(60.dp),
                         shape = RoundedCornerShape(14.dp),
-                        border = null,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)
+                        border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink)
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("Repeat Order", color = Ink, fontSize = 20.sp, lineHeight = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
