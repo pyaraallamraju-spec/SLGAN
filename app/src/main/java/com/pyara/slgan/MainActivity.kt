@@ -8112,7 +8112,11 @@ private fun AddAddressDetailsPage(
                 }
             }
         }
-        Surface(color = Color.White, shadowElevation = 8.dp) {
+        Surface(
+            modifier = Modifier.navigationBarsPadding(),
+            color = Color.White,
+            shadowElevation = 8.dp
+        ) {
             Button(
                 onClick = {
                     cityError = city.isBlank()
