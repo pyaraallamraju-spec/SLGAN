@@ -4197,7 +4197,7 @@ private fun ShopScreen(
         }
     }) { padding ->
         when (selectedTab) {
-            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick, onAddressClick = { onTabChange("AddressBook") }) { onTabChange("Home") }
+            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick) { onTabChange("Home") }
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") }, onCategories = { onCategoryChange("All"); onTabChange("Categories") }, onTabChange = onTabChange)
             "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") }, onCategories = { onTabChange("Categories") }, onTabChange = onTabChange)
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
@@ -4211,7 +4211,6 @@ private fun ShopScreen(
             )
             "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, onBack = { onTabChange("Accounts") })
-            "AddressBook" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, initialSection = "Addresses", onBack = { onTabChange("Accounts") })
             "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "About" -> AboutPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "AccountPrivacy" -> AccountPrivacyPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
@@ -5363,7 +5362,7 @@ private fun ProductDetailsPage(
 }
 
 @Composable
-private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onAddressClick: () -> Unit, onBack: () -> Unit) {
+private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
@@ -5372,7 +5371,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     var customerName by remember(signedInUser?.uid) { mutableStateOf(signedInUser?.displayName.orEmpty()) }
     var email by remember(signedInUser?.uid) { mutableStateOf(signedInUser?.email.orEmpty()) }
     var phone by remember(signedInUser?.uid) { mutableStateOf("") }
-    var address by remember { mutableStateOf("") }
     var submitting by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var orderMessage by remember { mutableStateOf<String?>(null) }
@@ -5394,7 +5392,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     }
 
     var selectedInstruction by remember { mutableStateOf("") }
-    var saveInstructionForAddress by remember { mutableStateOf(false) }
     var gstin by remember { mutableStateOf("") }
     val recommendations = remember(products, cart) { products.filter { (cart[it.id] ?: 0) == 0 && it.productStock != 0 }.take(6) }
     val itemCount = selected.sumOf { cart[it.id] ?: 0 }
@@ -5563,15 +5560,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }
             }
-            Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Home, contentDescription = null, tint = Ink, modifier = Modifier.size(25.dp))
-                Spacer(Modifier.width(10.dp))
-                Column(Modifier.weight(1f)) {
-                    Text("Delivering to", color = Muted, fontSize = 11.sp)
-                    Text(if (address.isBlank()) "Add delivery address" else address, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                }
-                TextButton(onClick = onAddressClick) { Text(if (address.isBlank()) "Add" else "Change", color = Ink, fontWeight = FontWeight.Bold) }
-            }
             Row(Modifier.fillMaxWidth().background(Color.White).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(0.7f)) {
                     Text(money(total), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
@@ -5594,7 +5582,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     OutlinedTextField(customerName, { customerName = it }, label = { Text(tr("Customer name *", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
                     OutlinedTextField(email, { email = it }, label = { Text(tr("Email for invoice *", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
                     OutlinedTextField(phone, { phone = it }, label = { Text(tr("Phone number", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone))
-                    OutlinedTextField(address, { address = it }, label = { Text(tr("Full delivery address *", LocalAppLanguage.current)) }, modifier = Modifier.fillMaxWidth(), minLines = 2)
                     Text(tr("Payment: none. This order request does not collect payment.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                     if (errorMessage != null) Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
                     if (orderMessage != null) Text(orderMessage!!, color = Forest)
@@ -5602,8 +5589,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             },
             confirmButton = {
                 Button(enabled = !submitting && orderMessage == null, onClick = {
-                    if (customerName.isBlank() || !email.contains("@") || address.isBlank()) {
-                        errorMessage = "Enter your name, valid email and full delivery address."
+                    if (customerName.isBlank() || !email.contains("@")) {
+                        errorMessage = "Enter your name and a valid email address."
                     } else {
                         submitting = true
                         errorMessage = null
@@ -5629,10 +5616,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 "customerName" to customerName.trim(),
                                 "email" to email.trim(),
                                 "phone" to phone.trim(),
-                                "shippingAddress" to address.trim(),
                                 "gstin" to gstin.trim(),
                                 "deliveryInstruction" to selectedInstruction,
-                                "rememberDeliveryInstruction" to saveInstructionForAddress,
                                 "items" to itemPayload,
                                 "subtotal" to total,
                                 "grandTotal" to total,
@@ -6350,7 +6335,6 @@ private fun OrdersPage(
                             Text(paymentStatus.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Ink, fontSize = 16.sp)
                         }
                         if (phone.isNotBlank()) Column { Text("Phone", color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
-                        if (address.isNotBlank()) Column { Text("Deliver to", color = Muted, fontSize = 14.sp); Text(address, color = Ink, fontSize = 16.sp, lineHeight = 23.sp) }
                         Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
                 }
@@ -7121,7 +7105,6 @@ private fun AccountsPage(
             Column {
                 Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
-                AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("AddressBook") }
                 AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("MyOrders") }
                 AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse your wishlist") { onTabChange("Wishlist") }
                 AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
@@ -7591,20 +7574,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         }
         onDispose { registration?.remove() }
     }
-    DisposableEffect(uid) {
-        var addressRegistration: ListenerRegistration? = null
-        if (uid != null) {
-            addressRegistration = FirebaseFirestore.getInstance().collection("addresses")
-                .whereEqualTo("userId", uid)
-                .addSnapshotListener { snapshot, _ ->
-                    addresses = snapshot?.documents?.mapNotNull { doc ->
-                        doc.data?.plus("id" to doc.id)
-                    }.orEmpty()
-                }
-        }
-        onDispose { addressRegistration?.remove() }
-    }
-
     Column(
         modifier.fillMaxSize()
             .background(Color(0xFFF3F5FA))
