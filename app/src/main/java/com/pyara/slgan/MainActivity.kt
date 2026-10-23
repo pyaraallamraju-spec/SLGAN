@@ -7551,15 +7551,20 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
                                     )
-                                    IconButton(
-                                        onClick = { selectedAddressId = addressId },
-                                        modifier = Modifier.size(30.dp)
+                                    Box(
+                                        modifier = Modifier.size(34.dp)
+                                            .background(
+                                                if (isSelected) Color(0xFF25884B) else Color(0xFFE2E2E2),
+                                                CircleShape
+                                            )
+                                            .clickable { selectedAddressId = addressId },
+                                        contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
                                             if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
                                             contentDescription = if (isSelected) "Selected address" else "Select address",
-                                            tint = if (isSelected) Ink else Muted,
-                                            modifier = Modifier.size(20.dp)
+                                            tint = if (isSelected) Color.White else Color(0xFFB5B5B5),
+                                            modifier = Modifier.size(23.dp)
                                         )
                                     }
                                 }
