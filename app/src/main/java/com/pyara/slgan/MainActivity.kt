@@ -5851,14 +5851,14 @@ private fun OrdersPage(
                             ) {
                                 val isPending = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
                                 val statusColor = if (isPending) Color(0xFF76551A) else Color(0xFF237344)
-                                val statusBackground = if (isPending) Color(0xFFFFF8E1) else Color(0xFFEEF8F0)
+                                val statusBackground = if (isPending) Color(0xFFFFFCF2) else Color(0xFFEEF8F0)
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clip(RoundedCornerShape(18.dp))
                                         .background(statusBackground)
-                                        .border(1.dp, if (isPending) Color(0xFFE8C96A) else Color(0xFFD4EAD8), RoundedCornerShape(18.dp))
-                                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                                        .border(1.dp, if (isPending) Color(0xFFF0DFA6) else Color(0xFFD4EAD8), RoundedCornerShape(18.dp))
+                                        .padding(horizontal = 14.dp, vertical = 8.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                                 ) {
@@ -5878,7 +5878,7 @@ private fun OrdersPage(
                                     }
                                     Column(
                                         modifier = Modifier.weight(1f),
-                                        verticalArrangement = Arrangement.spacedBy(3.dp)
+                                        verticalArrangement = Arrangement.spacedBy(1.dp)
                                     ) {
                                         Text(
                                             "ORDER STATUS",
