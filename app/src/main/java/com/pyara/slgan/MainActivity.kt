@@ -2,6 +2,11 @@ package com.pyara.slgan
 
 import android.app.Activity
 import android.os.Bundle
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.LocationManager
+import android.os.Build
 import android.view.View
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.RectangleShape
@@ -110,6 +115,8 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Locale
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -373,6 +380,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 4102)
+        }
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         setContent { Box(Modifier.fillMaxSize().safeDrawingPadding().imePadding()) { AyurvedicApp() } }
     }
@@ -7364,6 +7375,44 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     var selectedAddressId by remember(authUser?.uid) { mutableStateOf<String?>(null) }
     var loading by remember { mutableStateOf(true) }
     var showAddAddressSheet by remember { mutableStateOf(false) }
+    var currentLocationAddress by remember { mutableStateOf("Detecting your current address…") }
+    var locationLookupStarted by remember { mutableStateOf(false) }
+
+    LaunchedEffect(context) {
+        if (locationLookupStarted) return@LaunchedEffect
+        locationLookupStarted = true
+        currentLocationAddress = withContext(Dispatchers.IO) {
+            try {
+                val fine = context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                val coarse = context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                if (!fine && !coarse) return@withContext "Allow location access to detect your address"
+                val manager = context.getSystemService(android.content.Context.LOCATION_SERVICE) as LocationManager
+                val location = listOf(LocationManager.NETWORK_PROVIDER, LocationManager.GPS_PROVIDER)
+                    .asSequence()
+                    .filter { provider -> runCatching { manager.isProviderEnabled(provider) }.getOrDefault(false) }
+                    .mapNotNull { provider -> runCatching { manager.getLastKnownLocation(provider) }.getOrNull() }
+                    .maxByOrNull { it.time }
+                    ?: return@withContext "Turn on device location to detect your address"
+                val geocoder = Geocoder(context, Locale.getDefault())
+                val results = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    kotlinx.coroutines.suspendCancellableCoroutine<List<android.location.Address>?> { continuation ->
+                        geocoder.getFromLocation(location.latitude, location.longitude, 1) { addresses ->
+                            if (continuation.isActive) continuation.resume(addresses)
+                        }
+                    }
+                } else {
+                    @Suppress("DEPRECATION")
+                    geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                }
+                val address = results?.firstOrNull()
+                address?.getAddressLine(0)?.takeIf { it.isNotBlank() }
+                    ?: listOfNotNull(address?.subLocality, address?.locality, address?.adminArea).joinToString(", ")
+                        .ifBlank { "Location detected; address unavailable" }
+            } catch (_: Exception) {
+                "Couldn't detect address. Please enter it manually."
+            }
+        }
+    }
 
     LaunchedEffect(authUser?.uid) {
         val uid = authUser?.uid
@@ -7544,7 +7593,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     Spacer(Modifier.width(12.dp))
                     Column(horizontalAlignment = Alignment.Start) {
                         Text("Yes, deliver at my current location", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
-                        Text("Use device location for delivery", color = Muted, fontSize = 12.sp)
+                        Text(currentLocationAddress, color = Muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
                     }
                 }
                 Spacer(Modifier.height(12.dp))
