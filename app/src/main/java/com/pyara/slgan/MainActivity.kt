@@ -7510,7 +7510,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add address", tint = Ink, modifier = Modifier.size(28.dp))
                 }
-                }
             }
             Spacer(Modifier.height(20.dp))
         }
