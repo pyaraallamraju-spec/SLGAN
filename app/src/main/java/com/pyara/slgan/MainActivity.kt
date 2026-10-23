@@ -4846,84 +4846,21 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             }
             Spacer(Modifier.height(10.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
-            if (product.category.isNotBlank() || product.subtitle.isNotBlank()) {
-                Spacer(Modifier.height(3.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (product.category.isNotBlank()) {
-                        Surface(
-                            modifier = Modifier.weight(1f, fill = false),
-                            shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFFE2E2E2),
-                            contentColor = Ink
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(3.dp)
-                            ) {
-                                Text(
-                                    when (product.category.trim().lowercase()) {
-                                        "all" -> "🌿"
-                                        "lehyas" -> "🫙"
-                                        "grutas", "ghritas", "ghrutas" -> "🏺"
-                                        "pills" -> "💊"
-                                        "tailas" -> "🫙"
-                                        "churnas" -> "🌾"
-                                        "rasayanas" -> "🪴"
-                                        "bhasmas" -> "🪨"
-                                        else -> "🌿"
-                                    },
-                                    fontSize = 9.sp
-                                )
-                                Text(
-                                    product.category,
-                                    color = Color.Black,
-                                    fontSize = 8.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
-                    }
-                    if (product.subtitle.isNotBlank()) {
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFFE2E2E2),
-                            contentColor = Ink
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(2.dp)
-                            ) {
-                                Text("⚖", color = Color.Black, fontSize = 9.sp)
-                                Text(
-                                    product.subtitle.replace(" ", ""),
-                                    color = Color.Black,
-                                    fontSize = 9.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
-                    }
-                }
-            }
             Spacer(Modifier.height(5.dp))
             Row(
-                modifier = Modifier.fillMaxWidth().height(48.dp),
+                modifier = Modifier.fillMaxWidth().height(28.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Box(modifier = Modifier.weight(1f).fillMaxHeight(), contentAlignment = Alignment.CenterStart) {
-                    ProductRatingLine(product, ratingSummary, countBaselineFix = true)
-                }
+                Text(
+                    product.subtitle.replace(" ", ""),
+                    color = Muted,
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false)
+                )
+                ProductRatingLine(product, ratingSummary, countBaselineFix = true)
             }
             Spacer(Modifier.height(5.dp))
             Row(
