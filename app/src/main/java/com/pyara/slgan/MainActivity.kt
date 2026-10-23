@@ -7658,6 +7658,7 @@ private fun AddAddressDetailsPage(
     var cityMenu by remember { mutableStateOf(false) }
     var areaMenu by remember { mutableStateOf(false) }
     var citySearch by remember { mutableStateOf("") }
+    var areaSearch by remember { mutableStateOf("") }
     val cities = listOf(
         "Abohar", "Adoni", "Agartala", "Agra", "Ahmedabad", "Ahmednagar", "Aizawl", "Ajmer",
         "Akola", "Alappuzha", "Aligarh", "Allahabad", "Alwar", "Amravati", "Amritsar", "Anantapur",
@@ -7865,7 +7866,7 @@ private fun AddAddressDetailsPage(
                     if (cityError) Text("Please select a city", color = Color(0xFFE53945), fontSize = 13.sp)
                     Box {
                         OutlinedButton(
-                            onClick = { areaMenu = true },
+                            onClick = { areaSearch = ""; areaMenu = true },
                             modifier = Modifier.fillMaxWidth().height(76.dp),
                             shape = RoundedCornerShape(16.dp),
                             border = BorderStroke(1.dp, if (areaError) Color(0xFFE53945) else Color(0xFFD7DCE6)),
@@ -7875,8 +7876,98 @@ private fun AddAddressDetailsPage(
                             Text(area.ifBlank { "Select an area, street" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 16.sp)
                             Text("Select", color = Forest, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
-                        DropdownMenu(expanded = areaMenu, onDismissRequest = { areaMenu = false }) {
-                            areas.forEach { item -> DropdownMenuItem(text = { Text(item) }, onClick = { area = item; areaError = false; areaMenu = false }) }
+                        if (areaMenu) {
+                            val localityResults = listOf(
+                                "Manikonda Marrichettu" to "Marrichettu, Hyderabad, Telangana, India",
+                                "Manikeshwari Nagar" to "Amberpet, Hyderabad, Telangana, India",
+                                "Manikonda - Puppalaguda" to "Shirdi Sai Nagar, Manikonda, Telangana, India",
+                                "Gachibowli" to "Gachibowli, Hyderabad, Telangana, India",
+                                "Kondapur" to "Kondapur, Hyderabad, Telangana, India",
+                                "Pappulaguda" to "Pappulaguda, Hyderabad, Telangana, India",
+                                "Kukatpally" to "Kukatpally, Hyderabad, Telangana, India",
+                                "Malkajgiri" to "Malkajgiri, Hyderabad, Telangana, India",
+                                "Miyapur" to "Miyapur, Hyderabad, Telangana, India",
+                                "Madhapur" to "Madhapur, Hyderabad, Telangana, India",
+                                "Begumpet" to "Begumpet, Hyderabad, Telangana, India",
+                                "Banjara Hills" to "Banjara Hills, Hyderabad, Telangana, India",
+                                "Secunderabad" to "Secunderabad, Telangana, India",
+                                "Kakinada" to "Kakinada, Andhra Pradesh, India",
+                                "Sarpavaram" to "Sarpavaram, Kakinada, Andhra Pradesh, India",
+                                "Pithapuram" to "Pithapuram, Andhra Pradesh, India",
+                                "Mandapeta" to "Mandapeta, Andhra Pradesh, India",
+                                "Visakhapatnam" to "Visakhapatnam, Andhra Pradesh, India"
+                            )
+                            ModalBottomSheet(
+                                onDismissRequest = { areaMenu = false },
+                                containerColor = Color(0xFFF2F4FA),
+                                contentColor = Ink,
+                                shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+                                dragHandle = {
+                                    Box(Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 4.dp), contentAlignment = Alignment.Center) {
+                                        Box(Modifier.width(44.dp).height(4.dp).background(Color(0xFFD2D6DF), CircleShape))
+                                    }
+                                }
+                            ) {
+                                Column(Modifier.fillMaxWidth().fillMaxHeight(0.92f).padding(horizontal = 20.dp)) {
+                                    Text("Select an area, street", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 18.dp))
+                                    OutlinedTextField(
+                                        value = areaSearch,
+                                        onValueChange = { areaSearch = it },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        placeholder = { Text("Search for an area, street") },
+                                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                                        trailingIcon = {
+                                            if (areaSearch.isNotEmpty()) IconButton(onClick = { areaSearch = "" }) {
+                                                Icon(Icons.Default.Close, contentDescription = "Clear search", tint = Muted)
+                                            }
+                                        },
+                                        singleLine = true,
+                                        shape = RoundedCornerShape(18.dp),
+                                        colors = OutlinedTextFieldDefaults.colors(
+                                            focusedBorderColor = Color(0xFFD7DCE6),
+                                            unfocusedBorderColor = Color(0xFFD7DCE6),
+                                            cursorColor = Forest
+                                        )
+                                    )
+                                    Spacer(Modifier.height(14.dp))
+                                    LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.weight(1f)) {
+                                        items(localityResults.filter { (name, description) ->
+                                            areaSearch.isBlank() || name.contains(areaSearch.trim(), true) || description.contains(areaSearch.trim(), true)
+                                        }) { (name, description) ->
+                                            Surface(
+                                                modifier = Modifier.fillMaxWidth().clickable {
+                                                    area = name
+                                                    if (city.isBlank()) {
+                                                        city = description.split(",").dropLast(2).lastOrNull()?.trim().orEmpty()
+                                                    }
+                                                    fullAddress = listOf(fullAddress.trim(), description).filter { it.isNotBlank() }.distinct().joinToString(", ")
+                                                    areaError = false
+                                                    areaMenu = false
+                                                },
+                                                shape = RoundedCornerShape(18.dp),
+                                                color = Color.White
+                                            ) {
+                                                Row(
+                                                    Modifier.fillMaxWidth().padding(12.dp),
+                                                    verticalAlignment = Alignment.CenterVertically,
+                                                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                                                ) {
+                                                    Box(
+                                                        Modifier.size(76.dp, 66.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF2F4FA)),
+                                                        contentAlignment = Alignment.Center
+                                                    ) {
+                                                        Icon(Icons.Default.Place, contentDescription = null, tint = Color(0xFFFFC83D), modifier = Modifier.size(34.dp))
+                                                    }
+                                                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                                        Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                                        Text(description, color = Muted, fontSize = 14.sp)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     if (areaError) Text("Please select an area, street", color = Color(0xFFE53945), fontSize = 13.sp)
