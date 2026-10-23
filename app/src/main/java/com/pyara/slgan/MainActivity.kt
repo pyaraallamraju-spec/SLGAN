@@ -8221,7 +8221,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 Spacer(Modifier.width(8.dp)); Text(if (addressSaving) "Saving address…" else "Save address", color = Ink, fontWeight = FontWeight.Bold)
                     }
                 }
-            }
         } else {
             if (addresses.isEmpty()) {
                 Spacer(Modifier.height(44.dp))
