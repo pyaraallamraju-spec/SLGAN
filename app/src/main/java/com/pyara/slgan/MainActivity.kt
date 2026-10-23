@@ -8310,15 +8310,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         textAlign = TextAlign.Center
                     )
                     Spacer(Modifier.height(18.dp))
-                        modifier = Modifier.fillMaxWidth(0.78f).height(54.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
-                        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(22.dp))
-                        Spacer(Modifier.width(8.dp))
-                        Text("+ Address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    }
                 }
                 Spacer(Modifier.height(24.dp))
             } else {
