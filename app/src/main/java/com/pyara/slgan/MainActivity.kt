@@ -1574,7 +1574,7 @@ private fun LoginScreen(
             enabled = !loading,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 16.dp)
                 .height(58.dp),
             shape = signInShape,
             elevation = ButtonDefaults.buttonElevation(
@@ -1616,7 +1616,7 @@ private fun LoginScreen(
                     // the right decorative edge cannot be cropped on narrow screens.
                     // Add a small inset around the decorative PNG so its outer gold
                     // border and curved right tip remain inside the visible button bounds.
-                    modifier = Modifier.fillMaxWidth().height(58.dp),
+                    modifier = Modifier.fillMaxWidth(1f).height(58.dp),
                     contentScale = ContentScale.FillBounds
                 )
             }
