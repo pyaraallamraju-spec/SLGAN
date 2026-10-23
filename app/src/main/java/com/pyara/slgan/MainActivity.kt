@@ -7805,49 +7805,49 @@ private fun AddAddressDetailsPage(
         )
     }
 
-    Column(Modifier.fillMaxSize().background(Color(0xFFF2F4FA))) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFF5F5F5))) {
         Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
+            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { showExitConfirmation = true }, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE1E6EF), CircleShape)) {
+            IconButton(onClick = { showExitConfirmation = true }, modifier = Modifier.size(40.dp).border(1.dp, Color(0xFFE2E2E2), RoundedCornerShape(10.dp))) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
-            Text("Add address details", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text("Add address details", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
         Column(
-            Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 18.dp, vertical = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
-                Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("Address details", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("Address details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Box {
                         OutlinedButton(
                             onClick = { citySearch = ""; cityMenu = true },
-                            modifier = Modifier.fillMaxWidth().height(76.dp),
-                            shape = RoundedCornerShape(16.dp),
-                            border = BorderStroke(1.dp, if (cityError) Color(0xFFE53945) else Color(0xFFD7DCE6)),
-                            contentPadding = PaddingValues(horizontal = 14.dp)
+                            modifier = Modifier.fillMaxWidth().height(56.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            border = BorderStroke(1.dp, if (cityError) Color(0xFFE53945) else Color(0xFFB5B5B5)),
+                            contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
                             Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink)
-                            Text(city.ifBlank { "Select a city" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 17.sp)
-                            Text("Select", color = Forest, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(city.ifBlank { "Select a city" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 15.sp)
+                            Text("Select", color = Forest, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                         }
                         if (cityMenu) {
                             ModalBottomSheet(
                                 onDismissRequest = { cityMenu = false },
-                                containerColor = Color(0xFFF2F4FA),
+                                containerColor = Color(0xFFF5F5F5),
                                 contentColor = Ink,
                                 shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
                                 dragHandle = {
                                     Box(Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 4.dp), contentAlignment = Alignment.Center) {
-                                        Box(Modifier.width(44.dp).height(4.dp).background(Color(0xFFD2D6DF), CircleShape))
+                                        Box(Modifier.width(44.dp).height(4.dp).background(Color(0xFFB5B5B5), CircleShape))
                                     }
                                 }
                             ) {
-                                Column(Modifier.fillMaxWidth().fillMaxHeight(0.92f).padding(horizontal = 20.dp)) {
-                                    Text("Select a city", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 18.dp))
+                                Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f).padding(horizontal = 16.dp)) {
+                                    Text("Select a city", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
                                     OutlinedTextField(
                                         value = citySearch,
                                         onValueChange = { citySearch = it },
@@ -7855,49 +7855,49 @@ private fun AddAddressDetailsPage(
                                         placeholder = { Text("Search for a city") },
                                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
                                         singleLine = true,
-                                        shape = RoundedCornerShape(18.dp),
+                                        shape = RoundedCornerShape(12.dp),
                                         colors = OutlinedTextFieldDefaults.colors(
-                                            focusedBorderColor = Color(0xFFD7DCE6),
-                                            unfocusedBorderColor = Color(0xFFD7DCE6),
+                                            focusedBorderColor = Color(0xFFB5B5B5),
+                                            unfocusedBorderColor = Color(0xFFB5B5B5),
                                             cursorColor = Forest
                                         )
                                     )
-                                    Text("Top cities", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 18.dp, bottom = 12.dp))
+                                    Text("Top cities", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 8.dp))
                                     val topCities = listOf("New Delhi", "Mumbai", "Bengaluru", "Kolkata", "Hyderabad", "Ahmedabad")
                                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
                                         topCities.take(3).forEach { item ->
                                             Surface(
                                                 modifier = Modifier.weight(1f).clickable { city = item; cityError = false; cityMenu = false },
-                                                shape = RoundedCornerShape(16.dp), color = Color.White
+                                                shape = RoundedCornerShape(12.dp), color = Color.White
                                             ) {
-                                                Column(Modifier.padding(vertical = 18.dp, horizontal = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                                Column(Modifier.padding(vertical = 10.dp, horizontal = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                                                     Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink, modifier = Modifier.size(32.dp))
                                                     Text(item, color = Ink, fontSize = 12.sp, textAlign = TextAlign.Center, maxLines = 2)
                                                 }
                                             }
                                         }
                                     }
-                                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth().padding(top = 10.dp)) {
+                                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth().padding(top = 6.dp)) {
                                         topCities.drop(3).forEach { item ->
                                             Surface(
                                                 modifier = Modifier.weight(1f).clickable { city = item; cityError = false; cityMenu = false },
-                                                shape = RoundedCornerShape(16.dp), color = Color.White
+                                                shape = RoundedCornerShape(12.dp), color = Color.White
                                             ) {
-                                                Column(Modifier.padding(vertical = 18.dp, horizontal = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                                                Column(Modifier.padding(vertical = 10.dp, horizontal = 4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                                                     Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink, modifier = Modifier.size(32.dp))
                                                     Text(item, color = Ink, fontSize = 12.sp, textAlign = TextAlign.Center, maxLines = 2)
                                                 }
                                             }
                                         }
                                     }
-                                    Text(if (citySearch.isBlank()) "Other cities" else "Search results", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 18.dp, bottom = 10.dp))
+                                    Text(if (citySearch.isBlank()) "Other cities" else "Search results", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
                                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)) {
                                         items(cities.filter { it.contains(citySearch.trim(), ignoreCase = true) }) { item ->
                                             Surface(
                                                 modifier = Modifier.fillMaxWidth().clickable { city = item; cityError = false; cityMenu = false },
-                                                shape = RoundedCornerShape(14.dp), color = Color.White
+                                                shape = RoundedCornerShape(10.dp), color = Color.White
                                             ) {
-                                                Text(item, modifier = Modifier.padding(horizontal = 18.dp, vertical = 16.dp), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                                                Text(item, modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                                             }
                                         }
                                     }
@@ -7909,14 +7909,14 @@ private fun AddAddressDetailsPage(
                     Box {
                         OutlinedButton(
                             onClick = { areaSearch = ""; areaMenu = true },
-                            modifier = Modifier.fillMaxWidth().height(76.dp),
-                            shape = RoundedCornerShape(16.dp),
-                            border = BorderStroke(1.dp, if (areaError) Color(0xFFE53945) else Color(0xFFD7DCE6)),
-                            contentPadding = PaddingValues(horizontal = 14.dp)
+                            modifier = Modifier.fillMaxWidth().height(56.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            border = BorderStroke(1.dp, if (areaError) Color(0xFFE53945) else Color(0xFFB5B5B5)),
+                            contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
                             Icon(Icons.Default.Place, contentDescription = null, tint = Ink)
-                            Text(area.ifBlank { "Select an area, street" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 16.sp)
-                            Text("Select", color = Forest, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(area.ifBlank { "Select an area, street" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 14.sp)
+                            Text("Select", color = Forest, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                         }
                         if (areaMenu) {
                             val localityResults = listOf(
@@ -7941,17 +7941,17 @@ private fun AddAddressDetailsPage(
                             )
                             ModalBottomSheet(
                                 onDismissRequest = { areaMenu = false },
-                                containerColor = Color(0xFFF2F4FA),
+                                containerColor = Color(0xFFF5F5F5),
                                 contentColor = Ink,
                                 shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
                                 dragHandle = {
                                     Box(Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 4.dp), contentAlignment = Alignment.Center) {
-                                        Box(Modifier.width(44.dp).height(4.dp).background(Color(0xFFD2D6DF), CircleShape))
+                                        Box(Modifier.width(44.dp).height(4.dp).background(Color(0xFFB5B5B5), CircleShape))
                                     }
                                 }
                             ) {
-                                Column(Modifier.fillMaxWidth().fillMaxHeight(0.92f).padding(horizontal = 20.dp)) {
-                                    Text("Select an area, street", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 18.dp))
+                                Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f).padding(horizontal = 16.dp)) {
+                                    Text("Select an area, street", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
                                     OutlinedTextField(
                                         value = areaSearch,
                                         onValueChange = { areaSearch = it },
@@ -7964,15 +7964,15 @@ private fun AddAddressDetailsPage(
                                             }
                                         },
                                         singleLine = true,
-                                        shape = RoundedCornerShape(18.dp),
+                                        shape = RoundedCornerShape(12.dp),
                                         colors = OutlinedTextFieldDefaults.colors(
-                                            focusedBorderColor = Color(0xFFD7DCE6),
-                                            unfocusedBorderColor = Color(0xFFD7DCE6),
+                                            focusedBorderColor = Color(0xFFB5B5B5),
+                                            unfocusedBorderColor = Color(0xFFB5B5B5),
                                             cursorColor = Forest
                                         )
                                     )
-                                    Spacer(Modifier.height(14.dp))
-                                    LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.weight(1f)) {
+                                    Spacer(Modifier.height(8.dp))
+                                    LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.weight(1f)) {
                                         items(localityResults.filter { (name, description) ->
                                             areaSearch.isBlank() || name.contains(areaSearch.trim(), true) || description.contains(areaSearch.trim(), true)
                                         }) { (name, description) ->
@@ -7986,22 +7986,22 @@ private fun AddAddressDetailsPage(
                                                     areaError = false
                                                     areaMenu = false
                                                 },
-                                                shape = RoundedCornerShape(18.dp),
+                                                shape = RoundedCornerShape(12.dp),
                                                 color = Color.White
                                             ) {
                                                 Row(
-                                                    Modifier.fillMaxWidth().padding(12.dp),
+                                                    Modifier.fillMaxWidth().padding(10.dp),
                                                     verticalAlignment = Alignment.CenterVertically,
-                                                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                                                 ) {
                                                     Box(
-                                                        Modifier.size(76.dp, 66.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF2F4FA)),
+                                                        Modifier.size(54.dp, 48.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF5F5F5)),
                                                         contentAlignment = Alignment.Center
                                                     ) {
-                                                        Icon(Icons.Default.Place, contentDescription = null, tint = Color(0xFFFFC83D), modifier = Modifier.size(34.dp))
+                                                        Icon(Icons.Default.Place, contentDescription = null, tint = Color(0xFFB5B5B5), modifier = Modifier.size(26.dp))
                                                     }
-                                                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                                        Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                                        Text(name, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                                                         Text(description, color = Muted, fontSize = 14.sp)
                                                     }
                                                 }
@@ -8016,7 +8016,7 @@ private fun AddAddressDetailsPage(
                     OutlinedTextField(
                         value = fullAddress, onValueChange = { fullAddress = it; addressError = false },
                         modifier = Modifier.fillMaxWidth(), placeholder = { Text("Enter complete address*") },
-                        isError = addressError, minLines = 2, shape = RoundedCornerShape(14.dp)
+                        isError = addressError, minLines = 2, shape = RoundedCornerShape(10.dp)
                     )
                     if (addressError) Text("Please enter complete address", color = Color(0xFFE53945), fontSize = 13.sp)
                     Text("Example: Flat/house no., building, street, landmark", color = Muted, fontSize = 12.sp)
@@ -8024,14 +8024,14 @@ private fun AddAddressDetailsPage(
                         value = mapLink, onValueChange = { mapLink = it },
                         modifier = Modifier.fillMaxWidth(), placeholder = { Text("Add Google Maps link (optional)") },
                         leadingIcon = { Icon(Icons.Default.Map, contentDescription = null, tint = Forest) },
-                        singleLine = true, shape = RoundedCornerShape(14.dp)
+                        singleLine = true, shape = RoundedCornerShape(10.dp)
                     )
                 }
             }
-            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
-                Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("Contact details", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(22.dp)) {
+            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("Contact details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = false
                             receiverName = user?.displayName.orEmpty().ifBlank { receiverName }
@@ -8068,7 +8068,7 @@ private fun AddAddressDetailsPage(
                     OutlinedTextField(
                         value = receiverName, onValueChange = { receiverName = it; nameError = false },
                         modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) "Receiver's name*" else "Your name*") },
-                        isError = nameError, singleLine = true, shape = RoundedCornerShape(14.dp),
+                        isError = nameError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         trailingIcon = {
                             if (receiverName.isNotEmpty()) IconButton(onClick = { receiverName = ""; nameError = false }) {
                                 Icon(Icons.Default.Cancel, contentDescription = "Clear name", tint = Muted)
@@ -8079,7 +8079,7 @@ private fun AddAddressDetailsPage(
                     OutlinedTextField(
                         value = receiverPhone, onValueChange = { receiverPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(16); phoneError = false },
                         modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) "Receiver's phone number*" else "Your phone number*") },
-                        isError = phoneError, singleLine = true, shape = RoundedCornerShape(14.dp),
+                        isError = phoneError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         leadingIcon = { Text("+91", color = Ink, fontWeight = FontWeight.SemiBold) },
                         trailingIcon = { Icon(Icons.Default.ContactPhone, contentDescription = "Phone number", tint = Muted) }
                     )
@@ -8090,11 +8090,11 @@ private fun AddAddressDetailsPage(
                             val selected = label.equals(option, ignoreCase = true)
                             Surface(
                                 modifier = Modifier.weight(1f).clickable { label = option },
-                                shape = RoundedCornerShape(14.dp),
-                                color = if (selected) Color(0xFFEAFBEA) else Color.White,
-                                border = BorderStroke(1.dp, if (selected) Forest else Color(0xFFE1E6EF))
+                                shape = RoundedCornerShape(10.dp),
+                                color = if (selected) Color(0xFFE2E2E2) else Color.White,
+                                border = BorderStroke(1.dp, if (selected) Forest else Color(0xFFE2E2E2))
                             ) {
-                                Row(Modifier.padding(vertical = 12.dp, horizontal = 5.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                                Row(Modifier.padding(vertical = 8.dp, horizontal = 4.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                                     Icon(
                                         imageVector = when (option) {
                                             "Home" -> Icons.Default.Home
@@ -8102,7 +8102,7 @@ private fun AddAddressDetailsPage(
                                             "Hotel" -> Icons.Default.Business
                                             else -> Icons.Default.People
                                         },
-                                        contentDescription = null, tint = Color(0xFFFFC83D), modifier = Modifier.size(18.dp)
+                                        contentDescription = null, tint = Color(0xFFB5B5B5), modifier = Modifier.size(18.dp)
                                     )
                                     Text(option, color = Ink, fontSize = 13.sp, modifier = Modifier.padding(start = 5.dp), maxLines = 1)
                                 }
@@ -8127,12 +8127,12 @@ private fun AddAddressDetailsPage(
                     if (cityError || areaError || addressError || nameError || phoneError) return@Button
                     showReview = true
                 },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 14.dp).height(58.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).height(50.dp),
                 enabled = !saving, colors = ButtonDefaults.buttonColors(containerColor = Forest),
-                shape = RoundedCornerShape(18.dp)
+                shape = RoundedCornerShape(12.dp)
             ) {
                 if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = Color.White, strokeWidth = 2.dp)
-                else Text("Next", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                else Text("Next", fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
