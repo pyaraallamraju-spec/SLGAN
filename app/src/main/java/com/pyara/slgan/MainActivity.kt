@@ -1615,13 +1615,10 @@ private fun LoginScreen(
                 Image(
                     painter = painterResource(R.drawable.slgan_sign_in_button),
                     contentDescription = "Sign in",
-                    // Fit the complete sign-in artwork inside the button bounds so
-                    // the right decorative edge cannot be cropped on narrow screens.
-                    // Add a small inset around the decorative PNG so its outer gold
-                    // border and curved right tip remain inside the visible button bounds.
-                    // Keep the complete button artwork away from the Material button's outer edge.
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 2.dp),
-                    contentScale = ContentScale.Fit
+                    // Let the artwork occupy the full button area so it stays
+                    // horizontally aligned with the login form instead of appearing tiny.
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillBounds
                 )
             }
         }
