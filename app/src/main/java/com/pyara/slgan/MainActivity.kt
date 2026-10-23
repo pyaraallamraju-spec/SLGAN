@@ -1783,6 +1783,59 @@ private fun LoginScreen(
     }
 }
 
+private fun requestEmailOtp(
+    email: String,
+    action: String,
+    code: String = "",
+    callback: (Boolean, String, String?) -> Unit
+) {
+    val endpoint = BuildConfig.EMAIL_OTP_SCRIPT_URL
+    if (endpoint.isBlank()) {
+        callback(false, "Email OTP service is not configured.", null)
+        return
+    }
+    Thread {
+        var ok = false
+        var message = "Could not contact the email verification service. Please try again."
+        var customToken: String? = null
+        var connection: java.net.HttpURLConnection? = null
+        try {
+            connection = (java.net.URL(endpoint).openConnection() as java.net.HttpURLConnection).apply {
+                requestMethod = "POST"
+                connectTimeout = 15000
+                readTimeout = 20000
+                doOutput = true
+                setRequestProperty("Content-Type", "application/json; charset=utf-8")
+                setRequestProperty("Accept", "application/json")
+            }
+            val payload = org.json.JSONObject().put("action", action).put("email", email).apply {
+                if (action == "verify") put("code", code)
+            }.toString()
+            connection.outputStream.use { it.write(payload.toByteArray(Charsets.UTF_8)) }
+            val status = connection.responseCode
+            val stream = if (status in 200..299) connection.inputStream else connection.errorStream
+            val body = stream?.bufferedReader(Charsets.UTF_8)?.use { it.readText() }.orEmpty()
+            val json = org.json.JSONObject(body)
+            ok = json.optBoolean("ok", false)
+            message = json.optString("message").takeIf { it.isNotBlank() }
+                ?: if (ok) "Verification request completed." else "Email verification failed."
+            customToken = json.optString("customToken").takeIf { it.isNotBlank() && it != "null" }
+            if (status !in 200..299) {
+                ok = false
+                message = "Email verification service returned HTTP $status."
+            }
+        } catch (error: Exception) {
+            android.util.Log.w("SLGAN_EMAIL_OTP", "Email OTP request failed", error)
+            message = error.localizedMessage ?: message
+        } finally {
+            connection?.disconnect()
+        }
+        android.os.Handler(android.os.Looper.getMainLooper()).post {
+            callback(ok, message, customToken)
+        }
+    }.start()
+}
+
 private data class HomeBannerSlide(
     val productName: String,
     val tagline: String,
