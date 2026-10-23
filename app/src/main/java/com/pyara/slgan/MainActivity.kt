@@ -8087,6 +8087,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             } else {
                 Spacer(Modifier.height(14.dp))
             }
+            if (showAddressForm) {
             Card(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 18.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
