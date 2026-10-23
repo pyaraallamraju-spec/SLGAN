@@ -1077,7 +1077,7 @@ private fun AyurvedicApp() {
                     }
                 }
             )
-            else if (!adminRoleResolved) Box(Modifier.fillMaxSize().background(Color.White), contentAlignment = Alignment.Center) { AppLoader("Checking account permissions…") }
+            else if (!adminRoleResolved) Box(Modifier.fillMaxSize().background(Color.White), contentAlignment = Alignment.Center) { AppLoader("Checking account permissions…", messageColor = Ink) }
             else if (isAdmin && adminCustomersOpen) AdminCustomersScreen(onBack = { adminCustomersOpen = false })
             else if (isAdmin && adminDiseasesOpen) AdminDiseasesScreen(onBack = { adminDiseasesOpen = false })
             else if (isAdmin && adminBannersOpen) BannerManagementScreen(onBack = { adminBannersOpen = false })
@@ -8384,7 +8384,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
 }
 
 @Composable
-private fun AppLoader(message: String, compact: Boolean = false) {
+private fun AppLoader(message: String, compact: Boolean = false, messageColor: Color = Forest) {
     val leafMotion = rememberInfiniteTransition(label = "herbalLeafLoader")
     val leafRotation by leafMotion.animateFloat(
         initialValue = -18f,
@@ -8429,7 +8429,7 @@ private fun AppLoader(message: String, compact: Boolean = false) {
             )
         }
         Spacer(Modifier.height(10.dp))
-        Text(message, color = Forest, fontSize = if (compact) 13.sp else 15.sp, fontWeight = FontWeight.SemiBold)
+        Text(message, color = messageColor, fontSize = if (compact) 13.sp else 15.sp, fontWeight = FontWeight.SemiBold)
         if (!compact) {
             Spacer(Modifier.height(4.dp))
             Text(tr("Please wait a moment", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
