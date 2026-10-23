@@ -7562,6 +7562,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, initialSection: String = "Profile", onBack: (() -> Unit)? = null) {
     val user = remember { FirebaseAuth.getInstance().currentUser }
