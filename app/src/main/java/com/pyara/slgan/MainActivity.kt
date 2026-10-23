@@ -7583,13 +7583,8 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                 }
                                 if (phone.isNotBlank()) {
                                     Text(
-                                        buildAnnotatedString {
-                                            append("Phone number: ")
-                                            pushStyle(SpanStyle(fontWeight = FontWeight.Bold, color = Ink))
-                                            append(phone)
-                                            pop()
-                                        },
-                                        color = Muted,
+                                        "Phone number: $phone",
+                                        color = Ink,
                                         fontSize = 14.sp,
                                         modifier = Modifier.padding(top = 8.dp)
                                     )
