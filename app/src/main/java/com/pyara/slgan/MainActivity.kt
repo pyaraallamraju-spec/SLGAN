@@ -7730,3 +7730,397 @@ private fun AddAddressDetailsPage(
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, initialSection: String = "Profile", onBack: (() -> Unit)? = null) {
+    val user = remember { FirebaseAuth.getInstance().currentUser }
+    val uid = user?.uid
+    val context = LocalContext.current
+    var firstName by remember(uid) { mutableStateOf("") }
+    var lastName by remember(uid) { mutableStateOf("") }
+    var nickname by remember(uid) { mutableStateOf("") }
+    var gender by remember(uid) { mutableStateOf("Prefer not to say") }
+    var mobileNumber by remember(uid) { mutableStateOf("") }
+    var dateOfBirth by remember(uid) { mutableStateOf("") }
+    var showDateOfBirthPicker by remember { mutableStateOf(false) }
+    val countryCodes = remember {
+        listOf(
+            Triple("IN", "🇮🇳", "+91"), Triple("US", "🇺🇸", "+1"), Triple("CA", "🇨🇦", "+1"),
+            Triple("GB", "🇬🇧", "+44"), Triple("AU", "🇦🇺", "+61"), Triple("NZ", "🇳🇿", "+64"),
+            Triple("AE", "🇦🇪", "+971"), Triple("SA", "🇸🇦", "+966"), Triple("SG", "🇸🇬", "+65"),
+            Triple("MY", "🇲🇾", "+60"), Triple("LK", "🇱🇰", "+94"), Triple("NP", "🇳🇵", "+977"),
+            Triple("BD", "🇧🇩", "+880"), Triple("PK", "🇵🇰", "+92"), Triple("ZA", "🇿🇦", "+27"),
+            Triple("DE", "🇩🇪", "+49"), Triple("FR", "🇫🇷", "+33"), Triple("IT", "🇮🇹", "+39"),
+            Triple("ES", "🇪🇸", "+34"), Triple("NL", "🇳🇱", "+31"), Triple("JP", "🇯🇵", "+81"),
+            Triple("CN", "🇨🇳", "+86"), Triple("BR", "🇧🇷", "+55"), Triple("MX", "🇲🇽", "+52"),
+            Triple("PH", "🇵🇭", "+63"), Triple("ID", "🇮🇩", "+62"), Triple("TH", "🇹🇭", "+66"),
+            Triple("NG", "🇳🇬", "+234"), Triple("KE", "🇰🇪", "+254"), Triple("IE", "🇮🇪", "+353")
+        )
+    }
+    var selectedCountry by remember {
+        mutableStateOf(countryCodes.firstOrNull { it.first == Locale.getDefault().country.uppercase(Locale.ROOT) } ?: countryCodes.first())
+    }
+    var countryMenuExpanded by remember { mutableStateOf(false) }
+    var genderMenuExpanded by remember { mutableStateOf(false) }
+    var languageMenuExpanded by remember { mutableStateOf(false) }
+    var languageSaving by remember { mutableStateOf(false) }
+    var languageMessage by remember { mutableStateOf<String?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
+    var isSaving by remember { mutableStateOf(false) }
+    var saveMessage by remember { mutableStateOf<String?>(null) }
+    var profileSection by remember(initialSection) { mutableStateOf(initialSection) }
+
+    DisposableEffect(uid) {
+        var registration: ListenerRegistration? = null
+        if (uid != null) {
+            registration = FirebaseFirestore.getInstance().collection("customers").document(uid)
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        isLoading = false
+                        saveMessage = "Couldn't load profile. Check your connection and try again."
+                    } else if (snapshot != null) {
+                        firstName = snapshot.getString("firstName").orEmpty()
+                        lastName = snapshot.getString("lastName").orEmpty()
+                        nickname = snapshot.getString("nickname").orEmpty()
+                        gender = snapshot.getString("gender")?.takeIf { it.isNotBlank() } ?: "Prefer not to say"
+                        dateOfBirth = snapshot.getString("dateOfBirth").orEmpty()
+                        val savedPhone = snapshot.getString("mobileNumber").orEmpty()
+                        val savedCountryIso = snapshot.getString("countryIso").orEmpty()
+                        val matchingCountry = countryCodes.firstOrNull { it.first == savedCountryIso }
+                            ?: countryCodes.sortedByDescending { it.third.length }
+                                .firstOrNull { savedPhone.startsWith(it.third) }
+                        if (matchingCountry != null) {
+                            selectedCountry = matchingCountry
+                            mobileNumber = if (savedPhone.startsWith(matchingCountry.third)) {
+                                savedPhone.removePrefix(matchingCountry.third).filter(Char::isDigit)
+                            } else {
+                                savedPhone.filter(Char::isDigit)
+                            }
+                        } else {
+                            mobileNumber = savedPhone.filter(Char::isDigit)
+                        }
+                        snapshot.getString("languagePreference")?.let(onLanguageChange)
+                        isLoading = false
+                    } else {
+                        isLoading = false
+                    }
+                }
+        } else {
+            isLoading = false
+        }
+        onDispose { registration?.remove() }
+    }
+    Column(
+        modifier.fillMaxSize()
+            .background(Color(0xFFF3F5FA))
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = if (initialSection == "Profile") 0.dp else 16.dp, vertical = if (initialSection == "Profile") 0.dp else 18.dp)
+    ) {
+        if (initialSection == "Profile") {
+            Row(
+                modifier = Modifier.fillMaxWidth().background(Color.White).padding(start = 0.dp, end = 12.dp, top = 10.dp, bottom = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    modifier = Modifier.size(48.dp).clickable { onBack?.invoke() },
+                    shape = CircleShape,
+                    color = Color.White,
+                    border = BorderStroke(1.dp, Color(0xFFE5E9F0))
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+                    }
+                }
+                Spacer(Modifier.width(14.dp))
+                Text("Personal information", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
+            }
+            Spacer(Modifier.height(20.dp))
+
+        }
+        if (profileSection == "Profile") {
+            Column(Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp)) {
+            Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
+                Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Surface(
+                        modifier = Modifier.size(58.dp),
+                        shape = CircleShape,
+                        color = Color(0xFFF1F1F1),
+                        shadowElevation = 4.dp
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(Icons.Default.Person, null, tint = Ink, modifier = Modifier.size(30.dp))
+                        }
+                    }
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname.ifBlank { "SLGAN Customer" } },
+                            color = Ink, fontWeight = FontWeight.Bold
+                        )
+                        Text(mobileNumber.ifBlank { user?.email.orEmpty() }, color = Muted, fontSize = 12.sp)
+                    }
+                }
+            }
+            Spacer(Modifier.height(20.dp))
+            OutlinedTextField(value = firstName, onValueChange = { firstName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("First name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.PersonOutline, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(value = lastName, onValueChange = { lastName = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Last name", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Badge, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
+            Spacer(Modifier.height(12.dp))
+            OutlinedTextField(value = nickname, onValueChange = { nickname = it; saveMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Nickname", LocalAppLanguage.current)) }, singleLine = true, leadingIcon = { Icon(Icons.Default.Face, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
+            Spacer(Modifier.height(12.dp))
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Box {
+                    OutlinedTextField(
+                        value = "${selectedCountry.second}  ${selectedCountry.third}",
+                        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
+                        onValueChange = {},
+                        readOnly = true,
+                        modifier = Modifier.width(140.dp).clickable { countryMenuExpanded = true },
+                        label = { Text("Country", maxLines = 1, softWrap = false) },
+                        trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country", tint = Ink, modifier = Modifier.size(18.dp)) },
+                        singleLine = true
+                    )
+                    Box(Modifier.matchParentSize().clickable { countryMenuExpanded = true })
+                    DropdownMenu(expanded = countryMenuExpanded, onDismissRequest = { countryMenuExpanded = false }, containerColor = Color.White) {
+                        countryCodes.forEach { country ->
+                            DropdownMenuItem(
+                                text = { Text("${country.second}  ${country.first}  ${country.third}") },
+                                onClick = {
+                                    selectedCountry = country
+                                    countryMenuExpanded = false
+                                    saveMessage = null
+                                }
+                            )
+                        }
+                    }
+                }
+                OutlinedTextField(
+                    value = mobileNumber,
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
+                    onValueChange = { input -> mobileNumber = input.filter(Char::isDigit).take(15); saveMessage = null },
+                    modifier = Modifier.weight(1f),
+                    label = { Text(tr("Mobile number", LocalAppLanguage.current), maxLines = 1, softWrap = false) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                    leadingIcon = { Icon(Icons.Default.Phone, null, tint = Ink) }
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+            Box(Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = dateOfBirth.takeIf { it.isNotBlank() }?.let { saved ->
+                        runCatching { LocalDate.parse(saved).format(DateTimeFormatter.ofPattern("dd MMM yyyy")) }.getOrDefault(saved)
+                    }.orEmpty(),
+                    onValueChange = {},
+                    readOnly = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
+                    label = { Text("Date of birth") },
+                    placeholder = { Text("Select date of birth") },
+                    leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Ink) },
+                    trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = "Choose date", tint = Ink) }
+                )
+                Box(Modifier.matchParentSize().clickable { showDateOfBirthPicker = true })
+            }
+            if (showDateOfBirthPicker) {
+                val initialDobMillis = dateOfBirth.takeIf { it.isNotBlank() }?.let { saved ->
+                    runCatching { LocalDate.parse(saved).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli() }.getOrNull()
+                }
+                val datePickerState = rememberDatePickerState(initialSelectedDateMillis = initialDobMillis)
+                DatePickerDialog(
+                    onDismissRequest = { showDateOfBirthPicker = false },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                datePickerState.selectedDateMillis?.let { millis ->
+                                    dateOfBirth = Instant.ofEpochMilli(millis).atZone(ZoneOffset.UTC).toLocalDate().toString()
+                                    saveMessage = null
+                                }
+                                showDateOfBirthPicker = false
+                            },
+                            colors = ButtonDefaults.textButtonColors(contentColor = Ink)
+                        ) { Text("Select") }
+                    },
+                    dismissButton = {
+                        TextButton(
+                            onClick = { showDateOfBirthPicker = false },
+                            colors = ButtonDefaults.textButtonColors(contentColor = Forest)
+                        ) { Text("Cancel") }
+                    },
+                ) {
+                    DatePicker(
+                        state = datePickerState,
+                        colors = DatePickerDefaults.colors(
+                            containerColor = Color.White,
+                            titleContentColor = Ink,
+                            headlineContentColor = Ink,
+                            weekdayContentColor = Muted,
+                            subheadContentColor = Ink,
+                            navigationContentColor = Ink,
+                            yearContentColor = Ink,
+                            currentYearContentColor = Ink,
+                            selectedYearContainerColor = Ink,
+                            selectedYearContentColor = Color.White,
+                            dayContentColor = Ink,
+                            disabledDayContentColor = Muted,
+                            selectedDayContainerColor = Ink,
+                            selectedDayContentColor = Color.White,
+                            todayContentColor = Ink,
+                            todayDateBorderColor = Ink
+                        )
+                    )
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+            Box(Modifier.fillMaxWidth()) {
+                OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Ink) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
+                Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
+                DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }, containerColor = Color.White) {
+                    listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
+                        DropdownMenuItem(text = { Text(tr(option, LocalAppLanguage.current)) }, onClick = { gender = option; genderMenuExpanded = false; saveMessage = null })
+                    }
+                }
+            }
+            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(18.dp))
+            Button(
+                onClick = {
+                    val currentUid = uid
+                    val parsedDob = dateOfBirth.takeIf { it.isNotBlank() }?.let {
+                        runCatching { LocalDate.parse(it) }.getOrNull()
+                    }
+                    val mobileDigits = mobileNumber.filter(Char::isDigit)
+                    val countryCodeValid = selectedCountry.third.matches(Regex("^\\+[1-9]\\d{0,3}$"))
+                    val mobileValid = when (selectedCountry.first) {
+                        "IN" -> mobileDigits.length == 10 && mobileDigits.firstOrNull() in '6'..'9'
+                        "US", "CA" -> mobileDigits.length == 10
+                        else -> mobileDigits.length in 7..15
+                    }
+                    val today = LocalDate.now()
+                    when {
+                        firstName.isBlank() && mobileNumber.isBlank() ->
+                            saveMessage = "First name and mobile number are required."
+                        firstName.isBlank() ->
+                            saveMessage = "First name is required."
+                        mobileNumber.isBlank() ->
+                            saveMessage = "Mobile number is required."
+                        !countryCodeValid ->
+                            saveMessage = "Please select a valid country calling code."
+                        !mobileValid ->
+                            saveMessage = if (selectedCountry.first == "IN") "Enter a valid 10-digit Indian mobile number starting with 6–9."
+                                else if (selectedCountry.first in listOf("US", "CA")) "Enter a valid 10-digit mobile number."
+                                else "Enter a valid mobile number containing 7–15 digits."
+                        dateOfBirth.isBlank() ->
+                            saveMessage = "Date of birth is required."
+                        parsedDob == null ->
+                            saveMessage = "Please select a valid date of birth."
+                        parsedDob.isAfter(today) ->
+                            saveMessage = "Date of birth cannot be in the future."
+                        parsedDob.isBefore(today.minusYears(120)) ->
+                            saveMessage = "Please enter a valid date of birth."
+                        currentUid == null ->
+                            saveMessage = "Please sign in again to save your profile."
+                        else -> {
+                            isSaving = true
+                            saveMessage = null
+                            FirebaseData.saveCustomerProfile(currentUid, mapOf(
+                                "email" to (user.email ?: ""), "firstName" to firstName.trim(),
+                                "lastName" to lastName.trim(), "nickname" to nickname.trim(),
+                                "gender" to gender,
+                                "dateOfBirth" to dateOfBirth,
+                                "countryIso" to selectedCountry.first,
+                                "countryFlag" to selectedCountry.second,
+                                "countryDialCode" to selectedCountry.third,
+                                "mobileNumber" to (selectedCountry.third + mobileNumber.filter(Char::isDigit)),
+                                "updatedAt" to System.currentTimeMillis()
+                            )) { error ->
+                                isSaving = false
+                                if (error == null) {
+                                    saveMessage = null
+                                    Toast.makeText(context, "Saved successfully.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    saveMessage = "Couldn't save profile. Please try again."
+                                    Toast.makeText(context, "Couldn't save profile. Please try again.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    }
+                },
+                enabled = !isSaving && !isLoading,
+                modifier = Modifier.fillMaxWidth().height(58.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+            ) {
+                if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null)
+                Spacer(Modifier.width(8.dp))
+                Text(if (isLoading) "Loading profile…" else if (isSaving) "Saving…" else "Save profile", fontWeight = FontWeight.Bold)
+            }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppLoader(message: String, compact: Boolean = false, messageColor: Color = Forest) {
+    val leafMotion = rememberInfiniteTransition(label = "herbalLeafLoader")
+    val leafRotation by leafMotion.animateFloat(
+        initialValue = -18f,
+        targetValue = 342f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "leafRotation"
+    )
+    val leafScale by leafMotion.animateFloat(
+        initialValue = 0.88f,
+        targetValue = 1.08f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(750, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "leafScale"
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = if (compact) 8.dp else 28.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .size(if (compact) 48.dp else 76.dp)
+                .background(Cream, CircleShape)
+                .border(2.dp, Gold, CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "🌿",
+                fontSize = if (compact) 25.sp else 39.sp,
+                modifier = Modifier.graphicsLayer {
+                    rotationZ = leafRotation
+                    scaleX = leafScale
+                    scaleY = leafScale
+                }
+            )
+        }
+        Spacer(Modifier.height(10.dp))
+        Text(message, color = messageColor, fontSize = if (compact) 13.sp else 15.sp, fontWeight = FontWeight.SemiBold)
+        if (!compact) {
+            Spacer(Modifier.height(4.dp))
+            Text(tr("Please wait a moment", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
+        }
+    }
+}
+
+@Composable
+private fun EmptyState(emoji: String, title: String, subtitle: String) {
+    Column(Modifier.fillMaxWidth().padding(top = 80.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(emoji, fontSize = 52.sp); Spacer(Modifier.height(12.dp))
+        Text(title, fontSize = 18.sp, color = Ink, fontWeight = FontWeight.Bold); Spacer(Modifier.height(6.dp))
+        Text(subtitle, fontSize = 13.sp, color = Muted)
+    }
+}
