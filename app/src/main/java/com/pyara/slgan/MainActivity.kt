@@ -6056,14 +6056,25 @@ private fun OrdersPage(
                             Text("₹" + String.format("%.2f", total), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
+                            val isFailedStatus = status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)
+                            val isPendingStatus = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
+                            val orderStatusTint = when {
+                                isFailedStatus -> Color(0xFFC62828)
+                                isPendingStatus -> Color(0xFFC58B00)
+                                else -> Color(0xFF27864A)
+                            }
                             Icon(
-                                if (status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)) Icons.Default.Cancel else Icons.Default.CheckCircle,
+                                when {
+                                    isFailedStatus -> Icons.Default.Cancel
+                                    isPendingStatus -> Icons.Default.Schedule
+                                    else -> Icons.Default.CheckCircle
+                                },
                                 contentDescription = null,
-                                tint = if (status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)) Color(0xFFC62828) else Color(0xFF27864A),
+                                tint = orderStatusTint,
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(Modifier.width(5.dp))
-                            Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = if (status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)) Color(0xFFC62828) else Color(0xFF27864A), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                            Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = orderStatusTint, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
                             TextButton(onClick = { selectedOrder = order }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) {
                                 Text("View Order", color = Ink, fontWeight = FontWeight.Bold)
