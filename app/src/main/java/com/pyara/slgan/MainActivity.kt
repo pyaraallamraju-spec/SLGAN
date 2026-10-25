@@ -5351,6 +5351,7 @@ private fun ProductDetailsPage(
             }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
