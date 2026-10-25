@@ -5357,6 +5357,10 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     var showCheckout by remember { mutableStateOf(false) }
+    var savedAddresses by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    var selectedDeliveryAddressId by remember { mutableStateOf<String?>(null) }
+    var confirmedDeliveryAddress by remember { mutableStateOf<Map<String, Any>?>(null) }
+    var loadingDeliveryAddresses by remember { mutableStateOf(false) }
     val signedInUser = FirebaseAuth.getInstance().currentUser
     var customerName by remember(signedInUser?.uid) { mutableStateOf(signedInUser?.displayName.orEmpty()) }
     var email by remember(signedInUser?.uid) { mutableStateOf(signedInUser?.email.orEmpty()) }
@@ -5542,12 +5546,117 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }
             }
+            if (confirmedDeliveryAddress != null) {
+                val address = confirmedDeliveryAddress!!
+                val confirmedText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode").mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ").ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
+                Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).clickable { confirmedDeliveryAddress = null }, colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFE2E5EA))) {
+                    Column(Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.LocationOn, contentDescription = null, tint = Forest)
+                            Text("Deliver to: ${address["label"]?.toString().orEmpty().ifBlank { "Saved address" }}", color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            TextButton(onClick = { confirmedDeliveryAddress = null }) { Text("Change") }
+                        }
+                        Text(address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { customerName }, color = Ink, fontSize = 14.sp)
+                        Text(confirmedText, color = Muted, fontSize = 13.sp)
+                        Text(address["phone"]?.toString().orEmpty().ifBlank { phone }, color = Muted, fontSize = 13.sp)
+                    }
+                }
+            }
             Row(Modifier.fillMaxWidth().background(Color.White).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(0.7f)) {
                     Text(money(total), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                     Text("TOTAL", color = Muted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 }
-                Button(onClick = { showCheckout = true; errorMessage = null }, modifier = Modifier.weight(1.3f).height(58.dp), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFB5B5B5)), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Color(0xFF000000))) {
+                Button(onClick = {
+                    errorMessage = null
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if (user == null) {
+                        errorMessage = "Please sign in again before placing an order."
+                    } else if (confirmedDeliveryAddress == null) {
+                        loadingDeliveryAddresses = true
+                        showCheckout = true
+                        FirebaseFirestore.getInstance().collection("addresses").whereEqualTo("userId", user.uid).get()
+                            .addOnSuccessListener { snapshot ->
+                                savedAddresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
+                                if (selectedDeliveryAddressId == null || savedAddresses.none { it["_id"]?.toString() == selectedDeliveryAddressId }) {
+                                    selectedDeliveryAddressId = savedAddresses.firstOrNull { it["isDefault"] == true || it["default"] == true }?.get("_id")?.toString()
+                                        ?: savedAddresses.firstOrNull()?.get("_id")?.toString()
+                                }
+                                loadingDeliveryAddresses = false
+                            }
+                            .addOnFailureListener { error ->
+                                loadingDeliveryAddresses = false
+                                errorMessage = error.localizedMessage ?: "Could not load saved addresses."
+                            }
+                    } else if (customerName.isBlank() || !email.contains("@")) {
+                        errorMessage = "Enter your name and a valid email address."
+                    } else {
+                        submitting = true
+                        val userForOrder = FirebaseAuth.getInstance().currentUser
+                        if (userForOrder == null) {
+                            submitting = false
+                            errorMessage = "Please sign in again before placing an order."
+                        } else {
+                            val address = confirmedDeliveryAddress!!
+                            val addressText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
+                                .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
+                                .joinToString(", ")
+                                .ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
+                            if (addressText.isBlank()) {
+                                submitting = false
+                                errorMessage = "The selected address has no address details. Please edit or choose another address."
+                            } else {
+                                val orderId = "SLGAN-" + java.util.UUID.randomUUID().toString().take(8).uppercase()
+                                val itemPayload = selected.map { product ->
+                                    mapOf("productId" to product.id, "productName" to product.name, "unitPrice" to product.price, "quantity" to (cart[product.id] ?: 0), "lineTotal" to (product.price * (cart[product.id] ?: 0))
+                                }
+                                val now = com.google.firebase.Timestamp.now()
+                                val orderFields = mapOf<String, Any>(
+                                    "orderId" to orderId,
+                                    "customerId" to userForOrder.uid,
+                                    "customerName" to customerName.trim(),
+                                    "email" to email.trim(),
+                                    "phone" to phone.trim().ifBlank { address["phone"]?.toString().orEmpty() },
+                                    "deliveryAddressId" to address["_id"]?.toString().orEmpty(),
+                                    "deliveryAddress" to addressText,
+                                    "deliveryAddressLabel" to address["label"]?.toString().orEmpty(),
+                                    "deliveryRecipientName" to address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() },
+                                    "deliveryPhone" to address["phone"]?.toString().orEmpty(),
+                                    "deliveryInstruction" to selectedInstruction,
+                                    "items" to itemPayload,
+                                    "subtotal" to total,
+                                    "grandTotal" to total,
+                                    "currency" to "INR",
+                                    "paymentStatus" to "not_collected",
+                                    "orderStatus" to "pending_verification",
+                                    "invoiceNumber" to orderId,
+                                    "invoiceStatus" to "not_generated",
+                                    "createdAt" to now,
+                                    "updatedAt" to now
+                                )
+                                FirebaseFirestore.getInstance().collection("orders").document(orderId).set(orderFields)
+                                    .addOnSuccessListener {
+                                        orderMessage = "Order saved: $orderId"
+                                        submitting = false
+                                        confirmedDeliveryAddress = null
+                                        onOrderResult(orderId, true, null, "Order saved. Payment has not been collected; the shop must verify the order.")
+                                        userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
+                                            val idToken = tokenResult.token
+                                            if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
+                                                orderMessage = if (emailSent) "Order saved: $orderId. Email service confirmed the request." else "Order saved: $orderId. Email failed: $detail"
+                                                Toast.makeText(context, if (emailSent) "Order saved. Email service confirmed." else "Order saved, but email failed. " + detail.take(160), Toast.LENGTH_LONG).show()
+                                            }
+                                        }.addOnFailureListener { error -> orderMessage = "Order saved: $orderId. Email failed: ${error.localizedMessage ?: "Could not get Firebase ID token."}" }
+                                    }
+                                    .addOnFailureListener { error ->
+                                        submitting = false
+                                        errorMessage = error.localizedMessage ?: "Could not save order. Please try again."
+                                        onOrderResult("", false, null, errorMessage.orEmpty())
+                                    }
+                            }
+                        }
+                    }
+                }, modifier = Modifier.weight(1.3f).height(58.dp), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFB5B5B5)), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Color(0xFF000000))) {
                     Text("Place order  ›", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFF000000))
                 }
             }
@@ -5555,107 +5664,62 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     }
 
     if (showCheckout) {
-        AlertDialog(
+        ModalBottomSheet(
             onDismissRequest = { if (!submitting) showCheckout = false },
-            title = { Text(tr("Place order", LocalAppLanguage.current)) },
-            text = {
-                Column(Modifier.fillMaxWidth().heightIn(max = 430.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(tr("Total: ₹", LocalAppLanguage.current) + String.format("%.2f", total), fontWeight = FontWeight.Bold, color = Forest)
-                    OutlinedTextField(customerName, { customerName = it }, label = { Text(tr("Customer name *", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth())
-                    OutlinedTextField(email, { email = it }, label = { Text(tr("Email for invoice *", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
-                    OutlinedTextField(phone, { phone = it }, label = { Text(tr("Phone number", LocalAppLanguage.current)) }, singleLine = true, modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone))
-                    Text(tr("Payment: none. This order request does not collect payment.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
-                    if (errorMessage != null) Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
-                    if (orderMessage != null) Text(orderMessage!!, color = Forest)
-                }
-            },
-            confirmButton = {
-                Button(enabled = !submitting && orderMessage == null, onClick = {
-                    if (customerName.isBlank() || !email.contains("@")) {
-                        errorMessage = "Enter your name and a valid email address."
-                    } else {
-                        submitting = true
-                        errorMessage = null
-                        val user = FirebaseAuth.getInstance().currentUser
-                        if (user == null) {
-                            errorMessage = "Please sign in again before placing an order."
-                            submitting = false
-                        } else {
-                            val orderId = "SLGAN-" + java.util.UUID.randomUUID().toString().take(8).uppercase()
-                            val itemPayload = selected.map { product ->
-                                mapOf(
-                                    "productId" to product.id,
-                                    "productName" to product.name,
-                                    "unitPrice" to product.price,
-                                    "quantity" to (cart[product.id] ?: 0),
-                                    "lineTotal" to (product.price * (cart[product.id] ?: 0))
-                                )
+            containerColor = Color.White,
+            contentColor = Ink,
+            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        ) {
+            Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f)) {
+                Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text("Choose delivery address", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                    Text("Select the saved address for this order.", color = Muted, fontSize = 14.sp)
+                    if (loadingDeliveryAddresses) {
+                        Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Forest) }
+                    } else if (savedAddresses.isEmpty()) {
+                        Text("No saved addresses found. Add a delivery address from your profile before placing an order.", color = Muted, fontSize = 14.sp)
+                    } else savedAddresses.forEach { address ->
+                        val addressId = address["_id"]?.toString().orEmpty()
+                        val label = address["label"]?.toString().orEmpty().ifBlank { "Delivery address" }
+                        val addressText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
+                            .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ")
+                            .ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
+                        val isSelected = selectedDeliveryAddressId == addressId
+                        Card(Modifier.fillMaxWidth().clickable { selectedDeliveryAddressId = addressId }, shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, if (isSelected) Forest else Color(0xFFE2E5EA)), colors = CardDefaults.cardColors(containerColor = if (isSelected) Color(0xFFF4F8F2) else Color.White)) {
+                            Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.Top) {
+                                Icon(if (isSelected) Icons.Default.RadioButtonChecked else Icons.Default.RadioButtonUnchecked, contentDescription = null, tint = if (isSelected) Forest else Muted)
+                                Spacer(Modifier.width(10.dp))
+                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    Text(label, color = Ink, fontWeight = FontWeight.Bold)
+                                    Text(address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { "Recipient" }, color = Ink, fontSize = 14.sp)
+                                    Text(addressText.ifBlank { "Address details unavailable" }, color = Muted, fontSize = 13.sp)
+                                    address["phone"]?.toString()?.takeIf { it.isNotBlank() }?.let { Text(it, color = Muted, fontSize = 13.sp) }
+                                    if (address["isDefault"] == true || address["default"] == true) Text("Default address", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                                }
                             }
-                            val now = com.google.firebase.Timestamp.now()
-                            val orderFields = mapOf<String, Any>(
-                                "orderId" to orderId,
-                                "customerId" to user.uid,
-                                "customerName" to customerName.trim(),
-                                "email" to email.trim(),
-                                "phone" to phone.trim(),
-                                "deliveryInstruction" to selectedInstruction,
-                                "items" to itemPayload,
-                                "subtotal" to total,
-                                "grandTotal" to total,
-                                "currency" to "INR",
-                                "paymentStatus" to "not_collected",
-                                "orderStatus" to "pending_verification",
-                                "invoiceNumber" to orderId,
-                                "invoiceStatus" to "not_generated",
-                                "createdAt" to now,
-                                "updatedAt" to now
-                            )
-                            FirebaseFirestore.getInstance().collection("orders").document(orderId)
-                                .set(orderFields)
-                                .addOnSuccessListener {
-                                    orderMessage = "Order saved: " + orderId
-                                    submitting = false
-                                    showCheckout = false
-                                    user.getIdToken(false)
-                                        .addOnSuccessListener { tokenResult ->
-                                            val idToken = tokenResult.token
-                                            if (!idToken.isNullOrBlank()) {
-                                                requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
-                                                    if (emailSent) {
-                                                        orderMessage = "Order saved: $orderId. Email service confirmed the request."
-                                                        Toast.makeText(context, "Order saved. Email service confirmed.", Toast.LENGTH_LONG).show()
-                                                    } else {
-                                                        orderMessage = "Order saved: $orderId. Email failed: $detail"
-                                                        Toast.makeText(context, "Order saved, but email failed. " + detail.take(160), Toast.LENGTH_LONG).show()
-                                                    }
-                                                }
-                                            } else {
-                                                val detail = "Firebase returned an empty ID token."
-                                                android.util.Log.e("SLGANOrderEmail", "$detail Order: $orderId")
-                                                orderMessage = "Order saved: $orderId. Email failed: $detail"
-                                                Toast.makeText(context, detail, Toast.LENGTH_LONG).show()
-                                            }
-                                        }
-                                        .addOnFailureListener { error ->
-                                            val detail = error.localizedMessage ?: "Could not get Firebase ID token."
-                                            android.util.Log.e("SLGANOrderEmail", "Could not get Firebase ID token for $orderId", error)
-                                            orderMessage = "Order saved: $orderId. Email failed: $detail"
-                                            Toast.makeText(context, "Order saved, but email failed: " + detail.take(160), Toast.LENGTH_LONG).show()
-                                        }
-                                    onOrderResult(orderId, true, null, "Order saved. Payment has not been collected; the shop must verify the order.")
-                                }
-                                .addOnFailureListener { err ->
-                                    val message = err.localizedMessage ?: "Could not save order. Please try again."
-                                    errorMessage = message
-                                    submitting = false
-                                    onOrderResult("", false, null, message)
-                                }
                         }
                     }
-                }) { Text(if (submitting) "Placing order…" else "Place order") }
-            },
-            dismissButton = { TextButton(enabled = !submitting, onClick = { showCheckout = false }) { Text(tr("Cancel", LocalAppLanguage.current)) } }
-        )
+                    if (errorMessage != null) Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
+                }
+                Surface(color = Color.White, shadowElevation = 8.dp) {
+                    Button(onClick = {
+                        val address = savedAddresses.firstOrNull { it["_id"]?.toString() == selectedDeliveryAddressId }
+                        val textAddress = address?.let { listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode").mapNotNull { key -> it[key]?.toString()?.trim()?.takeIf { value -> value.isNotBlank() } }.joinToString(", ").ifBlank { (it["address"] ?: it["addressText"] ?: it["fullAddress"] ?: it["completeAddress"] ?: it["formattedAddress"])?.toString().orEmpty() } }.orEmpty()
+                        if (address == null) errorMessage = if (savedAddresses.isEmpty()) "Please add a delivery address first." else "Please select a delivery address."
+                        else if (textAddress.isBlank()) errorMessage = "Please edit this address and add complete address details."
+                        else {
+                            confirmedDeliveryAddress = address
+                            customerName = address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { customerName }
+                            phone = address["phone"]?.toString().orEmpty().ifBlank { phone }
+                            showCheckout = false
+                            errorMessage = null
+                        }
+                    }, enabled = !loadingDeliveryAddresses && !submitting && savedAddresses.isNotEmpty(), modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp).height(54.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest, contentColor = Color.White)) {
+                        Text("Confirm address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
     }
 }
 
