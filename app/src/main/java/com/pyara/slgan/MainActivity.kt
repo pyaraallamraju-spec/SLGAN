@@ -6282,14 +6282,14 @@ private fun OrdersPage(
                         if (phone.isNotBlank()) Column { Text("Phone", color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
                         Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
-                }
-                Column(
-                    Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Text("Need help with your order?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-                    Spacer(Modifier.height(3.dp))
-                    Text("About any issues related to your order", color = Muted, fontSize = 13.sp)
-                    TextButton(onClick = { selectedOrder = null; onTabChange?.invoke("Help") }, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)) { Text("Chat with us", color = Ink, fontWeight = FontWeight.Medium) }
+                    Column(
+                        Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Text("Need help with your order?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        Spacer(Modifier.height(3.dp))
+                        Text("About any issues related to your order", color = Muted, fontSize = 13.sp)
+                        TextButton(onClick = { selectedOrder = null; onTabChange?.invoke("Help") }, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)) { Text("Chat with us", color = Ink, fontWeight = FontWeight.Medium) }
+                    }
                 }
                 Column(
                     Modifier.fillMaxWidth()
