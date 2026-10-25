@@ -7540,10 +7540,19 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 }
                 Row(Modifier.fillMaxWidth().clickable {
                     val id = address["_id"]?.toString().orEmpty()
-                    if (id.isNotBlank()) FirebaseFirestore.getInstance().collection("addresses").document(id)
-                        .update(mapOf("isDefault" to true, "default" to true))
-                        .addOnSuccessListener { selectedAddressId = id; addresses = addresses.map { it + ("isDefault" to (it["_id"]?.toString() == id)) }; Toast.makeText(context, "Delivery address updated", Toast.LENGTH_SHORT).show() }
-                        .addOnFailureListener { e -> Toast.makeText(context, e.localizedMessage ?: "Could not update address", Toast.LENGTH_LONG).show() }
+                    if (id.isNotBlank()) {
+                        val db = FirebaseFirestore.getInstance()
+                        val batch = db.batch()
+                        addresses.forEach { existing ->
+                            val existingId = existing["_id"]?.toString().orEmpty()
+                            if (existingId.isNotBlank()) batch.update(db.collection("addresses").document(existingId), "isDefault", existingId == id, "default", existingId == id)
+                        }
+                        batch.commit().addOnSuccessListener {
+                            selectedAddressId = id
+                            addresses = addresses.map { row -> row + ("isDefault" to (row["_id"]?.toString() == id)) + ("default" to (row["_id"]?.toString() == id)) }
+                            Toast.makeText(context, "Delivery address updated", Toast.LENGTH_SHORT).show()
+                        }.addOnFailureListener { e -> Toast.makeText(context, e.localizedMessage ?: "Could not update address", Toast.LENGTH_LONG).show() }
+                    }
                     addressOptions = null
                 }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Set as delivery address", color = Ink, fontSize = 16.sp)
