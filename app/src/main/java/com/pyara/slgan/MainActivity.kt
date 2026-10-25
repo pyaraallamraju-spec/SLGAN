@@ -7944,7 +7944,7 @@ private fun AddAddressDetailsPage(
     val user = FirebaseAuth.getInstance().currentUser
     var city by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("city")?.toString().orEmpty()) }
     var area by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("area")?.toString().orEmpty()) }
-    var fullAddress by remember(editAddress?.get("_id")) { mutableStateOf((editAddress?.get("address") ?: editAddress?.get("addressText"))?.toString().orEmpty()) }
+    var fullAddress by remember(editAddress?.get("_id")) { mutableStateOf((editAddress?.get("address") ?: editAddress?.get("addressText") ?: editAddress?.get("fullAddress") ?: editAddress?.get("completeAddress") ?: editAddress?.get("formattedAddress"))?.toString().orEmpty()) }
     var mapLink by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("googleMapsLink")?.toString().orEmpty()) }
     var receiverName by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("name")?.toString() ?: if (useCurrentLocation) user?.displayName.orEmpty() else "") }
     var receiverPhone by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("phone")?.toString() ?: if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
@@ -8381,6 +8381,7 @@ private fun AddAddressDetailsPage(
                         }
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = true
+                            label = "Other"
                             receiverName = ""
                             receiverPhone = ""
                             nameError = false
@@ -8388,6 +8389,7 @@ private fun AddAddressDetailsPage(
                         }) {
                             RadioButton(selected = forSomeoneElse, onClick = {
                                 forSomeoneElse = true
+                                label = "Other"
                                 receiverName = ""
                                 receiverPhone = ""
                                 nameError = false
@@ -8444,7 +8446,7 @@ private fun AddAddressDetailsPage(
             }
         }
         Surface(
-            modifier = Modifier.navigationBarsPadding().imePadding().fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().imePadding().navigationBarsPadding().padding(bottom = 76.dp),
             color = Color.White,
             shadowElevation = 8.dp
         ) {
