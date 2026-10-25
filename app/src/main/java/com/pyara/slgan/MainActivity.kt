@@ -7940,8 +7940,15 @@ private fun AddAddressDetailsPage(
     LaunchedEffect(user?.uid) {
         val uid = user?.uid ?: return@LaunchedEffect
         FirebaseFirestore.getInstance().collection("customers").document(uid).get().addOnSuccessListener { doc ->
-            profileName = (doc.getString("name") ?: doc.getString("fullName") ?: doc.getString("displayName") ?: user?.displayName).orEmpty()
-            profilePhone = (doc.getString("phone") ?: doc.getString("phoneNumber") ?: user?.phoneNumber).orEmpty()
+            val savedFirstName = doc.getString("firstName").orEmpty().trim()
+            val savedLastName = doc.getString("lastName").orEmpty().trim()
+            profileName = listOf(savedFirstName, savedLastName).filter { it.isNotBlank() }.joinToString(" ")
+                .ifBlank { (doc.getString("name") ?: doc.getString("fullName") ?: doc.getString("displayName") ?: doc.getString("nickname") ?: user?.displayName).orEmpty() }
+            val savedMobile = (doc.getString("mobileNumber") ?: doc.getString("phone") ?: doc.getString("phoneNumber") ?: doc.getString("mobile") ?: user?.phoneNumber).orEmpty().trim()
+            val savedCountryCode = doc.getString("countryCode").orEmpty().trim()
+            profilePhone = if (savedMobile.isNotBlank() && savedCountryCode.isNotBlank() && !savedMobile.startsWith("+") && savedMobile.startsWith(savedCountryCode).not()) {
+                savedCountryCode + savedMobile
+            } else savedMobile
             if (!forSomeoneElse) {
                 receiverName = profileName
                 receiverPhone = profilePhone
