@@ -5382,7 +5382,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     }
 
     var selectedInstruction by remember { mutableStateOf("") }
-    var gstin by remember { mutableStateOf("") }
     val recommendations = remember(products, cart) { products.filter { (cart[it.id] ?: 0) == 0 && it.productStock != 0 }.take(6) }
     val itemCount = selected.sumOf { cart[it.id] ?: 0 }
     val money: (Double) -> String = { amount -> "₹" + String.format(java.util.Locale("en", "IN"), "%.0f", amount) }
@@ -5522,13 +5521,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
                     Column(Modifier.padding(14.dp)) {
-                        Text("Add GSTIN (optional)", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        Spacer(Modifier.height(6.dp))
-                        OutlinedTextField(value = gstin, onValueChange = { gstin = it.uppercase().take(15) }, modifier = Modifier.fillMaxWidth(), singleLine = true, placeholder = { Text("Enter GSTIN if applicable") }, shape = RoundedCornerShape(12.dp), colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = Color.White, focusedContainerColor = Color.White, focusedBorderColor = Forest, unfocusedBorderColor = Color(0xFFE0E3EA)))
-                    }
-                }
-                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
-                    Column(Modifier.padding(14.dp)) {
                         Text("Delivery instructions", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(10.dp))
                         listOf("Call before delivery", "Avoid calling", "Do not ring the bell").forEach { instruction ->
@@ -5606,7 +5598,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 "customerName" to customerName.trim(),
                                 "email" to email.trim(),
                                 "phone" to phone.trim(),
-                                "gstin" to gstin.trim(),
                                 "deliveryInstruction" to selectedInstruction,
                                 "items" to itemPayload,
                                 "subtotal" to total,
