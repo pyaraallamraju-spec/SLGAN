@@ -8067,9 +8067,9 @@ private fun AddAddressDetailsPage(
                                         singleLine = true,
                                         shape = RoundedCornerShape(12.dp),
                                         colors = OutlinedTextFieldDefaults.colors(
-                                            focusedBorderColor = Color(0xFFB5B5B5),
-                                            unfocusedBorderColor = Color(0xFFB5B5B5),
-                                            cursorColor = Forest
+                                            focusedBorderColor = Ink,
+                                            unfocusedBorderColor = Ink,
+                                            cursorColor = Ink
                                         )
                                     )
                                     Text("Top cities", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 8.dp))
@@ -8176,9 +8176,9 @@ private fun AddAddressDetailsPage(
                                         singleLine = true,
                                         shape = RoundedCornerShape(12.dp),
                                         colors = OutlinedTextFieldDefaults.colors(
-                                            focusedBorderColor = Color(0xFFB5B5B5),
-                                            unfocusedBorderColor = Color(0xFFB5B5B5),
-                                            cursorColor = Forest
+                                            focusedBorderColor = Ink,
+                                            unfocusedBorderColor = Ink,
+                                            cursorColor = Ink
                                         )
                                     )
                                     Spacer(Modifier.height(8.dp))
