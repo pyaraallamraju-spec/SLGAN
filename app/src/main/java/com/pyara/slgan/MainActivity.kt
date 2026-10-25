@@ -7727,10 +7727,10 @@ private fun AddAddressDetailsPage(
     var area by remember { mutableStateOf("") }
     var fullAddress by remember { mutableStateOf("") }
     var mapLink by remember { mutableStateOf("") }
-    var receiverName by remember { mutableStateOf(user?.displayName.orEmpty()) }
-    var receiverPhone by remember { mutableStateOf(user?.phoneNumber.orEmpty()) }
-    var label by remember { mutableStateOf("") }
-    var forSomeoneElse by remember { mutableStateOf(false) }
+    var receiverName by remember { mutableStateOf(if (useCurrentLocation) user?.displayName.orEmpty() else "") }
+    var receiverPhone by remember { mutableStateOf(if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
+    var label by remember { mutableStateOf(if (useCurrentLocation) "Home" else "Other") }
+    var forSomeoneElse by remember { mutableStateOf(!useCurrentLocation) }
     var saving by remember { mutableStateOf(false) }
     var cityError by remember { mutableStateOf(false) }
     var areaError by remember { mutableStateOf(false) }
@@ -8107,7 +8107,7 @@ private fun AddAddressDetailsPage(
                     OutlinedTextField(
                         value = mapLink, onValueChange = { mapLink = it },
                         modifier = Modifier.fillMaxWidth(), placeholder = { Text("Add Google Maps link (optional)") },
-                        leadingIcon = { Icon(Icons.Default.Map, contentDescription = null, tint = Forest) },
+                        leadingIcon = { Icon(Icons.Default.Map, contentDescription = null, tint = Ink) },
                         singleLine = true, shape = RoundedCornerShape(10.dp)
                     )
                 }
@@ -8176,7 +8176,7 @@ private fun AddAddressDetailsPage(
                                 modifier = Modifier.weight(1f).clickable { label = option },
                                 shape = RoundedCornerShape(10.dp),
                                 color = if (selected) Color(0xFFE2E2E2) else Color.White,
-                                border = BorderStroke(1.dp, if (selected) Forest else Color(0xFFE2E2E2))
+                                border = BorderStroke(1.dp, if (selected) Color(0xFFB5B5B5) else Color(0xFFE2E2E2))
                             ) {
                                 Row(Modifier.padding(vertical = 8.dp, horizontal = 4.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                                     Icon(
