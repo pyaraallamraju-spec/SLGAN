@@ -67,6 +67,93 @@ nav button.active,nav button:hover{background:#fff0d2;color:var(--m)}
 .disease-content .accordion{padding:8px 0}.disease-content .accordion summary{font-size:13px}
 @keyframes bannerFade{from{opacity:.55;transform:scale(1.01)}to{opacity:1;transform:scale(1)}}
 @media(max-width:760px){.banner-slider{border-radius:17px}.banner-slide{aspect-ratio:1.9/1;min-height:155px}.banner-overlay h2{font-size:21px;max-width:85%}.banner-overlay p{font-size:12px}.disease-grid{grid-template-columns:1fr}.disease-card{padding:13px}.disease-content p{font-size:13px}}
+
+/* Modern light theme refresh — preserve SLGAN maroon and gold identity */
+:root{
+ --m:#762a24;--g:#d7a441;--c:#f7f9fc;--ink:#252d35;--muted:#697586;--line:#e5eaf1;--soft:#f4f7fb;
+ color-scheme:light;
+}
+html{scroll-behavior:smooth;background:#f7f9fc}
+body{background:#f7f9fc;color:#252d35;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{border-radius:12px;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+button:not(:disabled):hover{transform:translateY(-1px);box-shadow:0 5px 14px #762a241a}
+button:disabled{opacity:.55;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d7a44177;outline-offset:2px}
+input,select,textarea{border-color:#dce3ec;border-radius:12px;background:#fff;transition:border-color .16s,box-shadow .16s}
+input:focus,select:focus,textarea:focus{border-color:#b88735;box-shadow:0 0 0 3px #d7a44124;outline:0}
+.top{background:rgba(255,255,255,.96);border-bottom:1px solid #e8edf3;box-shadow:0 3px 16px #25324708;backdrop-filter:blur(14px)}
+.brand{color:#762a24;letter-spacing:-.35px}
+.brand small{color:#718096;letter-spacing:1.35px}
+.brand-mark{background:#fff7e6;border:1px solid #f0e2c3;border-radius:13px}
+.top-actions button.avatar-btn{background:#f5f7fa;border-color:#e5eaf1}
+.layout{background:#f7f9fc}
+aside{background:#fff;border-right:1px solid #e8edf3;box-shadow:3px 0 16px #25324705}
+nav button{color:#536071;border-radius:12px}
+nav button.active,nav button:hover{background:#f7eee9;color:#762a24}
+.nav-label{color:#9aa4b2}
+.main{padding:clamp(16px,2.5vw,32px)}
+.welcome{background:linear-gradient(115deg,#fff 0%,#fffaf0 65%,#f5f8fb 100%);color:#334155;border:1px solid #eee5d5;box-shadow:0 8px 26px #25324708}
+.welcome h1{color:#252d35;letter-spacing:-1.1px}
+.welcome h1 em{color:#762a24}
+.welcome p{color:#697586}
+.welcome small,.eyebrow{color:#8c6421}
+.welcome-art{filter:none;opacity:.75}
+.home-search{border-color:#e2e8f0;background:#fff;box-shadow:0 4px 16px #25324707;border-radius:15px}
+.home-search>span{color:#8792a2}
+.home-search input{box-shadow:none}
+.section-head h2{color:#252d35;letter-spacing:-.35px}
+.text-action{color:#762a24!important}
+.category-tile{background:#fff;color:#344054;border-color:#e5eaf1;box-shadow:0 4px 12px #25324705;transition:transform .18s,border-color .18s,box-shadow .18s}
+.category-tile:hover{transform:translateY(-2px);border-color:#d8bd8a;box-shadow:0 8px 20px #2532470d}
+.category-tile span{background:#fff5df;color:#762a24}
+.grid{gap:16px}
+.product,.panel{background:#fff;border:1px solid #e5eaf1;border-radius:18px;box-shadow:0 4px 16px #25324708;transition:transform .18s ease,box-shadow .18s ease,border-color .18s}
+.product:hover{transform:translateY(-3px);box-shadow:0 12px 28px #25324710;border-color:#e0d3bd}
+.product{padding:14px}
+.product-img{background:#f8fafc;border:1px solid #f0f2f6;border-radius:13px}
+.product h3{color:#293241;letter-spacing:-.2px}
+.price{color:#762a24}
+button.secondary,.chip{background:#f7f8fb;color:#762a24;border:1px solid #e1e6ee}
+button.secondary:hover,.chip:hover{background:#f8eee8}
+.chip.active{background:#762a24;color:#fff;border-color:#762a24}
+.badge{background:#fdf2d7;color:#76531c}
+.notice{background:#fff7e5;border:1px solid #f2dfb6;color:#76531c}
+.empty{color:#758195}
+th,td{border-bottom:1px solid #e8edf3}
+th{background:#f6f8fb;color:#647184}
+.table-wrap{border:1px solid #e5eaf1;border-radius:14px;background:#fff}
+table{background:#fff}
+.cart-line{border-bottom-color:#e8edf3}
+.detail img{background:#f7f9fc;border:1px solid #e5eaf1}
+.accordion{border-bottom-color:#e8edf3}
+.signin{box-shadow:0 12px 32px #2532470c}
+.bottom-nav{background:rgba(255,255,255,.97);border-top-color:#e5eaf1;box-shadow:0 -5px 20px #25324709;backdrop-filter:blur(14px)}
+.bottom-nav button{color:#647184}
+.bottom-nav button.active{color:#762a24}
+.nav-cart-badge{background:#762a24}
+.banner-slider{box-shadow:0 8px 22px #2532470c}
+.banner-slide{background:linear-gradient(115deg,#fff7e6,#f5f8fb)}
+.banner-overlay{background:linear-gradient(90deg,#281b1bd9 0%,#281b1b80 58%,#281b1b08 100%)}
+.banner-dot.active{background:#e7bd66}
+.disease-card{background:#fff;border-color:#e5eaf1;box-shadow:0 4px 16px #25324707}
+.disease-icon{background:#fff5df;color:#762a24}
+.disease-content h3{color:#762a24}
+.disease-content p{color:#536071}
+.disease-content small{color:#758195}
+@media(max-width:760px){
+ .main{padding:14px 12px calc(94px + env(safe-area-inset-bottom))}
+ .welcome{box-shadow:0 5px 18px #25324707}
+ .grid{gap:10px}
+ .product{padding:9px;border-radius:15px}
+ .product-img{border-radius:11px}
+ .bottom-nav{padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+ .bottom-nav button{border-radius:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
 </style></head>
 <body>
 <header class="top"><div class="brand"><span class="brand-mark">🌿</span><span>Sri Lakshmi Ganapathi<small>AYURVEDA NILAYAM · ESTD. 1900</small></span></div><div class="top-actions"><button id="accountBtn" class="avatar-btn" aria-label="Profile">♙</button></div></header>
