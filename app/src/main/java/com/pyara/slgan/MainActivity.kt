@@ -1515,7 +1515,7 @@ private fun LoginScreen(
                 unfocusedBorderColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                cursorColor = Forest
+                cursorColor = Ink
             )
         )
         Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
@@ -5582,6 +5582,8 @@ private fun OrdersPage(
     var loadingOrders by remember(user?.uid) { mutableStateOf(true) }
     var ordersError by remember(user?.uid) { mutableStateOf<String?>(null) }
     var selectedOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
+    var orderOptions by remember { mutableStateOf<Map<String, Any?>?>(null) }
+    var confirmDeleteOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
     var orderSearch by remember { mutableStateOf("") }
     var rateOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
     var selectedRating by remember { mutableIntStateOf(5) }
@@ -6078,7 +6080,7 @@ private fun OrdersPage(
                             Spacer(Modifier.width(5.dp))
                             Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = orderStatusTint, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
-                            IconButton(onClick = { selectedOrder = order }, modifier = Modifier.size(34.dp)) {
+                            IconButton(onClick = { orderOptions = order }, modifier = Modifier.size(34.dp)) {
                                 Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
                             }
                             TextButton(onClick = {
@@ -6130,6 +6132,46 @@ private fun OrdersPage(
         )
     }
 
+    orderOptions?.let { order ->
+        ModalBottomSheet(onDismissRequest = { orderOptions = null }, containerColor = Color.White, contentColor = Ink) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Order info", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Row(Modifier.fillMaxWidth().clickable { confirmDeleteOrder = order; orderOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink)
+                    Spacer(Modifier.width(12.dp)); Text("Delete order", color = Ink, fontSize = 16.sp)
+                }
+                Row(Modifier.fillMaxWidth().clickable {
+                    val items = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
+                    val textItems = items.map { item ->
+                        val name = item["productName"]?.toString() ?: item["name"]?.toString() ?: item["title"]?.toString() ?: "Product"
+                        val qty = item["quantity"]?.toString() ?: item["qty"]?.toString() ?: "1"
+                        "$name × $qty"
+                    }.joinToString("\\n").ifBlank { "Order items are not available." }
+                    runCatching {
+                        context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_TEXT, textItems) }, "Share order items"))
+                    }.onFailure { Toast.makeText(context, "Unable to share order items", Toast.LENGTH_SHORT).show() }
+                    orderOptions = null
+                }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.Share, contentDescription = null, tint = Ink)
+                    Spacer(Modifier.width(12.dp)); Text("Share order items", color = Ink, fontSize = 16.sp)
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+        }
+    }
+    confirmDeleteOrder?.let { order ->
+        AlertDialog(onDismissRequest = { confirmDeleteOrder = null }, title = { Text("Delete order?", color = Ink, fontWeight = FontWeight.Bold) }, text = { Text("This will remove the order from your order history. This action cannot be undone.", color = Muted) }, confirmButton = {
+            TextButton(onClick = {
+                val id = order["_documentId"]?.toString().orEmpty()
+                if (id.isBlank()) Toast.makeText(context, "Could not identify this order.", Toast.LENGTH_LONG).show()
+                else FirebaseFirestore.getInstance().collection("orders").document(id).delete()
+                    .addOnSuccessListener { Toast.makeText(context, "Order deleted", Toast.LENGTH_SHORT).show() }
+                    .addOnFailureListener { e -> Toast.makeText(context, e.localizedMessage ?: "Could not delete order", Toast.LENGTH_LONG).show() }
+                confirmDeleteOrder = null
+            }) { Text("Delete", color = Color(0xFFC62828)) }
+        }, dismissButton = { TextButton(onClick = { confirmDeleteOrder = null }) { Text("Cancel", color = Ink) } })
+    }
+
     selectedOrder?.let { order ->
         val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
         val invoiceNo = order["invoiceNumber"]?.toString() ?: orderId
@@ -6151,9 +6193,7 @@ private fun OrdersPage(
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back to Order History", tint = Ink)
                     }
                     Spacer(Modifier.weight(1f))
-                    IconButton(onClick = {
-                        Toast.makeText(context, "Order deletion is not available here. Contact support for help.", Toast.LENGTH_LONG).show()
-                    }, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape)) {
+                    IconButton(onClick = { confirmDeleteOrder = order }, modifier = Modifier.size(48.dp).border(1.dp, Color(0xFFE8EAF0), CircleShape)) {
                         Icon(Icons.Default.DeleteOutline, contentDescription = "Delete order", tint = Ink)
                     }
                 }
@@ -6234,6 +6274,14 @@ private fun OrdersPage(
                         if (phone.isNotBlank()) Column { Text("Phone", color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
                         Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
+                }
+                Column(
+                    Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    Text("Need help with your order?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                    Spacer(Modifier.height(3.dp))
+                    Text("About any issues related to your order", color = Muted, fontSize = 13.sp)
+                    TextButton(onClick = { selectedOrder = null; onTabChange?.invoke("Help") }, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)) { Text("Chat with us", color = Ink, fontWeight = FontWeight.Medium) }
                 }
                 Column(
                     Modifier.fillMaxWidth()
@@ -7394,6 +7442,8 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     var showAddAddressPage by remember { mutableStateOf(false) }
     var useCurrentLocationForAddress by remember { mutableStateOf(false) }
     var showAddAddressSheet by remember { mutableStateOf(false) }
+    var addressOptions by remember { mutableStateOf<Map<String, Any>?>(null) }
+    var confirmDeleteAddress by remember { mutableStateOf<Map<String, Any>?>(null) }
     var currentLocationAddress by remember { mutableStateOf("Detecting your current address…") }
     var locationLookupStarted by remember { mutableStateOf(false) }
 
@@ -7456,6 +7506,45 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 }
                 .addOnFailureListener { loading = false }
         }
+    }
+
+    addressOptions?.let { address ->
+        ModalBottomSheet(onDismissRequest = { addressOptions = null }, containerColor = Color.White, contentColor = Ink) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text("Address options", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Row(Modifier.fillMaxWidth().clickable { confirmDeleteAddress = address; addressOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Delete address", color = Ink, fontSize = 16.sp)
+                }
+                Row(Modifier.fillMaxWidth().clickable {
+                    Toast.makeText(context, "Edit address is not available yet for this saved address.", Toast.LENGTH_LONG).show()
+                    addressOptions = null
+                }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.Edit, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Edit address", color = Ink, fontSize = 16.sp)
+                }
+                Row(Modifier.fillMaxWidth().clickable {
+                    val id = address["_id"]?.toString().orEmpty()
+                    if (id.isNotBlank()) FirebaseFirestore.getInstance().collection("addresses").document(id)
+                        .update(mapOf("isDefault" to true, "default" to true))
+                        .addOnSuccessListener { selectedAddressId = id; addresses = addresses.map { it + ("isDefault" to (it["_id"]?.toString() == id)) }; Toast.makeText(context, "Delivery address updated", Toast.LENGTH_SHORT).show() }
+                        .addOnFailureListener { e -> Toast.makeText(context, e.localizedMessage ?: "Could not update address", Toast.LENGTH_LONG).show() }
+                    addressOptions = null
+                }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Set as delivery address", color = Ink, fontSize = 16.sp)
+                }
+                Spacer(Modifier.height(8.dp))
+            }
+        }
+    }
+    confirmDeleteAddress?.let { address ->
+        AlertDialog(onDismissRequest = { confirmDeleteAddress = null }, title = { Text("Delete address?", color = Ink, fontWeight = FontWeight.Bold) }, text = { Text("Are you sure you want to delete this saved address?", color = Muted) }, confirmButton = {
+            TextButton(onClick = {
+                val id = address["_id"]?.toString().orEmpty()
+                if (id.isNotBlank()) FirebaseFirestore.getInstance().collection("addresses").document(id).delete()
+                    .addOnSuccessListener { addresses = addresses.filterNot { it["_id"]?.toString() == id }; if (selectedAddressId == id) selectedAddressId = addresses.firstOrNull()?.get("_id")?.toString(); Toast.makeText(context, "Address deleted", Toast.LENGTH_SHORT).show() }
+                    .addOnFailureListener { e -> Toast.makeText(context, e.localizedMessage ?: "Could not delete address", Toast.LENGTH_LONG).show() }
+                confirmDeleteAddress = null
+            }) { Text("Delete", color = Color(0xFFC62828)) }
+        }, dismissButton = { TextButton(onClick = { confirmDeleteAddress = null }) { Text("Cancel", color = Ink) } })
     }
 
     if (showAddAddressPage) {
@@ -7608,7 +7697,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Surface(
-                                        onClick = { selectedAddressId = addressId },
+                                        onClick = { addressOptions = address },
                                         shape = CircleShape,
                                         color = Color.White,
                                         border = BorderStroke(1.dp, Color(0xFFE2E2E2))
@@ -7916,7 +8005,7 @@ private fun AddAddressDetailsPage(
                         ) {
                             Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink)
                             Text(city.ifBlank { "Select a city" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 15.sp)
-                            Text("Select", color = Forest, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            Text("Select", color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                         }
                         if (cityMenu) {
                             ModalBottomSheet(
@@ -7937,7 +8026,7 @@ private fun AddAddressDetailsPage(
                                         onValueChange = { citySearch = it },
                                         modifier = Modifier.fillMaxWidth(),
                                         placeholder = { Text("Search for a city") },
-                                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
                                         singleLine = true,
                                         shape = RoundedCornerShape(12.dp),
                                         colors = OutlinedTextFieldDefaults.colors(
@@ -8129,7 +8218,7 @@ private fun AddAddressDetailsPage(
                                 receiverPhone = user?.phoneNumber.orEmpty().ifBlank { receiverPhone }
                                 nameError = false
                                 phoneError = false
-                            }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
+                            }, colors = RadioButtonDefaults.colors(selectedColor = Ink))
                             Text("Myself", color = Ink)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
