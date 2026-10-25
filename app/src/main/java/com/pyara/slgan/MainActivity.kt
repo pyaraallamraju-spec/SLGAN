@@ -582,7 +582,25 @@ private val categories = listOf("All", "Lehyas", "Ghrutas", "Pills", "Tailas", "
 // Offline fallback keeps the disease selector usable until Firestore is populated.
 private val fallbackDiseases = listOf("All Diseases", "Cough", "Fever", "Obesity", "Tuberculosis (TB)")
 
-private fun productFromFirestore(data: Map<String, Any?>): Product? {
+private fun localProductImageFor(context: android.content.Context, productName: String): String {
+    val folder = "drawable/products"
+    val normalizedName = productName.lowercase().replace(Regex("[^a-z0-9]"), "")
+    val assets = try {
+        context.assets.list(folder)?.toList().orEmpty()
+    } catch (_: Exception) {
+        emptyList()
+    }
+    val match = assets.firstOrNull { filename ->
+        val normalizedFile = filename.substringBeforeLast('.').lowercase().replace(Regex("[^a-z0-9]"), "")
+        val productStem = normalizedFile.removeSuffix("product").removeSuffix("profuct")
+        productStem == normalizedName ||
+            productStem.replace("mahad", "maha") == normalizedName ||
+            (productStem == "rasottamaadi" && normalizedName == "rasottamadi")
+    }
+    return match?.let { "file:///android_asset/$folder/${it.replace(" ", "%20")}" }.orEmpty()
+}
+
+private fun productFromFirestore(data: Map<String, Any?>, context: android.content.Context): Product? {
     val name = listOf("product_name", "name", "productName", "product_title", "title", "medicine_name").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     if (name.isBlank()) return null
     // Show only the pack weight beneath the product name, e.g. "5g".
@@ -620,31 +638,8 @@ private fun productFromFirestore(data: Map<String, Any?>): Product? {
     }
     val description = listOf("product_description", "description", "product_details", "details").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val remoteImageUrl = listOf("product_image", "image_url", "imageUrl", "image", "product_image_url").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.startsWith("https://") || it.startsWith("http://") } }.orEmpty()
-    // Local product artwork bundled under app/src/main/assets/drawable/products/.
-    // Coil can load Android asset URLs, so local artwork works even when Firestore has no image URL.
-    val normalizedProductName = name.lowercase().replace(Regex("[^a-z0-9]"), "")
-    val localProductImage = when {
-        normalizedProductName.contains("taaleesaadi") || normalizedProductName.contains("taleesaadi") -> "file:///android_asset/drawable/products/taaleesaadi_product.png"
-        normalizedProductName.contains("sitophaladi") || normalizedProductName.contains("sitaphaladi") -> "file:///android_asset/drawable/products/sitophaladi_product.png"
-        normalizedProductName.contains("chyavanaprasha") || normalizedProductName.contains("chyawanprasha") -> "file:///android_asset/drawable/products/chyavanaprasha_product.png"
-        normalizedProductName.contains("bhaskara lavana") || normalizedProductName.contains("bhaskaralavana") -> "file:///android_asset/drawable/products/bhaskara%20lavana_product.png"
-        normalizedProductName.contains("chandanaadi") -> "file:///android_asset/drawable/products/chandanaadi_product.png"
-        normalizedProductName.contains("chaturjaataka") || normalizedProductName.contains("chaturjataka") -> "file:///android_asset/drawable/products/chaturjaataka_product.png"
-        normalizedProductName.contains("dantadhavana") -> "file:///android_asset/drawable/products/danta%20dhavana_product.png"
-        normalizedProductName.contains("gangadhara") -> "file:///android_asset/drawable/products/gangadhara_product.png"
-        normalizedProductName.contains("garudaanjanam") -> "file:///android_asset/drawable/products/garudaanjanam_product.png"
-        normalizedProductName.contains("hingwastaka") || normalizedProductName.contains("hingvastaka") -> "file:///android_asset/drawable/products/hingwastaka_product.png"
-        normalizedProductName.contains("lavangaadi") -> "file:///android_asset/drawable/products/lavangaadi_product.png"
-        normalizedProductName.contains("mahad rakshaadi") || normalizedProductName.contains("mahad rakshadi") || normalizedProductName.contains("mahadrakshaadi") -> "file:///android_asset/drawable/products/maha%20drakshaadi_product.png"
-        normalizedProductName.contains("patchakarpuram") -> "file:///android_asset/drawable/products/patcha%20karpuram_product.png"
-        normalizedProductName.contains("pushyanuga") -> "file:///android_asset/drawable/products/pushyanuga_product.png"
-        normalizedProductName.contains("rasottamaadi") || normalizedProductName.contains("rasottamadi") -> "file:///android_asset/drawable/products/rasottamaadi_profuct.png"
-        normalizedProductName.contains("sudarshana") -> "file:///android_asset/drawable/products/sudarshana_product.png"
-        normalizedProductName.contains("tippasattu") -> "file:///android_asset/drawable/products/tippa%20sattu_product.png"
-        normalizedProductName.contains("triphala") -> "file:///android_asset/drawable/products/triphala_product.png"
-        normalizedProductName.contains("vasadidhoomapaanadi") || normalizedProductName.contains("vasadidhoomapanaadi") -> "file:///android_asset/drawable/products/vasadi%20dhoomapaanadi_product.png"
-        else -> ""
-    }
+    // Automatically find artwork in app/src/main/assets/drawable/products by matching its filename to the product name.
+    val localProductImage = localProductImageFor(context, name)
     val imageUrl = remoteImageUrl.ifBlank { localProductImage }
     val quantity = listOf("product_quantity", "quantity", "stock").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
@@ -881,7 +876,7 @@ private fun AyurvedicApp() {
                     // A malformed Firestore document must not crash the entire app after login.
                     val parsedProducts = records.mapNotNull { record ->
                         try {
-                            productFromFirestore(record)
+                            productFromFirestore(record, appContext)
                         } catch (error: Exception) {
                             android.util.Log.w("SLGAN_PRODUCTS", "Skipping an invalid product record", error)
                             null
