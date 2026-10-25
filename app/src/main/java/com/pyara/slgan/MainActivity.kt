@@ -5608,7 +5608,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             } else {
                                 val orderId = "SLGAN-" + java.util.UUID.randomUUID().toString().take(8).uppercase()
                                 val itemPayload = selected.map { product ->
-                                    mapOf("productId" to product.id, "productName" to product.name, "unitPrice" to product.price, "quantity" to (cart[product.id] ?: 0), "lineTotal" to (product.price * (cart[product.id] ?: 0))
+                                    mapOf("productId" to product.id, "productName" to product.name, "unitPrice" to product.price, "quantity" to (cart[product.id] ?: 0), "lineTotal" to (product.price * (cart[product.id] ?: 0)))
                                 }
                                 val now = com.google.firebase.Timestamp.now()
                                 val orderFields = mapOf<String, Any>(
