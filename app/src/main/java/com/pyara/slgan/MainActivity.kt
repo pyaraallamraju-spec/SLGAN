@@ -4987,7 +4987,8 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
 
 @Composable
 private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
-    Card(modifier.clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+    Box(modifier) {
+    Card(Modifier.fillMaxWidth().clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(Color.White, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 if (product.imageUrl.isNotBlank()) {
@@ -5004,26 +5005,6 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     if (imageLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp, color = Ink)
                 } else {
                     Text(product.emoji, fontSize = 42.sp)
-                }
-                if (product.productStock == 0) {
-                    Box(
-                        Modifier.fillMaxSize().background(Color(0x66BDBDBD)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Surface(
-                            color = Color.White,
-                            shape = RoundedCornerShape(10.dp),
-                            shadowElevation = 2.dp
-                        ) {
-                            Text(
-                                "Out of Stock",
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
-                                color = Color(0xFF333333),
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
                 }
                 Row(
                     modifier = Modifier
@@ -5099,6 +5080,29 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 else Text(count.toString() + " in cart", fontSize = 10.sp, color = Color(0xFF2E7D32), fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterVertically).clickable(enabled = false) {})
             }
         }
+    }
+    if (product.productStock == 0) {
+        Box(
+            Modifier.matchParentSize()
+                .clip(RoundedCornerShape(18.dp))
+                .background(Color(0x66808080)),
+            contentAlignment = Alignment.Center
+        ) {
+            Surface(
+                color = Color.White,
+                shape = RoundedCornerShape(12.dp),
+                shadowElevation = 4.dp
+            ) {
+                Text(
+                    "Out of Stock",
+                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 10.dp),
+                    color = Color(0xFF333333),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+    }
     }
 }
 
