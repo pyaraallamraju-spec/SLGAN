@@ -6160,7 +6160,9 @@ private fun OrdersPage(
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
                                 Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
                             }
-                            
+                            IconButton(onClick = { orderOptions = order }, modifier = Modifier.size(34.dp)) {
+                                Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
+                            }
                         }
                         if (orderItems.isNotEmpty()) {
                             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -6196,9 +6198,6 @@ private fun OrdersPage(
                             Spacer(Modifier.width(5.dp))
                             Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = orderStatusTint, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
-                            IconButton(onClick = { orderOptions = order }, modifier = Modifier.size(34.dp)) {
-                                Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
-                            }
                             TextButton(onClick = {
                                 val addedCount = addOrderItemsToCart(orderItems)
                                 Toast.makeText(
