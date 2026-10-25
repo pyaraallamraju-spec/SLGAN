@@ -6059,6 +6059,19 @@ private fun OrdersPage(
                             }
                             
                         }
+                        if (orderItems.isNotEmpty()) {
+                            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                orderItems.take(3).forEach { item ->
+                                    val productId = item["productId"]?.toString().orEmpty()
+                                    val product = products.firstOrNull { it.id == productId }
+                                    Box(Modifier.size(66.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF6F7FA)), contentAlignment = Alignment.Center) {
+                                        if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = product?.name ?: item["productName"]?.toString(), modifier = Modifier.fillMaxSize().padding(5.dp), contentScale = ContentScale.Fit)
+                                        else Text(product?.emoji ?: "🌿", fontSize = 24.sp)
+                                    }
+                                }
+                                if (orderItems.size > 3) Box(Modifier.size(66.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFE2E2E2)), contentAlignment = Alignment.Center) { Text("+" + (orderItems.size - 3), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                            }
+                        }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             val isFailedStatus = status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)
                             val isPendingStatus = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
