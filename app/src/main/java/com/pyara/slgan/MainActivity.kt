@@ -4697,7 +4697,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                 horizontalArrangement = Arrangement.spacedBy(1.dp)
                                             ) {
                                                 val signatureLike = productLikes[product.id] ?: ProductLikeSummary()
-                                                IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(26.dp)) {
+                                                IconButton(onClick = { onToggleLike(product) }, enabled = product.productStock != 0, modifier = Modifier.size(26.dp)) {
                                                     Icon(
                                                         if (signatureLike.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                                         contentDescription = if (signatureLike.likedByMe) "Unlike product" else "Like product",
@@ -4799,7 +4799,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                     modifier = Modifier
                                                         .size(44.dp)
                                                         .background(Color(0xFF2E7D32), CircleShape)
-                                                        .then(if (product.price > 0.0) Modifier.clickable { onAdd(product.id) } else Modifier),
+                                                        .then(if (product.price > 0.0 && product.productStock != 0) Modifier.clickable { onAdd(product.id) } else Modifier),
                                                     contentAlignment = Alignment.Center
                                                 ) {
                                                     Icon(
@@ -4836,7 +4836,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
 @Composable
 private fun ProductLikeControl(product: Product, summary: ProductLikeSummary, onToggleLike: (Product) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-        IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(30.dp)) {
+        IconButton(onClick = { onToggleLike(product) }, enabled = product.productStock != 0, modifier = Modifier.size(30.dp)) {
             Icon(if (summary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                 contentDescription = if (summary.likedByMe) "Unlike product" else "Like product",
                 tint = if (summary.likedByMe) Color(0xFFD32F2F) else Muted, modifier = Modifier.size(19.dp))
@@ -4964,7 +4964,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(1.dp)
                 ) {
-                    IconButton(onClick = { onToggleLike(product) }, modifier = Modifier.size(26.dp)) {
+                    IconButton(onClick = { onToggleLike(product) }, enabled = product.productStock != 0, modifier = Modifier.size(26.dp)) {
                         Icon(
                             if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = if (likeSummary.likedByMe) "Unlike product" else "Like product",
@@ -5025,7 +5025,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Color.Black, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
-                if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(44.dp), shape = CircleShape, colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFF2E7D32), contentColor = Color.White)) { Icon(Icons.Default.Add, "Add " + product.name, tint = Color.White, modifier = Modifier.size(24.dp)) }
+                if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, enabled = product.productStock != 0, modifier = Modifier.size(44.dp), shape = CircleShape, colors = IconButtonDefaults.filledIconButtonColors(containerColor = Color(0xFF2E7D32), contentColor = Color.White)) { Icon(Icons.Default.Add, "Add " + product.name, tint = Color.White, modifier = Modifier.size(24.dp)) }
                 else Text(count.toString() + " in cart", fontSize = 10.sp, color = Color(0xFF2E7D32), fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterVertically).clickable(enabled = false) {})
             }
         }
@@ -5124,7 +5124,7 @@ private fun ProductDetailsPage(
                             repeat(5) { dot -> Box(Modifier.size(if (dot == 2) 8.dp else 7.dp).background(if (dot == 2) Ink else Color(0xFFB7BEC9), CircleShape)) }
                         }
                     }
-                    IconButton(onClick = onToggleLike, modifier = Modifier.align(Alignment.BottomEnd).padding(end = 24.dp, bottom = 22.dp).size(48.dp).background(Color.White, CircleShape)) {
+                    IconButton(onClick = onToggleLike, enabled = product.productStock != 0, modifier = Modifier.align(Alignment.BottomEnd).padding(end = 24.dp, bottom = 22.dp).size(48.dp).background(Color.White, CircleShape)) {
                         Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = "Save product", tint = if (likeSummary.likedByMe) Color(0xFFE91E63) else Ink)
                     }
                 }
