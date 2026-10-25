@@ -8562,7 +8562,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname.ifBlank { "SLGAN Customer" } },
                             color = Ink, fontWeight = FontWeight.Bold
                         )
-                        Text(mobileNumber.ifBlank { user?.email.orEmpty() }, color = Muted, fontSize = 12.sp)
+                        Text(user?.email.orEmpty(), color = Muted, fontSize = 12.sp)
                     }
                 }
             }
