@@ -2600,6 +2600,7 @@ private fun AdminProductEditor(
     }
     var quantity by remember(product?.id) { mutableStateOf(product?.quantity.orEmpty()) }
     var imageUrl by remember(product?.id) { mutableStateOf(product?.imageUrl.orEmpty()) }
+    var message by remember { mutableStateOf<String?>(null) }
     var uploadingImage by remember(product?.id) { mutableStateOf(false) }
     val context = LocalContext.current
     val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -2636,7 +2637,6 @@ private fun AdminProductEditor(
     var signature by remember(product?.id) { mutableStateOf(product?.signature ?: false) }
     var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
     var saving by remember { mutableStateOf(false) }
-    var message by remember { mutableStateOf<String?>(null) }
     Column(Modifier.fillMaxSize().background(AdminBackground)) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack, enabled = !saving) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
