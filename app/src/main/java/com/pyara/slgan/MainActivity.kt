@@ -7440,6 +7440,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     var selectedAddressId by remember(authUser?.uid) { mutableStateOf<String?>(null) }
     var loading by remember { mutableStateOf(true) }
     var showAddAddressPage by remember { mutableStateOf(false) }
+    var editAddress by remember { mutableStateOf<Map<String, Any>?>(null) }
     var useCurrentLocationForAddress by remember { mutableStateOf(false) }
     var showAddAddressSheet by remember { mutableStateOf(false) }
     var addressOptions by remember { mutableStateOf<Map<String, Any>?>(null) }
@@ -7516,7 +7517,9 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Delete address", color = Ink, fontSize = 16.sp)
                 }
                 Row(Modifier.fillMaxWidth().clickable {
-                    Toast.makeText(context, "Edit address is not available yet for this saved address.", Toast.LENGTH_LONG).show()
+                    editAddress = address
+                    useCurrentLocationForAddress = false
+                    showAddAddressPage = true
                     addressOptions = null
                 }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Edit, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Edit address", color = Ink, fontSize = 16.sp)
@@ -7550,11 +7553,14 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     if (showAddAddressPage) {
         AddAddressDetailsPage(
             useCurrentLocation = useCurrentLocationForAddress,
-            onBack = { showAddAddressPage = false },
+            editAddress = editAddress,
+            onBack = { showAddAddressPage = false; editAddress = null },
             onSaved = { saved ->
-                addresses = listOf(saved) + addresses
-                selectedAddressId = saved["_id"]?.toString()
+                val savedId = saved["_id"]?.toString()
+                addresses = if (savedId.isNullOrBlank()) listOf(saved) + addresses else addresses.map { if (it["_id"]?.toString() == savedId) saved else it }
+                selectedAddressId = savedId
                 showAddAddressPage = false
+                editAddress = null
                 useCurrentLocationForAddress = false
             }
         )
@@ -7807,19 +7813,20 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
 @Composable
 private fun AddAddressDetailsPage(
     useCurrentLocation: Boolean = false,
+    editAddress: Map<String, Any>? = null,
     onBack: () -> Unit,
     onSaved: (Map<String, Any>) -> Unit
 ) {
     val context = LocalContext.current
     val user = FirebaseAuth.getInstance().currentUser
-    var city by remember { mutableStateOf("") }
-    var area by remember { mutableStateOf("") }
-    var fullAddress by remember { mutableStateOf("") }
-    var mapLink by remember { mutableStateOf("") }
-    var receiverName by remember { mutableStateOf(if (useCurrentLocation) user?.displayName.orEmpty() else "") }
-    var receiverPhone by remember { mutableStateOf(if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
-    var label by remember { mutableStateOf(if (useCurrentLocation) "Home" else "Other") }
-    var forSomeoneElse by remember { mutableStateOf(!useCurrentLocation) }
+    var city by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("city")?.toString().orEmpty()) }
+    var area by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("area")?.toString().orEmpty()) }
+    var fullAddress by remember(editAddress?.get("_id")) { mutableStateOf((editAddress?.get("address") ?: editAddress?.get("addressText"))?.toString().orEmpty()) }
+    var mapLink by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("googleMapsLink")?.toString().orEmpty()) }
+    var receiverName by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("name")?.toString() ?: if (useCurrentLocation) user?.displayName.orEmpty() else "") }
+    var receiverPhone by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("phone")?.toString() ?: if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
+    var label by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("label")?.toString() ?: if (useCurrentLocation) "Home" else "Other") }
+    var forSomeoneElse by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("name")?.toString()?.let { it != user?.displayName } ?: !useCurrentLocation) }
     var saving by remember { mutableStateOf(false) }
     var cityError by remember { mutableStateOf(false) }
     var areaError by remember { mutableStateOf(false) }
@@ -7919,13 +7926,16 @@ private fun AddAddressDetailsPage(
                     "name" to receiverName.trim(),
                     "phone" to receiverPhone.trim(),
                     "label" to label.trim().ifBlank { "Other" },
-                    "isDefault" to false,
-                    "createdAt" to com.google.firebase.Timestamp.now()
+                    "isDefault" to (editAddress?.get("isDefault") as? Boolean ?: false),
+                    "createdAt" to (editAddress?.get("createdAt") ?: com.google.firebase.Timestamp.now())
                 )
-                FirebaseFirestore.getInstance().collection("addresses").add(data)
-                    .addOnSuccessListener { doc ->
+                val addressCollection = FirebaseFirestore.getInstance().collection("addresses")
+                val existingId = editAddress?.get("_id")?.toString()
+                val saveTask = if (!existingId.isNullOrBlank()) addressCollection.document(existingId).set(data, com.google.firebase.firestore.SetOptions.merge()) else addressCollection.add(data)
+                saveTask.addOnSuccessListener { result ->
                         saving = false
-                        onSaved(data + ("_id" to doc.id))
+                        val docId = existingId ?: (result as? com.google.firebase.firestore.DocumentReference)?.id
+                        onSaved(data + ("_id" to docId.orEmpty()))
                     }
                     .addOnFailureListener {
                         saving = false
@@ -7986,7 +7996,7 @@ private fun AddAddressDetailsPage(
             IconButton(onClick = { showExitConfirmation = true }, modifier = Modifier.size(40.dp).border(1.dp, Color(0xFFE2E2E2), RoundedCornerShape(10.dp))) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
-            Text("Add address details", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(if (editAddress != null) "Edit address details" else "Add address details", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
         Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 10.dp),
