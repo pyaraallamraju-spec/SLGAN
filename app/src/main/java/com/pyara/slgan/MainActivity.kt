@@ -1196,7 +1196,7 @@ private fun AyurvedicApp() {
                 onAdd = { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 onRemove = { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 }
             )
-            else ShopScreen(selectedTab, previousTab, { nextTab -> if (nextTab != selectedTab) previousTab = selectedTab; selectedTab = nextTab }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productRatings, productLikes, toggleProductLike, productsLoading, productsError, liveDiseases.ifEmpty { fallbackDiseases }, diseasesLoading, if (liveDiseases.isEmpty()) null else diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
+            else ShopScreen(selectedTab, previousTab, { nextTab -> if (nextTab != selectedTab) previousTab = selectedTab; if (nextTab == "Home") { selectedCategory = "All"; search = "" }; selectedTab = nextTab }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productRatings, productLikes, toggleProductLike, productsLoading, productsError, liveDiseases.ifEmpty { fallbackDiseases }, diseasesLoading, if (liveDiseases.isEmpty()) null else diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
                 { orderId, success, invoiceUrl, message ->
@@ -6079,7 +6079,7 @@ private fun OrdersPage(
                             Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = orderStatusTint, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
                             TextButton(onClick = { selectedOrder = order }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) {
-                                Text("View Order", color = Ink, fontWeight = FontWeight.Bold)
+                                Text("View Order", color = Ink, fontWeight = FontWeight.Medium)
                             }
                             TextButton(onClick = {
                                 val addedCount = addOrderItemsToCart(orderItems)
@@ -6089,7 +6089,7 @@ private fun OrdersPage(
                                     Toast.LENGTH_LONG
                                 ).show()
                                 if (addedCount > 0) onCart()
-                            }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) { Text("Reorder", color = Ink, fontWeight = FontWeight.Bold) }
+                            }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) { Text("Reorder", color = Ink, fontWeight = FontWeight.Medium) }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
@@ -6163,7 +6163,7 @@ private fun OrdersPage(
                         Spacer(Modifier.height(6.dp))
                         Text(if (status.equals("delivered", true) || status.equals("completed", true)) "Arrived at $created" else "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", color = Muted, fontSize = 16.sp)
                         Spacer(Modifier.height(12.dp))
-                        if (!invoiceUrl.isNullOrBlank()) {
+                        if (!invoiceUrl.isNullOrBlank() && (status.equals("accepted", true) || status.equals("approved", true))) {
                             Row(Modifier.clickable { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) } }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Text("Download Invoice", color = Forest, fontSize = 17.sp, fontWeight = FontWeight.Medium)
                                 Spacer(Modifier.width(8.dp))
@@ -7871,16 +7871,18 @@ private fun AddAddressDetailsPage(
                         showExitConfirmation = false
                         onBack()
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink),
+                    border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
                     shape = RoundedCornerShape(12.dp)
-                ) { Text("Yes", color = Color.White) }
+                ) { Text("Yes", color = Ink) }
             },
             dismissButton = {
                 OutlinedButton(
                     onClick = { showExitConfirmation = false },
-                    border = BorderStroke(1.dp, Forest),
+                    border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink),
                     shape = RoundedCornerShape(12.dp)
-                ) { Text("No", color = Forest) }
+                ) { Text("No", color = Ink) }
             },
             shape = RoundedCornerShape(22.dp),
             containerColor = Color.White
