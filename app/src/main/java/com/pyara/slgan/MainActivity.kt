@@ -5561,6 +5561,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     }
 }
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 private fun OrdersPage(
     modifier: Modifier,
