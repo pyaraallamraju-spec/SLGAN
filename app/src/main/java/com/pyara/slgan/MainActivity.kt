@@ -2602,7 +2602,6 @@ private fun AdminProductEditor(
     var imageUrl by remember(product?.id) { mutableStateOf(product?.imageUrl.orEmpty()) }
     var message by remember { mutableStateOf<String?>(null) }
     var uploadingImage by remember(product?.id) { mutableStateOf(false) }
-    val context = LocalContext.current
     val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             val cleanName = name.trim().lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]+"), "_").trim('_')
