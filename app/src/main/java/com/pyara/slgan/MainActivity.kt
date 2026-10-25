@@ -2762,7 +2762,7 @@ private fun AdminProductEditor(
             enabled = !saving,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 16.dp).height(58.dp),
             shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink)
         ) {
             if (saving) CircularProgressIndicator(Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp)
             else Icon(Icons.Default.Save, null, tint = Ink)
