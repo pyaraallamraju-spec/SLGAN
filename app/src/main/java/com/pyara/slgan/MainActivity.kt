@@ -4935,6 +4935,26 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 } else {
                     Text(product.emoji, fontSize = 42.sp)
                 }
+                if (product.productStock == 0) {
+                    Box(
+                        Modifier.fillMaxSize().background(Color(0x66BDBDBD)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Surface(
+                            color = Color.White,
+                            shape = RoundedCornerShape(10.dp),
+                            shadowElevation = 2.dp
+                        ) {
+                            Text(
+                                "Out of Stock",
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+                                color = Color(0xFF333333),
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
                 Row(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
