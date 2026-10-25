@@ -5626,6 +5626,15 @@ private fun OrdersPage(
     var rateOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
     var selectedRating by remember { mutableIntStateOf(5) }
 
+    BackHandler(enabled = selectedOrder != null) {
+        when {
+            confirmDeleteOrder != null -> confirmDeleteOrder = null
+            orderOptions != null -> orderOptions = null
+            rateOrder != null -> rateOrder = null
+            else -> selectedOrder = null
+        }
+    }
+
     DisposableEffect(user?.uid) {
         var registration: ListenerRegistration? = null
         if (user != null) {
