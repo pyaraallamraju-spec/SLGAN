@@ -8365,6 +8365,7 @@ private fun AddAddressDetailsPage(
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = false
+                            label = "Home"
                             receiverName = profileName.ifBlank { receiverName }
                             receiverPhone = profilePhone.ifBlank { receiverPhone }
                             nameError = false
@@ -8372,6 +8373,7 @@ private fun AddAddressDetailsPage(
                         }) {
                             RadioButton(selected = !forSomeoneElse, onClick = {
                                 forSomeoneElse = false
+                                label = "Home"
                                 receiverName = profileName.ifBlank { user?.displayName.orEmpty() }
                                 receiverPhone = profilePhone.ifBlank { user?.phoneNumber.orEmpty() }
                                 nameError = false
