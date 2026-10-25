@@ -154,6 +154,17 @@ table{background:#fff}
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
+
+/* Requested neutral primary buttons and silver borders/highlights */
+button:not(.secondary):not(.danger):not(.avatar-btn):not(.chip):not(.active):not(nav button):not(.bottom-nav button){
+ background:#e2e2e2;color:#292929;border:1px solid #b5b5b5;
+}
+button:not(.secondary):not(.danger):not(.avatar-btn):not(.chip):not(.active):not(nav button):not(.bottom-nav button):not(:disabled):hover{
+ background:#d6d6d6;border-color:#b5b5b5;box-shadow:0 5px 14px #00000012;
+}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #b5b5b577;outline-offset:2px}
+input:focus,select:focus,textarea:focus{border-color:#b5b5b5;box-shadow:0 0 0 3px #b5b5b524;outline:0}
+.category-tile:hover,.product:hover{border-color:#b5b5b5}
 </style></head>
 <body>
 <header class="top"><div class="brand"><span class="brand-mark">🌿</span><span>Sri Lakshmi Ganapathi<small>AYURVEDA NILAYAM · ESTD. 1900</small></span></div><div class="top-actions"><button id="accountBtn" class="avatar-btn" aria-label="Profile">♙</button></div></header>
