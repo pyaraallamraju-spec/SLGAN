@@ -7855,8 +7855,8 @@ private fun AddAddressDetailsPage(
     LaunchedEffect(user?.uid) {
         val uid = user?.uid ?: return@LaunchedEffect
         FirebaseFirestore.getInstance().collection("customers").document(uid).get().addOnSuccessListener { doc ->
-            profileName = (doc.getString("name") ?: doc.getString("fullName") ?: doc.getString("displayName") ?: user.displayName).orEmpty()
-            profilePhone = (doc.getString("phone") ?: doc.getString("phoneNumber") ?: user.phoneNumber).orEmpty()
+            profileName = (doc.getString("name") ?: doc.getString("fullName") ?: doc.getString("displayName") ?: user?.displayName).orEmpty()
+            profilePhone = (doc.getString("phone") ?: doc.getString("phoneNumber") ?: user?.phoneNumber).orEmpty()
             if (useCurrentLocation && editAddress == null) { if (receiverName.isBlank()) receiverName = profileName; if (receiverPhone.isBlank()) receiverPhone = profilePhone }
         }
     }
