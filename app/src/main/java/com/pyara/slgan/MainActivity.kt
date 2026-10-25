@@ -6016,12 +6016,6 @@ private fun OrdersPage(
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                IconButton(
-                                    onClick = { orderOptions = order },
-                                    modifier = Modifier.size(46.dp).border(1.dp, Color(0xFFB5B5B5), RoundedCornerShape(14.dp))
-                                ) {
-                                    Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
-                                }
                                 Button(
                                     onClick = {
                                         val addedCount = addOrderItemsToCart(orderItems)
@@ -6041,6 +6035,12 @@ private fun OrdersPage(
                                     Icon(Icons.Default.Refresh, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
                                     Text("Reorder", color = Ink, fontWeight = FontWeight.Bold, maxLines = 1)
+                                }
+                                IconButton(
+                                    onClick = { orderOptions = order },
+                                    modifier = Modifier.size(46.dp).border(1.dp, Color(0xFFB5B5B5), RoundedCornerShape(14.dp))
+                                ) {
+                                    Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
                                 }
                             }
                         }
