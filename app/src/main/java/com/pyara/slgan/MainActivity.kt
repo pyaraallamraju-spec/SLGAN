@@ -5930,7 +5930,12 @@ private fun OrdersPage(
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
                                 Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
                             }
-                            
+                            IconButton(
+                                onClick = { orderOptions = order },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
+                            }
                         }
                         val orderItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
                         if (orderItems.isNotEmpty()) {
@@ -6035,12 +6040,6 @@ private fun OrdersPage(
                                     Icon(Icons.Default.Refresh, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
                                     Text("Reorder", color = Ink, fontWeight = FontWeight.Bold, maxLines = 1)
-                                }
-                                IconButton(
-                                    onClick = { orderOptions = order },
-                                    modifier = Modifier.size(46.dp).border(1.dp, Color(0xFFB5B5B5), RoundedCornerShape(14.dp))
-                                ) {
-                                    Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
                                 }
                             }
                         }
