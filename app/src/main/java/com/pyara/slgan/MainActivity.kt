@@ -6390,26 +6390,20 @@ private fun OrdersPage(
                         if (phone.isNotBlank()) Column { Text("Phone", color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
                         Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
-                    Column(
-                        Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
-                        Text("Need help with your order?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-                        Spacer(Modifier.height(3.dp))
-                        Text("About any issues related to your order", color = Muted, fontSize = 13.sp)
-                        TextButton(onClick = { selectedOrder = null; onTabChange?.invoke("Help") }, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)) { Text("Chat with us", color = Ink, fontWeight = FontWeight.Medium) }
-                    }
                 }
                 Column(
                     Modifier.fillMaxWidth()
                         .background(Color.White)
-                        // Keep the action area compact and above the system navigation bar.
+                        // Keep the help link and repeat-order action visible above app/system navigation.
                         .navigationBarsPadding()
-                        // The order detail is rendered inside the main Scaffold, whose app
-                        // navigation bar remains visible. Reserve space so Repeat Order sits above it.
-                        .padding(bottom = 76.dp)
                         .padding(horizontal = 16.dp)
-                        .padding(top = 8.dp, bottom = 12.dp)
+                        .padding(top = 6.dp, bottom = 8.dp)
                 ) {
+                    Text("Need help with your order?", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                    Text("About any issues related to your order", color = Muted, fontSize = 12.sp)
+                    TextButton(onClick = { selectedOrder = null; onTabChange?.invoke("Help") }, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 0.dp)) {
+                        Text("Chat with us", color = Ink, fontWeight = FontWeight.Medium)
+                    }
                     Button(
                         onClick = {
                             // Use the same tolerant catalogue matching as the order-history Reorder action.
