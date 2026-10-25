@@ -5863,15 +5863,17 @@ private fun OrdersPage(
                 }
             }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
-            currentOrders.isEmpty() -> Row(Modifier.fillMaxWidth().background(Color(0xFFF4F5FA)).padding(horizontal = 0.dp, vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(54.dp).shadow(4.dp, CircleShape).background(Color.White, CircleShape), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Ink, modifier = Modifier.size(26.dp))
-                }
-                Spacer(Modifier.width(16.dp))
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
-                    Text("No orders placed today", color = Color(0xFF4A4A4A), fontSize = 16.sp, fontWeight = FontWeight.Medium)
-                    TextButton(onClick = onCategories, contentPadding = PaddingValues(0.dp)) { Text("Click to order  →", color = Ink, fontWeight = FontWeight.Bold) }
-                }
+            currentOrders.isEmpty() -> Column(
+                Modifier.fillMaxWidth().background(Color(0xFFF4F5FA)).padding(horizontal = 16.dp, vertical = 18.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text("No orders placed today", color = Color(0xFF4A4A4A), fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                TextButton(
+                    onClick = onCategories,
+                    modifier = Modifier.height(28.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) { Text("Click to order  →", color = Ink, fontWeight = FontWeight.Bold) }
             }
             else -> currentOrders.forEach { order ->
                 val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
