@@ -7811,6 +7811,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 OutlinedButton(
                     onClick = {
                         showAddAddressSheet = false
+                        useCurrentLocationForAddress = false
                         showAddAddressPage = true
                     },
                     modifier = Modifier.fillMaxWidth().heightIn(min = 76.dp),
@@ -7840,10 +7841,10 @@ private fun AddAddressDetailsPage(
     var area by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("area")?.toString().orEmpty()) }
     var fullAddress by remember(editAddress?.get("_id")) { mutableStateOf((editAddress?.get("address") ?: editAddress?.get("addressText"))?.toString().orEmpty()) }
     var mapLink by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("googleMapsLink")?.toString().orEmpty()) }
-    var receiverName by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("name")?.toString() ?: if (useCurrentLocation) user?.displayName.orEmpty() else "") }
-    var receiverPhone by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("phone")?.toString() ?: if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
-    var label by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("label")?.toString() ?: if (useCurrentLocation) "Home" else "Other") }
-    var forSomeoneElse by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("name")?.toString()?.let { it != user?.displayName } ?: !useCurrentLocation) }
+    var receiverName by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("name")?.toString() ?: if (useCurrentLocation) user?.displayName.orEmpty() else "") }
+    var receiverPhone by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("phone")?.toString() ?: if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
+    var label by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("label")?.toString() ?: if (useCurrentLocation) "Home" else "Other") }
+    var forSomeoneElse by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("name")?.toString()?.let { it != user?.displayName } ?: !useCurrentLocation) }
     var profileName by remember(user?.uid) { mutableStateOf(user?.displayName.orEmpty()) }
     var profilePhone by remember(user?.uid) { mutableStateOf(user?.phoneNumber.orEmpty()) }
     LaunchedEffect(user?.uid) {
@@ -8251,8 +8252,8 @@ private fun AddAddressDetailsPage(
                         }) {
                             RadioButton(selected = !forSomeoneElse, onClick = {
                                 forSomeoneElse = false
-                                receiverName = user?.displayName.orEmpty().ifBlank { receiverName }
-                                receiverPhone = user?.phoneNumber.orEmpty().ifBlank { receiverPhone }
+                                receiverName = profileName.ifBlank { user?.displayName.orEmpty() }
+                                receiverPhone = profilePhone.ifBlank { user?.phoneNumber.orEmpty() }
                                 nameError = false
                                 phoneError = false
                             }, colors = RadioButtonDefaults.colors(selectedColor = Ink))
