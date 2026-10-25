@@ -36,6 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.functions.FirebaseFunctions
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -2599,6 +2600,35 @@ private fun AdminProductEditor(
     }
     var quantity by remember(product?.id) { mutableStateOf(product?.quantity.orEmpty()) }
     var imageUrl by remember(product?.id) { mutableStateOf(product?.imageUrl.orEmpty()) }
+    var uploadingImage by remember(product?.id) { mutableStateOf(false) }
+    val context = LocalContext.current
+    val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            val cleanName = name.trim().lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]+"), "_").trim('_')
+            if (cleanName.isBlank()) {
+                Toast.makeText(context, "Enter the product name before uploading an image.", Toast.LENGTH_LONG).show()
+            } else {
+                uploadingImage = true
+                message = "Uploading product image…"
+                val imageRef = FirebaseStorage.getInstance().reference.child("products/${cleanName}_product")
+                imageRef.putFile(uri)
+                    .continueWithTask { task ->
+                        if (!task.isSuccessful) throw (task.exception ?: Exception("Image upload failed"))
+                        imageRef.downloadUrl
+                    }
+                    .addOnSuccessListener { downloadUri ->
+                        imageUrl = downloadUri.toString()
+                        uploadingImage = false
+                        message = "Image uploaded. Save the product to publish it."
+                    }
+                    .addOnFailureListener { error ->
+                        uploadingImage = false
+                        message = "Image upload failed: ${error.localizedMessage ?: "Check Firebase Storage setup and rules."}"
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                    }
+            }
+        }
+    }
     var description by remember(product?.id) { mutableStateOf(product?.description.orEmpty()) }
     var usage by remember(product?.id) { mutableStateOf(product?.usage.orEmpty()) }
     var cures by remember(product?.id) { mutableStateOf(product?.cures.orEmpty()) }
@@ -2718,7 +2748,21 @@ private fun AdminProductEditor(
                     )
                 }
             }
-            OutlinedTextField(imageUrl, { imageUrl = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product image URL") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), minLines = 1)
+            Text("Product image", color = AdminInk, fontWeight = FontWeight.SemiBold)
+            if (imageUrl.isNotBlank()) {
+                AsyncImage(model = imageUrl, contentDescription = "Product image preview", modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)), contentScale = ContentScale.Fit)
+            }
+            OutlinedButton(
+                onClick = { imagePicker.launch("image/*") },
+                enabled = !uploadingImage,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(Icons.Default.UploadFile, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text(if (uploadingImage) "Uploading image…" else "Upload product image")
+            }
+            Text("The image is stored online using a filename based on the product name and updates in the app after saving.", color = AdminMuted, fontSize = 12.sp)
+            OutlinedTextField(imageUrl, { imageUrl = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Image URL (optional)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), minLines = 1)
             OutlinedTextField(description, { description = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Description") }, minLines = 3)
             OutlinedTextField(usage, { usage = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Usage / directions") }, minLines = 2)
             OutlinedTextField(cures, { cures = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Cures / indications") }, minLines = 2)
@@ -2732,7 +2776,9 @@ private fun AdminProductEditor(
         }
         Button(
             onClick = {
-                if (name.isBlank() || category.isBlank() || price.toDoubleOrNull() == null || weight.toDoubleOrNull() == null || weight.toDoubleOrNull()!! <= 0 || units.isBlank() || quantity.toIntOrNull() == null || quantity.toIntOrNull()!! <= 0) {
+                if (uploadingImage) {
+                    message = "Wait for the image upload to finish."
+                } else if (name.isBlank() || category.isBlank() || price.toDoubleOrNull() == null || weight.toDoubleOrNull() == null || weight.toDoubleOrNull()!! <= 0 || units.isBlank() || quantity.toIntOrNull() == null || quantity.toIntOrNull()!! <= 0) {
                     message = "Enter product name, category, valid price, weight, weight unit and quantity."
                 } else {
                     saving = true
