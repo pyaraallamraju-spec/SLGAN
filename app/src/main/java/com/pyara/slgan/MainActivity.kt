@@ -2750,7 +2750,7 @@ private fun AdminProductEditor(
                     )
                 }
             }
-            Text("Product image", color = AdminInk, fontWeight = FontWeight.SemiBold)
+            Text("Product image", color = Ink, fontWeight = FontWeight.SemiBold)
             if (imageUrl.isNotBlank()) {
                 AsyncImage(model = imageUrl, contentDescription = "Product image preview", modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)), contentScale = ContentScale.Fit)
             }
@@ -2759,14 +2759,14 @@ private fun AdminProductEditor(
                 enabled = !uploadingImage,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = AdminInk,
-                    disabledContentColor = AdminInk.copy(alpha = 0.55f)
+                    contentColor = Ink,
+                    disabledContentColor = Ink.copy(alpha = 0.55f)
                 ),
-                border = BorderStroke(1.dp, AdminInk)
+                border = BorderStroke(1.dp, Ink)
             ) {
-                Icon(Icons.Default.UploadFile, contentDescription = null, tint = AdminInk)
+                Icon(Icons.Default.UploadFile, contentDescription = null, tint = Ink)
                 Spacer(Modifier.width(8.dp))
-                Text(if (uploadingImage) "Uploading image…" else "Upload product image", color = AdminInk)
+                Text(if (uploadingImage) "Uploading image…" else "Upload product image", color = Ink)
             }
             Text("The image is stored online using a filename based on the product name and updates in the app after saving.", color = AdminMuted, fontSize = 12.sp)
             OutlinedTextField(imageUrl, { imageUrl = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Image URL (optional)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), minLines = 1)
