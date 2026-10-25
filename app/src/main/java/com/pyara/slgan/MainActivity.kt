@@ -7844,7 +7844,12 @@ private fun AddAddressDetailsPage(
     var receiverName by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("name")?.toString() ?: if (useCurrentLocation) user?.displayName.orEmpty() else "") }
     var receiverPhone by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("phone")?.toString() ?: if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
     var label by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("label")?.toString() ?: if (useCurrentLocation) "Home" else "Other") }
-    var forSomeoneElse by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("name")?.toString()?.let { it != user?.displayName } ?: !useCurrentLocation) }
+    var forSomeoneElse by remember(editAddress?.get("_id"), useCurrentLocation) {
+        mutableStateOf(
+            if (editAddress != null) !editAddress["label"]?.toString().equals("Home", ignoreCase = true)
+            else !useCurrentLocation
+        )
+    }
     var profileName by remember(user?.uid) { mutableStateOf(user?.displayName.orEmpty()) }
     var profilePhone by remember(user?.uid) { mutableStateOf(user?.phoneNumber.orEmpty()) }
     LaunchedEffect(user?.uid) {
@@ -7852,7 +7857,7 @@ private fun AddAddressDetailsPage(
         FirebaseFirestore.getInstance().collection("customers").document(uid).get().addOnSuccessListener { doc ->
             profileName = (doc.getString("name") ?: doc.getString("fullName") ?: doc.getString("displayName") ?: user?.displayName).orEmpty()
             profilePhone = (doc.getString("phone") ?: doc.getString("phoneNumber") ?: user?.phoneNumber).orEmpty()
-            if (editAddress == null && (useCurrentLocation || !forSomeoneElse)) {
+            if (!forSomeoneElse) {
                 receiverName = profileName
                 receiverPhone = profilePhone
             }
