@@ -1544,7 +1544,7 @@ private fun LoginScreen(
                 unfocusedBorderColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                cursorColor = Forest
+                cursorColor = Ink
             )
         )
         Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
@@ -7841,6 +7841,16 @@ private fun AddAddressDetailsPage(
     var receiverPhone by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("phone")?.toString() ?: if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
     var label by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("label")?.toString() ?: if (useCurrentLocation) "Home" else "Other") }
     var forSomeoneElse by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("name")?.toString()?.let { it != user?.displayName } ?: !useCurrentLocation) }
+    var profileName by remember(user?.uid) { mutableStateOf(user?.displayName.orEmpty()) }
+    var profilePhone by remember(user?.uid) { mutableStateOf(user?.phoneNumber.orEmpty()) }
+    LaunchedEffect(user?.uid) {
+        val uid = user?.uid ?: return@LaunchedEffect
+        FirebaseFirestore.getInstance().collection("customers").document(uid).get().addOnSuccessListener { doc ->
+            profileName = (doc.getString("name") ?: doc.getString("fullName") ?: doc.getString("displayName") ?: user.displayName).orEmpty()
+            profilePhone = (doc.getString("phone") ?: doc.getString("phoneNumber") ?: user.phoneNumber).orEmpty()
+            if (useCurrentLocation && editAddress == null) { if (receiverName.isBlank()) receiverName = profileName; if (receiverPhone.isBlank()) receiverPhone = profilePhone }
+        }
+    }
     var saving by remember { mutableStateOf(false) }
     var cityError by remember { mutableStateOf(false) }
     var areaError by remember { mutableStateOf(false) }
@@ -8113,7 +8123,7 @@ private fun AddAddressDetailsPage(
                         ) {
                             Icon(Icons.Default.Place, contentDescription = null, tint = Ink)
                             Text(area.ifBlank { "Select an area, street" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 14.sp)
-                            Text("Select", color = Forest, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            Text("Select", color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                         }
                         if (areaMenu) {
                             val localityResults = listOf(
@@ -8154,7 +8164,7 @@ private fun AddAddressDetailsPage(
                                         onValueChange = { areaSearch = it },
                                         modifier = Modifier.fillMaxWidth(),
                                         placeholder = { Text("Search for an area, street") },
-                                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Forest) },
+                                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
                                         trailingIcon = {
                                             if (areaSearch.isNotEmpty()) IconButton(onClick = { areaSearch = "" }) {
                                                 Icon(Icons.Default.Close, contentDescription = "Clear search", tint = Muted)
@@ -8231,8 +8241,8 @@ private fun AddAddressDetailsPage(
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = false
-                            receiverName = user?.displayName.orEmpty().ifBlank { receiverName }
-                            receiverPhone = user?.phoneNumber.orEmpty().ifBlank { receiverPhone }
+                            receiverName = profileName.ifBlank { receiverName }
+                            receiverPhone = profilePhone.ifBlank { receiverPhone }
                             nameError = false
                             phoneError = false
                         }) {
@@ -8258,7 +8268,7 @@ private fun AddAddressDetailsPage(
                                 receiverPhone = ""
                                 nameError = false
                                 phoneError = false
-                            }, colors = RadioButtonDefaults.colors(selectedColor = Forest))
+                            }, colors = RadioButtonDefaults.colors(selectedColor = Ink))
                             Text("Someone else", color = Ink)
                         }
                     }
