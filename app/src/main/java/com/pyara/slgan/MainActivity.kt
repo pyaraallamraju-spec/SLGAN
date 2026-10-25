@@ -2757,11 +2757,16 @@ private fun AdminProductEditor(
             OutlinedButton(
                 onClick = { imagePicker.launch("image/*") },
                 enabled = !uploadingImage,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = AdminInk,
+                    disabledContentColor = AdminInk.copy(alpha = 0.55f)
+                ),
+                border = BorderStroke(1.dp, AdminInk)
             ) {
-                Icon(Icons.Default.UploadFile, contentDescription = null)
+                Icon(Icons.Default.UploadFile, contentDescription = null, tint = AdminInk)
                 Spacer(Modifier.width(8.dp))
-                Text(if (uploadingImage) "Uploading image…" else "Upload product image")
+                Text(if (uploadingImage) "Uploading image…" else "Upload product image", color = AdminInk)
             }
             Text("The image is stored online using a filename based on the product name and updates in the app after saving.", color = AdminMuted, fontSize = 12.sp)
             OutlinedTextField(imageUrl, { imageUrl = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Image URL (optional)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri), minLines = 1)
