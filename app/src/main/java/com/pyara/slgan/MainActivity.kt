@@ -5979,17 +5979,11 @@ private fun OrdersPage(
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                OutlinedButton(
-                                    onClick = { selectedOrder = order },
-                                    modifier = Modifier.weight(1f).height(46.dp),
-                                    shape = RoundedCornerShape(14.dp),
-                                    border = null,
-                                    colors = ButtonDefaults.outlinedButtonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink),
-                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+                                IconButton(
+                                    onClick = { orderOptions = order },
+                                    modifier = Modifier.size(46.dp).border(1.dp, Color(0xFFB5B5B5), RoundedCornerShape(14.dp))
                                 ) {
-                                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
-                                    Spacer(Modifier.width(6.dp))
-                                    Text("View order", color = Ink, fontWeight = FontWeight.Bold, maxLines = 1)
+                                    Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
                                 }
                                 Button(
                                     onClick = {
