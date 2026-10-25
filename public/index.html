@@ -165,6 +165,131 @@ button:not(.secondary):not(.danger):not(.avatar-btn):not(.chip):not(.active):not
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #b5b5b577;outline-offset:2px}
 input:focus,select:focus,textarea:focus{border-color:#b5b5b5;box-shadow:0 0 0 3px #b5b5b524;outline:0}
 .category-tile:hover,.product:hover{border-color:#b5b5b5}
+
+/* App-parity pass: consistent SLGAN mobile-app layout across every web screen.
+   CSS only: keep existing Firebase/auth/cart/order/admin handlers and markup intact. */
+:root{--m:#762a24;--g:#b5b5b5;--c:#f6f6f6;--ink:#302f2f;--muted:#707070;--line:#e3e3e3;--soft:#f0f0f0}
+html,body{min-height:100%;background:#f6f6f6;color:#302f2f}
+body{font-family:Roboto,"Segoe UI",system-ui,-apple-system,sans-serif;font-size:14px;letter-spacing:0}
+.top{min-height:64px;padding:10px clamp(14px,2.5vw,26px);background:#fff;color:#302f2f;border-bottom:1px solid #e5e5e5;box-shadow:0 2px 8px #00000008}
+.brand{gap:10px;color:#762a24;font-size:clamp(16px,2vw,21px);font-weight:800}
+.brand small{color:#606060;font-size:10px;letter-spacing:.7px}
+.brand-mark{background:#f2f2f2;border:1px solid #dedede;color:#762a24}
+.top-actions{align-items:center}
+.top-actions button.avatar-btn{background:#f0f0f0;border:1px solid #dedede;color:#333}
+.layout{grid-template-columns:224px minmax(0,1fr);background:#f6f6f6}
+aside{top:64px;height:calc(100vh - 64px);padding:14px 11px;background:#fff;border-right:1px solid #e5e5e5;box-shadow:none}
+.nav-label{color:#8a8a8a;margin:14px 10px 6px}
+nav{gap:4px}
+nav button{display:flex;align-items:center;gap:9px;width:100%;min-height:43px;padding:11px 13px;background:transparent;color:#555;text-align:left;border:1px solid transparent;border-radius:12px;font-weight:650}
+nav button.active,nav button:hover{background:#f0f0f0;color:#762a24;border-color:#dedede;box-shadow:none}
+.main{max-width:1560px;padding:clamp(14px,2vw,26px)}
+.title{font-size:clamp(21px,2.2vw,27px);letter-spacing:-.4px;color:#292929}
+.sub,.muted{color:#737373}
+.welcome{border-radius:18px;min-height:160px;padding:clamp(18px,3vw,30px);background:linear-gradient(115deg,#762a24,#8a4b2a);border:1px solid #6c211c;color:#fff}
+.welcome h1{font-size:clamp(23px,3.5vw,35px);letter-spacing:-.6px;color:#fff}
+.welcome h1 em{color:#e2e2e2}
+.welcome p{color:#f6eaea}
+.welcome small,.eyebrow{color:#e2e2e2}
+.welcome-art{opacity:.72}
+.home-search{border:1px solid #dedede;background:#fff;border-radius:14px;box-shadow:0 2px 9px #00000006}
+.home-search>span{color:#737373}
+.home-search input{border:0;background:transparent;box-shadow:none}
+.section-head{margin:22px 0 12px}
+.section-head h2{font-size:clamp(17px,1.7vw,21px);color:#303030}
+.category-tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.category-tile{min-height:105px;gap:8px;padding:12px 8px;background:#fff;color:#303030;border:1px solid #e1e1e1;border-radius:15px;box-shadow:0 2px 8px #00000005}
+.category-tile:hover{transform:translateY(-2px);border-color:#b5b5b5;box-shadow:0 5px 13px #0000000c}
+.category-tile span{width:44px;height:44px;background:#f0f0f0;color:#762a24;border:1px solid #e4e4e4}
+.category-tile strong{font-size:12px;line-height:1.25}
+.grid{grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:13px}
+.product,.panel{background:#fff;border:1px solid #e2e2e2;border-radius:15px;box-shadow:0 2px 9px #00000006}
+.product{padding:11px;min-width:0}
+.product:hover{transform:translateY(-2px);border-color:#b5b5b5;box-shadow:0 6px 16px #0000000c}
+.product-img{height:148px;background:#f7f7f7;border:1px solid #f0f0f0;border-radius:12px;margin-bottom:10px}
+.product-img img{object-fit:contain}
+.product h3{font-size:14px;line-height:1.4;min-height:39px;color:#292929}
+.price{color:#762a24;font-size:18px}
+.badge{background:#f0f0f0;color:#444;border:1px solid #e0e0e0}
+.filters{gap:9px}
+.chips{gap:7px;margin:10px 0 18px}
+.chip{padding:8px 13px;background:#fff;color:#555;border:1px solid #dedede;border-radius:999px}
+.chip.active{background:#e2e2e2;color:#292929;border-color:#b5b5b5}
+button,button.secondary,button.danger{border-radius:11px;font-weight:700}
+button:not(.secondary):not(.danger):not(.avatar-btn):not(.chip):not(.active):not(nav button):not(.bottom-nav button){background:#e2e2e2;color:#292929;border:1px solid #b5b5b5}
+button:not(.secondary):not(.danger):not(.avatar-btn):not(.chip):not(.active):not(nav button):not(.bottom-nav button):not(:disabled):hover{background:#d6d6d6;border-color:#b5b5b5;box-shadow:0 4px 10px #00000010}
+button.secondary{background:#fff;color:#444;border:1px solid #b5b5b5}
+button.danger{background:#a52b25;color:#fff}
+input,select,textarea{border:1px solid #dedede;background:#fff;color:#303030;border-radius:11px;padding:11px}
+input:focus,select:focus,textarea:focus{border-color:#b5b5b5;box-shadow:0 0 0 3px #b5b5b526;outline:0}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #b5b5b577;outline-offset:2px}
+.panel{padding:clamp(13px,1.8vw,20px)}
+.table-wrap{border:1px solid #e2e2e2;border-radius:14px;background:#fff}
+table{background:#fff}
+th{background:#f3f3f3;color:#555}
+th,td{border-bottom:1px solid #e9e9e9;padding:12px}
+.cart-line{border-bottom:1px solid #e8e8e8}
+.notice{background:#f1f1f1;border:1px solid #dedede;color:#484848;border-radius:12px}
+.empty{color:#777}
+.detail{gap:clamp(14px,2.5vw,26px)}
+.detail img{background:#f7f7f7;border:1px solid #e4e4e4;border-radius:15px}
+.accordion{border-bottom:1px solid #e6e6e6}
+.disease-grid{gap:12px}
+.disease-card{background:#fff;border-color:#e2e2e2;border-radius:15px;box-shadow:0 2px 9px #00000006}
+.disease-icon{background:#f0f0f0;color:#762a24}
+.disease-content h3{color:#762a24}
+.bottom-nav{background:rgba(255,255,255,.98);border-top:1px solid #e3e3e3;box-shadow:0 -3px 12px #0000000a}
+.bottom-nav button{color:#666}
+.bottom-nav button.active{color:#762a24}
+.nav-cart-badge{background:#762a24}
+.banner-slider{border-radius:18px;box-shadow:0 5px 16px #0000000b}
+.banner-slide{background:linear-gradient(115deg,#762a24,#8a4b2a)}
+.banner-dot.active{background:#e2e2e2}
+.banner-arrow{color:#292929;border:1px solid #b5b5b5}
+.signin{border:1px solid #e2e2e2;border-radius:16px;background:#fff}
+.foot{color:#777}
+@media(min-width:761px){
+ .layout{grid-template-columns:224px minmax(0,1fr)}
+ .bottom-nav{display:none}
+ .category-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:1000px){.category-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}.grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+@media(max-width:760px){
+ .top{min-height:58px;padding:9px 11px}
+ .brand{font-size:14px;gap:8px}
+ .brand-mark{width:34px;height:34px;border-radius:10px;font-size:20px}
+ .brand small{font-size:9px}
+ .layout{display:block}
+ .layout aside{display:none}
+ .main{padding:12px 11px calc(94px + env(safe-area-inset-bottom))}
+ .welcome{min-height:150px;padding:18px 15px;border-radius:16px}
+ .welcome h1{font-size:24px}
+ .welcome p{font-size:12px}
+ .welcome-art{font-size:54px;padding:0}
+ .home-search{margin-bottom:18px}
+ .category-tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+ .category-tile{min-height:88px;padding:8px 3px;gap:6px;border-radius:12px}
+ .category-tile span{width:38px;height:38px;font-size:21px}
+ .category-tile strong{font-size:10px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .product{padding:8px;border-radius:13px}
+ .product-img{height:116px;border-radius:10px}
+ .product h3{font-size:12px;min-height:34px}
+ .price{font-size:16px}
+ .filters{grid-template-columns:1fr}
+ .disease-grid{grid-template-columns:1fr}
+ .disease-card{padding:12px}
+ .bottom-nav{display:flex;padding:6px 3px calc(6px + env(safe-area-inset-bottom))}
+ .bottom-nav button{flex:1;padding:7px 2px;font-size:10px;border-radius:9px}
+ .cart-line{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+ .cart-line .line-price{grid-column:1/-1;text-align:right}
+ .form-grid,.detail{grid-template-columns:1fr}
+ .span2{grid-column:auto}
+ .table-wrap{border-radius:11px}
+ th,td{padding:9px;font-size:12px}
+ .title{font-size:22px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style></head>
 <body>
 <header class="top"><div class="brand"><span class="brand-mark">🌿</span><span>Sri Lakshmi Ganapathi<small>AYURVEDA NILAYAM · ESTD. 1900</small></span></div><div class="top-actions"><button id="accountBtn" class="avatar-btn" aria-label="Profile">♙</button></div></header>
