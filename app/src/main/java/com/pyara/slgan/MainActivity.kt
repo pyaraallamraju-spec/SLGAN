@@ -585,18 +585,21 @@ private val fallbackDiseases = listOf("All Diseases", "Cough", "Fever", "Obesity
 
 private fun localProductImageFor(context: android.content.Context, productName: String): String {
     val folder = "drawable/products"
-    val normalizedName = productName.lowercase().replace(Regex("[^a-z0-9]"), "")
+    fun normalize(value: String): String = value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
+        .removeSuffix("churnas").removeSuffix("churnam").removeSuffix("choornas").removeSuffix("choornam")
+        .removeSuffix("product").removeSuffix("profuct")
+    val normalizedName = normalize(productName)
     val assets = try {
         context.assets.list(folder)?.toList().orEmpty()
     } catch (_: Exception) {
         emptyList()
     }
     val match = assets.firstOrNull { filename ->
-        val normalizedFile = filename.substringBeforeLast('.').lowercase().replace(Regex("[^a-z0-9]"), "")
-        val productStem = normalizedFile.removeSuffix("product").removeSuffix("profuct")
-        productStem == normalizedName ||
-            productStem.replace("mahad", "maha") == normalizedName ||
-            (productStem == "rasottamaadi" && normalizedName == "rasottamadi")
+        val stem = normalize(filename.substringBeforeLast('.'))
+        stem == normalizedName ||
+            stem.replace("mahad", "maha") == normalizedName ||
+            (stem == "rasottamaadi" && normalizedName == "rasottamadi") ||
+            (stem == "dantadhavana" && normalizedName == "dantadhavanam")
     }
     return match?.let { "file:///android_asset/$folder/${it.replace(" ", "%20")}" }.orEmpty()
 }
@@ -4983,12 +4986,17 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).background(Color.White, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
                 if (product.imageUrl.isNotBlank()) {
+                    var imageLoading by remember(product.imageUrl) { mutableStateOf(true) }
                     AsyncImage(
                         model = product.imageUrl,
                         contentDescription = product.name,
                         modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(14.dp)).padding(4.dp),
-                        contentScale = ContentScale.Fit
+                        contentScale = ContentScale.Fit,
+                        onLoading = { imageLoading = true },
+                        onSuccess = { imageLoading = false },
+                        onError = { imageLoading = false }
                     )
+                    if (imageLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp, color = Ink)
                 } else {
                     Text(product.emoji, fontSize = 42.sp)
                 }
@@ -5146,7 +5154,17 @@ private fun ProductDetailsPage(
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 Box(Modifier.fillMaxWidth().height(360.dp).background(Color.White)) {
                     if (product.imageUrl.isNotBlank()) {
-                        AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
+                        var detailImageLoading by remember(product.imageUrl) { mutableStateOf(true) }
+                        AsyncImage(
+                            model = product.imageUrl,
+                            contentDescription = product.name,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Fit,
+                            onLoading = { detailImageLoading = true },
+                            onSuccess = { detailImageLoading = false },
+                            onError = { detailImageLoading = false }
+                        )
+                        if (detailImageLoading) CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp, color = Ink)
                     } else {
                         Box(
                             Modifier.fillMaxSize().background(Color(0xFFF1F2F4)),
