@@ -8417,7 +8417,7 @@ private fun AddAddressDetailsPage(
             }
         }
         Surface(
-            modifier = Modifier.navigationBarsPadding(),
+            modifier = Modifier.navigationBarsPadding().imePadding().fillMaxWidth(),
             color = Color.White,
             shadowElevation = 8.dp
         ) {
