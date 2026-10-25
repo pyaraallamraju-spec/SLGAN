@@ -5890,7 +5890,7 @@ private fun OrdersPage(
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
                                 Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
                             }
-                            Text("₹" + String.format("%.2f", total), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                            
                         }
                         val orderItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
                         if (orderItems.isNotEmpty()) {
@@ -6055,7 +6055,7 @@ private fun OrdersPage(
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
                                 Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
                             }
-                            Text("₹" + String.format("%.2f", total), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                            
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             val isFailedStatus = status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)
@@ -6078,8 +6078,8 @@ private fun OrdersPage(
                             Spacer(Modifier.width(5.dp))
                             Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = orderStatusTint, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
-                            TextButton(onClick = { selectedOrder = order }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) {
-                                Text("View Order", color = Ink, fontWeight = FontWeight.Medium)
+                            IconButton(onClick = { selectedOrder = order }, modifier = Modifier.size(34.dp)) {
+                                Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
                             }
                             TextButton(onClick = {
                                 val addedCount = addOrderItemsToCart(orderItems)
