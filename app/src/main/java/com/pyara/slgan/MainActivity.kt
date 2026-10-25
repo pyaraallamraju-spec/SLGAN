@@ -4021,7 +4021,7 @@ private fun ShopScreen(
 ) {
     val cartCount = products.sumOf { product -> (cart[product.id] ?: 0).coerceAtLeast(0) }
     Scaffold(containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().shadow(8.dp).background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Color.White))
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
@@ -7844,12 +7844,7 @@ private fun AddAddressDetailsPage(
     var receiverName by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("name")?.toString() ?: if (useCurrentLocation) user?.displayName.orEmpty() else "") }
     var receiverPhone by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("phone")?.toString() ?: if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
     var label by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("label")?.toString() ?: if (useCurrentLocation) "Home" else "Other") }
-    var forSomeoneElse by remember(editAddress?.get("_id"), useCurrentLocation) {
-        mutableStateOf(
-            if (editAddress != null) !editAddress["label"]?.toString().equals("Home", ignoreCase = true)
-            else !useCurrentLocation
-        )
-    }
+    var forSomeoneElse by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("name")?.toString()?.let { it != user?.displayName } ?: !useCurrentLocation) }
     var profileName by remember(user?.uid) { mutableStateOf(user?.displayName.orEmpty()) }
     var profilePhone by remember(user?.uid) { mutableStateOf(user?.phoneNumber.orEmpty()) }
     LaunchedEffect(user?.uid) {
@@ -7857,7 +7852,7 @@ private fun AddAddressDetailsPage(
         FirebaseFirestore.getInstance().collection("customers").document(uid).get().addOnSuccessListener { doc ->
             profileName = (doc.getString("name") ?: doc.getString("fullName") ?: doc.getString("displayName") ?: user?.displayName).orEmpty()
             profilePhone = (doc.getString("phone") ?: doc.getString("phoneNumber") ?: user?.phoneNumber).orEmpty()
-            if (!forSomeoneElse) {
+            if (editAddress == null && (useCurrentLocation || !forSomeoneElse)) {
                 receiverName = profileName
                 receiverPhone = profilePhone
             }
