@@ -74,14 +74,16 @@ function sendOrderConfirmation(orderId, order) {
     if (!items.length) throw new Error("The order contains no items.");
     const total = Number(order.grandTotal != null ? order.grandTotal : order.subtotal) || 0;
     const pdf = buildInvoicePdf(orderId, order, items, total);
-    GmailApp.sendEmail({
-      to: String(order.email),
-      subject: "SLGAN order confirmation and invoice — " + orderId,
-      body: "Thank you for placing an order with Sri Lakshmi Ganapathi Ayurvedic Nilayam. Your order confirmation PDF is attached. Order status: " + (order.orderStatus || "pending verification") + ". No online payment has been collected.",
-      htmlBody: "<p>Thank you for your order.</p><p><b>Order ID:</b> " + escapeHtml(orderId) + "<br><b>Status:</b> " + escapeHtml(order.orderStatus || "pending verification") + "</p><p>Your order confirmation PDF is attached. No online payment has been collected.</p><p>Sri Lakshmi Ganapathi Ayurvedic Nilayam</p>",
-      attachments: [pdf],
-      name: "Sri Lakshmi Ganapathi Ayurvedic Nilayam"
-    });
+    GmailApp.sendEmail(
+      String(order.email),
+      "SLGAN order confirmation and invoice — " + orderId,
+      "Thank you for your order with Sri Lakshmi Ganapathi Ayurvedic Nilayam. Your order confirmation PDF is attached. Order status: " + (order.orderStatus || "pending verification") + ". No online payment has been collected.",
+      {
+        htmlBody: "<p>Thank you for your order.</p><p><b>Order ID:</b> " + escapeHtml(orderId) + "<br><b>Status:</b> " + escapeHtml(order.orderStatus || "pending verification") + "</p><p>Your order confirmation PDF is attached. No online payment has been collected.</p><p>Sri Lakshmi Ganapathi Ayurvedic Nilayam</p>",
+        attachments: [pdf],
+        name: "Sri Lakshmi Ganapathi Ayurvedic Nilayam"
+      }
+    );
     firestorePatch(docPath, {
       invoiceStatus: { stringValue: "generated" },
       invoiceEmailStatus: { stringValue: "sent" },
