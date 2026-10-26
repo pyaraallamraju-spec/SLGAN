@@ -8737,7 +8737,7 @@ private fun ReviewAddressPage(
                 Text("  Address  :  $fullAddress", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Place, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
                 Text("  Area  :  $area", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
@@ -8745,7 +8745,7 @@ private fun ReviewAddressPage(
                 Text("  City  :  $city", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.People, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.Person, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
                 Text("  Receiver  :  $receiverName, $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
         }
