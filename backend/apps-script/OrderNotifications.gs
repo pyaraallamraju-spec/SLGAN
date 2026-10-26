@@ -73,8 +73,7 @@ function sendOrderConfirmation(orderId, order) {
     const items = Array.isArray(order.items) ? order.items : [];
     if (!items.length) throw new Error("The order contains no items.");
     const total = Number(order.grandTotal != null ? order.grandTotal : order.subtotal) || 0;
-    const html = invoiceHtml(orderId, order, items, total);
-    const pdf = Utilities.newBlob(html, "text/html", orderId + ".html").getAs("application/pdf").setName(orderId + ".pdf");
+    const pdf = buildInvoicePdf(orderId, order, items, total);
     GmailApp.sendEmail({
       to: String(order.email),
       subject: "SLGAN order confirmation and invoice — " + orderId,
@@ -104,6 +103,35 @@ function sendOrderConfirmation(orderId, order) {
   } finally {
     lock.releaseLock();
   }
+}
+
+function buildInvoicePdf(orderId, order, items, total) {
+  const doc = DocumentApp.create("SLGAN " + orderId + " invoice");
+  const body = doc.getBody();
+  body.appendParagraph("Sri Lakshmi Ganapathi Ayurvedic Nilayam").setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  body.appendParagraph("ORDER CONFIRMATION / PROVISIONAL INVOICE").setHeading(DocumentApp.ParagraphHeading.HEADING2);
+  body.appendParagraph("Order ID: " + orderId);
+  body.appendParagraph("Date: " + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a"));
+  body.appendParagraph("Customer: " + (order.customerName || ""));
+  body.appendParagraph("Email: " + (order.email || ""));
+  body.appendParagraph("Phone: " + (order.phone || order.deliveryPhone || ""));
+  body.appendParagraph("Delivery address: " + (order.shippingAddress || order.deliveryAddress || ""));
+  const tableRows = [["Product", "Qty", "Unit price", "Amount"]];
+  items.forEach(function(it) {
+    const qty = Number(it.quantity) || 0;
+    const unit = Number(it.unitPrice != null ? it.unitPrice : it.price) || 0;
+    const line = Number(it.lineTotal != null ? it.lineTotal : unit * qty) || 0;
+    tableRows.push([String(it.productName || it.name || "Product"), String(qty), "₹" + unit.toFixed(2), "₹" + line.toFixed(2)]);
+  });
+  body.appendTable(tableRows);
+  body.appendParagraph("Product total: ₹" + total.toFixed(2)).setHeading(DocumentApp.ParagraphHeading.HEADING2);
+  body.appendParagraph("Order status: " + (order.orderStatus || "pending verification"));
+  body.appendParagraph("No online payment was collected. This document confirms receipt of the order request; it is not a final tax invoice. Delivery charges, applicable taxes and the final tax invoice, if required, will be confirmed by the seller.");
+  doc.saveAndClose();
+  const file = DriveApp.getFileById(doc.getId());
+  const pdf = file.getAs(MimeType.PDF).setName(orderId + ".pdf");
+  file.setTrashed(true);
+  return pdf;
 }
 
 function invoiceHtml(orderId, order, items, total) {
