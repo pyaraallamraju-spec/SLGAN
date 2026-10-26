@@ -5550,12 +5550,35 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             if (confirmedDeliveryAddress != null) {
                 val address = confirmedDeliveryAddress!!
                 val confirmedText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode").mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ").ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
-                Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).clickable { confirmedDeliveryAddress = null }, colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFE2E5EA))) {
+                Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFE2E5EA))) {
                     Column(Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.LocationOn, contentDescription = null, tint = Forest)
                             Text("Deliver to: ${address["label"]?.toString().orEmpty().ifBlank { "Saved address" }}", color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                            TextButton(onClick = { confirmedDeliveryAddress = null }) { Text("Change") }
+                            TextButton(onClick = {
+                                 val user = FirebaseAuth.getInstance().currentUser
+                                 if (user == null) {
+                                     errorMessage = "Please sign in again before choosing an address."
+                                 } else {
+                                     errorMessage = null
+                                     loadingDeliveryAddresses = true
+                                     showCheckout = true
+                                     FirebaseFirestore.getInstance().collection("addresses").whereEqualTo("userId", user.uid).get()
+                                         .addOnSuccessListener { snapshot ->
+                                             savedAddresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
+                                             if (selectedDeliveryAddressId == null || savedAddresses.none { it["_id"]?.toString() == selectedDeliveryAddressId }) {
+                                                 selectedDeliveryAddressId = (confirmedDeliveryAddress?.get("_id")?.toString()
+                                                     ?: savedAddresses.firstOrNull { it["isDefault"] == true || it["default"] == true }?.get("_id")?.toString()
+                                                     ?: savedAddresses.firstOrNull()?.get("_id")?.toString())
+                                             }
+                                             loadingDeliveryAddresses = false
+                                         }
+                                         .addOnFailureListener { error ->
+                                             loadingDeliveryAddresses = false
+                                             errorMessage = error.localizedMessage ?: "Could not load saved addresses."
+                                         }
+                                 }
+                             }) { Text("Change") }
                         }
                         Text(address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { customerName }, color = Ink, fontSize = 14.sp)
                         Text(confirmedText, color = Muted, fontSize = 13.sp)
