@@ -5084,21 +5084,20 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
     }
     if (product.productStock == 0) {
         Box(
-            Modifier.matchParentSize()
-                .clip(RoundedCornerShape(18.dp))
-                .background(Color(0x66808080)),
-            contentAlignment = Alignment.Center
+            Modifier.matchParentSize().padding(top = 8.dp),
+            contentAlignment = Alignment.TopCenter
         ) {
             Surface(
-                color = Color.White,
+                color = Color(0xFFF0F0F0),
                 shape = RoundedCornerShape(12.dp),
-                shadowElevation = 4.dp
+                border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                shadowElevation = 2.dp
             ) {
                 Text(
                     "Out of Stock",
-                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 10.dp),
-                    color = Color(0xFF333333),
-                    fontSize = 15.sp,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    color = Ink,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
