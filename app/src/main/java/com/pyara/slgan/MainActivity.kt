@@ -5654,11 +5654,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                              errorMessage = error.localizedMessage ?: "Could not load saved addresses."
                                          }
                                  }
-                             }) { Text("Change") }
+                             }) { Text("Change", color = Ink) }
                         }
                         Text(address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { customerName }, color = Ink, fontSize = 14.sp)
-                        Text(confirmedText, color = Ink, fontSize = 13.sp)
-                        Text(address["phone"]?.toString().orEmpty().ifBlank { phone }, color = Ink, fontSize = 13.sp)
+                        Text(confirmedText, color = Muted, fontSize = 13.sp)
+                        Text(address["phone"]?.toString().orEmpty().ifBlank { phone }, color = Muted, fontSize = 13.sp)
                     }
                 }
             }
