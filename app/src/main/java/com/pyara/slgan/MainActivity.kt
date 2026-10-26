@@ -8627,7 +8627,7 @@ private fun ReviewAddressPage(
             Text("Review address", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
         AndroidView(
-            modifier = Modifier.fillMaxWidth().weight(1f).heightIn(min = 280.dp),
+            modifier = Modifier.fillMaxWidth().height(300.dp),
             factory = { ctx ->
                 WebView(ctx).apply {
                     webViewClient = WebViewClient()
