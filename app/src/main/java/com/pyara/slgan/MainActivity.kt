@@ -5071,23 +5071,58 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             }
             Spacer(Modifier.height(10.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
-            Spacer(Modifier.height(5.dp))
+            Spacer(Modifier.height(6.dp))
             Row(
-                modifier = Modifier.fillMaxWidth().height(28.dp),
+                modifier = Modifier.fillMaxWidth().height(26.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                Text(
-                    product.subtitle.replace(" ", ""),
-                    color = Muted,
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, fill = false)
-                )
-                ProductRatingLine(product, ratingSummary, countBaselineFix = true)
+                if (product.category.isNotBlank()) {
+                    Surface(shape = RoundedCornerShape(8.dp), color = Color(0xFFE2E2E2), contentColor = Ink) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(3.dp)
+                        ) {
+                            Text(
+                                when (product.category.trim().lowercase()) {
+                                    "lehyas" -> "🫙"
+                                    "grutas", "ghritas", "ghrutas" -> "🏺"
+                                    "pills" -> "💊"
+                                    "tailas" -> "🫙"
+                                    "churnas" -> "🌾"
+                                    "rasayogas", "rasayoga" -> "🪷"
+                                    "rasayanas" -> "🪴"
+                                    "bhasmas" -> "🪨"
+                                    else -> "🌿"
+                                },
+                                fontSize = 9.sp
+                            )
+                            Text(product.category, color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
+                }
+                if (product.subtitle.isNotBlank()) {
+                    Surface(shape = RoundedCornerShape(8.dp), color = Color(0xFFE2E2E2), contentColor = Ink) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(3.dp)
+                        ) {
+                            Text("⚖", color = Muted, fontSize = 9.sp)
+                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
+                }
             }
             Spacer(Modifier.height(5.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth().height(24.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ProductRatingLine(product, ratingSummary)
+            }
+            Spacer(Modifier.height(3.dp))
             Row(
                 modifier = Modifier.fillMaxWidth().height(44.dp),
                 verticalAlignment = Alignment.CenterVertically
