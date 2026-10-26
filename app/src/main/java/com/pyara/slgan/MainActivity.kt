@@ -126,7 +126,7 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-private const val SLGAN_ORDER_EMAIL_WEB_APP_URL = "https://script.google.com/macros/s/AKfycby1zrs1-PSgLzdz7r2fhmFFTNgF9PHHQPb1oN8o8TRRUxxAW_-NYEy6acqlkGAVG8mpkA/exec"
+private const val SLGAN_ORDER_EMAIL_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzmv15O2r71h7FQkQ_CaI00GSHsyGPZ3QFIB08m8Xw8TxjJjYwFtuGFHz71iDPKEBR/exec"
 
 private fun requestSlganOrderEmail(
     idToken: String,
