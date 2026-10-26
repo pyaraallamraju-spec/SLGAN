@@ -5053,14 +5053,14 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(start = 1.dp, top = 1.dp)
-                            .graphicsLayer { rotationZ = -8f }
-                            .width(82.dp)
+                            .graphicsLayer { rotationZ = -5f }
+                            .width(112.dp)
                             .height(30.dp)
                             .background(Color(0xFFE4AC37), RoundedCornerShape(8.dp)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            "Signature",
+                            "Patent Product",
                             color = Color.White,
                             fontSize = 11.sp,
                             fontWeight = FontWeight.ExtraBold,
