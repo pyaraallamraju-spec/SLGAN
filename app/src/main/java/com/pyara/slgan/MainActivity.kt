@@ -5686,9 +5686,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ")
                             .ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
                         val isSelected = selectedDeliveryAddressId == addressId
-                        Card(Modifier.fillMaxWidth().clickable { selectedDeliveryAddressId = addressId }, shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, if (isSelected) Forest else Color(0xFFE2E5EA)), colors = CardDefaults.cardColors(containerColor = if (isSelected) Color(0xFFF4F8F2) else Color.White)) {
+                        Card(Modifier.fillMaxWidth().clickable { selectedDeliveryAddressId = addressId }, shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, if (isSelected) Color(0xFFB5B5B5) else Color(0xFFE2E5EA)), colors = CardDefaults.cardColors(containerColor = if (isSelected) Color(0xFFF4F8F2) else Color.White)) {
                             Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.Top) {
-                                Icon(if (isSelected) Icons.Default.RadioButtonChecked else Icons.Default.RadioButtonUnchecked, contentDescription = null, tint = if (isSelected) Forest else Muted)
+                                Icon(if (isSelected) Icons.Default.RadioButtonChecked else Icons.Default.RadioButtonUnchecked, contentDescription = null, tint = if (isSelected) Color(0xFF2E7D32) else Muted)
                                 Spacer(Modifier.width(10.dp))
                                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     Text(label, color = Ink, fontWeight = FontWeight.Bold)
@@ -5715,7 +5715,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             showCheckout = false
                             errorMessage = null
                         }
-                    }, enabled = !loadingDeliveryAddresses && !submitting && savedAddresses.isNotEmpty(), modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp).height(54.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest, contentColor = Color.White)) {
+                    }, enabled = !loadingDeliveryAddresses && !submitting && savedAddresses.isNotEmpty(), modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp).height(54.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink)) {
                         Text("Confirm address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     }
                 }
