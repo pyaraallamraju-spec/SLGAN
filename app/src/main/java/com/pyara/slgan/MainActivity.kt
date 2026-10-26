@@ -1657,7 +1657,7 @@ private fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextButton(onClick = onToggleMode, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
-                Text(if (isCreatingAccount) "Already have an account? Sign in" else "New customer? Create account", color = Muted, fontSize = 13.sp)
+                Text(if (isCreatingAccount) "Already have an account? Sign in" else "New? Create account", color = Muted, fontSize = 13.sp)
             }
             if (!isCreatingAccount) {
                 TextButton(onClick = onForgotPassword, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
