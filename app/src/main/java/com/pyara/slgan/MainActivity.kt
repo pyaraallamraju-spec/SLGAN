@@ -5597,22 +5597,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     if (user == null) {
                         errorMessage = "Please sign in again before placing an order."
                     } else if (confirmedDeliveryAddress == null) {
-                        loadingDeliveryAddresses = true
-                        showCheckout = true
-                        FirebaseFirestore.getInstance().collection("addresses").whereEqualTo("userId", user.uid).get()
-                            .addOnSuccessListener { snapshot ->
-                                savedAddresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
-                                if (selectedDeliveryAddressId == null || savedAddresses.none { it["_id"]?.toString() == selectedDeliveryAddressId }) {
-                                    selectedDeliveryAddressId = savedAddresses.firstOrNull { it["isDefault"] == true || it["default"] == true }?.get("_id")?.toString()
-                                        ?: savedAddresses.firstOrNull()?.get("_id")?.toString()
-                                }
-                                loadingDeliveryAddresses = false
-                            }
-                            .addOnFailureListener { error ->
-                                loadingDeliveryAddresses = false
-                                errorMessage = error.localizedMessage ?: "Could not load saved addresses."
-                            }
-                    } else if (customerName.isBlank() || !email.contains("@")) {
+                        errorMessage = "Please choose a delivery address using Change before placing your order."
+                    else if (customerName.isBlank() || !email.contains("@")) {
                         errorMessage = "Enter your name and a valid email address."
                     } else {
                         submitting = true
