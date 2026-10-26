@@ -4815,7 +4815,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                         contentColor = Ink
                                                     ) {
                                                         Row(
-                                                            modifier = Modifier.fillMaxHeight().padding(horizontal = 7.dp, vertical = 0.dp),
+                                                            modifier = Modifier.heightIn(min = 28.dp).padding(horizontal = 7.dp, vertical = 0.dp),
                                                             verticalAlignment = Alignment.CenterVertically,
                                                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                                                         ) {
