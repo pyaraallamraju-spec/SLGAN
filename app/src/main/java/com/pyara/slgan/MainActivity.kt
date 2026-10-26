@@ -4809,12 +4809,13 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             ) {
                                                 if (product.category.isNotBlank()) {
                                                     Surface(
+                                                        modifier = Modifier.heightIn(min = 28.dp),
                                                         shape = RoundedCornerShape(8.dp),
                                                         color = Color(0xFFE2E2E2),
                                                         contentColor = Ink
                                                     ) {
                                                         Row(
-                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 1.dp),
+                                                            modifier = Modifier.fillMaxHeight().padding(horizontal = 7.dp, vertical = 0.dp),
                                                             verticalAlignment = Alignment.CenterVertically,
                                                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                                                         ) {
