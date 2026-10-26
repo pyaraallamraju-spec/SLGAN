@@ -5385,6 +5385,32 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         }
     }
 
+    LaunchedEffect(signedInUser?.uid) {
+        val user = signedInUser ?: return@LaunchedEffect
+        loadingDeliveryAddresses = true
+        FirebaseFirestore.getInstance().collection("addresses")
+            .whereEqualTo("userId", user.uid)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val addresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
+                savedAddresses = addresses
+                if (confirmedDeliveryAddress == null) {
+                    val preferred = addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
+                        ?: addresses.firstOrNull()
+                    if (preferred != null) {
+                        confirmedDeliveryAddress = preferred
+                        selectedDeliveryAddressId = preferred["_id"]?.toString()
+                        customerName = preferred["name"]?.toString().orEmpty()
+                            .ifBlank { preferred["fullName"]?.toString().orEmpty() }
+                            .ifBlank { customerName }
+                        phone = preferred["phone"]?.toString().orEmpty().ifBlank { phone }
+                    }
+                }
+                loadingDeliveryAddresses = false
+            }
+            .addOnFailureListener { loadingDeliveryAddresses = false }
+    }
+
     var selectedInstruction by remember { mutableStateOf("") }
     val recommendations = remember(products, cart) { products.filter { (cart[it.id] ?: 0) == 0 && it.productStock != 0 }.take(6) }
     val itemCount = selected.sumOf { cart[it.id] ?: 0 }
