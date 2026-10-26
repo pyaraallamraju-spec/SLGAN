@@ -3904,7 +3904,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             }
         }
         when {
-            loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = AdminInk) }
+            loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { AppLoader("Loading orders…") }
             error != null -> Text("Could not load orders: " + error, color = Color(0xFFB3261E), modifier = Modifier.padding(20.dp))
             orders.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("No orders yet", color = AdminMuted, fontSize = 18.sp) }
             filteredOrders.isEmpty() -> Box(Modifier.fillMaxSize().padding(20.dp), contentAlignment = Alignment.Center) {
@@ -4391,9 +4391,7 @@ private fun WishlistPage(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                CircularProgressIndicator(color = Forest)
-                Spacer(Modifier.height(12.dp))
-                Text(if (appLanguage == "English") "Loading your wishlist…" else "మీ విష్‌లిస్ట్ లోడ్ అవుతోంది…", color = Muted, fontSize = 13.sp)
+                AppLoader(if (appLanguage == "English") "Loading your wishlist…" else "మీ విష్‌లిస్ట్ లోడ్ అవుతోంది…")
             }
         } else if (wishlistError) {
             Column(
@@ -5686,7 +5684,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Text("Choose delivery address", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
                     Text("Select the saved address for this order.", color = Muted, fontSize = 14.sp)
                     if (loadingDeliveryAddresses) {
-                        Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Forest) }
+                        Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) { AppLoader("Loading addresses…", compact = true) }
                     } else if (savedAddresses.isEmpty()) {
                         Text("No saved addresses found. Add a delivery address from your profile before placing an order.", color = Muted, fontSize = 14.sp)
                     } else savedAddresses.forEach { address ->
@@ -7792,8 +7790,8 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
             Text("Keep delivery locations for future orders.", color = Muted, fontSize = 14.sp)
             Spacer(Modifier.height(20.dp))
             if (loading) {
-                Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = Forest)
+                Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) {
+                    AppLoader("Loading addresses…", compact = true)
                 }
             } else if (addresses.isEmpty()) {
                 Card(
@@ -8998,7 +8996,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
 }
 
 @Composable
-private fun AppLoader(message: String, compact: Boolean = false, messageColor: Color = Forest) {
+private fun AppLoader(message: String, compact: Boolean = false, messageColor: Color = Ink) {
     val leafMotion = rememberInfiniteTransition(label = "herbalLeafLoader")
     val leafRotation by leafMotion.animateFloat(
         initialValue = -18f,
@@ -9028,13 +9026,14 @@ private fun AppLoader(message: String, compact: Boolean = false, messageColor: C
         Box(
             modifier = Modifier
                 .size(if (compact) 48.dp else 76.dp)
-                .background(Cream, CircleShape)
-                .border(2.dp, Gold, CircleShape),
+                .background(Color(0xFFF1F3F1), CircleShape)
+                .border(2.dp, Color(0xFFB5B5B5), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "🌿",
                 fontSize = if (compact) 25.sp else 39.sp,
+                color = Color(0xFF2E7D32),
                 modifier = Modifier.graphicsLayer {
                     rotationZ = leafRotation
                     scaleX = leafScale
