@@ -4991,14 +4991,14 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
     Box(modifier) {
     Card(Modifier.fillMaxWidth().clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
-            Box(Modifier.fillMaxWidth().height(98.dp).clip(RoundedCornerShape(14.dp)).background(Color.White), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxWidth().height(150.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF7F7F7)), contentAlignment = Alignment.Center) {
                 if (product.imageUrl.isNotBlank()) {
                     var imageLoading by remember(product.imageUrl) { mutableStateOf(true) }
                     AsyncImage(
                         model = product.imageUrl,
                         contentDescription = product.name,
-                        modifier = Modifier.fillMaxSize().padding(4.dp).clip(RoundedCornerShape(12.dp)),
-                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
                         onLoading = { imageLoading = true },
                         onSuccess = { imageLoading = false },
                         onError = { imageLoading = false }
