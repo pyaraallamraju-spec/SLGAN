@@ -4833,7 +4833,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                                 },
                                                                 fontSize = 9.sp
                                                             )
-                                                            Text(product.category, color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(product.category, color = Color.Black, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
@@ -4844,12 +4844,12 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                         contentColor = Ink
                                                     ) {
                                                         Row(
-                                                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 1.dp),
+                                                            modifier = Modifier.heightIn(min = 28.dp).padding(horizontal = 7.dp, vertical = 0.dp),
                                                             verticalAlignment = Alignment.CenterVertically,
                                                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                                                         ) {
-                                                            Text("⚖", color = Muted, fontSize = 9.sp, fontWeight = FontWeight.Normal)
-                                                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text("⚖", color = Muted, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.Normal)
+                                                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
@@ -5098,19 +5098,19 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                 },
                                 fontSize = 9.sp
                             )
-                            Text(product.category, color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(product.category, color = Color.Black, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                 }
                 if (product.subtitle.isNotBlank()) {
                     Surface(shape = RoundedCornerShape(8.dp), color = Color(0xFFE2E2E2), contentColor = Ink) {
                         Row(
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            modifier = Modifier.heightIn(min = 28.dp).padding(horizontal = 6.dp, vertical = 0.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                         ) {
-                            Text("⚖", color = Muted, fontSize = 9.sp)
-                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text("⚖", color = Muted, fontSize = 9.sp, lineHeight = 12.sp)
+                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                 }
