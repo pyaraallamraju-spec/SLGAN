@@ -8750,6 +8750,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             .background(Color(0xFFF3F5FA))
             .verticalScroll(rememberScrollState())
             .padding(horizontal = if (initialSection == "Profile") 0.dp else 16.dp, vertical = if (initialSection == "Profile") 0.dp else 18.dp)
+            .padding(bottom = if (initialSection == "Profile") 28.dp else 0.dp)
     ) {
         if (initialSection == "Profile") {
             Row(
@@ -8984,7 +8985,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                 enabled = !isSaving && !isLoading,
                 modifier = Modifier.fillMaxWidth().height(58.dp),
                 shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE1E5EC), contentColor = Ink),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
             ) {
                 if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null)
