@@ -6375,7 +6375,7 @@ private fun OrdersPage(
                         Icon(Icons.Default.DeleteOutline, contentDescription = "Delete order", tint = Ink)
                     }
                 }
-                Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+                Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 28.dp)) {
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
                         Text("Order summary", color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(6.dp))
@@ -6453,7 +6453,7 @@ private fun OrdersPage(
                         Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
                     Spacer(Modifier.height(20.dp))
-                    Column(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 20.dp, vertical = 12.dp)) {
+                    Column(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 20.dp, vertical = 16.dp)) {
                         Text("Need help with your order?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(3.dp))
                         Text("About any issues related to your order", color = Muted, fontSize = 13.sp)
