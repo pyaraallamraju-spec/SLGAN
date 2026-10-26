@@ -4147,7 +4147,7 @@ private fun ShopScreen(
         }
     }) { padding ->
         when (selectedTab) {
-            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick) { onTabChange("Home") }
+            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick, onAddAddress = { onTabChange("AddressBook") }) { onTabChange("Home") }
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") }, onCategories = { onCategoryChange("All"); onTabChange("Categories") }, onTabChange = onTabChange)
             "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") }, onCategories = { onTabChange("Categories") }, onTabChange = onTabChange)
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
@@ -5353,7 +5353,7 @@ private fun ProductDetailsPage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onBack: () -> Unit) {
+private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onAddAddress: () -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
@@ -5727,6 +5727,20 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     if (errorMessage != null) Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
                 }
                 Surface(color = Color.White, shadowElevation = 8.dp) {
+                    OutlinedButton(
+                        onClick = {
+                            showCheckout = false
+                            onAddAddress()
+                        },
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp).height(48.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = null, tint = Ink)
+                        Spacer(Modifier.width(8.dp))
+                        Text("Add new address", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Ink)
+                    }
                     Button(onClick = {
                         val address = savedAddresses.firstOrNull { it["_id"]?.toString() == selectedDeliveryAddressId }
                         val textAddress = address?.let { listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode").mapNotNull { key -> it[key]?.toString()?.trim()?.takeIf { value -> value.isNotBlank() } }.joinToString(", ").ifBlank { (it["address"] ?: it["addressText"] ?: it["fullAddress"] ?: it["completeAddress"] ?: it["formattedAddress"])?.toString().orEmpty() } }.orEmpty()
