@@ -5084,7 +5084,9 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
     }
     if (product.productStock == 0) {
         Box(
-            Modifier.matchParentSize().padding(top = 8.dp),
+            Modifier.matchParentSize()
+                .padding(top = 8.dp)
+                .clip(RoundedCornerShape(18.dp)),
             contentAlignment = Alignment.TopCenter
         ) {
             Surface(
