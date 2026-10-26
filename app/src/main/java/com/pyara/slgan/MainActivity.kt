@@ -8673,54 +8673,14 @@ private fun ReviewAddressPage(
                     settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW
                     settings.loadWithOverviewMode = true
                     settings.useWideViewPort = true
-                    val mapHtml = """
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <style>
-                                html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
-                                iframe { border: 0; width: 100%; height: 100%; display: block; }
-                            </style>
-                        </head>
-                        <body>
-                            <iframe
-                                src="https://maps.google.com/maps?q=$query&amp;output=embed"
-                                allowfullscreen
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                        </body>
-                        </html>
-                    """.trimIndent()
                     tag = query
-                    loadDataWithBaseURL("https://maps.google.com/", mapHtml, "text/html", "UTF-8", null)
+                    loadUrl("https://www.google.com/maps?q=$" + "{query}")
                 }
             },
             update = { view ->
                 if (view.tag != query) {
-                    val mapHtml = """
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <style>
-                                html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
-                                iframe { border: 0; width: 100%; height: 100%; display: block; }
-                            </style>
-                        </head>
-                        <body>
-                            <iframe
-                                src="https://maps.google.com/maps?q=$query&amp;output=embed"
-                                allowfullscreen
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
-                        </body>
-                        </html>
-                    """.trimIndent()
                     view.tag = query
-                    view.loadDataWithBaseURL("https://maps.google.com/", mapHtml, "text/html", "UTF-8", null)
+                    view.loadUrl("https://www.google.com/maps?q=$" + "{query}")
                 }
             }
         )
@@ -8746,17 +8706,18 @@ private fun ReviewAddressPage(
                 Text("  City  :  $city", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.People, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.People, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
                 Text("  Receiver  :  $receiverName, $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
         }
         Button(
             onClick = onSave,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp).height(60.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Forest),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink),
+            border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Text("Save Address", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text("Save Address", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
