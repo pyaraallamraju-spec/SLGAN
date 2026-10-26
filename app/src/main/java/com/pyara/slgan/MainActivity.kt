@@ -2775,9 +2775,24 @@ private fun AdminProductEditor(
             OutlinedTextField(usage, { usage = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Usage / directions") }, minLines = 2)
             OutlinedTextField(cures, { cures = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Cures / indications") }, minLines = 2)
             OutlinedTextField(ingredients, { ingredients = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Major ingredients") }, minLines = 2)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = signature, onCheckedChange = { signature = it }, colors = CheckboxDefaults.colors(checkedColor = Forest))
-                Text("Show as signature product", color = Ink)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text("Is signature product", color = Ink, fontWeight = FontWeight.SemiBold)
+                    Text(if (signature) "Yes" else "No", color = if (signature) Forest else AdminMuted, fontSize = 12.sp)
+                }
+                Switch(
+                    checked = signature,
+                    onCheckedChange = { signature = it; message = null },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = Color.White,
+                        checkedTrackColor = Forest,
+                        uncheckedThumbColor = Color.White,
+                        uncheckedTrackColor = Color(0xFFB5B5B5)
+                    )
+                )
             }
             if (message != null) Text(message!!, color = if (message!!.startsWith("Saved")) Forest else Color(0xFFB3261E), fontSize = 13.sp)
             Spacer(Modifier.height(4.dp))
