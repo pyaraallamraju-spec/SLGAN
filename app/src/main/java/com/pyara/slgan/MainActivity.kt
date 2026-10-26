@@ -4736,17 +4736,17 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 ) {
                                     Column(Modifier.padding(10.dp)) {
                                         Box(
-                                            Modifier.fillMaxWidth().height(98.dp)
-                                                 .clip(RoundedCornerShape(13.dp))
-                                                .background(Color.White),
+                                            Modifier.fillMaxWidth().height(150.dp)
+                                                .clip(RoundedCornerShape(13.dp))
+                                                .background(Color(0xFFF7F7F7)),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             if (product.imageUrl.isNotBlank()) {
                                                 AsyncImage(
                                                     model = product.imageUrl,
                                                     contentDescription = product.name,
-                                                    modifier = Modifier.fillMaxSize().padding(3.dp).clip(RoundedCornerShape(11.dp)),
-                                                    contentScale = ContentScale.Fit
+                                                    modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(11.dp)),
+                                                    contentScale = ContentScale.Crop
                                                 )
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
