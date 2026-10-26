@@ -8609,20 +8609,20 @@ private fun ReviewAddressPage(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text("Your address details", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-            TextButton(onClick = onEdit) { Text("Edit", color = Forest, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
+            TextButton(onClick = onEdit) { Text("Edit", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
         }
         Divider(color = Color(0xFFE6E8EE))
         Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Home, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.Home, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
                 Text("  Address  :  $fullAddress", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Place, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.Place, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
                 Text("  Area  :  $area", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.LocationCity, contentDescription = null, tint = Forest, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
                 Text("  City  :  $city", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
