@@ -8565,14 +8565,42 @@ private fun ReviewAddressPage(
                     webViewClient = WebViewClient()
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
-                    loadUrl("https://maps.google.com/maps?q=$query&output=embed")
+                    settings.loadWithOverviewMode = true
+                    settings.useWideViewPort = true
+                    val mapUrl = "https://www.google.com/maps?q=$query&output=embed"
+                    val mapHtml = """
+                        <!doctype html>
+                        <html>
+                          <head>
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <style>html,body,iframe{width:100%;height:100%;margin:0;padding:0;border:0;overflow:hidden}</style>
+                          </head>
+                          <body>
+                            <iframe src="$mapUrl" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+                          </body>
+                        </html>
+                    """.trimIndent()
+                    loadDataWithBaseURL("https://www.google.com/", mapHtml, "text/html", "UTF-8", null)
+                    tag = mapUrl
                 }
             },
             update = { view ->
-                val nextUrl = "https://maps.google.com/maps?q=$query&output=embed"
+                val nextUrl = "https://www.google.com/maps?q=$query&output=embed"
                 if (view.tag != nextUrl) {
                     view.tag = nextUrl
-                    view.loadUrl(nextUrl)
+                    val mapHtml = """
+                        <!doctype html>
+                        <html>
+                          <head>
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <style>html,body,iframe{width:100%;height:100%;margin:0;padding:0;border:0;overflow:hidden}</style>
+                          </head>
+                          <body>
+                            <iframe src="$nextUrl" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+                          </body>
+                        </html>
+                    """.trimIndent()
+                    view.loadDataWithBaseURL("https://www.google.com/", mapHtml, "text/html", "UTF-8", null)
                 }
             }
         )
