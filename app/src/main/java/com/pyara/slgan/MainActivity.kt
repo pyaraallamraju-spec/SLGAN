@@ -5620,6 +5620,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     "phone" to phone.trim().ifBlank { address["phone"]?.toString().orEmpty() },
                                     "deliveryAddressId" to address["_id"]?.toString().orEmpty(),
                                     "deliveryAddress" to addressText,
+                                    "shippingAddress" to addressText,
                                     "deliveryAddressLabel" to address["label"]?.toString().orEmpty(),
                                     "deliveryRecipientName" to address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() },
                                     "deliveryPhone" to address["phone"]?.toString().orEmpty(),
