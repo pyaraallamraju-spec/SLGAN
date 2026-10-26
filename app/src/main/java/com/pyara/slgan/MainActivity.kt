@@ -5754,21 +5754,23 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     if (errorMessage != null) Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
                 }
                 Surface(color = Color.White, shadowElevation = 8.dp) {
-                    OutlinedButton(
-                        onClick = {
-                            showCheckout = false
-                            onAddAddress()
-                        },
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp).height(48.dp),
-                        shape = RoundedCornerShape(14.dp),
-                        border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = null, tint = Ink)
-                        Spacer(Modifier.width(8.dp))
-                        Text("Add new address", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Ink)
-                    }
-                    Button(onClick = {
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp)) {
+                        OutlinedButton(
+                            onClick = {
+                                showCheckout = false
+                                onAddAddress()
+                            },
+                            modifier = Modifier.fillMaxWidth().height(48.dp),
+                            shape = RoundedCornerShape(14.dp),
+                            border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = null, tint = Ink)
+                            Spacer(Modifier.width(8.dp))
+                            Text("Add new address", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Ink)
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        Button(onClick = {
                         val address = savedAddresses.firstOrNull { it["_id"]?.toString() == selectedDeliveryAddressId }
                         val textAddress = address?.let { listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode").mapNotNull { key -> it[key]?.toString()?.trim()?.takeIf { value -> value.isNotBlank() } }.joinToString(", ").ifBlank { (it["address"] ?: it["addressText"] ?: it["fullAddress"] ?: it["completeAddress"] ?: it["formattedAddress"])?.toString().orEmpty() } }.orEmpty()
                         if (address == null) errorMessage = if (savedAddresses.isEmpty()) "Please add a delivery address first." else "Please select a delivery address."
@@ -5780,8 +5782,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             showCheckout = false
                             errorMessage = null
                         }
-                    }, enabled = !loadingDeliveryAddresses && !submitting && savedAddresses.isNotEmpty(), modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp).height(54.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink)) {
-                        Text("Confirm address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        }, enabled = !loadingDeliveryAddresses && !submitting && savedAddresses.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink)) {
+                            Text("Confirm address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        }
                     }
                 }
             }
