@@ -8674,13 +8674,13 @@ private fun ReviewAddressPage(
                     settings.loadWithOverviewMode = true
                     settings.useWideViewPort = true
                     tag = query
-                    loadUrl("https://www.google.com/maps?q=$" + "{query}")
+                    loadUrl("https://www.google.com/maps?q=$query")
                 }
             },
             update = { view ->
                 if (view.tag != query) {
                     view.tag = query
-                    view.loadUrl("https://www.google.com/maps?q=$" + "{query}")
+                    view.loadUrl("https://www.google.com/maps?q=$query")
                 }
             }
         )
