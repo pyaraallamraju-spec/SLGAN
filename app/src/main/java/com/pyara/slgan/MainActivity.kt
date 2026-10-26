@@ -4736,7 +4736,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 ) {
                                     Column(Modifier.padding(10.dp)) {
                                         Box(
-                                            Modifier.fillMaxWidth().height(150.dp)
+                                            Modifier.fillMaxWidth().height(98.dp)
                                                 .clip(RoundedCornerShape(13.dp))
                                                 .background(Color(0xFFF7F7F7)),
                                             contentAlignment = Alignment.Center
