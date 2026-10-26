@@ -5595,7 +5595,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         errorMessage = "Please sign in again before placing an order."
                     } else if (confirmedDeliveryAddress == null) {
                         errorMessage = "Please choose a delivery address using Change before placing your order."
-                    else if (customerName.isBlank() || !email.contains("@")) {
+                    } else if (customerName.isBlank() || !email.contains("@")) {
                         errorMessage = "Enter your name and a valid email address."
                     } else {
                         submitting = true
