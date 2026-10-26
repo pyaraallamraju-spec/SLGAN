@@ -8637,16 +8637,54 @@ private fun ReviewAddressPage(
                     settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW
                     settings.loadWithOverviewMode = true
                     settings.useWideViewPort = true
-                    val mapUrl = "https://www.google.com/maps?q=$query&output=embed"
-                    tag = mapUrl
-                    loadUrl(mapUrl)
+                    val mapHtml = """
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <style>
+                                html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+                                iframe { border: 0; width: 100%; height: 100%; display: block; }
+                            </style>
+                        </head>
+                        <body>
+                            <iframe
+                                src="https://maps.google.com/maps?q=$query&amp;output=embed"
+                                allowfullscreen
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </body>
+                        </html>
+                    """.trimIndent()
+                    tag = query
+                    loadDataWithBaseURL("https://maps.google.com/", mapHtml, "text/html", "UTF-8", null)
                 }
             },
             update = { view ->
-                val nextUrl = "https://www.google.com/maps?q=$query&output=embed"
-                if (view.tag != nextUrl) {
-                    view.tag = nextUrl
-                    view.loadUrl(nextUrl)
+                if (view.tag != query) {
+                    val mapHtml = """
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <style>
+                                html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+                                iframe { border: 0; width: 100%; height: 100%; display: block; }
+                            </style>
+                        </head>
+                        <body>
+                            <iframe
+                                src="https://maps.google.com/maps?q=$query&amp;output=embed"
+                                allowfullscreen
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </body>
+                        </html>
+                    """.trimIndent()
+                    view.tag = query
+                    view.loadDataWithBaseURL("https://maps.google.com/", mapHtml, "text/html", "UTF-8", null)
                 }
             }
         )
