@@ -1652,7 +1652,7 @@ private fun LoginScreen(
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 2.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).offset(y = (-6).dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
