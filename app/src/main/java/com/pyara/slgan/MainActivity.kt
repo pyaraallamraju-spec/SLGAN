@@ -5629,7 +5629,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, Color(0xFFE2E5EA))) {
                     Column(Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.LocationOn, contentDescription = null, tint = Forest)
+                            Icon(Icons.Default.Home, contentDescription = null, tint = Ink)
                             Text("Deliver to: ${address["label"]?.toString().orEmpty().ifBlank { "Saved address" }}", color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                             TextButton(onClick = {
                                  val user = FirebaseAuth.getInstance().currentUser
@@ -5657,8 +5657,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                              }) { Text("Change") }
                         }
                         Text(address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { customerName }, color = Ink, fontSize = 14.sp)
-                        Text(confirmedText, color = Muted, fontSize = 13.sp)
-                        Text(address["phone"]?.toString().orEmpty().ifBlank { phone }, color = Muted, fontSize = 13.sp)
+                        Text(confirmedText, color = Ink, fontSize = 13.sp)
+                        Text(address["phone"]?.toString().orEmpty().ifBlank { phone }, color = Ink, fontSize = 13.sp)
                     }
                 }
             }
