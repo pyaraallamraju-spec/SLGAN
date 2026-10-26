@@ -1493,12 +1493,13 @@ private fun LoginScreen(
             color = Color(0xFF38251F),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
-        Spacer(Modifier.height(10.dp))
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            Box(Modifier.width(54.dp).height(1.dp).background(Gold))
-            Text(tr("  ✦  🌿  ✦  ", LocalAppLanguage.current), color = Gold, fontSize = 13.sp)
-            Box(Modifier.width(54.dp).height(1.dp).background(Gold))
-        }
+        Spacer(Modifier.height(6.dp))
+        Image(
+            painter = painterResource(id = R.drawable.slgan_divider_gold),
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp).height(30.dp)
+        )
         Spacer(Modifier.height(6.dp))
         Text(
             tr("Estd. 1900 by Vidyaraju Sri Allamraju Perraju Sharma", LocalAppLanguage.current),
