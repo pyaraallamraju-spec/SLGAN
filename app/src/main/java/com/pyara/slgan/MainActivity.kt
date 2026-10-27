@@ -8719,14 +8719,19 @@ private fun ReviewAddressPage(
                 Text("  Receiver  :  $receiverName, $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
         }
-        Button(
-            onClick = onSave,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp).height(60.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink),
-            border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
-            shape = RoundedCornerShape(18.dp)
-        ) {
-            Text("Save Address", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        val hasCompleteAddress = fullAddress.isNotBlank() &&
+            area.isNotBlank() && city.isNotBlank() &&
+            receiverName.isNotBlank() && receiverPhone.isNotBlank()
+        if (hasCompleteAddress) {
+            Button(
+                onClick = onSave,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp).height(60.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink),
+                border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                shape = RoundedCornerShape(18.dp)
+            ) {
+                Text("Save Address", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            }
         }
     }
 }
