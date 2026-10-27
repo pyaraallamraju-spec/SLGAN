@@ -8668,9 +8668,21 @@ private fun ReviewAddressPage(
                             view: WebView,
                             request: android.webkit.WebResourceRequest
                         ): Boolean {
-                            val url = request.url.toString()
-                            // Keep the interactive map inside the app; do not hand off to intent://.
-                            return url.startsWith("intent://") || url.startsWith("market://")
+                            val target = request.url
+                            // Keep web map navigation inside the app and block app/deep-link schemes.
+                            return target.scheme != "https" && target.scheme != "http"
+                        }
+
+                        override fun onReceivedError(
+                            view: WebView,
+                            request: android.webkit.WebResourceRequest,
+                            error: android.webkit.WebResourceError
+                        ) {
+                            super.onReceivedError(view, request, error)
+                            if (request.isForMainFrame && view.tag != "osm-fallback:$query") {
+                                view.tag = "osm-fallback:$query"
+                                view.loadUrl("https://www.openstreetmap.org/search?query=$query")
+                            }
                         }
                     }
                     settings.javaScriptEnabled = true
@@ -8681,16 +8693,18 @@ private fun ReviewAddressPage(
                     settings.setSupportZoom(true)
                     settings.builtInZoomControls = true
                     settings.displayZoomControls = false
-                    tag = query
-                    // Use the map embed endpoint instead of the interactive search page,
-                    // which can leave a blank tile area inside Android WebView.
-                    loadUrl("https://maps.google.com/maps?output=embed&q=$query")
+                    settings.allowFileAccess = false
+                    settings.allowContentAccess = false
+                    tag = "google-map:$query"
+                    // Use the browser-based map search page; Google Maps may redirect to
+                    // intent:// in Android WebView. OpenStreetMap is the in-app fallback.
+                    loadUrl("https://www.openstreetmap.org/search?query=$query")
                 }
             },
             update = { view ->
-                if (view.tag != query) {
-                    view.tag = query
-                    view.loadUrl("https://maps.google.com/maps?output=embed&q=$query")
+                if (view.tag != "google-map:$query" && view.tag != "osm-fallback:$query") {
+                    view.tag = "google-map:$query"
+                    view.loadUrl("https://www.openstreetmap.org/search?query=$query")
                 }
             }
         )
