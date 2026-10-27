@@ -4735,8 +4735,16 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                                 ) {
                                     Column(Modifier.padding(10.dp)) {
+                                        Box(Modifier.fillMaxWidth().height(58.dp)) {
+                                            Image(
+                                                painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
+                                                contentDescription = "Patent Product",
+                                                modifier = Modifier.align(Alignment.TopStart).size(58.dp),
+                                                contentScale = ContentScale.Fit
+                                            )
+                                        }
                                         Box(
-                                            Modifier.fillMaxWidth().height(98.dp)
+                                            Modifier.fillMaxWidth().height(80.dp)
                                                 .clip(RoundedCornerShape(13.dp))
                                                 .background(Color(0xFFF7F7F7)),
                                             contentAlignment = Alignment.Center
@@ -4751,15 +4759,6 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
-                                            Image(
-                                                painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-                                                contentDescription = "Patent Product",
-                                                modifier = Modifier
-                                                    .align(Alignment.TopStart)
-                                                    .padding(start = 6.dp, top = 5.dp)
-                                                    .size(76.dp),
-                                                contentScale = ContentScale.Fit
-                                            )
                                             Row(
                                                 modifier = Modifier
                                                     .align(Alignment.TopEnd)
@@ -4999,7 +4998,17 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
     Box(modifier) {
     Card(Modifier.fillMaxWidth().clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
-            Box(Modifier.fillMaxWidth().height(98.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF7F7F7)), contentAlignment = Alignment.Center) {
+            if (product.signature) {
+                Box(Modifier.fillMaxWidth().height(58.dp)) {
+                    Image(
+                        painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
+                        contentDescription = "Patent Product",
+                        modifier = Modifier.align(Alignment.TopStart).size(58.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+            }
+            Box(Modifier.fillMaxWidth().height(if (product.signature) 80.dp else 98.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF7F7F7)), contentAlignment = Alignment.Center) {
                 if (product.imageUrl.isNotBlank()) {
                     var imageLoading by remember(product.imageUrl) { mutableStateOf(true) }
                     AsyncImage(
@@ -5038,18 +5047,6 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(end = 4.dp)
-                    )
-                }
-                if (product.signature) {
-                    // Use the approved transparent gold seal asset on signature-product cards.
-                    Image(
-                        painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-                        contentDescription = "Patent Product",
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .padding(start = 6.dp, top = 5.dp)
-                            .size(76.dp),
-                        contentScale = ContentScale.Fit
                     )
                 }
             }
