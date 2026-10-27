@@ -4751,34 +4751,15 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
-                                            // Cinematic royal seal: antique gold rings over deep embossed maroon.
-                                            Box(
+                                            Image(
+                                                painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
+                                                contentDescription = "Patent Product",
                                                 modifier = Modifier
                                                     .align(Alignment.TopStart)
                                                     .padding(start = 6.dp, top = 5.dp)
-                                                    .size(76.dp)
-                                                    .shadow(6.dp, CircleShape)
-                                                    .background(
-                                                        Brush.radialGradient(listOf(Color(0xFF8D2428), Color(0xFF35090D))),
-                                                        CircleShape
-                                                    )
-                                                    .border(3.dp, Color(0xFFC99A3B), CircleShape)
-                                                    .padding(4.dp)
-                                                    .border(1.dp, Color(0xFFFFD978), CircleShape)
-                                                    .padding(4.dp),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                Column(
-                                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                                    verticalArrangement = Arrangement.Center
-                                                ) {
-                                                    Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                                                    Text("PATENT", color = Color(0xFFFFE7A0), fontSize = 9.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                                                    Box(Modifier.padding(vertical = 2.dp).width(42.dp).height(1.dp).background(Color(0xFFC99A3B)))
-                                                    Text("PRODUCT", color = Color.White, fontSize = 8.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
-                                                    Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                                                }
-                                            }
+                                                    .size(76.dp),
+                                                contentScale = ContentScale.Fit
+                                            )
                                             Row(
                                                 modifier = Modifier
                                                     .align(Alignment.TopEnd)
@@ -5060,34 +5041,16 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     )
                 }
                 if (product.signature) {
-                    // Use the same cinematic royal seal on signature-product cards.
-                    Box(
+                    // Use the approved transparent gold seal asset on signature-product cards.
+                    Image(
+                        painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
+                        contentDescription = "Patent Product",
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(start = 6.dp, top = 5.dp)
-                            .size(76.dp)
-                            .shadow(6.dp, CircleShape)
-                            .background(
-                                Brush.radialGradient(listOf(Color(0xFF8D2428), Color(0xFF35090D))),
-                                CircleShape
-                            )
-                            .border(3.dp, Color(0xFFC99A3B), CircleShape)
-                            .padding(4.dp)
-                            .border(1.dp, Color(0xFFFFD978), CircleShape)
-                            .padding(4.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                            Text("PATENT", color = Color(0xFFFFE7A0), fontSize = 9.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                            Box(Modifier.padding(vertical = 2.dp).width(42.dp).height(1.dp).background(Color(0xFFC99A3B)))
-                            Text("PRODUCT", color = Color.White, fontSize = 8.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
-                            Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                        }
-                    }
+                            .size(76.dp),
+                        contentScale = ContentScale.Fit
+                    )
                 }
             }
             Spacer(Modifier.height(10.dp))
