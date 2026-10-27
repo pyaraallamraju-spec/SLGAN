@@ -8666,7 +8666,19 @@ private fun ReviewAddressPage(
             modifier = Modifier.fillMaxWidth().height(300.dp),
             factory = { ctx ->
                 WebView(ctx).apply {
-                    webViewClient = WebViewClient()
+                    webViewClient = object : WebViewClient() {
+                        override fun shouldOverrideUrlLoading(
+                            view: WebView,
+                            request: android.webkit.WebResourceRequest
+                        ): Boolean {
+                            val target = request.url.toString()
+                            if (target.startsWith("intent://")) {
+                                view.loadUrl("https://maps.google.com/maps?output=embed&q=$query")
+                                return true
+                            }
+                            return false
+                        }
+                    }
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
                     settings.loadsImagesAutomatically = true
@@ -8674,13 +8686,13 @@ private fun ReviewAddressPage(
                     settings.loadWithOverviewMode = true
                     settings.useWideViewPort = true
                     tag = query
-                    loadUrl("https://www.google.com/maps?q=$query")
+                    loadUrl("https://maps.google.com/maps?output=embed&q=$query")
                 }
             },
             update = { view ->
                 if (view.tag != query) {
                     view.tag = query
-                    view.loadUrl("https://www.google.com/maps?q=$query")
+                    view.loadUrl("https://maps.google.com/maps?output=embed&q=$query")
                 }
             }
         )
