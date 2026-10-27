@@ -5642,6 +5642,25 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Text(address["phone"]?.toString().orEmpty().ifBlank { phone }, color = Muted, fontSize = 13.sp)
                     }
                 }
+            } else {
+                Card(
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(14.dp),
+                    border = BorderStroke(1.dp, Color(0xFFE2E5EA))
+                ) {
+                    Row(
+                        Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink)
+                        Spacer(Modifier.width(8.dp))
+                        Text("No address added", color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                        TextButton(onClick = onAddAddress) {
+                            Text("Add", color = Ink, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
             }
             Row(Modifier.fillMaxWidth().background(Color.White).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(0.7f)) {
