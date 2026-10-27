@@ -1109,15 +1109,25 @@ private fun AyurvedicApp() {
                     }
                 },
                 onForgotPassword = {
-                    val email = userInput.trim()
-                    if (email.isBlank()) {
-                        authError = "Enter your registered email address first."
-                    } else {
-                        isLoading = true
-                        authError = null
-                        auth.sendPasswordResetEmail(email).addOnCompleteListener { result ->
-                            isLoading = false
-                            authError = if (result.isSuccessful) "Password reset email sent. Please check your inbox." else result.exception?.localizedMessage ?: "Could not send password reset email."
+                    val email = userInput.trim().lowercase()
+                    when {
+                        email.isBlank() -> {
+                            authError = "Enter your registered email address first."
+                        }
+                        !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                            authError = "Enter a valid email address before requesting a password reset."
+                        }
+                        else -> {
+                            isLoading = true
+                            authError = null
+                            auth.sendPasswordResetEmail(email).addOnCompleteListener { result ->
+                                isLoading = false
+                                authError = if (result.isSuccessful) {
+                                    "If an account exists for this email, a password reset link has been sent. Check your inbox and spam folder."
+                                } else {
+                                    result.exception?.localizedMessage ?: "Could not send password reset email. Please try again."
+                                }
+                            }
                         }
                     }
                 },
@@ -1597,7 +1607,12 @@ private fun LoginScreen(
             )
             Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         }
-        if (errorMessage != null) Text(errorMessage, Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp), color = Color(0xFFB3261E), fontSize = 12.sp)
+        if (errorMessage != null) Text(
+            errorMessage,
+            Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp),
+            color = if (errorMessage.startsWith("If an account exists for this email")) Color(0xFF237A3B) else Color(0xFFB3261E),
+            fontSize = 12.sp
+        )
         Spacer(Modifier.height(18.dp))
         // The PNG already contains the pill-shaped artwork. Keep the Material
         // button from clipping that artwork at its rounded bounds.
