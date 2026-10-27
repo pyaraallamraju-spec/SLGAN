@@ -7056,7 +7056,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             Modifier.fillMaxWidth()
                                                 .height(128.dp)
                                                 .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
-                                                .background(Color.White),
+                                                .background(Color(0xFFF7F7F7)),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             if (product.imageUrl.isNotBlank()) {
