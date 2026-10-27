@@ -8646,44 +8646,33 @@ private fun ReviewAddressPage(
             modifier = Modifier.fillMaxWidth().height(300.dp),
             factory = { ctx ->
                 WebView(ctx).apply {
-                    webViewClient = WebViewClient()
+                    webViewClient = object : WebViewClient() {
+                        override fun shouldOverrideUrlLoading(
+                            view: WebView,
+                            request: android.webkit.WebResourceRequest
+                        ): Boolean {
+                            val url = request.url.toString()
+                            // Keep the interactive map inside the app; do not hand off to intent://.
+                            return url.startsWith("intent://") || url.startsWith("market://")
+                        }
+                    }
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
                     settings.loadsImagesAutomatically = true
-                    settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW
                     settings.loadWithOverviewMode = true
                     settings.useWideViewPort = true
                     settings.setSupportZoom(true)
                     settings.builtInZoomControls = true
                     settings.displayZoomControls = false
                     tag = query
-                    val html = """
-                        <!doctype html>
-                        <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <style>html,body,iframe{margin:0;padding:0;width:100%;height:100%;border:0;overflow:hidden}</style>
-                        </head><body>
-                        <iframe title="Address map" loading="eager"
-                          referrerpolicy="no-referrer-when-downgrade"
-                          src="https://maps.google.com/maps?output=embed&amp;q=$query">
-                        </iframe></body></html>
-                    """.trimIndent()
-                    loadDataWithBaseURL("https://maps.google.com/", html, "text/html", "UTF-8", null)
+                    // OpenStreetMap's interactive search map does not require a Google Maps API key.
+                    loadUrl("https://www.openstreetmap.org/search?query=$query")
                 }
             },
             update = { view ->
                 if (view.tag != query) {
                     view.tag = query
-                    val html = """
-                        <!doctype html>
-                        <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <style>html,body,iframe{margin:0;padding:0;width:100%;height:100%;border:0;overflow:hidden}</style>
-                        </head><body>
-                        <iframe title="Address map" loading="eager"
-                          referrerpolicy="no-referrer-when-downgrade"
-                          src="https://maps.google.com/maps?output=embed&amp;q=$query">
-                        </iframe></body></html>
-                    """.trimIndent()
-                    view.loadDataWithBaseURL("https://maps.google.com/", html, "text/html", "UTF-8", null)
+                    view.loadUrl("https://www.openstreetmap.org/search?query=$query")
                 }
             }
         )
