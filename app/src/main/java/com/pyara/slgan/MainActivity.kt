@@ -4735,14 +4735,6 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                                 ) {
                                     Column(Modifier.padding(10.dp)) {
-                                        Box(Modifier.fillMaxWidth().height(58.dp)) {
-                                            Image(
-                                                painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-                                                contentDescription = "Patent Product",
-                                                modifier = Modifier.align(Alignment.TopStart).size(58.dp),
-                                                contentScale = ContentScale.Fit
-                                            )
-                                        }
                                         Box(
                                             Modifier.fillMaxWidth().height(80.dp)
                                                 .clip(RoundedCornerShape(13.dp))
@@ -4759,6 +4751,12 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
+                                            Image(
+                                                painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
+                                                contentDescription = "Patent Product",
+                                                modifier = Modifier.align(Alignment.TopStart).padding(5.dp).size(38.dp),
+                                                contentScale = ContentScale.Fit
+                                            )
                                             Row(
                                                 modifier = Modifier
                                                     .align(Alignment.TopEnd)
