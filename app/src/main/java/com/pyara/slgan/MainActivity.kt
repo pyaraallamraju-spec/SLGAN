@@ -8678,13 +8678,14 @@ private fun ReviewAddressPage(
             modifier = Modifier.fillMaxWidth().height(300.dp),
             factory = { ctx ->
                 WebView(ctx).apply {
+                    setBackgroundColor(android.graphics.Color.WHITE)
                     webViewClient = object : WebViewClient() {
                         override fun shouldOverrideUrlLoading(
                             view: WebView,
                             request: android.webkit.WebResourceRequest
                         ): Boolean {
                             val target = request.url
-                            // Keep web map navigation inside the app and block app/deep-link schemes.
+                            // Keep web pages inside the app; block non-web/deep-link schemes.
                             return target.scheme != "https" && target.scheme != "http"
                         }
 
@@ -8710,16 +8711,16 @@ private fun ReviewAddressPage(
                     settings.displayZoomControls = false
                     settings.allowFileAccess = false
                     settings.allowContentAccess = false
-                    tag = "google-map:$query"
-                    // Use the browser-based map search page; Google Maps may redirect to
-                    // intent:// in Android WebView. OpenStreetMap is the in-app fallback.
-                    loadUrl("https://www.openstreetmap.org/search?query=$query")
+                    // Google Maps' lightweight embed endpoint renders a map without an API key.
+                    // If it fails, the WebView error handler falls back to OpenStreetMap search.
+                    tag = "google-embed:$query"
+                    loadUrl("https://maps.google.com/maps?q=$query&output=embed")
                 }
             },
             update = { view ->
-                if (view.tag != "google-map:$query" && view.tag != "osm-fallback:$query") {
-                    view.tag = "google-map:$query"
-                    view.loadUrl("https://www.openstreetmap.org/search?query=$query")
+                if (view.tag != "google-embed:$query" && view.tag != "osm-fallback:$query") {
+                    view.tag = "google-embed:$query"
+                    view.loadUrl("https://maps.google.com/maps?q=$query&output=embed")
                 }
             }
         )
