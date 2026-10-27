@@ -8646,33 +8646,44 @@ private fun ReviewAddressPage(
             modifier = Modifier.fillMaxWidth().height(300.dp),
             factory = { ctx ->
                 WebView(ctx).apply {
-                    webViewClient = object : WebViewClient() {
-                        override fun shouldOverrideUrlLoading(
-                            view: WebView,
-                            request: android.webkit.WebResourceRequest
-                        ): Boolean {
-                            val target = request.url.toString()
-                            if (target.startsWith("intent://")) {
-                                view.loadUrl("https://maps.google.com/maps?output=embed&q=$query")
-                                return true
-                            }
-                            return false
-                        }
-                    }
+                    webViewClient = WebViewClient()
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
                     settings.loadsImagesAutomatically = true
                     settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW
                     settings.loadWithOverviewMode = true
                     settings.useWideViewPort = true
+                    settings.setSupportZoom(true)
+                    settings.builtInZoomControls = true
+                    settings.displayZoomControls = false
                     tag = query
-                    loadUrl("https://maps.google.com/maps?output=embed&q=$query")
+                    val html = """
+                        <!doctype html>
+                        <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <style>html,body,iframe{margin:0;padding:0;width:100%;height:100%;border:0;overflow:hidden}</style>
+                        </head><body>
+                        <iframe title="Address map" loading="eager"
+                          referrerpolicy="no-referrer-when-downgrade"
+                          src="https://maps.google.com/maps?output=embed&amp;q=$query">
+                        </iframe></body></html>
+                    """.trimIndent()
+                    loadDataWithBaseURL("https://maps.google.com/", html, "text/html", "UTF-8", null)
                 }
             },
             update = { view ->
                 if (view.tag != query) {
                     view.tag = query
-                    view.loadUrl("https://maps.google.com/maps?output=embed&q=$query")
+                    val html = """
+                        <!doctype html>
+                        <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <style>html,body,iframe{margin:0;padding:0;width:100%;height:100%;border:0;overflow:hidden}</style>
+                        </head><body>
+                        <iframe title="Address map" loading="eager"
+                          referrerpolicy="no-referrer-when-downgrade"
+                          src="https://maps.google.com/maps?output=embed&amp;q=$query">
+                        </iframe></body></html>
+                    """.trimIndent()
+                    view.loadDataWithBaseURL("https://maps.google.com/", html, "text/html", "UTF-8", null)
                 }
             }
         )
