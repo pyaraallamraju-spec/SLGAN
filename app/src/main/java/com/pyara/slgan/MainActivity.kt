@@ -4751,25 +4751,33 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
-                                            // Compact embossed-style patent seal, replacing the old ribbon.
-                                            Column(
+                                            // Cinematic royal seal: antique gold rings over deep embossed maroon.
+                                            Box(
                                                 modifier = Modifier
                                                     .align(Alignment.TopStart)
-                                                    .padding(start = 7.dp, top = 6.dp)
-                                                    .graphicsLayer { rotationZ = -12f }
-                                                    .size(66.dp)
-                                                    .shadow(4.dp, CircleShape)
-                                                    .background(Color(0xFF8E1B24), CircleShape)
-                                                    .border(2.dp, Color(0xFFE5B84B), CircleShape)
+                                                    .padding(start = 6.dp, top = 5.dp)
+                                                    .size(76.dp)
+                                                    .shadow(6.dp, CircleShape)
+                                                    .background(
+                                                        Brush.radialGradient(listOf(Color(0xFF8D2428), Color(0xFF35090D))),
+                                                        CircleShape
+                                                    )
+                                                    .border(3.dp, Color(0xFFC99A3B), CircleShape)
                                                     .padding(4.dp)
-                                                    .border(1.dp, Color(0xFFE5B84B), CircleShape)
-                                                    .padding(3.dp),
-                                                horizontalAlignment = Alignment.CenterHorizontally,
-                                                verticalArrangement = Arrangement.Center
+                                                    .border(1.dp, Color(0xFFFFD978), CircleShape)
+                                                    .padding(4.dp),
+                                                contentAlignment = Alignment.Center
                                             ) {
-                                                Text("✦  PATENT  ✦", color = Color(0xFFFFD978), fontSize = 7.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                                                Text("PRODUCT", color = Color.White, fontSize = 9.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                                                Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                                Column(
+                                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                                    verticalArrangement = Arrangement.Center
+                                                ) {
+                                                    Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                                                    Text("PATENT", color = Color(0xFFFFE7A0), fontSize = 9.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                                                    Box(Modifier.padding(vertical = 2.dp).width(42.dp).height(1.dp).background(Color(0xFFC99A3B)))
+                                                    Text("PRODUCT", color = Color.White, fontSize = 8.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
+                                                    Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                                                }
                                             }
                                             Row(
                                                 modifier = Modifier
@@ -5052,25 +5060,33 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     )
                 }
                 if (product.signature) {
-                    // Match the signature-product badge to the embossed patent seal.
-                    Column(
+                    // Use the same cinematic royal seal on signature-product cards.
+                    Box(
                         modifier = Modifier
                             .align(Alignment.TopStart)
-                            .padding(start = 7.dp, top = 6.dp)
-                            .graphicsLayer { rotationZ = -12f }
-                            .size(66.dp)
-                            .shadow(4.dp, CircleShape)
-                            .background(Color(0xFF8E1B24), CircleShape)
-                            .border(2.dp, Color(0xFFE5B84B), CircleShape)
+                            .padding(start = 6.dp, top = 5.dp)
+                            .size(76.dp)
+                            .shadow(6.dp, CircleShape)
+                            .background(
+                                Brush.radialGradient(listOf(Color(0xFF8D2428), Color(0xFF35090D))),
+                                CircleShape
+                            )
+                            .border(3.dp, Color(0xFFC99A3B), CircleShape)
                             .padding(4.dp)
-                            .border(1.dp, Color(0xFFE5B84B), CircleShape)
-                            .padding(3.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                            .border(1.dp, Color(0xFFFFD978), CircleShape)
+                            .padding(4.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text("✦  PATENT  ✦", color = Color(0xFFFFD978), fontSize = 7.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                        Text("PRODUCT", color = Color.White, fontSize = 9.sp, fontWeight = FontWeight.Black, maxLines = 1)
-                        Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                            Text("PATENT", color = Color(0xFFFFE7A0), fontSize = 9.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                            Box(Modifier.padding(vertical = 2.dp).width(42.dp).height(1.dp).background(Color(0xFFC99A3B)))
+                            Text("PRODUCT", color = Color.White, fontSize = 8.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
+                            Text("✦  ✦  ✦", color = Color(0xFFFFD978), fontSize = 8.sp, fontWeight = FontWeight.Black, maxLines = 1)
+                        }
                     }
                 }
             }
