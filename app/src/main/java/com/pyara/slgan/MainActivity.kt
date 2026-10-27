@@ -8682,14 +8682,15 @@ private fun ReviewAddressPage(
                     settings.builtInZoomControls = true
                     settings.displayZoomControls = false
                     tag = query
-                    // OpenStreetMap's interactive search map does not require a Google Maps API key.
-                    loadUrl("https://www.openstreetmap.org/search?query=$query")
+                    // Use the map embed endpoint instead of the interactive search page,
+                    // which can leave a blank tile area inside Android WebView.
+                    loadUrl("https://maps.google.com/maps?output=embed&q=$query")
                 }
             },
             update = { view ->
                 if (view.tag != query) {
                     view.tag = query
-                    view.loadUrl("https://www.openstreetmap.org/search?query=$query")
+                    view.loadUrl("https://maps.google.com/maps?output=embed&q=$query")
                 }
             }
         )
