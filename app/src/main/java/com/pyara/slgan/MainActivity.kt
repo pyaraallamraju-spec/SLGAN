@@ -5779,7 +5779,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Spacer(Modifier.width(10.dp))
                                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     Text(label, color = Ink, fontWeight = FontWeight.Bold)
-                                    Text(address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { "Recipient" }, color = Ink, fontSize = 14.sp)
+                                    Text(listOf("name", "fullName", "receiverName", "recipientName", "customerName").firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty().ifBlank { FirebaseAuth.getInstance().currentUser?.displayName?.trim().orEmpty() }.ifBlank { "Name not provided" }, color = Ink, fontSize = 14.sp)
                                     Text(addressText.ifBlank { "Address details unavailable" }, color = Muted, fontSize = 13.sp)
                                     address["phone"]?.toString()?.takeIf { it.isNotBlank() }?.let { Text(it, color = Muted, fontSize = 13.sp) }
                                     if (address["isDefault"] == true || address["default"] == true) Text("Default address", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
