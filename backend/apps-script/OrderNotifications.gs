@@ -28,7 +28,26 @@ function doPost(e) {
       const order = firestoreGet("orders/" + encodeURIComponent(orderId));
       if (order.customerId !== user.localId) throw new Error("Order does not belong to the signed-in customer.");
       const result = sendOrderConfirmation(orderId, order);
-      return jsonOut({ success: true, ok: true, message: result });
+      let adminNotification = "Admin notification not configured.";
+      try {
+        adminNotification = sendAdminOrderNotification(orderId, order);
+        firestorePatch("orders/" + encodeURIComponent(orderId), {
+          adminEmailStatus: { stringValue: "sent" },
+          adminEmailSentAt: { timestampValue: new Date().toISOString() },
+          updatedAt: { timestampValue: new Date().toISOString() }
+        });
+      } catch (adminErr) {
+        adminNotification = "Customer email sent; admin notification failed: " + String(adminErr && adminErr.message || adminErr).slice(0, 180);
+        try {
+          firestorePatch("orders/" + encodeURIComponent(orderId), {
+            adminEmailStatus: { stringValue: "failed" },
+            adminEmailError: { stringValue: String(adminErr && adminErr.message || adminErr).slice(0, 300) },
+            updatedAt: { timestampValue: new Date().toISOString() }
+          });
+        } catch (ignored) {}
+        console.error("SLGAN admin order email failed: " + (adminErr && adminErr.stack || adminErr));
+      }
+      return jsonOut({ success: true, ok: true, message: result + " " + adminNotification });
     }
     if (action === "statusUpdated") {
       if (!isAdmin(user.localId)) throw new Error("Only an authorized administrator may send order status updates.");
@@ -57,6 +76,35 @@ function doPost(e) {
     console.error("SLGAN order email failed: " + (err && err.stack || err));
     return jsonOut({ success: false, ok: false, message: String(err && err.message || "Email request failed.").slice(0, 300) });
   }
+}
+
+function sendAdminOrderNotification(orderId, order) {
+  const adminEmail = String(PropertiesService.getScriptProperties().getProperty("SLGAN_ADMIN_EMAIL") || "").trim();
+  if (!adminEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adminEmail)) {
+    throw new Error("SLGAN_ADMIN_EMAIL is missing or invalid in Script Properties.");
+  }
+  const items = Array.isArray(order.items) ? order.items : [];
+  const itemLines = items.map(function(item) {
+    const qty = Number(item.quantity) || 0;
+    const unit = Number(item.unitPrice != null ? item.unitPrice : item.price) || 0;
+    const line = Number(item.lineTotal != null ? item.lineTotal : unit * qty) || 0;
+    return "- " + String(item.productName || item.name || "Product") + " x " + qty + " = ₹" + line.toFixed(2);
+  }).join("\n");
+  const total = Number(order.grandTotal != null ? order.grandTotal : order.subtotal) || 0;
+  GmailApp.sendEmail(
+    adminEmail,
+    "New SLGAN order received — " + orderId,
+    "A new order was placed in SLGAN.\n\nOrder ID: " + orderId +
+      "\nCustomer: " + String(order.customerName || "Customer") +
+      "\nCustomer email: " + String(order.email || "") +
+      "\nPhone: " + String(order.phone || order.deliveryPhone || "") +
+      "\nDelivery address: " + String(order.shippingAddress || order.deliveryAddress || "") +
+      "\n\nItems:\n" + itemLines +
+      "\n\nTotal: ₹" + total.toFixed(2) +
+      "\nStatus: " + String(order.orderStatus || "pending verification") +
+      "\n\nPlease open the SLGAN admin panel to review this order."
+  );
+  return "Admin notification sent.";
 }
 
 function sendOrderConfirmation(orderId, order) {
