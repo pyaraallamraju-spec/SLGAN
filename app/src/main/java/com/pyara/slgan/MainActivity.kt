@@ -8799,12 +8799,12 @@ private fun ReviewAddressPage(
                             <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
                             </head><body><div id="map"></div><div class="hint">Drag the pin to your exact delivery location</div>
                             <script>
-                              const map=L.map("map").setView([$initialLatitude,$initialLongitude],16);
-                              L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
-                              const marker=L.marker([$initialLatitude,$initialLongitude],{draggable:true}).addTo(map);
+                              window.map=L.map("map").setView([$initialLatitude,$initialLongitude],16);
+                              L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(window.map);
+                              window.marker=L.marker([$initialLatitude,$initialLongitude],{draggable:true}).addTo(window.map);
                               function send(){const p=marker.getLatLng();if(window.SLGANMap)SLGANMap.onPinMoved(p.lat,p.lng);}
-                              marker.on("dragend",send);map.on("click",function(e){marker.setLatLng(e.latlng);send();});
-                              setTimeout(()=>map.invalidateSize(),300);
+                              window.marker.on("dragend",send);window.map.on("click",function(e){window.marker.setLatLng(e.latlng);send();});
+                              setTimeout(()=>window.map.invalidateSize(),300);
                             </script></body></html>
                         """.trimIndent()
                         loadDataWithBaseURL("https://unpkg.com/",html,"text/html","UTF-8",null)
