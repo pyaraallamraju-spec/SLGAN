@@ -8912,7 +8912,7 @@ private fun ReviewAddressPage(
 ) {
     val context = LocalContext.current
     val query = Uri.encode(listOf(fullAddress, area, city).filter { it.isNotBlank() }.joinToString(", "))
-    Column(Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).navigationBarsPadding()) {
+    Column(Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 112.dp)) {
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -8945,6 +8945,7 @@ private fun ReviewAddressPage(
                                 }
                             }
                         }, "SLGANMap")
+                        webChromeClient = android.webkit.WebChromeClient()
                         webViewClient = object : WebViewClient() {
                             override fun onPageFinished(view: WebView, url: String) {
                                 super.onPageFinished(view, url)
@@ -8954,6 +8955,16 @@ private fun ReviewAddressPage(
                                 view.postDelayed({
                                     view.evaluateJavascript("if(window.map){window.map.invalidateSize(true);}", null)
                                 }, 1400)
+                            }
+                            override fun onReceivedError(
+                                view: WebView,
+                                request: android.webkit.WebResourceRequest,
+                                error: android.webkit.WebResourceError
+                            ) {
+                                super.onReceivedError(view, request, error)
+                                if (request.isForMainFrame) {
+                                    android.util.Log.e("SLGANMap", "Map page load failed: ${error.description}")
+                                }
                             }
                         }
                         tag = "leaflet-map:$initialLatitude:$initialLongitude"
@@ -8968,7 +8979,8 @@ private fun ReviewAddressPage(
                                 .hint{position:absolute;z-index:1000;top:8px;left:8px;right:8px;background:white;padding:10px 12px;border-radius:10px;font:16px Arial,sans-serif;box-shadow:0 2px 8px #0003}
                                 .map-error{position:absolute;z-index:1100;left:12px;right:12px;bottom:12px;background:#fff;padding:12px;border-radius:8px;font:14px Arial,sans-serif;box-shadow:0 1px 6px #0004;color:#333;display:none}
                               </style>
-                              <link id="leaflet-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+                              <link id="leaflet-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
+                                onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'">
                             </head>
                             <body>
                               <div id="map"></div>
