@@ -20,6 +20,7 @@ import android.content.Intent
 import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.webkit.JavascriptInterface
 import android.speech.RecognizerIntent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
@@ -8167,6 +8168,9 @@ private fun AddAddressDetailsPage(
     var area by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("area")?.toString().orEmpty()) }
     var fullAddress by remember(editAddress?.get("_id")) { mutableStateOf(listOf("address", "addressText", "fullAddress", "completeAddress", "complete_address", "formattedAddress", "formatted_address", "complete address").firstNotNullOfOrNull { key -> editAddress?.get(key)?.toString()?.trim()?.takeIf { it.isNotBlank() } } ?: listOf("addressLine1", "addressLine2", "landmark", "street", "area", "city", "state", "pincode", "postalCode").mapNotNull { key -> editAddress?.get(key)?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ")) }
     var mapLink by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("googleMapsLink")?.toString().orEmpty()) }
+    var mapLatitude by remember(editAddress?.get("_id")) { mutableStateOf((editAddress?.get("latitude") as? Number)?.toDouble()) }
+    var mapLongitude by remember(editAddress?.get("_id")) { mutableStateOf((editAddress?.get("longitude") as? Number)?.toDouble()) }
+    var mapLocationResolved by remember(editAddress?.get("_id")) { mutableStateOf(mapLatitude != null && mapLongitude != null) }
     var receiverName by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("name")?.toString() ?: if (useCurrentLocation) user?.displayName.orEmpty() else "") }
     var receiverPhone by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("phone")?.toString() ?: if (useCurrentLocation) user?.phoneNumber.orEmpty() else "") }
     var label by remember(editAddress?.get("_id"), useCurrentLocation) { mutableStateOf(editAddress?.get("label")?.toString() ?: if (useCurrentLocation) "Home" else "Other") }
@@ -8253,6 +8257,9 @@ private fun AddAddressDetailsPage(
             } catch (_: Exception) { null }
         }
         if (detected != null) {
+            mapLatitude = detected.latitude
+            mapLongitude = detected.longitude
+            mapLocationResolved = true
             city = detected.locality ?: detected.subAdminArea ?: detected.adminArea ?: city
             area = detected.subLocality ?: detected.thoroughfare ?: detected.featureName ?: area
             fullAddress = detected.getAddressLine(0).orEmpty()
@@ -8308,6 +8315,9 @@ private fun AddAddressDetailsPage(
             fullAddress = fullAddress,
             receiverName = receiverName,
             receiverPhone = receiverPhone,
+            initialLatitude = mapLatitude,
+            initialLongitude = mapLongitude,
+            onLocationSelected = { latitude, longitude -> mapLatitude = latitude; mapLongitude = longitude; mapLocationResolved = true },
             onEdit = { showReview = false },
             onSave = {
                 cityError = city.isBlank()
@@ -8331,6 +8341,8 @@ private fun AddAddressDetailsPage(
                     "address" to fullAddress.trim(),
                     "addressText" to fullAddress.trim(),
                     "googleMapsLink" to mapLink.trim(),
+                    "latitude" to (mapLatitude ?: 0.0),
+                    "longitude" to (mapLongitude ?: 0.0),
                     "name" to receiverName.trim(),
                     "phone" to receiverPhone.trim(),
                     "label" to label.trim().ifBlank { "Other" },
@@ -8741,6 +8753,9 @@ private fun ReviewAddressPage(
     fullAddress: String,
     receiverName: String,
     receiverPhone: String,
+    initialLatitude: Double?,
+    initialLongitude: Double?,
+    onLocationSelected: (Double, Double) -> Unit,
     onEdit: () -> Unit,
     onSave: () -> Unit
 ) {
@@ -8756,71 +8771,54 @@ private fun ReviewAddressPage(
             }
             Text("Review address", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
-        // Google Maps requires its Embed endpoint to be loaded inside an iframe.
-        // Loading the endpoint directly as a WebView URL produces the API error shown by users.
-        AndroidView(
-            modifier = Modifier.fillMaxWidth().height(300.dp),
-            factory = { ctx ->
-                WebView(ctx).apply {
-                    setBackgroundColor(android.graphics.Color.WHITE)
-                    settings.javaScriptEnabled = true
-                    settings.domStorageEnabled = true
-                    settings.loadsImagesAutomatically = true
-                    settings.loadWithOverviewMode = true
-                    settings.useWideViewPort = true
-                    settings.setSupportZoom(true)
-                    settings.builtInZoomControls = true
-                    settings.displayZoomControls = false
-                    settings.allowFileAccess = false
-                    settings.allowContentAccess = false
-                    webViewClient = WebViewClient()
-                    tag = "address-map:$query"
-                    val html = """
-                        <!doctype html>
-                        <html>
-                        <head>
-                          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
-                          <style>
-                            html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#f1f2f4; }
-                            iframe { border:0; width:100%; height:100%; display:block; }
-                          </style>
-                        </head>
-                        <body>
-                          <iframe
-                            title="Map showing saved address"
-                            src="https://www.google.com/maps?q=$query&output=embed"
-                            loading="eager"
-                            referrerpolicy="no-referrer-when-downgrade"
-                            allowfullscreen>
-                          </iframe>
-                        </body>
-                        </html>
-                    """.trimIndent()
-                    loadDataWithBaseURL("https://www.google.com/", html, "text/html", "UTF-8", null)
+        if (initialLatitude != null && initialLongitude != null) {
+            AndroidView(
+                modifier = Modifier.fillMaxWidth().height(300.dp),
+                factory = { ctx ->
+                    WebView(ctx).apply {
+                        setBackgroundColor(android.graphics.Color.WHITE)
+                        settings.javaScriptEnabled = true
+                        settings.domStorageEnabled = true
+                        settings.loadsImagesAutomatically = true
+                        settings.setSupportZoom(true)
+                        settings.builtInZoomControls = true
+                        settings.displayZoomControls = false
+                        settings.allowFileAccess = false
+                        settings.allowContentAccess = false
+                        addJavascriptInterface(object {
+                            @JavascriptInterface
+                            fun onPinMoved(lat: Double, lon: Double) { post { onLocationSelected(lat, lon) } }
+                        }, "SLGANMap")
+                        webViewClient = WebViewClient()
+                        tag = "leaflet-map:$initialLatitude:$initialLongitude"
+                        val html = """
+                            <!doctype html><html><head>
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+                            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+                            <style>html,body,#map{height:100%;width:100%;margin:0;padding:0}.hint{position:absolute;z-index:1000;top:8px;left:8px;right:8px;background:white;padding:8px 10px;border-radius:8px;font:14px Arial;box-shadow:0 1px 5px #888}</style>
+                            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                            </head><body><div id="map"></div><div class="hint">Drag the pin to your exact delivery location</div>
+                            <script>
+                              const map=L.map("map").setView([$initialLatitude,$initialLongitude],16);
+                              L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
+                              const marker=L.marker([$initialLatitude,$initialLongitude],{draggable:true}).addTo(map);
+                              function send(){const p=marker.getLatLng();if(window.SLGANMap)SLGANMap.onPinMoved(p.lat,p.lng);}
+                              marker.on("dragend",send);map.on("click",function(e){marker.setLatLng(e.latlng);send();});
+                              setTimeout(()=>map.invalidateSize(),300);
+                            </script></body></html>
+                        """.trimIndent()
+                        loadDataWithBaseURL("https://unpkg.com/",html,"text/html","UTF-8",null)
+                    }
+                },
+                update = { view ->
+                    val key="leaflet-map:$initialLatitude:$initialLongitude"
+                    if(view.tag!=key){view.tag=key;view.evaluateJavascript("if(window.map){map.setView([$initialLatitude,$initialLongitude],16);marker.setLatLng([$initialLatitude,$initialLongitude]);}",null)}
                 }
-            },
-            update = { view ->
-                if (view.tag != "address-map:$query") {
-                    view.tag = "address-map:$query"
-                    val html = """
-                        <!doctype html>
-                        <html>
-                        <head>
-                          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
-                          <style>
-                            html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#f1f2f4; }
-                            iframe { border:0; width:100%; height:100%; display:block; }
-                          </style>
-                        </head>
-                        <body>
-                          <iframe title="Map showing saved address" src="https://www.google.com/maps?q=$query&output=embed" loading="eager" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-                        </body>
-                        </html>
-                    """.trimIndent()
-                    view.loadDataWithBaseURL("https://www.google.com/", html, "text/html", "UTF-8", null)
-                }
-            }
-        )
+            )
+        } else {
+            Box(Modifier.fillMaxWidth().height(300.dp).background(Color(0xFFF1F2F4)),contentAlignment=Alignment.Center){Text("Finding the nearest area on the map…",color=Muted,textAlign=TextAlign.Center)}
+        }
+        Text("Move the pin or tap the map to select your exact delivery point.",Modifier.padding(horizontal=20.dp,vertical=6.dp),color=Muted,fontSize=12.sp)
         Row(
             Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
