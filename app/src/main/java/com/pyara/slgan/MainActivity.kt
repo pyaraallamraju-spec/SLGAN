@@ -1267,19 +1267,19 @@ private fun SplashScreen() {
                         .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
                         .build()
                 )
-                val hindiLocale = java.util.Locale("hi", "IN")
-                val languageStatus = player.setLanguage(hindiLocale)
+                val teluguLocale = java.util.Locale("te", "IN")
+                val languageStatus = player.setLanguage(teluguLocale)
                 if (languageStatus >= android.speech.tts.TextToSpeech.LANG_AVAILABLE) {
                     player.setSpeechRate(0.82f)
                     player.setPitch(0.88f)
                     player.speak(
-                        "Om Namo Bhagavate Vasudevaya Dhanvantaraye",
+                        "ఓం నమో భగవతే వాసుదేవాయ ధన్వంతరయే",
                         android.speech.tts.TextToSpeech.QUEUE_FLUSH,
                         null,
                         "slgan_splash_dhanvantari_mantra"
                     )
                 } else {
-                    android.util.Log.w("SLGANMantra", "Hindi TTS voice is not installed; splash mantra was not played.")
+                    android.util.Log.w("SLGANMantra", "Telugu TTS voice is not installed; splash mantra was not played.")
                 }
             } else {
                 android.util.Log.w("SLGANMantra", "Text-to-speech initialization failed.")
