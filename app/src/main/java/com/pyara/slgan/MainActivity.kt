@@ -4415,15 +4415,15 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
     val isEnglish = appLanguage == "English"
     val businessPhone = "9908355501"
     val businessAddress = "C/O Sri Lakshmi Ganapathi Ayurveda Nilayam, Uppada Kothapalli, Pincode 533447, Kakinada District, Andhra Pradesh"
-    Column(modifier.fillMaxSize().background(Color(0xFFF8F7F4))) {
+    Column(modifier.fillMaxSize().background(Cream)) {
         Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            Modifier.fillMaxWidth().background(Cream).padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
             Text(if (isEnglish) "Contact SLGAN" else "SLGANను సంప్రదించండి", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
-        Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
+        Divider(color = Gold.copy(alpha = 0.55f), thickness = 1.dp)
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -4434,7 +4434,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                 color = Muted, fontSize = 14.sp, lineHeight = 21.sp
             )
             Card(
-                Modifier.fillMaxWidth(),
+                Modifier.fillMaxWidth().border(1.dp, Gold.copy(alpha = 0.35f), RoundedCornerShape(18.dp)),
                 shape = RoundedCornerShape(18.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -4447,7 +4447,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                     }
                     Text(
                         "C/O Sri Lakshmi Ganapathi Ayurveda Nilayam\nUppada Kothapalli\nPincode: 533447\nKakinada District, Andhra Pradesh",
-                        color = Color(0xFF475467), fontSize = 15.sp, lineHeight = 24.sp
+                        color = Ink, fontSize = 15.sp, lineHeight = 24.sp
                     )
                     Button(
                         onClick = {
@@ -4465,7 +4465,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                 }
             }
             Card(
-                Modifier.fillMaxWidth(),
+                Modifier.fillMaxWidth().border(1.dp, Gold.copy(alpha = 0.35f), RoundedCornerShape(18.dp)),
                 shape = RoundedCornerShape(18.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -4476,17 +4476,19 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                         Spacer(Modifier.width(10.dp))
                         Text(if (isEnglish) "Phone number" else "ఫోన్ నంబర్", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
-                    Text(businessPhone, color = Color(0xFF475467), fontSize = 18.sp)
+                    Text(businessPhone, color = Ink, fontSize = 18.sp)
                     OutlinedButton(
                         onClick = {
                             runCatching { context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$businessPhone"))) }
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
+                        border = BorderStroke(1.dp, Forest),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Forest)
                     ) {
-                        Icon(Icons.Default.Phone, contentDescription = null)
+                        Icon(Icons.Default.Phone, contentDescription = null, tint = Forest)
                         Spacer(Modifier.width(8.dp))
-                        Text(if (isEnglish) "Call SLGAN" else "SLGANకు కాల్ చేయండి")
+                        Text(if (isEnglish) "Call SLGAN" else "SLGANకు కాల్ చేయండి", color = Forest)
                     }
                 }
             }
