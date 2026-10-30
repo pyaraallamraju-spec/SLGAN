@@ -1257,37 +1257,23 @@ private fun AyurvedicApp() {
 private fun SplashScreen() {
     val splashContext = LocalContext.current
     DisposableEffect(splashContext) {
-        var mantraPlayer: android.speech.tts.TextToSpeech? = null
-        mantraPlayer = android.speech.tts.TextToSpeech(splashContext.applicationContext) { status ->
-            if (status == android.speech.tts.TextToSpeech.SUCCESS) {
-                val player = mantraPlayer ?: return@TextToSpeech
-                player.setAudioAttributes(
-                    android.media.AudioAttributes.Builder()
-                        .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
-                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
-                        .build()
-                )
-                val teluguLocale = java.util.Locale("te", "IN")
-                val languageStatus = player.setLanguage(teluguLocale)
-                if (languageStatus >= android.speech.tts.TextToSpeech.LANG_AVAILABLE) {
-                    player.setSpeechRate(0.82f)
-                    player.setPitch(0.88f)
-                    player.speak(
-                        "ఓం నమో భగవతే వాసుదేవాయ ధన్వంతరయే",
-                        android.speech.tts.TextToSpeech.QUEUE_FLUSH,
-                        null,
-                        "slgan_splash_dhanvantari_mantra"
-                    )
-                } else {
-                    android.util.Log.w("SLGANMantra", "Telugu TTS voice is not installed; splash mantra was not played.")
-                }
-            } else {
-                android.util.Log.w("SLGANMantra", "Text-to-speech initialization failed.")
-            }
+        val splashMusic = android.media.MediaPlayer.create(
+            splashContext.applicationContext,
+            R.raw.splash_music
+        )
+        splashMusic?.setOnCompletionListener {
+            // The six-second intro finishes naturally; release when the splash leaves.
         }
+        splashMusic?.start()
         onDispose {
-            mantraPlayer?.stop()
-            mantraPlayer?.shutdown()
+            try {
+                splashMusic?.let { player ->
+                    if (player.isPlaying) player.stop()
+                    player.release()
+                }
+            } catch (error: Exception) {
+                android.util.Log.w("SLGANMusic", "Unable to stop splash music cleanly.", error)
+            }
         }
     }
     // Keep splash artwork in sync with the currently selected app palette.
