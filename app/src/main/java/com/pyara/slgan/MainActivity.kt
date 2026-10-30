@@ -605,9 +605,11 @@ private fun localProductImageFor(context: android.content.Context, productName: 
     return match?.let { "file:///android_asset/$folder/${it.replace(" ", "%20")}" }.orEmpty()
 }
 
-private fun productFromFirestore(data: Map<String, Any?>, context: android.content.Context): Product? {
-    val name = listOf("product_name", "name", "productName", "product_title", "title", "medicine_name").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    if (name.isBlank()) return null
+private fun productFromFirestore(data: Map<String, Any?>, context: android.content.Context, keepUnnamedForAdmin: Boolean = false): Product? {
+    val id = data["id"]?.toString().orEmpty()
+    val name = listOf("product_name", "name", "productName", "product_title", "title", "medicine_name", "productname", "item_name", "itemName", "medicineName", "display_name", "displayName").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    if (name.isBlank() && !keepUnnamedForAdmin) return null
+    val displayName = name.ifBlank { "Unnamed product (${id.take(8).ifBlank { "record" }})" }
     // Show only the pack weight beneath the product name, e.g. "5g".
     // Quantity is intentionally hidden; avoid separators such as "1 · 5 · g".
     val weight = data["product_weight"]?.toString()?.trim().orEmpty()
@@ -650,7 +652,7 @@ private fun productFromFirestore(data: Map<String, Any?>, context: android.conte
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val majorIngredients = listOf("product_major_ingredients", "major_ingredients", "ingredients", "product_ingredients").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true)
+    return Product(id.ifBlank { displayName.hashCode().toString() }, displayName, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true)
 }
 @Composable
 private fun AyurvedicApp() {
@@ -841,6 +843,7 @@ private fun AyurvedicApp() {
     var selectedCategory by remember { mutableStateOf("All") }
     var search by remember { mutableStateOf("") }
     var liveProducts by remember { mutableStateOf<List<Product>>(emptyList()) }
+    var adminLiveProducts by remember { mutableStateOf<List<Product>>(emptyList()) }
     var productsLoading by remember { mutableStateOf(true) }
     var productsError by remember { mutableStateOf<String?>(null) }
     var liveDiseases by remember { mutableStateOf<List<String>>(emptyList()) }
@@ -889,6 +892,14 @@ private fun AyurvedicApp() {
                         }
                     }
                     liveProducts = parsedProducts
+                    adminLiveProducts = records.mapNotNull { record ->
+                        try {
+                            productFromFirestore(record, appContext, keepUnnamedForAdmin = true)
+                        } catch (error: Exception) {
+                            android.util.Log.w("SLGAN_PRODUCTS", "Could not parse admin product record", error)
+                            null
+                        }
+                    }
                     productsLoading = false
                     productsError = null
                 },
@@ -900,6 +911,7 @@ private fun AyurvedicApp() {
             onDispose { registration.remove() }
         } else {
             liveProducts = emptyList()
+            adminLiveProducts = emptyList()
             productsLoading = true
             productsError = null
             onDispose { }
@@ -1186,14 +1198,14 @@ private fun AyurvedicApp() {
             else if (isAdmin && adminThemesOpen) ThemeManagementScreen(onBack = { adminThemesOpen = false })
             else if (isAdmin && adminOrdersOpen) AdminOrdersScreen(onBack = { adminOrdersOpen = false })
             else if (isAdmin && adminProductsOpen) AdminProductsScreen(
-                products = liveProducts,
+                products = adminLiveProducts,
                 loading = productsLoading,
                 loadError = productsError,
                 onBack = { adminProductsOpen = false }
             )
             else if (isAdmin) AdminDashboardScreen(
                 email = auth.currentUser?.email.orEmpty(),
-                productCount = liveProducts.size,
+                productCount = adminLiveProducts.size,
                 onProductsClick = { adminProductsOpen = true },
                 onOrdersClick = { adminOrdersOpen = true },
                 onCustomersClick = { adminCustomersOpen = true },
