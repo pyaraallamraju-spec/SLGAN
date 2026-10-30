@@ -8815,7 +8815,7 @@ private fun ReviewAddressPage(
                         settings.allowContentAccess = false
                         addJavascriptInterface(object {
                             @JavascriptInterface
-                            fun onPinMoved(lat: Double, lon: Double) { post { onLocationSelected(lat, lon) } }
+                            fun onPinMoved(lat: Double, lon: Double) { android.os.Handler(android.os.Looper.getMainLooper()).post { onLocationSelected(lat, lon) } }
                         }, "SLGANMap")
                         webViewClient = WebViewClient()
                         tag = "leaflet-map:$initialLatitude:$initialLongitude"
