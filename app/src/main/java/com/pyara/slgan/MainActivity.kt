@@ -4415,15 +4415,15 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
     val isEnglish = appLanguage == "English"
     val businessPhone = "9908355501"
     val businessAddress = "C/O Sri Lakshmi Ganapathi Ayurveda Nilayam, Uppada Kothapalli, Pincode 533447, Kakinada District, Andhra Pradesh"
-    Column(modifier.fillMaxSize().background(Cream)) {
+    Column(modifier.fillMaxSize().background(Color(0xFFF7F7F7))) {
         Row(
-            Modifier.fillMaxWidth().background(Cream).padding(horizontal = 8.dp, vertical = 12.dp),
+            Modifier.fillMaxWidth().background(Color(0xFFF7F7F7)).padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
             Text(if (isEnglish) "Contact SLGAN" else "SLGANను సంప్రదించండి", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
-        Divider(color = Gold.copy(alpha = 0.55f), thickness = 1.dp)
+        Divider(color = Color(0xFFB5B5B5), thickness = 1.dp)
         Column(
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -4434,14 +4434,14 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                 color = Muted, fontSize = 14.sp, lineHeight = 21.sp
             )
             Card(
-                Modifier.fillMaxWidth().border(1.dp, Gold.copy(alpha = 0.35f), RoundedCornerShape(18.dp)),
+                Modifier.fillMaxWidth().border(1.dp, Color(0xFFB5B5B5), RoundedCornerShape(18.dp)),
                 shape = RoundedCornerShape(18.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Forest, modifier = Modifier.size(25.dp))
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink, modifier = Modifier.size(25.dp))
                         Spacer(Modifier.width(10.dp))
                         Text(if (isEnglish) "Business address" else "వ్యాపార చిరునామా", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
@@ -4454,7 +4454,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                             val mapUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(businessAddress))
                             runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, mapUri)) }
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE2E2E2), contentColor = Ink),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -4465,14 +4465,14 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                 }
             }
             Card(
-                Modifier.fillMaxWidth().border(1.dp, Gold.copy(alpha = 0.35f), RoundedCornerShape(18.dp)),
+                Modifier.fillMaxWidth().border(1.dp, Color(0xFFB5B5B5), RoundedCornerShape(18.dp)),
                 shape = RoundedCornerShape(18.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Phone, contentDescription = null, tint = Forest, modifier = Modifier.size(24.dp))
+                        Icon(Icons.Default.Phone, contentDescription = null, tint = Ink, modifier = Modifier.size(24.dp))
                         Spacer(Modifier.width(10.dp))
                         Text(if (isEnglish) "Phone number" else "ఫోన్ నంబర్", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
@@ -4483,12 +4483,12 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
-                        border = BorderStroke(1.dp, Forest),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Forest)
+                        border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
                     ) {
-                        Icon(Icons.Default.Phone, contentDescription = null, tint = Forest)
+                        Icon(Icons.Default.Phone, contentDescription = null, tint = Ink)
                         Spacer(Modifier.width(8.dp))
-                        Text(if (isEnglish) "Call SLGAN" else "SLGANకు కాల్ చేయండి", color = Forest)
+                        Text(if (isEnglish) "Call SLGAN" else "SLGANకు కాల్ చేయండి", color = Ink)
                     }
                 }
             }
