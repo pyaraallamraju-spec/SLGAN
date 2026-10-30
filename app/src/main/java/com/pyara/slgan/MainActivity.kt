@@ -8910,8 +8910,6 @@ private fun ReviewAddressPage(
     onEdit: () -> Unit,
     onSave: () -> Unit
 ) {
-    val context = LocalContext.current
-    val query = Uri.encode(listOf(fullAddress, area, city).filter { it.isNotBlank() }.joinToString(", "))
     Column(Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 112.dp)) {
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
@@ -8928,7 +8926,8 @@ private fun ReviewAddressPage(
                 initialLatitude = initialLatitude,
                 initialLongitude = initialLongitude,
                 onLocationSelected = onLocationSelected
-            )        } else {
+            )
+        } else {
             Box(Modifier.fillMaxWidth().height(300.dp).background(Color(0xFFF1F2F4)),contentAlignment=Alignment.Center){Text("Finding the nearest area on the map…",color=Muted,textAlign=TextAlign.Center)}
         }
         Text("Move the pin or tap the map to select your exact delivery point.",Modifier.padding(horizontal=20.dp,vertical=6.dp),color=Muted,fontSize=12.sp)
