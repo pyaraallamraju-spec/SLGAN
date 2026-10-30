@@ -1255,6 +1255,41 @@ private fun AyurvedicApp() {
 }
 @Composable
 private fun SplashScreen() {
+    val splashContext = LocalContext.current
+    DisposableEffect(splashContext) {
+        var mantraPlayer: android.speech.tts.TextToSpeech? = null
+        mantraPlayer = android.speech.tts.TextToSpeech(splashContext.applicationContext) { status ->
+            if (status == android.speech.tts.TextToSpeech.SUCCESS) {
+                val player = mantraPlayer ?: return@TextToSpeech
+                player.setAudioAttributes(
+                    android.media.AudioAttributes.Builder()
+                        .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .build()
+                )
+                val hindiLocale = java.util.Locale("hi", "IN")
+                val languageStatus = player.setLanguage(hindiLocale)
+                if (languageStatus >= android.speech.tts.TextToSpeech.LANG_AVAILABLE) {
+                    player.setSpeechRate(0.82f)
+                    player.setPitch(0.88f)
+                    player.speak(
+                        "Om Namo Bhagavate Vasudevaya Dhanvantaraye",
+                        android.speech.tts.TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        "slgan_splash_dhanvantari_mantra"
+                    )
+                } else {
+                    android.util.Log.w("SLGANMantra", "Hindi TTS voice is not installed; splash mantra was not played.")
+                }
+            } else {
+                android.util.Log.w("SLGANMantra", "Text-to-speech initialization failed.")
+            }
+        }
+        onDispose {
+            mantraPlayer?.stop()
+            mantraPlayer?.shutdown()
+        }
+    }
     // Keep splash artwork in sync with the currently selected app palette.
     val botanicalTheme = Forest == Color(0xFF214B35)
     val splashBackground = Color.White
