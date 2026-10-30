@@ -8,6 +8,7 @@ android {
     namespace = "com.pyara.slgan"
     compileSdk = 35
     defaultConfig {
+        manifestPlaceholders["MAPS_API_KEY"] = (project.findProperty("MAPS_API_KEY") as String?) ?: System.getenv("GOOGLE_MAPS_API_KEY").orEmpty()
         applicationId = "com.pyara.slgan"
         minSdk = 24
         targetSdk = 35
@@ -41,6 +42,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("com.google.maps.android:maps-compose:6.4.1")
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
