@@ -663,8 +663,9 @@ private fun AyurvedicApp() {
             // Keep the camera/status-bar cutout area owned by the system bars and white,
             // rather than allowing edge-to-edge app content to draw behind it.
             WindowCompat.setDecorFitsSystemWindows(appWindow, true)
-            appWindow.statusBarColor = Color.White.toArgb()
             appWindow.navigationBarColor = creamColor
+            // Use the exact same system-bar color for the top camera/status-bar area.
+            appWindow.statusBarColor = appWindow.navigationBarColor
             appWindow.decorView.systemUiVisibility = appWindow.decorView.systemUiVisibility or
                 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
