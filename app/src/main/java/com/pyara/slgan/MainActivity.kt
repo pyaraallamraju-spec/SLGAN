@@ -8923,123 +8923,12 @@ private fun ReviewAddressPage(
             Text("Review address", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
         if (initialLatitude != null && initialLongitude != null) {
-            AndroidView(
+            GoogleMapPicker(
                 modifier = Modifier.fillMaxWidth().height(300.dp),
-                factory = { ctx ->
-                    WebView(ctx).apply {
-                        setBackgroundColor(android.graphics.Color.rgb(245, 245, 245))
-                        settings.javaScriptEnabled = true
-                        settings.domStorageEnabled = true
-                        settings.loadsImagesAutomatically = true
-                        settings.setSupportZoom(true)
-                        settings.builtInZoomControls = true
-                        settings.displayZoomControls = false
-                        settings.allowFileAccess = false
-                        settings.allowContentAccess = false
-                        settings.cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
-                        addJavascriptInterface(object {
-                            @JavascriptInterface
-                            fun onPinMoved(lat: Double, lon: Double) {
-                                android.os.Handler(android.os.Looper.getMainLooper()).post {
-                                    onLocationSelected(lat, lon)
-                                }
-                            }
-                        }, "SLGANMap")
-                        webChromeClient = android.webkit.WebChromeClient()
-                        webViewClient = object : WebViewClient() {
-                            override fun onPageFinished(view: WebView, url: String) {
-                                super.onPageFinished(view, url)
-                                view.postDelayed({
-                                    view.evaluateJavascript("if(window.map){window.map.invalidateSize(true);}", null)
-                                }, 500)
-                                view.postDelayed({
-                                    view.evaluateJavascript("if(window.map){window.map.invalidateSize(true);}", null)
-                                }, 1400)
-                            }
-                            override fun onReceivedError(
-                                view: WebView,
-                                request: android.webkit.WebResourceRequest,
-                                error: android.webkit.WebResourceError
-                            ) {
-                                super.onReceivedError(view, request, error)
-                                if (request.isForMainFrame) {
-                                    android.util.Log.e("SLGANMap", "Map page load failed: ${error.description}")
-                                }
-                            }
-                        }
-                        tag = "leaflet-map:$initialLatitude:$initialLongitude"
-                        val html = """
-                            <!doctype html>
-                            <html>
-                            <head>
-                              <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
-                              <style>
-                                html,body,#map{height:100%;width:100%;margin:0;padding:0;overflow:hidden}
-                                #map{background:#e8edf0}
-                                .hint{position:absolute;z-index:1000;top:8px;left:8px;right:8px;background:white;padding:10px 12px;border-radius:10px;font:16px Arial,sans-serif;box-shadow:0 2px 8px #0003}
-                                .map-error{position:absolute;z-index:1100;left:12px;right:12px;bottom:12px;background:#fff;padding:12px;border-radius:8px;font:14px Arial,sans-serif;box-shadow:0 1px 6px #0004;color:#333;display:none}
-                              </style>
-                              <link id="leaflet-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
-                                onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'">
-                            </head>
-                            <body>
-                              <div id="map"></div>
-                              <div class="hint">Drag the pin to your exact delivery location</div>
-                              <div id="map-error" class="map-error"></div>
-                              <script>
-                                (function(){
-                                  var lat = $initialLatitude, lon = $initialLongitude;
-                                  var errorBox = document.getElementById('map-error');
-                                  function showError(message){errorBox.textContent=message;errorBox.style.display='block';}
-                                  function startMap(){
-                                    if(!window.L){showError('Map could not load. Please check your internet connection and tap Edit to try again.');return;}
-                                    try{
-                                      window.map = L.map('map',{zoomControl:true}).setView([lat,lon],16);
-                                      var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-                                        maxZoom:19,attribution:'© OpenStreetMap'
-                                      }).addTo(window.map);
-                                      var loadedTiles=0;
-                                      tiles.on('tileload',function(){loadedTiles++;if(loadedTiles>0){errorBox.style.display='none';}});
-                                      tiles.on('tileerror',function(){if(loadedTiles===0)showError('Map imagery is not reachable right now. Check your internet connection.');});
-                                      window.marker=L.marker([lat,lon],{draggable:true}).addTo(window.map);
-                                      function send(){var point=window.marker.getLatLng();if(window.SLGANMap){window.SLGANMap.onPinMoved(point.lat,point.lng);}}
-                                      window.marker.on('dragend',send);
-                                      window.map.on('click',function(event){window.marker.setLatLng(event.latlng);send();});
-                                      setTimeout(function(){window.map.invalidateSize(true);},250);
-                                      setTimeout(function(){window.map.invalidateSize(true);},1000);
-                                    }catch(error){showError('Unable to start the map: '+error.message);}
-                                  }
-                                  function loadScript(url, fallback){
-                                    var script=document.createElement('script');
-                                    script.src=url;
-                                    script.onload=startMap;
-                                    script.onerror=function(){
-                                      if(fallback)loadScript(fallback,null);
-                                      else showError('Map library could not be downloaded. Check your internet connection and try again.');
-                                    };
-                                    document.head.appendChild(script);
-                                  }
-                                  loadScript('https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js','https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
-                                })();
-                              </script>
-                            </body>
-                            </html>
-                        """.trimIndent()
-                        loadDataWithBaseURL("https://cdn.jsdelivr.net/", html, "text/html", "UTF-8", null)
-                    }
-                },
-                update = { view ->
-                    val key = "leaflet-map:$initialLatitude:$initialLongitude"
-                    if (view.tag != key) {
-                        view.tag = key
-                        view.evaluateJavascript(
-                            "if(window.map && window.marker){window.map.setView([$initialLatitude,$initialLongitude],16);window.marker.setLatLng([$initialLatitude,$initialLongitude]);window.map.invalidateSize(true);}",
-                            null
-                        )
-                    }
-                }
-            )
-        } else {
+                initialLatitude = initialLatitude,
+                initialLongitude = initialLongitude,
+                onLocationSelected = onLocationSelected
+            )        } else {
             Box(Modifier.fillMaxWidth().height(300.dp).background(Color(0xFFF1F2F4)),contentAlignment=Alignment.Center){Text("Finding the nearest area on the map…",color=Muted,textAlign=TextAlign.Center)}
         }
         Text("Move the pin or tap the map to select your exact delivery point.",Modifier.padding(horizontal=20.dp,vertical=6.dp),color=Muted,fontSize=12.sp)
