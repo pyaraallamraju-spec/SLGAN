@@ -8717,33 +8717,13 @@ private fun ReviewAddressPage(
             }
             Text("Review address", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
+        // Google Maps requires its Embed endpoint to be loaded inside an iframe.
+        // Loading the endpoint directly as a WebView URL produces the API error shown by users.
         AndroidView(
             modifier = Modifier.fillMaxWidth().height(300.dp),
             factory = { ctx ->
                 WebView(ctx).apply {
                     setBackgroundColor(android.graphics.Color.WHITE)
-                    webViewClient = object : WebViewClient() {
-                        override fun shouldOverrideUrlLoading(
-                            view: WebView,
-                            request: android.webkit.WebResourceRequest
-                        ): Boolean {
-                            val target = request.url
-                            // Keep web pages inside the app; block non-web/deep-link schemes.
-                            return target.scheme != "https" && target.scheme != "http"
-                        }
-
-                        override fun onReceivedError(
-                            view: WebView,
-                            request: android.webkit.WebResourceRequest,
-                            error: android.webkit.WebResourceError
-                        ) {
-                            super.onReceivedError(view, request, error)
-                            if (request.isForMainFrame && view.tag != "osm-fallback:$query") {
-                                view.tag = "osm-fallback:$query"
-                                view.loadUrl("https://www.openstreetmap.org/search?query=$query")
-                            }
-                        }
-                    }
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
                     settings.loadsImagesAutomatically = true
@@ -8754,16 +8734,51 @@ private fun ReviewAddressPage(
                     settings.displayZoomControls = false
                     settings.allowFileAccess = false
                     settings.allowContentAccess = false
-                    // Google Maps' lightweight embed endpoint renders a map without an API key.
-                    // If it fails, the WebView error handler falls back to OpenStreetMap search.
-                    tag = "google-embed:$query"
-                    loadUrl("https://maps.google.com/maps?q=$query&output=embed")
+                    webViewClient = WebViewClient()
+                    tag = "address-map:$query"
+                    val html = """
+                        <!doctype html>
+                        <html>
+                        <head>
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+                          <style>
+                            html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#f1f2f4; }
+                            iframe { border:0; width:100%; height:100%; display:block; }
+                          </style>
+                        </head>
+                        <body>
+                          <iframe
+                            title="Map showing saved address"
+                            src="https://www.google.com/maps?q=$query&output=embed"
+                            loading="eager"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            allowfullscreen>
+                          </iframe>
+                        </body>
+                        </html>
+                    """.trimIndent()
+                    loadDataWithBaseURL("https://www.google.com/", html, "text/html", "UTF-8", null)
                 }
             },
             update = { view ->
-                if (view.tag != "google-embed:$query" && view.tag != "osm-fallback:$query") {
-                    view.tag = "google-embed:$query"
-                    view.loadUrl("https://maps.google.com/maps?q=$query&output=embed")
+                if (view.tag != "address-map:$query") {
+                    view.tag = "address-map:$query"
+                    val html = """
+                        <!doctype html>
+                        <html>
+                        <head>
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+                          <style>
+                            html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#f1f2f4; }
+                            iframe { border:0; width:100%; height:100%; display:block; }
+                          </style>
+                        </head>
+                        <body>
+                          <iframe title="Map showing saved address" src="https://www.google.com/maps?q=$query&output=embed" loading="eager" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                        </body>
+                        </html>
+                    """.trimIndent()
+                    view.loadDataWithBaseURL("https://www.google.com/", html, "text/html", "UTF-8", null)
                 }
             }
         )
