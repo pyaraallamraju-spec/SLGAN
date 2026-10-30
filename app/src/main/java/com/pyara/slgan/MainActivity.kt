@@ -4239,6 +4239,7 @@ private fun ShopScreen(
             "AddressBook" -> AddressBookPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") })
             "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "About" -> AboutPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
+            "ContactSLGAN" -> ContactSLGANPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "AccountPrivacy" -> AccountPrivacyPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
         }
@@ -4391,6 +4392,91 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                 verticalAlignment = Alignment.CenterVertically
             ) { Text(if (appLanguage == "English") "Terms & Conditions" else "నిబంధనలు మరియు షరతులు", color = Ink, fontSize = 19.sp) }
             Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
+        }
+    }
+}
+
+@Composable
+private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: () -> Unit) {
+    val context = LocalContext.current
+    val isEnglish = appLanguage == "English"
+    val businessPhone = "9908355501"
+    val businessAddress = "C/O Sri Lakshmi Ganapathi Ayurveda Nilayam, Uppada Kothapalli, Pincode 533447, Kakinada District, Andhra Pradesh"
+    Column(modifier.fillMaxSize().background(Color(0xFFF8F7F4))) {
+        Row(
+            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
+            Text(if (isEnglish) "Contact SLGAN" else "SLGANను సంప్రదించండి", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        }
+        Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
+        Column(
+            Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(
+                if (isEnglish) "We are happy to hear from you. Contact us or visit our location." else "మీ సందేహాలు మరియు వివరాల కోసం మమ్మల్ని సంప్రదించండి లేదా మా చిరునామాకు రండి.",
+                color = Muted, fontSize = 14.sp, lineHeight = 21.sp
+            )
+            Card(
+                Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = Forest, modifier = Modifier.size(25.dp))
+                        Spacer(Modifier.width(10.dp))
+                        Text(if (isEnglish) "Business address" else "వ్యాపార చిరునామా", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Text(
+                        "C/O Sri Lakshmi Ganapathi Ayurveda Nilayam\nUppada Kothapalli\nPincode: 533447\nKakinada District, Andhra Pradesh",
+                        color = Color(0xFF475467), fontSize = 15.sp, lineHeight = 24.sp
+                    )
+                    Button(
+                        onClick = {
+                            val mapUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(businessAddress))
+                            runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, mapUri)) }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(Icons.Default.Map, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text(if (isEnglish) "Get directions" else "దారి చూపించండి")
+                    }
+                }
+            }
+            Card(
+                Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Phone, contentDescription = null, tint = Forest, modifier = Modifier.size(24.dp))
+                        Spacer(Modifier.width(10.dp))
+                        Text(if (isEnglish) "Phone number" else "ఫోన్ నంబర్", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Text(businessPhone, color = Color(0xFF475467), fontSize = 18.sp)
+                    OutlinedButton(
+                        onClick = {
+                            runCatching { context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$businessPhone"))) }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Icon(Icons.Default.Phone, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text(if (isEnglish) "Call SLGAN" else "SLGANకు కాల్ చేయండి")
+                    }
+                }
+            }
         }
     }
 }
@@ -7401,6 +7487,7 @@ private fun AccountsPage(
                 Text("About and support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.HelpOutline, "Help and support", "Contact us for assistance") { onTabChange("Help") }
                 AccountMenuRow(Icons.Default.Info, "About SLGAN", "Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("About") }
+                AccountMenuRow(Icons.Default.Phone, "Contact SLGAN", "Address, phone number and directions") { onTabChange("ContactSLGAN") }
             }
         }
         Spacer(Modifier.height(14.dp))
