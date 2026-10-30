@@ -575,7 +575,7 @@ private fun localizedProductName(name: String, language: String): String {
     return when (language) { "Telugu" -> telugu[name] ?: name; "Hindi" -> hindi[name] ?: name; else -> name }
 }
 
-private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1)
+private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1, val isHidden: Boolean = false)
 private data class ProductRatingSummary(val average: Double = 0.0, val count: Int = 0, val myRating: Int = 0)
 private data class ProductLikeSummary(val count: Int = 0, val likedByMe: Boolean = false)
 private val categories = listOf("All", "Lehyas", "Ghrutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
@@ -649,7 +649,7 @@ private fun productFromFirestore(data: Map<String, Any?>, context: android.conte
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val majorIngredients = listOf("product_major_ingredients", "major_ingredients", "ingredients", "product_ingredients").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1)
+    return Product(data["id"]?.toString() ?: name.hashCode().toString(), name, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true)
 }
 @Composable
 private fun AyurvedicApp() {
@@ -1222,7 +1222,7 @@ private fun AyurvedicApp() {
                 onAdd = { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 onRemove = { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 }
             )
-            else ShopScreen(selectedTab, previousTab, { nextTab -> if (nextTab != selectedTab) previousTab = selectedTab; if (nextTab == "Home") { selectedCategory = "All"; search = "" }; selectedTab = nextTab }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts, productRatings, productLikes, toggleProductLike, productsLoading, productsError, liveDiseases.ifEmpty { fallbackDiseases }, diseasesLoading, if (liveDiseases.isEmpty()) null else diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
+            else ShopScreen(selectedTab, previousTab, { nextTab -> if (nextTab != selectedTab) previousTab = selectedTab; if (nextTab == "Home") { selectedCategory = "All"; search = "" }; selectedTab = nextTab }, appLanguage, { appLanguage = it }, selectedCategory, { selectedCategory = it }, search, { search = it }, cart, liveProducts.filterNot { it.isHidden }, productRatings, productLikes, toggleProductLike, productsLoading, productsError, liveDiseases.ifEmpty { fallbackDiseases }, diseasesLoading, if (liveDiseases.isEmpty()) null else diseasesError, latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage,
                 { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 },
                 { orderId, success, invoiceUrl, message ->
@@ -2070,6 +2070,7 @@ private fun AdminProductsScreen(
     var addingProduct by remember { mutableStateOf(false) }
     var viewingProduct by remember { mutableStateOf<Product?>(null) }
     var deletingProduct by remember { mutableStateOf<Product?>(null) }
+    var visibilityUpdating by remember { mutableStateOf(false) }
     if (editingProduct != null || addingProduct) {
         AdminProductEditor(
             product = editingProduct,
@@ -2233,6 +2234,35 @@ private fun AdminProductsScreen(
                     color = Ink, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.4.sp)
                 Text("${filtered.size} products", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
+            val categoryProducts = products.filter { selectedAdminCategory == "All" || it.category.equals(selectedAdminCategory, ignoreCase = true) }
+            val categoryHasVisibleProducts = categoryProducts.any { !it.isHidden }
+            Button(
+                onClick = {
+                    if (!visibilityUpdating && categoryProducts.isNotEmpty()) {
+                        visibilityUpdating = true
+                        val hide = categoryHasVisibleProducts
+                        val db = FirebaseFirestore.getInstance()
+                        val batch = db.batch()
+                        categoryProducts.filter { it.isHidden != hide }.forEach { item ->
+                            batch.update(db.collection("products").document(item.id), "product_hidden", hide)
+                        }
+                        batch.commit()
+                            .addOnSuccessListener {
+                                Toast.makeText(context, if (hide) "All products hidden" else "All products shown", Toast.LENGTH_SHORT).show()
+                                visibilityUpdating = false
+                            }
+                            .addOnFailureListener { error ->
+                                Toast.makeText(context, error.localizedMessage ?: "Could not update product visibility", Toast.LENGTH_LONG).show()
+                                visibilityUpdating = false
+                            }
+                    }
+                },
+                enabled = !visibilityUpdating && categoryProducts.isNotEmpty(),
+                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = AdminLightGray, contentColor = AdminInk)
+            ) {
+                Text(if (visibilityUpdating) "Updating…" else if (categoryHasVisibleProducts) "Hide all" else "Show all", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+            }
             if (searchText.isNotBlank() || selectedAdminCategory != "All") {
                 TextButton(onClick = { searchText = ""; selectedAdminCategory = "All" }) {
                     Icon(Icons.Default.Close, contentDescription = null, modifier = Modifier.size(16.dp))
@@ -2354,7 +2384,20 @@ private fun AdminProductsScreen(
                                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("PRODUCT DETAILS", Modifier.weight(1f), color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
+                                Text(if (product.isHidden) "HIDDEN" else "PRODUCT DETAILS", Modifier.weight(1f), color = if (product.isHidden) Color(0xFFB3261E) else AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
+                                TextButton(
+                                    onClick = {
+                                        FirebaseFirestore.getInstance().collection("products").document(product.id)
+                                            .update("product_hidden", !product.isHidden)
+                                            .addOnSuccessListener { Toast.makeText(context, if (product.isHidden) "Product shown" else "Product hidden", Toast.LENGTH_SHORT).show() }
+                                            .addOnFailureListener { error -> Toast.makeText(context, error.localizedMessage ?: "Could not update visibility", Toast.LENGTH_LONG).show() }
+                                    },
+                                    contentPadding = PaddingValues(horizontal = 7.dp, vertical = 4.dp)
+                                ) {
+                                    Icon(if (product.isHidden) Icons.Default.Visibility else Icons.Default.VisibilityOff, contentDescription = if (product.isHidden) "Show ${product.name}" else "Hide ${product.name}", modifier = Modifier.size(16.dp), tint = if (product.isHidden) Color(0xFF258348) else AdminInk)
+                                    Spacer(Modifier.width(3.dp))
+                                    Text(if (product.isHidden) "Show" else "Hide", color = if (product.isHidden) Color(0xFF258348) else AdminInk, fontSize = 11.sp)
+                                }
                                 TextButton(
                                     onClick = { viewingProduct = product },
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
