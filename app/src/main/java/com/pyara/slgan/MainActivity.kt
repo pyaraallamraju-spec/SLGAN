@@ -8262,6 +8262,45 @@ private fun AddAddressDetailsPage(
         }
     }
 
+    LaunchedEffect(showReview, city, area, fullAddress, editAddress?.get("_id")) {
+        if (!showReview || mapLocationResolved) return@LaunchedEffect
+        val found = withContext(Dispatchers.IO) {
+            try {
+                val geocoder = Geocoder(context, Locale.getDefault())
+                val searches = listOf(
+                    listOf(fullAddress, area, city).filter { it.isNotBlank() }.joinToString(", "),
+                    listOf(area, city).filter { it.isNotBlank() }.joinToString(", "),
+                    city.trim()
+                ).filter { it.isNotBlank() }.distinct()
+                var match: android.location.Address? = null
+                for (search in searches) {
+                    val results = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        kotlinx.coroutines.suspendCancellableCoroutine<List<android.location.Address>?> { continuation ->
+                            geocoder.getFromLocationName(search, 1) { list ->
+                                if (continuation.isActive) continuation.resume(list)
+                            }
+                        }
+                    } else {
+                        @Suppress("DEPRECATION")
+                        geocoder.getFromLocationName(search, 1)
+                    }
+                    match = results?.firstOrNull()
+                    if (match != null) break
+                }
+                match
+            } catch (_: Exception) { null }
+        }
+        if (found != null) {
+            mapLatitude = found.latitude
+            mapLongitude = found.longitude
+            mapLocationResolved = true
+            if (area.isBlank()) area = found.subLocality ?: found.thoroughfare ?: found.featureName.orEmpty()
+            if (city.isBlank()) city = found.locality ?: found.subAdminArea ?: found.adminArea.orEmpty()
+        } else {
+            Toast.makeText(context, "Address not found. Try entering a nearby area and city to place the pin.", Toast.LENGTH_LONG).show()
+        }
+    }
+
     if (showReview) {
         ReviewAddressPage(
             city = city,
