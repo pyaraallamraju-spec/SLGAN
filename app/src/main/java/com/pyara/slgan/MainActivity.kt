@@ -8891,7 +8891,7 @@ private fun ReviewAddressPage(
 ) {
     val context = LocalContext.current
     val query = Uri.encode(listOf(fullAddress, area, city).filter { it.isNotBlank() }.joinToString(", "))
-    Column(Modifier.fillMaxSize().background(Color.White)) {
+    Column(Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).navigationBarsPadding()) {
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -9042,7 +9042,7 @@ private fun ReviewAddressPage(
         Button(
             onClick = onSave,
             enabled = hasCompleteAddress,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp).height(60.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 28.dp).height(60.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFE2E2E2),
                 contentColor = Ink,
