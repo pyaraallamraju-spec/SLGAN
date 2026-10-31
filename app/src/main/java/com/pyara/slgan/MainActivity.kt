@@ -6913,7 +6913,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             }
             Spacer(Modifier.width(12.dp))
             Text(tr("Diseases", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Surface(shape = RoundedCornerShape(50.dp), color = Color(0xFFF5F5F8)) { Text("${diseases.size} items", modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp), color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 14.sp) }
+            Surface(shape = RoundedCornerShape(50.dp), color = Color(0xFFF5F5F8)) { Text("${diseases.size}", modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp), color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 14.sp) }
         }
         Column(Modifier.padding(horizontal = 16.dp, vertical = 18.dp)) {
         Box(Modifier.fillMaxWidth()) {
