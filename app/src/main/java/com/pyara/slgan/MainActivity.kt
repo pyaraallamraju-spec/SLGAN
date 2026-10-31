@@ -205,7 +205,10 @@ private val AdminSurface = Color.White
 private val AdminInk = Color(0xFF25282D)
 private val AdminMuted = Color(0xFF707780)
 
-private var activeAppThemeId: Int = 1
+private val activeAppThemeState = mutableIntStateOf(1)
+private var activeAppThemeId: Int
+    get() = activeAppThemeState.intValue
+    set(value) { activeAppThemeState.intValue = value }
 
 private fun applyAppPalette(themeId: Int) {
     activeAppThemeId = themeId
@@ -683,7 +686,6 @@ private fun productFromFirestore(data: Map<String, Any?>, context: android.conte
 @Composable
 private fun AyurvedicApp() {
     val appContext = LocalContext.current
-    var themeRevision by remember { mutableIntStateOf(0) }
     // Match system bars to the active customer theme; admin content keeps its own neutral palette.
     val systemBarCream = if (activeAppThemeId == 3) Color(0xFF0B1118) else if (activeAppThemeId == 4) Color(0xFFF1FAF0) else Color.White
     SideEffect {
@@ -726,7 +728,6 @@ private fun AyurvedicApp() {
                     val lightThemeEnabled = settings?.getBoolean("lightThemeEnabled") ?: true
                     val activeTheme = if (lightThemeEnabled) (settings?.getLong("activeTheme") ?: 1L).toInt().coerceIn(1, 4) else 1
                     applyAppPalette(activeTheme)
-                    themeRevision++
                 }
             }
         onDispose { themeRegistration.remove() }
