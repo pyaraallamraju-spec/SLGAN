@@ -1206,6 +1206,7 @@ private fun AyurvedicApp() {
             else if (isAdmin) AdminDashboardScreen(
                 email = auth.currentUser?.email.orEmpty(),
                 productCount = adminLiveProducts.size,
+                productsLoading = productsLoading,
                 onProductsClick = { adminProductsOpen = true },
                 onOrdersClick = { adminOrdersOpen = true },
                 onCustomersClick = { adminCustomersOpen = true },
@@ -2995,6 +2996,7 @@ private fun AdminProductEditor(
 private fun AdminDashboardScreen(
     email: String,
     productCount: Int,
+    productsLoading: Boolean,
     onProductsClick: () -> Unit,
     onOrdersClick: () -> Unit,
     onCustomersClick: () -> Unit,
@@ -3006,16 +3008,22 @@ private fun AdminDashboardScreen(
     var orderCount by remember { mutableIntStateOf(0) }
     var diseaseCount by remember { mutableIntStateOf(0) }
     var customerCount by remember { mutableIntStateOf(0) }
+    var ordersLoading by remember { mutableStateOf(true) }
+    var diseasesLoading by remember { mutableStateOf(true) }
+    var customersLoading by remember { mutableStateOf(true) }
     DisposableEffect(Unit) {
         val db = FirebaseFirestore.getInstance()
         val ordersListener = db.collection("orders").addSnapshotListener { snapshot, error ->
             if (error == null) orderCount = snapshot?.size() ?: 0
+            ordersLoading = false
         }
         val diseasesListener = db.collection("diseases").addSnapshotListener { snapshot, error ->
             if (error == null) diseaseCount = snapshot?.size() ?: 0
+            diseasesLoading = false
         }
         val customersListener = db.collection("customers").addSnapshotListener { snapshot, error ->
             if (error == null) customerCount = snapshot?.documents?.count { it.getBoolean("is_admin") != true } ?: 0
+            customersLoading = false
         }
         onDispose {
             ordersListener.remove()
@@ -3024,13 +3032,16 @@ private fun AdminDashboardScreen(
         }
     }
 
-    val metrics = listOf(
-        Triple("Products", productCount, Icons.Default.Inventory2),
-        Triple("Orders", orderCount, Icons.Default.ReceiptLong),
-        Triple("Diseases", diseaseCount, Icons.Default.MedicalServices),
-        Triple("Customers", customerCount, Icons.Default.PeopleAlt)
-    )
-    val maxMetric = metrics.maxOfOrNull { it.second }?.coerceAtLeast(1) ?: 1
+    val metrics = remember(productCount, orderCount, diseaseCount, customerCount) {
+        listOf(
+            Triple("Products", productCount, Icons.Default.Inventory2),
+            Triple("Orders", orderCount, Icons.Default.ReceiptLong),
+            Triple("Diseases", diseaseCount, Icons.Default.MedicalServices),
+            Triple("Customers", customerCount, Icons.Default.PeopleAlt)
+        )
+    }
+    val metricLoading = listOf(productsLoading, ordersLoading, diseasesLoading, customersLoading)
+    val maxMetric = remember(metrics) { metrics.maxOfOrNull { it.second }?.coerceAtLeast(1) ?: 1 }
 
     Column(
         Modifier.fillMaxSize()
@@ -3091,7 +3102,11 @@ private fun AdminDashboardScreen(
                         val fraction = (metric.second.toFloat() / maxMetric.toFloat()).coerceIn(0.08f, 1f)
                         val barColor = listOf(Color(0xFF9A6847), Color(0xFFB58A5A), Color(0xFF8B766A), Color(0xFFD0A45D))[index]
                         Column(Modifier.weight(1f).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
-                            Text(metric.second.toString(), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            if (metricLoading[index]) {
+                                CircularProgressIndicator(Modifier.size(14.dp), color = Color(0xFF9A6847), strokeWidth = 2.dp)
+                            } else {
+                                Text(metric.second.toString(), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
                             Spacer(Modifier.height(5.dp))
                             Box(
                                 Modifier.width(27.dp).weight(1f).clip(RoundedCornerShape(topStart = 7.dp, topEnd = 7.dp)).background(Color(0xFFF0F1F2)),
@@ -3130,7 +3145,11 @@ private fun AdminDashboardScreen(
                             Icon(metric.third, null, tint = iconTint, modifier = Modifier.size(21.dp))
                         }
                         Spacer(Modifier.height(9.dp))
-                        Text(metric.second.toString(), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                        if (metricLoading[index]) {
+                            Box(Modifier.width(48.dp).height(25.dp).clip(RoundedCornerShape(6.dp)).background(Color(0xFFEDEFF1)))
+                        } else {
+                            Text(metric.second.toString(), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                        }
                         Text(metric.first, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                     }
                 }
@@ -3153,7 +3172,11 @@ private fun AdminDashboardScreen(
                             Icon(metric.third, null, tint = iconTint, modifier = Modifier.size(21.dp))
                         }
                         Spacer(Modifier.height(9.dp))
-                        Text(metric.second.toString(), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                        if (metricLoading[index + 2]) {
+                            Box(Modifier.width(48.dp).height(25.dp).clip(RoundedCornerShape(6.dp)).background(Color(0xFFEDEFF1)))
+                        } else {
+                            Text(metric.second.toString(), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                        }
                         Text(metric.first, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                     }
                 }
