@@ -8502,15 +8502,41 @@ private fun AddAddressDetailsPage(
                 )
                 val addressCollection = FirebaseFirestore.getInstance().collection("addresses")
                 val existingId = editAddress?.get("_id")?.toString()
-                val saveTask = if (!existingId.isNullOrBlank()) addressCollection.document(existingId).set(data, com.google.firebase.firestore.SetOptions.merge()) else addressCollection.add(data)
-                saveTask.addOnSuccessListener { result ->
-                        saving = false
-                        val docId = existingId ?: (result as? com.google.firebase.firestore.DocumentReference)?.id
-                        onSaved(data + ("_id" to docId.orEmpty()))
+                val normalizedLabel = label.trim().ifBlank { "Other" }
+                addressCollection.whereEqualTo("userId", user.uid).get()
+                    .addOnSuccessListener { snapshot ->
+                        val duplicate = normalizedLabel.equals("Home", ignoreCase = true) ||
+                            normalizedLabel.equals("Work", ignoreCase = true)
+                        val alreadyUsed = duplicate && snapshot.documents.any { document ->
+                            document.id != existingId &&
+                                document.getString("label")?.equals(normalizedLabel, ignoreCase = true) == true
+                        }
+                        if (alreadyUsed) {
+                            saving = false
+                            Toast.makeText(
+                                context,
+                                "You can save only one $normalizedLabel address. Please edit or delete the existing one.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@addOnSuccessListener
+                        }
+                        val saveTask = if (!existingId.isNullOrBlank()) {
+                            addressCollection.document(existingId).set(data, com.google.firebase.firestore.SetOptions.merge())
+                        } else {
+                            addressCollection.add(data)
+                        }
+                        saveTask.addOnSuccessListener { result ->
+                            saving = false
+                            val docId = existingId ?: (result as? com.google.firebase.firestore.DocumentReference)?.id
+                            onSaved(data + ("_id" to docId.orEmpty()))
+                        }.addOnFailureListener {
+                            saving = false
+                            Toast.makeText(context, "Couldn't save address. Please try again.", Toast.LENGTH_LONG).show()
+                        }
                     }
                     .addOnFailureListener {
                         saving = false
-                        Toast.makeText(context, "Couldn't save address. Please try again.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Couldn't verify saved addresses. Please try again.", Toast.LENGTH_LONG).show()
                     }
             }
         )
