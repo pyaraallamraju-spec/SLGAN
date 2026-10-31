@@ -3186,6 +3186,8 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
         onDispose { listener.remove() }
     }
     val themes = listOf(
+        Triple(1, "Classic Maroon", "Theme 1 · Traditional maroon, cream and gold"),
+        Triple(2, "Botanical Green", "Theme 2 · Natural forest green with warm cream"),
         Triple(3, "Dark Mode", "Theme 3 · Premium charcoal with warm gold accents"),
         Triple(4, "Green Mode", "Theme 4 · Fresh botanical green with light backgrounds")
     )
@@ -3201,11 +3203,31 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
         Spacer(Modifier.height(16.dp))
         themes.forEach { (id, name, description) ->
             val dark = id == 3
-            val bg = if (dark) Color(0xFF0B1118) else Color(0xFFF1FAF0)
-            val surface = if (dark) Color(0xFF142130) else Color.White
-            val accent = if (dark) Color(0xFFF4C96B) else Color(0xFF075B2A)
-            val mainText = if (dark) Color(0xFFF4F1E8) else Color(0xFF12351E)
-            val secondary = if (dark) Color(0xFFAAB4C0) else Color(0xFF607568)
+            val bg = when (id) {
+                1 -> Color(0xFFFFF7E8)
+                2 -> Color(0xFFFFF9E9)
+                3 -> Color(0xFF0B1118)
+                else -> Color(0xFFF1FAF0)
+            }
+            val surface = when (id) { 3 -> Color(0xFF142130); else -> Color.White }
+            val accent = when (id) {
+                1 -> Color(0xFF762A24)
+                2 -> Color(0xFF214B35)
+                3 -> Color(0xFFF4C96B)
+                else -> Color(0xFF075B2A)
+            }
+            val mainText = when (id) {
+                1 -> Color(0xFF38251F)
+                2 -> Color(0xFF20372A)
+                3 -> Color(0xFFF4F1E8)
+                else -> Color(0xFF12351E)
+            }
+            val secondary = when (id) {
+                1 -> Color(0xFF806D60)
+                2 -> Color(0xFF687663)
+                3 -> Color(0xFFAAB4C0)
+                else -> Color(0xFF607568)
+            }
             Card(
                 Modifier.fillMaxWidth().padding(bottom = 14.dp),
                 shape = RoundedCornerShape(20.dp),
@@ -3260,7 +3282,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                             listOf("Mahabala", "Sleshamrutham", "Jeevasatvam").forEach { product ->
                                 Surface(Modifier.weight(1f), shape = RoundedCornerShape(9.dp), color = surface, border = BorderStroke(0.5.dp, accent.copy(alpha = 0.25f))) {
                                     Column(Modifier.padding(8.dp)) {
-                                        Box(Modifier.fillMaxWidth().height(28.dp).clip(RoundedCornerShape(6.dp)).background(if (dark) Color(0xFF26394A) else Color(0xFFE2F2E2)))
+                                        Box(Modifier.fillMaxWidth().height(28.dp).clip(RoundedCornerShape(6.dp)).background(when (id) { 1 -> Color(0xFFF5E5C8); 2 -> Color(0xFFE7EBD4); 3 -> Color(0xFF26394A); else -> Color(0xFFE2F2E2) }))
                                         Spacer(Modifier.height(5.dp))
                                         Text(product, color = mainText, fontSize = 8.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                                         Text("₹350", color = accent, fontSize = 9.sp, fontWeight = FontWeight.Bold)
