@@ -3396,25 +3396,77 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
             val colors = when (design) { 4 -> listOf(AdminInk, AdminInk.copy(alpha = 0.92f), AdminInk, AdminInk); 3 -> listOf(Color(0xFFF8F0DC), AdminInk, AdminInk); 2 -> listOf(AdminInk, AdminInk, AdminInk); else -> listOf(AdminInk, AdminInk, AdminInk) }
             Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, Color(0xFFB5B5B5)), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
                 Column(Modifier.padding(12.dp)) {
-                    Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Color.Transparent).padding(0.dp)) {
+                    Box(
+                        Modifier.fillMaxWidth()
+                            .height(104.dp)
+                            .clip(RoundedCornerShape(14.dp))
+                    ) {
+                        val previewArtwork = when (design) {
+                            1 -> R.drawable.slga_banner
+                            2 -> R.drawable.slgan_banner_02_traditional_formulations
+                            3 -> R.drawable.slgan_banner_03_natural_family_care
+                            else -> R.drawable.slgan_banner_06_tradition_purity_wellness
+                        }
+                        Image(
+                            painter = painterResource(id = previewArtwork),
+                            contentDescription = "Slider $design promotional banner preview",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
                         if (design == 4) {
-                            AsyncImage(
-                                model = "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=85",
-                                contentDescription = "Botanical background preview",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
-                            )
-                            Box(Modifier.fillMaxSize().background(AdminInk.copy(alpha = 0.68f)))
-                        } else {
-                            Box(Modifier.fillMaxSize().background(Brush.linearGradient(colors)))
+                            val themeOverlay = when (activeAppThemeId) {
+                                3 -> Color(0xFF0B1118).copy(alpha = 0.30f)
+                                4 -> Color(0xFF075B2A).copy(alpha = 0.22f)
+                                2 -> Color(0xFF214B35).copy(alpha = 0.20f)
+                                else -> Color(0xFF25282D).copy(alpha = 0.22f)
+                            }
+                            Box(Modifier.fillMaxSize().background(themeOverlay))
                         }
                         Box(Modifier.fillMaxSize().padding(14.dp)) {
-                        Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.82f)) {
-                            Text(when (design) { 4 -> "✦  THEME-ADAPTIVE SIGNATURE"; 3 -> "PURE AYURVEDA"; 2 -> "BOTANICAL WELLNESS"; else -> "SLGAN · TRUSTED SINCE 1990" }, color = if (design == 3) AdminInk else AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                            Text(when (design) { 4 -> "Wellness, Inspired by Nature"; 3 -> "Pure Ayurveda for Better Living"; 2 -> "Nature’s Goodness"; else -> "Authentic Ayurvedic Formulations" }, color = if (design == 3) AdminInk else if (design == 2) AdminInk else Color.White, fontSize = 17.sp, lineHeight = 20.sp, fontWeight = FontWeight.ExtraBold)
-                            Text(when (design) { 4 -> "Traditional wisdom · Trusted since 1990"; 3 -> "Traditional wisdom · Natural wellness"; 2 -> "Herbs · Roots · Everyday wellness"; else -> "Traditional wisdom · Natural wellness" }, color = if (design == 3) AdminInk else if (design == 2) AdminInk else AdminInk, fontSize = 10.sp)
-                        }
-                        Icon(if (activeDesign == design) Icons.Default.CheckCircle else Icons.Default.Circle, contentDescription = null, tint = if (design == 3) AdminInk else AdminInk, modifier = Modifier.align(Alignment.TopEnd).size(24.dp))
+                            Column(
+                                Modifier.align(Alignment.CenterStart).fillMaxWidth(0.82f),
+                                verticalArrangement = Arrangement.spacedBy(2.dp)
+                            ) {
+                                Text(
+                                    when (design) {
+                                        4 -> "✦  THEME-ADAPTIVE SIGNATURE"
+                                        3 -> "PURE AYURVEDA"
+                                        2 -> "BOTANICAL WELLNESS"
+                                        else -> "SLGAN · TRUSTED SINCE 1990"
+                                    },
+                                    color = Color.White,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    when (design) {
+                                        4 -> "Wellness, Inspired by Nature"
+                                        3 -> "Pure Ayurveda for Better Living"
+                                        2 -> "Nature’s Goodness"
+                                        else -> "Authentic Ayurvedic Formulations"
+                                    },
+                                    color = Color.White,
+                                    fontSize = 17.sp,
+                                    lineHeight = 20.sp,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                                Text(
+                                    when (design) {
+                                        4 -> "Traditional wisdom · Trusted since 1990"
+                                        3 -> "Traditional wisdom · Natural wellness"
+                                        2 -> "Herbs · Roots · Everyday wellness"
+                                        else -> "Traditional wisdom · Natural wellness"
+                                    },
+                                    color = Color.White.copy(alpha = 0.92f),
+                                    fontSize = 10.sp
+                                )
+                            }
+                            Icon(
+                                if (activeDesign == design) Icons.Default.CheckCircle else Icons.Default.Circle,
+                                contentDescription = if (activeDesign == design) "Selected slider" else "Select slider",
+                                tint = Color.White,
+                                modifier = Modifier.align(Alignment.TopEnd).size(24.dp)
+                            )
                         }
                     }
                     Spacer(Modifier.height(10.dp))
