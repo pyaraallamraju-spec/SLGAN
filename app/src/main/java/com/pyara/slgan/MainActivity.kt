@@ -191,13 +191,38 @@ private fun requestSlganOrderEmail(
     }.start()
 }
 
-private var Forest by mutableStateOf(Color(0xFF762A24))
-private var Leaf by mutableStateOf(Color(0xFF8A4B2A))
-private var Cream by mutableStateOf(Color(0xFFFFF7E8))
-private var PaleGreen by mutableStateOf(Color(0xFFF5E5C8))
-private var Ink by mutableStateOf(Color(0xFF38251F))
-private var Muted by mutableStateOf(Color(0xFF806D60))
-private var Gold by mutableStateOf(Color(0xFFD9A441))
+private data class AppPalette(
+    val themeId: Int,
+    val forest: Color,
+    val leaf: Color,
+    val cream: Color,
+    val paleGreen: Color,
+    val ink: Color,
+    val muted: Color,
+    val gold: Color
+)
+
+private val defaultAppPalette = AppPalette(
+    themeId = 1,
+    forest = Color(0xFF762A24),
+    leaf = Color(0xFF8A4B2A),
+    cream = Color(0xFFFFF7E8),
+    paleGreen = Color(0xFFF5E5C8),
+    ink = Color(0xFF38251F),
+    muted = Color(0xFF806D60),
+    gold = Color(0xFFD9A441)
+)
+
+// One observable palette keeps all customer-facing colors in sync with a single recomposition.
+private var currentAppPalette by mutableStateOf(defaultAppPalette)
+private val Forest get() = currentAppPalette.forest
+private val Leaf get() = currentAppPalette.leaf
+private val Cream get() = currentAppPalette.cream
+private val PaleGreen get() = currentAppPalette.paleGreen
+private val Ink get() = currentAppPalette.ink
+private val Muted get() = currentAppPalette.muted
+private val Gold get() = currentAppPalette.gold
+private val activeAppThemeId get() = currentAppPalette.themeId
 
 private val AdminBackground = Color(0xFFF1F2F4)
 private val AdminLightGray = Color(0xFFF8F9FA)
@@ -205,45 +230,41 @@ private val AdminSurface = Color.White
 private val AdminInk = Color(0xFF25282D)
 private val AdminMuted = Color(0xFF707780)
 
-private val activeAppThemeState = mutableIntStateOf(1)
-private var activeAppThemeId: Int
-    get() = activeAppThemeState.intValue
-    set(value) { activeAppThemeState.intValue = value }
-
 private fun applyAppPalette(themeId: Int) {
-    activeAppThemeId = themeId
-    when (themeId) {
-        3 -> {
-            // Theme 3 — Dark Mode: deep charcoal/navy surfaces with warm gold accents.
-            Forest = Color(0xFFF4C96B)
-            Leaf = Color(0xFFDDAE4F)
-            Cream = Color(0xFF0B1118)
-            PaleGreen = Color(0xFF142130)
-            Ink = Color(0xFFF4F1E8)
-            Muted = Color(0xFFAAB4C0)
-            Gold = Color(0xFFF4C96B)
-        }
-        4 -> {
-            // Theme 4 — Green Mode: light botanical backgrounds with natural green accents.
-            Forest = Color(0xFF075B2A)
-            Leaf = Color(0xFF2E8B45)
-            Cream = Color(0xFFF1FAF0)
-            PaleGreen = Color(0xFFDDF3DF)
-            Ink = Color(0xFF12351E)
-            Muted = Color(0xFF607568)
-            Gold = Color(0xFF2E8B45)
-        }
-        2 -> {
-            Forest = Color(0xFF214B35); Leaf = Color(0xFF557A45); Cream = Color(0xFFFFF9E9)
-            PaleGreen = Color(0xFFE7EBD4); Ink = Color(0xFF20372A); Muted = Color(0xFF687663); Gold = Color(0xFFC9A34A)
-        }
-        else -> {
-            Forest = Color(0xFF762A24); Leaf = Color(0xFF8A4B2A); Cream = Color(0xFFFFF7E8)
-            PaleGreen = Color(0xFFF5E5C8); Ink = Color(0xFF38251F); Muted = Color(0xFF806D60); Gold = Color(0xFFD9A441)
-        }
+    currentAppPalette = when (themeId) {
+        3 -> AppPalette(
+            themeId = 3,
+            forest = Color(0xFFF4C96B),
+            leaf = Color(0xFFDDAE4F),
+            cream = Color(0xFF0B1118),
+            paleGreen = Color(0xFF142130),
+            ink = Color(0xFFF4F1E8),
+            muted = Color(0xFFAAB4C0),
+            gold = Color(0xFFF4C96B)
+        )
+        4 -> AppPalette(
+            themeId = 4,
+            forest = Color(0xFF075B2A),
+            leaf = Color(0xFF2E8B45),
+            cream = Color(0xFFF1FAF0),
+            paleGreen = Color(0xFFDDF3DF),
+            ink = Color(0xFF12351E),
+            muted = Color(0xFF607568),
+            gold = Color(0xFF2E8B45)
+        )
+        2 -> AppPalette(
+            themeId = 2,
+            forest = Color(0xFF214B35),
+            leaf = Color(0xFF557A45),
+            cream = Color(0xFFFFF9E9),
+            paleGreen = Color(0xFFE7EBD4),
+            ink = Color(0xFF20372A),
+            muted = Color(0xFF687663),
+            gold = Color(0xFFC9A34A)
+        )
+        else -> defaultAppPalette
     }
 }
-
 private val LocalAppLanguage = staticCompositionLocalOf { "English" }
 
 private fun tr(text: String, language: String): String {
