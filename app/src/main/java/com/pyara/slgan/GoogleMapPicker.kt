@@ -61,7 +61,6 @@ internal fun GoogleMapPicker(
         Marker(
             state = markerState,
             title = "Delivery location",
-            snippet = "Drag the pin or tap the map to adjust",
             draggable = true
         )
     }
