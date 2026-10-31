@@ -6918,45 +6918,54 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         Column(Modifier.padding(horizontal = 16.dp, vertical = 18.dp)) {
         Box(Modifier.fillMaxWidth()) {
                 Column(Modifier.fillMaxWidth()) {
-                    OutlinedTextField(
-                        value = query,
-                        onValueChange = {
-                            query = it
-                            selectedDisease = null
-                            dropdownExpanded = true
-                        },
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp).defaultMinSize(minHeight = 60.dp),
-                        textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-                        label = { Text(tr("Search diseases", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, maxLines = 1) },
-                        placeholder = { Text(tr("Select disease", LocalAppLanguage.current), fontSize = 14.sp, maxLines = 1, color = Muted) },
-                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(22.dp), tint = Muted) },
-                        trailingIcon = {
-                            IconButton(onClick = {
-                                // Reopen the complete disease list even when a disease is already selected.
-                                query = ""
+                    CompositionLocalProvider(
+                        androidx.compose.foundation.text.selection.LocalTextSelectionColors provides
+                            androidx.compose.foundation.text.selection.TextSelectionColors(
+                                handleColor = Ink,
+                                backgroundColor = Ink.copy(alpha = 0.28f)
+                            )
+                    ) {
+                        OutlinedTextField(
+                            value = query,
+                            onValueChange = {
+                                query = it
+                                selectedDisease = null
                                 dropdownExpanded = true
-                            }) {
-                                Icon(
-                                    if (dropdownExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                                    contentDescription = "Show all disease options",
-                                    tint = Muted
-                                )
-                            }
-                        },
-                        singleLine = true,
-                        shape = RectangleShape,
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            disabledBorderColor = Color.Transparent,
-                            errorBorderColor = Color.Transparent,
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            focusedLabelColor = Muted,
-                            unfocusedLabelColor = Muted,
-                            cursorColor = Forest
+                            },
+                            modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp).defaultMinSize(minHeight = 60.dp),
+                            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
+                            label = { Text(tr("Search diseases", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, maxLines = 1) },
+                            placeholder = { Text(tr("Select disease", LocalAppLanguage.current), fontSize = 14.sp, maxLines = 1, color = Muted) },
+                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(22.dp), tint = Muted) },
+                            trailingIcon = {
+                                IconButton(onClick = {
+                                    // Reopen the complete disease list even when a disease is already selected.
+                                    query = ""
+                                    dropdownExpanded = true
+                                }) {
+                                    Icon(
+                                        if (dropdownExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                                        contentDescription = "Show all disease options",
+                                        tint = Muted
+                                    )
+                                }
+                            },
+                            singleLine = true,
+                            shape = RectangleShape,
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color.Transparent,
+                                unfocusedBorderColor = Color.Transparent,
+                                disabledBorderColor = Color.Transparent,
+                                errorBorderColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedLabelColor = Muted,
+                                unfocusedLabelColor = Muted,
+                                cursorColor = Ink
+                            )
                         )
-                    )
+    
+                    }
                     Box(Modifier.fillMaxWidth().height(1.dp).background(Muted.copy(alpha = 0.45f)))
                 }
                 DropdownMenu(
