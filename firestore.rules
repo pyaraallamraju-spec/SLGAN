@@ -65,6 +65,13 @@ service cloud.firestore {
       }
     }
 
+    // Shared app settings (theme and home banners): customers may read
+    // the active presentation settings; only trusted administrators may change them.
+    match /appSettings/{settingId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
     // Orders are client-created on the Spark plan. Restrict each order to
     // its authenticated owner and keep it pending until the shop verifies it.
     // Client-supplied prices are not trusted for final fulfilment/payment.
