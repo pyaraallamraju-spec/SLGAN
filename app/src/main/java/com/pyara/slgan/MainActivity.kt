@@ -8055,43 +8055,89 @@ private fun AccountsPage(
         }
     }
     if (showLogoutDialog) {
-        AlertDialog(
+        ModalBottomSheet(
             onDismissRequest = { showLogoutDialog = false },
-            shape = RoundedCornerShape(20.dp),
-            containerColor = Color.White,
-            title = {
-                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Text("Log out from?", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+            containerColor = Color(0xFFF3F4F5),
+            contentColor = Color(0xFF25282D),
+            shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+            dragHandle = {
+                Box(
+                    Modifier.padding(top = 10.dp, bottom = 8.dp)
+                        .size(width = 40.dp, height = 5.dp)
+                        .background(Color(0xFFB5B5B5), CircleShape)
+                )
+            }
+        ) {
+            Column(
+                Modifier.fillMaxWidth().navigationBarsPadding()
+                    .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 28.dp)
+            ) {
+                Text("Log out from?", color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Spacer(Modifier.height(5.dp))
+                Text("Choose where you want to end your SLGAN session.", color = Color(0xFF707780), fontSize = 14.sp)
+                Spacer(Modifier.height(20.dp))
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable {
+                        showLogoutDialog = false
+                        onSignOut()
+                    },
+                    shape = RoundedCornerShape(18.dp),
+                    border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+                ) {
+                    Row(
+                        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(Modifier.size(46.dp).background(Color(0xFFF3F4F5), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+                            Icon(Icons.Default.Smartphone, contentDescription = null, tint = Color(0xFF25282D), modifier = Modifier.size(23.dp))
+                        }
+                        Spacer(Modifier.width(14.dp))
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text("Current Device", color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                            Text("Sign out from this phone", color = Color(0xFF707780), fontSize = 12.sp)
+                        }
+                        Icon(Icons.Default.ChevronRight, contentDescription = "Sign out from current device", tint = Color(0xFF25282D))
+                    }
                 }
-            },
-            text = {
-                Column(Modifier.fillMaxWidth()) {
-                    HorizontalDivider(color = appThemedColor(Color(0xFFE1E5EB)))
-                    Box(
-                        Modifier.fillMaxWidth().clickable {
-                            showLogoutDialog = false
-                            onSignOut()
-                        }.padding(vertical = 16.dp),
-                        contentAlignment = Alignment.Center
-                    ) { Text("Current Device", color = appThemedColor(Color(0xFF27851F)), fontSize = 18.sp, fontWeight = FontWeight.Medium) }
-                    HorizontalDivider(color = appThemedColor(Color(0xFFE1E5EB)))
-                    Box(
-                        Modifier.fillMaxWidth().clickable {
-                            showLogoutDialog = false
-                            Toast.makeText(context, "This app can sign out this device only. Signing out all devices requires secure server support.", Toast.LENGTH_LONG).show()
-                        }.padding(vertical = 16.dp),
-                        contentAlignment = Alignment.Center
-                    ) { Text("All Devices", color = appThemedColor(Color(0xFF27851F)), fontSize = 18.sp, fontWeight = FontWeight.Medium) }
-                    HorizontalDivider(color = appThemedColor(Color(0xFFE1E5EB)))
-                    Box(
-                        Modifier.fillMaxWidth().clickable { showLogoutDialog = false }.padding(vertical = 16.dp),
-                        contentAlignment = Alignment.Center
-                    ) { Text("Cancel", color = appThemedColor(Color(0xFF27851F)), fontSize = 18.sp, fontWeight = FontWeight.Medium) }
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable {
+                        showLogoutDialog = false
+                        Toast.makeText(context, "This app can sign out this device only. Signing out all devices requires secure server support.", Toast.LENGTH_LONG).show()
+                    },
+                    shape = RoundedCornerShape(18.dp),
+                    border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFFE2E2E2)),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                ) {
+                    Row(
+                        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(Modifier.size(46.dp).background(Color(0xFFF3F4F5), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+                            Icon(Icons.Default.Devices, contentDescription = null, tint = Color(0xFF25282D), modifier = Modifier.size(23.dp))
+                        }
+                        Spacer(Modifier.width(14.dp))
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text("All Devices", color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                            Text("Requires secure server support", color = Color(0xFF707780), fontSize = 12.sp)
+                        }
+                        Icon(Icons.Default.ChevronRight, contentDescription = "All devices", tint = Color(0xFF25282D))
+                    }
                 }
-            },
-            confirmButton = {},
-            dismissButton = {}
-        )
+                Spacer(Modifier.height(8.dp))
+                OutlinedButton(
+                    onClick = { showLogoutDialog = false },
+                    modifier = Modifier.fillMaxWidth().height(52.dp),
+                    shape = RoundedCornerShape(15.dp),
+                    border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF25282D))
+                ) {
+                    Text("Cancel", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                }
+            }
+        }
     }
     }
 }
