@@ -7955,15 +7955,36 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     addresses = snapshot.documents.map { doc ->
                         doc.data.orEmpty() + ("_id" to doc.id)
                     }
-                    selectedAddressId = addresses.firstOrNull {
-                        it["label"]?.toString().equals("home", ignoreCase = true)
-                    }?.get("_id")?.toString()
-                        ?: addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
-                            ?.get("_id")?.toString()
+                    selectedAddressId = addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
+                        ?.get("_id")?.toString()
                         ?: addresses.firstOrNull()?.get("_id")?.toString()
                     loading = false
                 }
                 .addOnFailureListener { loading = false }
+        }
+    }
+
+    fun setDefaultAddress(id: String) {
+        if (id.isBlank() || id == selectedAddressId) return
+        val db = FirebaseFirestore.getInstance()
+        val batch = db.batch()
+        addresses.forEach { existing ->
+            val existingId = existing["_id"]?.toString().orEmpty()
+            if (existingId.isNotBlank()) {
+                val makeDefault = existingId == id
+                batch.update(db.collection("addresses").document(existingId),
+                    "isDefault", makeDefault, "default", makeDefault)
+            }
+        }
+        batch.commit().addOnSuccessListener {
+            selectedAddressId = id
+            addresses = addresses.map { row ->
+                val makeDefault = row["_id"]?.toString() == id
+                row + ("isDefault" to makeDefault) + ("default" to makeDefault)
+            }
+            Toast.makeText(context, "Default delivery address updated", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener { error ->
+            Toast.makeText(context, error.localizedMessage ?: "Could not update default address", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -7983,20 +8004,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     Icon(Icons.Default.Edit, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Edit address", color = Ink, fontSize = 16.sp)
                 }
                 Row(Modifier.fillMaxWidth().clickable {
-                    val id = address["_id"]?.toString().orEmpty()
-                    if (id.isNotBlank()) {
-                        val db = FirebaseFirestore.getInstance()
-                        val batch = db.batch()
-                        addresses.forEach { existing ->
-                            val existingId = existing["_id"]?.toString().orEmpty()
-                            if (existingId.isNotBlank()) batch.update(db.collection("addresses").document(existingId), "isDefault", existingId == id, "default", existingId == id)
-                        }
-                        batch.commit().addOnSuccessListener {
-                            selectedAddressId = id
-                            addresses = addresses.map { row -> row + ("isDefault" to (row["_id"]?.toString() == id)) + ("default" to (row["_id"]?.toString() == id)) }
-                            Toast.makeText(context, "Delivery address updated", Toast.LENGTH_SHORT).show()
-                        }.addOnFailureListener { e -> Toast.makeText(context, e.localizedMessage ?: "Could not update address", Toast.LENGTH_LONG).show() }
-                    }
+                    setDefaultAddress(address["_id"]?.toString().orEmpty())
                     addressOptions = null
                 }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Set as delivery address", color = Ink, fontSize = 16.sp)
@@ -8082,7 +8090,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     val isSelected = selectedAddressId == addressId
                     Card(
                         modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable {
-                            selectedAddressId = addressId
+                            setDefaultAddress(addressId)
                         },
                         shape = RoundedCornerShape(20.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -8134,7 +8142,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                                 if (isSelected) Color(0xFF25884B) else Color(0xFFE2E2E2),
                                                 CircleShape
                                             )
-                                            .clickable { selectedAddressId = addressId },
+                                            .clickable { setDefaultAddress(addressId) },
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
