@@ -5567,7 +5567,7 @@ private fun ProductDetailsPage(
                                 Icon(if (highlightsExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = null, tint = Ink)
                             }
                             if (highlightsExpanded) {
-                                Text(product.description.ifBlank { "Product details will be updated soon." }, color = Muted, fontSize = 14.sp, lineHeight = 21.sp, modifier = Modifier.padding(horizontal = 8.dp))
+                                Text(product.description.ifBlank { "Product details will be updated soon." }, color = Muted, fontSize = 14.sp, lineHeight = 18.sp, modifier = Modifier.padding(horizontal = 8.dp))
                                 if (product.category.isNotBlank()) Text("Category: ${product.category}", color = Muted, fontSize = 14.sp, modifier = Modifier.padding(horizontal = 8.dp))
                             }
                             Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Color(0xFFF8F8FC)).clickable { informationExpanded = !informationExpanded }.padding(17.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -5577,7 +5577,7 @@ private fun ProductDetailsPage(
                             if (informationExpanded) {
                                 listOf("Usage" to product.usage, "Cures / uses" to product.cures, "Major ingredients" to product.majorIngredients).forEach { (heading, value) ->
                                     Text(heading, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp))
-                                    Text(value.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 21.sp, modifier = Modifier.padding(horizontal = 8.dp))
+                                    Text(value.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 18.sp, modifier = Modifier.padding(horizontal = 8.dp))
                                 }
                             }
                             Row(Modifier.fillMaxWidth().clickable { showReviewDialog = true }.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
