@@ -4491,8 +4491,8 @@ private fun ShopScreen(
 ) {
     val cartCount = products.sumOf { product -> (cart[product.id] ?: 0).coerceAtLeast(0) }
     Scaffold(containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
-        Row(Modifier.fillMaxWidth().shadow(6.dp).background(Color.White).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(Color.White))
+        Row(Modifier.fillMaxWidth().shadow(6.dp).background(appThemedColor(Color.White)).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(appThemedColor(Color.White)))
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -4522,7 +4522,7 @@ private fun ShopScreen(
             }
         }
     }, bottomBar = {
-        NavigationBar(modifier = Modifier.fillMaxWidth().shadow(8.dp), containerColor = Color.White, contentColor = Forest) {
+        NavigationBar(modifier = Modifier.fillMaxWidth().shadow(8.dp), containerColor = appThemedColor(Color.White), contentColor = Forest) {
             listOf(
                 Triple("Home", Icons.Default.Home, "Home"),
                 Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
@@ -4581,7 +4581,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
     val facebookUrl = "https://www.facebook.com/share/1bdVs2DWgy/"
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF7F7F7)))) {
         Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
@@ -4606,7 +4606,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
                         .onFailure { Toast.makeText(context, if (isEnglish) "Unable to open Facebook." else "Facebook తెరవడం సాధ్యం కాలేదు.", Toast.LENGTH_SHORT).show() }
                 },
                 shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Row(
@@ -4634,9 +4634,9 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
     var expanded by remember { mutableStateOf(false) }
     var showDeleteConfirmation by remember { mutableStateOf(false) }
     val isEnglish = appLanguage == "English"
-    Column(modifier.fillMaxSize().background(Color.White)) {
+    Column(modifier.fillMaxSize().background(appThemedColor(Color.White))) {
         Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
@@ -4731,9 +4731,9 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
         "మా ఉద్దేశ్యం ఉత్పత్తులను సులభంగా చూడటం, డెలివరీ చిరునామాలను నిర్వహించడం, ఆర్డర్లు చేయడం మరియు మీకు ఇష్టమైన ఉత్పత్తులను మళ్లీ చూడటం సులభం చేయడం. వైద్య సలహా కోసం అర్హత కలిగిన వైద్య నిపుణుడిని సంప్రదించండి.",
         "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం స్వతంత్ర ఆయుర్వేద వ్యాపారం. ఈ యాప్‌లోని ఉత్పత్తుల సమాచారం సాధారణ అవగాహన కోసం మాత్రమే; ఇది వైద్య నిర్ధారణ లేదా చికిత్సకు ప్రత్యామ్నాయం కాదు."
     )
-    Column(modifier.fillMaxSize().background(Color.White)) {
+    Column(modifier.fillMaxSize().background(appThemedColor(Color.White))) {
         Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
@@ -4805,7 +4805,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
             Card(
                 Modifier.fillMaxWidth().border(1.dp, appThemedColor(Color(0xFFB5B5B5)), RoundedCornerShape(18.dp)),
                 shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -4836,7 +4836,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
             Card(
                 Modifier.fillMaxWidth().border(1.dp, appThemedColor(Color(0xFFB5B5B5)), RoundedCornerShape(18.dp)),
                 shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -4909,7 +4909,7 @@ private fun WishlistPage(
     val savedProducts = products.filter { it.id in savedProductIds }
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF1F2F5)))) {
         Row(
-            modifier = Modifier.fillMaxWidth().background(Color.White).padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
+            modifier = Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(
@@ -5095,7 +5095,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
     ) {
         item {
             Column(
-                Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 18.dp)
+                Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 18.dp)
             ) {
                 Spacer(Modifier.height(8.dp))
                 Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 19.sp, fontWeight = FontWeight.SemiBold, color = Ink)
@@ -5171,7 +5171,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 }
                 Spacer(Modifier.height(20.dp))
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                    Icon(Icons.Default.GridView, contentDescription = null, tint = Color.Black, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Default.GridView, contentDescription = null, tint = appThemedColor(Color.Black), modifier = Modifier.size(20.dp))
                     Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 }
                 Spacer(Modifier.height(8.dp))
@@ -5246,7 +5246,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                                Icon(Icons.Default.WorkspacePremium, contentDescription = null, tint = Color.Black, modifier = Modifier.size(20.dp))
+                                Icon(Icons.Default.WorkspacePremium, contentDescription = null, tint = appThemedColor(Color.Black), modifier = Modifier.size(20.dp))
                                 Text("Signature Products", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                             }
                             Text("SLGAN", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Ink)
@@ -5260,7 +5260,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 Card(
                                     modifier = Modifier.width(198.dp).height(285.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
-                                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                                    colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                                 ) {
                                     Column(Modifier.padding(10.dp)) {
@@ -5351,7 +5351,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                                 },
                                                                 fontSize = 9.sp
                                                             )
-                                                            Text(product.category, color = Color.Black, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(product.category, color = appThemedColor(Color.Black), fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
@@ -5367,7 +5367,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                                                         ) {
                                                             Text("⚖", color = Muted, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.Normal)
-                                                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(product.subtitle.replace(" ", ""), color = appThemedColor(Color.Black), fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
@@ -5387,7 +5387,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                         ) {
                                             Text(
                                                 tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price),
-                                                color = Color.Black,
+                                                color = appThemedColor(Color.Black),
                                                 fontWeight = FontWeight.ExtraBold,
                                                 fontSize = 15.sp,
                                                 maxLines = 1,
@@ -5523,7 +5523,7 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
 @Composable
 private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
     Box(modifier) {
-    Card(Modifier.fillMaxWidth().clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+    Card(Modifier.fillMaxWidth().clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).clip(RoundedCornerShape(14.dp)).background(appThemedColor(Color(0xFFF7F7F7))), contentAlignment = Alignment.Center) {
                 if (product.imageUrl.isNotBlank()) {
@@ -5596,7 +5596,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                 },
                                 fontSize = 9.sp
                             )
-                            Text(product.category, color = Color.Black, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(product.category, color = appThemedColor(Color.Black), fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                 }
@@ -5608,7 +5608,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                             horizontalArrangement = Arrangement.spacedBy(3.dp)
                         ) {
                             Text("⚖", color = Muted, fontSize = 9.sp, lineHeight = 12.sp)
-                            Text(product.subtitle.replace(" ", ""), color = Color.Black, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(product.subtitle.replace(" ", ""), color = appThemedColor(Color.Black), fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                 }
@@ -5625,7 +5625,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 modifier = Modifier.fillMaxWidth().height(44.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Color.Black, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = appThemedColor(Color.Black), fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
                 if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, enabled = product.productStock != 0, modifier = Modifier.size(44.dp), shape = CircleShape, colors = IconButtonDefaults.filledIconButtonColors(containerColor = appThemedColor(Color(0xFF2E7D32)), contentColor = Color.White)) { Icon(Icons.Default.Add, "Add " + product.name, tint = Color.White, modifier = Modifier.size(24.dp)) }
                 else Text(count.toString() + " in cart", fontSize = 10.sp, color = appThemedColor(Color(0xFF2E7D32)), fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterVertically).clickable(enabled = false) {})
             }
@@ -5762,7 +5762,7 @@ private fun ProductDetailsPage(
                             context.startActivity(Intent.createChooser(shareIntent, tr("Share product", currentLanguage)))
                         }, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.Share, contentDescription = "Share product", tint = Color.Black) }
                     }
-                    IconButton(onClick = { showReviewDialog = true }, modifier = Modifier.align(Alignment.BottomStart).padding(start = 24.dp, bottom = 22.dp).size(48.dp).background(Color.White, CircleShape)) {
+                    IconButton(onClick = { showReviewDialog = true }, modifier = Modifier.align(Alignment.BottomStart).padding(start = 24.dp, bottom = 22.dp).size(48.dp).background(appThemedColor(Color.White), CircleShape)) {
                         Icon(Icons.Default.Info, contentDescription = "Product information", tint = Ink)
                     }
                     Box(Modifier.align(Alignment.BottomCenter).padding(bottom = 18.dp).background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(50.dp)).padding(horizontal = 12.dp, vertical = 5.dp)) {
@@ -5770,12 +5770,12 @@ private fun ProductDetailsPage(
                             repeat(5) { dot -> Box(Modifier.size(if (dot == 2) 8.dp else 7.dp).background(if (dot == 2) Ink else appThemedColor(Color(0xFFB7BEC9)), CircleShape)) }
                         }
                     }
-                    IconButton(onClick = onToggleLike, enabled = product.productStock != 0, modifier = Modifier.align(Alignment.BottomEnd).padding(end = 24.dp, bottom = 22.dp).size(48.dp).background(Color.White, CircleShape)) {
+                    IconButton(onClick = onToggleLike, enabled = product.productStock != 0, modifier = Modifier.align(Alignment.BottomEnd).padding(end = 24.dp, bottom = 22.dp).size(48.dp).background(appThemedColor(Color.White), CircleShape)) {
                         Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = "Save product", tint = if (likeSummary.likedByMe) appThemedColor(Color(0xFFE91E63)) else Ink)
                     }
                 }
                 Column(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Surface(shape = RoundedCornerShape(30.dp), color = appThemedColor(Color(0xFFF0F2F6))) {
@@ -5796,7 +5796,7 @@ private fun ProductDetailsPage(
                             } else Text(tr("Price not available yet.", currentLanguage), color = Muted, fontSize = 15.sp)
                         }
                     }
-                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Row(Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             Column(Modifier.weight(1f).clip(RoundedCornerShape(20.dp)).background(appThemedColor(Color(0xFFF8F8FC))).padding(vertical = 18.dp, horizontal = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                                 Icon(Icons.Default.AssignmentReturn, contentDescription = null, tint = Ink, modifier = Modifier.size(34.dp))
@@ -5810,7 +5810,7 @@ private fun ProductDetailsPage(
                             }
                         }
                     }
-                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                             Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(appThemedColor(Color(0xFFF8F8FC))).clickable { highlightsExpanded = !highlightsExpanded }.padding(17.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Text("Highlights", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
@@ -5847,13 +5847,13 @@ private fun ProductDetailsPage(
                 }
             }
         }
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Box(Modifier.size(62.dp).border(1.dp, appThemedColor(Color(0xFFD5DCE7)), RoundedCornerShape(16.dp)).clickable(onClick = onCartClick).padding(8.dp), contentAlignment = Alignment.Center) {
                 BadgedBox(badge = { if (cartCount > 0) Badge(containerColor = appThemedColor(Color(0xFF2E7D32)), contentColor = Color.White) { Text(cartCount.toString(), color = Color.White) } }) {
-                    Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = Color.Black, modifier = Modifier.size(28.dp))
+                    Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = appThemedColor(Color.Black), modifier = Modifier.size(28.dp))
                 }
             }
-            Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(62.dp), shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFD5DCE7))), colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Ink, disabledContainerColor = Color.White, disabledContentColor = Ink)) {
+            Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(62.dp), shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFD5DCE7))), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color.White), contentColor = Ink, disabledContainerColor = Color.White, disabledContentColor = Ink)) {
                 Text(if (product.productStock == 0) "Out of stock" else if (cartCount > 0) "Add another" else "Add to Cart", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
             }
         }
@@ -5861,7 +5861,7 @@ private fun ProductDetailsPage(
             if (showReviewDialog) {
                 ModalBottomSheet(
                     onDismissRequest = { if (!ratingSaving) showReviewDialog = false },
-                    containerColor = Color.White,
+                    containerColor = appThemedColor(Color.White),
                     contentColor = Ink,
                     scrimColor = Color.Black.copy(alpha = 0.62f),
                     shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
@@ -5992,7 +5992,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     colors = ButtonDefaults.textButtonColors(contentColor = Muted)
                 ) { Text("Cancel") }
             },
-            containerColor = Color.White
+            containerColor = appThemedColor(Color.White)
         )
     }
 
@@ -6002,7 +6002,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     val money: (Double) -> String = { amount -> "₹" + String.format(java.util.Locale("en", "IN"), "%.0f", amount) }
 
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA)))) {
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(42.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onBack), contentAlignment = Alignment.Center) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
@@ -6018,7 +6018,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         }
         if (selected.isEmpty()) {
             Column(Modifier.fillMaxSize().padding(22.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                Box(Modifier.size(100.dp).background(Color.White, CircleShape), contentAlignment = Alignment.Center) { Text("🛍️", fontSize = 48.sp) }
+                Box(Modifier.size(100.dp).background(appThemedColor(Color.White), CircleShape), contentAlignment = Alignment.Center) { Text("🛍️", fontSize = 48.sp) }
                 Spacer(Modifier.height(18.dp))
                 Text("Your cart is empty", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
@@ -6026,7 +6026,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             }
         } else {
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(0.dp)) {
+                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), elevation = CardDefaults.cardElevation(0.dp)) {
                     Column {
                         Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(42.dp).background(appThemedColor(Color(0xFFE1E5EC)), RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
@@ -6081,7 +6081,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }
                 if (recommendations.isNotEmpty()) {
-                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.padding(14.dp)) {
                             Text("You might also like", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                             Spacer(Modifier.height(12.dp))
@@ -6118,7 +6118,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         }
                     }
                 }
-                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(16.dp)) {
                         Text("Bill details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(16.dp))
@@ -6142,7 +6142,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Text("No online payment is collected in this app.", color = Muted, fontSize = 12.sp)
                     }
                 }
-                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(14.dp)) {
                         Text("Delivery instructions", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(10.dp))
@@ -6155,7 +6155,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         }
                     }
                 }
-                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(14.dp)) {
                         Text("Ordering for someone else?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         Text("Recipient details can be added at checkout.", color = Muted, fontSize = 13.sp)
@@ -6168,7 +6168,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             if (confirmedDeliveryAddress != null) {
                 val address = confirmedDeliveryAddress!!
                 val confirmedText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode").mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ").ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
-                Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 2.dp), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))) {
+                Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 2.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))) {
                     Column(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(0.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink)
@@ -6206,7 +6206,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             } else {
                 Card(
                     Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                     shape = RoundedCornerShape(14.dp),
                     border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))
                 ) {
@@ -6223,7 +6223,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }
             }
-            Row(Modifier.fillMaxWidth().background(Color.White).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(0.7f)) {
                     Text(money(total), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                     Text("TOTAL", color = Muted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
@@ -6314,7 +6314,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     if (showCheckout) {
         ModalBottomSheet(
             onDismissRequest = { if (!submitting) showCheckout = false },
-            containerColor = Color.White,
+            containerColor = appThemedColor(Color.White),
             contentColor = Ink,
             sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         ) {
@@ -6524,7 +6524,7 @@ private fun OrdersPage(
         return addedCount
     }
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF4F5FA))).verticalScroll(rememberScrollState())) {
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(42.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onHome), contentAlignment = Alignment.Center) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
@@ -6555,7 +6555,7 @@ private fun OrdersPage(
         Box(Modifier.fillMaxWidth().height(1.dp).background(Muted.copy(alpha = 0.45f)))
         Spacer(Modifier.height(18.dp))
         if (failedOrders.isNotEmpty() && orderSearch.isBlank()) {
-            Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.ErrorOutline, contentDescription = null, tint = appThemedColor(Color(0xFFE76F35)), modifier = Modifier.size(38.dp))
                     Spacer(Modifier.width(14.dp))
@@ -6686,7 +6686,7 @@ private fun OrdersPage(
             }
             Box(
                 Modifier.shadow(4.dp, RoundedCornerShape(50.dp))
-                    .background(Color.White, RoundedCornerShape(50.dp))
+                    .background(appThemedColor(Color.White), RoundedCornerShape(50.dp))
                     .padding(horizontal = 11.dp, vertical = 7.dp)
             ) {
                 Text(currentOrders.size.toString(), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
@@ -6720,7 +6720,7 @@ private fun OrdersPage(
                 val total = (order["grandTotal"] as? Number)?.toDouble() ?: 0.0
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
-                Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 3.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                Card(colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 3.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(42.dp).shadow(4.dp, CircleShape).background(appThemedColor(Color(0xFFF1F1F1)), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp)) }
@@ -6855,7 +6855,7 @@ private fun OrdersPage(
             }
             Box(
                 Modifier.shadow(4.dp, RoundedCornerShape(50.dp))
-                    .background(Color.White, RoundedCornerShape(50.dp))
+                    .background(appThemedColor(Color.White), RoundedCornerShape(50.dp))
                     .padding(horizontal = 11.dp, vertical = 7.dp)
             ) {
                 Text(historicalOrders.size.toString(), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 13.sp)
@@ -6878,7 +6878,7 @@ private fun OrdersPage(
                 val timestamp = order["createdAt"] as? com.google.firebase.Timestamp
                 val invoiceUrl = order["invoiceUrl"]?.toString()
                 val orderItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
-                Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 3.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
+                Card(colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(18.dp), elevation = CardDefaults.cardElevation(defaultElevation = 3.dp), modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { selectedOrder = order }) {
                     Column(Modifier.fillMaxWidth().padding(15.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(Modifier.size(42.dp).background(appThemedColor(Color(0xFFF1F1F1)), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp)) }
@@ -6937,7 +6937,7 @@ private fun OrdersPage(
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
-                                    modifier = Modifier.size(38.dp).background(Color.White, CircleShape)
+                                    modifier = Modifier.size(38.dp).background(appThemedColor(Color.White), CircleShape)
                                 ) {
                                     Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Ink)
                                 }
@@ -6975,7 +6975,7 @@ private fun OrdersPage(
     }
 
     orderOptions?.let { order ->
-        ModalBottomSheet(onDismissRequest = { orderOptions = null }, containerColor = Color.White, contentColor = Ink) {
+        ModalBottomSheet(onDismissRequest = { orderOptions = null }, containerColor = appThemedColor(Color.White), contentColor = Ink) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Order info", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Row(Modifier.fillMaxWidth().clickable { confirmDeleteOrder = order; orderOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -7028,8 +7028,8 @@ private fun OrdersPage(
         val invoiceUrl = order["invoiceUrl"]?.toString()
         // Render order summary as a full-screen in-app page instead of a Dialog.
         // This gives the page its own header, scrollable content, and bottom action area.
-        Box(Modifier.fillMaxSize().background(Color.White)) {
-            Column(Modifier.fillMaxSize().background(Color.White)) {
+        Box(Modifier.fillMaxSize().background(appThemedColor(Color.White))) {
+            Column(Modifier.fillMaxSize().background(appThemedColor(Color.White))) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { selectedOrder = null }, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape)) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back to Order History", tint = Ink)
@@ -7117,7 +7117,7 @@ private fun OrdersPage(
                         Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
                     Spacer(Modifier.height(20.dp))
-                    Column(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 20.dp, vertical = 16.dp)) {
+                    Column(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 20.dp, vertical = 16.dp)) {
                         Text("Need help with your order?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(3.dp))
                         Text("About any issues related to your order", color = Muted, fontSize = 13.sp)
@@ -7128,7 +7128,7 @@ private fun OrdersPage(
                 }
                 Column(
                     Modifier.fillMaxWidth()
-                        .background(Color.White)
+                        .background(appThemedColor(Color.White))
                         .navigationBarsPadding()
                         .padding(horizontal = 16.dp)
                         .padding(top = 6.dp, bottom = 8.dp)
@@ -7234,7 +7234,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
     }
 
     Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(rememberScrollState())) {
-        Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(42.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onHome), contentAlignment = Alignment.Center) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
@@ -7301,7 +7301,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     modifier = Modifier.fillMaxWidth(0.94f)
                         .heightIn(max = 280.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(Color.White)
+                        .background(appThemedColor(Color.White))
                         .border(1.dp, appThemedColor(Color(0xFFE5E8EF)), RoundedCornerShape(12.dp))
                 ) {
                     matches.forEach { disease ->
@@ -7337,7 +7337,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(22.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(16.dp)) {
@@ -7467,7 +7467,7 @@ private fun DiseaseAccordion(
     onToggle: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp)).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), RoundedCornerShape(15.dp)).background(Color.White)) {
+    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(15.dp)).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), RoundedCornerShape(15.dp)).background(appThemedColor(Color.White))) {
         Row(Modifier.fillMaxWidth().clickable(onClick = onToggle).padding(horizontal = 14.dp, vertical = 16.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(21.dp))
             Spacer(Modifier.width(10.dp))
@@ -7532,7 +7532,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
 
     Row(modifier.fillMaxSize().background(appThemedColor(Color(0xFFFFF8EC)))) {
         Column(
-            Modifier.width(94.dp).fillMaxHeight().background(Color.White).verticalScroll(leftScroll).padding(horizontal = 6.dp, vertical = 8.dp),
+            Modifier.width(94.dp).fillMaxHeight().background(appThemedColor(Color.White)).verticalScroll(leftScroll).padding(horizontal = 6.dp, vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             visibleCategories.forEach { category ->
@@ -7617,7 +7617,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                 Card(
                                     modifier = Modifier.weight(1f).height(285.dp).padding(bottom = 6.dp).clickable { onProductClick(product) },
                                     shape = RoundedCornerShape(18.dp),
-                                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                                    colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                                 ) {
                                     Column(Modifier.fillMaxWidth()) {
@@ -7682,7 +7682,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             Spacer(Modifier.height(4.dp))
                                             Text(
                                                 if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
-                                                color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1
+                                                color = appThemedColor(Color.Black), fontSize = 14.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1
                                             )
                                             Spacer(Modifier.height(6.dp))
                                             if (quantityInCart == 0) {
@@ -7692,9 +7692,9 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     modifier = Modifier.fillMaxWidth().height(38.dp),
                                                     contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
                                                     shape = RoundedCornerShape(12.dp),
-                                                    colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = Color.Black, disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)), disabledContentColor = Color.Black),
+                                                    colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = appThemedColor(Color.Black), disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)), disabledContentColor = Color.Black),
                                                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 0.dp)
-                                                ) { Text("ADD", color = Color.Black, fontSize = 12.sp, fontWeight = FontWeight.Bold) }
+                                                ) { Text("ADD", color = appThemedColor(Color.Black), fontSize = 12.sp, fontWeight = FontWeight.Bold) }
                                             } else {
                                                 Row(
                                                     Modifier.fillMaxWidth().height(38.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFE2E2E2))),
@@ -7826,7 +7826,7 @@ private fun AccountsPage(
         ) {
             Box(Modifier.size(78.dp), contentAlignment = Alignment.BottomEnd) {
                 Box(
-                    Modifier.fillMaxSize().background(Color.White, CircleShape)
+                    Modifier.fillMaxSize().background(appThemedColor(Color.White), CircleShape)
                         .border(2.dp, Gold.copy(alpha = 0.7f), CircleShape).clip(CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
@@ -7869,7 +7869,7 @@ private fun AccountsPage(
             ).forEach { (label, icon, route) ->
                 Card(
                     modifier = Modifier.weight(1f).height(112.dp).clickable { onTabChange(route) },
-                    shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)
+                    shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))
                 ) {
                     Column(Modifier.fillMaxSize().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                         Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(30.dp))
@@ -7880,7 +7880,7 @@ private fun AccountsPage(
             }
         }
         Spacer(Modifier.height(18.dp))
-        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(44.dp).background(appThemedColor(Color(0xFFF1F2F4)), RoundedCornerShape(13.dp)), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Spa, contentDescription = null, tint = Ink, modifier = Modifier.size(25.dp))
@@ -7894,7 +7894,7 @@ private fun AccountsPage(
             }
         }
         Spacer(Modifier.height(18.dp))
-        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Column {
                 Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information") { onTabChange("Profile") }
@@ -7909,7 +7909,7 @@ private fun AccountsPage(
             }
         }
         Spacer(Modifier.height(16.dp))
-        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Column {
                 Text("About and support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.HelpOutline, "Help and support") { onTabChange("Help") }
@@ -7918,7 +7918,7 @@ private fun AccountsPage(
             }
         }
         Spacer(Modifier.height(14.dp))
-        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+        Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Column {
                 Text("Other Information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.Share, "Share the app") {
@@ -8083,7 +8083,7 @@ private fun AccountsPage(
                     },
                     shape = RoundedCornerShape(18.dp),
                     border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                     elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
                 ) {
                     Row(
@@ -8181,7 +8181,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
     }
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF1F2F6)))) {
         Row(
-            modifier = Modifier.fillMaxWidth().background(Color.White).padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
+            modifier = Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
@@ -8194,7 +8194,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             shape = RoundedCornerShape(18.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(Modifier.padding(14.dp)) {
@@ -8246,7 +8246,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                             spotColor = Ink.copy(alpha = 0.14f)
                         ),
                         colors = SuggestionChipDefaults.suggestionChipColors(
-                            containerColor = Color.White,
+                            containerColor = appThemedColor(Color.White),
                             labelColor = Ink
                         )
                     )
@@ -8419,7 +8419,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     }
 
     addressOptions?.let { address ->
-        ModalBottomSheet(onDismissRequest = { addressOptions = null }, containerColor = Color.White, contentColor = Ink) {
+        ModalBottomSheet(onDismissRequest = { addressOptions = null }, containerColor = appThemedColor(Color.White), contentColor = Ink) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text("Address options", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Row(Modifier.fillMaxWidth().clickable { confirmDeleteAddress = address; addressOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -8472,7 +8472,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     } else {
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF2F4FA)))) {
         Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 10.dp),
+            Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE1E6EF)), CircleShape)) {
@@ -8496,7 +8496,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 Card(
                     Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                     elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
                 ) {
                     Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -8523,7 +8523,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                             setDefaultAddress(addressId)
                         },
                         shape = RoundedCornerShape(20.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
                     ) {
                         Row(
@@ -8532,7 +8532,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                         ) {
                             Column(
                                 Modifier.width(66.dp).border(1.dp, appThemedColor(Color(0xFFD9DDE7)), RoundedCornerShape(14.dp))
-                                    .background(Color.White, RoundedCornerShape(14.dp)).padding(vertical = 8.dp),
+                                    .background(appThemedColor(Color.White), RoundedCornerShape(14.dp)).padding(vertical = 8.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Icon(
@@ -8652,7 +8652,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     if (showAddAddressSheet && !showAddAddressPage) {
         ModalBottomSheet(
             onDismissRequest = { showAddAddressSheet = false },
-            containerColor = Color.White,
+            containerColor = appThemedColor(Color.White),
             contentColor = Ink,
             shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
             dragHandle = {
@@ -9019,13 +9019,13 @@ private fun AddAddressDetailsPage(
                 ) { Text("No", color = Ink) }
             },
             shape = RoundedCornerShape(22.dp),
-            containerColor = Color.White
+            containerColor = appThemedColor(Color.White)
         )
     }
 
     Column(Modifier.fillMaxSize().background(appThemedColor(Color(0xFFF5F5F5)))) {
         Row(
-            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 12.dp, vertical = 6.dp),
+            Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = { showExitConfirmation = true }, modifier = Modifier.size(40.dp).border(1.dp, appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(10.dp))) {
@@ -9037,7 +9037,7 @@ private fun AddAddressDetailsPage(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("Address details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Box {
@@ -9246,7 +9246,7 @@ private fun AddAddressDetailsPage(
                     )
                 }
             }
-            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+            Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("Contact details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -9374,7 +9374,7 @@ private fun ReviewAddressPage(
     onEdit: () -> Unit,
     onSave: () -> Unit
 ) {
-    Column(Modifier.fillMaxSize().background(Color.White).verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 112.dp)) {
+    Column(Modifier.fillMaxSize().background(appThemedColor(Color.White)).verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 112.dp)) {
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -9531,7 +9531,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     ) {
         if (initialSection == "Profile") {
             Row(
-                modifier = Modifier.fillMaxWidth().background(Color.White).padding(start = 0.dp, end = 12.dp, top = 10.dp, bottom = 10.dp),
+                modifier = Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 0.dp, end = 12.dp, top = 10.dp, bottom = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Surface(
@@ -9552,7 +9552,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         }
         if (profileSection == "Profile") {
             Column(Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp)) {
-            Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
+            Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(20.dp)) {
                 Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Surface(
                         modifier = Modifier.size(58.dp),
@@ -9594,7 +9594,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         singleLine = true
                     )
                     Box(Modifier.matchParentSize().clickable { countryMenuExpanded = true })
-                    DropdownMenu(expanded = countryMenuExpanded, onDismissRequest = { countryMenuExpanded = false }, containerColor = Color.White) {
+                    DropdownMenu(expanded = countryMenuExpanded, onDismissRequest = { countryMenuExpanded = false }, containerColor = appThemedColor(Color.White)) {
                         countryCodes.forEach { country ->
                             DropdownMenuItem(
                                 text = { Text("${country.second}  ${country.first}  ${country.third}") },
@@ -9664,7 +9664,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     DatePicker(
                         state = datePickerState,
                         colors = DatePickerDefaults.colors(
-                            containerColor = Color.White,
+                            containerColor = appThemedColor(Color.White),
                             titleContentColor = Ink,
                             headlineContentColor = Ink,
                             weekdayContentColor = Muted,
@@ -9688,7 +9688,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             Box(Modifier.fillMaxWidth()) {
                 OutlinedTextField(value = gender, onValueChange = {}, readOnly = true, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Gender", LocalAppLanguage.current)) }, placeholder = { Text(tr("Select gender", LocalAppLanguage.current)) }, trailingIcon = { Icon(Icons.Default.ArrowDropDown, null, tint = Ink) }, leadingIcon = { Icon(Icons.Default.Wc, null, tint = Ink) }, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink))
                 Box(Modifier.matchParentSize().clickable { genderMenuExpanded = true })
-                DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }, containerColor = Color.White) {
+                DropdownMenu(expanded = genderMenuExpanded, onDismissRequest = { genderMenuExpanded = false }, containerColor = appThemedColor(Color.White)) {
                     listOf("Female", "Male", "Non-binary", "Prefer not to say").forEach { option ->
                         DropdownMenuItem(text = { Text(tr(option, LocalAppLanguage.current)) }, onClick = { gender = option; genderMenuExpanded = false; saveMessage = null })
                     }
