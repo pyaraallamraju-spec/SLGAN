@@ -3550,6 +3550,9 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
     var loading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
     var search by remember { mutableStateOf("") }
+    var statusFilter by remember { mutableStateOf("All") }
+    var sortBy by remember { mutableStateOf("Latest") }
+    var sortMenuExpanded by remember { mutableStateOf(false) }
     var updatingIds by remember { mutableStateOf<Set<String>>(emptySet()) }
     var viewingCustomer by remember { mutableStateOf<Map<String, Any?>?>(null) }
     var editingCustomer by remember { mutableStateOf<Map<String, Any?>?>(null) }
@@ -3575,66 +3578,100 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         onDispose { registration.remove() }
     }
 
-    val visibleCustomers = customers.filter { customer ->
-        listOf("firstName", "lastName", "nickname", "email", "mobileNumber")
-            .mapNotNull { customer[it]?.toString() }.joinToString(" ")
-            .contains(search.trim(), ignoreCase = true)
+    val enabledCount = remember(customers) { customers.count { (it["is_active"] as? Boolean) ?: (it["enabled"] != false) } }
+    val disabledCount = customers.size - enabledCount
+    val visibleCustomers = remember(customers, search, statusFilter, sortBy) {
+        customers.filter { customer ->
+            val matchesSearch = listOf("firstName", "lastName", "nickname", "email", "mobileNumber")
+                .mapNotNull { customer[it]?.toString() }.joinToString(" ")
+                .contains(search.trim(), ignoreCase = true)
+            val active = (customer["is_active"] as? Boolean) ?: (customer["enabled"] != false)
+            val matchesStatus = statusFilter == "All" || (statusFilter == "Enabled" && active) || (statusFilter == "Disabled" && !active)
+            matchesSearch && matchesStatus
+        }.let { result ->
+            when (sortBy) {
+                "Name A–Z" -> result.sortedBy { (it["firstName"]?.toString().orEmpty() + " " + it["lastName"]?.toString().orEmpty()).trim().lowercase() }
+                "Name Z–A" -> result.sortedByDescending { (it["firstName"]?.toString().orEmpty() + " " + it["lastName"]?.toString().orEmpty()).trim().lowercase() }
+                else -> result.sortedByDescending { customer ->
+                    listOf("createdAt", "created_at", "joinedAt", "registrationDate")
+                        .firstNotNullOfOrNull { key ->
+                            when (val value = customer[key]) {
+                                is com.google.firebase.Timestamp -> value.toDate().time
+                                is java.util.Date -> value.time
+                                is Number -> value.toLong()
+                                else -> null
+                            }
+                        } ?: 0L
+                }
+            }
+        }
     }
 
-    Column(Modifier.fillMaxSize().background(AdminBackground).padding(top = 8.dp)) {
-        Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+    Column(Modifier.fillMaxSize().background(AdminBackground).padding(top = 4.dp)) {
+        Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = AdminInk) }
             Column(Modifier.weight(1f)) {
-                Text("Customers", color = AdminInk, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                Text("${customers.size} customer accounts", color = AdminMuted, fontSize = 12.sp)
+                Text("Customers", color = AdminInk, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text("Manage customer accounts", color = AdminMuted, fontSize = 12.sp)
             }
         }
-        Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
-            Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 17.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(50.dp).background(AdminLightGray, RoundedCornerShape(16.dp)), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Groups, contentDescription = null, tint = AdminInk, modifier = Modifier.size(27.dp))
-                }
-                Spacer(Modifier.width(14.dp))
-                Column(Modifier.weight(1f)) {
-                    Text("Customer library", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    Text("Registered customer accounts", color = AdminMuted, fontSize = 12.sp)
-                }
-                Column(horizontalAlignment = Alignment.End) {
-                    Text(customers.size.toString(), color = AdminInk, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("TOTAL", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+        Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf(Triple(customers.size.toString(), "Total", AdminLightGray), Triple(enabledCount.toString(), "Enabled", AdminLightGray), Triple(disabledCount.toString(), "Disabled", AdminLightGray)).forEach { item ->
+                Card(Modifier.weight(1f), shape = RoundedCornerShape(13.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(1.dp, Color(0xFFB5B5B5)), elevation = CardDefaults.cardElevation(0.dp)) {
+                    Column(Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 9.dp)) {
+                        Text(item.first, color = AdminInk, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(item.second, color = AdminMuted, fontSize = 10.sp)
+                    }
                 }
             }
         }
-        OutlinedTextField(
-            value = search,
-            onValueChange = { search = it },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
-            singleLine = true,
-            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-            label = { Text("Search name, email or mobile", modifier = Modifier.background(Color.Transparent), color = AdminMuted, fontSize = 13.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = AdminMuted, modifier = Modifier.size(22.dp)) },
-            shape = RoundedCornerShape(16.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                focusedLabelColor = AdminMuted,
-                unfocusedLabelColor = AdminMuted,
-                cursorColor = AdminInk
+        Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                value = search, onValueChange = { search = it },
+                modifier = Modifier.weight(1f).height(54.dp), singleLine = true,
+                placeholder = { Text("Search name, email or mobile…", fontSize = 12.sp, color = AdminMuted) },
+                leadingIcon = { Icon(Icons.Default.Search, null, tint = AdminInk) },
+                trailingIcon = { if (search.isNotBlank()) IconButton(onClick = { search = "" }) { Icon(Icons.Default.Close, "Clear search") } },
+                shape = RoundedCornerShape(12.dp),
+                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Color(0xFFB5B5B5), unfocusedBorderColor = Color(0xFFB5B5B5), focusedContainerColor = Color.White, unfocusedContainerColor = Color.White, focusedTextColor = AdminInk, unfocusedTextColor = AdminInk, cursorColor = AdminInk)
             )
-        )
-        Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(1.dp).background(AdminMuted.copy(alpha = 0.45f)))
-        Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.width(8.dp))
+            Box {
+                Surface(onClick = { sortMenuExpanded = true }, shape = RoundedCornerShape(12.dp), color = Color.White, border = BorderStroke(1.dp, Color(0xFFB5B5B5))) {
+                    Row(Modifier.height(52.dp).padding(horizontal = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.FilterList, null, tint = AdminInk, modifier = Modifier.size(18.dp))
+                        Spacer(Modifier.width(4.dp))
+                        Icon(Icons.Default.ArrowDropDown, null, tint = AdminInk)
+                    }
+                }
+                DropdownMenu(expanded = sortMenuExpanded, onDismissRequest = { sortMenuExpanded = false }) {
+                    listOf("Latest", "Name A–Z", "Name Z–A").forEach { option ->
+                        DropdownMenuItem(text = { Text(option, color = AdminInk) }, onClick = { sortBy = option; sortMenuExpanded = false })
+                    }
+                }
+            }
+        }
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+            listOf("All", "Enabled", "Disabled").forEach { status ->
+                FilterChip(
+                    selected = statusFilter == status,
+                    onClick = { statusFilter = status },
+                    label = { Text(when (status) { "All" -> "All (${customers.size})"; "Enabled" -> "Enabled ($enabledCount)"; else -> "Disabled ($disabledCount)" }, fontSize = 11.sp) },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = FilterChipDefaults.filterChipColors(selectedContainerColor = AdminInk, selectedLabelColor = Color.White, containerColor = Color.White, labelColor = AdminInk)
+                )
+            }
+        }
+        Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text("SORT: $sortBy", color = AdminMuted, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
+            Spacer(Modifier.weight(1f))
+            Text("Showing ${visibleCustomers.size} of ${customers.size}", color = AdminMuted, fontSize = 10.sp)
+        }
         when {
-            loading -> AppLoader("Loading customers…")
-            error != null -> Text("Could not load customers: ${error}", color = AdminInk, modifier = Modifier.padding(16.dp))
-            visibleCustomers.isEmpty() -> EmptyState("👥", if (search.isBlank()) "No customers yet" else "No matching customers", "Registered customer accounts will appear here.")
-            else -> LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
+            loading -> AppLoader("Loading customers…", compact = true, messageColor = AdminInk)
+            error != null -> Text("Could not load customers: $error", color = AdminInk, modifier = Modifier.padding(16.dp))
+            visibleCustomers.isEmpty() -> EmptyState("👥", if (search.isBlank() && statusFilter == "All") "No customers yet" else "No matching customers", "Try changing your search or filters.")
+            else -> LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(horizontal = 12.dp, vertical = 5.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(visibleCustomers, key = { it["uid"].toString() }) { customer ->
                     val uid = customer["uid"].toString()
                     val firstName = customer["firstName"]?.toString().orEmpty().trim()
@@ -3643,63 +3680,50 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                     val name = listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname }.ifBlank { "Customer" }
                     val email = customer["email"]?.toString().orEmpty()
                     val phone = customer["mobileNumber"]?.toString().orEmpty()
-                    val gender = customer["gender"]?.toString().orEmpty()
                     val enabled = (customer["is_active"] as? Boolean) ?: (customer["enabled"] != false)
                     val isUpdating = uid in updatingIds
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = AdminSurface),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-                    ) {
-                        Column(Modifier.padding(15.dp)) {
+                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp), colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(0.7.dp, Color(0xFFB5B5B5)), elevation = CardDefaults.cardElevation(0.dp)) {
+                        Column(Modifier.padding(12.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Box(Modifier.size(44.dp).background(AdminLightGray, CircleShape), contentAlignment = Alignment.Center) {
-                                    Icon(Icons.Default.Person, contentDescription = null, tint = AdminInk)
+                                Box(Modifier.size(42.dp).clip(CircleShape).background(AdminLightGray), contentAlignment = Alignment.Center) {
+                                    Icon(Icons.Default.Person, null, tint = AdminInk, modifier = Modifier.size(22.dp))
                                 }
-                                Spacer(Modifier.width(11.dp))
+                                Spacer(Modifier.width(10.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(name, color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                                    Text(email.ifBlank { "Email not provided" }, color = AdminMuted, fontSize = 12.sp)
+                                    Text(name, color = AdminInk, fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text(email.ifBlank { "Email not provided" }, color = AdminMuted, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    if (phone.isNotBlank()) Text(phone, color = AdminMuted, fontSize = 10.sp, maxLines = 1)
                                 }
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Switch(
-                                        checked = enabled,
-                                        onCheckedChange = { newValue ->
-                                            if (!isUpdating) {
-                                                updatingIds = updatingIds + uid
-                                                FirebaseFirestore.getInstance().collection("customers").document(uid)
-                                                    .update(mapOf("is_active" to newValue, "updatedAt" to System.currentTimeMillis()))
-                                                    .addOnSuccessListener {
-                                                        Toast.makeText(context, if (newValue) "Customer enabled" else "Customer disabled", Toast.LENGTH_SHORT).show()
-                                                        updatingIds = updatingIds - uid
-                                                    }
-                                                    .addOnFailureListener { exception ->
-                                                        Toast.makeText(context, "Could not update customer: " + (exception.localizedMessage ?: "permission denied"), Toast.LENGTH_LONG).show()
-                                                        updatingIds = updatingIds - uid
-                                                    }
-                                            }
-                                        },
-                                        enabled = !isUpdating,
-                                        colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AdminInk, checkedBorderColor = AdminInk)
-                                    )
-                                    Text(if (enabled) "Enabled" else "Disabled", color = if (enabled) AdminInk else AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Surface(shape = RoundedCornerShape(7.dp), color = AdminLightGray) {
+                                    Text(if (enabled) "Enabled" else "Disabled", Modifier.padding(horizontal = 8.dp, vertical = 5.dp), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
-                            Spacer(Modifier.height(10.dp))
-                            HorizontalDivider(color = AdminLightGray)
-                            Spacer(Modifier.height(8.dp))
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                IconButton(onClick = { viewingCustomer = customer }) {
-                                    Icon(Icons.Default.Visibility, contentDescription = "View customer details", tint = AdminInk)
-                                }
-                                IconButton(onClick = { editingCustomer = customer }) {
-                                    Icon(Icons.Default.Edit, contentDescription = "Edit customer details", tint = AdminInk)
-                                }
+                            HorizontalDivider(Modifier.padding(vertical = 8.dp), color = Color(0xFFB5B5B5))
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("Account status", color = AdminMuted, fontSize = 11.sp, modifier = Modifier.weight(1f))
+                                if (isUpdating) CircularProgressIndicator(Modifier.size(17.dp), color = AdminInk, strokeWidth = 2.dp)
+                                Switch(
+                                    checked = enabled,
+                                    onCheckedChange = { newValue ->
+                                        if (!isUpdating) {
+                                            updatingIds = updatingIds + uid
+                                            FirebaseFirestore.getInstance().collection("customers").document(uid)
+                                                .update(mapOf("is_active" to newValue, "updatedAt" to System.currentTimeMillis()))
+                                                .addOnSuccessListener {
+                                                    Toast.makeText(context, if (newValue) "Customer enabled" else "Customer disabled", Toast.LENGTH_SHORT).show()
+                                                    updatingIds = updatingIds - uid
+                                                }
+                                                .addOnFailureListener { exception ->
+                                                    Toast.makeText(context, "Could not update customer: " + (exception.localizedMessage ?: "permission denied"), Toast.LENGTH_LONG).show()
+                                                    updatingIds = updatingIds - uid
+                                                }
+                                        }
+                                    },
+                                    enabled = !isUpdating,
+                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AdminInk, checkedBorderColor = AdminInk, uncheckedTrackColor = AdminLightGray, uncheckedBorderColor = Color(0xFFB5B5B5))
+                                )
+                                IconButton(onClick = { viewingCustomer = customer }, modifier = Modifier.size(36.dp)) { Icon(Icons.Default.Visibility, "View customer details", tint = AdminInk, modifier = Modifier.size(19.dp)) }
+                                IconButton(onClick = { editingCustomer = customer }, modifier = Modifier.size(36.dp)) { Icon(Icons.Default.Edit, "Edit customer details", tint = AdminInk, modifier = Modifier.size(19.dp)) }
                             }
                         }
                     }
