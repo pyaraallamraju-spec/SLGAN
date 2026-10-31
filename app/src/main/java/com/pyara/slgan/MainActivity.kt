@@ -7680,7 +7680,7 @@ private fun AccountsPage(
                     }
                     context.startActivity(Intent.createChooser(sendIntent, "Share SLGAN"))
                 }
-                AccountMenuRow(Icons.Default.Facebook, "Social media", onClick = { onTabChange("SocialMedia") })
+                AccountMenuRow(Icons.Default.Public, "Social media", onClick = { onTabChange("SocialMedia") })
                 AccountMenuRow(Icons.Default.Lock, "Account privacy", onClick = { onTabChange("AccountPrivacy") })
                 AccountMenuRow(Icons.Default.NotificationsNone, "Notification preferences") {
                     android.app.AlertDialog.Builder(context)
