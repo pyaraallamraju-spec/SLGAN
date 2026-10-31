@@ -265,6 +265,44 @@ private fun applyAppPalette(themeId: Int) {
         else -> defaultAppPalette
     }
 }
+
+private fun appThemedColor(original: Color): Color {
+    val themeId = activeAppThemeId
+    if (themeId != 3 && themeId != 4) return original
+
+    val red = original.red
+    val green = original.green
+    val blue = original.blue
+    val max = maxOf(red, green, blue)
+    val min = minOf(red, green, blue)
+    val delta = max - min
+    val saturation = if (max <= 0f) 0f else delta / max
+    val brightness = 0.299f * red + 0.587f * green + 0.114f * blue
+    val hue = when {
+        delta <= 0.00001f -> 0f
+        max == red -> (60f * ((green - blue) / delta) + 360f) % 360f
+        max == green -> 60f * ((blue - red) / delta + 2f)
+        else -> 60f * ((red - green) / delta + 4f)
+    }
+
+    // Preserve strong semantic red (errors) and green (success) indicators.
+    if (saturation > 0.48f && (hue < 12f || hue > 345f || hue in 85f..165f)) return original
+
+    return when {
+        brightness > 0.91f && saturation < 0.16f ->
+            if (themeId == 3) Color(0xFF142130) else Color(0xFFF1FAF0)
+        brightness > 0.72f && saturation < 0.28f ->
+            if (themeId == 3) Color(0xFF0B1118) else Color(0xFFDDF3DF)
+        brightness < 0.22f && saturation < 0.45f ->
+            if (themeId == 3) Color(0xFFF4F1E8) else Color(0xFF12351E)
+        saturation < 0.22f && brightness < 0.68f ->
+            if (themeId == 3) Color(0xFFAAB4C0) else Color(0xFF607568)
+        hue in 15f..65f && saturation >= 0.12f ->
+            if (themeId == 3) Color(0xFFF4C96B) else Color(0xFF075B2A)
+        else -> original
+    }
+}
+
 private val LocalAppLanguage = staticCompositionLocalOf { "English" }
 
 private fun tr(text: String, language: String): String {
