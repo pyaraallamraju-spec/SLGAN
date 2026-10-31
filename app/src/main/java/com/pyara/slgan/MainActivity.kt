@@ -4273,9 +4273,64 @@ private fun ShopScreen(
             "AddressBook" -> AddressBookPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") })
             "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "About" -> AboutPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
+            "SocialMedia" -> SocialMediaPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "ContactSLGAN" -> ContactSLGANPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "AccountPrivacy" -> AccountPrivacyPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
+        }
+    }
+}
+
+@Composable
+private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () -> Unit) {
+    val context = LocalContext.current
+    val isEnglish = appLanguage == "English"
+    val facebookUrl = "https://www.facebook.com/share/1bdVs2DWgy/"
+    Column(modifier.fillMaxSize().background(Color(0xFFF7F7F7))) {
+        Row(
+            Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
+            Text(if (isEnglish) "Social media" else "సోషల్ మీడియా", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        }
+        Divider(color = Color(0xFFE4E6EB), thickness = 1.dp)
+        Column(
+            Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                if (isEnglish) "Connect with SLGAN" else "SLGANతో కనెక్ట్ అవ్వండి",
+                color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold
+            )
+            Text(
+                if (isEnglish) "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam on social media for updates and information." else "తాజా సమాచారం మరియు వివరాల కోసం శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయాన్ని సోషల్ మీడియాలో అనుసరించండి.",
+                color = Muted, fontSize = 14.sp, lineHeight = 21.sp
+            )
+            Card(
+                Modifier.fillMaxWidth().clickable {
+                    runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl))) }
+                        .onFailure { Toast.makeText(context, if (isEnglish) "Unable to open Facebook." else "Facebook తెరవడం సాధ్యం కాలేదు.", Toast.LENGTH_SHORT).show() }
+                },
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Row(
+                    Modifier.fillMaxWidth().padding(18.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(Modifier.size(48.dp).background(Color(0xFFE8F0FE), RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.Facebook, contentDescription = "Facebook", tint = Color(0xFF1877F2), modifier = Modifier.size(28.dp))
+                    }
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text("Facebook", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text(if (isEnglish) "Visit our Facebook page" else "మా Facebook పేజీని సందర్శించండి", color = Muted, fontSize = 13.sp)
+                    }
+                    Icon(Icons.Default.OpenInNew, contentDescription = if (isEnglish) "Open Facebook" else "Facebook తెరవండి", tint = Ink)
+                }
+            }
         }
     }
 }
@@ -7539,7 +7594,7 @@ private fun AccountsPage(
                     }
                     context.startActivity(Intent.createChooser(sendIntent, "Share SLGAN"))
                 }
-                AccountMenuRow(Icons.Default.Info, "About us") { onTabChange("About") }
+                AccountMenuRow(Icons.Default.Share, "Social media", "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("SocialMedia") }
                 AccountMenuRow(Icons.Default.Lock, "Account privacy", "Manage your privacy and account data") { onTabChange("AccountPrivacy") }
                 AccountMenuRow(Icons.Default.NotificationsNone, "Notification preferences") {
                     android.app.AlertDialog.Builder(context)
