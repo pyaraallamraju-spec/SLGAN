@@ -7946,118 +7946,111 @@ private fun AccountsPage(
     if (showLanguageSheet) {
         ModalBottomSheet(
             onDismissRequest = { showLanguageSheet = false; languageDropdownExpanded = false },
-            containerColor = Color.White,
-            contentColor = Ink,
+            containerColor = Color(0xFFF3F4F5),
+            contentColor = Color(0xFF25282D),
             shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
             dragHandle = {
-                Box(Modifier.padding(top = 10.dp, bottom = 6.dp).size(width = 38.dp, height = 4.dp).background(appThemedColor(Color(0xFFD7D9DE)), CircleShape))
+                Box(
+                    Modifier.padding(top = 10.dp, bottom = 8.dp)
+                        .size(width = 40.dp, height = 5.dp)
+                        .background(Color(0xFFB5B5B5), CircleShape)
+                )
             }
         ) {
             Column(
-                Modifier.fillMaxWidth().navigationBarsPadding().padding(start = 22.dp, end = 22.dp, top = 8.dp, bottom = 28.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                Modifier.fillMaxWidth().navigationBarsPadding()
+                    .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 28.dp),
+                horizontalAlignment = Alignment.Start
             ) {
-                Box(Modifier.size(58.dp).background(appThemedColor(Color(0xFFF1F1F1)), CircleShape), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Language, contentDescription = null, tint = Ink, modifier = Modifier.size(28.dp))
-                }
-                Spacer(Modifier.height(12.dp))
-                Text("Choose your language", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
-                Spacer(Modifier.height(6.dp))
-                Text("Select the language you want to use in SLGAN.", color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
-                Spacer(Modifier.height(22.dp))
-                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    BoxWithConstraints(Modifier.weight(0.73f)) {
-                        OutlinedButton(
-                            onClick = { languageDropdownExpanded = true },
-                            modifier = Modifier.fillMaxWidth().height(54.dp),
-                            shape = RoundedCornerShape(14.dp),
-                            border = BorderStroke(1.dp, appThemedColor(Color(0xFFD9DCE2))),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink),
-                            contentPadding = PaddingValues(horizontal = 14.dp)
+                Text("Choose your language", color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Spacer(Modifier.height(5.dp))
+                Text("Select your preferred language for SLGAN.", color = Color(0xFF707780), fontSize = 14.sp)
+                Spacer(Modifier.height(20.dp))
+                listOf("English", "Telugu", "Hindi").forEach { option ->
+                    val isSelected = selectedLanguage == option
+                    val nativeName = when (option) {
+                        "Telugu" -> "తెలుగు"
+                        "Hindi" -> "हिन्दी"
+                        else -> "English"
+                    }
+                    val symbol = when (option) {
+                        "Telugu" -> "అ"
+                        "Hindi" -> "अ"
+                        else -> "A"
+                    }
+                    Card(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(bottom = 10.dp)
+                            .clickable { selectedLanguage = option },
+                        shape = RoundedCornerShape(18.dp),
+                        border = BorderStroke(
+                            if (isSelected) 2.dp else 1.dp,
+                            if (isSelected) Color(0xFF25282D) else Color(0xFFB5B5B5)
+                        ),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (isSelected) Color(0xFFE2E2E2) else Color.White
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 2.dp else 0.dp)
+                    ) {
+                        Row(
+                            Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 15.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Box(
-                                modifier = Modifier.size(24.dp),
+                                Modifier.size(46.dp).background(Color(0xFFF3F4F5), RoundedCornerShape(14.dp)),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    text = when (selectedLanguage) {
-                                        "Telugu" -> "అ"
-                                        "Hindi" -> "अ"
-                                        else -> "A"
-                                    },
-                                    color = Ink,
-                                    fontSize = if (selectedLanguage == "English") 18.sp else 20.sp,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    textAlign = TextAlign.Center,
-                                    maxLines = 1
-                                )
+                                Text(symbol, color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.Bold)
                             }
-                            Spacer(Modifier.width(10.dp))
-                            Text(tr(selectedLanguage, appLanguage), modifier = Modifier.weight(1f), textAlign = TextAlign.Start, maxLines = 1)
-                            Icon(Icons.Default.ExpandMore, contentDescription = "Choose language", tint = Ink)
-                        }
-                        DropdownMenu(
-                            expanded = languageDropdownExpanded,
-                            onDismissRequest = { languageDropdownExpanded = false },
-                            modifier = Modifier.width(maxWidth).background(Color.White),
-                        ) {
-                            listOf("English", "Telugu", "Hindi").forEach { option ->
-                                val isSelected = selectedLanguage == option
-                                DropdownMenuItem(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .then(if (isSelected) Modifier.background(Forest, RoundedCornerShape(10.dp)) else Modifier),
-                                    leadingIcon = {
-                                        if (isSelected) {
-                                            Box(
-                                                modifier = Modifier
-                                                    .size(24.dp)
-                                                    .background(appThemedColor(Color(0xFF21834A)), CircleShape),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                Icon(Icons.Default.Check, contentDescription = "Selected", tint = Color.White, modifier = Modifier.size(17.dp))
-                                            }
-                                        }
-                                    },
-                                    text = { Text(tr(option, appLanguage), color = if (isSelected) Color.White else Ink) },
-                                    onClick = { selectedLanguage = option; languageDropdownExpanded = false }
-                                )
+                            Spacer(Modifier.width(14.dp))
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                Text(nativeName, color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                                Text(option, color = Color(0xFF707780), fontSize = 12.sp)
                             }
-                        }
-                    }
-                    Button(
-                        onClick = {
-                            val uid = user?.uid
-                            if (uid == null) {
-                                Toast.makeText(context, "Please sign in again to save your language.", Toast.LENGTH_SHORT).show()
+                            if (isSelected) {
+                                Icon(Icons.Default.CheckCircle, contentDescription = "Selected", tint = Color(0xFF25282D), modifier = Modifier.size(24.dp))
                             } else {
-                                languageSaving = true
-                                FirebaseData.saveCustomerProfile(uid, mapOf(
-                                    "languagePreference" to selectedLanguage,
-                                    "updatedAt" to System.currentTimeMillis()
-                                )) { error ->
-                                    languageSaving = false
-                                    if (error == null) {
-                                        onLanguageChange(selectedLanguage)
-                                        showLanguageSheet = false
-                                        Toast.makeText(context, "Language preference saved.", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        Toast.makeText(context, "Couldn't save language. Please try again.", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
+                                Icon(Icons.Default.Circle, contentDescription = "Not selected", tint = Color(0xFFB5B5B5), modifier = Modifier.size(22.dp))
                             }
-                        },
-                        enabled = !languageSaving,
-                        modifier = Modifier.weight(0.27f).height(54.dp),
-                        shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Ink, contentColor = Color.White),
-                        contentPadding = PaddingValues(horizontal = 8.dp)
-                    ) {
-                        if (languageSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
-                        else Text("Select", fontWeight = FontWeight.Bold, maxLines = 1)
+                        }
                     }
                 }
                 Spacer(Modifier.height(8.dp))
+                Button(
+                    onClick = {
+                        val uid = user?.uid
+                        if (uid == null) {
+                            Toast.makeText(context, "Please sign in again to save your language.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            languageSaving = true
+                            FirebaseData.saveCustomerProfile(uid, mapOf(
+                                "languagePreference" to selectedLanguage,
+                                "updatedAt" to System.currentTimeMillis()
+                            )) { error ->
+                                languageSaving = false
+                                if (error == null) {
+                                    onLanguageChange(selectedLanguage)
+                                    showLanguageSheet = false
+                                    Toast.makeText(context, "Language preference saved.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, "Couldn't save language. Please try again.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    },
+                    enabled = !languageSaving,
+                    modifier = Modifier.fillMaxWidth().height(54.dp),
+                    shape = RoundedCornerShape(15.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF25282D),
+                        contentColor = Color.White,
+                        disabledContainerColor = Color(0xFFB5B5B5),
+                        disabledContentColor = Color.White
+                    )
+                ) {
+                    if (languageSaving) CircularProgressIndicator(modifier = Modifier.size(19.dp), color = Color.White, strokeWidth = 2.dp)
+                    else Text("Continue", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                }
             }
         }
     }
