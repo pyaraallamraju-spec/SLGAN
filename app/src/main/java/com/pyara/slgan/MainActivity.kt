@@ -7561,11 +7561,11 @@ private fun AccountsPage(
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
             Column {
                 Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                AccountMenuRow(Icons.Default.PersonOutline, "Personal information", "Name, mobile number and profile details") { onTabChange("Profile") }
-                AccountMenuRow(Icons.Default.LocationOn, "Address book", "Manage delivery addresses") { onTabChange("AddressBook") }
-                AccountMenuRow(Icons.Default.ReceiptLong, "My orders", "Track orders and revisit") { onTabChange("MyOrders") }
-                AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products", "Browse your wishlist") { onTabChange("Wishlist") }
-                AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies", "Browse Ayurvedic product information") { onTabChange("Diseases") }
+                AccountMenuRow(Icons.Default.PersonOutline, "Personal information") { onTabChange("Profile") }
+                AccountMenuRow(Icons.Default.LocationOn, "Address book") { onTabChange("AddressBook") }
+                AccountMenuRow(Icons.Default.ReceiptLong, "My orders") { onTabChange("MyOrders") }
+                AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products") { onTabChange("Wishlist") }
+                AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies") { onTabChange("Diseases") }
                 AccountMenuRow(Icons.Default.Language, "Language", appLanguage) {
                     selectedLanguage = appLanguage
                     showLanguageSheet = true
