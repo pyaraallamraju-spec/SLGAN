@@ -5293,7 +5293,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
                 Row(
                     modifier = Modifier
-                        .align(if (product.signature) Alignment.TopStart else Alignment.TopEnd)
+                        .align(Alignment.TopEnd)
                         .padding(4.dp)
                         .background(Color.White.copy(alpha = 0.94f), RoundedCornerShape(18.dp))
                         .padding(horizontal = 3.dp),
@@ -5386,8 +5386,8 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
             contentDescription = "Signature product",
             modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 12.dp, end = 12.dp)
+                .align(Alignment.TopStart)
+                .padding(top = 12.dp, start = 12.dp)
                 .size(54.dp),
             contentScale = ContentScale.Fit
         )
