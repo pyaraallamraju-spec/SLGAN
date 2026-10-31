@@ -2936,11 +2936,11 @@ private fun AdminProductEditor(
             enabled = !saving,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 16.dp).height(58.dp),
             shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = AdminInk, contentColor = AdminInk)
+            colors = ButtonDefaults.buttonColors(containerColor = AdminInk, contentColor = Color.White)
         ) {
-            if (saving) CircularProgressIndicator(Modifier.size(20.dp), color = AdminInk, strokeWidth = 2.dp)
-            else Icon(Icons.Default.Save, null, tint = AdminInk)
-            Spacer(Modifier.width(8.dp)); Text(if (saving) "Saving…" else "Save product", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = AdminInk)
+            if (saving) CircularProgressIndicator(Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
+            else Icon(Icons.Default.Save, null, tint = Color.White)
+            Spacer(Modifier.width(8.dp)); Text(if (saving) "Saving…" else "Save product", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
         }
     }
 }
