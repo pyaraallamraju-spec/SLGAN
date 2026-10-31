@@ -206,12 +206,35 @@ private val AdminInk = Color(0xFF25282D)
 private val AdminMuted = Color(0xFF707780)
 
 private fun applyAppPalette(themeId: Int) {
-    if (themeId == 2) {
-        Forest = Color(0xFF214B35); Leaf = Color(0xFF557A45); Cream = Color(0xFFFFF9E9)
-        PaleGreen = Color(0xFFE7EBD4); Ink = Color(0xFF20372A); Muted = Color(0xFF687663); Gold = Color(0xFFC9A34A)
-    } else {
-        Forest = Color(0xFF762A24); Leaf = Color(0xFF8A4B2A); Cream = Color(0xFFFFF7E8)
-        PaleGreen = Color(0xFFF5E5C8); Ink = Color(0xFF38251F); Muted = Color(0xFF806D60); Gold = Color(0xFFD9A441)
+    when (themeId) {
+        3 -> {
+            // Theme 3 — Dark Mode: deep charcoal/navy surfaces with warm gold accents.
+            Forest = Color(0xFFF4C96B)
+            Leaf = Color(0xFFDDAE4F)
+            Cream = Color(0xFF0B1118)
+            PaleGreen = Color(0xFF142130)
+            Ink = Color(0xFFF4F1E8)
+            Muted = Color(0xFFAAB4C0)
+            Gold = Color(0xFFF4C96B)
+        }
+        4 -> {
+            // Theme 4 — Green Mode: light botanical backgrounds with natural green accents.
+            Forest = Color(0xFF075B2A)
+            Leaf = Color(0xFF2E8B45)
+            Cream = Color(0xFFF1FAF0)
+            PaleGreen = Color(0xFFDDF3DF)
+            Ink = Color(0xFF12351E)
+            Muted = Color(0xFF607568)
+            Gold = Color(0xFF2E8B45)
+        }
+        2 -> {
+            Forest = Color(0xFF214B35); Leaf = Color(0xFF557A45); Cream = Color(0xFFFFF9E9)
+            PaleGreen = Color(0xFFE7EBD4); Ink = Color(0xFF20372A); Muted = Color(0xFF687663); Gold = Color(0xFFC9A34A)
+        }
+        else -> {
+            Forest = Color(0xFF762A24); Leaf = Color(0xFF8A4B2A); Cream = Color(0xFFFFF7E8)
+            PaleGreen = Color(0xFFF5E5C8); Ink = Color(0xFF38251F); Muted = Color(0xFF806D60); Gold = Color(0xFFD9A441)
+        }
     }
 }
 
@@ -690,7 +713,7 @@ private fun AyurvedicApp() {
     }
     DisposableEffect(Unit) {
         val themeRegistration = FirebaseFirestore.getInstance().collection("appSettings").document("appTheme")
-            .addSnapshotListener { snapshot, error -> if (error == null) { val settings = snapshot; val lightThemeEnabled = settings?.getBoolean("lightThemeEnabled") ?: true; val activeTheme = if (lightThemeEnabled) (settings?.getLong("activeTheme") ?: 1L).toInt().coerceIn(1, 2) else 1; applyAppPalette(activeTheme) } }
+            .addSnapshotListener { snapshot, error -> if (error == null) { val settings = snapshot; val lightThemeEnabled = settings?.getBoolean("lightThemeEnabled") ?: true; val activeTheme = if (lightThemeEnabled) (settings?.getLong("activeTheme") ?: 1L).toInt().coerceIn(1, 4) else 1; applyAppPalette(activeTheme) } }
         onDispose { themeRegistration.remove() }
     }
     DisposableEffect(auth) {
@@ -3061,105 +3084,139 @@ private fun AdminDashboardScreen(
 @Composable
 private fun ThemeManagementScreen(onBack: () -> Unit) {
     val db = remember { FirebaseFirestore.getInstance() }
-    var selectedTheme by remember { mutableIntStateOf(1) }
-    var lightThemeEnabled by remember { mutableStateOf(true) }
+    var selectedTheme by remember { mutableIntStateOf(3) }
     var saving by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     DisposableEffect(Unit) {
         val listener = db.collection("appSettings").document("appTheme").addSnapshotListener { snap, error ->
-            if (error == null) { selectedTheme = (snap?.getLong("activeTheme") ?: 1L).toInt().coerceIn(1, 2); lightThemeEnabled = snap?.getBoolean("lightThemeEnabled") ?: true }
+            if (error == null) selectedTheme = (snap?.getLong("activeTheme") ?: 3L).toInt().coerceIn(1, 4)
         }
         onDispose { listener.remove() }
     }
-    Column(Modifier.fillMaxSize().background(AdminBackground).verticalScroll(rememberScrollState()).padding(18.dp)) {
+    val themes = listOf(
+        Triple(3, "Dark Mode", "Theme 3 · Premium charcoal with warm gold accents"),
+        Triple(4, "Green Mode", "Theme 4 · Fresh botanical green with light backgrounds")
+    )
+    Column(Modifier.fillMaxSize().background(AdminBackground).verticalScroll(rememberScrollState()).padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Surface(onClick = onBack, modifier = Modifier.size(56.dp), shape = CircleShape, color = Color.White) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = AdminInk, modifier = Modifier.size(28.dp)) } }
-            Spacer(Modifier.width(16.dp))
-            Column { Text("APP APPEARANCE", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose app theme", color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
-        }
-        Spacer(Modifier.height(8.dp))
-        Text("Manage the app-wide appearance, including colors, backgrounds, buttons, icons and text.", color = AdminMuted, fontSize = 14.sp)
-        Spacer(Modifier.height(14.dp))
-        Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
-            Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text("Light Theme", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(if (lightThemeEnabled) "Enabled for the customer app" else "Disabled — default classic palette is used", color = AdminMuted, fontSize = 12.sp)
-                }
-                Switch(checked = lightThemeEnabled, onCheckedChange = { enabled ->
-                    lightThemeEnabled = enabled
-                    saving = true
-                    message = null
-                    db.collection("appSettings").document("appTheme")
-                        .set(mapOf("lightThemeEnabled" to enabled, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()), com.google.firebase.firestore.SetOptions.merge())
-                        .addOnSuccessListener {
-                            saving = false
-                            applyAppPalette(if (enabled) selectedTheme else 1)
-                            message = if (enabled) "Light Theme enabled." else "Light Theme disabled; default classic palette is active."
-                        }
-                        .addOnFailureListener { e -> saving = false; lightThemeEnabled = !enabled; message = "Could not update Light Theme: ${e.localizedMessage ?: "Check Firestore permissions."}" }
-                }, enabled = !saving)
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
+            Column(Modifier.weight(1f)) {
+                Text("SLGAN ADMIN", color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
+                Text("App themes", color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
             }
         }
-        Spacer(Modifier.height(18.dp))
-        (1..2).forEach { theme ->
-            val botanical = theme == 2
-            val primary = if (botanical) AdminInk else AdminInk
-            val accent = if (botanical) AdminInk else AdminInk
-            val background = if (botanical) AdminBackground else AdminBackground
-            val textColor = if (botanical) AdminInk else AdminInk
-            Card(Modifier.fillMaxWidth().padding(bottom = 14.dp).clickable { selectedTheme = theme; message = null },
-                shape = RoundedCornerShape(22.dp),
-                border = BorderStroke(if (selectedTheme == theme) 2.dp else 1.dp, if (selectedTheme == theme) accent else AdminInk),
-                colors = CardDefaults.cardColors(containerColor = AdminSurface),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        Text("Choose the appearance for the customer app. The admin screens keep their separate neutral theme.", color = AdminMuted, fontSize = 13.sp)
+        Spacer(Modifier.height(16.dp))
+        themes.forEach { (id, name, description) ->
+            val dark = id == 3
+            val bg = if (dark) Color(0xFF0B1118) else Color(0xFFF1FAF0)
+            val surface = if (dark) Color(0xFF142130) else Color.White
+            val accent = if (dark) Color(0xFFF4C96B) else Color(0xFF075B2A)
+            val mainText = if (dark) Color(0xFFF4F1E8) else Color(0xFF12351E)
+            val secondary = if (dark) Color(0xFFAAB4C0) else Color(0xFF607568)
+            Card(
+                Modifier.fillMaxWidth().padding(bottom = 14.dp),
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(if (selectedTheme == id) 2.dp else 1.dp, if (selectedTheme == id) accent else Color(0xFFB5B5B5)),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(1.dp)
             ) {
-                Column(Modifier.padding(14.dp)) {
-                    Box(Modifier.fillMaxWidth().height(132.dp).clip(RoundedCornerShape(16.dp)).background(Brush.linearGradient(if (botanical) listOf(AdminInk, AdminInk, AdminInk) else listOf(AdminInk, AdminInk, AdminInk))).padding(16.dp)) {
-                        Column(Modifier.align(Alignment.CenterStart).fillMaxWidth(0.78f)) {
-                            Text(if (botanical) "🌿  BOTANICAL HERITAGE" else "🌺  SLGAN CLASSIC", color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                            Spacer(Modifier.height(8.dp))
-                            Text(if (botanical) "Nature’s Wisdom" else "Tradition & Trust", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
-                            Text(if (botanical) "AdminInk green · antique gold · ivory" else "Maroon · gold · warm cream", color = Color.White.copy(alpha = 0.92f), fontSize = 11.sp)
+                Column(Modifier.padding(13.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(name, color = AdminInk, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                            Text(description, color = AdminMuted, fontSize = 11.sp)
                         }
-                        if (selectedTheme == theme) Icon(Icons.Default.CheckCircle, null, tint = accent, modifier = Modifier.align(Alignment.TopEnd).size(26.dp))
+                        if (selectedTheme == id) Icon(Icons.Default.CheckCircle, "Selected", tint = AdminInk)
                     }
-                    Spacer(Modifier.height(12.dp))
-                    Text(if (botanical) "Botanical Heritage" else "Light Theme", color = textColor, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(if (botanical) "AdminInk green, antique gold, ivory surfaces and botanical accents." else "The current main-module style: maroon, terracotta, gold, warm cream, existing backgrounds, icons and text colors.", color = AdminMuted, fontSize = 13.sp)
-                    Spacer(Modifier.height(10.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                        listOf(primary, accent, background, textColor).forEach { swatch -> Box(Modifier.size(24.dp).clip(CircleShape).background(swatch).border(1.dp, Color.LightGray, CircleShape)) }
-                        Spacer(Modifier.width(4.dp))
-                        Button(onClick = { selectedTheme = theme; saving = true; message = null
-                            db.collection("appSettings").document("appTheme").set(mapOf("activeTheme" to theme, "lightThemeEnabled" to true, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
-                                .addOnSuccessListener {
-                                    applyAppPalette(theme)
-                                    val matchingSlider = if (theme == 1) 1 else 2
-                                    db.collection("appSettings").document("homeBanner")
-                                        .set(mapOf("activeDesign" to matchingSlider, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
-                                        .addOnSuccessListener {
-                                            saving = false
-                                            message = if (theme == 1) "Light Theme and Slider 1 applied across the app." else "Botanical theme and Slider 2 applied across the app."
-                                        }
-                                        .addOnFailureListener { e ->
-                                            saving = false
-                                            message = "Theme applied, but could not update its slider: ${e.localizedMessage ?: "Check Firestore permissions."}"
-                                        }
+                    Spacer(Modifier.height(11.dp))
+                    // Compact live palette preview; layout mirrors the existing home page without changing it.
+                    Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(bg).padding(12.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(30.dp).clip(CircleShape).background(accent), contentAlignment = Alignment.Center) {
+                                Icon(Icons.Default.Spa, null, tint = bg, modifier = Modifier.size(19.dp))
+                            }
+                            Spacer(Modifier.width(8.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text("Sri Lakshmi Ganapathi", color = mainText, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text("Ayurveda Nilayam", color = secondary, fontSize = 9.sp)
+                            }
+                            Surface(shape = RoundedCornerShape(7.dp), color = accent) {
+                                Text("3", Modifier.padding(horizontal = 9.dp, vertical = 5.dp), color = bg, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                        Spacer(Modifier.height(10.dp))
+                        Surface(shape = RoundedCornerShape(10.dp), color = surface, border = BorderStroke(1.dp, accent.copy(alpha = 0.35f))) {
+                            Row(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Search, null, tint = accent, modifier = Modifier.size(17.dp))
+                                Spacer(Modifier.width(8.dp))
+                                Text("Search products…", color = secondary, fontSize = 10.sp)
+                            }
+                        }
+                        Spacer(Modifier.height(10.dp))
+                        Surface(shape = RoundedCornerShape(10.dp), color = surface) {
+                            Row(Modifier.fillMaxWidth().padding(9.dp), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                                listOf("All", "Lehyas", "Grutas", "Pills").forEachIndexed { index, label ->
+                                    Surface(Modifier.weight(1f), shape = RoundedCornerShape(8.dp), color = if (index == 0) accent else bg) {
+                                        Text(label, Modifier.padding(vertical = 8.dp), color = if (index == 0) bg else mainText, fontSize = 9.sp, textAlign = TextAlign.Center, fontWeight = FontWeight.Bold)
+                                    }
                                 }
-                                .addOnFailureListener { e -> saving = false; message = "Could not apply theme: ${e.localizedMessage ?: "Check Firestore permissions."}" }
-                        }, enabled = !saving, colors = ButtonDefaults.buttonColors(containerColor = primary), shape = RoundedCornerShape(12.dp)) {
-                            if (saving && selectedTheme == theme) CircularProgressIndicator(Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Check, null)
-                            Spacer(Modifier.width(6.dp)); Text(if (theme == 1) "Apply Light Theme" else "Apply Botanical")
+                            }
+                        }
+                        Spacer(Modifier.height(9.dp))
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            listOf("Mahabala", "Sleshamrutham", "Jeevasatvam").forEach { product ->
+                                Surface(Modifier.weight(1f), shape = RoundedCornerShape(9.dp), color = surface, border = BorderStroke(0.5.dp, accent.copy(alpha = 0.25f))) {
+                                    Column(Modifier.padding(8.dp)) {
+                                        Box(Modifier.fillMaxWidth().height(28.dp).clip(RoundedCornerShape(6.dp)).background(if (dark) Color(0xFF26394A) else Color(0xFFE2F2E2)))
+                                        Spacer(Modifier.height(5.dp))
+                                        Text(product, color = mainText, fontSize = 8.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                        Text("₹350", color = accent, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(11.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                        listOf(bg, surface, accent, mainText, secondary).forEach { swatch ->
+                            Box(Modifier.size(23.dp).clip(CircleShape).background(swatch).border(1.dp, Color(0xFFB5B5B5), CircleShape))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        Button(
+                            onClick = {
+                                selectedTheme = id
+                                saving = true
+                                message = null
+                                db.collection("appSettings").document("appTheme")
+                                    .set(mapOf("activeTheme" to id, "lightThemeEnabled" to true, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()), com.google.firebase.firestore.SetOptions.merge())
+                                    .addOnSuccessListener {
+                                        applyAppPalette(id)
+                                        saving = false
+                                        message = "$name applied to the customer app."
+                                    }
+                                    .addOnFailureListener { e ->
+                                        saving = false
+                                        message = "Could not apply theme: ${e.localizedMessage ?: "Check Firestore permissions."}"
+                                    }
+                            },
+                            enabled = !saving,
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = accent, contentColor = if (dark) Color(0xFF0B1118) else Color.White)
+                        ) {
+                            if (saving && selectedTheme == id) CircularProgressIndicator(Modifier.size(16.dp), color = if (dark) Color(0xFF0B1118) else Color.White, strokeWidth = 2.dp)
+                            else Icon(Icons.Default.Check, null, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(5.dp))
+                            Text("Apply $name", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
         }
-        message?.let { Text(it, color = if (it.startsWith("Could not")) AdminInk else AdminInk, fontSize = 13.sp) }
+        message?.let { Text(it, color = AdminInk, fontSize = 12.sp, modifier = Modifier.padding(vertical = 8.dp)) }
+        Text("Theme changes affect colors and backgrounds only. Home page structure, product data, images and navigation remain unchanged.", color = AdminMuted, fontSize = 11.sp)
     }
 }
-
 @Composable
 private fun BannerManagementScreen(onBack: () -> Unit) {
     val db = remember { FirebaseFirestore.getInstance() }
