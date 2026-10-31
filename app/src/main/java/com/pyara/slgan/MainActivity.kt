@@ -1184,7 +1184,7 @@ private fun AyurvedicApp() {
                                         }
                                     }
                                 } else {
-                                    authError = result.exception?.localizedMessage ?: "Sign-in failed. Please try again."
+                                    authError = userFriendlyAuthError(result.exception, isCreatingAccount)
                                 }
                             }
                         }
@@ -1642,12 +1642,33 @@ private fun LoginScreen(
             )
             Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
         }
-        if (errorMessage != null) Text(
-            errorMessage,
-            Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 8.dp),
-            color = if (errorMessage.startsWith("If an account exists for this email")) Color(0xFF237A3B) else Color(0xFFB3261E),
-            fontSize = 12.sp
-        )
+        if (errorMessage != null) {
+            val isSuccessMessage = errorMessage.startsWith("If an account exists for this email")
+            Row(
+                Modifier.fillMaxWidth()
+                    .padding(horizontal = 22.dp, vertical = 8.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(if (isSuccessMessage) Color(0xFFEAF5EC) else Color(0xFFFFEEEE))
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.Top
+            ) {
+                Icon(
+                    if (isSuccessMessage) Icons.Default.CheckCircle else Icons.Default.ErrorOutline,
+                    contentDescription = null,
+                    tint = if (isSuccessMessage) Color(0xFF237A3B) else Color(0xFFB3261E),
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    errorMessage,
+                    color = if (isSuccessMessage) Color(0xFF237A3B) else Color(0xFF9E211B),
+                    fontSize = 13.sp,
+                    lineHeight = 18.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
         Spacer(Modifier.height(18.dp))
         // The PNG already contains the pill-shaped artwork. Keep the Material
         // button from clipping that artwork at its rounded bounds.
@@ -1740,6 +1761,27 @@ private fun LoginScreen(
         Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(12.dp))
         Spacer(Modifier.height(24.dp))
+        }
+    }
+}
+
+private fun userFriendlyAuthError(error: Exception?, creatingAccount: Boolean = false): String {
+    val code = (error as? com.google.firebase.auth.FirebaseAuthException)?.errorCode.orEmpty()
+    return when (code) {
+        "ERROR_INVALID_EMAIL" -> "That email address doesn't look right. Check it and try again."
+        "ERROR_EMAIL_ALREADY_IN_USE" -> "An account with this email already exists. Go back to Sign in instead."
+        "ERROR_WEAK_PASSWORD" -> "Your password is too easy to guess. Please choose a stronger password with at least 6 characters."
+        "ERROR_USER_NOT_FOUND" -> "We couldn't find an account with this email. Check the address or create a new account."
+        "ERROR_WRONG_PASSWORD", "ERROR_INVALID_CREDENTIAL" -> "The email or password is incorrect. Check both and try again, or use Forgot Password."
+        "ERROR_USER_DISABLED" -> "This account has been disabled. Please contact SLGAN support for help."
+        "ERROR_TOO_MANY_REQUESTS" -> "There have been too many attempts. Please wait a little while and try again."
+        "ERROR_NETWORK_REQUEST_FAILED" -> "We couldn't connect to the internet. Check your connection and try again."
+        "ERROR_OPERATION_NOT_ALLOWED" -> "Email and password sign-in is not enabled. Please contact SLGAN support."
+        "ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL" -> "An account already exists with this email using a different sign-in method. Try Google sign-in."
+        else -> if (creatingAccount) {
+            "We couldn't create your account right now. Please check your details and internet connection, then try again."
+        } else {
+            "We couldn't sign you in. Check your email and password, then try again. If needed, use Forgot Password."
         }
     }
 }
