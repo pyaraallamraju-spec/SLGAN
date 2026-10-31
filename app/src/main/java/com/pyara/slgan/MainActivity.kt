@@ -5549,12 +5549,12 @@ private fun ProductDetailsPage(
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
                         Row(Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             Column(Modifier.weight(1f).clip(RoundedCornerShape(20.dp)).background(Color(0xFFF8F8FC)).padding(vertical = 18.dp, horizontal = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(Icons.Default.AssignmentReturn, contentDescription = null, tint = Muted, modifier = Modifier.size(34.dp))
+                                Icon(Icons.Default.AssignmentReturn, contentDescription = null, tint = Ink, modifier = Modifier.size(34.dp))
                                 Spacer(Modifier.height(8.dp))
                                 Text("Check return policy", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                             }
                             Column(Modifier.weight(1f).clip(RoundedCornerShape(20.dp)).background(Color(0xFFF8F8FC)).padding(vertical = 18.dp, horizontal = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(Icons.Default.LocalShipping, contentDescription = null, tint = Muted, modifier = Modifier.size(34.dp))
+                                Icon(Icons.Default.LocalShipping, contentDescription = null, tint = Ink, modifier = Modifier.size(34.dp))
                                 Spacer(Modifier.height(8.dp))
                                 Text("Fast delivery", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                             }
@@ -5588,7 +5588,7 @@ private fun ProductDetailsPage(
                             }
                             if (customerReviews.isNotEmpty()) customerReviews.take(3).forEach { (customerName, reviewText) ->
                                 Column(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
-                                    Text(customerName, color = Forest, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                    Text(customerName, color = Color(0xFF2E7D32), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                                     Text(reviewText, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                                 }
                             }
