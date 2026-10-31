@@ -1248,7 +1248,8 @@ private fun AyurvedicApp() {
                     selectedTab = "Orders"
                 },
                 { auth.signOut(); signedIn = false; password = "" },
-                { product -> selectedProduct = product })
+                { product -> selectedProduct = product },
+                { cart.clear() })
         }
     }
     }
@@ -4236,7 +4237,7 @@ private fun AdminModuleInfo(
 private fun ShopScreen(
     selectedTab: String, previousTab: String, onTabChange: (String) -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit,
     search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, diseases: List<String>, diseasesLoading: Boolean, diseasesError: String?, latestOrderId: String?, latestOrderSuccess: Boolean?, latestOrderInvoiceUrl: String?, latestOrderMessage: String?, onAdd: (String) -> Unit, onRemove: (String) -> Unit,
-    onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit
+    onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit, onClearCart: () -> Unit
 ) {
     val cartCount = products.sumOf { product -> (cart[product.id] ?: 0).coerceAtLeast(0) }
     Scaffold(containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
@@ -4298,7 +4299,7 @@ private fun ShopScreen(
         }
     }) { padding ->
         when (selectedTab) {
-            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick, onAddAddress = { onTabChange("AddressBook") }) { onTabChange("Home") }
+            "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick, onAddAddress = { onTabChange("AddressBook") }, onClearCart = onClearCart) { onTabChange("Home") }
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") }, onCategories = { onCategoryChange("All"); onTabChange("Categories") }, onTabChange = onTabChange)
             "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") }, onCategories = { onTabChange("Categories") }, onTabChange = onTabChange)
             "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
@@ -5660,11 +5661,12 @@ private fun ProductDetailsPage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onAddAddress: () -> Unit, onBack: () -> Unit) {
+private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onAddAddress: () -> Unit, onClearCart: () -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
     val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     var showCheckout by remember { mutableStateOf(false) }
+    var showClearCartConfirmation by remember { mutableStateOf(false) }
     var savedAddresses by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var selectedDeliveryAddressId by remember { mutableStateOf<String?>(null) }
     var confirmedDeliveryAddress by remember { mutableStateOf<Map<String, Any>?>(null) }
@@ -5719,6 +5721,30 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             .addOnFailureListener { loadingDeliveryAddresses = false }
     }
 
+    if (showClearCartConfirmation) {
+        AlertDialog(
+            onDismissRequest = { showClearCartConfirmation = false },
+            title = { Text("Clear your cart?", color = Ink, fontWeight = FontWeight.Bold) },
+            text = { Text("This will remove all ${selected.sumOf { cart[it.id] ?: 0 }} items from your cart. You can add them again later.", color = Muted) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showClearCartConfirmation = false
+                        onClearCart()
+                    },
+                    colors = ButtonDefaults.textButtonColors(contentColor = Ink)
+                ) { Text("Clear cart", fontWeight = FontWeight.Bold) }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showClearCartConfirmation = false },
+                    colors = ButtonDefaults.textButtonColors(contentColor = Muted)
+                ) { Text("Cancel") }
+            },
+            containerColor = Color.White
+        )
+    }
+
     var selectedInstruction by remember { mutableStateOf("") }
     val recommendations = remember(products, cart) { products.filter { (cart[it.id] ?: 0) == 0 && it.productStock != 0 }.take(6) }
     val itemCount = selected.sumOf { cart[it.id] ?: 0 }
@@ -5761,6 +5787,14 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             Column(Modifier.weight(1f)) {
                                 Text("Your Ayurvedic order", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                                 Text("Review ${selected.size} products before placing order", color = Muted, fontSize = 12.sp)
+                            }
+                            IconButton(
+                                onClick = { showClearCartConfirmation = true },
+                                modifier = Modifier.size(42.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(Color(0xFFE1E5EC))
+                            ) {
+                                Icon(Icons.Default.DeleteSweep, contentDescription = "Clear cart", tint = Ink, modifier = Modifier.size(22.dp))
                             }
                         }
                         Divider(color = Color(0xFFEFF1F5))
