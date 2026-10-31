@@ -4232,8 +4232,8 @@ private fun ShopScreen(
         NavigationBar(modifier = Modifier.fillMaxWidth().shadow(8.dp), containerColor = Color.White, contentColor = Forest) {
             listOf(
                 Triple("Home", Icons.Default.Home, "Home"),
-                Triple("Categories", Icons.Default.GridView, "Categories"),
                 Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
+                Triple("Categories", Icons.Default.GridView, "Categories"),
                 Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
                 Triple("Cart", Icons.Default.ShoppingCart, "Cart")
             ).forEach { (label, icon, route) ->
