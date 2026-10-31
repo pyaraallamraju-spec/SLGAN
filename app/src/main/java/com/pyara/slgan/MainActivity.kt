@@ -3267,7 +3267,9 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                     Text("Show slider on Home", color = AdminInk, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     Text(if (sliderEnabled) "Slider is visible on the home page" else "Slider is hidden from the home page", color = AdminMuted, fontSize = 12.sp)
                 }
-                Switch(checked = sliderEnabled, onCheckedChange = { enabled ->
+                Switch(
+                    checked = sliderEnabled,
+                    onCheckedChange = { enabled ->
                     sliderEnabled = enabled
                     message = null
                     db.collection("appSettings").document("homeBanner")
@@ -3277,7 +3279,16 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                             message = "Could not update slider visibility: ${e.localizedMessage ?: "Check Firestore permissions."}"
                         }
                         .addOnSuccessListener { message = if (enabled) "Home slider enabled." else "Home slider disabled." }
-                })
+                    },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = Color.White,
+                        checkedTrackColor = AdminInk,
+                        checkedBorderColor = AdminInk,
+                        uncheckedThumbColor = AdminInk,
+                        uncheckedTrackColor = AdminLightGray,
+                        uncheckedBorderColor = Color(0xFFB5B5B5)
+                    )
+                )
             }
         }
         Spacer(Modifier.height(12.dp))
@@ -3285,7 +3296,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
         Spacer(Modifier.height(16.dp))
         (1..4).forEach { design ->
             val colors = when (design) { 4 -> listOf(AdminInk, AdminInk.copy(alpha = 0.92f), AdminInk, AdminInk); 3 -> listOf(Color(0xFFF8F0DC), AdminInk, AdminInk); 2 -> listOf(AdminInk, AdminInk, AdminInk); else -> listOf(AdminInk, AdminInk, AdminInk) }
-            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, if (activeDesign == design) AdminInk else AdminInk), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+            Card(Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable { activeDesign = design; message = null }, shape = RoundedCornerShape(20.dp), border = BorderStroke(if (activeDesign == design) 2.dp else 1.dp, Color(0xFFB5B5B5)), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)) {
                 Column(Modifier.padding(12.dp)) {
                     Box(Modifier.fillMaxWidth().height(104.dp).clip(RoundedCornerShape(14.dp)).background(Color.Transparent).padding(0.dp)) {
                         if (design == 4) {
@@ -3321,7 +3332,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                 .set(mapOf("activeDesign" to activeDesign, "enabled" to sliderEnabled, "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()), com.google.firebase.firestore.SetOptions.merge())
                 .addOnSuccessListener { saving = false; message = "Slider $activeDesign applied to the home page." }
                 .addOnFailureListener { e -> saving = false; message = "Could not apply slider: ${e.localizedMessage ?: "Check Firestore permissions."}" }
-        }, enabled = !saving, modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = AdminInk)) {
+        }, enabled = !saving, modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = AdminInk, contentColor = Color.White)) {
             if (saving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Check, contentDescription = null)
             Spacer(Modifier.width(8.dp)); Text(if (saving) "Applying…" else "Apply Slider $activeDesign", fontWeight = FontWeight.Bold)
         }
