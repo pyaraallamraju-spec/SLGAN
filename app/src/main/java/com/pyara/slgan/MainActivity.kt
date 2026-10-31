@@ -3023,99 +3023,177 @@ private fun AdminDashboardScreen(
             customersListener.remove()
         }
     }
+
+    val metrics = listOf(
+        Triple("Products", productCount, Icons.Default.Inventory2),
+        Triple("Orders", orderCount, Icons.Default.ReceiptLong),
+        Triple("Diseases", diseaseCount, Icons.Default.MedicalServices),
+        Triple("Customers", customerCount, Icons.Default.PeopleAlt)
+    )
+    val maxMetric = metrics.maxOfOrNull { it.second }?.coerceAtLeast(1) ?: 1
+
     Column(
-        Modifier.fillMaxSize().background(AdminBackground).verticalScroll(rememberScrollState()).padding(20.dp)
+        Modifier.fillMaxSize()
+            .background(AdminBackground)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 18.dp, vertical = 16.dp)
     ) {
-        Column(
-            Modifier.fillMaxWidth().background(Color.White).padding(20.dp)
+        // Compact admin identity header
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            Column(Modifier.weight(1f)) {
+                Text("SLGAN ADMIN", color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
+                Spacer(Modifier.height(3.dp))
+                Text("Dashboard", color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
+                Text("Welcome back", color = AdminMuted, fontSize = 14.sp)
+                Text(email.ifBlank { "Administrator" }, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+            Surface(
+                onClick = onSignOut,
+                shape = RoundedCornerShape(14.dp),
+                color = Color.White,
+                shadowElevation = 2.dp
             ) {
-                Column(Modifier.weight(1f)) {
-                    Text("SLGAN ADMIN", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 2.sp)
-                    Spacer(Modifier.height(4.dp))
-                    Text("Dashboard", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
-                }
-                IconButton(onClick = onSignOut) {
+                Box(Modifier.size(46.dp), contentAlignment = Alignment.Center) {
                     Icon(Icons.Default.Logout, contentDescription = "Sign out", tint = AdminInk)
                 }
             }
-            Spacer(Modifier.height(8.dp))
-            Text("Welcome back", color = AdminMuted, fontSize = 15.sp)
-            Text(email.ifBlank { "Administrator" }, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         }
-        Spacer(Modifier.height(22.dp))
+
         Spacer(Modifier.height(20.dp))
-        Text("OVERVIEW", color = AdminMuted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
-        Spacer(Modifier.height(10.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            AdminSummaryCard(
-                modifier = Modifier.weight(1f),
-                icon = Icons.Default.Inventory2,
-                title = "Products",
-                value = productCount.toString(),
-                subtitle = "Catalogue items",
-                onClick = onProductsClick
-            )
-            AdminSummaryCard(
-                modifier = Modifier.weight(1f),
-                icon = Icons.Default.ReceiptLong,
-                title = "Orders",
-                value = orderCount.toString(),
-                subtitle = "Customer orders",
-                onClick = onOrdersClick
-            )
-        }
-        Spacer(Modifier.height(12.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            AdminSummaryCard(
-                modifier = Modifier.weight(1f),
-                icon = Icons.Default.MedicalServices,
-                title = "Diseases",
-                value = diseaseCount.toString(),
-                subtitle = "Disease records",
-                onClick = onDiseasesClick
-            )
-            AdminSummaryCard(
-                modifier = Modifier.weight(1f),
-                icon = Icons.Default.PeopleAlt,
-                title = "Customers",
-                value = customerCount.toString(),
-                subtitle = "Registered customers",
-                onClick = onCustomersClick
-            )
-        }
-        Spacer(Modifier.height(18.dp))
-        Card(Modifier.fillMaxWidth().shadow(5.dp, RoundedCornerShape(18.dp)).clickable(onClick = onThemesClick), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)) {
-            Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) { Icon(Icons.Default.Palette, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp)) }
-                Spacer(Modifier.width(12.dp))
-                Column(Modifier.weight(1f)) { Text("App themes", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold); Text("Apply Default or Theme 1 across the app", color = AdminMuted, fontSize = 12.sp) }
-                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = AdminInk)
-            }
-        }
-        Spacer(Modifier.height(12.dp))
+
+        // Analytics panel uses the live totals already supplied by Firestore listeners.
         Card(
-            Modifier.fillMaxWidth().shadow(5.dp, RoundedCornerShape(18.dp)).clickable(onClick = onBannersClick),
-            shape = RoundedCornerShape(18.dp),
-            colors = CardDefaults.cardColors(containerColor = AdminSurface),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(22.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
         ) {
-            Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(48.dp).clip(RoundedCornerShape(14.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.ViewCarousel, contentDescription = null, tint = AdminInk, modifier = Modifier.size(26.dp))
+            Column(Modifier.fillMaxWidth().padding(17.dp)) {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Live overview", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("Current records across your store", color = AdminMuted, fontSize = 12.sp)
+                    }
+                    Surface(shape = RoundedCornerShape(9.dp), color = Color(0xFFF4EBDD)) {
+                        Text("LIVE", modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp), color = Color(0xFF79502E), fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                    }
                 }
-                Spacer(Modifier.width(12.dp))
-                Column(Modifier.weight(1f)) {
-                    Text("Sliders & Banners", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text("Manage home page slider images and visibility", color = AdminMuted, fontSize = 12.sp)
+                Spacer(Modifier.height(18.dp))
+                Row(
+                    Modifier.fillMaxWidth().height(104.dp),
+                    horizontalArrangement = Arrangement.spacedBy(15.dp),
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    metrics.forEachIndexed { index, metric ->
+                        val fraction = (metric.second.toFloat() / maxMetric.toFloat()).coerceIn(0.08f, 1f)
+                        val barColor = listOf(Color(0xFF9A6847), Color(0xFFB58A5A), Color(0xFF8B766A), Color(0xFFD0A45D))[index]
+                        Column(Modifier.weight(1f).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
+                            Text(metric.second.toString(), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Spacer(Modifier.height(5.dp))
+                            Box(
+                                Modifier.width(27.dp).weight(1f).clip(RoundedCornerShape(topStart = 7.dp, topEnd = 7.dp)).background(Color(0xFFF0F1F2)),
+                                contentAlignment = Alignment.BottomCenter
+                            ) {
+                                Box(
+                                    Modifier.fillMaxWidth().fillMaxHeight(fraction).clip(RoundedCornerShape(topStart = 7.dp, topEnd = 7.dp)).background(barColor)
+                                )
+                            }
+                            Spacer(Modifier.height(7.dp))
+                            Text(metric.first, color = AdminMuted, fontSize = 10.sp, maxLines = 1, softWrap = false)
+                        }
+                    }
                 }
-                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = AdminInk)
             }
         }
+
+        Spacer(Modifier.height(20.dp))
+        Text("OVERVIEW", color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.5.sp)
+        Spacer(Modifier.height(10.dp))
+
+        // Compact metric tiles
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            metrics.take(2).forEachIndexed { index, metric ->
+                val tileTint = listOf(Color(0xFFFFE8C8), Color(0xFFE0F1E5))[index]
+                val iconTint = listOf(Color(0xFF87512A), Color(0xFF356B49))[index]
+                val action = if (index == 0) onProductsClick else onOrdersClick
+                Card(
+                    Modifier.weight(1f).clickable(onClick = action),
+                    shape = RoundedCornerShape(17.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Column(Modifier.fillMaxWidth().padding(13.dp)) {
+                        Box(Modifier.size(38.dp).clip(RoundedCornerShape(12.dp)).background(tileTint), contentAlignment = Alignment.Center) {
+                            Icon(metric.third, null, tint = iconTint, modifier = Modifier.size(21.dp))
+                        }
+                        Spacer(Modifier.height(9.dp))
+                        Text(metric.second.toString(), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(metric.first, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
+        Spacer(Modifier.height(10.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            metrics.drop(2).forEachIndexed { index, metric ->
+                val tileTint = listOf(Color(0xFFFBE5E2), Color(0xFFE3ECFA))[index]
+                val iconTint = listOf(Color(0xFF9A5148), Color(0xFF426A9B))[index]
+                val action = if (index == 0) onDiseasesClick else onCustomersClick
+                Card(
+                    Modifier.weight(1f).clickable(onClick = action),
+                    shape = RoundedCornerShape(17.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Column(Modifier.fillMaxWidth().padding(13.dp)) {
+                        Box(Modifier.size(38.dp).clip(RoundedCornerShape(12.dp)).background(tileTint), contentAlignment = Alignment.Center) {
+                            Icon(metric.third, null, tint = iconTint, modifier = Modifier.size(21.dp))
+                        }
+                        Spacer(Modifier.height(9.dp))
+                        Text(metric.second.toString(), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(metric.first, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
+
+        Spacer(Modifier.height(22.dp))
+        Text("MANAGEMENT", color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.5.sp)
+        Spacer(Modifier.height(10.dp))
+
+        @Composable
+        fun ManagementRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
+            Card(
+                Modifier.fillMaxWidth().clickable(onClick = onClick),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 13.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF5EBDD)), contentAlignment = Alignment.Center) {
+                        Icon(icon, null, tint = Color(0xFF79502E), modifier = Modifier.size(22.dp))
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(title, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        Text(subtitle, color = AdminMuted, fontSize = 11.sp)
+                    }
+                    Icon(Icons.Default.ChevronRight, null, tint = AdminMuted)
+                }
+            }
+            Spacer(Modifier.height(9.dp))
+        }
+
+        ManagementRow(Icons.Default.Inventory2, "Products Catalogue", "Add, edit and manage products", onProductsClick)
+        ManagementRow(Icons.Default.ReceiptLong, "Orders Management", "View and manage customer orders", onOrdersClick)
+        ManagementRow(Icons.Default.MedicalServices, "Diseases Management", "Manage disease records", onDiseasesClick)
+        ManagementRow(Icons.Default.PeopleAlt, "Customers Management", "View registered customers", onCustomersClick)
+        ManagementRow(Icons.Default.Palette, "App themes", "Apply Default or Theme 1 across the app", onThemesClick)
+        ManagementRow(Icons.Default.ViewCarousel, "Sliders & Banners", "Manage home page slider images and visibility", onBannersClick)
+        Spacer(Modifier.height(18.dp))
     }
 }
 
