@@ -3264,6 +3264,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
     var loading by remember { mutableStateOf(true) }
     var loadError by remember { mutableStateOf<String?>(null) }
     var search by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf("All") }
     var showAddDialog by remember { mutableStateOf(false) }
     var diseaseName by remember { mutableStateOf("") }
     var diseaseDescription by remember { mutableStateOf("") }
@@ -3303,10 +3304,25 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
         onDispose { registration.remove() }
     }
 
-    val filtered = records.filter {
-        (it["diseases_name"]?.toString().orEmpty() + " " + it["disease_desc"]?.toString().orEmpty())
-            .contains(search.trim(), ignoreCase = true)
+    fun categoryForDisease(disease: Map<String, Any?>): String {
+        val text = (disease["diseases_name"]?.toString().orEmpty() + " " + disease["disease_desc"]?.toString().orEmpty()).lowercase()
+        return when {
+            listOf("cough", "asthma", "flu", "tuberculosis", "tb", "breath", "lung", "chest", "respiratory", "throat").any { it in text } -> "Respiratory"
+            listOf("stomach", "abdomen", "digest", "liver", "gastric", "acidity", "constipation", "diarrh", "ulcer", "bowel").any { it in text } -> "Digestive"
+            listOf("skin", "itch", "rash", "eczema", "psoriasis", "acne", "allergy").any { it in text } -> "Skin"
+            listOf("bone", "joint", "arthritis", "back pain", "muscle", "knee", "spine").any { it in text } -> "Bone & Joints"
+            listOf("heart", "blood pressure", "hypertension", "diabetes", "sugar", "obesity", "thyroid", "kidney", "urinary").any { it in text } -> "Metabolic & Other"
+            else -> "General"
+        }
     }
+    val categories = listOf("All", "General", "Respiratory", "Digestive", "Skin", "Bone & Joints", "Metabolic & Other")
+    val filtered = remember(records, search, selectedCategory) {
+        records.filter { disease ->
+            val matchesSearch = (disease["diseases_name"]?.toString().orEmpty() + " " + disease["disease_desc"]?.toString().orEmpty()).contains(search.trim(), ignoreCase = true)
+            matchesSearch && (selectedCategory == "All" || categoryForDisease(disease) == selectedCategory)
+        }
+    }
+    val groupedDiseases = remember(filtered) { filtered.groupBy { categoryForDisease(it) }.toSortedMap() }
 
     if (showAddDialog) {
         AlertDialog(
@@ -3490,6 +3506,14 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 )
             )
             Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).height(1.dp).background(AdminMuted.copy(alpha = 0.45f)))
+            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                categories.forEach { category ->
+                    val count = if (category == "All") records.size else records.count { categoryForDisease(it) == category }
+                    FilterChip(selected = selectedCategory == category, onClick = { selectedCategory = category },
+                        label = { Text("$category ($count)", fontSize = 11.sp) }, shape = RoundedCornerShape(10.dp),
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = AdminInk, selectedLabelColor = Color.White, containerColor = Color.White, labelColor = AdminInk))
+                }
+            }
         }
         Spacer(Modifier.height(10.dp))
         when {
@@ -3504,37 +3528,44 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             filtered.isEmpty() -> EmptyState("🌿", if (search.isBlank()) "No diseases added yet" else "No matching diseases", "Use Add to create your first disease entry.")
             else -> LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 5.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(filtered, key = { it["_documentId"].toString() }) { disease ->
-                    val name = disease["diseases_name"]?.toString().orEmpty().ifBlank { "Unnamed disease" }
-                    val description = disease["disease_desc"]?.toString().orEmpty().ifBlank { "Information not available." }
-                    val diseaseEmoji = when (name.trim().lowercase()) {
-                        "fever" -> "🤒"
-                        "cough" -> "🦠"
-                        "flu" -> "🫁"
-                        "obesity" -> "⚖️"
-                        "tuberculosis", "tuberculosis (tb)", "tb" -> "🫁"
-                        else -> "🌿"
+                groupedDiseases.forEach { (category, diseasesInCategory) ->
+                    item(key = "category-$category") {
+                        Row(Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Text(category, color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+                            Text(diseasesInCategory.size.toString() + " items", color = AdminMuted, fontSize = 10.sp)
+                        }
                     }
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(18.dp),
-                        colors = CardDefaults.cardColors(containerColor = AdminSurface),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-                    ) {
-                        Row(Modifier.fillMaxWidth().padding(15.dp), verticalAlignment = Alignment.Top) {
-                            Box(Modifier.size(44.dp).background(AdminLightGray, RoundedCornerShape(14.dp)), contentAlignment = Alignment.Center) {
-                                Text(diseaseEmoji, fontSize = 24.sp)
+                    items(diseasesInCategory.chunked(2), key = { row -> "disease-row-" + row.joinToString("-") { it["_documentId"].toString() } }) { rowDiseases ->
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                            rowDiseases.forEach { disease ->
+                                val name = disease["diseases_name"]?.toString().orEmpty().ifBlank { "Unnamed disease" }
+                                val description = disease["disease_desc"]?.toString().orEmpty().ifBlank { "Information not available." }
+                                val diseaseEmoji = when (category) {
+                                    "Respiratory" -> "🫁"
+                                    "Digestive" -> "◉"
+                                    "Skin" -> "✦"
+                                    "Bone & Joints" -> "♧"
+                                    "Metabolic & Other" -> "⌁"
+                                    else -> "✚"
+                                }
+                                Card(Modifier.weight(1f).defaultMinSize(minHeight = 132.dp), shape = RoundedCornerShape(15.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color.White), border = BorderStroke(0.7.dp, Color(0xFFB5B5B5)),
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)) {
+                                    Column(Modifier.fillMaxWidth().padding(11.dp)) {
+                                        Box(Modifier.size(36.dp).clip(RoundedCornerShape(11.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
+                                            Text(diseaseEmoji, color = AdminInk, fontSize = 20.sp)
+                                        }
+                                        Spacer(Modifier.height(9.dp))
+                                        Text(name, color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                        Spacer(Modifier.height(4.dp))
+                                        Text(description, color = AdminMuted, fontSize = 10.sp, lineHeight = 14.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                                    }
+                                }
                             }
-                            Spacer(Modifier.width(12.dp))
-                            Column(Modifier.weight(1f)) {
-                                Text(name, color = AdminInk, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                Spacer(Modifier.height(5.dp))
-                                Text(description, color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 4, overflow = TextOverflow.Ellipsis)
-                                Spacer(Modifier.height(8.dp))
-                            }
+                            if (rowDiseases.size == 1) Spacer(Modifier.weight(1f))
                         }
                     }
                 }
