@@ -7564,7 +7564,7 @@ private fun AccountsPage(
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information") { onTabChange("Profile") }
                 AccountMenuRow(Icons.Default.LocationOn, "Address book") { onTabChange("AddressBook") }
                 AccountMenuRow(Icons.Default.ReceiptLong, "My orders") { onTabChange("MyOrders") }
-                AccountMenuRow(Icons.Default.FavoriteBorder, "Saved products") { onTabChange("Wishlist") }
+                AccountMenuRow(Icons.Default.FavoriteBorder, "My Wishlist") { onTabChange("Wishlist") }
                 AccountMenuRow(Icons.Default.MedicalInformation, "Diseases and remedies") { onTabChange("Diseases") }
                 AccountMenuRow(Icons.Default.Language, "Language", appLanguage) {
                     selectedLanguage = appLanguage
