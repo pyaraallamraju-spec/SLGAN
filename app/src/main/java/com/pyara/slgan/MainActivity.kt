@@ -5275,17 +5275,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
     Box(modifier) {
     Card(Modifier.fillMaxWidth().clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = Color.White), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
-            if (product.signature) {
-                Box(Modifier.fillMaxWidth().height(58.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-                        contentDescription = "Patent Product",
-                        modifier = Modifier.align(Alignment.TopStart).size(58.dp),
-                        contentScale = ContentScale.Fit
-                    )
-                }
-            }
-            Box(Modifier.fillMaxWidth().height(if (product.signature) 80.dp else 98.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF7F7F7)), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxWidth().height(98.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFFF7F7F7)), contentAlignment = Alignment.Center) {
                 if (product.imageUrl.isNotBlank()) {
                     var imageLoading by remember(product.imageUrl) { mutableStateOf(true) }
                     AsyncImage(
@@ -5303,7 +5293,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
                 Row(
                     modifier = Modifier
-                        .align(Alignment.TopEnd)
+                        .align(if (product.signature) Alignment.TopStart else Alignment.TopEnd)
                         .padding(4.dp)
                         .background(Color.White.copy(alpha = 0.94f), RoundedCornerShape(18.dp))
                         .padding(horizontal = 3.dp),
@@ -5326,6 +5316,17 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                         modifier = Modifier.padding(end = 4.dp)
                     )
                 }
+            }
+            if (product.signature) {
+                Image(
+                    painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
+                    contentDescription = "Signature product",
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(top = 7.dp, end = 7.dp)
+                        .size(54.dp),
+                    contentScale = ContentScale.Fit
+                )
             }
             Spacer(Modifier.height(10.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
