@@ -2248,6 +2248,7 @@ private fun AdminProductsScreen(
     var viewingProduct by remember { mutableStateOf<Product?>(null) }
     var deletingProduct by remember { mutableStateOf<Product?>(null) }
     var visibilityUpdating by remember { mutableStateOf(false) }
+    var filterMenuOpen by remember { mutableStateOf(false) }
     if (editingProduct != null || addingProduct) {
         AdminProductEditor(
             product = editingProduct,
@@ -2339,8 +2340,24 @@ private fun AdminProductsScreen(
                 )
             )
             Spacer(Modifier.width(8.dp))
-            Surface(shape = RoundedCornerShape(12.dp), color = AdminLightGray, border = BorderStroke(1.dp, AdminInk)) {
-                Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) { Icon(Icons.Default.FilterList, "Filter categories", tint = AdminInk) }
+            Box {
+                Surface(
+                    modifier = Modifier.clickable { filterMenuOpen = true },
+                    shape = RoundedCornerShape(12.dp), color = AdminLightGray,
+                    border = BorderStroke(1.dp, AdminInk)
+                ) {
+                    Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.FilterList, "Filter categories", tint = AdminInk)
+                    }
+                }
+                DropdownMenu(expanded = filterMenuOpen, onDismissRequest = { filterMenuOpen = false }) {
+                    adminCategories.forEach { category ->
+                        DropdownMenuItem(
+                            text = { Text(if (category == "All") "All (" + products.size + ")" else category) },
+                            onClick = { selectedAdminCategory = category; filterMenuOpen = false }
+                        )
+                    }
+                }
             }
         }
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 14.dp), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
@@ -2377,10 +2394,10 @@ private fun AdminProductsScreen(
         }
         Surface(Modifier.fillMaxWidth().padding(horizontal = 10.dp), color = AdminInk, shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 9.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("Product", Modifier.weight(2.5f), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                Text("Price", Modifier.weight(1f), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                Text("Stock", Modifier.weight(1f), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                Text("Actions", Modifier.weight(1f), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
+                Text("Product", Modifier.weight(2.5f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text("Price", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text("Stock", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text("Actions", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
             }
         }
         when {
@@ -2407,7 +2424,7 @@ private fun AdminProductsScreen(
                                 Modifier.weight(1f), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                             Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
                                 Surface(shape = RoundedCornerShape(6.dp), color = if (product.productStock == 1) AdminLightGray else AdminInk) {
-                                    Text(if (product.productStock == 1) "In" else "Out", Modifier.padding(horizontal = 6.dp, vertical = 4.dp), color = AdminInk, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                    Text(if (product.productStock == 1) "In" else "Out", Modifier.padding(horizontal = 6.dp, vertical = 4.dp), color = if (product.productStock == 1) AdminInk else Color.White, fontSize = 9.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
                             Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
