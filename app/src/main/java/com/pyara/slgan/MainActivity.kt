@@ -7680,8 +7680,8 @@ private fun AccountsPage(
                     }
                     context.startActivity(Intent.createChooser(sendIntent, "Share SLGAN"))
                 }
-                AccountMenuRow(Icons.Default.Share, "Social media", "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("SocialMedia") }
-                AccountMenuRow(Icons.Default.Lock, "Account privacy", "Manage your privacy and account data") { onTabChange("AccountPrivacy") }
+                AccountMenuRow(Icons.Default.Facebook, "Social media", onClick = { onTabChange("SocialMedia") })
+                AccountMenuRow(Icons.Default.Lock, "Account privacy", onClick = { onTabChange("AccountPrivacy") })
                 AccountMenuRow(Icons.Default.NotificationsNone, "Notification preferences") {
                     android.app.AlertDialog.Builder(context)
                         .setTitle("Notification preferences")
