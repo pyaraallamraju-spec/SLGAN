@@ -4077,90 +4077,112 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                         val time = ts?.let { java.text.SimpleDateFormat("h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Time unavailable"
                         val itemRows = order["items"] as? List<*> ?: emptyList<Any>()
                         Card(
-                            Modifier.fillMaxWidth().clickable { expandedOrderId = if (expanded) null else docId },
-                            shape = RoundedCornerShape(18.dp),
-                            elevation = CardDefaults.cardElevation(2.dp),
-                            colors = CardDefaults.cardColors(containerColor = AdminSurface)
+                            Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(16.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            border = BorderStroke(0.8.dp, Color(0xFFB5B5B5))
                         ) {
-                            Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Column(Modifier.fillMaxWidth().padding(13.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(Modifier.size(40.dp).clip(RoundedCornerShape(12.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
+                                        Icon(Icons.Default.Inventory2, null, tint = AdminInk, modifier = Modifier.size(21.dp))
+                                    }
+                                    Spacer(Modifier.width(10.dp))
                                     Column(Modifier.weight(1f)) {
-                                        Text(order["customerName"]?.toString().orEmpty().ifBlank { "Customer" }, color = AdminInk, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
-                                        Text("Order #" + displayId.takeLast(12) + " • " + time, color = AdminMuted, fontSize = 11.sp)
-                                        Text(order["phone"]?.toString().orEmpty().ifBlank { "Phone not provided" }, color = AdminMuted, fontSize = 12.sp)
+                                        Text("#" + displayId.takeLast(12), color = AdminInk, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
+                                        Text(order["customerName"]?.toString().orEmpty().ifBlank { "Customer" }, color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                        Text(time + " • " + (order["phone"]?.toString().orEmpty().ifBlank { "No phone" }), color = AdminMuted, fontSize = 10.sp, maxLines = 1)
                                     }
                                     Column(horizontalAlignment = Alignment.End) {
-                                        Text("₹" + String.format(java.util.Locale.US, "%.2f", total), color = AdminInk, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
-                                        Text(status.replace("_", " ").replaceFirstChar { it.uppercase() }, color = if (status == "accepted") AdminInk else if (status == "rejected") AdminInk else AdminInk, fontWeight = FontWeight.Bold, fontSize = 11.sp)
-                                        Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = if (expanded) "Collapse order" else "Expand order", tint = AdminInk)
+                                        Text("₹" + String.format(java.util.Locale.US, "%.2f", total), color = AdminInk, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp)
+                                        Surface(shape = RoundedCornerShape(7.dp), color = AdminLightGray, border = BorderStroke(0.5.dp, Color(0xFFB5B5B5))) {
+                                            Text(status.replace("_", " ").replaceFirstChar { it.uppercase() }, Modifier.padding(horizontal = 8.dp, vertical = 5.dp), color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 9.sp, maxLines = 1)
+                                        }
+                                    }
+                                }
+                                HorizontalDivider(color = Color(0xFFB5B5B5).copy(alpha = 0.55f))
+                                Text("ORDER ITEMS (" + itemRows.size + ")", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                                if (itemRows.isEmpty()) {
+                                    Text("Item details are not available for this order.", color = AdminMuted, fontSize = 11.sp)
+                                } else {
+                                    itemRows.take(3).forEachIndexed { index, raw ->
+                                        val item = raw as? Map<*, *>
+                                        if (item != null) {
+                                            val name = item["productName"]?.toString() ?: item["name"]?.toString() ?: "Item"
+                                            val qty = (item["quantity"] as? Number)?.toInt() ?: 0
+                                            val price = (item["price"] as? Number)?.toDouble() ?: (item["unitPrice"] as? Number)?.toDouble()
+                                            val lineTotal = (item["lineTotal"] as? Number)?.toDouble() ?: (item["total"] as? Number)?.toDouble() ?: price?.times(qty)
+                                            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                                Box(Modifier.size(34.dp).clip(RoundedCornerShape(8.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
+                                                    Text("📦", fontSize = 17.sp)
+                                                }
+                                                Spacer(Modifier.width(9.dp))
+                                                Column(Modifier.weight(1f)) {
+                                                    Text(name, color = AdminInk, fontSize = 11.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                    Text("Qty: " + qty + (price?.let { " • ₹" + String.format(java.util.Locale.US, "%.2f", it) + " each" } ?: ""), color = AdminMuted, fontSize = 9.sp)
+                                                }
+                                                Text(lineTotal?.let { "₹" + String.format(java.util.Locale.US, "%.2f", it) } ?: "—", color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                            }
+                                        }
+                                    }
+                                    if (itemRows.size > 3) Text("+ " + (itemRows.size - 3) + " more items", color = AdminMuted, fontSize = 10.sp)
+                                }
+                                HorizontalDivider(color = Color(0xFFB5B5B5).copy(alpha = 0.55f))
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Column(Modifier.weight(1f)) {
+                                        Text("Total amount", color = AdminMuted, fontSize = 10.sp)
+                                        Text("₹" + String.format(java.util.Locale.US, "%.2f", total), color = AdminInk, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
+                                    }
+                                    OutlinedButton(
+                                        onClick = { expandedOrderId = if (expanded) null else docId },
+                                        shape = RoundedCornerShape(10.dp),
+                                        border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
+                                        colors = ButtonDefaults.outlinedButtonColors(contentColor = AdminInk),
+                                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
+                                    ) {
+                                        Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, null, modifier = Modifier.size(16.dp))
+                                        Spacer(Modifier.width(4.dp))
+                                        Text(if (expanded) "Hide details" else "View details", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                     }
                                 }
                                 if (expanded) {
                                     HorizontalDivider(color = AdminLightGray)
-                                    Text("Order details", color = AdminInk, fontSize = 14.sp, fontWeight = FontWeight.ExtraBold)
-                                    Text("Order ID: " + displayId, color = AdminInk, fontSize = 12.sp)
-                                    Text("Customer: " + (order["customerName"]?.toString().orEmpty().ifBlank { "Information not available" }), color = AdminInk, fontSize = 12.sp)
-                                    Text("Email: " + (order["email"]?.toString().orEmpty().ifBlank { "Information not available" }), color = AdminInk, fontSize = 12.sp)
-                                    Text("Phone: " + (order["phone"]?.toString().orEmpty().ifBlank { "Information not available" }), color = AdminInk, fontSize = 12.sp)
-                                    Text("Order time: " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Information not available"), color = AdminMuted, fontSize = 12.sp)
-                                    Text("Items", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                                    if (itemRows.isEmpty()) {
-                                        Text("No item details were saved with this order.", color = AdminMuted, fontSize = 12.sp)
-                                    } else {
-                                        itemRows.forEachIndexed { index, raw ->
-                                            val item = raw as? Map<*, *>
-                                            if (item != null) {
-                                                val name = item["productName"]?.toString() ?: item["name"]?.toString() ?: "Item"
-                                                val qty = (item["quantity"] as? Number)?.toInt() ?: 0
-                                                val price = (item["price"] as? Number)?.toDouble() ?: (item["unitPrice"] as? Number)?.toDouble()
-                                                val lineTotal = (item["lineTotal"] as? Number)?.toDouble() ?: (item["total"] as? Number)?.toDouble()
-                                                Text(
-                                                    "${index + 1}. ${name} × ${qty}" +
-                                                        (if (price != null) " • ₹" + String.format(java.util.Locale.US, "%.2f", price) + " each" else "") +
-                                                        (if (lineTotal != null) " • ₹" + String.format(java.util.Locale.US, "%.2f", lineTotal) else ""),
-                                                    color = AdminMuted, fontSize = 12.sp
-                                                )
-                                            }
-                                        }
-                                    }
-                                    HorizontalDivider(color = AdminLightGray)
-                                    Text("Order total: ₹" + String.format(java.util.Locale.US, "%.2f", total), color = AdminInk, fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
+                                    Text("Order ID: " + displayId, color = AdminInk, fontSize = 11.sp)
+                                    Text("Email: " + (order["email"]?.toString().orEmpty().ifBlank { "Information not available" }), color = AdminMuted, fontSize = 11.sp)
+                                    Text("Order time: " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Information not available"), color = AdminMuted, fontSize = 11.sp)
                                     if (pending) {
-                                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                                        Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
                                             OutlinedButton(
                                                 onClick = {
                                                     busy = docId
-                                                    db.collection("orders").document(docId)
-                                                        .update(mapOf("orderStatus" to "rejected", "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
+                                                    db.collection("orders").document(docId).update(mapOf("orderStatus" to "rejected", "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
                                                         .addOnSuccessListener { busy = null; Toast.makeText(context, "Order rejected.", Toast.LENGTH_SHORT).show() }
                                                         .addOnFailureListener { e -> busy = null; Toast.makeText(context, "Reject failed: " + (e.localizedMessage ?: "Try again"), Toast.LENGTH_LONG).show() }
                                                 },
-                                                enabled = busy == null,
-                                                modifier = Modifier.weight(1f),
+                                                enabled = busy == null, modifier = Modifier.weight(1f),
                                                 colors = ButtonDefaults.outlinedButtonColors(contentColor = AdminInk)
                                             ) {
-                                                Icon(Icons.Default.Close, null); Spacer(Modifier.width(5.dp)); Text(if (busy == docId) "Updating…" else "Reject")
+                                                if (busy == docId) CircularProgressIndicator(Modifier.size(15.dp), color = AdminInk, strokeWidth = 2.dp) else Icon(Icons.Default.Close, null)
+                                                Spacer(Modifier.width(5.dp)); Text("Reject")
                                             }
                                             Button(
                                                 onClick = {
                                                     busy = docId
-                                                    db.collection("orders").document(docId)
-                                                        .update(mapOf("orderStatus" to "accepted", "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
+                                                    db.collection("orders").document(docId).update(mapOf("orderStatus" to "accepted", "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()))
                                                         .addOnSuccessListener { busy = null; Toast.makeText(context, "Order approved.", Toast.LENGTH_SHORT).show() }
                                                         .addOnFailureListener { e -> busy = null; Toast.makeText(context, "Approve failed: " + (e.localizedMessage ?: "Try again"), Toast.LENGTH_LONG).show() }
                                                 },
-                                                enabled = busy == null,
-                                                modifier = Modifier.weight(1f),
-                                                colors = ButtonDefaults.buttonColors(containerColor = AdminInk)
+                                                enabled = busy == null, modifier = Modifier.weight(1f),
+                                                colors = ButtonDefaults.buttonColors(containerColor = AdminInk, contentColor = Color.White)
                                             ) {
-                                                Icon(Icons.Default.Check, null); Spacer(Modifier.width(5.dp)); Text(if (busy == docId) "Updating…" else "Approve")
+                                                if (busy == docId) CircularProgressIndicator(Modifier.size(15.dp), color = Color.White, strokeWidth = 2.dp) else Icon(Icons.Default.Check, null)
+                                                Spacer(Modifier.width(5.dp)); Text("Approve")
                                             }
                                         }
                                     } else {
-                                        Text("This order has already been ${status.replace("_", " ")}.", color = AdminMuted, fontSize = 12.sp)
+                                        Text("This order has already been " + status.replace("_", " ") + ".", color = AdminMuted, fontSize = 11.sp)
                                     }
-                                } else {
-                                    Text("Tap to view order details", color = AdminMuted, fontSize = 11.sp)
                                 }
                             }
                         }
