@@ -5317,17 +5317,6 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     )
                 }
             }
-            if (product.signature) {
-                Image(
-                    painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-                    contentDescription = "Signature product",
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(top = 7.dp, end = 7.dp)
-                        .size(54.dp),
-                    contentScale = ContentScale.Fit
-                )
-            }
             Spacer(Modifier.height(10.dp))
             Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             Spacer(Modifier.height(6.dp))
@@ -5391,6 +5380,17 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 else Text(count.toString() + " in cart", fontSize = 10.sp, color = Color(0xFF2E7D32), fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterVertically).clickable(enabled = false) {})
             }
         }
+    }
+    if (product.signature) {
+        Image(
+            painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
+            contentDescription = "Signature product",
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(top = 12.dp, end = 12.dp)
+                .size(54.dp),
+            contentScale = ContentScale.Fit
+        )
     }
     if (product.productStock == 0) {
         Box(
