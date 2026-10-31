@@ -7576,9 +7576,9 @@ private fun AccountsPage(
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = Color.White)) {
             Column {
                 Text("About and support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                AccountMenuRow(Icons.Default.HelpOutline, "Help and support", "Contact us for assistance") { onTabChange("Help") }
-                AccountMenuRow(Icons.Default.Info, "About SLGAN", "Sri Lakshmi Ganapathi Ayurveda Nilayam") { onTabChange("About") }
-                AccountMenuRow(Icons.Default.Phone, "Contact SLGAN", "Address, phone number and directions") { onTabChange("ContactSLGAN") }
+                AccountMenuRow(Icons.Default.HelpOutline, "Help and support") { onTabChange("Help") }
+                AccountMenuRow(Icons.Default.Info, "About SLGAN") { onTabChange("About") }
+                AccountMenuRow(Icons.Default.Phone, "Contact SLGAN") { onTabChange("ContactSLGAN") }
             }
         }
         Spacer(Modifier.height(14.dp))
