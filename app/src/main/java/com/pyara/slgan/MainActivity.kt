@@ -8372,25 +8372,30 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
         }
     }
 
-    LaunchedEffect(authUser?.uid) {
+    DisposableEffect(authUser?.uid) {
         val uid = authUser?.uid
         if (uid == null) {
             addresses = emptyList()
+            selectedAddressId = null
             loading = false
+            onDispose { }
         } else {
-            FirebaseFirestore.getInstance().collection("addresses")
+            loading = true
+            val registration = FirebaseFirestore.getInstance().collection("addresses")
                 .whereEqualTo("userId", uid)
-                .get()
-                .addOnSuccessListener { snapshot ->
-                    addresses = snapshot.documents.map { doc ->
-                        doc.data.orEmpty() + ("_id" to doc.id)
+                .addSnapshotListener { snapshot, error ->
+                    if (error != null) {
+                        loading = false
+                        Toast.makeText(context, error.localizedMessage ?: "Could not load saved addresses", Toast.LENGTH_LONG).show()
+                    } else if (snapshot != null) {
+                        addresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
+                        val preferred = addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
+                            ?: addresses.firstOrNull()
+                        selectedAddressId = preferred?.get("_id")?.toString()
+                        loading = false
                     }
-                    selectedAddressId = addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
-                        ?.get("_id")?.toString()
-                        ?: addresses.firstOrNull()?.get("_id")?.toString()
-                    loading = false
                 }
-                .addOnFailureListener { loading = false }
+            onDispose { registration.remove() }
         }
     }
 
@@ -8462,11 +8467,13 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
             onBack = { showAddAddressPage = false; editAddress = null },
             onSaved = { saved ->
                 val savedId = saved["_id"]?.toString()
+                loading = true
                 addresses = if (savedId.isNullOrBlank()) listOf(saved) + addresses else addresses.map { if (it["_id"]?.toString() == savedId) saved else it }
                 selectedAddressId = savedId
                 showAddAddressPage = false
                 editAddress = null
                 useCurrentLocationForAddress = false
+                Toast.makeText(context, "Address saved successfully", Toast.LENGTH_SHORT).show()
             }
         )
     } else {
@@ -8977,6 +8984,11 @@ private fun AddAddressDetailsPage(
                                 Toast.LENGTH_LONG
                             ).show()
                             return@addOnSuccessListener
+                        }
+                        // The first saved address becomes the default automatically.
+                        if (existingId.isNullOrBlank() && snapshot.documents.isEmpty()) {
+                            data["isDefault"] = true
+                            data["default"] = true
                         }
                         val saveTask = if (!existingId.isNullOrBlank()) {
                             addressCollection.document(existingId).set(data, com.google.firebase.firestore.SetOptions.merge())
