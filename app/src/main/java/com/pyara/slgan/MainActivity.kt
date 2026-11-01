@@ -7623,7 +7623,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                     Column(Modifier.fillMaxWidth()) {
                                         Box(
                                             Modifier.fillMaxWidth()
-                                                .height(128.dp)
+                                                .height(if (selectedCategory.equals("Rasayanas", ignoreCase = true)) 145.dp else 128.dp)
                                                 .clip(RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp))
                                                 .background(appThemedColor(Color(0xFFF7F7F7))),
                                             contentAlignment = Alignment.Center
@@ -7632,7 +7632,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 AsyncImage(
                                                     model = product.imageUrl,
                                                     contentDescription = product.name,
-                                                    modifier = Modifier.fillMaxSize().padding(start = 5.dp, end = 5.dp, top = 18.dp, bottom = 5.dp).clip(RoundedCornerShape(10.dp)),
+                                                    modifier = Modifier.fillMaxSize(),
                                                     contentScale = ContentScale.Fit
                                                 )
                                             } else {
