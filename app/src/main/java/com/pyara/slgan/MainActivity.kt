@@ -7346,10 +7346,35 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             }
             if (selectedDisease != null) {
             Spacer(Modifier.height(14.dp))
+            val detailDiseaseName = selectedDisease.orEmpty()
+            val normalizedDetailDisease = detailDiseaseName.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]+"), " ").trim()
+            val detailDiseaseEmoji = when {
+                normalizedDetailDisease.contains("tuberculosis") || normalizedDetailDisease == "tb" -> "🫁"
+                normalizedDetailDisease.contains("fever") -> "🤒"
+                normalizedDetailDisease.contains("cough") -> "😷"
+                normalizedDetailDisease.contains("flu") || normalizedDetailDisease.contains("influenza") || normalizedDetailDisease.contains("cold") || normalizedDetailDisease.contains("rhinitis") -> "🤧"
+                normalizedDetailDisease.contains("obesity") -> "⚖️"
+                normalizedDetailDisease.contains("diabetes") || normalizedDetailDisease.contains("blood sugar") -> "🩸"
+                normalizedDetailDisease.contains("heart") || normalizedDetailDisease.contains("cardiac") || normalizedDetailDisease.contains("hypertension") || normalizedDetailDisease.contains("blood pressure") -> "❤️"
+                normalizedDetailDisease.contains("skin") || normalizedDetailDisease.contains("rash") || normalizedDetailDisease.contains("eczema") || normalizedDetailDisease.contains("dermatitis") -> "🩹"
+                normalizedDetailDisease.contains("liver") || normalizedDetailDisease.contains("hepatitis") || normalizedDetailDisease.contains("cirrhosis") -> "🟤"
+                normalizedDetailDisease.contains("kidney") || normalizedDetailDisease.contains("renal") || normalizedDetailDisease.contains("urinary") -> "🫘"
+                normalizedDetailDisease.contains("stomach") || normalizedDetailDisease.contains("gastric") || normalizedDetailDisease.contains("digest") || normalizedDetailDisease.contains("acidity") -> "🫃"
+                normalizedDetailDisease.contains("eye") || normalizedDetailDisease.contains("vision") -> "👁️"
+                normalizedDetailDisease.contains("bone") || normalizedDetailDisease.contains("joint") || normalizedDetailDisease.contains("arthritis") -> "🦴"
+                normalizedDetailDisease.contains("headache") || normalizedDetailDisease.contains("migraine") -> "🤕"
+                normalizedDetailDisease.contains("asthma") || normalizedDetailDisease.contains("lung") || normalizedDetailDisease.contains("respiratory") -> "🫁"
+                normalizedDetailDisease.contains("anemia") || normalizedDetailDisease.contains("anaemia") -> "🩸"
+                normalizedDetailDisease.contains("allergy") || normalizedDetailDisease.contains("allergic") -> "🌼"
+                normalizedDetailDisease.contains("mental") || normalizedDetailDisease.contains("anxiety") || normalizedDetailDisease.contains("depression") -> "🧠"
+                else -> "🩺"
+            }
             Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(detailDiseaseEmoji, fontSize = 30.sp)
+                Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     Text("DISEASE DETAILS", color = Ink, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
-                    Text(selectedDisease!!, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(detailDiseaseName, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 }
                 IconButton(onClick = {
                     selectedDisease = null
