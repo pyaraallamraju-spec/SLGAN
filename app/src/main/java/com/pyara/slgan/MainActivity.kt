@@ -9447,12 +9447,19 @@ private fun AddAddressDetailsPage(
                     if (cityError || areaError || addressError || nameError || phoneError) return@Button
                     showReview = true
                 },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).height(50.dp),
-                enabled = !saving, colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = Ink, disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)), disabledContentColor = Ink),
-                shape = RoundedCornerShape(12.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).height(DefaultBtn.height),
+                enabled = !saving,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = appThemedColor(DefaultBtn.background),
+                    contentColor = appThemedColor(DefaultBtn.content),
+                    disabledContainerColor = appThemedColor(DefaultBtn.background),
+                    disabledContentColor = appThemedColor(DefaultBtn.content)
+                ),
+                border = BorderStroke(1.dp, appThemedColor(DefaultBtn.border)),
+                shape = RoundedCornerShape(DefaultBtn.cornerRadius)
             ) {
-                if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = Ink, strokeWidth = 2.dp)
-                else Text("Next", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp)
+                else Text("Next", color = appThemedColor(DefaultBtn.content), fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
