@@ -9592,7 +9592,6 @@ private fun ReviewAddressPage(
             GoogleMapPicker(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = 12.dp)
-                    .shadow(6.dp, RoundedCornerShape(14.dp))
                     .height(300.dp),
                 initialLatitude = initialLatitude,
                 initialLongitude = initialLongitude,
