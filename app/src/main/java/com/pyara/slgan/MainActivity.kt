@@ -8590,9 +8590,13 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
             onBack = { showAddAddressPage = false; editAddress = null },
             onSaved = { saved ->
                 val savedId = saved["_id"]?.toString()
-                loading = true
-                addresses = if (savedId.isNullOrBlank()) listOf(saved) + addresses else addresses.map { if (it["_id"]?.toString() == savedId) saved else it }
+                addresses = if (savedId.isNullOrBlank()) listOf(saved) + addresses else {
+                    if (addresses.any { it["_id"]?.toString() == savedId }) {
+                        addresses.map { if (it["_id"]?.toString() == savedId) saved else it }
+                    } else listOf(saved) + addresses
+                }
                 selectedAddressId = savedId
+                loading = false
                 showAddAddressPage = false
                 editAddress = null
                 useCurrentLocationForAddress = false
