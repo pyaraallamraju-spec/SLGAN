@@ -10070,3 +10070,4 @@ private fun EmptyState(emoji: String, title: String, subtitle: String) {
         Text(title, fontSize = 18.sp, color = Ink, fontWeight = FontWeight.Bold); Spacer(Modifier.height(6.dp))
         Text(subtitle, fontSize = 13.sp, color = Muted)
     }
+}
