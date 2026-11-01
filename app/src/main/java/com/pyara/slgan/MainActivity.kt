@@ -7981,12 +7981,12 @@ private fun AccountsPage(
                 Triple("Need help?", Icons.Default.SupportAgent, "Help")
             ).forEach { (label, icon, route) ->
                 Card(
-                    modifier = Modifier.weight(1f).height(112.dp).clickable { onTabChange(route) },
+                    modifier = Modifier.weight(1f).height(92.dp).clickable { onTabChange(route) },
                     shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))
                 ) {
-                    Column(Modifier.fillMaxSize().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(30.dp))
-                        Spacer(Modifier.height(10.dp))
+                    Column(Modifier.fillMaxSize().padding(horizontal = 6.dp, vertical = 4.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                        Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(26.dp))
+                        Spacer(Modifier.height(6.dp))
                         Text(label, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                     }
                 }
