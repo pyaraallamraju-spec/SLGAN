@@ -7307,6 +7307,12 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 backgroundColor = Ink.copy(alpha = 0.28f)
                             )
                     ) {
+                        Text(
+                            tr("Search diseases", LocalAppLanguage.current),
+                            color = Muted,
+                            fontSize = 13.sp,
+                            modifier = Modifier.padding(start = 14.dp, bottom = 2.dp)
+                        )
                         OutlinedTextField(
                             value = query,
                             onValueChange = {
@@ -7316,7 +7322,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             },
                             modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp).defaultMinSize(minHeight = 60.dp),
                             textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-                            label = { Text(tr("Search diseases", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, maxLines = 1) },
                             placeholder = { Text(tr("Select disease", LocalAppLanguage.current), fontSize = 14.sp, maxLines = 1, color = Muted) },
                             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(22.dp), tint = Muted) },
                             trailingIcon = {
