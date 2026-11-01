@@ -9064,12 +9064,19 @@ private fun AddAddressDetailsPage(
     LaunchedEffect(mapLatitude, mapLongitude) {
         val lat = mapLatitude ?: return@LaunchedEffect
         val lon = mapLongitude ?: return@LaunchedEffect
+
+        // Wait until the user finishes moving the pin so reverse geocoding
+        // does not run for every small movement during a drag.
+        delay(350)
+
         val resolved = withContext(Dispatchers.IO) {
             try {
                 val geocoder = Geocoder(context, Locale.getDefault())
                 val results = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     kotlinx.coroutines.suspendCancellableCoroutine<List<android.location.Address>?> { continuation ->
-                        geocoder.getFromLocation(lat, lon, 1) { list -> if (continuation.isActive) continuation.resume(list) }
+                        geocoder.getFromLocation(lat, lon, 1) { list ->
+                            if (continuation.isActive) continuation.resume(list)
+                        }
                     }
                 } else {
                     @Suppress("DEPRECATION")
@@ -9078,10 +9085,15 @@ private fun AddAddressDetailsPage(
                 results?.firstOrNull()
             } catch (_: Exception) { null }
         }
+
+        // Ignore a slow response if the pin has moved again while lookup ran.
+        if (mapLatitude != lat || mapLongitude != lon) return@LaunchedEffect
+
         if (resolved != null) {
             resolved.getAddressLine(0)?.takeIf { it.isNotBlank() }?.let { fullAddress = it }
             resolved.subLocality?.takeIf { it.isNotBlank() }?.let { area = it }
-            (resolved.locality ?: resolved.subAdminArea ?: resolved.adminArea)?.takeIf { it.isNotBlank() }?.let { city = it }
+            (resolved.locality ?: resolved.subAdminArea ?: resolved.adminArea)
+                ?.takeIf { it.isNotBlank() }?.let { city = it }
         }
         mapLink = "https://www.google.com/maps/search/?api=1&query=$lat,$lon"
     }
