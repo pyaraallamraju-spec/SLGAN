@@ -32,3 +32,10 @@ The Apps Script creates a Firebase custom token whose UID is the normalized emai
 - Never accept a client-supplied UID; the server derives the token UID from the verified email.
 - Keep the service-account key in Script Properties and restrict who can edit the Apps Script project.
 - Apps Script Web Apps are public endpoints, so the resend/daily limits and verification attempt limit in the script are important. Review quotas and abuse monitoring periodically.
+
+
+## Updated branded OTP email design
+
+The current source sends a responsive SLGAN-branded HTML verification email using the green, cream and gold palette and the repository logo. The 6-digit code, five-minute expiry and security warning are clearly highlighted.
+
+**Important:** Apps Script deployments are separate from GitHub. Copy the latest `EmailOtp.gs` contents into the existing OTP Apps Script project, save, then **Deploy → Manage deployments → Edit → New version → Deploy**. Keep the existing Script Properties and deployment URL unchanged.
