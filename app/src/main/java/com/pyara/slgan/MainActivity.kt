@@ -7737,7 +7737,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     model = product.imageUrl,
                                                     contentDescription = product.name,
                                                     modifier = Modifier.fillMaxSize(),
-                                                    contentScale = ContentScale.Fit
+                                                    contentScale = ContentScale.Crop
                                                 )
                                             } else {
                                                 Text(product.emoji.ifBlank { "🌿" }, fontSize = 38.sp)
