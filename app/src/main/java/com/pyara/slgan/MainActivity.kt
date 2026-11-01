@@ -9750,27 +9750,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             .padding(horizontal = if (initialSection == "Profile") 0.dp else 16.dp, vertical = if (initialSection == "Profile") 0.dp else 18.dp)
             .padding(bottom = if (initialSection == "Profile") 28.dp else 0.dp)
     ) {
-        if (initialSection == "Profile") {
-            Row(
-                modifier = Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 0.dp, end = 12.dp, top = 10.dp, bottom = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Surface(
-                    modifier = Modifier.size(48.dp).clickable { onBack?.invoke() },
-                    shape = CircleShape,
-                    color = Color.White,
-                    border = BorderStroke(1.dp, appThemedColor(Color(0xFFE5E9F0)))
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
-                    }
-                }
-                Spacer(Modifier.width(14.dp))
-                Text("Personal information", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Ink)
-            }
-            Spacer(Modifier.height(20.dp))
-
-        }
         if (profileSection == "Profile") {
             Column(Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp)) {
             Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(20.dp)) {
