@@ -30,7 +30,7 @@ function doPost(e) {
     }
     if (action === "send") return sendOtp(email);
     if (action === "verify") return verifyOtp(email, String(data.code || "").trim());
-    if (action === "passwordReset") return sendBrandedPasswordReset(email);
+    if (action === "passwordReset") return sendBrandedPasswordReset(email, String(data.userIp || "").trim());
     return json({ ok: false, message: "Unknown action." });
   } catch (err) {
     console.error("OTP request failed: " + err);
@@ -50,7 +50,12 @@ const IDENTITY_TOOLKIT_PROJECTS_URL = "https://identitytoolkit.googleapis.com/v1
  * The endpoint always gives the same public response for existing/non-existing
  * accounts so callers cannot use it to enumerate registered email addresses.
  */
-function sendBrandedPasswordReset(email) {
+function sendBrandedPasswordReset(email, userIp) {
+  if (!userIp || userIp.length > 64 || !/^[0-9a-fA-F:.]+$/.test(userIp)) {
+    console.error("Password reset rejected: caller IP missing or invalid.");
+    return json({ ok: false, message: "Could not verify the network address. Please try again." });
+  }
+  console.log("Password reset request received; caller IP supplied.");
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
@@ -79,9 +84,12 @@ function sendBrandedPasswordReset(email) {
     props.setProperty(dayKey, String(globalDaily + 1));
 
     try {
-      const actionLink = generateFirebasePasswordResetLink(email);
+      console.log("Password reset: requesting Firebase action link.");
+      const actionLink = generateFirebasePasswordResetLink(email, userIp);
+      console.log("Password reset: Firebase action-link request finished; link returned=" + Boolean(actionLink));
       // An unknown email is deliberately indistinguishable to the caller.
       if (actionLink) {
+        console.log("Password reset: sending branded email through Gmail.");
         GmailApp.sendEmail(
           email,
           "Reset your SLGAN account password",
@@ -92,6 +100,9 @@ function sendBrandedPasswordReset(email) {
             name: "Sri Lakshmi Ganapathi Ayurveda Nilayam"
           }
         );
+        console.log("Password reset: Gmail sendEmail call completed.");
+      } else {
+        console.log("Password reset: Firebase returned no link; no email was sent (account may not exist).");
       }
     } catch (err) {
       console.error("SLGAN branded password-reset delivery failed: " +
@@ -110,7 +121,7 @@ function passwordResetGenericMessage() {
   return "If an account exists for this email, a password reset link has been sent. Check your inbox and spam folder.";
 }
 
-function generateFirebasePasswordResetLink(email) {
+function generateFirebasePasswordResetLink(email, userIp) {
   const raw = PropertiesService.getScriptProperties().getProperty("FIREBASE_SERVICE_ACCOUNT_JSON");
   if (!raw) throw new Error("Missing FIREBASE_SERVICE_ACCOUNT_JSON Script Property.");
   const serviceAccount = JSON.parse(raw);
@@ -157,6 +168,7 @@ function generateFirebasePasswordResetLink(email) {
     payload: JSON.stringify({
       requestType: "PASSWORD_RESET",
       email: email,
+      userIp: userIp,
       returnOobLink: true
     }),
     muteHttpExceptions: true
