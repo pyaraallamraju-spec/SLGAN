@@ -1254,13 +1254,10 @@ private fun AyurvedicApp() {
                         else -> {
                             isLoading = true
                             authError = null
-                            auth.sendPasswordResetEmail(email).addOnCompleteListener { result ->
+                            requestEmailOtp(email, "passwordReset") { ok, message, _ ->
                                 isLoading = false
-                                authError = if (result.isSuccessful) {
-                                    "If an account exists for this email, a password reset link has been sent. Check your inbox and spam folder."
-                                } else {
-                                    result.exception?.localizedMessage ?: "Could not send password reset email. Please try again."
-                                }
+                                authError = if (ok) message else
+                                    message.ifBlank { "Could not send password reset email. Please try again later." }
                             }
                         }
                     }
