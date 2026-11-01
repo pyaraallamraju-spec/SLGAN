@@ -28,3 +28,16 @@ The PDF is explicitly labelled a provisional order confirmation, not a final tax
 - The Apps Script source is committed, but Apps Script deployment and Script Properties cannot be configured from this GitHub repository. Until the Web App is deployed and its URL is inserted in both places, this feature is **not live**.
 - Apps Script email quotas apply. Failed sends are recorded as failed; an admin can call the `retryInvoice` action through an authenticated request after deployment.
 - This uses Apps Script/Gmail and Firestore REST; it does not require Firebase Cloud Functions, a payment gateway, or a change to the Firebase billing plan.
+
+## Updated branded email design
+
+The current source now uses the SLGAN green, cream and gold email layout with the repository logo for:
+- Customer order confirmation (PDF remains attached).
+- Admin new-order notification with customer, address, item and total details.
+- Accepted/rejected order status updates.
+
+**Important:** Apps Script deployments are separate from GitHub. After updating this repository, copy the latest `OrderNotifications.gs` contents into the existing standalone Apps Script project, save, then **Deploy → Manage deployments → Edit → New version → Deploy**. No Script Properties need to change for the visual template update.
+
+## Forgot-password email branding
+
+Forgot-password messages are sent by Firebase Authentication from the Android `sendPasswordResetEmail` flow, not by this Apps Script. To brand that email, open Firebase Console → Authentication → Templates → Password reset. Set the sender name to **Sri Lakshmi Ganapathi Ayurveda Nilayam**, choose a clear subject, and update the message and action URL text to match the SLGAN green/cream/gold identity. The built-in Firebase template has its own customization limits; the custom Apps Script HTML/logo layout does not automatically apply to Firebase-generated password-reset messages.
