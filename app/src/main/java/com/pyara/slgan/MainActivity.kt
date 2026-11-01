@@ -6213,6 +6213,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Spacer(Modifier.height(8.dp))
                         Text("Cancellation policy", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         Text("Orders are saved as pending verification. Please contact the shop for changes after placing an order.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                        Spacer(Modifier.height(10.dp))
+                        Text("Product Design", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text("Product images, bottle designs and packaging shown in the app are for illustration and design reference only. The actual product appearance, bottle shape, label, colour and packaging may vary from the images displayed. The contents and product details will correspond to the product supplied.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                     }
                 }
             }
