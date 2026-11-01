@@ -4575,7 +4575,7 @@ private fun ShopScreen(
             "Cart" -> CartPage(Modifier.padding(padding), cart, products, onAdd, onRemove, onOrderResult, onProductClick, onAddAddress = { onTabChange("AddressBook") }, onClearCart = onClearCart) { onTabChange("Home") }
             "Orders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, onHome = { onTabChange(previousTab) }, onCart = { onTabChange("Cart") }, onCategories = { onCategoryChange("All"); onTabChange("Categories") }, onTabChange = onTabChange)
             "MyOrders" -> OrdersPage(Modifier.padding(padding), latestOrderId, latestOrderSuccess, latestOrderInvoiceUrl, latestOrderMessage, products, onAdd, pageTitle = "My Orders", onHome = { onTabChange("Accounts") }, onCart = { onTabChange("Cart") }, onCategories = { onTabChange("Categories") }, onTabChange = onTabChange)
-            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
+            "Categories" -> CategoriesPage(Modifier.padding(padding), products, cart, productRatings, productLikes, category, onCategoryChange, onToggleLike, onAdd, onRemove, onCategoryChange, onProductClick) { onTabChange("Home") }
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError, onHome = { onTabChange(previousTab) })
             "Accounts" -> AccountsPage(
                 modifier = Modifier.padding(padding),
@@ -7593,8 +7593,7 @@ private fun DetailSectionHeading(icon: androidx.compose.ui.graphics.vector.Image
 }
 
 @Composable
-private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onCategoryChange: (String) -> Unit, onProductClick: (Product) -> Unit, onHome: () -> Unit) {
-    var selectedCategory by remember { mutableStateOf("All") }
+private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Map<String, Int>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, selectedCategory: String, onSelectedCategoryChange: (String) -> Unit, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onCategoryChange: (String) -> Unit, onProductClick: (Product) -> Unit, onHome: () -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
     val leftScroll = rememberScrollState()
     val rightScroll = rememberScrollState()
@@ -7646,7 +7645,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                     Modifier.fillMaxWidth().padding(bottom = 8.dp).clip(RoundedCornerShape(14.dp))
                         .background(if (selected) appThemedColor(Color(0xFFE2E2E2)) else Color.White)
                         .clickable {
-                            selectedCategory = category
+                            onSelectedCategoryChange(category)
                             onCategoryChange(category)
                         }.padding(horizontal = 3.dp, vertical = 8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
