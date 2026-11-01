@@ -8660,55 +8660,75 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
             }
         ) {
             Column(
-                Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 22.dp).padding(bottom = 28.dp),
+                Modifier.fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(horizontal = 22.dp)
+                    .padding(top = 2.dp, bottom = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(Modifier.size(54.dp).shadow(5.dp, CircleShape).background(appThemedColor(Color(0xFFB2B2B2)), CircleShape), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.Close, contentDescription = "Close", tint = Ink, modifier = Modifier.size(27.dp).clickable { showAddAddressSheet = false })
+                Box(
+                    Modifier.size(44.dp).shadow(4.dp, CircleShape)
+                        .background(appThemedColor(Color(0xFFB2B2B2)), CircleShape)
+                        .clickable { showAddAddressSheet = false },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.Close, contentDescription = "Close", tint = Ink, modifier = Modifier.size(23.dp))
                 }
-                Spacer(Modifier.height(24.dp))
-                Box(Modifier.fillMaxWidth().height(220.dp).background(appThemedColor(Color(0xFFFAFAFA)), RoundedCornerShape(22.dp)), contentAlignment = Alignment.Center) {
+                Spacer(Modifier.height(10.dp))
+                Box(
+                    Modifier.fillMaxWidth().height(112.dp)
+                        .background(appThemedColor(Color(0xFFFAFAFA)), RoundedCornerShape(22.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = appThemedColor(Color(0xFF21852A)), modifier = Modifier.size(100.dp))
-                        Text("DELIVERY LOCATION", color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                        Icon(Icons.Default.LocationOn, contentDescription = null, tint = appThemedColor(Color(0xFF21852A)), modifier = Modifier.size(58.dp))
+                        Spacer(Modifier.height(2.dp))
+                        Text("DELIVERY LOCATION", color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.1.sp)
                     }
                 }
-                Spacer(Modifier.height(26.dp))
-                Text("Do you want this order at your current location?", color = Ink, fontSize = 22.sp, lineHeight = 29.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
-                Spacer(Modifier.height(22.dp))
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    "Do you want this order at your current location?",
+                    color = Ink,
+                    fontSize = 19.sp,
+                    lineHeight = 24.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(Modifier.height(12.dp))
                 OutlinedButton(
                     onClick = {
                         showAddAddressSheet = false
                         showAddAddressPage = true
                         useCurrentLocationForAddress = true
                     },
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 76.dp),
-                    shape = RoundedCornerShape(22.dp),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 62.dp),
+                    shape = RoundedCornerShape(18.dp),
                     border = BorderStroke(2.dp, appThemedColor(Color(0xFF21852A))),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = appThemedColor(Color(0xFF21852A))),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 7.dp)
                 ) {
-                    Icon(Icons.Default.MyLocation, contentDescription = null, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(12.dp))
+                    Icon(Icons.Default.MyLocation, contentDescription = null, modifier = Modifier.size(21.dp))
+                    Spacer(Modifier.width(10.dp))
                     Column(horizontalAlignment = Alignment.Start) {
-                        Text("Yes, deliver at my current location", fontWeight = FontWeight.ExtraBold, fontSize = 16.sp)
-                        Text(currentLocationAddress, color = Muted, fontSize = 12.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                        Text("Yes, deliver at my current location", fontWeight = FontWeight.ExtraBold, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(currentLocationAddress, color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(8.dp))
                 OutlinedButton(
                     onClick = {
                         showAddAddressSheet = false
                         useCurrentLocationForAddress = false
                         showAddAddressPage = true
                     },
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 76.dp),
-                    shape = RoundedCornerShape(22.dp),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 54.dp),
+                    shape = RoundedCornerShape(18.dp),
                     border = BorderStroke(1.5.dp, appThemedColor(Color(0xFF21852A))),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = appThemedColor(Color(0xFF21852A))),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 14.dp)
+                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
                 ) {
-                    Text("No, at some other location", color = appThemedColor(Color(0xFF21852A)), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("No, at some other location", color = appThemedColor(Color(0xFF21852A)), fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
