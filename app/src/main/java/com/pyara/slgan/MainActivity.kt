@@ -7217,6 +7217,7 @@ private fun OrdersPage(
 
 @Composable
 private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: List<Product>, loading: Boolean, error: String?, onHome: () -> Unit) {
+    val scrollState = rememberScrollState()
     var query by remember { mutableStateOf("") }
     var selectedDisease by remember { mutableStateOf<String?>(null) }
     var dropdownExpanded by remember { mutableStateOf(false) }
@@ -10069,4 +10070,3 @@ private fun EmptyState(emoji: String, title: String, subtitle: String) {
         Text(title, fontSize = 18.sp, color = Ink, fontWeight = FontWeight.Bold); Spacer(Modifier.height(6.dp))
         Text(subtitle, fontSize = 13.sp, color = Muted)
     }
-}
