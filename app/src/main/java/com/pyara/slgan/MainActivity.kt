@@ -8732,7 +8732,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                 )
                                 Spacer(Modifier.height(5.dp))
                                 Text(
-                                    if (isSelected) "Selected" else if (isDefault) "Default" else "Address",
+                                    label.trim().ifBlank { "Other" }.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
                                     color = Muted,
                                     fontSize = 10.sp,
                                     maxLines = 1
