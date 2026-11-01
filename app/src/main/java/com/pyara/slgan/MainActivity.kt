@@ -28,7 +28,8 @@ import androidx.core.view.WindowCompat
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.google.firebase.FirebaseApp
 import com.google.firebase.Firebase
-import com.google.firebase.ai.GenerativeBackend
+import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
@@ -8392,7 +8393,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                                                 Preferred language: $appLanguage
                                                 User question: $question
                                             """.trimIndent()
-                                            val model = Firebase.ai(backend = GenerativeBackend.googleAI())
+                                            val model = Firebase.ai(backend = GenerativeBackend.googleAI(), useLimitedUseAppCheckTokens = true)
                                                 .generativeModel("gemini-3.8-flash")
                                             model.generateContent(prompt).text?.takeIf { it.isNotBlank() }
                                                 ?: throw IllegalStateException("Gemini returned an empty reply")
@@ -9576,7 +9577,6 @@ private fun AddAddressDetailsPage(
                 else Text("Next", color = appThemedColor(DefaultBtn.content), fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
             }
-        }
     }
 }
 
