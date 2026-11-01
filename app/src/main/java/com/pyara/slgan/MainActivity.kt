@@ -9612,26 +9612,22 @@ private fun ReviewAddressPage(
             Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Your address details", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Text("Delivery details", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             TextButton(onClick = onEdit) { Text("Edit", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
         }
         Divider(color = appThemedColor(Color(0xFFE6E8EE)))
-        Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Home, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
-                Text("  Address  :  $fullAddress", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Icon(Icons.Default.Person, contentDescription = "Receiver", tint = Ink, modifier = Modifier.size(22.dp))
+                Text("  Receiver:  $receiverName", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Place, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
-                Text("  Area  :  $area", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Icon(Icons.Default.Phone, contentDescription = "Mobile number", tint = Ink, modifier = Modifier.size(22.dp))
+                Text("  Mobile:  $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
-                Text("  City  :  $city", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
-            }
-            Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.People, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
-                Text("  Receiver  :  $receiverName, $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Icon(Icons.Default.Home, contentDescription = "Complete address", tint = Ink, modifier = Modifier.size(22.dp))
+                Text("  Complete address:  $fullAddress", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
         }
         val hasCompleteAddress = fullAddress.isNotBlank() &&
