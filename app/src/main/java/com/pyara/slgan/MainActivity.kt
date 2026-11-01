@@ -7302,14 +7302,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
     }
 
     Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(scrollState)) {
-        Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(42.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onHome), contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
-            }
-            Spacer(Modifier.width(12.dp))
-            Text(tr("Diseases", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Surface(shape = RoundedCornerShape(50.dp), color = appThemedColor(Color(0xFFF5F5F8))) { Text("${diseases.size}", modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp), color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 14.sp) }
-        }
         Column(Modifier.padding(horizontal = 16.dp, vertical = 18.dp)) {
         Box(Modifier.fillMaxWidth()) {
                 Column(Modifier.fillMaxWidth()) {
@@ -7320,12 +7312,26 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 backgroundColor = Ink.copy(alpha = 0.28f)
                             )
                     ) {
-                        Text(
-                            tr("Search diseases", LocalAppLanguage.current),
-                            color = Muted,
-                            fontSize = 13.sp,
-                            modifier = Modifier.padding(start = 14.dp, bottom = 2.dp)
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp, bottom = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                tr("Search diseases", LocalAppLanguage.current),
+                                color = Muted,
+                                fontSize = 13.sp,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                "${diseases.size}",
+                                color = Ink,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                modifier = Modifier
+                                    .background(appThemedColor(Color(0xFFE8EAF0)), RoundedCornerShape(50.dp))
+                                    .padding(horizontal = 12.dp, vertical = 5.dp)
+                            )
+                        }
                         OutlinedTextField(
                             value = query,
                             onValueChange = {
