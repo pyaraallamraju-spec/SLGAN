@@ -8802,10 +8802,10 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                 }
                                 Text(name, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 5.dp))
                                 if (phone.isNotBlank()) {
-                                    Text("Mobile: $phone", color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 3.dp))
+                                    Text(phone, color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 3.dp))
                                 }
                                 if (addressText.isNotBlank()) {
-                                    Text("Address: $addressText", color = Muted, fontSize = 14.sp, lineHeight = 20.sp, softWrap = true, modifier = Modifier.padding(top = 5.dp))
+                                    Text(addressText, color = Muted, fontSize = 14.sp, lineHeight = 20.sp, softWrap = true, modifier = Modifier.padding(top = 5.dp))
                                 }
                                 Row(
                                     Modifier.padding(top = 8.dp),
