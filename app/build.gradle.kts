@@ -43,7 +43,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("com.google.maps.android:maps-compose:6.4.1")
-    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
     implementation("com.google.firebase:firebase-firestore")
