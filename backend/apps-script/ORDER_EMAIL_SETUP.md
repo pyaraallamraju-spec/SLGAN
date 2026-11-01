@@ -40,4 +40,6 @@ The current source now uses the SLGAN green, cream and gold email layout with th
 
 ## Forgot-password email branding
 
-Forgot-password messages are sent by Firebase Authentication from the Android `sendPasswordResetEmail` flow, not by this Apps Script. To brand that email, open Firebase Console → Authentication → Templates → Password reset. Set the sender name to **Sri Lakshmi Ganapathi Ayurveda Nilayam**, choose a clear subject, and update the message and action URL text to match the SLGAN green/cream/gold identity. The built-in Firebase template has its own customization limits; the custom Apps Script HTML/logo layout does not automatically apply to Firebase-generated password-reset messages.
+The Android Forgot Password action now calls the existing Email OTP Apps Script Web App using its `passwordReset` action. That service generates a genuine Firebase password-reset action link with the Firebase service account and sends it through Gmail using the branded SLGAN HTML template. Follow the deployment and test instructions in `EMAIL_OTP_SETUP.md`.
+
+The Firebase-generated default email is no longer requested by the app after this change. Keep the existing Firebase authentication password-reset capability enabled; the custom email contains a Firebase-issued action link and Firebase still performs the actual password change.
