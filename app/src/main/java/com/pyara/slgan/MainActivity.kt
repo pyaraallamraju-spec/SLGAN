@@ -9767,15 +9767,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         }
         if (profileSection == "Profile") {
             Column(Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp)) {
-            if (initialSection == "Profile") {
-                Image(
-                    painter = painterResource(id = R.drawable.address_book_header),
-                    contentDescription = "SLGAN profile header background",
-                    modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(20.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                Spacer(Modifier.height(16.dp))
-            }
             Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(20.dp)) {
                 Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Surface(
