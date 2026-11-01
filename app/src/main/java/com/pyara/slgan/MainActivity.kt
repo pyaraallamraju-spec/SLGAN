@@ -9406,15 +9406,25 @@ private fun ReviewAddressPage(
         }
         if (initialLatitude != null && initialLongitude != null) {
             GoogleMapPicker(
-                modifier = Modifier.fillMaxWidth().height(300.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .shadow(6.dp, RoundedCornerShape(14.dp))
+                    .height(300.dp),
                 initialLatitude = initialLatitude,
                 initialLongitude = initialLongitude,
                 onLocationSelected = onLocationSelected
             )
         } else {
-            Box(Modifier.fillMaxWidth().height(300.dp).background(appThemedColor(Color(0xFFF1F2F4))),contentAlignment=Alignment.Center){Text("Finding the nearest area on the map…",color=Muted,textAlign=TextAlign.Center)}
+            Box(
+                Modifier.fillMaxWidth().padding(horizontal = 12.dp)
+                    .shadow(6.dp, RoundedCornerShape(14.dp))
+                    .height(300.dp)
+                    .background(appThemedColor(Color(0xFFF1F2F4)), RoundedCornerShape(14.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Finding the nearest area on the map…", color = Muted, textAlign = TextAlign.Center)
+            }
         }
-        Text("Move the pin or tap the map to select your exact delivery point.",Modifier.padding(horizontal=20.dp,vertical=6.dp),color=Muted,fontSize=12.sp)
         Row(
             Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
