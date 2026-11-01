@@ -80,16 +80,19 @@ function sendBrandedPasswordReset(email) {
 
     try {
       const actionLink = generateFirebasePasswordResetLink(email);
-      GmailApp.sendEmail(
-        email,
-        "Reset your SLGAN account password",
-        "We received a request to reset your SLGAN account password. Open this link to choose a new password: " +
-          actionLink + "\\n\\nIf you did not request this, you can ignore this email. Your password will remain unchanged.",
-        {
-          htmlBody: passwordResetEmailHtml(actionLink),
-          name: "Sri Lakshmi Ganapathi Ayurveda Nilayam"
-        }
-      );
+      // An unknown email is deliberately indistinguishable to the caller.
+      if (actionLink) {
+        GmailApp.sendEmail(
+          email,
+          "Reset your SLGAN account password",
+          "We received a request to reset your SLGAN account password. Open this link to choose a new password: " +
+            actionLink + "\\n\\nIf you did not request this, you can ignore this email. Your password will remain unchanged.",
+          {
+            htmlBody: passwordResetEmailHtml(actionLink),
+            name: "Sri Lakshmi Ganapathi Ayurveda Nilayam"
+          }
+        );
+      }
     } catch (err) {
       console.error("SLGAN branded password-reset delivery failed: " +
         String(err && err.message || err).slice(0, 300));
@@ -159,10 +162,10 @@ function generateFirebasePasswordResetLink(email) {
   const linkStatus = linkResponse.getResponseCode();
   const linkJson = JSON.parse(linkResponse.getContentText() || "{}");
   if (linkStatus < 200 || linkStatus >= 300 || !linkJson.oobLink) {
-    const apiMessage = linkJson.error && linkJson.error.message
-      ? String(linkJson.error.message).slice(0, 180)
-      : "No action link returned.";
-    throw new Error("Firebase password-reset link generation failed (HTTP " + linkStatus + "): " + apiMessage);
+    const apiMessage = String(linkJson.error && linkJson.error.message || "");
+    if (/EMAIL_NOT_FOUND|USER_NOT_FOUND/i.test(apiMessage)) return "";
+    throw new Error("Firebase password-reset link generation failed (HTTP " + linkStatus + "): " +
+      (apiMessage || "No action link returned.").slice(0, 180));
   }
   return String(linkJson.oobLink);
 }
