@@ -266,6 +266,16 @@ private fun applyAppPalette(themeId: Int) {
     }
 }
 
+private data class DefaultBtnTheme(
+    val name: String = "default-btn",
+    val background: Color = Color(0xFFE2E2E2),
+    val border: Color = Color(0xFFB5B5B5),
+    val content: Color = Color(0xFF000000),
+    val cornerRadius: Dp = 14.dp,
+    val height: Dp = 58.dp
+)
+
+private val DefaultBtn = DefaultBtnTheme()
 private fun appThemedColor(original: Color): Color {
     val themeId = activeAppThemeId
     if (themeId != 3 && themeId != 4) return original
@@ -6304,8 +6314,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             }
                         }
                     }
-                }, modifier = Modifier.weight(1.3f).height(58.dp), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = appThemedColor(Color(0xFF000000)))) {
-                    Text("Place order  ›", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = appThemedColor(Color(0xFF000000)))
+                }, modifier = Modifier.weight(1.3f).height(DefaultBtn.height), shape = RoundedCornerShape(DefaultBtn.cornerRadius), border = BorderStroke(1.dp, appThemedColor(DefaultBtn.border)), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(DefaultBtn.background), contentColor = appThemedColor(DefaultBtn.content))) {
+                    Text("Place order  ›", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = appThemedColor(DefaultBtn.content))
                 }
             }
         }
