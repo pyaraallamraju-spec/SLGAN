@@ -9394,7 +9394,7 @@ private fun ReviewAddressPage(
     onEdit: () -> Unit,
     onSave: () -> Unit
 ) {
-    Column(Modifier.fillMaxSize().background(appThemedColor(Color.White)).verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 112.dp)) {
+    Column(Modifier.fillMaxSize().background(appThemedColor(Color.White)).verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 72.dp)) {
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -9457,7 +9457,7 @@ private fun ReviewAddressPage(
         Button(
             onClick = onSave,
             enabled = hasCompleteAddress,
-            modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 28.dp).height(60.dp),
+            modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp).height(60.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = appThemedColor(Color(0xFFE2E2E2)),
                 contentColor = Ink,
