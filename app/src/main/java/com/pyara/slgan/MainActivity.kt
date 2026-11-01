@@ -9860,12 +9860,16 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     }
                 },
                 enabled = !isSaving && !isLoading,
-                modifier = Modifier.fillMaxWidth().height(58.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = Ink),
+                modifier = Modifier.fillMaxWidth().height(DefaultBtn.height),
+                shape = RoundedCornerShape(DefaultBtn.cornerRadius),
+                border = BorderStroke(1.dp, appThemedColor(DefaultBtn.border)),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = appThemedColor(DefaultBtn.background),
+                    contentColor = appThemedColor(DefaultBtn.content)
+                ),
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
             ) {
-                if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Ink, strokeWidth = 2.dp) else Icon(Icons.Default.Save, null)
+                if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp) else Icon(Icons.Default.Save, null, tint = appThemedColor(DefaultBtn.content))
                 Spacer(Modifier.width(8.dp))
                 Text(if (isLoading) "Loading profile…" else if (isSaving) "Saving…" else "Save profile", fontWeight = FontWeight.Bold)
             }
