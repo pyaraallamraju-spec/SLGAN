@@ -42,7 +42,7 @@ const PASSWORD_RESET_RESEND_WAIT_MS = 60 * 1000;
 const PASSWORD_RESET_DAILY_LIMIT = 5;
 const PASSWORD_RESET_GLOBAL_DAILY_LIMIT = 100;
 const IDENTITY_TOOLKIT_SCOPE = "https://www.googleapis.com/auth/identitytoolkit";
-const IDENTITY_TOOLKIT_RESET_URL = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode";
+const IDENTITY_TOOLKIT_PROJECTS_URL = "https://identitytoolkit.googleapis.com/v1/projects/";
 
 /**
  * Creates a genuine Firebase password-reset action link with the Admin
@@ -148,7 +148,9 @@ function generateFirebasePasswordResetLink(email) {
     throw new Error("Could not obtain Google Identity Toolkit access token (HTTP " + tokenStatus + ").");
   }
 
-  const linkResponse = UrlFetchApp.fetch(IDENTITY_TOOLKIT_RESET_URL, {
+  const linkEndpoint = IDENTITY_TOOLKIT_PROJECTS_URL +
+    encodeURIComponent(serviceAccount.project_id) + "/accounts:sendOobCode";
+  const linkResponse = UrlFetchApp.fetch(linkEndpoint, {
     method: "post",
     contentType: "application/json",
     headers: { Authorization: "Bearer " + tokenJson.access_token },
