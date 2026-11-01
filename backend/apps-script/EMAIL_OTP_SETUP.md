@@ -39,3 +39,18 @@ The Apps Script creates a Firebase custom token whose UID is the normalized emai
 The current source sends a responsive SLGAN-branded HTML verification email using the green, cream and gold palette and the repository logo. The 6-digit code, five-minute expiry and security warning are clearly highlighted.
 
 **Important:** Apps Script deployments are separate from GitHub. Copy the latest `EmailOtp.gs` contents into the existing OTP Apps Script project, save, then **Deploy → Manage deployments → Edit → New version → Deploy**. Keep the existing Script Properties and deployment URL unchanged.
+
+
+## Branded password reset email
+
+The same deployed Email OTP Apps Script Web App now supports a `passwordReset` action. It uses the Firebase service account already stored in Script Properties to generate a genuine Firebase password-reset action link, then sends it with Gmail using the SLGAN green, cream and gold HTML template and logo.
+
+No new Script Properties or separate deployment URL are required. The existing `FIREBASE_SERVICE_ACCOUNT_JSON` property is reused. The script requests the Google Identity Toolkit OAuth scope when generating a reset link; on the first redeployment, Apps Script may ask the owner to approve the additional Google service access.
+
+After updating this file in the existing Apps Script project:
+1. Keep the existing Script Properties and deployment URL.
+2. Save the complete updated `EmailOtp.gs`.
+3. Open **Deploy → Manage deployments → Edit → New version → Deploy**.
+4. Test **Forgot Password** in SLGAN with an inbox you control. Confirm the email arrives, the button opens Firebase's password-reset page, and a new password can be saved.
+
+The public response is intentionally the same whether or not the email belongs to an account, to avoid exposing registered users. Requests are rate-limited per email and globally. Do not disable the existing Firebase password reset until the branded flow has been tested successfully.
