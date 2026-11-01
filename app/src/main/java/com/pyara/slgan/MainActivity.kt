@@ -5780,8 +5780,8 @@ private fun ProductDetailsPage(
                         AsyncImage(
                             model = product.imageUrl,
                             contentDescription = product.name,
-                            modifier = Modifier.fillMaxSize().padding(12.dp),
-                            contentScale = ContentScale.Inside,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop,
                             onLoading = { detailImageLoading = true },
                             onSuccess = { detailImageLoading = false },
                             onError = { detailImageLoading = false }
