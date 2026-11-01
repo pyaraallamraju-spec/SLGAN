@@ -4757,7 +4757,34 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                 Spacer(Modifier.width(12.dp))
                 Text("v$versionName", color = Muted, fontSize = 17.sp)
             }
-            Spacer(Modifier.height(34.dp))
+            Spacer(Modifier.height(24.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = appThemedColor(Color(0xFFF7F3EA))),
+                border = BorderStroke(1.dp, appThemedColor(Color(0xFFE5D8BF))),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                    Text("1900", color = appThemedColor(Color(0xFF8A642D)), fontSize = 30.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        if (appLanguage == "English") "Our Heritage" else "మా వారసత్వం",
+                        color = Ink, fontSize = 19.sp, fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    Text(
+                        if (appLanguage == "English")
+                            "Sri Lakshmi Ganapathi Ayurveda Nilayam was established in 1900 by Sri Vidya Raju Allamraju Perraju Garu at Uppada Kothapalli."
+                        else
+                            "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం 1900లో శ్రీ విద్యా రాజు అల్లంరాజు పేర్రాజు గారిచే ఉప్పాడ కొత్తపల్లిలో స్థాపించబడింది.",
+                        color = appThemedColor(Color(0xFF514638)),
+                        fontSize = 15.sp,
+                        lineHeight = 23.sp
+                    )
+                }
+            }
+            Spacer(Modifier.height(26.dp))
             paragraphs.forEachIndexed { index, paragraph ->
                 Text(paragraph, color = appThemedColor(Color(0xFF667085)), fontSize = 16.sp, lineHeight = 23.sp)
                 if (index != paragraphs.lastIndex) Spacer(Modifier.height(24.dp))
