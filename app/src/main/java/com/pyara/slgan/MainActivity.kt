@@ -8716,12 +8716,22 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     val phone = address["phone"]?.toString().orEmpty()
                         .ifBlank { address["mobile"]?.toString().orEmpty() }
                         .ifBlank { address["receiverPhone"]?.toString().orEmpty() }
-                    val primaryAddress = listOf("address", "addressText", "fullAddress", "addressLine1")
+                    val completeAddress = listOf("completeAddress", "complete_address", "formattedAddress", "formatted_address", "fullAddress", "full_address")
                         .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-                    val addressParts = (listOf(primaryAddress) + listOf("addressLine2", "landmark", "area", "city", "state", "pincode")
-                        .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } })
-                        .filter { part -> primaryAddress.isBlank() || !primaryAddress.contains(part, ignoreCase = true) }
-                    val addressText = addressParts.distinctBy { it.lowercase(Locale.ROOT) }.joinToString(", ")
+                    val addressKeys = listOf(
+                        "address", "addressText", "addressLine1", "addressLine2", "houseNo", "houseNumber",
+                        "building", "apartment", "street", "streetName", "road", "landmark", "area", "locality",
+                        "village", "town", "city", "district", "state", "pincode", "postalCode", "zipCode", "country"
+                    )
+                    val addressParts = addressKeys.mapNotNull { key ->
+                        address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() }
+                    }.distinctBy { it.lowercase(Locale.ROOT) }
+                    val addressText = (listOf(completeAddress).filter { it.isNotBlank() } + addressParts)
+                        .distinctBy { it.lowercase(Locale.ROOT) }
+                        .fold(mutableListOf<String>()) { result, part ->
+                            if (result.none { it.contains(part, ignoreCase = true) || part.contains(it, ignoreCase = true) }) result.add(part)
+                            result
+                        }.joinToString(", ")
                     val isDefault = address["isDefault"] == true || address["default"] == true
                     val addressId = address["_id"]?.toString().orEmpty()
                     val isSelected = selectedAddressId == addressId
@@ -8795,7 +8805,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     Text("Mobile: $phone", color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 3.dp))
                                 }
                                 if (addressText.isNotBlank()) {
-                                    Text("Address: $addressText", color = Muted, fontSize = 14.sp, lineHeight = 20.sp, maxLines = 5, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 5.dp))
+                                    Text("Address: $addressText", color = Muted, fontSize = 14.sp, lineHeight = 20.sp, softWrap = true, modifier = Modifier.padding(top = 5.dp))
                                 }
                                 Row(
                                     Modifier.padding(top = 8.dp),
