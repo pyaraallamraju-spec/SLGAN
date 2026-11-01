@@ -7460,7 +7460,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                         Spacer(Modifier.width(10.dp))
                                         Text("About this condition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
-                                    Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp), modifier = Modifier.padding(start = 44.dp)
+                                    Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp, modifier = Modifier.padding(start = 44.dp))
                                 }
                                 "Suggested medicines" -> {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
