@@ -7450,7 +7450,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                         Spacer(Modifier.width(10.dp))
                                         Text("About this condition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
-                                    Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp)
+                                    Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp), modifier = Modifier.padding(start = 44.dp)
                                 }
                                 "Suggested medicines" -> {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -7469,8 +7469,10 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                     if (detailLoading) CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.dp, color = Forest)
                                     else if (displayedSuggestions.isEmpty()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                                     else displayedSuggestions.forEach { medicine ->
-                                        Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                                            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = appThemedColor(Color(0xFF6F625A)), modifier = Modifier.size(18.dp))
+                                        Row(Modifier.fillMaxWidth().padding(start = 8.dp, top = 4.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                                            Box(Modifier.size(20.dp).clip(CircleShape).background(Forest), contentAlignment = Alignment.Center) {
+                                                Icon(Icons.Default.Check, contentDescription = null, tint = Color.White, modifier = Modifier.size(14.dp))
+                                            }
                                             Spacer(Modifier.width(10.dp))
                                             Text(medicine, color = Ink, fontSize = 14.sp, lineHeight = 20.sp)
                                         }
@@ -7489,9 +7491,9 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                         Spacer(Modifier.width(10.dp))
                                         Text("Precautions & care", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
-                                    if (diseasePrecautions.isBlank()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
+                                    if (diseasePrecautions.isBlank()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, modifier = Modifier.padding(start = 44.dp))
                                     else diseasePrecautions.split("\n").filter { it.isNotBlank() }.forEach { precaution ->
-                                        Row(Modifier.fillMaxWidth().padding(vertical = 3.dp), verticalAlignment = Alignment.Top) {
+                                        Row(Modifier.fillMaxWidth().padding(start = 44.dp, top = 3.dp, bottom = 3.dp), verticalAlignment = Alignment.Top) {
                                             Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Forest, modifier = Modifier.size(17.dp))
                                             Spacer(Modifier.width(9.dp))
                                             Text(precaution, color = Muted, fontSize = 13.sp, lineHeight = 20.sp)
