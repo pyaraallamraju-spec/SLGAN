@@ -59,10 +59,17 @@ function doPost(e) {
       const message = status === "accepted"
         ? "Your order has been accepted by Sri Lakshmi Ganapathi Ayurvedic Nilayam. We will contact you about dispatch and delivery."
         : "Your order was not accepted. Please contact Sri Lakshmi Ganapathi Ayurvedic Nilayam if you need help.";
+      const statusHtml = emailFrame("Order " + (status === "accepted" ? "accepted" : "update"),
+        "Your SLGAN order status has changed.",
+        '<p style="margin:0 0 16px">Dear ' + escapeHtml(order.customerName || "Customer") + ',</p>' +
+        '<p style="margin:0 0 18px">' + escapeHtml(message) + '</p>' +
+        emailInfoTable([["Order ID", orderId], ["Current status", status.toUpperCase()]]) +
+        emailButton("Visit SLGAN", "https://slgan-a364e.web.app/"));
       GmailApp.sendEmail(order.email, "SLGAN order status: " + status.toUpperCase() + " — " + orderId,
-        "Dear " + (order.customerName || "Customer") + ",\n\n" + message +
-        "\n\nOrder ID: " + orderId + "\nCurrent status: " + status.toUpperCase() +
-        "\n\nSri Lakshmi Ganapathi Ayurvedic Nilayam");
+        "Dear " + (order.customerName || "Customer") + ",\\n\\n" + message +
+        "\\n\\nOrder ID: " + orderId + "\\nCurrent status: " + status.toUpperCase() +
+        "\\n\\nSri Lakshmi Ganapathi Ayurvedic Nilayam",
+        { htmlBody: statusHtml, name: "Sri Lakshmi Ganapathi Ayurveda Nilayam" });
       return jsonOut({ success: true, ok: true, message: "Order status email sent." });
     }
     if (action === "retryInvoice") {
@@ -80,30 +87,27 @@ function doPost(e) {
 
 function sendAdminOrderNotification(orderId, order) {
   const adminEmail = String(PropertiesService.getScriptProperties().getProperty("SLGAN_ADMIN_EMAIL") || "").trim();
-  if (!adminEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adminEmail)) {
-    throw new Error("SLGAN_ADMIN_EMAIL is missing or invalid in Script Properties.");
-  }
+  if (!adminEmail || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(adminEmail)) throw new Error("SLGAN_ADMIN_EMAIL is missing or invalid in Script Properties.");
   const items = Array.isArray(order.items) ? order.items : [];
-  const itemLines = items.map(function(item) {
+  const rows = items.map(function(item) {
     const qty = Number(item.quantity) || 0;
     const unit = Number(item.unitPrice != null ? item.unitPrice : item.price) || 0;
     const line = Number(item.lineTotal != null ? item.lineTotal : unit * qty) || 0;
-    return "- " + String(item.productName || item.name || "Product") + " x " + qty + " = ₹" + line.toFixed(2);
-  }).join("\n");
+    return emailTableRow(item.productName || item.name || "Product", qty, unit, line);
+  }).join("");
   const total = Number(order.grandTotal != null ? order.grandTotal : order.subtotal) || 0;
-  GmailApp.sendEmail(
-    adminEmail,
-    "New SLGAN order received — " + orderId,
-    "A new order was placed in SLGAN.\n\nOrder ID: " + orderId +
-      "\nCustomer: " + String(order.customerName || "Customer") +
-      "\nCustomer email: " + String(order.email || "") +
-      "\nPhone: " + String(order.phone || order.deliveryPhone || "") +
-      "\nDelivery address: " + String(order.shippingAddress || order.deliveryAddress || "") +
-      "\n\nItems:\n" + itemLines +
-      "\n\nTotal: ₹" + total.toFixed(2) +
-      "\nStatus: " + String(order.orderStatus || "pending verification") +
-      "\n\nPlease open the SLGAN admin panel to review this order."
-  );
+  const details = emailInfoTable([
+    ["Order ID", orderId], ["Order date", Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a")],
+    ["Customer", order.customerName || "Customer"], ["Email", order.email || ""],
+    ["Mobile", order.phone || order.deliveryPhone || ""], ["Delivery address", order.shippingAddress || order.deliveryAddress || ""],
+    ["Total amount", "₹" + total.toFixed(2)], ["Status", order.orderStatus || "Pending verification"]
+  ]);
+  const html = emailFrame("New order received", "A customer has placed an order on SLGAN.",
+    '<p style="margin:0 0 16px">Hello Admin,</p><p style="margin:0 0 18px">Please review this new order.</p>' +
+    details + emailItemsTable(rows, total) + emailButton("Open Admin Panel", "https://slgan-a364e.web.app/"));
+  GmailApp.sendEmail(adminEmail, "New SLGAN order received — " + orderId,
+    "A new SLGAN order was placed. Order ID: " + orderId + ". Total: ₹" + total.toFixed(2),
+    { htmlBody: html, name: "Sri Lakshmi Ganapathi Ayurveda Nilayam" });
   return "Admin notification sent.";
 }
 
@@ -127,7 +131,12 @@ function sendOrderConfirmation(orderId, order) {
       "SLGAN order confirmation and invoice — " + orderId,
       "Thank you for your order with Sri Lakshmi Ganapathi Ayurvedic Nilayam. Your order confirmation PDF is attached. Order status: " + (order.orderStatus || "pending verification") + ". No online payment has been collected.",
       {
-        htmlBody: "<p>Thank you for your order.</p><p><b>Order ID:</b> " + escapeHtml(orderId) + "<br><b>Status:</b> " + escapeHtml(order.orderStatus || "pending verification") + "</p><p>Your order confirmation PDF is attached. No online payment has been collected.</p><p>Sri Lakshmi Ganapathi Ayurvedic Nilayam</p>",
+        htmlBody: emailFrame("Order confirmed", "Thank you for choosing Sri Lakshmi Ganapathi Ayurveda Nilayam.",
+          '<p style="margin:0 0 16px">Dear ' + escapeHtml(order.customerName || "Customer") + ',</p>' +
+          '<p style="margin:0 0 18px">Your order has been successfully received. Your order confirmation PDF is attached.</p>' +
+          emailInfoTable([["Order ID", orderId], ["Order status", order.orderStatus || "Pending verification"], ["Order total", "₹" + total.toFixed(2)]]) +
+          emailButton("View SLGAN", "https://slgan-a364e.web.app/") +
+          '<p style="font-size:13px;color:#687565;margin:18px 0 0">No online payment has been collected. We will contact you regarding order verification and dispatch.</p>'),
         attachments: [pdf],
         name: "Sri Lakshmi Ganapathi Ayurvedic Nilayam"
       }
@@ -193,6 +202,30 @@ function invoiceHtml(orderId, order, items, total) {
     return "<tr><td>" + escapeHtml(name) + "</td><td>" + qty + "</td><td>₹" + unit.toFixed(2) + "</td><td>₹" + line.toFixed(2) + "</td></tr>";
   }).join("");
   return '<html><head><meta charset="UTF-8"><style>body{font-family:Arial,sans-serif;color:#38251f;padding:26px}h1{color:#762a24;font-size:22px}table{width:100%;border-collapse:collapse;margin-top:18px}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#fff2d7}.total{text-align:right;font-size:17px;font-weight:bold;margin-top:20px}.note{margin-top:25px;font-size:11px;color:#655}</style></head><body><h1>Sri Lakshmi Ganapathi Ayurvedic Nilayam</h1><h2>Order Confirmation / Provisional Invoice</h2><p><b>Order ID:</b> ' + escapeHtml(orderId) + '<br><b>Date:</b> ' + escapeHtml(new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })) + '<br><b>Customer:</b> ' + escapeHtml(order.customerName || "") + '<br><b>Email:</b> ' + escapeHtml(order.email || "") + '<br><b>Phone:</b> ' + escapeHtml(order.phone || order.deliveryPhone || "") + '<br><b>Delivery address:</b> ' + escapeHtml(order.shippingAddress || order.deliveryAddress || "") + '</p><table><thead><tr><th>Product</th><th>Qty</th><th>Unit price</th><th>Amount</th></tr></thead><tbody>' + rows + '</tbody></table><div class="total">Product total: ₹' + total.toFixed(2) + '</div><p><b>Order status:</b> ' + escapeHtml(order.orderStatus || "pending verification") + '</p><p class="note">No online payment was collected. This document confirms receipt of the order request; it is not a final tax invoice. Delivery charges, applicable taxes and the final tax invoice, if required, will be confirmed by the seller.</p></body></html>';
+}
+
+const SLGAN_LOGO_URL = "https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/app/src/main/res/drawable-nodpi/slgan_logo_true_transparent.png";
+function emailFrame(title, subtitle, content) {
+  return '<!doctype html><html><body style="margin:0;padding:24px 10px;background:#f3f5ed;font-family:Arial,Helvetica,sans-serif;color:#203b2b">' +
+    '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;margin:0 auto;background:#fffdf6;border:1px solid #e8dfc5;border-radius:18px;overflow:hidden">' +
+    '<tr><td style="padding:22px 24px;background:#fffdf2;text-align:center;border-bottom:3px solid #c9a84f"><img src="' + SLGAN_LOGO_URL + '" alt="SLGAN logo" width="76" height="76" style="display:block;margin:0 auto 10px;object-fit:contain">' +
+    '<div style="font-size:23px;line-height:1.25;font-weight:700;color:#173d28">Sri Lakshmi Ganapathi</div><div style="font-size:16px;color:#365641;margin-top:3px">Ayurveda Nilayam</div><div style="font-size:11px;color:#9b792e;margin-top:7px">Estd. 1900 by Perraju Sharma</div></td></tr>' +
+    '<tr><td style="padding:25px 24px;background:#174b2d;color:#fffdf2;border-bottom:4px solid #d5b65d"><div style="font-size:25px;font-weight:700;line-height:1.25">' + escapeHtml(title) + '</div><div style="font-size:14px;line-height:1.5;margin-top:7px;color:#f6efd9">' + escapeHtml(subtitle) + '</div></td></tr>' +
+    '<tr><td style="padding:26px 24px 30px;font-size:15px;line-height:1.6;color:#26392d">' + content + '</td></tr>' +
+    '<tr><td style="padding:20px 24px;background:#174b2d;color:#fffdf2;text-align:center;border-top:4px solid #d5b65d"><div style="font-weight:700;font-size:14px">Sri Lakshmi Ganapathi Ayurveda Nilayam</div><div style="font-size:12px;color:#e9e0c8;margin-top:6px">U. Kothapalli – 533447, Andhra Pradesh, India</div><div style="font-size:11px;color:#e9e0c8;margin-top:10px">Authentic Ayurvedic Formulas &nbsp; • &nbsp; Traditional Heritage &nbsp; • &nbsp; Quality Assured</div></td></tr></table></body></html>';
+}
+function emailInfoTable(rows) {
+  return '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border:1px solid #e7d79e;border-radius:10px;background:#fffdf6;margin:16px 0 20px">' +
+    rows.map(function(row) { return '<tr><td style="padding:8px 12px;color:#687565;font-size:13px;border-bottom:1px solid #f0ead8;width:38%">' + escapeHtml(row[0]) + '</td><td style="padding:8px 12px;color:#203b2b;font-size:13px;font-weight:600;border-bottom:1px solid #f0ead8">' + escapeHtml(row[1]) + '</td></tr>'; }).join("") + '</table>';
+}
+function emailTableRow(name, qty, unit, line) {
+  return '<tr><td style="padding:9px;border-bottom:1px solid #e9e2ce">' + escapeHtml(name) + '</td><td style="padding:9px;text-align:center;border-bottom:1px solid #e9e2ce">' + qty + '</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e9e2ce">₹' + unit.toFixed(2) + '</td><td style="padding:9px;text-align:right;border-bottom:1px solid #e9e2ce">₹' + line.toFixed(2) + '</td></tr>';
+}
+function emailItemsTable(rows, total) {
+  return '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;font-size:12px;margin:18px 0"><tr style="background:#e8edcf;color:#203b2b"><th align="left" style="padding:9px">Product</th><th>Qty</th><th align="right">Unit</th><th align="right">Amount</th></tr>' + rows + '<tr><td colspan="3" align="right" style="padding:11px;font-weight:700;color:#203b2b">Total</td><td align="right" style="padding:11px;font-weight:700;color:#174b2d">₹' + total.toFixed(2) + '</td></tr></table>';
+}
+function emailButton(label, url) {
+  return '<table role="presentation" cellspacing="0" cellpadding="0" style="margin:22px auto"><tr><td bgcolor="#17602f" style="border-radius:8px"><a href="' + escapeHtml(url) + '" style="display:inline-block;padding:13px 25px;color:#fffdf2;text-decoration:none;font-weight:700;font-size:14px">' + escapeHtml(label) + '</a></td></tr></table>';
 }
 
 function verifyFirebaseUser(idToken) {
