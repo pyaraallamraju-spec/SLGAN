@@ -8568,13 +8568,20 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 }
             } else {
                 addresses.forEach { address ->
-                    val name = address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { "Delivery address" }
+                    val name = address["name"]?.toString().orEmpty()
+                        .ifBlank { address["fullName"]?.toString().orEmpty() }
+                        .ifBlank { address["receiverName"]?.toString().orEmpty() }
+                        .ifBlank { "Delivery address" }
                     val label = address["label"]?.toString().orEmpty().ifBlank { "HOME" }
                     val phone = address["phone"]?.toString().orEmpty()
-                    val addressText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
-                        .mapNotNull { key -> address[key]?.toString()?.takeIf { it.isNotBlank() } }
-                        .joinToString(", ")
-                        .ifBlank { address["address"]?.toString().orEmpty() }
+                        .ifBlank { address["mobile"]?.toString().orEmpty() }
+                        .ifBlank { address["receiverPhone"]?.toString().orEmpty() }
+                    val primaryAddress = listOf("address", "addressText", "fullAddress", "addressLine1")
+                        .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+                    val addressParts = (listOf(primaryAddress) + listOf("addressLine2", "landmark", "area", "city", "state", "pincode")
+                        .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } })
+                        .filter { part -> primaryAddress.isBlank() || !primaryAddress.contains(part, ignoreCase = true) }
+                    val addressText = addressParts.distinctBy { it.lowercase(Locale.ROOT) }.joinToString(", ")
                     val isDefault = address["isDefault"] == true || address["default"] == true
                     val addressId = address["_id"]?.toString().orEmpty()
                     val isSelected = selectedAddressId == addressId
@@ -8643,24 +8650,12 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                         )
                                     }
                                 }
-                                if (addressText.isNotBlank()) {
-                                    Text(
-                                        addressText,
-                                        color = Muted,
-                                        fontSize = 14.sp,
-                                        lineHeight = 20.sp,
-                                        maxLines = 3,
-                                        overflow = TextOverflow.Ellipsis,
-                                        modifier = Modifier.padding(top = 2.dp)
-                                    )
-                                }
+                                Text(name, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 5.dp))
                                 if (phone.isNotBlank()) {
-                                    Text(
-                                        "Phone number: $phone",
-                                        color = Ink,
-                                        fontSize = 14.sp,
-                                        modifier = Modifier.padding(top = 8.dp)
-                                    )
+                                    Text("Mobile: $phone", color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 3.dp))
+                                }
+                                if (addressText.isNotBlank()) {
+                                    Text("Address: $addressText", color = Muted, fontSize = 14.sp, lineHeight = 20.sp, maxLines = 5, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 5.dp))
                                 }
                                 Row(
                                     Modifier.padding(top = 8.dp),
