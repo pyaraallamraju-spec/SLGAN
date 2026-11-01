@@ -8591,7 +8591,62 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 Icon(Icons.Default.Add, contentDescription = "Add address", tint = appThemedColor(DefaultBtn.content), modifier = Modifier.size(28.dp))
             }
         }
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 18.dp, vertical = 22.dp)) {
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+            Box(
+                Modifier.fillMaxWidth().height(190.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.address_book_header),
+                    contentDescription = "Ayurvedic profile header background",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+                Row(
+                    Modifier.fillMaxWidth().padding(start = 18.dp, end = 112.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        Modifier.size(68.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFF7EBD4))
+                            .border(2.dp, Color(0xFFC99A36), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (authUser?.photoUrl != null) {
+                            AsyncImage(
+                                model = authUser.photoUrl,
+                                contentDescription = "Profile photo",
+                                modifier = Modifier.fillMaxSize().clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color(0xFF8A7048), modifier = Modifier.size(38.dp))
+                        }
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(
+                            authUser?.displayName?.takeIf { it.isNotBlank() } ?: "Welcome",
+                            color = Color(0xFF382313),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        authUser?.email?.takeIf { it.isNotBlank() }?.let { email ->
+                            Text(
+                                email,
+                                color = Color(0xFF513B2B),
+                                fontSize = 13.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                }
+            }
+            Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 22.dp)) {
             Text("Saved addresses", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(6.dp))
             Text("Keep delivery locations for future orders.", color = Muted, fontSize = 14.sp)
@@ -9490,6 +9545,7 @@ private fun AddAddressDetailsPage(
             ) {
                 if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp)
                 else Text("Next", color = appThemedColor(DefaultBtn.content), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            }
             }
         }
     }
