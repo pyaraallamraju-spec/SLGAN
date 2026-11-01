@@ -8630,57 +8630,6 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
         )
     } else {
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF2F4FA)))) {
-            Box(
-                Modifier.fillMaxWidth().height(190.dp),
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Box(
-                    Modifier.fillMaxSize().background(appThemedColor(Color(0xFFF7EBD4)))
-                )
-                Row(
-                    Modifier.fillMaxWidth().padding(start = 18.dp, end = 112.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        Modifier.size(68.dp)
-                            .clip(CircleShape)
-                            .background(Color(0xFFF7EBD4))
-                            .border(2.dp, Color(0xFFC99A36), CircleShape),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        if (authUser?.photoUrl != null) {
-                            AsyncImage(
-                                model = authUser.photoUrl,
-                                contentDescription = "Profile photo",
-                                modifier = Modifier.fillMaxSize().clip(CircleShape),
-                                contentScale = ContentScale.Crop
-                            )
-                        } else {
-                            Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color(0xFF8A7048), modifier = Modifier.size(38.dp))
-                        }
-                    }
-                    Spacer(Modifier.width(12.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(
-                            authUser?.displayName?.takeIf { it.isNotBlank() } ?: "Welcome",
-                            color = Color(0xFF382313),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        authUser?.email?.takeIf { it.isNotBlank() }?.let { email ->
-                            Text(
-                                email,
-                                color = Color(0xFF513B2B),
-                                fontSize = 13.sp,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                        }
-                    }
-                }
-            }
         Row(
             Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
