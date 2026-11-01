@@ -8522,6 +8522,11 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
         }
     }
 
+    LaunchedEffect(authUser?.uid) {
+        kotlinx.coroutines.delay(10_000)
+        if (loading) loading = false
+    }
+
     fun setDefaultAddress(id: String) {
         if (id.isBlank() || id == selectedAddressId) return
         val db = FirebaseFirestore.getInstance()
@@ -8605,26 +8610,6 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
         )
     } else {
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF2F4FA)))) {
-        Row(
-            Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE1E6EF)), CircleShape)) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
-            }
-            Text("Address book", modifier = Modifier.weight(1f).padding(start = 14.dp), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
-            Box(
-                Modifier.size(44.dp)
-                    .shadow(5.dp, RoundedCornerShape(DefaultBtn.cornerRadius))
-                    .background(appThemedColor(DefaultBtn.background), RoundedCornerShape(DefaultBtn.cornerRadius))
-                    .border(1.dp, appThemedColor(DefaultBtn.border), RoundedCornerShape(DefaultBtn.cornerRadius))
-                    .clickable { showAddAddressSheet = true },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add address", tint = appThemedColor(DefaultBtn.content), modifier = Modifier.size(28.dp))
-            }
-        }
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Box(
                 Modifier.fillMaxWidth().height(190.dp),
                 contentAlignment = Alignment.CenterStart
@@ -8679,6 +8664,26 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     }
                 }
             }
+        Row(
+            Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE1E6EF)), CircleShape)) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+            }
+            Text("Address book", modifier = Modifier.weight(1f).padding(start = 14.dp), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+            Box(
+                Modifier.size(44.dp)
+                    .shadow(5.dp, RoundedCornerShape(DefaultBtn.cornerRadius))
+                    .background(appThemedColor(DefaultBtn.background), RoundedCornerShape(DefaultBtn.cornerRadius))
+                    .border(1.dp, appThemedColor(DefaultBtn.border), RoundedCornerShape(DefaultBtn.cornerRadius))
+                    .clickable { showAddAddressSheet = true },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add address", tint = appThemedColor(DefaultBtn.content), modifier = Modifier.size(28.dp))
+            }
+        }
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 22.dp)) {
             Text("Saved addresses", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(6.dp))
