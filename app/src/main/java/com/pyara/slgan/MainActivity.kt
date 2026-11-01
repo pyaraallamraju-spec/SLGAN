@@ -8634,11 +8634,8 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 Modifier.fillMaxWidth().height(190.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.address_book_header),
-                    contentDescription = "Ayurvedic profile header background",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                Box(
+                    Modifier.fillMaxSize().background(appThemedColor(Color(0xFFF7EBD4)))
                 )
                 Row(
                     Modifier.fillMaxWidth().padding(start = 18.dp, end = 112.dp),
@@ -9821,6 +9818,15 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
         }
         if (profileSection == "Profile") {
             Column(Modifier.fillMaxWidth().padding(horizontal = if (initialSection == "Profile") 16.dp else 0.dp)) {
+            if (initialSection == "Profile") {
+                Image(
+                    painter = painterResource(id = R.drawable.address_book_header),
+                    contentDescription = "SLGAN profile header background",
+                    modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(20.dp)),
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(Modifier.height(16.dp))
+            }
             Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(20.dp)) {
                 Row(Modifier.fillMaxWidth().padding(18.dp), verticalAlignment = Alignment.CenterVertically) {
                     Surface(
