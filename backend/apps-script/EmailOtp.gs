@@ -55,6 +55,7 @@ function sendBrandedPasswordReset(email, userIp) {
     console.error("Password reset rejected: caller IP missing or invalid.");
     return json({ ok: false, message: "Could not verify the network address. Please try again." });
   }
+
   console.log("Password reset request received; caller IP supplied.");
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
@@ -66,52 +67,61 @@ function sendBrandedPasswordReset(email, userIp) {
     const today = Utilities.formatDate(new Date(), "UTC", "yyyy-MM-dd");
     const dayKey = "RESET_DAY_" + today;
     const globalDaily = Number(props.getProperty(dayKey) || "0");
+    const todayCount = Number(record.date === today ? record.count : 0);
 
-    if (record.lastSent && now - record.lastSent < PASSWORD_RESET_RESEND_WAIT_MS) {
+    // Apply the resend cooldown only after a message was actually sent.
+    if (record.lastSent && now - Number(record.lastSent) < PASSWORD_RESET_RESEND_WAIT_MS) {
+      console.log("Password reset skipped: successful-send cooldown is active.");
       return json({ ok: true, message: passwordResetGenericMessage() });
     }
-    if (Number(record.date === today ? record.count : 0) >= PASSWORD_RESET_DAILY_LIMIT ||
+    if (todayCount >= PASSWORD_RESET_DAILY_LIMIT ||
         globalDaily >= PASSWORD_RESET_GLOBAL_DAILY_LIMIT) {
+      console.log("Password reset skipped: daily request limit reached.");
       return json({ ok: true, message: passwordResetGenericMessage() });
     }
 
-    // Record the attempt before contacting Google to prevent rapid retries.
-    const priorCount = record.date === today ? Number(record.count || 0) : 0;
+    // Count every request for abuse protection, but do not set lastSent here.
     record.date = today;
-    record.count = priorCount + 1;
-    record.lastSent = now;
+    record.count = todayCount + 1;
     props.setProperty(key, JSON.stringify(record));
     props.setProperty(dayKey, String(globalDaily + 1));
 
     try {
-      console.log("Password reset: requesting Firebase action link.");
+      console.log("Password reset stage 1/3: requesting Firebase action link.");
       const actionLink = generateFirebasePasswordResetLink(email, userIp);
-      console.log("Password reset: Firebase action-link request finished; link returned=" + Boolean(actionLink));
-      // An unknown email is deliberately indistinguishable to the caller.
-      if (actionLink) {
-        console.log("Password reset: sending branded email through Gmail.");
-        GmailApp.sendEmail(
-          email,
-          "Reset your SLGAN account password",
-          "We received a request to reset your SLGAN account password. Open this link to choose a new password: " +
-            actionLink + "\\n\\nIf you did not request this, you can ignore this email. Your password will remain unchanged.",
-          {
-            htmlBody: passwordResetEmailHtml(actionLink),
-            name: "Sri Lakshmi Ganapathi Ayurveda Nilayam"
-          }
-        );
-        console.log("Password reset: Gmail sendEmail call completed.");
-      } else {
-        console.log("Password reset: Firebase returned no link; no email was sent (account may not exist).");
-      }
-    } catch (err) {
-      console.error("SLGAN branded password-reset delivery failed: " +
-        String(err && err.message || err).slice(0, 300));
-      // Do not expose whether the account exists or the Firebase error details.
-      return json({ ok: false, message: "The password reset service is temporarily unavailable. Please try again later." });
-    }
+      console.log("Password reset stage 2/3: Firebase returned link=" + Boolean(actionLink));
 
-    return json({ ok: true, message: passwordResetGenericMessage() });
+      // Keep the public response identical for unknown accounts.
+      if (!actionLink) {
+        console.warn("Password reset completed without delivery: Firebase returned no action link for this request.");
+        return json({ ok: true, message: passwordResetGenericMessage() });
+      }
+
+      console.log("Password reset stage 3/3: sending branded message through Gmail.");
+      GmailApp.sendEmail(
+        email,
+        "Reset your SLGAN account password",
+        "We received a request to reset your SLGAN account password. Open this link to choose a new password: " +
+          actionLink + "\n\nIf you did not request this, you can ignore this email. Your password will remain unchanged.",
+        {
+          htmlBody: passwordResetEmailHtml(actionLink),
+          name: "Sri Lakshmi Ganapathi Ayurveda Nilayam"
+        }
+      );
+
+      // Record successful delivery only after GmailApp accepts the send call.
+      record.lastSent = Date.now();
+      props.setProperty(key, JSON.stringify(record));
+      console.log("Password reset email accepted by Gmail; successful-send timestamp saved.");
+      return json({ ok: true, message: passwordResetGenericMessage() });
+    } catch (err) {
+      const detail = String(err && err.message || err).slice(0, 500);
+      console.error("SLGAN password-reset failure: " + detail);
+      return json({
+        ok: false,
+        message: "The password reset service could not send the email. Please try again later."
+      });
+    }
   } finally {
     lock.releaseLock();
   }
