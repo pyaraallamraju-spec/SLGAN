@@ -7308,7 +7308,33 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         DropdownMenuItem(
                             colors = MenuDefaults.itemColors(textColor = Ink),
                             text = { Text(disease, color = Ink, fontWeight = FontWeight.Medium) },
-                            leadingIcon = { Text(when (disease.trim().lowercase()) { "fever" -> "🤒"; "cough" -> "🦠"; "flu" -> "🫁"; "obesity" -> "⚖️"; "tuberculosis", "tuberculosis (tb)", "tb" -> "🫁"; else -> "🌿" }, fontSize = 20.sp) },
+                            leadingIcon = {
+                                val normalizedDisease = disease.trim().lowercase(Locale.ROOT)
+                                    .replace(Regex("[^a-z0-9 ]"), " ")
+                                    .replace(Regex("\\s+"), " ")
+                                val diseaseIcon = when {
+                                    normalizedDisease.contains("tuberculosis") || normalizedDisease == "tb" || normalizedDisease.contains(" tb ") -> "🫁"
+                                    normalizedDisease.contains("fever") || normalizedDisease.contains("pyrexia") -> "🤒"
+                                    normalizedDisease.contains("cough") || normalizedDisease.contains("bronchitis") -> "😷"
+                                    normalizedDisease.contains("flu") || normalizedDisease.contains("influenza") || normalizedDisease.contains("cold") || normalizedDisease.contains("rhinitis") -> "🤧"
+                                    normalizedDisease.contains("obesity") || normalizedDisease.contains("overweight") -> "⚖️"
+                                    normalizedDisease.contains("diabetes") || normalizedDisease.contains("blood sugar") -> "🩸"
+                                    normalizedDisease.contains("heart") || normalizedDisease.contains("cardiac") || normalizedDisease.contains("hypertension") || normalizedDisease.contains("blood pressure") -> "❤️"
+                                    normalizedDisease.contains("skin") || normalizedDisease.contains("rash") || normalizedDisease.contains("eczema") || normalizedDisease.contains("dermatitis") -> "🩹"
+                                    normalizedDisease.contains("liver") || normalizedDisease.contains("hepatitis") || normalizedDisease.contains("cirrhosis") -> "🟤"
+                                    normalizedDisease.contains("kidney") || normalizedDisease.contains("renal") || normalizedDisease.contains("urinary") -> "🫘"
+                                    normalizedDisease.contains("stomach") || normalizedDisease.contains("gastric") || normalizedDisease.contains("digest") || normalizedDisease.contains("acidity") -> "🫃"
+                                    normalizedDisease.contains("eye") || normalizedDisease.contains("vision") -> "👁️"
+                                    normalizedDisease.contains("bone") || normalizedDisease.contains("joint") || normalizedDisease.contains("arthritis") -> "🦴"
+                                    normalizedDisease.contains("headache") || normalizedDisease.contains("migraine") -> "🤕"
+                                    normalizedDisease.contains("asthma") || normalizedDisease.contains("lung") || normalizedDisease.contains("respiratory") -> "🫁"
+                                    normalizedDisease.contains("anemia") || normalizedDisease.contains("anaemia") -> "🩸"
+                                    normalizedDisease.contains("allergy") || normalizedDisease.contains("allergic") -> "🌼"
+                                    normalizedDisease.contains("mental") || normalizedDisease.contains("anxiety") || normalizedDisease.contains("depression") -> "🧠"
+                                    else -> "🩺"
+                                }
+                                Text(diseaseIcon, fontSize = 20.sp)
+                            },
                             onClick = {
                                 selectedDisease = disease
                                 query = disease
