@@ -4501,6 +4501,7 @@ private fun ShopScreen(
     onOrderResult: (String, Boolean, String?, String) -> Unit, onSignOut: () -> Unit, onProductClick: (Product) -> Unit, onClearCart: () -> Unit
 ) {
     val cartCount = products.sumOf { product -> (cart[product.id] ?: 0).coerceAtLeast(0) }
+    val accountsScrollState = rememberScrollState()
     Scaffold(containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
         Row(Modifier.fillMaxWidth().shadow(6.dp).background(appThemedColor(Color.White)).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(appThemedColor(Color.White)))
@@ -4567,6 +4568,7 @@ private fun ShopScreen(
             "Diseases" -> DiseasesPage(Modifier.padding(padding), diseases, products, diseasesLoading, diseasesError, onHome = { onTabChange(previousTab) })
             "Accounts" -> AccountsPage(
                 modifier = Modifier.padding(padding),
+                scrollState = accountsScrollState,
                 onTabChange = onTabChange,
                 onSignOut = onSignOut,
                 appLanguage = appLanguage,
@@ -7271,7 +7273,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         if (query.isBlank()) diseases else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
     }
 
-    Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(rememberScrollState())) {
+    Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(scrollState)) {
         Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(42.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onHome), contentAlignment = Alignment.Center) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
@@ -7839,6 +7841,7 @@ private fun AccountMenuRow(
 @Composable
 private fun AccountsPage(
     modifier: Modifier,
+    scrollState: androidx.compose.foundation.ScrollState,
     onTabChange: (String) -> Unit,
     onSignOut: () -> Unit,
     appLanguage: String,
