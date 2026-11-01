@@ -87,7 +87,7 @@ function doPost(e) {
 
 function sendAdminOrderNotification(orderId, order) {
   const adminEmail = String(PropertiesService.getScriptProperties().getProperty("SLGAN_ADMIN_EMAIL") || "").trim();
-  if (!adminEmail || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(adminEmail)) throw new Error("SLGAN_ADMIN_EMAIL is missing or invalid in Script Properties.");
+  if (!adminEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adminEmail)) throw new Error("SLGAN_ADMIN_EMAIL is missing or invalid in Script Properties.");
   const items = Array.isArray(order.items) ? order.items : [];
   const rows = items.map(function(item) {
     const qty = Number(item.quantity) || 0;
