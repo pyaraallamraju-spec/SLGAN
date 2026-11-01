@@ -27,6 +27,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.WindowCompat
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import com.google.firebase.FirebaseApp
+import com.google.firebase.Firebase
+import com.google.firebase.ai.GenerativeBackend
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider
@@ -485,6 +489,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
+        FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
+            PlayIntegrityAppCheckProviderFactory.getInstance()
+        )
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
             checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 4102)
@@ -8369,7 +8376,24 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                                 val answer = withContext(Dispatchers.IO) {
                                     val endpoint = BuildConfig.CHATBOT_API_BASE_URL.trim().trimEnd('/')
                                     if (endpoint.isBlank() || user == null) {
-                                        supportFaqReply(question, appLanguage)
+                                        runCatching {
+                                            val prompt = """
+                                                You are the SLGAN Assistant for Sri Lakshmi Ganapathi Ayurveda Nilayam.
+                                                Reply naturally in the user's language (Telugu, English, or mixed Telugu-English).
+                                                Help with app navigation, product catalogue information, orders, invoices, and delivery.
+                                                Never invent product prices, ingredients, stock, order status, or customer-specific details.
+                                                Do not diagnose, prescribe, recommend medicine dosages, claim any Ayurvedic product cures a disease, or advise stopping prescribed treatment.
+                                                For health concerns, recommend consulting a qualified healthcare professional.
+                                                Never ask for passwords, OTPs, payment details, or unnecessary personal data.
+                                                Keep replies concise, polite, and clear.
+                                                Preferred language: $appLanguage
+                                                User question: $question
+                                            """.trimIndent()
+                                            val model = Firebase.ai(backend = GenerativeBackend.googleAI())
+                                                .generativeModel("gemini-3.8-flash")
+                                            model.generateContent(prompt).text?.takeIf { it.isNotBlank() }
+                                                ?: throw IllegalStateException("Gemini returned an empty reply")
+                                        }.getOrElse { supportFaqReply(question, appLanguage) }
                                     } else {
                                         runCatching {
                                             val token = Tasks.await(user.getIdToken(false)).token
