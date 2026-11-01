@@ -1930,9 +1930,25 @@ private fun requestEmailOtp(
                 setRequestProperty("Content-Type", "application/json; charset=utf-8")
                 setRequestProperty("Accept", "application/json")
             }
-            val payload = org.json.JSONObject().put("action", action).put("email", email).apply {
-                if (action == "verify") put("code", code)
-            }.toString()
+            val payloadObject = org.json.JSONObject().put("action", action).put("email", email)
+            if (action == "verify") payloadObject.put("code", code)
+            if (action == "passwordReset") {
+                val ipConnection = (java.net.URL("https://api.ipify.org").openConnection() as java.net.HttpURLConnection).apply {
+                    requestMethod = "GET"
+                    connectTimeout = 8000
+                    readTimeout = 8000
+                }
+                val publicIp = try {
+                    ipConnection.inputStream.bufferedReader(Charsets.UTF_8).use { it.readText().trim() }
+                } finally {
+                    ipConnection.disconnect()
+                }
+                if (publicIp.isBlank() || publicIp.length > 64) {
+                    throw IllegalStateException("Could not determine network IP for password reset. Please try again.")
+                }
+                payloadObject.put("userIp", publicIp)
+            }
+            val payload = payloadObject.toString()
             connection.outputStream.use { it.write(payload.toByteArray(Charsets.UTF_8)) }
             val status = connection.responseCode
             val stream = if (status in 200..299) connection.inputStream else connection.errorStream
