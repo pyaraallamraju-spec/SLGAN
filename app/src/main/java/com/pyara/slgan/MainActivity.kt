@@ -6243,7 +6243,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Column(Modifier.padding(14.dp)) {
                         Text("Delivery instructions", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(10.dp))
-                        listOf("Call before delivery", "Avoid calling", "Do not ring the bell").forEach { instruction ->
+                        listOf("Call before delivery", "Avoid calling").forEach { instruction ->
                             Row(Modifier.fillMaxWidth().clickable { selectedInstruction = if (selectedInstruction == instruction) "" else instruction }.padding(vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Icon(if (selectedInstruction == instruction) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank, contentDescription = null, tint = if (selectedInstruction == instruction) appThemedColor(Color(0xFF7B818A)) else appThemedColor(Color(0xFFD1D5DB)))
                                 Spacer(Modifier.width(10.dp))
