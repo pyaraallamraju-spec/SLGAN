@@ -4781,7 +4781,6 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
             Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
             Text(title, color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
         Divider(color = appThemedColor(Color(0xFFE4E6EB)), thickness = 1.dp)
