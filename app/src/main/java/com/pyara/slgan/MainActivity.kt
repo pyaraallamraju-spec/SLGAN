@@ -7589,25 +7589,31 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         Triple("Suggested medicines", Icons.Default.MedicalServices, "Medicines"),
                         Triple("Precautions", Icons.Default.HealthAndSafety, "Care")
                     )
-                    Column(
-                        Modifier.fillMaxWidth()
-                            .background(appThemedColor(Color(0xFFF3F5F7)), RoundedCornerShape(16.dp))
-                            .padding(5.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.Top
                     ) {
-                        detailTabs.forEach { (tab, icon, shortLabel) ->
-                            val selected = selectedDetailTab == tab
-                            Row(
-                                Modifier.fillMaxWidth()
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(if (selected) appThemedColor(Color(0xFFE1E5EC)) else Color.Transparent)
-                                    .clickable { selectedDetailTab = tab }
-                                    .padding(horizontal = 16.dp, vertical = 13.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(14.dp)
-                            ) {
-                                Icon(icon, contentDescription = shortLabel, tint = Ink, modifier = Modifier.size(21.dp))
-                                Text(shortLabel, color = Ink, fontSize = 14.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
+                        Column(
+                            Modifier.width(124.dp)
+                                .background(appThemedColor(Color(0xFFF3F5F7)), RoundedCornerShape(16.dp))
+                                .padding(5.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            detailTabs.forEach { (tab, icon, shortLabel) ->
+                                val selected = selectedDetailTab == tab
+                                Column(
+                                    Modifier.fillMaxWidth()
+                                        .clip(RoundedCornerShape(12.dp))
+                                        .background(if (selected) appThemedColor(Color(0xFFE1E5EC)) else Color.Transparent)
+                                        .clickable { selectedDetailTab = tab }
+                                        .padding(horizontal = 10.dp, vertical = 12.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(5.dp)
+                                ) {
+                                    Icon(icon, contentDescription = shortLabel, tint = Ink, modifier = Modifier.size(21.dp))
+                                    Text(shortLabel, color = Ink, fontSize = 12.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
+                                }
                             }
                         }
                     }
