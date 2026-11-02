@@ -6264,7 +6264,30 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             }
             if (confirmedDeliveryAddress != null) {
                 val address = confirmedDeliveryAddress!!
-                val confirmedText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode").mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ").ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
+                val completeAddress = listOf("completeAddress", "complete_address", "formattedAddress", "formatted_address", "fullAddress", "full_address")
+                    .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+                val addressKeys = listOf(
+                    "address", "addressText", "addressLine1", "addressLine2", "houseNo", "houseNumber",
+                    "building", "apartment", "street", "streetName", "road", "landmark", "area", "locality",
+                    "village", "town", "city", "district", "state", "pincode", "postalCode", "zipCode", "country"
+                )
+                val addressParts = addressKeys.mapNotNull { key ->
+                    address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() }
+                }.distinctBy { it.lowercase(Locale.ROOT) }
+                val confirmedText = (listOf(completeAddress).filter { it.isNotBlank() } + addressParts)
+                    .distinctBy { it.lowercase(Locale.ROOT) }
+                    .fold(mutableListOf<String>()) { result, part ->
+                        if (result.none { it.contains(part, ignoreCase = true) || part.contains(it, ignoreCase = true) }) result.add(part)
+                        result
+                    }.joinToString(", ")
+                val recipientName = address["name"]?.toString().orEmpty()
+                    .ifBlank { address["fullName"]?.toString().orEmpty() }
+                    .ifBlank { address["receiverName"]?.toString().orEmpty() }
+                    .ifBlank { customerName }
+                val recipientMobile = address["phone"]?.toString().orEmpty()
+                    .ifBlank { address["mobile"]?.toString().orEmpty() }
+                    .ifBlank { address["receiverPhone"]?.toString().orEmpty() }
+                    .ifBlank { phone }
                 Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 2.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))) {
                     Column(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(0.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -6295,9 +6318,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                  }
                              }) { Text("Change", color = Ink) }
                         }
-                        Text(address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() }.ifBlank { customerName }, color = Ink, fontSize = 14.sp)
-                        Text(confirmedText, color = Muted, fontSize = 13.sp)
-                        Text(address["phone"]?.toString().orEmpty().ifBlank { phone }, color = Muted, fontSize = 13.sp)
+                        Text(recipientName, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                        Text(recipientMobile, color = Muted, fontSize = 13.sp)
+                        Text(confirmedText.ifBlank { "Complete address not available" }, color = Muted, fontSize = 13.sp, lineHeight = 18.sp)
                     }
                 }
             } else {
