@@ -6090,6 +6090,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     }
 
     var selectedInstruction by remember { mutableStateOf("") }
+    var userInstructions by remember { mutableStateOf("") }
+    var userInstructionsEnabled by remember { mutableStateOf(false) }
     val recommendations = remember(products, cart) { products.filter { (cart[it.id] ?: 0) == 0 && it.productStock != 0 }.take(6) }
     val itemCount = selected.sumOf { cart[it.id] ?: 0 }
     val money: (Double) -> String = { amount -> "₹" + String.format(java.util.Locale("en", "IN"), "%.0f", amount) }
@@ -6236,6 +6238,43 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         }
                         Spacer(Modifier.height(8.dp))
                         Text("No online payment is collected in this app.", color = Muted, fontSize = 12.sp)
+                    }
+                }
+                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
+                    Column(Modifier.padding(14.dp)) {
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            OutlinedTextField(
+                                value = userInstructions,
+                                onValueChange = { userInstructions = it },
+                                modifier = Modifier.weight(1f),
+                                label = { Text("Instructions") },
+                                placeholder = { Text("Add any special instructions for your order") },
+                                enabled = userInstructionsEnabled,
+                                readOnly = !userInstructionsEnabled,
+                                minLines = 2,
+                                maxLines = 4,
+                                shape = RoundedCornerShape(12.dp),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = appThemedColor(Color(0xFFB5B5B5)),
+                                    unfocusedBorderColor = appThemedColor(Color(0xFFB5B5B5)),
+                                    disabledBorderColor = appThemedColor(Color(0xFFB5B5B5)),
+                                    focusedTextColor = Ink,
+                                    unfocusedTextColor = Ink,
+                                    disabledTextColor = Ink,
+                                    cursorColor = Ink
+                                )
+                            )
+                            IconButton(
+                                onClick = { userInstructionsEnabled = !userInstructionsEnabled },
+                                modifier = Modifier.size(44.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Edit,
+                                    contentDescription = if (userInstructionsEnabled) "Finish editing instructions" else "Edit instructions",
+                                    tint = appThemedColor(if (userInstructionsEnabled) Color(0xFF2E7D32) else Color(0xFFD32F2F))
+                                )
+                            }
+                        }
                     }
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
@@ -6411,6 +6450,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     "deliveryRecipientName" to address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() },
                                     "deliveryPhone" to address["phone"]?.toString().orEmpty(),
                                     "deliveryInstruction" to selectedInstruction,
+                                    "user_instructions" to userInstructions.trim(),
                                     "items" to itemPayload,
                                     "subtotal" to total,
                                     "grandTotal" to total,
