@@ -2685,6 +2685,9 @@ private fun AdminProductEditor(
     )
     var categoryOptions by remember { mutableStateOf(defaultCategoryOptions) }
     var categoryMenuExpanded by remember { mutableStateOf(false) }
+    var showAddCategoryDialog by remember { mutableStateOf(false) }
+    var newCategoryName by remember { mutableStateOf("") }
+    var savingCategory by remember { mutableStateOf(false) }
     var categorySeedStarted by remember { mutableStateOf(false) }
     DisposableEffect(Unit) {
         val db = FirebaseFirestore.getInstance()
@@ -2819,35 +2822,46 @@ private fun AdminProductEditor(
         ) {
             Text("Product information", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, isError = invalidName, singleLine = true)
-            ExposedDropdownMenuBox(
-                expanded = categoryMenuExpanded,
-                onExpandedChange = { categoryMenuExpanded = it },
-                modifier = Modifier.fillMaxWidth()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                OutlinedTextField(
-                    value = category,
-                    onValueChange = {},
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).menuAnchor(),
-                    enabled = true,
-                    label = { Text("Category *") },
-                    isError = invalidCategory,
-                    readOnly = true,
-                    singleLine = true,
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryMenuExpanded)
-                    }
-                )
-                ExposedDropdownMenu(
-                    expanded = categoryMenuExpanded,
-                    onDismissRequest = { categoryMenuExpanded = false },
-                    modifier = Modifier.heightIn(max = 320.dp).background(AdminBackground)
-                ) {
-                    categoryOptions.forEach { option ->
-                        DropdownMenuItem(
-                            text = { Text(listOf(option.second, option.first).filter { it.isNotBlank() }.joinToString(" "), color = AdminInk) },
-                            onClick = { category = option.first; message = null; categoryMenuExpanded = false }
+                Box(Modifier.weight(1f)) {
+                    ExposedDropdownMenuBox(
+                        expanded = categoryMenuExpanded,
+                        onExpandedChange = { categoryMenuExpanded = it },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = category,
+                            onValueChange = {},
+                            modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).menuAnchor(),
+                            enabled = true,
+                            label = { Text("Category *") },
+                            isError = invalidCategory,
+                            readOnly = true,
+                            singleLine = true,
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryMenuExpanded)
+                            }
                         )
+                        ExposedDropdownMenu(
+                            expanded = categoryMenuExpanded,
+                            onDismissRequest = { categoryMenuExpanded = false },
+                            modifier = Modifier.heightIn(max = 320.dp).background(AdminBackground)
+                        ) {
+                            categoryOptions.forEach { option ->
+                                DropdownMenuItem(
+                                    text = { Text(listOf(option.second, option.first).filter { it.isNotBlank() }.joinToString(" "), color = AdminInk) },
+                                    onClick = { category = option.first; message = null; categoryMenuExpanded = false }
+                                )
+                            }
+                        }
                     }
+                }
+                IconButton(onClick = { newCategoryName = ""; showAddCategoryDialog = true }, modifier = Modifier.size(52.dp)) {
+                    Icon(Icons.Default.Add, contentDescription = "Add category", tint = AdminInk)
                 }
             }
             OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), isError = invalidPrice, singleLine = true)
@@ -2968,6 +2982,55 @@ private fun AdminProductEditor(
             if (message != null) Text(message!!, color = if (message!!.startsWith("Saved")) AdminInk else AdminInk, fontSize = 13.sp)
             Spacer(Modifier.height(4.dp))
         }
+    if (showAddCategoryDialog) {
+        AlertDialog(
+            onDismissRequest = { if (!savingCategory) showAddCategoryDialog = false },
+            containerColor = AdminSurface,
+            title = { Text("Add category", color = AdminInk, fontWeight = FontWeight.Bold) },
+            text = {
+                OutlinedTextField(
+                    value = newCategoryName,
+                    onValueChange = { newCategoryName = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Enter category") },
+                    singleLine = true,
+                    enabled = !savingCategory
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    enabled = newCategoryName.isNotBlank() && !savingCategory,
+                    onClick = {
+                        val label = newCategoryName.trim()
+                        val categoryId = label.lowercase(Locale.ROOT)
+                            .replace(Regex("[^a-z0-9]+"), "_").trim('_')
+                        if (label.isNotBlank() && categoryId.isNotBlank()) {
+                            savingCategory = true
+                            FirebaseFirestore.getInstance().collection("categories")
+                                .document(categoryId)
+                                .set(mapOf("category_name" to label, "name" to label, "emoji" to "🌿"), com.google.firebase.firestore.SetOptions.merge())
+                                .addOnSuccessListener {
+                                    category = label
+                                    message = null
+                                    savingCategory = false
+                                    showAddCategoryDialog = false
+                                    Toast.makeText(context, "Category added", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { error ->
+                                    savingCategory = false
+                                    Toast.makeText(context, error.localizedMessage ?: "Could not add category", Toast.LENGTH_LONG).show()
+                                }
+                        }
+                    }
+                ) { Text(if (savingCategory) "Saving…" else "Add", color = AdminInk) }
+            },
+            dismissButton = {
+                TextButton(onClick = { if (!savingCategory) showAddCategoryDialog = false }) {
+                    Text("Cancel", color = AdminMuted)
+                }
+            }
+        )
+    }
         Button(
             onClick = {
                 if (uploadingImage) {
@@ -3135,7 +3198,7 @@ private fun AdminDashboardScreen(
                 ) {
                     metrics.forEachIndexed { index, metric ->
                         val fraction = (metric.second.toFloat() / maxMetric.toFloat()).coerceIn(0.08f, 1f)
-                        val barColor = listOf(AdminInk, AdminInk, AdminInk, AdminInk)[index]
+                        val barColor = listOf(Color(0xFF2E9D62), Color(0xFFE05252), Color(0xFF2E9D62), Color(0xFFE05252))[index]
                         Column(Modifier.weight(1f).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
                             if (metricLoading[index]) {
                                 CircularProgressIndicator(Modifier.size(14.dp), color = AdminInk, strokeWidth = 2.dp)
