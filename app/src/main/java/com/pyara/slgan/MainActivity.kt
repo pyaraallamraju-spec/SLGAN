@@ -6179,9 +6179,12 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Column(Modifier.padding(14.dp)) {
                             Text("You might also like", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                             Spacer(Modifier.height(12.dp))
-                            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                recommendations.take(3).forEach { product ->
-                                    Column(Modifier.weight(1f).clickable { onProductClick(product) }) {
+                            LazyRow(
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                contentPadding = PaddingValues(end = 2.dp)
+                            ) {
+                                items(recommendations.take(10), key = { it.id }) { product ->
+                                    Column(Modifier.width(145.dp).clickable { onProductClick(product) }) {
                                         if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF5F6FA))), contentScale = ContentScale.Crop)
                                         else Box(Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 35.sp) }
                                         Spacer(Modifier.height(7.dp))
