@@ -2735,7 +2735,7 @@ private fun AdminProductEditor(
             }
         onDispose { registration.remove() }
     }
-    var quantity by remember(product?.id) { mutableStateOf(product?.quantity.orEmpty()) }
+    var quantity by remember(product?.id) { mutableStateOf(product?.quantity?.ifBlank { "1" } ?: "1") }
     var imageUrl by remember(product?.id) { mutableStateOf(product?.imageUrl.orEmpty()) }
     var message by remember { mutableStateOf<String?>(null) }
     var uploadingImage by remember(product?.id) { mutableStateOf(false) }
@@ -2824,7 +2824,7 @@ private fun AdminProductEditor(
             }
             OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), isError = invalidPrice, singleLine = true)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight *") }, isError = invalidWeight, singleLine = true)
+                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight *") }, isError = invalidWeight, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
                 Box(Modifier.weight(1f)) {
                     OutlinedTextField(
                         value = units,
