@@ -5864,13 +5864,6 @@ private fun ProductDetailsPage(
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Surface(shape = RoundedCornerShape(30.dp), color = appThemedColor(Color(0xFFF0F2F6))) {
-                                    Row(Modifier.padding(horizontal = 10.dp, vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(Icons.Default.Bolt, contentDescription = null, tint = Muted, modifier = Modifier.size(15.dp))
-                                        Spacer(Modifier.width(4.dp))
-                                        Text("Fast delivery", color = Muted, fontSize = 12.sp)
-                                    }
-                                }
                                 Spacer(Modifier.weight(1f))
                                 ProductRatingLine(product, ratingSummary, showEmptyLabel = true)
                             }
@@ -5880,20 +5873,6 @@ private fun ProductDetailsPage(
                                 Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 5.dp).background(appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(9.dp)).padding(horizontal = 10.dp, vertical = 5.dp))
                                 Text("Price inclusive of applicable taxes", color = Muted, fontSize = 13.sp)
                             } else Text(tr("Price not available yet.", currentLanguage), color = Muted, fontSize = 15.sp)
-                        }
-                    }
-                    Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
-                        Row(Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Column(Modifier.weight(1f).clip(RoundedCornerShape(20.dp)).background(appThemedColor(Color(0xFFF8F8FC))).padding(vertical = 18.dp, horizontal = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(Icons.Default.AssignmentReturn, contentDescription = null, tint = Ink, modifier = Modifier.size(34.dp))
-                                Spacer(Modifier.height(8.dp))
-                                Text("Check return policy", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-                            }
-                            Column(Modifier.weight(1f).clip(RoundedCornerShape(20.dp)).background(appThemedColor(Color(0xFFF8F8FC))).padding(vertical = 18.dp, horizontal = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(Icons.Default.LocalShipping, contentDescription = null, tint = Ink, modifier = Modifier.size(34.dp))
-                                Spacer(Modifier.height(8.dp))
-                                Text("Fast delivery", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
-                            }
                         }
                     }
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
