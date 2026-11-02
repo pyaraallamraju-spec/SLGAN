@@ -6318,9 +6318,27 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                  }
                              }) { Text("Change", color = Ink) }
                         }
-                        Text(recipientName, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-                        Text(recipientMobile, color = Muted, fontSize = 13.sp)
-                        Text(confirmedText.ifBlank { "Complete address not available" }, color = Muted, fontSize = 13.sp, lineHeight = 18.sp)
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                recipientName,
+                                color = Ink,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Medium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                recipientMobile,
+                                color = Muted,
+                                fontSize = 13.sp,
+                                textAlign = TextAlign.End
+                            )
+                        }
+                        Text(
+                            confirmedText.ifBlank { "Complete address not available" },
+                            color = Muted,
+                            fontSize = 13.sp,
+                            lineHeight = 18.sp
+                        )
                     }
                 }
             } else {
