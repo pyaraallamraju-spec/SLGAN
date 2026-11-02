@@ -5782,8 +5782,7 @@ private fun ProductDetailsPage(
                 }
         }
     }
-    var highlightsExpanded by remember(product.id) { mutableStateOf(false) }
-    var informationExpanded by remember(product.id) { mutableStateOf(false) }
+    var selectedDetailsTab by remember(product.id) { mutableStateOf("About") }
     Column(Modifier.fillMaxSize().background(appThemedColor(Color(0xFFF4F5FA)))) {
         Box(Modifier.fillMaxWidth().weight(0.88f)) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
@@ -5875,23 +5874,52 @@ private fun ProductDetailsPage(
                         }
                     }
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
-                        Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(appThemedColor(Color(0xFFF8F8FC))).clickable { highlightsExpanded = !highlightsExpanded }.padding(17.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Text("Highlights", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                                Icon(if (highlightsExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = null, tint = Ink)
+                        Column(Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            val detailTabs = listOf("About", "Cures", "Major ingredients", "Usage")
+                            val detailContent = when (selectedDetailsTab) {
+                                "Cures" -> product.cures
+                                "Major ingredients" -> product.majorIngredients
+                                "Usage" -> product.usage
+                                else -> product.description
                             }
-                            if (highlightsExpanded) {
-                                Text(product.description.ifBlank { "Product details will be updated soon." }, color = Muted, fontSize = 14.sp, lineHeight = 18.sp, modifier = Modifier.padding(horizontal = 8.dp))
-                                if (product.category.isNotBlank()) Text("Category: ${product.category}", color = Muted, fontSize = 14.sp, modifier = Modifier.padding(horizontal = 8.dp))
-                            }
-                            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(appThemedColor(Color(0xFFF8F8FC))).clickable { informationExpanded = !informationExpanded }.padding(17.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Text("Information", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                                Icon(if (informationExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = null, tint = Ink)
-                            }
-                            if (informationExpanded) {
-                                listOf("Usage" to product.usage, "Cures / uses" to product.cures, "Major ingredients" to product.majorIngredients).forEach { (heading, value) ->
-                                    Text(heading, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 8.dp))
-                                    Text(value.ifBlank { "Information not available." }, color = Muted, fontSize = 14.sp, lineHeight = 18.sp, modifier = Modifier.padding(horizontal = 8.dp))
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.Top) {
+                                Column(Modifier.width(124.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    detailTabs.forEach { tab ->
+                                        val selected = selectedDetailsTab == tab
+                                        Surface(
+                                            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).clickable { selectedDetailsTab = tab },
+                                            shape = RoundedCornerShape(10.dp),
+                                            color = appThemedColor(if (selected) Color(0xFFE2E2E2) else Color(0xFFF8F8FC))
+                                        ) {
+                                            Text(
+                                                tab,
+                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 13.dp),
+                                                color = Ink,
+                                                fontSize = 12.sp,
+                                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                                                maxLines = 2,
+                                                lineHeight = 15.sp
+                                            )
+                                        }
+                                    }
+                                }
+                                Column(
+                                    Modifier.weight(1f).defaultMinSize(minHeight = 174.dp)
+                                        .clip(RoundedCornerShape(12.dp))
+                                        .background(appThemedColor(Color(0xFFF8F8FC)))
+                                        .padding(12.dp),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    Text(selectedDetailsTab, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                    Text(
+                                        detailContent.ifBlank { "Information not available." },
+                                        color = Muted,
+                                        fontSize = 13.sp,
+                                        lineHeight = 19.sp
+                                    )
+                                    if (selectedDetailsTab == "About" && product.category.isNotBlank()) {
+                                        Text("Category: ${product.category}", color = Muted, fontSize = 12.sp)
+                                    }
                                 }
                             }
                             Row(Modifier.fillMaxWidth().clickable { showReviewDialog = true }.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
