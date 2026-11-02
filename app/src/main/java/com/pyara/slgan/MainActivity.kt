@@ -686,7 +686,7 @@ private fun localizedProductName(name: String, language: String): String {
     return when (language) { "Telugu" -> telugu[name] ?: name; "Hindi" -> hindi[name] ?: name; else -> name }
 }
 
-private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1, val isHidden: Boolean = false)
+private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1, val isHidden: Boolean = false, val isActive: Boolean = true)
 private data class ProductRatingSummary(val average: Double = 0.0, val count: Int = 0, val myRating: Int = 0)
 private data class ProductLikeSummary(val count: Int = 0, val likedByMe: Boolean = false)
 private val categories = listOf("All", "Lehyas", "Ghrutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
@@ -770,7 +770,7 @@ private fun productFromFirestore(data: Map<String, Any?>, context: android.conte
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val majorIngredients = listOf("product_major_ingredients", "major_ingredients", "ingredients", "product_ingredients").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    return Product(id.ifBlank { displayName.hashCode().toString() }, displayName, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true)
+    return Product(id.ifBlank { displayName.hashCode().toString() }, displayName, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true, isActive = data["product_active"]?.toString()?.equals("false", ignoreCase = true) != true)
 }
 @Composable
 private fun AyurvedicApp() {
@@ -2439,7 +2439,8 @@ private fun AdminProductsScreen(
             Row(Modifier.fillMaxWidth().padding(horizontal = 9.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text("Product", Modifier.weight(2.5f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 Text("Price", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                Text("Stock", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text("Stock", Modifier.weight(0.8f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text("Active", Modifier.weight(0.9f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                 Text("Actions", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
             }
         }
@@ -2451,7 +2452,7 @@ private fun AdminProductsScreen(
                 items(filtered, key = { it.id }) { product ->
                     Surface(Modifier.fillMaxWidth(), color = if (product.isHidden) Color(0xFFF7F7F7) else Color.White, border = BorderStroke(0.5.dp, AdminInk)) {
                         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Row(Modifier.weight(2.5f), verticalAlignment = Alignment.CenterVertically) {
+                            Row(Modifier.weight(2.2f), verticalAlignment = Alignment.CenterVertically) {
                                 Box(Modifier.size(42.dp).clip(RoundedCornerShape(8.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
                                     if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize().padding(2.dp), contentScale = ContentScale.Fit)
                                     else Text(product.emoji, fontSize = 21.sp)
@@ -2465,10 +2466,23 @@ private fun AdminProductsScreen(
                             }
                             Text(if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "—",
                                 Modifier.weight(1f), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
-                            Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                            Box(Modifier.weight(0.8f), contentAlignment = Alignment.CenterStart) {
                                 Surface(shape = RoundedCornerShape(6.dp), color = if (product.productStock == 1) AdminLightGray else AdminInk) {
                                     Text(if (product.productStock == 1) "In" else "Out", Modifier.padding(horizontal = 6.dp, vertical = 4.dp), color = if (product.productStock == 1) AdminInk else Color.White, fontSize = 9.sp, fontWeight = FontWeight.Bold)
                                 }
+                            }
+                            Box(Modifier.weight(0.9f), contentAlignment = Alignment.Center) {
+                                Switch(
+                                    checked = product.isActive,
+                                    onCheckedChange = { active ->
+                                        FirebaseFirestore.getInstance().collection("products").document(product.id)
+                                            .update("product_active", active)
+                                            .addOnSuccessListener { Toast.makeText(context, if (active) "Product activated" else "Product deactivated", Toast.LENGTH_SHORT).show() }
+                                            .addOnFailureListener { error -> Toast.makeText(context, error.localizedMessage ?: "Could not update product status", Toast.LENGTH_LONG).show() }
+                                    },
+                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AdminInk, uncheckedThumbColor = Color.White, uncheckedTrackColor = AdminMuted),
+                                    modifier = Modifier.height(30.dp)
+                                )
                             }
                             Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
                                 IconButton(onClick = { editingProduct = product }, modifier = Modifier.size(30.dp)) {
