@@ -2439,9 +2439,10 @@ private fun AdminProductsScreen(
             Row(Modifier.fillMaxWidth().padding(horizontal = 9.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text("Product", Modifier.weight(2.5f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 Text("Price", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                Text("Stock", Modifier.weight(0.8f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                Text("Active", Modifier.weight(0.9f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
-                Text("Actions", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
+                Text("Stock", Modifier.weight(0.7f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text("Active", Modifier.weight(0.85f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                Text("Show/Hide", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                Text("Actions", Modifier.weight(0.9f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
             }
         }
         when {
@@ -2466,12 +2467,12 @@ private fun AdminProductsScreen(
                             }
                             Text(if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "—",
                                 Modifier.weight(1f), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
-                            Box(Modifier.weight(0.8f), contentAlignment = Alignment.CenterStart) {
+                            Box(Modifier.weight(0.7f), contentAlignment = Alignment.CenterStart) {
                                 Surface(shape = RoundedCornerShape(6.dp), color = if (product.productStock == 1) AdminLightGray else AdminInk) {
                                     Text(if (product.productStock == 1) "In" else "Out", Modifier.padding(horizontal = 6.dp, vertical = 4.dp), color = if (product.productStock == 1) AdminInk else Color.White, fontSize = 9.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
-                            Box(Modifier.weight(0.9f), contentAlignment = Alignment.Center) {
+                            Box(Modifier.weight(0.85f), contentAlignment = Alignment.Center) {
                                 Switch(
                                     checked = product.isActive,
                                     onCheckedChange = { active ->
@@ -2484,7 +2485,20 @@ private fun AdminProductsScreen(
                                     modifier = Modifier.height(30.dp)
                                 )
                             }
-                            Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                                Switch(
+                                    checked = !product.isHidden,
+                                    onCheckedChange = { visible ->
+                                        FirebaseFirestore.getInstance().collection("products").document(product.id)
+                                            .update("product_hidden", !visible)
+                                            .addOnSuccessListener { Toast.makeText(context, if (visible) "Product shown" else "Product hidden", Toast.LENGTH_SHORT).show() }
+                                            .addOnFailureListener { error -> Toast.makeText(context, error.localizedMessage ?: "Could not update product visibility", Toast.LENGTH_LONG).show() }
+                                    },
+                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AdminInk, uncheckedThumbColor = Color.White, uncheckedTrackColor = AdminMuted),
+                                    modifier = Modifier.height(30.dp)
+                                )
+                            }
+                            Row(Modifier.weight(0.9f), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
                                 IconButton(onClick = { editingProduct = product }, modifier = Modifier.size(30.dp)) {
                                     Icon(Icons.Default.Edit, "Edit ${product.name}", tint = AdminInk, modifier = Modifier.size(16.dp))
                                 }
