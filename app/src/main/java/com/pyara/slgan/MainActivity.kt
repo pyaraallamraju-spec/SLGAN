@@ -710,7 +710,8 @@ private fun localProductImageFor(context: android.content.Context, productName: 
         stem == normalizedName ||
             stem.replace("mahad", "maha") == normalizedName ||
             (stem == "rasottamaadi" && normalizedName == "rasottamadi") ||
-            (stem == "dantadhavana" && normalizedName == "dantadhavanam")
+            (stem == "dantadhavana" && normalizedName == "dantadhavanam") ||
+            (stem == "chyavanaprasha" && normalizedName in setOf("chyavanaprasha", "chyavanaprasham", "chyavanaprash", "chyavanaprasa", "chyanaprasa", "chyanaprasham", "chyanaprash"))
     }
     return match?.let { "file:///android_asset/$folder/${it.replace(" ", "%20")}" }.orEmpty()
 }
@@ -757,7 +758,14 @@ private fun productFromFirestore(data: Map<String, Any?>, context: android.conte
     val remoteImageUrl = listOf("product_image", "image_url", "imageUrl", "image", "product_image_url").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.startsWith("https://") || it.startsWith("http://") } }.orEmpty()
     // Automatically find artwork in app/src/main/assets/drawable/products by matching its filename to the product name.
     val localProductImage = localProductImageFor(context, name)
-    val imageUrl = remoteImageUrl.ifBlank { localProductImage }
+    val normalizedProductImageName = displayName.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
+    // Chyavanaprasha has several common catalogue spellings; prefer the bundled artwork
+    // for these aliases so a stale or incorrect Firestore URL cannot hide the image.
+    val isChyavanaprasha = normalizedProductImageName in setOf(
+        "chyavanaprasha", "chyavanaprasham", "chyavanaprash", "chyavanaprasa",
+        "chyanaprasa", "chyanaprasham", "chyanaprash"
+    )
+    val imageUrl = if (isChyavanaprasha) localProductImage.ifBlank { remoteImageUrl } else remoteImageUrl.ifBlank { localProductImage }
     val quantity = listOf("product_quantity", "quantity", "stock").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
