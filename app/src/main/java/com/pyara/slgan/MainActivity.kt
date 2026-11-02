@@ -5883,18 +5883,29 @@ private fun ProductDetailsPage(
                                 "Usage" -> product.usage
                                 else -> product.description
                             }
-                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.Top) {
-                                Column(Modifier.width(124.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Start,
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Column(
+                                    Modifier.width(124.dp)
+                                        .background(appThemedColor(Color(0xFFF3F5F7)), RoundedCornerShape(16.dp))
+                                        .padding(5.dp),
+                                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
                                     detailTabs.forEach { tab ->
                                         val selected = selectedDetailsTab == tab
                                         Surface(
-                                            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).clickable { selectedDetailsTab = tab },
-                                            shape = RoundedCornerShape(10.dp),
-                                            color = appThemedColor(if (selected) Color(0xFFE2E2E2) else Color(0xFFF8F8FC))
+                                            modifier = Modifier.fillMaxWidth()
+                                                .clip(RoundedCornerShape(12.dp))
+                                                .clickable { selectedDetailsTab = tab },
+                                            shape = RoundedCornerShape(12.dp),
+                                            color = appThemedColor(if (selected) Color(0xFFE1E5EC) else Color.Transparent)
                                         ) {
                                             Text(
                                                 tab,
-                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 13.dp),
+                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 12.dp),
                                                 color = Ink,
                                                 fontSize = 12.sp,
                                                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
@@ -5904,23 +5915,24 @@ private fun ProductDetailsPage(
                                         }
                                     }
                                 }
-                                Column(
-                                    Modifier.weight(1f).defaultMinSize(minHeight = 174.dp)
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(appThemedColor(Color(0xFFF8F8FC)))
-                                        .padding(12.dp),
-                                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    Text(selectedDetailsTab, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                                    Text(
-                                        detailContent.ifBlank { "Information not available." },
-                                        color = Muted,
-                                        fontSize = 13.sp,
-                                        lineHeight = 19.sp
-                                    )
-                                    if (selectedDetailsTab == "About" && product.category.isNotBlank()) {
-                                        Text("Category: ${product.category}", color = Muted, fontSize = 12.sp)
-                                    }
+                            }
+                            Column(
+                                Modifier.fillMaxWidth().defaultMinSize(minHeight = 174.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(appThemedColor(Color(0xFFF3F5F7)))
+                                    .border(1.dp, appThemedColor(Color(0xFFE1E5EC)), RoundedCornerShape(12.dp))
+                                    .padding(12.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(selectedDetailsTab, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                Text(
+                                    detailContent.ifBlank { "Information not available." },
+                                    color = Muted,
+                                    fontSize = 13.sp,
+                                    lineHeight = 19.sp
+                                )
+                                if (selectedDetailsTab == "About" && product.category.isNotBlank()) {
+                                    Text("Category: ${product.category}", color = Muted, fontSize = 12.sp)
                                 }
                             }
                             Row(Modifier.fillMaxWidth().clickable { showReviewDialog = true }.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
