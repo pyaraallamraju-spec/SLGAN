@@ -2773,6 +2773,13 @@ private fun AdminProductEditor(
     var signature by remember(product?.id) { mutableStateOf(product?.signature ?: false) }
     var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
     var saving by remember { mutableStateOf(false) }
+    var showValidationErrors by remember(product?.id) { mutableStateOf(false) }
+    val invalidName = showValidationErrors && name.isBlank()
+    val invalidCategory = showValidationErrors && category.isBlank()
+    val invalidPrice = showValidationErrors && price.toDoubleOrNull() == null
+    val invalidWeight = showValidationErrors && (weight.toDoubleOrNull() == null || (weight.toDoubleOrNull() ?: 0.0) <= 0)
+    val invalidUnits = showValidationErrors && units.isBlank()
+    val invalidQuantity = showValidationErrors && (quantity.toIntOrNull() == null || (quantity.toIntOrNull() ?: 0) <= 0)
     Column(Modifier.fillMaxSize().background(AdminBackground)) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBack, enabled = !saving) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
@@ -2783,7 +2790,7 @@ private fun AdminProductEditor(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text("Product information", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-            OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, singleLine = true)
+            OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, isError = invalidName, singleLine = true)
             ExposedDropdownMenuBox(
                 expanded = categoryMenuExpanded,
                 onExpandedChange = { categoryMenuExpanded = it },
@@ -2795,6 +2802,7 @@ private fun AdminProductEditor(
                     modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).menuAnchor(),
                     enabled = true,
                     label = { Text("Category *") },
+                    isError = invalidCategory,
                     readOnly = true,
                     singleLine = true,
                     trailingIcon = {
@@ -2814,15 +2822,16 @@ private fun AdminProductEditor(
                     }
                 }
             }
-            OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
+            OutlinedTextField(price, { price = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Price (₹) *") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), isError = invalidPrice, singleLine = true)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight *") }, singleLine = true)
+                OutlinedTextField(weight, { weight = it.filter { ch -> ch.isDigit() || ch == '.' }; message = null }, modifier = Modifier.weight(1f), label = { Text("Weight *") }, isError = invalidWeight, singleLine = true)
                 Box(Modifier.weight(1f)) {
                     OutlinedTextField(
                         value = units,
                         onValueChange = {},
                         modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp).clickable { unitMenuExpanded = true },
                         label = { Text("Units *") },
+                        isError = invalidUnits,
                         readOnly = true,
                         singleLine = true,
                         trailingIcon = {
@@ -2859,6 +2868,7 @@ private fun AdminProductEditor(
                     { quantity = it; message = null },
                     modifier = Modifier.weight(1f),
                     label = { Text("Qty *") },
+                    isError = invalidQuantity,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
@@ -2935,7 +2945,8 @@ private fun AdminProductEditor(
                 if (uploadingImage) {
                     message = "Wait for the image upload to finish."
                 } else if (name.isBlank() || category.isBlank() || price.toDoubleOrNull() == null || weight.toDoubleOrNull() == null || weight.toDoubleOrNull()!! <= 0 || units.isBlank() || quantity.toIntOrNull() == null || quantity.toIntOrNull()!! <= 0) {
-                    message = "Enter product name, category, valid price, weight, weight unit and quantity."
+                    showValidationErrors = true
+                    message = null
                 } else {
                     saving = true
                     message = null
