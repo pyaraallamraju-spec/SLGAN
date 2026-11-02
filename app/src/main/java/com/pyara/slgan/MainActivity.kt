@@ -5579,14 +5579,29 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
                 modifier = Modifier.height(if (compact) 12.dp else 20.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("(${summary.count})", color = Muted, fontSize = if (compact) 10.sp else 12.sp, maxLines = 1, lineHeight = if (compact) 12.sp else 20.sp)
+                Text(
+                    "(${summary.count})",
+                    color = Muted,
+                    fontSize = if (compact) 10.sp else 12.sp,
+                    maxLines = 1,
+                    lineHeight = if (compact) 12.sp else 14.sp,
+                    modifier = Modifier.offset(y = (-1).dp)
+                )
             }
         } else if (showEmptyLabel) {
             Box(
                 modifier = Modifier.height(if (compact) 12.dp else 20.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("No ratings", color = Muted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    "No ratings",
+                    color = Muted,
+                    fontSize = 9.sp,
+                    maxLines = 1,
+                    lineHeight = 11.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.offset(y = (-1).dp)
+                )
             }
         }
     }
