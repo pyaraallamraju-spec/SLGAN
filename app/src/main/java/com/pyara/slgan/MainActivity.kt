@@ -5995,28 +5995,29 @@ private fun ProductDetailsPage(
                             }
                             Row(
                                 Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Start,
+                                horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
                                 Column(
-                                    Modifier.width(124.dp)
-                                        .background(appThemedColor(Color(0xFFF3F5F7)), RoundedCornerShape(16.dp))
-                                        .padding(5.dp),
-                                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                                    Modifier.width(116.dp)
+                                        .clip(RoundedCornerShape(22.dp))
+                                        .background(appThemedColor(Color(0xFFEAF2E9)))
+                                        .padding(6.dp),
+                                    verticalArrangement = Arrangement.spacedBy(7.dp)
                                 ) {
                                     detailTabs.forEach { tab ->
                                         val selected = selectedDetailsTab == tab
                                         Surface(
                                             modifier = Modifier.fillMaxWidth()
-                                                .clip(RoundedCornerShape(12.dp))
+                                                .clip(RoundedCornerShape(18.dp))
                                                 .clickable { selectedDetailsTab = tab },
-                                            shape = RoundedCornerShape(12.dp),
-                                            color = appThemedColor(if (selected) Color(0xFFE1E5EC) else Color.Transparent)
+                                            shape = RoundedCornerShape(18.dp),
+                                            color = appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent)
                                         ) {
                                             Text(
                                                 tab,
-                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 12.dp),
-                                                color = Ink,
+                                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 13.dp),
+                                                color = if (selected) Color.White else Ink,
                                                 fontSize = 12.sp,
                                                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                                                 maxLines = 2,
@@ -6025,24 +6026,24 @@ private fun ProductDetailsPage(
                                         }
                                     }
                                 }
-                            }
-                            Column(
-                                Modifier.fillMaxWidth().defaultMinSize(minHeight = 174.dp)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(appThemedColor(Color(0xFFF3F5F7)))
-                                    .border(1.dp, appThemedColor(Color(0xFFE1E5EC)), RoundedCornerShape(12.dp))
-                                    .padding(12.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                Text(selectedDetailsTab, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                                Text(
-                                    detailContent.ifBlank { "Information not available." },
-                                    color = Muted,
-                                    fontSize = 13.sp,
-                                    lineHeight = 19.sp
-                                )
-                                if (selectedDetailsTab == "About" && product.category.isNotBlank()) {
-                                    Text("Category: ${product.category}", color = Muted, fontSize = 12.sp)
+                                Column(
+                                    Modifier.weight(1f).defaultMinSize(minHeight = 190.dp)
+                                        .clip(RoundedCornerShape(22.dp))
+                                        .background(appThemedColor(Color.White))
+                                        .border(1.dp, appThemedColor(Color(0xFFC9DDC3)), RoundedCornerShape(22.dp))
+                                        .padding(14.dp),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                                ) {
+                                    Text(selectedDetailsTab, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                    Text(
+                                        detailContent.ifBlank { "Information not available." },
+                                        color = Muted,
+                                        fontSize = 13.sp,
+                                        lineHeight = 19.sp
+                                    )
+                                    if (selectedDetailsTab == "About" && product.description.isNotBlank()) {
+                                        Text("Product information", color = Muted, fontSize = 11.sp)
+                                    }
                                 }
                             }
                             Row(Modifier.fillMaxWidth().clickable { showReviewDialog = true }.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -7755,28 +7756,29 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         verticalAlignment = Alignment.Top
                     ) {
                         Column(
-                            Modifier.width(124.dp)
-                                .background(appThemedColor(Color(0xFFF3F5F7)), RoundedCornerShape(16.dp))
-                                .padding(5.dp),
+                            Modifier.width(116.dp)
+                                .clip(RoundedCornerShape(22.dp))
+                                .background(appThemedColor(Color(0xFFEAF2E9)))
+                                .padding(6.dp),
                             verticalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             detailTabs.forEach { (tab, icon, shortLabel) ->
                                 val selected = selectedDetailTab == tab
                                 Column(
                                     Modifier.fillMaxWidth()
-                                        .clip(RoundedCornerShape(12.dp))
-                                        .background(if (selected) appThemedColor(Color(0xFFE1E5EC)) else Color.Transparent)
+                                        .clip(RoundedCornerShape(18.dp))
+                                        .background(appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent))
                                         .clickable { selectedDetailTab = tab }
                                         .padding(horizontal = 10.dp, vertical = 12.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                     verticalArrangement = Arrangement.spacedBy(5.dp)
                                 ) {
                                     Icon(icon, contentDescription = shortLabel, tint = Ink, modifier = Modifier.size(21.dp))
-                                    Text(shortLabel, color = Ink, fontSize = 12.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
+                                    Text(shortLabel, color = if (selected) Color.White else Ink, fontSize = 12.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
                                 }
                             }
                         }
-                        Spacer(Modifier.width(12.dp))
+                        
                     AnimatedContent(
                         targetState = selectedDetailTab,
                         transitionSpec = {
