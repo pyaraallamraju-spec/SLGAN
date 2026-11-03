@@ -5986,51 +5986,53 @@ private fun ProductDetailsPage(
                     }
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                            val detailTabs = listOf("About", "Cures", "Major ingredients", "Usage")
+                            val detailTabs = listOf(
+                                Triple("About", Icons.Default.Info, "About"),
+                                Triple("Cures", Icons.Default.Eco, "Cures"),
+                                Triple("Major ingredients", Icons.Default.Spa, "Major ingredients"),
+                                Triple("Usage", Icons.Default.Description, "Usage")
+                            )
                             val detailContent = when (selectedDetailsTab) {
                                 "Cures" -> product.cures
                                 "Major ingredients" -> product.majorIngredients
                                 "Usage" -> product.usage
                                 else -> product.description
                             }
-                            Row(
-                                Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                                verticalAlignment = Alignment.Top
-                            ) {
+                            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
                                 Column(
                                     Modifier.width(116.dp)
-                                        .clip(RoundedCornerShape(22.dp))
+                                        .clip(RoundedCornerShape(topStart = 22.dp, bottomStart = 22.dp, topEnd = 30.dp, bottomEnd = 30.dp))
                                         .background(appThemedColor(Color(0xFFEAF2E9)))
                                         .padding(6.dp),
-                                    verticalArrangement = Arrangement.spacedBy(7.dp)
+                                    verticalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
-                                    detailTabs.forEach { tab ->
+                                    detailTabs.forEach { (tab, icon, label) ->
                                         val selected = selectedDetailsTab == tab
-                                        Surface(
-                                            modifier = Modifier.fillMaxWidth()
-                                                .clip(RoundedCornerShape(18.dp))
-                                                .clickable { selectedDetailsTab = tab },
-                                            shape = RoundedCornerShape(18.dp),
-                                            color = appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent)
-                                        ) {
-                                            Text(
-                                                tab,
-                                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 13.dp),
-                                                color = if (selected) Color.White else Ink,
-                                                fontSize = 12.sp,
-                                                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
-                                                maxLines = 2,
-                                                lineHeight = 15.sp
+                                        Box(Modifier.fillMaxWidth()) {
+                                            Row(
+                                                Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                                                    .clip(RoundedCornerShape(18.dp))
+                                                    .background(appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent))
+                                                    .clickable { selectedDetailsTab = tab }
+                                                    .padding(horizontal = 9.dp, vertical = 11.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                            ) {
+                                                Icon(icon, contentDescription = label, tint = if (selected) Color.White else Ink, modifier = Modifier.size(19.dp))
+                                                Text(label, color = if (selected) Color.White else Ink, fontSize = 12.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 15.sp)
+                                            }
+                                            if (selected) Box(
+                                                Modifier.align(Alignment.CenterEnd).offset(x = 17.dp).size(34.dp)
+                                                    .background(appThemedColor(Color.White), CircleShape)
                                             )
                                         }
                                     }
                                 }
                                 Column(
                                     Modifier.weight(1f).defaultMinSize(minHeight = 190.dp)
-                                        .clip(RoundedCornerShape(22.dp))
+                                        .clip(RoundedCornerShape(topStart = 0.dp, topEnd = 22.dp, bottomEnd = 22.dp, bottomStart = 0.dp))
                                         .background(appThemedColor(Color.White))
-                                        .border(1.dp, appThemedColor(Color(0xFFC9DDC3)), RoundedCornerShape(22.dp))
+                                        .border(1.dp, appThemedColor(Color(0xFFC9DDC3)), RoundedCornerShape(topStart = 0.dp, topEnd = 22.dp, bottomEnd = 22.dp, bottomStart = 0.dp))
                                         .padding(14.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
@@ -7758,24 +7760,30 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     ) {
                         Column(
                             Modifier.width(116.dp)
-                                .clip(RoundedCornerShape(22.dp))
+                                .clip(RoundedCornerShape(topStart = 22.dp, bottomStart = 22.dp, topEnd = 30.dp, bottomEnd = 30.dp))
                                 .background(appThemedColor(Color(0xFFEAF2E9)))
                                 .padding(6.dp),
                             verticalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             detailTabs.forEach { (tab, icon, shortLabel) ->
                                 val selected = selectedDetailTab == tab
-                                Column(
-                                    Modifier.fillMaxWidth()
-                                        .clip(RoundedCornerShape(18.dp))
-                                        .background(appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent))
-                                        .clickable { selectedDetailTab = tab }
-                                        .padding(horizontal = 10.dp, vertical = 12.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.spacedBy(5.dp)
-                                ) {
-                                    Icon(icon, contentDescription = shortLabel, tint = Ink, modifier = Modifier.size(21.dp))
-                                    Text(shortLabel, color = if (selected) Color.White else Ink, fontSize = 12.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 1, softWrap = false)
+                                Box(Modifier.fillMaxWidth()) {
+                                    Row(
+                                        Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                                            .clip(RoundedCornerShape(18.dp))
+                                            .background(appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent))
+                                            .clickable { selectedDetailTab = tab }
+                                            .padding(horizontal = 9.dp, vertical = 11.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        Icon(icon, contentDescription = shortLabel, tint = if (selected) Color.White else Ink, modifier = Modifier.size(19.dp))
+                                        Text(shortLabel, color = if (selected) Color.White else Ink, fontSize = 12.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 15.sp)
+                                    }
+                                    if (selected) Box(
+                                        Modifier.align(Alignment.CenterEnd).offset(x = 17.dp).size(34.dp)
+                                            .background(appThemedColor(Color.White), CircleShape)
+                                    )
                                 }
                             }
                         }
@@ -7790,10 +7798,11 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     ) { activeTab ->
                         Column(
                             Modifier.fillMaxWidth()
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(appThemedColor(Color(0xFFF3F5F7)))
-                                .border(1.dp, appThemedColor(Color(0xFFE1E5EC)), RoundedCornerShape(16.dp))
-                                .padding(16.dp),
+                                .defaultMinSize(minHeight = 190.dp)
+                                .clip(RoundedCornerShape(topStart = 0.dp, topEnd = 22.dp, bottomEnd = 22.dp, bottomStart = 0.dp))
+                                .background(appThemedColor(Color.White))
+                                .border(1.dp, appThemedColor(Color(0xFFC9DDC3)), RoundedCornerShape(topStart = 0.dp, topEnd = 22.dp, bottomEnd = 22.dp, bottomStart = 0.dp))
+                                .padding(14.dp),
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             when (activeTab) {
