@@ -5916,7 +5916,7 @@ private fun ProductDetailsPage(
     }
     var selectedDetailsTab by remember(product.id) { mutableStateOf("About") }
     Column(Modifier.fillMaxSize().background(appThemedColor(Color(0xFFF4F5FA)))) {
-        Box(Modifier.fillMaxWidth().weight(0.88f)) {
+        Box(Modifier.fillMaxWidth().weight(1f)) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 Box(Modifier.fillMaxWidth().height(360.dp).background(appThemedColor(Color(0xFFF7F7F7)))) {
                     if (product.imageUrl.isNotBlank()) {
@@ -6073,6 +6073,44 @@ private fun ProductDetailsPage(
                 Text(if (product.productStock == 0) "Out of stock" else if (cartCount > 0) "Add another" else "Add to Cart", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
             }
         }
+        NavigationBar(
+            modifier = Modifier.fillMaxWidth().shadow(8.dp),
+            containerColor = appThemedColor(Color.White),
+            contentColor = Forest
+        ) {
+            listOf(
+                Triple("Home", Icons.Default.Home, "Home"),
+                Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
+                Triple("Categories", Icons.Default.GridView, "Categories"),
+                Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
+                Triple("Cart", Icons.Default.ShoppingCart, "Cart")
+            ).forEach { (label, icon, route) ->
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { onNavigateTab(route) },
+                    icon = {
+                        if (route == "Cart") {
+                            BadgedBox(badge = {
+                                if (cartCount > 0) Badge(
+                                    containerColor = appThemedColor(Color(0xFF27864A)),
+                                    contentColor = Color.White
+                                ) { Text(cartCount.toString()) }
+                            }) { Icon(icon, contentDescription = label) }
+                        } else {
+                            Icon(icon, contentDescription = label)
+                        }
+                    },
+                    label = { Text(tr(label, currentLanguage), fontSize = 10.sp) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Ink,
+                        selectedTextColor = Ink,
+                        indicatorColor = appThemedColor(Color(0xFFE6E8EC)),
+                        unselectedIconColor = Ink,
+                        unselectedTextColor = Ink
+                    )
+                )
+            }
+        }
     }
             if (showReviewDialog) {
                 ModalBottomSheet(
@@ -6124,44 +6162,7 @@ private fun ProductDetailsPage(
                     }
                 }
             }
-        NavigationBar(
-            modifier = Modifier.fillMaxWidth().shadow(8.dp),
-            containerColor = appThemedColor(Color.White),
-            contentColor = Forest
-        ) {
-            listOf(
-                Triple("Home", Icons.Default.Home, "Home"),
-                Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
-                Triple("Categories", Icons.Default.GridView, "Categories"),
-                Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
-                Triple("Cart", Icons.Default.ShoppingCart, "Cart")
-            ).forEach { (label, icon, route) ->
-                NavigationBarItem(
-                    selected = false,
-                    onClick = { onNavigateTab(route) },
-                    icon = {
-                        if (route == "Cart") {
-                            BadgedBox(badge = {
-                                if (cartCount > 0) Badge(
-                                    containerColor = appThemedColor(Color(0xFF27864A)),
-                                    contentColor = Color.White
-                                ) { Text(cartCount.toString()) }
-                            }) { Icon(icon, contentDescription = label) }
-                        } else {
-                            Icon(icon, contentDescription = label)
-                        }
-                    },
-                    label = { Text(tr(label, currentLanguage), fontSize = 10.sp) },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Ink,
-                        selectedTextColor = Ink,
-                        indicatorColor = appThemedColor(Color(0xFFE6E8EC)),
-                        unselectedIconColor = Ink,
-                        unselectedTextColor = Ink
-                    )
-                )
-            }
-        }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
