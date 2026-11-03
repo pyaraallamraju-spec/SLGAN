@@ -7730,15 +7730,15 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 }
                             }
                         }
-                    }
-                    Spacer(Modifier.height(16.dp))
+                        Spacer(Modifier.width(12.dp))
                     AnimatedContent(
                         targetState = selectedDetailTab,
                         transitionSpec = {
                             (fadeIn(animationSpec = tween(220)) + slideInHorizontally(animationSpec = tween(220)) { it / 12 }) togetherWith
                                 (fadeOut(animationSpec = tween(150)) + slideOutHorizontally(animationSpec = tween(150)) { -it / 16 })
                         },
-                        label = "diseaseDetailTab"
+                        label = "diseaseDetailTab",
+                        modifier = Modifier.weight(1f)
                     ) { activeTab ->
                         Column(
                             Modifier.fillMaxWidth()
