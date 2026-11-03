@@ -1359,6 +1359,13 @@ private fun AyurvedicApp() {
                 cartCount = cart[selectedProduct!!.id] ?: 0,
                 onBack = { selectedProduct = null },
                 onCartClick = { selectedProduct = null; previousTab = selectedTab; selectedTab = "Cart" },
+                onNavigateTab = { route ->
+                    selectedProduct = null
+                    if (route != selectedTab) previousTab = selectedTab
+                    if (route == "Home") { selectedCategory = "All"; search = "" }
+                    if (route == "Categories") selectedCategory = "All"
+                    selectedTab = route
+                },
                 onAdd = { id -> cart[id] = (cart[id] ?: 0) + 1 },
                 onRemove = { id -> val n = cart[id] ?: 0; if (n <= 1) cart.remove(id) else cart[id] = n - 1 }
             )
@@ -5867,6 +5874,7 @@ private fun ProductDetailsPage(
     cartCount: Int,
     onBack: () -> Unit,
     onCartClick: () -> Unit,
+    onNavigateTab: (String) -> Unit,
     onAdd: (String) -> Unit,
     onRemove: (String) -> Unit
 ) {
@@ -6115,6 +6123,44 @@ private fun ProductDetailsPage(
                     }
                 }
             }
+        NavigationBar(
+            modifier = Modifier.fillMaxWidth().shadow(8.dp),
+            containerColor = appThemedColor(Color.White),
+            contentColor = Forest
+        ) {
+            listOf(
+                Triple("Home", Icons.Default.Home, "Home"),
+                Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
+                Triple("Categories", Icons.Default.GridView, "Categories"),
+                Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
+                Triple("Cart", Icons.Default.ShoppingCart, "Cart")
+            ).forEach { (label, icon, route) ->
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { onNavigateTab(route) },
+                    icon = {
+                        if (route == "Cart") {
+                            BadgedBox(badge = {
+                                if (cartCount > 0) Badge(
+                                    containerColor = appThemedColor(Color(0xFF27864A)),
+                                    contentColor = Color.White
+                                ) { Text(cartCount.toString()) }
+                            }) { Icon(icon, contentDescription = label) }
+                        } else {
+                            Icon(icon, contentDescription = label)
+                        }
+                    },
+                    label = { Text(tr(label, currentLanguage), fontSize = 10.sp) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Ink,
+                        selectedTextColor = Ink,
+                        indicatorColor = appThemedColor(Color(0xFFE6E8EC)),
+                        unselectedIconColor = Ink,
+                        unselectedTextColor = Ink
+                    )
+                )
+            }
+        }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
