@@ -7778,7 +7778,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 }
                             }
                         }
-                        
+                    }
                     AnimatedContent(
                         targetState = selectedDetailTab,
                         transitionSpec = {
