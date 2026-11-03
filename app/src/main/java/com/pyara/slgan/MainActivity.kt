@@ -7778,7 +7778,6 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 }
                             }
                         }
-                    }
                     AnimatedContent(
                         targetState = selectedDetailTab,
                         transitionSpec = {
@@ -7862,6 +7861,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 }
                             }
                         }
+                    }
                     }
                     Spacer(Modifier.height(14.dp))
                     Text(tr("Use medicines only with guidance from a qualified healthcare professional.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, lineHeight = 16.sp)
