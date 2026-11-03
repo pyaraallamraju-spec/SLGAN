@@ -5998,54 +5998,45 @@ private fun ProductDetailsPage(
                                 "Usage" -> product.usage
                                 else -> product.description
                             }
-                            Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), verticalAlignment = Alignment.Top) {
-                                Column(
-                                    Modifier.width(116.dp).fillMaxHeight()
-                                        .clip(RoundedCornerShape(topStart = 22.dp, bottomStart = 22.dp, topEnd = 30.dp, bottomEnd = 30.dp))
-                                        .background(appThemedColor(Color(0xFFEAF2E9)))
-                                        .padding(6.dp),
-                                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                                ) {
-                                    detailTabs.forEach { (tab, icon, label) ->
-                                        val selected = selectedDetailsTab == tab
-                                        Box(Modifier.fillMaxWidth()) {
-                                            Row(
-                                                Modifier.fillMaxWidth().heightIn(min = 48.dp)
-                                                    .clip(RoundedCornerShape(18.dp))
-                                                    .background(appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent))
-                                                    .clickable { selectedDetailsTab = tab }
-                                                    .padding(horizontal = 9.dp, vertical = 11.dp),
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                            ) {
-                                                Icon(icon, contentDescription = label, tint = if (selected) Color.White else Ink, modifier = Modifier.size(19.dp))
-                                                Text(label, color = if (selected) Color.White else Ink, fontSize = 12.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 15.sp)
+                            Column(Modifier.fillMaxWidth()) {
+                                Box {
+                                    Row(
+                                        Modifier.fillMaxWidth().clip(RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))
+                                            .background(appThemedColor(Color(0xFFEAF2E9))).padding(6.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        detailTabs.forEach { (tab, icon, label) ->
+                                            val selected = selectedDetailsTab == tab
+                                            Box(Modifier.weight(1f)) {
+                                                Column(
+                                                    Modifier.fillMaxWidth().heightIn(min = 58.dp)
+                                                        .clip(RoundedCornerShape(16.dp))
+                                                        .background(appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent))
+                                                        .clickable { selectedDetailsTab = tab }
+                                                        .padding(horizontal = 3.dp, vertical = 8.dp),
+                                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                                                ) {
+                                                    Icon(icon, contentDescription = label, tint = if (selected) Color.White else Ink, modifier = Modifier.size(19.dp))
+                                                    Text(label, color = if (selected) Color.White else Ink, fontSize = 10.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 12.sp, textAlign = TextAlign.Center)
+                                                }
+                                                if (selected) Box(Modifier.align(Alignment.BottomCenter).offset(y = 17.dp).size(30.dp).background(appThemedColor(Color.White), CircleShape))
                                             }
-                                            if (selected) Box(
-                                                Modifier.align(Alignment.CenterEnd).offset(x = 17.dp).size(34.dp)
-                                                    .background(appThemedColor(Color.White), CircleShape)
-                                            )
                                         }
                                     }
                                 }
                                 Column(
-                                    Modifier.weight(1f).defaultMinSize(minHeight = 190.dp)
-                                        .clip(RoundedCornerShape(topStart = 0.dp, topEnd = 22.dp, bottomEnd = 22.dp, bottomStart = 0.dp))
+                                    Modifier.fillMaxWidth().defaultMinSize(minHeight = 190.dp)
+                                        .clip(RoundedCornerShape(bottomStart = 22.dp, bottomEnd = 22.dp, topStart = 0.dp, topEnd = 0.dp))
                                         .background(appThemedColor(Color.White))
-                                        .border(1.dp, appThemedColor(Color(0xFFC9DDC3)), RoundedCornerShape(topStart = 0.dp, topEnd = 22.dp, bottomEnd = 22.dp, bottomStart = 0.dp))
+                                        .border(1.dp, appThemedColor(Color(0xFFC9DDC3)), RoundedCornerShape(bottomStart = 22.dp, bottomEnd = 22.dp, topStart = 0.dp, topEnd = 0.dp))
                                         .padding(14.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
                                     Text(selectedDetailsTab, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                    Text(
-                                        detailContent.ifBlank { "Information not available." },
-                                        color = Muted,
-                                        fontSize = 13.sp,
-                                        lineHeight = 19.sp
-                                    )
-                                    if (selectedDetailsTab == "About" && product.description.isNotBlank()) {
-                                        Text("Product information", color = Muted, fontSize = 11.sp)
-                                    }
+                                    Text(detailContent.ifBlank { "Information not available." }, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                                    if (selectedDetailsTab == "About" && product.description.isNotBlank()) Text("Product information", color = Muted, fontSize = 11.sp)
                                 }
                             }
                             Row(Modifier.fillMaxWidth().clickable { showReviewDialog = true }.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -7753,37 +7744,29 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         Triple("Suggested medicines", Icons.Default.MedicalServices, "Medicines"),
                         Triple("Precautions", Icons.Default.HealthAndSafety, "Care")
                     )
-                    Row(
-                        Modifier.fillMaxWidth().height(IntrinsicSize.Min),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.Top
-                    ) {
-                        Column(
-                            Modifier.width(116.dp).fillMaxHeight()
-                                .clip(RoundedCornerShape(topStart = 22.dp, bottomStart = 22.dp, topEnd = 30.dp, bottomEnd = 30.dp))
-                                .background(appThemedColor(Color(0xFFEAF2E9)))
-                                .padding(6.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                    Column(Modifier.fillMaxWidth()) {
+                        Row(
+                            Modifier.fillMaxWidth().clip(RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))
+                                .background(appThemedColor(Color(0xFFEAF2E9))).padding(6.dp),
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             detailTabs.forEach { (tab, icon, shortLabel) ->
                                 val selected = selectedDetailTab == tab
-                                Box(Modifier.fillMaxWidth()) {
-                                    Row(
-                                        Modifier.fillMaxWidth().heightIn(min = 48.dp)
-                                            .clip(RoundedCornerShape(18.dp))
+                                Box(Modifier.weight(1f)) {
+                                    Column(
+                                        Modifier.fillMaxWidth().heightIn(min = 58.dp)
+                                            .clip(RoundedCornerShape(16.dp))
                                             .background(appThemedColor(if (selected) Color(0xFF4F8B45) else Color.Transparent))
                                             .clickable { selectedDetailTab = tab }
-                                            .padding(horizontal = 9.dp, vertical = 11.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                            .padding(horizontal = 3.dp, vertical = 8.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.spacedBy(4.dp)
                                     ) {
                                         Icon(icon, contentDescription = shortLabel, tint = if (selected) Color.White else Ink, modifier = Modifier.size(19.dp))
-                                        Text(shortLabel, color = if (selected) Color.White else Ink, fontSize = 12.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 15.sp)
+                                        Text(shortLabel, color = if (selected) Color.White else Ink, fontSize = 10.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 12.sp, textAlign = TextAlign.Center)
                                     }
-                                    if (selected) Box(
-                                        Modifier.align(Alignment.CenterEnd).offset(x = 17.dp).size(34.dp)
-                                            .background(appThemedColor(Color.White), CircleShape)
-                                    )
+                                    if (selected) Box(Modifier.align(Alignment.BottomCenter).offset(y = 17.dp).size(30.dp).background(appThemedColor(Color.White), CircleShape))
                                 }
                             }
                         }
@@ -7794,7 +7777,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 (fadeOut(animationSpec = tween(150)) + slideOutHorizontally(animationSpec = tween(150)) { -it / 16 })
                         },
                         label = "diseaseDetailTab",
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.fillMaxWidth()
                     ) { activeTab ->
                         Column(
                             Modifier.fillMaxWidth()
