@@ -5985,7 +5985,7 @@ private fun ProductDetailsPage(
                         }
                     }
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
-                        Column(Modifier.fillMaxWidth().padding(12.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Column(Modifier.fillMaxWidth().padding(0.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                             val detailTabs = listOf(
                                 Triple("About", Icons.Default.Info, "About"),
                                 Triple("Cures", Icons.Default.Eco, "Cures"),
@@ -7747,7 +7747,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
             ) {
-                Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                Column(Modifier.fillMaxWidth().padding(0.dp)) {
                     val detailTabs = listOf(
                         Triple("Description", Icons.Default.Info, "About"),
                         Triple("Suggested medicines", Icons.Default.MedicalServices, "Medicines"),
