@@ -4643,7 +4643,7 @@ private fun ShopScreen(
 ) {
     val cartCount = products.sumOf { product -> (cart[product.id] ?: 0).coerceAtLeast(0) }
     val accountsScrollState = rememberScrollState()
-    Scaffold(modifier = Modifier.fillMaxSize(), containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
+    Scaffold(containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
         Row(Modifier.fillMaxWidth().shadow(6.dp).background(appThemedColor(Color.White)).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(appThemedColor(Color.White)))
             Spacer(Modifier.width(12.dp))
