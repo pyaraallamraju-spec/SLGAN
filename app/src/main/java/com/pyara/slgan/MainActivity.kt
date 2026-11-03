@@ -5998,9 +5998,9 @@ private fun ProductDetailsPage(
                                 "Usage" -> product.usage
                                 else -> product.description
                             }
-                            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+                            Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), verticalAlignment = Alignment.Top) {
                                 Column(
-                                    Modifier.width(116.dp)
+                                    Modifier.width(116.dp).fillMaxHeight()
                                         .clip(RoundedCornerShape(topStart = 22.dp, bottomStart = 22.dp, topEnd = 30.dp, bottomEnd = 30.dp))
                                         .background(appThemedColor(Color(0xFFEAF2E9)))
                                         .padding(6.dp),
@@ -7754,12 +7754,12 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         Triple("Precautions", Icons.Default.HealthAndSafety, "Care")
                     )
                     Row(
-                        Modifier.fillMaxWidth(),
+                        Modifier.fillMaxWidth().height(IntrinsicSize.Min),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.Top
                     ) {
                         Column(
-                            Modifier.width(116.dp)
+                            Modifier.width(116.dp).fillMaxHeight()
                                 .clip(RoundedCornerShape(topStart = 22.dp, bottomStart = 22.dp, topEnd = 30.dp, bottomEnd = 30.dp))
                                 .background(appThemedColor(Color(0xFFEAF2E9)))
                                 .padding(6.dp),
