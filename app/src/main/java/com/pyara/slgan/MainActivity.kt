@@ -3979,7 +3979,7 @@ private fun AdminProductDetailsScreen(
                                 Text(product.emoji, fontSize = 48.sp)
                             }
                         }
-                        Text(data["product_name"]?.toString() ?: data["name"]?.toString() ?: product.name, color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(localizedProductName(product.name, LocalAppLanguage.current, product.nameTe, product.nameHi), color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
                         Text(
                             if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
                             color = AdminInk, fontSize = 21.sp, fontWeight = FontWeight.Bold
