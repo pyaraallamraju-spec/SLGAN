@@ -675,6 +675,60 @@ private fun tr(text: String, language: String): String {
         "Close disease details and clear search" to "వ్యాధి వివరాలను మూసివేసి శోధనను క్లియర్ చేయండి",
         "Clear search" to "శోధనను క్లియర్ చేయండి",
         "ADD" to "జోడించండి",
+        "Add another" to "మరొకటి జోడించండి",
+        "Date not available" to "తేదీ అందుబాటులో లేదు",
+        "Arrived at $created" to "$created న డెలివరీ అయింది",
+        "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}" to "ఆర్డర్ స్థితి: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}",
+        "Name not provided" to "పేరు ఇవ్వలేదు",
+        "Patent Product" to "పేటెంట్ ఉత్పత్తి",
+        "Signature Products" to "ప్రత్యేక ఉత్పత్తులు",
+        "Product details are not available in the database yet." to "ఉత్పత్తి వివరాలు ఇంకా డేటాబేస్‌లో అందుబాటులో లేవు.",
+        "Add to cart" to "కార్ట్‌కు జోడించండి",
+        " in cart" to " కార్ట్‌లో ఉన్నాయి",
+        "Rate product" to "ఉత్పత్తికి రేటింగ్ ఇవ్వండి",
+        "Order saved. Email service confirmed." to "ఆర్డర్ సేవ్ అయింది. ఇమెయిల్ సేవ నిర్ధారించింది.",
+        "Order saved, but email failed. " to "ఆర్డర్ సేవ్ అయింది, కానీ ఇమెయిల్ పంపడం విఫలమైంది. ",
+        "Information not available" to "సమాచారం అందుబాటులో లేదు",
+        "Collapse $title" to "$title మూసివేయండి",
+        "Expand $title" to "$title విస్తరించండి",
+        "Profile picture updated." to "ప్రొఫైల్ చిత్రం నవీకరించబడింది.",
+        "Your Information" to "మీ సమాచారం",
+        "About And Support" to "మా గురించి మరియు సహాయం",
+        "Other Information" to "ఇతర సమాచారం",
+        "Privacy Policy" to "గోప్యతా విధానం",
+        "Terms & Conditions" to "నిబంధనలు మరియు షరతులు",
+        "Social Media" to "సోషల్ మీడియా",
+        "Follow" to "అనుసరించండి",
+        "Follow us on Facebook" to "Facebookలో మమ్మల్ని అనుసరించండి",
+        "Open Facebook" to "Facebook తెరవండి",
+        "Account Privacy" to "ఖాతా గోప్యత",
+        "Account Privacy And Policy" to "ఖాతా గోప్యత మరియు విధానం",
+        "Read less" to "తక్కువ చదవండి",
+        "Read more" to "మరింత చదవండి",
+        "Request To Delete Account" to "ఖాతా తొలగింపు కోసం అభ్యర్థించండి",
+        "Request to closure of your account" to "మీ ఖాతాను మూసివేయమని అభ్యర్థించండి",
+        "Contact SLGAN" to "SLGANను సంప్రదించండి",
+        "Business Address" to "వ్యాపార చిరునామా",
+        "Get directions" to "దారి చూపించండి",
+        "Call SLGAN" to "SLGANకు కాల్ చేయండి",
+        "Saved Addresses" to "సేవ్ చేసిన చిరునామాలు",
+        "Add address" to "చిరునామా జోడించండి",
+        "Select address" to "చిరునామాను ఎంచుకోండి",
+        "Selected address" to "ఎంచుకున్న చిరునామా",
+        "Share address" to "చిరునామాను షేర్ చేయండి",
+        "Close" to "మూసివేయండి",
+        "Back" to "వెనక్కి",
+        "Delete" to "తొలగించండి",
+        "Cancel" to "రద్దు చేయండి",
+        "Yes" to "అవును",
+        "No" to "కాదు",
+        "Edit" to "సవరించండి",
+        "Phone Number" to "ఫోన్ నంబర్",
+        "Mobile number" to "మొబైల్ నంబర్",
+        "Complete address" to "పూర్తి చిరునామా",
+        "Receiver" to "స్వీకర్త",
+        "Select date of birth" to "పుట్టిన తేదీని ఎంచుకోండి",
+        "Save profile" to "ప్రొఫైల్‌ను సేవ్ చేయండి",
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -1028,6 +1082,60 @@ private fun tr(text: String, language: String): String {
         "Close disease details and clear search" to "रोग विवरण बंद करें और खोज साफ़ करें",
         "Clear search" to "खोज साफ़ करें",
         "ADD" to "जोड़ें",
+        "Add another" to "एक और जोड़ें",
+        "Date not available" to "तारीख उपलब्ध नहीं",
+        "Arrived at $created" to "$created को डिलीवर हुआ",
+        "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}" to "ऑर्डर स्थिति: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}",
+        "Name not provided" to "नाम नहीं दिया गया",
+        "Patent Product" to "पेटेंट उत्पाद",
+        "Signature Products" to "विशेष उत्पाद",
+        "Product details are not available in the database yet." to "उत्पाद का विवरण अभी डेटाबेस में उपलब्ध नहीं है।",
+        "Add to cart" to "कार्ट में जोड़ें",
+        " in cart" to " कार्ट में",
+        "Rate product" to "उत्पाद को रेट करें",
+        "Order saved. Email service confirmed." to "ऑर्डर सहेजा गया। ईमेल सेवा ने पुष्टि की।",
+        "Order saved, but email failed. " to "ऑर्डर सहेजा गया, लेकिन ईमेल विफल रहा। ",
+        "Information not available" to "जानकारी उपलब्ध नहीं है",
+        "Collapse $title" to "$title बंद करें",
+        "Expand $title" to "$title विस्तृत करें",
+        "Profile picture updated." to "प्रोफ़ाइल चित्र अपडेट किया गया।",
+        "Your Information" to "आपकी जानकारी",
+        "About And Support" to "हमारे बारे में और सहायता",
+        "Other Information" to "अन्य जानकारी",
+        "Privacy Policy" to "गोपनीयता नीति",
+        "Terms & Conditions" to "नियम और शर्तें",
+        "Social Media" to "सोशल मीडिया",
+        "Follow" to "फ़ॉलो करें",
+        "Follow us on Facebook" to "Facebook पर हमें फ़ॉलो करें",
+        "Open Facebook" to "Facebook खोलें",
+        "Account Privacy" to "खाता गोपनीयता",
+        "Account Privacy And Policy" to "खाता गोपनीयता और नीति",
+        "Read less" to "कम पढ़ें",
+        "Read more" to "और पढ़ें",
+        "Request To Delete Account" to "खाता हटाने का अनुरोध करें",
+        "Request to closure of your account" to "अपना खाता बंद करने का अनुरोध करें",
+        "Contact SLGAN" to "SLGAN से संपर्क करें",
+        "Business Address" to "व्यावसायिक पता",
+        "Get directions" to "रास्ता देखें",
+        "Call SLGAN" to "SLGAN को कॉल करें",
+        "Saved Addresses" to "सहेजे गए पते",
+        "Add address" to "पता जोड़ें",
+        "Select address" to "पता चुनें",
+        "Selected address" to "चयनित पता",
+        "Share address" to "पता साझा करें",
+        "Close" to "बंद करें",
+        "Back" to "वापस",
+        "Delete" to "हटाएँ",
+        "Cancel" to "रद्द करें",
+        "Yes" to "हाँ",
+        "No" to "नहीं",
+        "Edit" to "संपादित करें",
+        "Phone Number" to "फ़ोन नंबर",
+        "Mobile number" to "मोबाइल नंबर",
+        "Complete address" to "पूरा पता",
+        "Receiver" to "प्राप्तकर्ता",
+        "Select date of birth" to "जन्म तिथि चुनें",
+        "Save profile" to "प्रोफ़ाइल सहेजें",
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -6048,7 +6156,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 if (productsError != null) { Spacer(Modifier.height(8.dp)); Text(tr("Could not load products: $productsError", LocalAppLanguage.current), color = appThemedColor(Color(0xFFB3261E)), fontSize = 12.sp) }
             }
         }
-        if (visible.isEmpty() && !productsLoading) item { Text(if (productsError != null) "Products could not be loaded. Check your internet and Firestore rules." else "No products found in this category. Try All or another search.", Modifier.padding(24.dp), color = Muted) }
+        if (visible.isEmpty() && !productsLoading) item { Text(if (productsError != null) tr("Products could not be loaded. Check your internet and Firestore rules.", LocalAppLanguage.current) else tr("No products found in this category. Try All or another search.", LocalAppLanguage.current), Modifier.padding(24.dp), color = Muted) }
         else items(visible.chunked(2)) { pair ->
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 5.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 pair.forEach { product -> ProductCard(product, cart[product.id] ?: 0, productRatings[product.id] ?: ProductRatingSummary(), productLikes[product.id] ?: ProductLikeSummary(), onToggleLike, onAdd, onProductClick, Modifier.weight(1f)) }
@@ -6101,7 +6209,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             }
                                             Image(
                                                 painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-                                                contentDescription = "Patent Product",
+                                                contentDescription = tr("Patent Product", LocalAppLanguage.current),
                                                 modifier = Modifier.align(Alignment.TopStart).padding(5.dp).size(38.dp),
                                                 contentScale = ContentScale.Fit
                                             )
@@ -6594,10 +6702,10 @@ private fun ProductDetailsPage(
                             }
                             val shareIntent = Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_TEXT, shareText) }
                             context.startActivity(Intent.createChooser(shareIntent, tr("Share product", currentLanguage)))
-                        }, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.Share, contentDescription = "Share product", tint = Color.Black) }
+                        }, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.Share, contentDescription = tr("Share product", LocalAppLanguage.current), tint = Color.Black) }
                     }
                     IconButton(onClick = { showReviewDialog = true }, modifier = Modifier.align(Alignment.BottomStart).padding(start = 24.dp, bottom = 22.dp).size(48.dp).background(appThemedColor(Color.White), CircleShape)) {
-                        Icon(Icons.Default.Info, contentDescription = "Product Information", tint = Ink)
+                        Icon(Icons.Default.Info, contentDescription = tr("Product Information", LocalAppLanguage.current), tint = Ink)
                     }
                     Box(Modifier.align(Alignment.BottomCenter).padding(bottom = 18.dp).background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(50.dp)).padding(horizontal = 12.dp, vertical = 5.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -6605,7 +6713,7 @@ private fun ProductDetailsPage(
                         }
                     }
                     IconButton(onClick = onToggleLike, enabled = product.productStock != 0, modifier = Modifier.align(Alignment.BottomEnd).padding(end = 24.dp, bottom = 22.dp).size(48.dp).background(appThemedColor(Color.White), CircleShape)) {
-                        Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = "Save product", tint = if (likeSummary.likedByMe) appThemedColor(Color(0xFFE91E63)) else Ink)
+                        Icon(if (likeSummary.likedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder, contentDescription = tr("Save product", LocalAppLanguage.current), tint = if (likeSummary.likedByMe) appThemedColor(Color(0xFFE91E63)) else Ink)
                     }
                 }
                 Column(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -6698,11 +6806,11 @@ private fun ProductDetailsPage(
         Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 14.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             Box(Modifier.size(52.dp).border(1.dp, appThemedColor(Color(0xFFD5DCE7)), RoundedCornerShape(12.dp)).clickable(onClick = onCartClick).padding(6.dp), contentAlignment = Alignment.Center) {
                 BadgedBox(badge = { if (cartCount > 0) Badge(containerColor = appThemedColor(Color(0xFF2E7D32)), contentColor = Color.White) { Text(cartCount.toString(), color = Color.White) } }) {
-                    Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = appThemedColor(Color.Black), modifier = Modifier.size(24.dp))
+                    Icon(Icons.Default.ShoppingCart, contentDescription = tr("View cart", LocalAppLanguage.current), tint = appThemedColor(Color.Black), modifier = Modifier.size(24.dp))
                 }
             }
             Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(52.dp), shape = RoundedCornerShape(12.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFD5DCE7))), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color.White), contentColor = Ink, disabledContainerColor = Color.White, disabledContentColor = Ink)) {
-                Text(if (product.productStock == 0) "Out of stock" else if (cartCount > 0) "Add another" else "Add to Cart", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                Text(if (product.productStock == 0) tr("Out of stock", LocalAppLanguage.current) else if (cartCount > 0) tr("Add another", LocalAppLanguage.current) else tr("Add to Cart", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
             }
         }
         NavigationBar(
@@ -6760,7 +6868,7 @@ private fun ProductDetailsPage(
                                 Spacer(Modifier.height(2.dp))
                                 Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                             }
-                            IconButton(onClick = { if (!ratingSaving) showReviewDialog = false }) { Icon(Icons.Default.Close, contentDescription = "Close review", tint = Muted) }
+                            IconButton(onClick = { if (!ratingSaving) showReviewDialog = false }) { Icon(Icons.Default.Close, contentDescription = tr("Close review", LocalAppLanguage.current), tint = Muted) }
                         }
                         OutlinedTextField(value = ratingReview, onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Your review (optional)", LocalAppLanguage.current)) }, placeholder = { Text(tr("Share your experience with this product", LocalAppLanguage.current)) }, minLines = 4, maxLines = 6, shape = RoundedCornerShape(16.dp))
                         ratingMessage?.let { Text(it, color = if (it.startsWith("Saved")) Forest else appThemedColor(Color(0xFFB3261E)), fontSize = 12.sp) }
@@ -7701,7 +7809,7 @@ private fun OrdersPage(
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
-                                Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
+                                Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · h:mm a", java.util.Locale.getDefault()).format(it) } ?: tr("Date not available", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
                             }
                             IconButton(
                                 onClick = { orderOptions = order },
@@ -7859,7 +7967,7 @@ private fun OrdersPage(
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
-                                Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
+                                Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: tr("Date not available", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
                             }
                             IconButton(onClick = { orderOptions = order }, modifier = Modifier.size(34.dp)) {
                                 Icon(Icons.Default.MoreVert, contentDescription = tr("Order options", LocalAppLanguage.current), tint = Ink)
@@ -8017,7 +8125,7 @@ private fun OrdersPage(
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
                         Text(tr("Order Summary", LocalAppLanguage.current), color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(6.dp))
-                        Text(if (status.equals("delivered", true) || status.equals("completed", true)) "Arrived at $created" else "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", color = Muted, fontSize = 16.sp)
+                        Text(if (status.equals("delivered", true) || status.equals("completed", true)) tr("Arrived at $created", LocalAppLanguage.current) else tr("Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", LocalAppLanguage.current), color = Muted, fontSize = 16.sp)
                         Spacer(Modifier.height(12.dp))
                         if (!invoiceUrl.isNullOrBlank() && (status.equals("accepted", true) || status.equals("approved", true))) {
                             Row(Modifier.clickable { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) } }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -8750,7 +8858,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     shape = RoundedCornerShape(12.dp),
                                                     colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = appThemedColor(Color.Black), disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)), disabledContentColor = Color.Black),
                                                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 0.dp)
-                                                ) { Text("ADD", color = appThemedColor(Color.Black), fontSize = 12.sp, fontWeight = FontWeight.Bold) }
+                                                ) { Text(tr("ADD", LocalAppLanguage.current), color = appThemedColor(Color.Black), fontSize = 12.sp, fontWeight = FontWeight.Bold) }
                                             } else {
                                                 Row(
                                                     Modifier.fillMaxWidth().height(38.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFE2E2E2))),
@@ -10555,7 +10663,7 @@ private fun ReviewAddressPage(
         Divider(color = appThemedColor(Color(0xFFE6E8EE)))
         Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Person, contentDescription = "Receiver", tint = Ink, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.Person, contentDescription = tr("Receiver", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
                 Text(tr("  Receiver:  $receiverName", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
@@ -10715,7 +10823,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         readOnly = true,
                         modifier = Modifier.width(140.dp).clickable { countryMenuExpanded = true },
                         label = { Text(tr("Country", LocalAppLanguage.current), maxLines = 1, softWrap = false) },
-                        trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country", tint = Ink, modifier = Modifier.size(18.dp)) },
+                        trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = tr("Select country", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(18.dp)) },
                         singleLine = true
                     )
                     Box(Modifier.matchParentSize().clickable { countryMenuExpanded = true })
@@ -10756,7 +10864,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     label = { Text(tr("Date of birth", LocalAppLanguage.current)) },
                     placeholder = { Text(tr("Select date of birth", LocalAppLanguage.current)) },
                     leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Ink) },
-                    trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = "Choose date", tint = Ink) }
+                    trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = tr("Choose date", LocalAppLanguage.current), tint = Ink) }
                 )
                 Box(Modifier.matchParentSize().clickable { showDateOfBirthPicker = true })
             }
