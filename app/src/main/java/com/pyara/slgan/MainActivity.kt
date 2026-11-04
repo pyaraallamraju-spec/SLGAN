@@ -9098,8 +9098,8 @@ private fun OrdersPage(
 @Composable
 private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: List<Product>, loading: Boolean, error: String?, onHome: () -> Unit) {
     val scrollState = rememberScrollState()
-    var query by remember { mutableStateOf("") }
-    var selectedDisease by remember { mutableStateOf<String?>(null) }
+    var query by remember { mutableStateOf("All Diseases") }
+    var selectedDisease by remember { mutableStateOf<String?>("All Diseases") }
     var dropdownExpanded by remember { mutableStateOf(false) }
     var detailLoading by remember { mutableStateOf(false) }
     var diseaseDescription by remember { mutableStateOf("") }
@@ -9124,7 +9124,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         diseaseImageUrl = ""
         diseasePrecautions = ""
         suggestedMedicineNames = emptyList()
-        if (selectedDisease != null) {
+        if (selectedDisease != null && selectedDisease != "All Diseases") {
             detailLoading = true
             FirebaseFirestore.getInstance().collection("diseases")
                 .whereEqualTo("diseases_name", selectedDisease).limit(1).get()
@@ -9160,8 +9160,11 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         }
     }
 
-    val matches = remember(diseases, query) {
-        if (query.isBlank()) diseases else diseases.filter { it.contains(query.trim(), ignoreCase = true) }
+    val availableDiseases = remember(diseases) {
+        (listOf("All Diseases") + diseases.filterNot { it.equals("All Diseases", ignoreCase = true) }).distinct()
+    }
+    val matches = remember(availableDiseases, query) {
+        if (query.isBlank()) availableDiseases else availableDiseases.filter { it.contains(query.trim(), ignoreCase = true) }
     }
 
     Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(scrollState)) {
