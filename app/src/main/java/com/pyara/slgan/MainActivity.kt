@@ -472,6 +472,151 @@ private fun tr(text: String, language: String): String {
         "Repeat Order" to "మళ్లీ ఆర్డర్ చేయండి",
         "VIEW CART ON NEXT STEP" to "తదుపరి దశలో కార్ట్ చూడండి",
         "Back to Order History" to "ఆర్డర్ చరిత్రకు తిరిగి వెళ్లండి"
+        "Confirm password" to "పాస్‌వర్డ్‌ను నిర్ధారించండి",
+        "Create account" to "ఖాతా సృష్టించండి",
+        "Already have an account? Sign in" to "ఇప్పటికే ఖాతా ఉందా? సైన్ ఇన్ చేయండి",
+        "New? Create account" to "కొత్తవారా? ఖాతా సృష్టించండి",
+        "Forgot Password?" to "పాస్‌వర్డ్ మర్చిపోయారా?",
+        "OR" to "లేదా",
+        "Please wait…" to "దయచేసి వేచి ఉండండి…",
+        "Continue with Google" to "Googleతో కొనసాగించండి",
+        "View Products" to "ఉత్పత్తులను చూడండి",
+        "Search Results" to "శోధన ఫలితాలు",
+        "Products could not be loaded. Check your internet and Firestore rules." to "ఉత్పత్తులను లోడ్ చేయలేకపోయాం. ఇంటర్నెట్ మరియు Firestore నియమాలను తనిఖీ చేయండి.",
+        "No products found in this category. Try All or another search." to "ఈ వర్గంలో ఉత్పత్తులు లేవు. అన్నీ లేదా మరో శోధనను ప్రయత్నించండి.",
+        "Signature Products" to "ప్రత్యేక ఉత్పత్తులు",
+        "Patent Product" to "పేటెంట్ ఉత్పత్తి",
+        "Unlike product" to "ఇష్టమైన వాటి నుంచి తొలగించండి",
+        "Like product" to "ఉత్పత్తిని ఇష్టపడండి",
+        "Please sign in to rate this product." to "ఈ ఉత్పత్తికి రేటింగ్ ఇవ్వడానికి సైన్ ఇన్ చేయండి.",
+        "Rating saved" to "రేటింగ్ సేవ్ అయింది",
+        "Could not save rating." to "రేటింగ్‌ను సేవ్ చేయలేకపోయాం.",
+        "No ratings" to "ఇంకా రేటింగ్‌లు లేవు",
+        "Signature product" to "ప్రత్యేక ఉత్పత్తి",
+        "Out of Stock" to "స్టాక్‌లో లేదు",
+        "Back to products" to "ఉత్పత్తులకు తిరిగి వెళ్లండి",
+        "Back to product search" to "ఉత్పత్తుల శోధనకు తిరిగి వెళ్లండి",
+        "Share product" to "ఉత్పత్తిని షేర్ చేయండి",
+        "Product Information" to "ఉత్పత్తి సమాచారం",
+        "Save product" to "ఉత్పత్తిని సేవ్ చేయండి",
+        "Information not available." to "సమాచారం అందుబాటులో లేదు.",
+        "About" to "గురించి",
+        "Customer Ratings & Reviews" to "కస్టమర్ రేటింగ్‌లు మరియు సమీక్షలు",
+        "View cart" to "కార్ట్ చూడండి",
+        "Out of stock" to "స్టాక్ లేదు",
+        "Add to Cart" to "కార్ట్‌కు జోడించండి",
+        "Write A Review" to "సమీక్ష రాయండి",
+        "Close review" to "సమీక్షను మూసివేయండి",
+        "Your review (optional)" to "మీ సమీక్ష (ఐచ్ఛికం)",
+        "Share your experience with this product" to "ఈ ఉత్పత్తితో మీ అనుభవాన్ని పంచుకోండి",
+        "Saved" to "సేవ్ అయింది",
+        "Saved! Thank you for your review." to "సేవ్ అయింది! మీ సమీక్షకు ధన్యవాదాలు.",
+        "Review saved successfully" to "సమీక్ష విజయవంతంగా సేవ్ అయింది",
+        "Could not save rating. Please try again." to "రేటింగ్‌ను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
+        "Save" to "సేవ్ చేయండి",
+        "Finish editing instructions" to "సూచనల సవరణను పూర్తి చేయండి",
+        "Edit instructions" to "సూచనలను సవరించండి",
+        "Complete address not available" to "పూర్తి చిరునామా అందుబాటులో లేదు",
+        "Address details unavailable" to "చిరునామా వివరాలు అందుబాటులో లేవు",
+        "Order successful" to "ఆర్డర్ విజయవంతమైంది",
+        "Order failed" to "ఆర్డర్ విఫలమైంది",
+        "Your order has been saved" to "మీ ఆర్డర్ సేవ్ అయింది",
+        "Please review your order" to "దయచేసి మీ ఆర్డర్‌ను పరిశీలించండి",
+        "Your order was saved." to "మీ ఆర్డర్ సేవ్ అయింది.",
+        "Your order could not be placed." to "మీ ఆర్డర్‌ను నమోదు చేయలేకపోయాం.",
+        "ORDER STATUS" to "ఆర్డర్ స్థితి",
+        "Pending verification" to "ధృవీకరణ పెండింగ్‌లో ఉంది",
+        "Show all disease options" to "అన్ని వ్యాధి ఎంపికలను చూపించండి",
+        "DISEASE DETAILS" to "వ్యాధి వివరాలు",
+        "Close disease details and clear search" to "వ్యాధి వివరాలను మూసివేసి శోధనను క్లియర్ చేయండి",
+        "About This Condition" to "ఈ వ్యాధి గురించి",
+        "Suggested Medicines" to "సూచించిన మందులు",
+        "Precautions & care" to "జాగ్రత్తలు మరియు సంరక్షణ",
+        "Search products" to "ఉత్పత్తులను వెతకండి",
+        "No products in this category" to "ఈ వర్గంలో ఉత్పత్తులు లేవు",
+        "Decrease quantity" to "పరిమాణాన్ని తగ్గించండి",
+        "Increase quantity" to "పరిమాణాన్ని పెంచండి",
+        "Your wishlist" to "మీ విష్‌లిస్ట్",
+        "saved products" to "సేవ్ చేసిన ఉత్పత్తులు",
+        "Couldn't load your wishlist" to "మీ విష్‌లిస్ట్‌ను లోడ్ చేయలేకపోయాం",
+        "Please check your connection and try again." to "దయచేసి మీ ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.",
+        "Your wishlist is empty" to "మీ విష్‌లిస్ట్ ఖాళీగా ఉంది",
+        "Tap the heart on any product to save it here." to "ఏదైనా ఉత్పత్తిపై హార్ట్ గుర్తును నొక్కి ఇక్కడ సేవ్ చేయండి.",
+        "Continue shopping" to "షాపింగ్ కొనసాగించండి",
+        "Choose Your Language" to "మీ భాషను ఎంచుకోండి",
+        "Select your preferred language for SLGAN." to "SLGAN కోసం మీకు నచ్చిన భాషను ఎంచుకోండి.",
+        "Selected" to "ఎంచుకున్నారు",
+        "Not selected" to "ఎంచుకోలేదు",
+        "Continue" to "కొనసాగించండి",
+        "Log out from?" to "ఎక్కడి నుంచి లాగ్ అవుట్ చేయాలి?",
+        "Choose where you want to end your SLGAN session." to "మీ SLGAN సెషన్‌ను ఎక్కడ ముగించాలో ఎంచుకోండి.",
+        "Current Device" to "ప్రస్తుత పరికరం",
+        "Sign out from this phone" to "ఈ ఫోన్ నుంచి సైన్ అవుట్ చేయండి",
+        "All Devices" to "అన్ని పరికరాలు",
+        "Requires secure server support" to "సురక్షిత సర్వర్ మద్దతు అవసరం",
+        "SLGAN Assistant" to "SLGAN సహాయకుడు",
+        "How Can We Help?" to "మేము మీకు ఎలా సహాయం చేయగలం?",
+        "Send message" to "సందేశం పంపండి",
+        "Address Options" to "చిరునామా ఎంపికలు",
+        "Delete address" to "చిరునామాను తొలగించండి",
+        "Edit address" to "చిరునామాను సవరించండి",
+        "Set as delivery address" to "డెలివరీ చిరునామాగా సెట్ చేయండి",
+        "Delete address?" to "చిరునామాను తొలగించాలా?",
+        "Are you sure you want to delete this saved address?" to "ఈ సేవ్ చేసిన చిరునామాను ఖచ్చితంగా తొలగించాలనుకుంటున్నారా?",
+        "Address deleted" to "చిరునామా తొలగించబడింది",
+        "Address saved successfully" to "చిరునామా విజయవంతంగా సేవ్ అయింది",
+        "Saved Addresses" to "సేవ్ చేసిన చిరునామాలు",
+        "Keep delivery locations for future orders." to "భవిష్యత్ ఆర్డర్ల కోసం డెలివరీ చిరునామాలను సేవ్ చేయండి.",
+        "No saved addresses yet" to "ఇంకా చిరునామాలు సేవ్ చేయలేదు",
+        "Your saved delivery addresses will appear here." to "మీరు సేవ్ చేసిన డెలివరీ చిరునామాలు ఇక్కడ కనిపిస్తాయి.",
+        "DELIVERY LOCATION" to "డెలివరీ స్థానం",
+        "Do you want this order at your current location?" to "ఈ ఆర్డర్‌ను మీ ప్రస్తుత స్థానానికి డెలివరీ చేయాలా?",
+        "Yes, deliver at my current location" to "అవును, నా ప్రస్తుత స్థానానికి డెలివరీ చేయండి",
+        "No, at some other location" to "కాదు, వేరే స్థానానికి",
+        "Are you sure?" to "మీకు ఖచ్చితంగా తెలుసా?",
+        "Any changes on this screen may be lost if you continue" to "కొనసాగితే ఈ స్క్రీన్‌లో చేసిన మార్పులు కోల్పోవచ్చు",
+        "Edit address details" to "చిరునామా వివరాలను సవరించండి",
+        "Add address details" to "చిరునామా వివరాలను జోడించండి",
+        "Address Details" to "చిరునామా వివరాలు",
+        "Select a city" to "నగరాన్ని ఎంచుకోండి",
+        "Select" to "ఎంచుకోండి",
+        "Search for a city" to "నగరం కోసం వెతకండి",
+        "Top cities" to "ప్రధాన నగరాలు",
+        "Other cities" to "ఇతర నగరాలు",
+        "Please select a city" to "దయచేసి నగరాన్ని ఎంచుకోండి",
+        "Select an area, street" to "ప్రాంతం లేదా వీధిని ఎంచుకోండి",
+        "Search for an area, street" to "ప్రాంతం లేదా వీధి కోసం వెతకండి",
+        "Please select an area, street" to "దయచేసి ప్రాంతం లేదా వీధిని ఎంచుకోండి",
+        "Enter complete address*" to "పూర్తి చిరునామాను నమోదు చేయండి*",
+        "Please enter complete address" to "దయచేసి పూర్తి చిరునామాను నమోదు చేయండి",
+        "Example: Flat/house no., building, street, landmark" to "ఉదాహరణ: ఫ్లాట్/ఇంటి నంబర్, భవనం, వీధి, గుర్తింపు స్థలం",
+        "Add Google Maps link (optional)" to "Google Maps లింక్ జోడించండి (ఐచ్ఛికం)",
+        "Contact Details" to "సంప్రదింపు వివరాలు",
+        "Myself" to "నేను",
+        "Someone else" to "మరొకరు",
+        "Receiver's name*" to "స్వీకర్త పేరు*",
+        "Your name*" to "మీ పేరు*",
+        "Please enter receiver's name" to "దయచేసి స్వీకర్త పేరును నమోదు చేయండి",
+        "Receiver's phone number*" to "స్వీకర్త ఫోన్ నంబర్*",
+        "Your phone number*" to "మీ ఫోన్ నంబర్*",
+        "Please enter a valid phone number" to "దయచేసి సరైన ఫోన్ నంబర్ నమోదు చేయండి",
+        "Save address as" to "చిరునామాను ఇలా సేవ్ చేయండి",
+        "Next" to "తదుపరి",
+        "Review Address" to "చిరునామాను పరిశీలించండి",
+        "Finding the nearest area on the map…" to "మ్యాప్‌లో సమీప ప్రాంతాన్ని కనుగొంటున్నాం…",
+        "Delivery Details" to "డెలివరీ వివరాలు",
+        "Receiver" to "స్వీకర్త",
+        "  Receiver:  $receiverName" to "  స్వీకర్త:  $receiverName",
+        "  Mobile:  $receiverPhone" to "  మొబైల్:  $receiverPhone",
+        "  Complete address:  $fullAddress" to "  పూర్తి చిరునామా:  $fullAddress",
+        "Save Address" to "చిరునామాను సేవ్ చేయండి",
+        "Country" to "దేశం",
+        "Select country" to "దేశాన్ని ఎంచుకోండి",
+        "Date of birth" to "పుట్టిన తేదీ",
+        "Select date of birth" to "పుట్టిన తేదీని ఎంచుకోండి",
+        "Choose date" to "తేదీని ఎంచుకోండి",
+        "Save profile" to "ప్రొఫైల్‌ను సేవ్ చేయండి",
+        "Couldn't save profile. Please try again." to "ప్రొఫైల్‌ను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -622,6 +767,151 @@ private fun tr(text: String, language: String): String {
         "Repeat Order" to "फिर से ऑर्डर करें",
         "VIEW CART ON NEXT STEP" to "अगले चरण में कार्ट देखें",
         "Back to Order History" to "ऑर्डर इतिहास पर वापस जाएँ"
+        "Confirm password" to "पासवर्ड की पुष्टि करें",
+        "Create account" to "खाता बनाएँ",
+        "Already have an account? Sign in" to "पहले से खाता है? साइन इन करें",
+        "New? Create account" to "नए हैं? खाता बनाएँ",
+        "Forgot Password?" to "पासवर्ड भूल गए?",
+        "OR" to "या",
+        "Please wait…" to "कृपया प्रतीक्षा करें…",
+        "Continue with Google" to "Google से जारी रखें",
+        "View Products" to "उत्पाद देखें",
+        "Search Results" to "खोज परिणाम",
+        "Products could not be loaded. Check your internet and Firestore rules." to "उत्पाद लोड नहीं हो सके। इंटरनेट और Firestore नियम जाँचें।",
+        "No products found in this category. Try All or another search." to "इस श्रेणी में कोई उत्पाद नहीं मिला। सभी या दूसरी खोज आज़माएँ।",
+        "Signature Products" to "विशेष उत्पाद",
+        "Patent Product" to "पेटेंट उत्पाद",
+        "Unlike product" to "पसंदीदा से हटाएँ",
+        "Like product" to "उत्पाद पसंद करें",
+        "Please sign in to rate this product." to "इस उत्पाद को रेट करने के लिए साइन इन करें।",
+        "Rating saved" to "रेटिंग सहेजी गई",
+        "Could not save rating." to "रेटिंग सहेजी नहीं जा सकी।",
+        "No ratings" to "अभी कोई रेटिंग नहीं",
+        "Signature product" to "विशेष उत्पाद",
+        "Out of Stock" to "स्टॉक में नहीं",
+        "Back to products" to "उत्पादों पर वापस जाएँ",
+        "Back to product search" to "उत्पाद खोज पर वापस जाएँ",
+        "Share product" to "उत्पाद साझा करें",
+        "Product Information" to "उत्पाद जानकारी",
+        "Save product" to "उत्पाद सहेजें",
+        "Information not available." to "जानकारी उपलब्ध नहीं है।",
+        "About" to "जानकारी",
+        "Customer Ratings & Reviews" to "ग्राहक रेटिंग और समीक्षाएँ",
+        "View cart" to "कार्ट देखें",
+        "Out of stock" to "स्टॉक में नहीं",
+        "Add to Cart" to "कार्ट में जोड़ें",
+        "Write A Review" to "समीक्षा लिखें",
+        "Close review" to "समीक्षा बंद करें",
+        "Your review (optional)" to "आपकी समीक्षा (वैकल्पिक)",
+        "Share your experience with this product" to "इस उत्पाद के साथ अपना अनुभव साझा करें",
+        "Saved" to "सहेजा गया",
+        "Saved! Thank you for your review." to "सहेजा गया! आपकी समीक्षा के लिए धन्यवाद।",
+        "Review saved successfully" to "समीक्षा सफलतापूर्वक सहेजी गई",
+        "Could not save rating. Please try again." to "रेटिंग सहेजी नहीं जा सकी। फिर कोशिश करें।",
+        "Save" to "सहेजें",
+        "Finish editing instructions" to "निर्देश संपादन पूरा करें",
+        "Edit instructions" to "निर्देश संपादित करें",
+        "Complete address not available" to "पूरा पता उपलब्ध नहीं है",
+        "Address details unavailable" to "पते का विवरण उपलब्ध नहीं है",
+        "Order successful" to "ऑर्डर सफल",
+        "Order failed" to "ऑर्डर विफल",
+        "Your order has been saved" to "आपका ऑर्डर सहेजा गया है",
+        "Please review your order" to "कृपया अपना ऑर्डर जाँचें",
+        "Your order was saved." to "आपका ऑर्डर सहेजा गया।",
+        "Your order could not be placed." to "आपका ऑर्डर नहीं किया जा सका।",
+        "ORDER STATUS" to "ऑर्डर स्थिति",
+        "Pending verification" to "सत्यापन लंबित",
+        "Show all disease options" to "सभी रोग विकल्प दिखाएँ",
+        "DISEASE DETAILS" to "रोग विवरण",
+        "Close disease details and clear search" to "रोग विवरण बंद करें और खोज साफ़ करें",
+        "About This Condition" to "इस स्थिति के बारे में",
+        "Suggested Medicines" to "सुझाई गई दवाएँ",
+        "Precautions & care" to "सावधानियाँ और देखभाल",
+        "Search products" to "उत्पाद खोजें",
+        "No products in this category" to "इस श्रेणी में कोई उत्पाद नहीं",
+        "Decrease quantity" to "मात्रा घटाएँ",
+        "Increase quantity" to "मात्रा बढ़ाएँ",
+        "Your wishlist" to "आपकी इच्छा-सूची",
+        "saved products" to "सहेजे गए उत्पाद",
+        "Couldn't load your wishlist" to "आपकी इच्छा-सूची लोड नहीं हो सकी",
+        "Please check your connection and try again." to "कृपया इंटरनेट कनेक्शन जाँचें और फिर प्रयास करें।",
+        "Your wishlist is empty" to "आपकी इच्छा-सूची खाली है",
+        "Tap the heart on any product to save it here." to "किसी भी उत्पाद पर दिल का निशान दबाकर उसे यहाँ सहेजें।",
+        "Continue shopping" to "खरीदारी जारी रखें",
+        "Choose Your Language" to "अपनी भाषा चुनें",
+        "Select your preferred language for SLGAN." to "SLGAN के लिए अपनी पसंदीदा भाषा चुनें।",
+        "Selected" to "चयनित",
+        "Not selected" to "चयनित नहीं",
+        "Continue" to "जारी रखें",
+        "Log out from?" to "कहाँ से लॉग आउट करना है?",
+        "Choose where you want to end your SLGAN session." to "चुनें कि आप अपना SLGAN सत्र कहाँ समाप्त करना चाहते हैं।",
+        "Current Device" to "वर्तमान डिवाइस",
+        "Sign out from this phone" to "इस फ़ोन से साइन आउट करें",
+        "All Devices" to "सभी डिवाइस",
+        "Requires secure server support" to "सुरक्षित सर्वर सहायता आवश्यक है",
+        "SLGAN Assistant" to "SLGAN सहायक",
+        "How Can We Help?" to "हम आपकी कैसे मदद कर सकते हैं?",
+        "Send message" to "संदेश भेजें",
+        "Address Options" to "पता विकल्प",
+        "Delete address" to "पता हटाएँ",
+        "Edit address" to "पता संपादित करें",
+        "Set as delivery address" to "डिलीवरी पता सेट करें",
+        "Delete address?" to "पता हटाएँ?",
+        "Are you sure you want to delete this saved address?" to "क्या आप यह सहेजा गया पता हटाना चाहते हैं?",
+        "Address deleted" to "पता हटा दिया गया",
+        "Address saved successfully" to "पता सफलतापूर्वक सहेजा गया",
+        "Saved Addresses" to "सहेजे गए पते",
+        "Keep delivery locations for future orders." to "भविष्य के ऑर्डर के लिए डिलीवरी पते सहेजें।",
+        "No saved addresses yet" to "अभी कोई पता सहेजा नहीं गया",
+        "Your saved delivery addresses will appear here." to "आपके सहेजे गए डिलीवरी पते यहाँ दिखाई देंगे।",
+        "DELIVERY LOCATION" to "डिलीवरी स्थान",
+        "Do you want this order at your current location?" to "क्या आप यह ऑर्डर अपने वर्तमान स्थान पर चाहते हैं?",
+        "Yes, deliver at my current location" to "हाँ, मेरे वर्तमान स्थान पर डिलीवर करें",
+        "No, at some other location" to "नहीं, किसी अन्य स्थान पर",
+        "Are you sure?" to "क्या आपको यक़ीन है?",
+        "Any changes on this screen may be lost if you continue" to "जारी रखने पर इस स्क्रीन के बदलाव खो सकते हैं",
+        "Edit address details" to "पते का विवरण संपादित करें",
+        "Add address details" to "पते का विवरण जोड़ें",
+        "Address Details" to "पते का विवरण",
+        "Select a city" to "शहर चुनें",
+        "Select" to "चुनें",
+        "Search for a city" to "शहर खोजें",
+        "Top cities" to "प्रमुख शहर",
+        "Other cities" to "अन्य शहर",
+        "Please select a city" to "कृपया शहर चुनें",
+        "Select an area, street" to "क्षेत्र या सड़क चुनें",
+        "Search for an area, street" to "क्षेत्र या सड़क खोजें",
+        "Please select an area, street" to "कृपया क्षेत्र या सड़क चुनें",
+        "Enter complete address*" to "पूरा पता दर्ज करें*",
+        "Please enter complete address" to "कृपया पूरा पता दर्ज करें",
+        "Example: Flat/house no., building, street, landmark" to "उदाहरण: फ्लैट/मकान नंबर, इमारत, सड़क, पहचान-चिह्न",
+        "Add Google Maps link (optional)" to "Google Maps लिंक जोड़ें (वैकल्पिक)",
+        "Contact Details" to "संपर्क विवरण",
+        "Myself" to "स्वयं",
+        "Someone else" to "कोई अन्य",
+        "Receiver's name*" to "प्राप्तकर्ता का नाम*",
+        "Your name*" to "आपका नाम*",
+        "Please enter receiver's name" to "कृपया प्राप्तकर्ता का नाम दर्ज करें",
+        "Receiver's phone number*" to "प्राप्तकर्ता का फ़ोन नंबर*",
+        "Your phone number*" to "आपका फ़ोन नंबर*",
+        "Please enter a valid phone number" to "कृपया सही फ़ोन नंबर दर्ज करें",
+        "Save address as" to "पता इस रूप में सहेजें",
+        "Next" to "अगला",
+        "Review Address" to "पते की समीक्षा करें",
+        "Finding the nearest area on the map…" to "मानचित्र पर निकटतम क्षेत्र खोज रहे हैं…",
+        "Delivery Details" to "डिलीवरी विवरण",
+        "Receiver" to "प्राप्तकर्ता",
+        "  Receiver:  $receiverName" to "  प्राप्तकर्ता:  $receiverName",
+        "  Mobile:  $receiverPhone" to "  मोबाइल:  $receiverPhone",
+        "  Complete address:  $fullAddress" to "  पूरा पता:  $fullAddress",
+        "Save Address" to "पता सहेजें",
+        "Country" to "देश",
+        "Select country" to "देश चुनें",
+        "Date of birth" to "जन्म तिथि",
+        "Select date of birth" to "जन्म तिथि चुनें",
+        "Choose date" to "तिथि चुनें",
+        "Save profile" to "प्रोफ़ाइल सहेजें",
+        "Couldn't save profile. Please try again." to "प्रोफ़ाइल सहेजी नहीं जा सकी। फिर प्रयास करें।",
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -1896,7 +2186,7 @@ private fun LoginScreen(
                 value = confirmPassword,
                 onValueChange = onConfirmPasswordChange,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-                placeholder = { Text("Confirm password", color = Muted, fontSize = 15.sp) },
+                placeholder = { Text(tr("Confirm password", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
                 leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
                 trailingIcon = {
                     IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
@@ -1985,7 +2275,7 @@ private fun LoginScreen(
                 ) {
                     Text("🌿", fontSize = 19.sp)
                     Spacer(Modifier.width(12.dp))
-                    Text("Create account", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = appThemedColor(Color(0xFF4A3028)))
+                    Text(tr("Create account", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.Bold, color = appThemedColor(Color(0xFF4A3028)))
                     Spacer(Modifier.width(12.dp))
                     Icon(Icons.Default.ArrowForward, null, tint = appThemedColor(Color(0xFFB88A36)))
                     Spacer(Modifier.width(12.dp))
@@ -2008,11 +2298,11 @@ private fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextButton(onClick = onToggleMode, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
-                Text(if (isCreatingAccount) "Already have an account? Sign in" else "New? Create account", color = Muted, fontSize = 13.sp)
+                Text(if (isCreatingAccount) tr("Already have an account? Sign in", LocalAppLanguage.current) else tr("New? Create account", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
             }
             if (!isCreatingAccount) {
                 TextButton(onClick = onForgotPassword, enabled = !loading, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
-                    Text("Forgot Password?", color = Muted, fontSize = 13.sp)
+                    Text(tr("Forgot Password?", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                 }
             }
         }
@@ -2034,7 +2324,7 @@ private fun LoginScreen(
         ) {
             Text("G", color = appThemedColor(Color(0xFF4285F4)), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.width(12.dp))
-            Text(if (loading) "Please wait…" else "Continue with Google", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            Text(if (loading) tr("Please wait…", LocalAppLanguage.current) else tr("Continue with Google", LocalAppLanguage.current), fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
         }
         Spacer(Modifier.height(8.dp))
         Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
@@ -2752,7 +3042,7 @@ private fun AdminProductDetailsScreen(
             AppLoader("Loading product details…", compact = true)
         } else if (detailsError != null && data.isEmpty()) {
             Text(detailsError.orEmpty(), Modifier.padding(20.dp), color = AdminInk)
-            TextButton(onClick = onBack) { Text("Back to products", color = AdminInk) }
+            TextButton(onClick = onBack) { Text(tr("Back to products", LocalAppLanguage.current), color = AdminInk) }
         } else {
             Column(
                 Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(16.dp),
@@ -2970,7 +3260,7 @@ private fun AdminProductEditor(
             Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text("Product Information", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(tr("Product Information", LocalAppLanguage.current), color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, isError = invalidName, singleLine = true)
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -5634,7 +5924,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     }
                 }
                 Spacer(Modifier.height(18.dp))
-                if (search.isNotBlank()) Text("Search Results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                if (search.isNotBlank()) Text(tr("Search Results", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 if (productsLoading) {
                     Spacer(Modifier.height(18.dp))
                     AppLoader(message = "Loading products…", compact = true)
@@ -5660,7 +5950,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                                 Icon(Icons.Default.WorkspacePremium, contentDescription = null, tint = appThemedColor(Color.Black), modifier = Modifier.size(20.dp))
-                                Text("Signature Products", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                                Text(tr("Signature Products", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                             }
                             Text("SLGAN", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Ink)
                         }
@@ -6269,13 +6559,13 @@ private fun ProductDetailsPage(
                                 ) {
                                     Text(selectedDetailsTab, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                                     Text(detailContent.ifBlank { "Information not available." }, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
-                                    if (selectedDetailsTab == "About" && product.description.isNotBlank()) Text("Product Information", color = Muted, fontSize = 11.sp)
+                                    if (selectedDetailsTab == "About" && product.description.isNotBlank()) Text(tr("Product Information", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
                                 }
                             }
                             Row(Modifier.fillMaxWidth().clickable { showReviewDialog = true }.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(24.dp))
                                 Spacer(Modifier.width(10.dp))
-                                Text("Customer Ratings & Reviews", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                                Text(tr("Customer Ratings & Reviews", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                                 Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Muted)
                             }
                             if (customerReviews.isNotEmpty()) customerReviews.take(3).forEach { (customerName, reviewText) ->
@@ -6350,13 +6640,13 @@ private fun ProductDetailsPage(
                     Column(Modifier.fillMaxWidth().navigationBarsPadding().imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp).padding(top = 6.dp, bottom = 20.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
-                                Text("Write A Review", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                                Text(tr("Write A Review", LocalAppLanguage.current), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                                 Spacer(Modifier.height(2.dp))
                                 Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                             }
                             IconButton(onClick = { if (!ratingSaving) showReviewDialog = false }) { Icon(Icons.Default.Close, contentDescription = "Close review", tint = Muted) }
                         }
-                        OutlinedTextField(value = ratingReview, onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Your review (optional)") }, placeholder = { Text("Share your experience with this product") }, minLines = 4, maxLines = 6, shape = RoundedCornerShape(16.dp))
+                        OutlinedTextField(value = ratingReview, onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Your review (optional)", LocalAppLanguage.current)) }, placeholder = { Text(tr("Share your experience with this product", LocalAppLanguage.current)) }, minLines = 4, maxLines = 6, shape = RoundedCornerShape(16.dp))
                         ratingMessage?.let { Text(it, color = if (it.startsWith("Saved")) Forest else appThemedColor(Color(0xFFB3261E)), fontSize = 12.sp) }
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
                             TextButton(onClick = { if (!ratingSaving) showReviewDialog = false }, enabled = !ratingSaving) { Text("Cancel", color = Muted) }
@@ -6382,7 +6672,7 @@ private fun ProductDetailsPage(
                                     }.addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
                                 }
                             }, enabled = !ratingSaving, modifier = Modifier.height(44.dp), contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE1E5EC)), contentColor = Ink)) {
-                                if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Ink, strokeWidth = 2.dp) else Text("Save", color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Ink, strokeWidth = 2.dp) else Text(tr("Save", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                             }
                         }
                     }
@@ -7953,7 +8243,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 Text(detailDiseaseEmoji, fontSize = 30.sp)
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("DISEASE DETAILS", color = Ink, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
+                    Text(tr("DISEASE DETAILS", LocalAppLanguage.current), color = Ink, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
                     Text(detailDiseaseName, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 }
                 IconButton(onClick = {
@@ -8033,7 +8323,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                             Icon(Icons.Default.Info, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
                                         }
                                         Spacer(Modifier.width(10.dp))
-                                        Text("About This Condition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                        Text(tr("About This Condition", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp, modifier = Modifier.padding(start = 44.dp))
                                 }
@@ -8048,7 +8338,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                             Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
                                         }
                                         Spacer(Modifier.width(10.dp))
-                                        Text("Suggested Medicines", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                        Text(tr("Suggested Medicines", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     val displayedSuggestions = if (suggestedMedicineNames.isNotEmpty()) suggestedMedicineNames else relatedMedicines.map { it.name }
                                     if (detailLoading) CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.dp, color = Forest)
@@ -8074,7 +8364,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                             Icon(Icons.Default.HealthAndSafety, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
                                         }
                                         Spacer(Modifier.width(10.dp))
-                                        Text("Precautions & care", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                        Text(tr("Precautions & care", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     if (diseasePrecautions.isBlank()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, modifier = Modifier.padding(start = 44.dp))
                                     else diseasePrecautions.split("\n").filter { it.isNotBlank() }.forEach { precaution ->
@@ -8224,7 +8514,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 onValueChange = { searchQuery = it },
                 modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp, top = 2.dp, bottom = 0.dp).height(60.dp),
                 textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-                placeholder = { Text("Search products", fontSize = 13.sp, maxLines = 1, color = Muted) },
+                placeholder = { Text(tr("Search products", LocalAppLanguage.current), fontSize = 13.sp, maxLines = 1, color = Muted) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(22.dp), tint = Muted) },
                 trailingIcon = {
                     if (searchQuery.isNotBlank()) IconButton(onClick = { searchQuery = "" }) {
@@ -8256,7 +8546,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                         Column(Modifier.fillMaxWidth().padding(top = 60.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("🌿", fontSize = 38.sp)
                             Spacer(Modifier.height(8.dp))
-                            Text("No products in this category", color = Muted, fontSize = 13.sp, textAlign = TextAlign.Center)
+                            Text(tr("No products in this category", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, textAlign = TextAlign.Center)
                         }
                     }
                 } else {
@@ -8613,9 +8903,9 @@ private fun AccountsPage(
                     .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 28.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("Choose Your Language", color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Choose Your Language", LocalAppLanguage.current), color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(5.dp))
-                Text("Select your preferred language for SLGAN.", color = Color(0xFF707780), fontSize = 14.sp)
+                Text(tr("Select your preferred language for SLGAN.", LocalAppLanguage.current), color = Color(0xFF707780), fontSize = 14.sp)
                 Spacer(Modifier.height(20.dp))
                 listOf("English", "Telugu", "Hindi").forEach { option ->
                     val isSelected = selectedLanguage == option
@@ -8700,7 +8990,7 @@ private fun AccountsPage(
                     )
                 ) {
                     if (languageSaving) CircularProgressIndicator(modifier = Modifier.size(19.dp), color = Color.White, strokeWidth = 2.dp)
-                    else Text("Continue", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    else Text(tr("Continue", LocalAppLanguage.current), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                 }
             }
         }
@@ -8723,9 +9013,9 @@ private fun AccountsPage(
                 Modifier.fillMaxWidth().navigationBarsPadding()
                     .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 28.dp)
             ) {
-                Text("Log out from?", color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Log out from?", LocalAppLanguage.current), color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(5.dp))
-                Text("Choose where you want to end your SLGAN session.", color = Color(0xFF707780), fontSize = 14.sp)
+                Text(tr("Choose where you want to end your SLGAN session.", LocalAppLanguage.current), color = Color(0xFF707780), fontSize = 14.sp)
                 Spacer(Modifier.height(20.dp))
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable {
@@ -8746,8 +9036,8 @@ private fun AccountsPage(
                         }
                         Spacer(Modifier.width(14.dp))
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                            Text("Current Device", color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                            Text("Sign out from this phone", color = Color(0xFF707780), fontSize = 12.sp)
+                            Text(tr("Current Device", LocalAppLanguage.current), color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                            Text(tr("Sign out from this phone", LocalAppLanguage.current), color = Color(0xFF707780), fontSize = 12.sp)
                         }
                         Icon(Icons.Default.ChevronRight, contentDescription = "Sign out from current device", tint = Color(0xFF25282D))
                     }
@@ -8771,8 +9061,8 @@ private fun AccountsPage(
                         }
                         Spacer(Modifier.width(14.dp))
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                            Text("All Devices", color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                            Text("Requires secure server support", color = Color(0xFF707780), fontSize = 12.sp)
+                            Text(tr("All Devices", LocalAppLanguage.current), color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                            Text(tr("Requires secure server support", LocalAppLanguage.current), color = Color(0xFF707780), fontSize = 12.sp)
                         }
                         Icon(Icons.Default.ChevronRight, contentDescription = "All devices", tint = Color(0xFF25282D))
                     }
@@ -8837,7 +9127,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
-                Text("SLGAN Assistant", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
+                Text(tr("SLGAN Assistant", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
                 Text(if (appLanguage == "English") "Help & Support · Telugu + English" else "సహాయం · తెలుగు + English", color = Muted, fontSize = 12.sp)
             }
             Surface(shape = RoundedCornerShape(14.dp), color = appThemedColor(Color(0xFFF1F1F1)), modifier = Modifier.size(44.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFE5E8EF)))) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.SupportAgent, contentDescription = "SLGAN support assistant", tint = Ink, modifier = Modifier.size(27.dp)) } }
@@ -9099,9 +9389,9 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     addressOptions?.let { address ->
         ModalBottomSheet(onDismissRequest = { addressOptions = null }, containerColor = appThemedColor(Color.White), contentColor = Ink) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text("Address Options", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Address Options", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Row(Modifier.fillMaxWidth().clickable { confirmDeleteAddress = address; addressOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Delete address", color = Ink, fontSize = 16.sp)
+                    Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text(tr("Delete address", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
                 }
                 Row(Modifier.fillMaxWidth().clickable {
                     editAddress = address
@@ -9109,20 +9399,20 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     showAddAddressPage = true
                     addressOptions = null
                 }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Edit, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Edit address", color = Ink, fontSize = 16.sp)
+                    Icon(Icons.Default.Edit, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text(tr("Edit address", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
                 }
                 Row(Modifier.fillMaxWidth().clickable {
                     setDefaultAddress(address["_id"]?.toString().orEmpty())
                     addressOptions = null
                 }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Set as delivery address", color = Ink, fontSize = 16.sp)
+                    Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text(tr("Set as delivery address", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
                 }
                 Spacer(Modifier.height(8.dp))
             }
         }
     }
     confirmDeleteAddress?.let { address ->
-        AlertDialog(onDismissRequest = { confirmDeleteAddress = null }, title = { Text("Delete address?", color = Ink, fontWeight = FontWeight.Bold) }, text = { Text("Are you sure you want to delete this saved address?", color = Muted) }, confirmButton = {
+        AlertDialog(onDismissRequest = { confirmDeleteAddress = null }, title = { Text(tr("Delete address?", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold) }, text = { Text(tr("Are you sure you want to delete this saved address?", LocalAppLanguage.current), color = Muted) }, confirmButton = {
             TextButton(onClick = {
                 val id = address["_id"]?.toString().orEmpty()
                 if (id.isNotBlank()) FirebaseFirestore.getInstance().collection("addresses").document(id).delete()
@@ -9158,7 +9448,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 22.dp)) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("Saved Addresses", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Saved Addresses", LocalAppLanguage.current), modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                 Box(
                     Modifier.size(44.dp)
                         .shadow(5.dp, RoundedCornerShape(DefaultBtn.cornerRadius))
@@ -9171,7 +9461,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 }
             }
             Spacer(Modifier.height(6.dp))
-            Text("Keep delivery locations for future orders.", color = Muted, fontSize = 14.sp)
+            Text(tr("Keep delivery locations for future orders.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
             Spacer(Modifier.height(20.dp))
             if (loading) {
                 Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) {
@@ -9187,8 +9477,8 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     Column(Modifier.fillMaxWidth().padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(Icons.Default.LocationOn, contentDescription = null, tint = Muted, modifier = Modifier.size(38.dp))
                         Spacer(Modifier.height(10.dp))
-                        Text("No saved addresses yet", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text("Your saved delivery addresses will appear here.", color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
+                        Text(tr("No saved addresses yet", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Your saved delivery addresses will appear here.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center)
                     }
                 }
             } else {
@@ -9374,7 +9664,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                         Icon(Icons.Default.LocationOn, contentDescription = null, tint = appThemedColor(Color(0xFF21852A)), modifier = Modifier.size(58.dp))
                         Spacer(Modifier.height(2.dp))
-                        Text("DELIVERY LOCATION", color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.1.sp)
+                        Text(tr("DELIVERY LOCATION", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.1.sp)
                     }
                 }
                 Spacer(Modifier.height(12.dp))
@@ -9402,7 +9692,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     Icon(Icons.Default.MyLocation, contentDescription = null, modifier = Modifier.size(21.dp))
                     Spacer(Modifier.width(10.dp))
                     Column(horizontalAlignment = Alignment.Start) {
-                        Text("Yes, deliver at my current location", fontWeight = FontWeight.ExtraBold, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(tr("Yes, deliver at my current location", LocalAppLanguage.current), fontWeight = FontWeight.ExtraBold, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         Text(currentLocationAddress, color = Muted, fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
@@ -9419,7 +9709,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = appThemedColor(Color(0xFF21852A))),
                     contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
                 ) {
-                    Text("No, at some other location", color = appThemedColor(Color(0xFF21852A)), fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("No, at some other location", LocalAppLanguage.current), color = appThemedColor(Color(0xFF21852A)), fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -9718,7 +10008,7 @@ private fun AddAddressDetailsPage(
         AlertDialog(
             onDismissRequest = { showExitConfirmation = false },
             title = {
-                Text("Are you sure?", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.ExtraBold)
+                Text(tr("Are you sure?", LocalAppLanguage.current), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.ExtraBold)
             },
             text = {
                 Text(
@@ -9767,7 +10057,7 @@ private fun AddAddressDetailsPage(
         ) {
             Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Address Details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("Address Details", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Box {
                         OutlinedButton(
                             onClick = { citySearch = ""; cityMenu = true },
@@ -9778,7 +10068,7 @@ private fun AddAddressDetailsPage(
                         ) {
                             Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink)
                             Text(city.ifBlank { "Select a city" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 15.sp)
-                            Text("Select", color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                            Text(tr("Select", LocalAppLanguage.current), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                         }
                         if (cityMenu) {
                             ModalBottomSheet(
@@ -9793,12 +10083,12 @@ private fun AddAddressDetailsPage(
                                 }
                             ) {
                                 Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f).padding(horizontal = 16.dp)) {
-                                    Text("Select a city", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
+                                    Text(tr("Select a city", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
                                     OutlinedTextField(
                                         value = citySearch,
                                         onValueChange = { citySearch = it },
                                         modifier = Modifier.fillMaxWidth(),
-                                        placeholder = { Text("Search for a city") },
+                                        placeholder = { Text(tr("Search for a city", LocalAppLanguage.current)) },
                                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
                                         singleLine = true,
                                         shape = RoundedCornerShape(12.dp),
@@ -9808,7 +10098,7 @@ private fun AddAddressDetailsPage(
                                             cursorColor = Ink
                                         )
                                     )
-                                    Text("Top cities", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 8.dp))
+                                    Text(tr("Top cities", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 8.dp))
                                     val topCities = listOf("New Delhi", "Mumbai", "Bengaluru", "Kolkata", "Hyderabad", "Ahmedabad")
                                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
                                         topCities.take(3).forEach { item ->
@@ -9851,7 +10141,7 @@ private fun AddAddressDetailsPage(
                             }
                         }
                     }
-                    if (cityError) Text("Please select a city", color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    if (cityError) Text(tr("Please select a city", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     Box {
                         OutlinedButton(
                             onClick = { areaSearch = ""; areaMenu = true },
@@ -9862,7 +10152,7 @@ private fun AddAddressDetailsPage(
                         ) {
                             Icon(Icons.Default.Place, contentDescription = null, tint = Ink)
                             Text(area.ifBlank { "Select an area, street" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 14.sp)
-                            Text("Select", color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                            Text(tr("Select", LocalAppLanguage.current), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                         }
                         if (areaMenu) {
                             val localityResults = listOf(
@@ -9897,12 +10187,12 @@ private fun AddAddressDetailsPage(
                                 }
                             ) {
                                 Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f).padding(horizontal = 16.dp)) {
-                                    Text("Select an area, street", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
+                                    Text(tr("Select an area, street", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
                                     OutlinedTextField(
                                         value = areaSearch,
                                         onValueChange = { areaSearch = it },
                                         modifier = Modifier.fillMaxWidth(),
-                                        placeholder = { Text("Search for an area, street") },
+                                        placeholder = { Text(tr("Search for an area, street", LocalAppLanguage.current)) },
                                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
                                         trailingIcon = {
                                             if (areaSearch.isNotEmpty()) IconButton(onClick = { areaSearch = "" }) {
@@ -9958,17 +10248,17 @@ private fun AddAddressDetailsPage(
                             }
                         }
                     }
-                    if (areaError) Text("Please select an area, street", color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    if (areaError) Text(tr("Please select an area, street", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     OutlinedTextField(
                         value = fullAddress, onValueChange = { fullAddress = it; addressError = false },
-                        modifier = Modifier.fillMaxWidth(), placeholder = { Text("Enter complete address*") },
+                        modifier = Modifier.fillMaxWidth(), placeholder = { Text(tr("Enter complete address*", LocalAppLanguage.current)) },
                         isError = addressError, minLines = 2, shape = RoundedCornerShape(10.dp)
                     )
-                    if (addressError) Text("Please enter complete address", color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
-                    Text("Example: Flat/house no., building, street, landmark", color = Muted, fontSize = 12.sp)
+                    if (addressError) Text(tr("Please enter complete address", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    Text(tr("Example: Flat/house no., building, street, landmark", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                     OutlinedTextField(
                         value = mapLink, onValueChange = { mapLink = it },
-                        modifier = Modifier.fillMaxWidth(), placeholder = { Text("Add Google Maps link (optional)") },
+                        modifier = Modifier.fillMaxWidth(), placeholder = { Text(tr("Add Google Maps link (optional)", LocalAppLanguage.current)) },
                         leadingIcon = { Icon(Icons.Default.Map, contentDescription = null, tint = Ink) },
                         singleLine = true, shape = RoundedCornerShape(10.dp)
                     )
@@ -9976,7 +10266,7 @@ private fun AddAddressDetailsPage(
             }
             Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Contact Details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("Contact Details", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = false
@@ -9994,7 +10284,7 @@ private fun AddAddressDetailsPage(
                                 nameError = false
                                 phoneError = false
                             }, colors = RadioButtonDefaults.colors(selectedColor = Ink))
-                            Text("Myself", color = Ink)
+                            Text(tr("Myself", LocalAppLanguage.current), color = Ink)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = true
@@ -10012,7 +10302,7 @@ private fun AddAddressDetailsPage(
                                 nameError = false
                                 phoneError = false
                             }, colors = RadioButtonDefaults.colors(selectedColor = Ink))
-                            Text("Someone else", color = Ink)
+                            Text(tr("Someone else", LocalAppLanguage.current), color = Ink)
                         }
                     }
                     OutlinedTextField(
@@ -10025,7 +10315,7 @@ private fun AddAddressDetailsPage(
                             }
                         }
                     )
-                    if (nameError) Text("Please enter receiver's name", color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    if (nameError) Text(tr("Please enter receiver's name", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     OutlinedTextField(
                         value = receiverPhone, onValueChange = { receiverPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(16); phoneError = false },
                         modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) "Receiver's phone number*" else "Your phone number*") },
@@ -10033,8 +10323,8 @@ private fun AddAddressDetailsPage(
                         leadingIcon = { Text("+91", color = Ink, fontWeight = FontWeight.SemiBold) },
                         trailingIcon = { Icon(Icons.Default.ContactPhone, contentDescription = "Phone Number", tint = Muted) }
                     )
-                    if (phoneError) Text("Please enter a valid phone number", color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
-                    Text("Save address as", color = Muted, fontSize = 15.sp)
+                    if (phoneError) Text(tr("Please enter a valid phone number", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    Text(tr("Save address as", LocalAppLanguage.current), color = Muted, fontSize = 15.sp)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         listOf("Home", "Work", "Hotel", "Other").forEach { option ->
                             val selected = label.equals(option, ignoreCase = true)
@@ -10089,7 +10379,7 @@ private fun AddAddressDetailsPage(
                 shape = RoundedCornerShape(DefaultBtn.cornerRadius)
             ) {
                 if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp)
-                else Text("Next", color = appThemedColor(DefaultBtn.content), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                else Text(tr("Next", LocalAppLanguage.current), color = appThemedColor(DefaultBtn.content), fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
             }
     }
@@ -10117,7 +10407,7 @@ private fun ReviewAddressPage(
             IconButton(onClick = onEdit, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE1E6EF)), CircleShape)) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back to address details", tint = Ink)
             }
-            Text("Review Address", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Review Address", LocalAppLanguage.current), modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
         if (initialLatitude != null && initialLongitude != null) {
             GoogleMapPicker(
@@ -10136,29 +10426,29 @@ private fun ReviewAddressPage(
                     .background(appThemedColor(Color(0xFFF1F2F4)), RoundedCornerShape(14.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Finding the nearest area on the map…", color = Muted, textAlign = TextAlign.Center)
+                Text(tr("Finding the nearest area on the map…", LocalAppLanguage.current), color = Muted, textAlign = TextAlign.Center)
             }
         }
         Row(
             Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Delivery Details", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Text(tr("Delivery Details", LocalAppLanguage.current), modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             TextButton(onClick = onEdit) { Text("Edit", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
         }
         Divider(color = appThemedColor(Color(0xFFE6E8EE)))
         Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Default.Person, contentDescription = "Receiver", tint = Ink, modifier = Modifier.size(22.dp))
-                Text("  Receiver:  $receiverName", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Text(tr("  Receiver:  $receiverName", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Default.Phone, contentDescription = "Mobile number", tint = Ink, modifier = Modifier.size(22.dp))
-                Text("  Mobile:  $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Text(tr("  Mobile:  $receiverPhone", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Default.Home, contentDescription = "Complete address", tint = Ink, modifier = Modifier.size(22.dp))
-                Text("  Complete address:  $fullAddress", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Text(tr("  Complete address:  $fullAddress", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
         }
         val hasCompleteAddress = fullAddress.isNotBlank() &&
@@ -10177,7 +10467,7 @@ private fun ReviewAddressPage(
             border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Text("Save Address", color = if (hasCompleteAddress) Ink else appThemedColor(Color(0xFF777777)), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Save Address", LocalAppLanguage.current), color = if (hasCompleteAddress) Ink else appThemedColor(Color(0xFF777777)), fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -10308,7 +10598,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         onValueChange = {},
                         readOnly = true,
                         modifier = Modifier.width(140.dp).clickable { countryMenuExpanded = true },
-                        label = { Text("Country", maxLines = 1, softWrap = false) },
+                        label = { Text(tr("Country", LocalAppLanguage.current), maxLines = 1, softWrap = false) },
                         trailingIcon = { Icon(Icons.Default.ArrowDropDown, contentDescription = "Select country", tint = Ink, modifier = Modifier.size(18.dp)) },
                         singleLine = true
                     )
@@ -10347,8 +10637,8 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     readOnly = true,
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Ink, focusedLabelColor = Ink),
-                    label = { Text("Date of birth") },
-                    placeholder = { Text("Select date of birth") },
+                    label = { Text(tr("Date of birth", LocalAppLanguage.current)) },
+                    placeholder = { Text(tr("Select date of birth", LocalAppLanguage.current)) },
                     leadingIcon = { Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Ink) },
                     trailingIcon = { Icon(Icons.Default.CalendarToday, contentDescription = "Choose date", tint = Ink) }
                 )
@@ -10371,7 +10661,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 showDateOfBirthPicker = false
                             },
                             colors = ButtonDefaults.textButtonColors(contentColor = Ink)
-                        ) { Text("Select") }
+                        ) { Text(tr("Select", LocalAppLanguage.current)) }
                     },
                     dismissButton = {
                         TextButton(
@@ -10490,7 +10780,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
             ) {
                 if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp) else Icon(Icons.Default.Save, null, tint = appThemedColor(DefaultBtn.content))
                 Spacer(Modifier.width(8.dp))
-                Text(if (isLoading) "Loading profile…" else if (isSaving) "Saving…" else "Save profile", fontWeight = FontWeight.Bold)
+                Text(if (isLoading) tr("Loading profile…", LocalAppLanguage.current) else if (isSaving) tr("Saving…", LocalAppLanguage.current) else tr("Save profile", LocalAppLanguage.current), fontWeight = FontWeight.Bold)
             }
             }
         }
