@@ -4731,7 +4731,7 @@ private fun ShopScreen(
 private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () -> Unit) {
     val context = LocalContext.current
     val isEnglish = appLanguage == "English"
-    val facebookUrl = "https://www.facebook.com/share/1bdVs2DWgy/"
+    val facebookUrl = "https://www.facebook.com/share/1FsyJYWAjd/"
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF7F7F7)))) {
         Row(
             Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 8.dp, vertical = 12.dp),
@@ -4772,7 +4772,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
                         Text("Facebook", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text(if (isEnglish) "Visit our Facebook page" else "మా Facebook పేజీని సందర్శించండి", color = Muted, fontSize = 13.sp)
+                        Text(if (isEnglish) "Follow us on Facebook" else "Facebookలో మమ్మల్ని అనుసరించండి", color = Muted, fontSize = 13.sp)
                     }
                     Icon(Icons.Default.OpenInNew, contentDescription = if (isEnglish) "Open Facebook" else "Facebook తెరవండి", tint = Ink)
                 }
