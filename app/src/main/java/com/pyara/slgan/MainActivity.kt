@@ -2371,7 +2371,6 @@ private fun AdminProductsScreen(
                 Text("Products Catalogue", color = AdminInk, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                 Text("Manage, add and organize your products", color = AdminMuted, fontSize = 11.sp)
             }
-            IconButton(onClick = { addingProduct = true }) { Icon(Icons.Default.AddCircle, "Add product", tint = AdminInk, modifier = Modifier.size(27.dp)) }
         }
         Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
