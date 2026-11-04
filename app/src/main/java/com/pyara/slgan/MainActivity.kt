@@ -9142,7 +9142,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             }
             products.filter { product ->
                 product.isActive && !product.isHidden && product.cures.isNotBlank() &&
-                    product.cures.split(",", ";", "|", "\\n")
+                    product.cures.split(",", ";", "|", "\n")
                         .map(::normalizeDisease)
                         .filter { it.isNotBlank() }
                         .any { cure -> diseaseAliases.any { alias -> cure == alias || Regex("(^| )" + Regex.escape(alias) + "( |$)").containsMatchIn(cure) } }
