@@ -966,6 +966,53 @@ private fun tr(text: String, language: String): String {
         "Expand $title" to "$title విస్తరించండి",
         "Address details unavailable" to "చిరునామా వివరాలు అందుబాటులో లేవు",
         "Name not provided" to "పేరు ఇవ్వలేదు",
+        "View Products" to "ఉత్పత్తులను చూడండి",
+        "Name not provided" to "పేరు ఇవ్వలేదు",
+        "Complete address not available" to "పూర్తి చిరునామా అందుబాటులో లేదు",
+        "Delivery address" to "డెలివరీ చిరునామా",
+        "Other cities" to "ఇతర నగరాలు",
+        "Search Results" to "శోధన ఫలితాలు",
+        "Edit address details" to "చిరునామా వివరాలను సవరించండి",
+        "Add address details" to "చిరునామా వివరాలను జోడించండి",
+        "Receiver's name*" to "స్వీకర్త పేరు*",
+        "Your name*" to "మీ పేరు*",
+        "Receiver's phone number*" to "స్వీకర్త ఫోన్ నంబర్*",
+        "Your phone number*" to "మీ ఫోన్ నంబర్*",
+        "Any changes on this screen may be lost if you continue" to "కొనసాగితే ఈ స్క్రీన్‌లో చేసిన మార్పులు కోల్పోవచ్చు",
+        "Yes" to "అవును",
+        "No" to "కాదు",
+        " items" to " వస్తువులు",
+        " products" to " ఉత్పత్తులు",
+        "orders" to "ఆర్డర్లు",
+        "Orders" to "ఆర్డర్లు",
+        "All" to "అన్నీ",
+        "Pending" to "పెండింగ్‌లో ఉంది",
+        "Accepted" to "ఆమోదించబడింది",
+        "Rejected" to "తిరస్కరించబడింది",
+        "Customer" to "కస్టమర్",
+        "No phone" to "ఫోన్ నంబర్ లేదు",
+        "ORDER ITEMS (" to "ఆర్డర్ వస్తువులు (",
+        "Qty: " to "పరిమాణం: ",
+        " each" to " ఒక్కొక్కటి",
+        " more items" to " మరిన్ని వస్తువులు",
+        "Total amount" to "మొత్తం మొత్తం",
+        "Hide details" to "వివరాలను దాచండి",
+        "View details" to "వివరాలు చూడండి",
+        "Order ID: " to "ఆర్డర్ ID: ",
+        "Email: " to "ఇమెయిల్: ",
+        "Order time: " to "ఆర్డర్ సమయం: ",
+        "Could not load diseases" to "వ్యాధులను లోడ్ చేయలేకపోయాం",
+        "Check that the latest Firestore rules are published." to "తాజా Firestore నియమాలు ప్రచురించబడ్డాయో లేదో తనిఖీ చేయండి.",
+        "Search diseases" to "వ్యాధులను వెతకండి",
+        "Disease name or description" to "వ్యాధి పేరు లేదా వివరణ",
+        "Email not provided" to "ఇమెయిల్ ఇవ్వలేదు",
+        "Enabled" to "ప్రారంభించబడింది",
+        "Disabled" to "నిలిపివేయబడింది",
+        "First name" to "మొదటి పేరు",
+        "Last name" to "ఇంటి పేరు",
+        "Nickname" to "ముద్దుపేరు",
+        "Gender" to "లింగం",
+        "Close" to "మూసివేయండి",
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -1610,6 +1657,53 @@ private fun tr(text: String, language: String): String {
         "Expand $title" to "$title विस्तृत करें",
         "Address details unavailable" to "पते का विवरण उपलब्ध नहीं है",
         "Name not provided" to "नाम नहीं दिया गया",
+        "View Products" to "उत्पाद देखें",
+        "Name not provided" to "नाम नहीं दिया गया",
+        "Complete address not available" to "पूरा पता उपलब्ध नहीं है",
+        "Delivery address" to "डिलीवरी पता",
+        "Other cities" to "अन्य शहर",
+        "Search Results" to "खोज परिणाम",
+        "Edit address details" to "पते का विवरण संपादित करें",
+        "Add address details" to "पते का विवरण जोड़ें",
+        "Receiver's name*" to "प्राप्तकर्ता का नाम*",
+        "Your name*" to "आपका नाम*",
+        "Receiver's phone number*" to "प्राप्तकर्ता का फ़ोन नंबर*",
+        "Your phone number*" to "आपका फ़ोन नंबर*",
+        "Any changes on this screen may be lost if you continue" to "जारी रखने पर इस स्क्रीन के बदलाव खो सकते हैं",
+        "Yes" to "हाँ",
+        "No" to "नहीं",
+        " items" to " आइटम",
+        " products" to " उत्पाद",
+        "orders" to "ऑर्डर",
+        "Orders" to "ऑर्डर",
+        "All" to "सभी",
+        "Pending" to "लंबित",
+        "Accepted" to "स्वीकृत",
+        "Rejected" to "अस्वीकृत",
+        "Customer" to "ग्राहक",
+        "No phone" to "फ़ोन नंबर नहीं",
+        "ORDER ITEMS (" to "ऑर्डर आइटम (",
+        "Qty: " to "मात्रा: ",
+        " each" to " प्रत्येक",
+        " more items" to " और आइटम",
+        "Total amount" to "कुल राशि",
+        "Hide details" to "विवरण छिपाएँ",
+        "View details" to "विवरण देखें",
+        "Order ID: " to "ऑर्डर ID: ",
+        "Email: " to "ईमेल: ",
+        "Order time: " to "ऑर्डर समय: ",
+        "Could not load diseases" to "रोग लोड नहीं हो सके",
+        "Check that the latest Firestore rules are published." to "जाँचें कि नवीनतम Firestore नियम प्रकाशित हैं।",
+        "Search diseases" to "रोग खोजें",
+        "Disease name or description" to "रोग का नाम या विवरण",
+        "Email not provided" to "ईमेल नहीं दिया गया",
+        "Enabled" to "सक्रिय",
+        "Disabled" to "निष्क्रिय",
+        "First name" to "पहला नाम",
+        "Last name" to "उपनाम",
+        "Nickname" to "उपनाम",
+        "Gender" to "लिंग",
+        "Close" to "बंद करें",
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -5004,8 +5098,8 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp).height(60.dp),
                 singleLine = true,
                 textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-                label = { Text("Search diseases", modifier = Modifier.background(Color.Transparent), color = AdminInk, fontSize = 12.sp, maxLines = 1) },
-                placeholder = { Text("Disease name or description", fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = AdminMuted) },
+                label = { Text(tr("Search diseases", LocalAppLanguage.current), modifier = Modifier.background(Color.Transparent), color = AdminInk, fontSize = 12.sp, maxLines = 1) },
+                placeholder = { Text(tr("Disease name or description", LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 18.sp, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis, color = AdminMuted) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = AdminInk) },
                 trailingIcon = {
                     if (search.isNotEmpty()) IconButton(onClick = { search = "" }) {
@@ -5348,9 +5442,9 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             title = { Text(tr("Edit Customer", LocalAppLanguage.current), color = AdminInk, fontWeight = FontWeight.Bold) },
             text = {
                 Column(Modifier.heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(firstName, { firstName = it }, label = { Text("First name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-                    OutlinedTextField(lastName, { lastName = it }, label = { Text("Last name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
-                    OutlinedTextField(nickname, { nickname = it }, label = { Text("Nickname") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(firstName, { firstName = it }, label = { Text(tr("First name", LocalAppLanguage.current)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(lastName, { lastName = it }, label = { Text(tr("Last name", LocalAppLanguage.current)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(nickname, { nickname = it }, label = { Text(tr("Nickname", LocalAppLanguage.current)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                     OutlinedTextField(email, { email = it }, label = { Text(tr("Email", LocalAppLanguage.current)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                         Box(Modifier.weight(0.42f)) {
@@ -5387,7 +5481,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                         )
                     }
-                    OutlinedTextField(gender, { gender = it }, label = { Text("Gender") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                    OutlinedTextField(gender, { gender = it }, label = { Text(tr("Gender", LocalAppLanguage.current)) }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 }
             },
             confirmButton = {
@@ -10747,7 +10841,7 @@ private fun AddAddressDetailsPage(
             IconButton(onClick = { showExitConfirmation = true }, modifier = Modifier.size(40.dp).border(1.dp, appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(10.dp))) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
-            Text(if (editAddress != null) "Edit address details" else "Add address details", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(if (editAddress != null) tr("Edit address details", LocalAppLanguage.current) else tr("Add address details", LocalAppLanguage.current), modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
         Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 10.dp),
@@ -10824,7 +10918,7 @@ private fun AddAddressDetailsPage(
                                             }
                                         }
                                     }
-                                    Text(if (citySearch.isBlank()) "Other cities" else "Search Results", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
+                                    Text(if (citySearch.isBlank()) tr("Other cities", LocalAppLanguage.current) else tr("Search Results", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
                                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)) {
                                         items(cities.filter { it.contains(citySearch.trim(), ignoreCase = true) }) { item ->
                                             Surface(
@@ -11005,7 +11099,7 @@ private fun AddAddressDetailsPage(
                     }
                     OutlinedTextField(
                         value = receiverName, onValueChange = { receiverName = it; nameError = false },
-                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) "Receiver's name*" else "Your name*") },
+                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) tr("Receiver's name*", LocalAppLanguage.current) else tr("Your name*", LocalAppLanguage.current)) },
                         isError = nameError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         trailingIcon = {
                             if (receiverName.isNotEmpty()) IconButton(onClick = { receiverName = ""; nameError = false }) {
@@ -11016,7 +11110,7 @@ private fun AddAddressDetailsPage(
                     if (nameError) Text(tr("Please enter receiver's name", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     OutlinedTextField(
                         value = receiverPhone, onValueChange = { receiverPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(16); phoneError = false },
-                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) "Receiver's phone number*" else "Your phone number*") },
+                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) tr("Receiver's phone number*", LocalAppLanguage.current) else tr("Your phone number*", LocalAppLanguage.current)) },
                         isError = phoneError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         leadingIcon = { Text("+91", color = Ink, fontWeight = FontWeight.SemiBold) },
                         trailingIcon = { Icon(Icons.Default.ContactPhone, contentDescription = "Phone Number", tint = Muted) }
