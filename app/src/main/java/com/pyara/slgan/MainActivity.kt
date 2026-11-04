@@ -5837,7 +5837,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                                 },
                                 fontSize = 9.sp
                             )
-                            Text(product.category, color = appThemedColor(Color.Black), fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            Text(tr(product.category, LocalAppLanguage.current), color = appThemedColor(Color.Black), fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                     }
                 }
