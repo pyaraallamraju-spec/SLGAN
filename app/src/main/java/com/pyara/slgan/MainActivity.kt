@@ -7551,42 +7551,74 @@ private fun ProductDetailsPage(
                     shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
                     dragHandle = { Box(Modifier.padding(top = 10.dp, bottom = 8.dp).size(width = 38.dp, height = 4.dp).background(appThemedColor(Color(0xFFD7D9DE)), CircleShape)) }
                 ) {
-                    Column(Modifier.fillMaxWidth().navigationBarsPadding().imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp).padding(top = 6.dp, bottom = 20.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Column(Modifier.fillMaxWidth().navigationBarsPadding().imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp).padding(top = 8.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
+                            Surface(Modifier.size(46.dp), shape = CircleShape, color = appThemedColor(Color(0xFFE7F3E7))) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    Icon(Icons.Default.Star, contentDescription = null, tint = appThemedColor(Color(0xFF26743A)), modifier = Modifier.size(25.dp))
+                                }
+                            }
+                            Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(tr("Write A Review", LocalAppLanguage.current), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                                Spacer(Modifier.height(2.dp))
-                                Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                                Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
                             }
-                            IconButton(onClick = { if (!ratingSaving) showReviewDialog = false }) { Icon(Icons.Default.Close, contentDescription = tr("Close review", LocalAppLanguage.current), tint = Muted) }
+                            IconButton(onClick = { if (!ratingSaving) showReviewDialog = false }, modifier = Modifier.size(40.dp).background(appThemedColor(Color(0xFFF0F2F0)), CircleShape)) {
+                                Icon(Icons.Default.Close, contentDescription = tr("Close review", LocalAppLanguage.current), tint = Muted)
+                            }
                         }
-                        OutlinedTextField(value = ratingReview, onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Your review (optional)", LocalAppLanguage.current)) }, placeholder = { Text(tr("Share your experience with this product", LocalAppLanguage.current)) }, minLines = 4, maxLines = 6, shape = RoundedCornerShape(16.dp))
-                        ratingMessage?.let { Text(it, color = if (it.startsWith("Saved")) Forest else appThemedColor(Color(0xFFB3261E)), fontSize = 12.sp) }
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
-                            TextButton(onClick = { if (!ratingSaving) showReviewDialog = false }, enabled = !ratingSaving) { Text(tr("Cancel", LocalAppLanguage.current), color = Muted) }
-                            Spacer(Modifier.width(8.dp))
-                            Button(onClick = {
-                                val user = ratingUser
-                                if (user == null) ratingMessage = "Please sign in to submit a review."
-                                else if (ratingReview.trim().isBlank()) ratingMessage = "Please enter your review before saving."
-                                else {
-                                    ratingSaving = true
-                                    val db = FirebaseFirestore.getInstance()
-                                    val ratingRef = db.collection("productRatings").document(product.id.replace("/", "_") + "_" + user.uid)
-                                    ratingRef.get().addOnSuccessListener { existing ->
-                                        val payload = hashMapOf<String, Any>(
-                                            "productId" to product.id, "productName" to product.name, "userId" to user.uid,
-                                            "userName" to (user.displayName?.takeIf { it.isNotBlank() } ?: user.email.orEmpty().substringBefore("@")),
-                                            "rating" to (existing.getLong("rating")?.toInt() ?: 0), "review" to ratingReview.trim(),
-                                            "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp())
-                                        if (!existing.exists()) payload["createdAt"] = com.google.firebase.firestore.FieldValue.serverTimestamp()
-                                        ratingRef.set(payload, com.google.firebase.firestore.SetOptions.merge())
-                                            .addOnSuccessListener { ratingSaving = false; ratingMessage = "Saved! Thank you for your review."; showReviewDialog = false; Toast.makeText(context, "Review saved successfully", Toast.LENGTH_SHORT).show() }
-                                            .addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
-                                    }.addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
+                        Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(appThemedColor(Color(0xFFF1F8F1))).padding(horizontal = 12.dp, vertical = 10.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                                (1..5).forEach { star ->
+                                    IconButton(onClick = { selectedRating = star; ratingMessage = null }, enabled = !ratingSaving, modifier = Modifier.size(48.dp)) {
+                                        Icon(if (star <= selectedRating) Icons.Default.Star else Icons.Default.StarBorder, contentDescription = tr("$star stars", LocalAppLanguage.current), tint = if (star <= selectedRating) appThemedColor(Color(0xFFE2A928)) else appThemedColor(Color(0xFF8B948D)), modifier = Modifier.size(34.dp))
+                                    }
                                 }
-                            }, enabled = !ratingSaving, modifier = Modifier.height(44.dp), contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp), shape = RoundedCornerShape(12.dp), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE1E5EC)), contentColor = Ink)) {
-                                if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Ink, strokeWidth = 2.dp) else Text(tr("Save", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                            }
+                            Text(if (selectedRating > 0) tr("$selectedRating out of 5", LocalAppLanguage.current) else tr("Tap to rate", LocalAppLanguage.current), color = appThemedColor(Color(0xFF365C40)), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                        }
+                        OutlinedTextField(
+                            value = ratingReview,
+                            onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null },
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text(tr("Your review (optional)", LocalAppLanguage.current)) },
+                            placeholder = { Text(tr("Share your experience with this product", LocalAppLanguage.current)) },
+                            minLines = 4, maxLines = 6, shape = RoundedCornerShape(18.dp),
+                            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = appThemedColor(Color(0xFF2E7D32)), unfocusedBorderColor = appThemedColor(Color(0xFF9AA99C)), focusedLabelColor = appThemedColor(Color(0xFF26743A)), cursorColor = appThemedColor(Color(0xFF26743A)))
+                        )
+                        Text(ratingReview.length.toString() + "/1000", modifier = Modifier.fillMaxWidth().padding(end = 4.dp), textAlign = TextAlign.End, color = Muted, fontSize = 11.sp)
+                        ratingMessage?.let { Text(it, color = if (it.startsWith("Saved")) Forest else appThemedColor(Color(0xFFB3261E)), fontSize = 12.sp) }
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            OutlinedButton(onClick = { if (!ratingSaving) showReviewDialog = false }, enabled = !ratingSaving, modifier = Modifier.weight(1f).height(50.dp), shape = RoundedCornerShape(15.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFF2E7D32))), colors = ButtonDefaults.outlinedButtonColors(contentColor = appThemedColor(Color(0xFF205C2D)))) {
+                                Text(tr("Cancel", LocalAppLanguage.current), fontWeight = FontWeight.SemiBold)
+                            }
+                            Button(
+                                onClick = {
+                                    val user = ratingUser
+                                    if (user == null) ratingMessage = "Please sign in to submit a review."
+                                    else if (selectedRating !in 1..5) ratingMessage = "Please select a star rating."
+                                    else {
+                                        ratingSaving = true
+                                        val db = FirebaseFirestore.getInstance()
+                                        val ratingRef = db.collection("productRatings").document(product.id.replace("/", "_") + "_" + user.uid)
+                                        ratingRef.get().addOnSuccessListener { existing ->
+                                            val payload = hashMapOf<String, Any>(
+                                                "productId" to product.id, "productName" to product.name, "userId" to user.uid,
+                                                "userName" to (user.displayName?.takeIf { it.isNotBlank() } ?: user.email.orEmpty().substringBefore("@")),
+                                                "rating" to selectedRating, "review" to ratingReview.trim(),
+                                                "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp())
+                                            if (!existing.exists()) payload["createdAt"] = com.google.firebase.firestore.FieldValue.serverTimestamp()
+                                            ratingRef.set(payload, com.google.firebase.firestore.SetOptions.merge())
+                                                .addOnSuccessListener { ratingSaving = false; ratingMessage = "Saved! Thank you for your review."; showReviewDialog = false; Toast.makeText(context, "Review saved successfully", Toast.LENGTH_SHORT).show() }
+                                                .addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
+                                        }.addOnFailureListener { error -> ratingSaving = false; ratingMessage = error.localizedMessage ?: "Could not save rating. Please try again." }
+                                    }
+                                },
+                                enabled = !ratingSaving, modifier = Modifier.weight(1f).height(50.dp), contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+                                shape = RoundedCornerShape(15.dp), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFF26743A)), contentColor = Color.White)
+                            ) {
+                                if (ratingSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                                else Text(tr("Save", LocalAppLanguage.current), color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                             }
                         }
                     }
