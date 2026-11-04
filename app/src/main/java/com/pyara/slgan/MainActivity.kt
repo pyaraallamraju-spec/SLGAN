@@ -9157,11 +9157,11 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         }.orEmpty()
                     if (selectedDisease == "All Diseases" && diseasePrecautions.isBlank()) {
                         diseasePrecautions = listOf(
-                            "Do not self-diagnose or start medicines based only on general information.",
-                            "Consult a qualified healthcare professional for diagnosis and a treatment plan suited to the specific condition.",
-                            "Use medicines only as prescribed; do not stop prescribed treatment without medical advice.",
-                            "Maintain appropriate hygiene, balanced nutrition, safe physical activity, and recommended vaccinations where applicable.",
-                            "Seek urgent medical care for severe symptoms such as breathing difficulty, chest pain, confusion, severe dehydration, or sudden worsening."
+                            tr("Do not self-diagnose or start medicines based only on general information.", LocalAppLanguage.current),
+                            tr("Consult a qualified healthcare professional for diagnosis and a treatment plan suited to the specific condition.", LocalAppLanguage.current),
+                            tr("Use medicines only as prescribed; do not stop prescribed treatment without medical advice.", LocalAppLanguage.current),
+                            tr("Maintain appropriate hygiene, balanced nutrition, safe physical activity, and recommended vaccinations where applicable.", LocalAppLanguage.current),
+                            tr("Seek urgent medical care for severe symptoms such as breathing difficulty, chest pain, confusion, severe dehydration, or sudden worsening.", LocalAppLanguage.current)
                         ).joinToString("\n")
                     }
                     suggestedMedicineNames = listOf("suggested_medicines", "suggestedMedicines", "recommended_medicines", "medicines")
