@@ -950,6 +950,22 @@ private fun tr(text: String, language: String): String {
         "Could not verify saved addresses. Please try again." to "సేవ్ చేసిన చిరునామాలను ధృవీకరించలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
         "Address deleted" to "చిరునామా తొలగించబడింది",
         "Address saved successfully" to "చిరునామా విజయవంతంగా సేవ్ అయింది",
+        "Profile picture updated." to "ప్రొఫైల్ చిత్రం నవీకరించబడింది.",
+        "Could not process image. Please choose another." to "చిత్రాన్ని ప్రాసెస్ చేయలేకపోయాం. దయచేసి మరొకదాన్ని ఎంచుకోండి.",
+        "Please sign in again to save your language." to "మీ భాషను సేవ్ చేయడానికి మళ్లీ సైన్ ఇన్ చేయండి.",
+        "Language preference saved." to "భాష ప్రాధాన్యత సేవ్ అయింది.",
+        "Couldn't save language. Please try again." to "భాషను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
+        "This app can sign out this device only. Signing out all devices requires secure server support." to "ఈ యాప్‌లో ఈ పరికరం నుంచి మాత్రమే సైన్ అవుట్ చేయవచ్చు. అన్ని పరికరాల నుంచి సైన్ అవుట్ చేయడానికి సురక్షిత సర్వర్ మద్దతు అవసరం.",
+        "Do you want this order at your current location?" to "ఈ ఆర్డర్‌ను మీ ప్రస్తుత స్థానానికి డెలివరీ చేయాలా?",
+        "Selected" to "ఎంచుకున్నారు",
+        "Not selected" to "ఎంచుకోలేదు",
+        "Sign out from current device" to "ప్రస్తుత పరికరం నుంచి సైన్ అవుట్ చేయండి",
+        "All devices" to "అన్ని పరికరాలు",
+        "AI can make mistakes. For medical advice or dosage, consult a qualified clinician." to "AI సమాధానాల్లో తప్పులు ఉండవచ్చు. వైద్య సలహా లేదా మోతాదు కోసం అర్హత కలిగిన వైద్యుడిని సంప్రదించండి.",
+        "Collapse $title" to "$title మూసివేయండి",
+        "Expand $title" to "$title విస్తరించండి",
+        "Address details unavailable" to "చిరునామా వివరాలు అందుబాటులో లేవు",
+        "Name not provided" to "పేరు ఇవ్వలేదు",
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -1578,6 +1594,22 @@ private fun tr(text: String, language: String): String {
         "Could not verify saved addresses. Please try again." to "सहेजे गए पतों की पुष्टि नहीं हो सकी। फिर प्रयास करें।",
         "Address deleted" to "पता हटा दिया गया",
         "Address saved successfully" to "पता सफलतापूर्वक सहेजा गया",
+        "Profile picture updated." to "प्रोफ़ाइल चित्र अपडेट किया गया।",
+        "Could not process image. Please choose another." to "चित्र संसाधित नहीं हो सका। कृपया दूसरा चुनें।",
+        "Please sign in again to save your language." to "अपनी भाषा सहेजने के लिए फिर से साइन इन करें।",
+        "Language preference saved." to "भाषा प्राथमिकता सहेजी गई।",
+        "Couldn't save language. Please try again." to "भाषा सहेजी नहीं जा सकी। फिर प्रयास करें।",
+        "This app can sign out this device only. Signing out all devices requires secure server support." to "यह ऐप केवल इस डिवाइस से साइन आउट कर सकता है। सभी डिवाइस से साइन आउट करने के लिए सुरक्षित सर्वर सहायता आवश्यक है।",
+        "Do you want this order at your current location?" to "क्या आप यह ऑर्डर अपने वर्तमान स्थान पर चाहते हैं?",
+        "Selected" to "चयनित",
+        "Not selected" to "चयनित नहीं",
+        "Sign out from current device" to "वर्तमान डिवाइस से साइन आउट करें",
+        "All devices" to "सभी डिवाइस",
+        "AI can make mistakes. For medical advice or dosage, consult a qualified clinician." to "AI से गलतियाँ हो सकती हैं। चिकित्सा सलाह या खुराक के लिए योग्य चिकित्सक से परामर्श करें।",
+        "Collapse $title" to "$title बंद करें",
+        "Expand $title" to "$title विस्तृत करें",
+        "Address details unavailable" to "पते का विवरण उपलब्ध नहीं है",
+        "Name not provided" to "नाम नहीं दिया गया",
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -7864,7 +7896,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     Text(label, color = Ink, fontWeight = FontWeight.Bold)
                                     Text(listOf("name", "fullName", "receiverName", "recipientName", "customerName").firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty().ifBlank { FirebaseAuth.getInstance().currentUser?.displayName?.trim().orEmpty() }.ifBlank { "Name not provided" }, color = Ink, fontSize = 14.sp)
-                                    Text(addressText.ifBlank { "Address details unavailable" }, color = Muted, fontSize = 13.sp)
+                                    Text(addressText.ifBlank { tr("Address details unavailable", LocalAppLanguage.current) }, color = Muted, fontSize = 13.sp)
                                     address["phone"]?.toString()?.takeIf { it.isNotBlank() }?.let { Text(it, color = Muted, fontSize = 13.sp) }
                                     if (address["isDefault"] == true || address["default"] == true) Text(tr("Default address", LocalAppLanguage.current), color = Forest, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                                 }
@@ -9079,7 +9111,7 @@ private fun DiseaseAccordion(
             Icon(icon, contentDescription = null, tint = Forest, modifier = Modifier.size(21.dp))
             Spacer(Modifier.width(10.dp))
             Text(title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp, modifier = Modifier.weight(1f))
-            Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = if (expanded) "Collapse $title" else "Expand $title", tint = Ink)
+            Icon(if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = if (expanded) tr("Collapse $title", LocalAppLanguage.current) else tr("Expand $title", LocalAppLanguage.current), tint = Ink)
         }
         if (expanded) Column(Modifier.fillMaxWidth().padding(start = 14.dp, end = 14.dp, bottom = 14.dp)) { content() }
     }
@@ -9615,9 +9647,9 @@ private fun AccountsPage(
                                 Text(option, color = Color(0xFF707780), fontSize = 12.sp)
                             }
                             if (isSelected) {
-                                Icon(Icons.Default.CheckCircle, contentDescription = "Selected", tint = Color(0xFF25282D), modifier = Modifier.size(24.dp))
+                                Icon(Icons.Default.CheckCircle, contentDescription = tr("Selected", LocalAppLanguage.current), tint = Color(0xFF25282D), modifier = Modifier.size(24.dp))
                             } else {
-                                Icon(Icons.Default.Circle, contentDescription = "Not selected", tint = Color(0xFFB5B5B5), modifier = Modifier.size(22.dp))
+                                Icon(Icons.Default.Circle, contentDescription = tr("Not selected", LocalAppLanguage.current), tint = Color(0xFFB5B5B5), modifier = Modifier.size(22.dp))
                             }
                         }
                     }
@@ -9705,7 +9737,7 @@ private fun AccountsPage(
                             Text(tr("Current Device", LocalAppLanguage.current), color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
                             Text(tr("Sign out from this phone", LocalAppLanguage.current), color = Color(0xFF707780), fontSize = 12.sp)
                         }
-                        Icon(Icons.Default.ChevronRight, contentDescription = "Sign out from current device", tint = Color(0xFF25282D))
+                        Icon(Icons.Default.ChevronRight, contentDescription = tr("Sign out from current device", LocalAppLanguage.current), tint = Color(0xFF25282D))
                     }
                 }
                 Card(
@@ -9730,7 +9762,7 @@ private fun AccountsPage(
                             Text(tr("All Devices", LocalAppLanguage.current), color = Color(0xFF25282D), fontSize = 17.sp, fontWeight = FontWeight.Bold)
                             Text(tr("Requires secure server support", LocalAppLanguage.current), color = Color(0xFF707780), fontSize = 12.sp)
                         }
-                        Icon(Icons.Default.ChevronRight, contentDescription = "All devices", tint = Color(0xFF25282D))
+                        Icon(Icons.Default.ChevronRight, contentDescription = tr("All devices", LocalAppLanguage.current), tint = Color(0xFF25282D))
                     }
                 }
                 Spacer(Modifier.height(8.dp))
