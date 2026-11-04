@@ -8155,9 +8155,29 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     } else savedAddresses.forEach { address ->
                         val addressId = address["_id"]?.toString().orEmpty()
                         val label = address["label"]?.toString().orEmpty().ifBlank { "Delivery address" }
-                        val addressText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
-                            .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ")
-                            .ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
+                        val completeAddress = listOf("completeAddress", "complete_address", "formattedAddress", "formatted_address", "fullAddress", "full_address")
+                            .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+                        val addressKeys = listOf(
+                            "address", "addressText", "addressLine1", "addressLine2", "houseNo", "houseNumber",
+                            "building", "apartment", "street", "streetName", "road", "landmark", "area", "locality",
+                            "village", "town", "city", "district", "state", "pincode", "postalCode", "zipCode", "country"
+                        )
+                        val addressParts = addressKeys.mapNotNull { key ->
+                            address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() }
+                        }.distinctBy { it.lowercase(Locale.ROOT) }
+                        val addressText = (listOf(completeAddress).filter { it.isNotBlank() } + addressParts)
+                            .distinctBy { it.lowercase(Locale.ROOT) }
+                            .fold(mutableListOf<String>()) { result, part ->
+                                if (result.none { it.contains(part, ignoreCase = true) || part.contains(it, ignoreCase = true) }) result.add(part)
+                                result
+                            }.joinToString(", ")
+                        val addressName = listOf("name", "fullName", "receiverName", "recipientName", "customerName")
+                            .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
+                            .orEmpty().ifBlank { FirebaseAuth.getInstance().currentUser?.displayName?.trim().orEmpty() }
+                            .ifBlank { "Name not provided" }
+                        val addressPhone = listOf("phone", "mobile", "receiverPhone", "mobileNumber", "phoneNumber")
+                            .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
+                            .orEmpty().ifBlank { FirebaseAuth.getInstance().currentUser?.phoneNumber.orEmpty() }
                         val isSelected = selectedDeliveryAddressId == addressId
                         Card(Modifier.fillMaxWidth().clickable { selectedDeliveryAddressId = addressId }, shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, if (isSelected) appThemedColor(Color(0xFFB5B5B5)) else appThemedColor(Color(0xFFE2E5EA))), colors = CardDefaults.cardColors(containerColor = if (isSelected) appThemedColor(Color(0xFFF4F8F2)) else Color.White)) {
                             Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.Top) {
@@ -8165,9 +8185,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Spacer(Modifier.width(10.dp))
                                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     Text(label, color = Ink, fontWeight = FontWeight.Bold)
-                                    Text(listOf("name", "fullName", "receiverName", "recipientName", "customerName").firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty().ifBlank { FirebaseAuth.getInstance().currentUser?.displayName?.trim().orEmpty() }.ifBlank { "Name not provided" }, color = Ink, fontSize = 14.sp)
-                                    Text(addressText.ifBlank { tr("Address details unavailable", LocalAppLanguage.current) }, color = Muted, fontSize = 13.sp)
-                                    address["phone"]?.toString()?.takeIf { it.isNotBlank() }?.let { Text(it, color = Muted, fontSize = 13.sp) }
+                                    Text(addressName, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                                    if (addressPhone.isNotBlank()) Text(addressPhone, color = Muted, fontSize = 13.sp)
+                                    Text(addressText.ifBlank { tr("Address details unavailable", LocalAppLanguage.current) }, color = Muted, fontSize = 13.sp, lineHeight = 18.sp)
                                     if (address["isDefault"] == true || address["default"] == true) Text(tr("Default address", LocalAppLanguage.current), color = Forest, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                                 }
                             }
