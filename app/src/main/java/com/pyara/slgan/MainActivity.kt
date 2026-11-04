@@ -2446,8 +2446,7 @@ private fun AdminProductsScreen(
             Row(Modifier.fillMaxWidth().padding(horizontal = 9.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text("Product", Modifier.weight(2.5f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 Text("Price", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                Text("Stock", Modifier.weight(0.7f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                Text("Active", Modifier.weight(0.85f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                Text("Stock", Modifier.weight(0.85f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                 Text("Show/Hide", Modifier.weight(1f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                 Text("Actions", Modifier.weight(0.9f), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
             }
@@ -2474,21 +2473,21 @@ private fun AdminProductsScreen(
                             }
                             Text(if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "—",
                                 Modifier.weight(1f), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1)
-                            Box(Modifier.weight(0.7f), contentAlignment = Alignment.CenterStart) {
-                                Surface(shape = RoundedCornerShape(6.dp), color = if (product.productStock == 1) AdminLightGray else AdminInk) {
-                                    Text(if (product.productStock == 1) "In" else "Out", Modifier.padding(horizontal = 6.dp, vertical = 4.dp), color = if (product.productStock == 1) AdminInk else Color.White, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                                }
-                            }
                             Box(Modifier.weight(0.85f), contentAlignment = Alignment.Center) {
                                 Switch(
-                                    checked = product.isActive,
-                                    onCheckedChange = { active ->
+                                    checked = product.productStock == 1,
+                                    onCheckedChange = { inStock ->
                                         FirebaseFirestore.getInstance().collection("products").document(product.id)
-                                            .update("product_active", active)
-                                            .addOnSuccessListener { Toast.makeText(context, if (active) "Product activated" else "Product deactivated", Toast.LENGTH_SHORT).show() }
-                                            .addOnFailureListener { error -> Toast.makeText(context, error.localizedMessage ?: "Could not update product status", Toast.LENGTH_LONG).show() }
+                                            .update("product_stock", if (inStock) 1 else 0)
+                                            .addOnSuccessListener { Toast.makeText(context, if (inStock) "Product in stock" else "Product out of stock", Toast.LENGTH_SHORT).show() }
+                                            .addOnFailureListener { error -> Toast.makeText(context, error.localizedMessage ?: "Could not update product stock", Toast.LENGTH_LONG).show() }
                                     },
-                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AdminInk, uncheckedThumbColor = Color.White, uncheckedTrackColor = AdminMuted),
+                                    colors = SwitchDefaults.colors(
+                                        checkedThumbColor = Color.White,
+                                        checkedTrackColor = Color(0xFF2E7D32),
+                                        uncheckedThumbColor = Color.White,
+                                        uncheckedTrackColor = Color(0xFFC62828)
+                                    ),
                                     modifier = Modifier.height(30.dp)
                                 )
                             }
