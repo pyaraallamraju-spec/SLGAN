@@ -4139,8 +4139,8 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                                     enabled = !isUpdating,
                                     colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AdminInk, checkedBorderColor = AdminInk, uncheckedTrackColor = AdminLightGray, uncheckedBorderColor = Color(0xFFB5B5B5))
                                 )
-                                IconButton(onClick = { viewingCustomer = customer }, modifier = Modifier.size(36.dp)) { Icon(Icons.Default.Visibility, "View customer details", tint = AdminInk, modifier = Modifier.size(19.dp)) }
-                                IconButton(onClick = { editingCustomer = customer }, modifier = Modifier.size(36.dp)) { Icon(Icons.Default.Edit, "Edit customer details", tint = AdminInk, modifier = Modifier.size(19.dp)) }
+                                IconButton(onClick = { viewingCustomer = customer }, modifier = Modifier.size(36.dp)) { Icon(Icons.Default.Visibility, "View customer details", tint = Color(0xFFB5B5B5), modifier = Modifier.size(19.dp)) }
+                                IconButton(onClick = { editingCustomer = customer }, modifier = Modifier.size(36.dp)) { Icon(Icons.Default.Edit, "Edit customer details", tint = Color(0xFFB5B5B5), modifier = Modifier.size(19.dp)) }
                             }
                         }
                     }
