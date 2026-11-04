@@ -6542,7 +6542,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 }
                                 Spacer(Modifier.width(12.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(product.name, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                                    Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 3, overflow = TextOverflow.Ellipsis)
                                     Spacer(Modifier.height(4.dp))
                                     Text(product.subtitle.ifBlank { product.quantity }, color = Muted, fontSize = 13.sp)
                                     Spacer(Modifier.height(8.dp))
@@ -6577,7 +6577,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF5F6FA))), contentScale = ContentScale.Crop)
                                         else Box(Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 35.sp) }
                                         Spacer(Modifier.height(7.dp))
-                                        Text(product.name, color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+                                        Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
                                         Text(money(product.price), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
                                         Spacer(Modifier.height(5.dp))
                                         Surface(
@@ -7638,7 +7638,7 @@ private fun OrdersPage(
                                 }
                                 Spacer(Modifier.width(14.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                                    Text(localizedProductName(product?.name ?: name, LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
                                     val packSize = product?.subtitle?.takeIf { it.isNotBlank() }
                                     Text("${packSize ?: tr("Item", LocalAppLanguage.current)} × $quantity", color = Muted, fontSize = 14.sp)
                                 }
