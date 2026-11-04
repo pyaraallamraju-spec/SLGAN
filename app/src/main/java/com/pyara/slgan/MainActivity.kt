@@ -6185,19 +6185,13 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
             Text(tr("Account Privacy And Policy", appLanguage), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(12.dp))
             Text(
-                if (isEnglish)
-                    "Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN) respects your privacy. We use account information such as your name, contact details, wishlist, and order information to provide app features and support your purchases. We do not ask you to share your password or one-time verification codes with anyone."
-                else
-                    "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం (SLGAN) మీ గోప్యతను గౌరవిస్తుంది. యాప్ సేవలు, ఆర్డర్ల కోసం మీ పేరు, సంప్రదింపు వివరాలు, డెలివరీ చిరునామాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సమాచారాన్ని ఉపయోగించవచ్చు. మీ పాస్‌వర్డ్ లేదా OTPలను ఎవరితోనూ పంచుకోవద్దు.",
+                tr("Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN) respects your privacy. We use account information such as your name, contact details, wishlist, and order information to provide app features and support your purchases. We do not ask you to share your password or one-time verification codes with anyone.", appLanguage),
                 color = appThemedColor(Color(0xFF667085)), fontSize = 16.sp, lineHeight = 23.sp
             )
             if (expanded) {
                 Spacer(Modifier.height(14.dp))
                 Text(
-                    if (isEnglish)
-                        "Your information is used to operate account, address, wishlist, and order features. Access to information should be limited to what is needed to provide these services. Please keep your sign-in credentials private and contact SLGAN support if you have questions or believe your account has been accessed without permission. Do not submit sensitive financial information in chat or support messages."
-                    else
-                        "మీ సమాచారాన్ని ఖాతా, చిరునామా, విష్‌లిస్ట్ మరియు ఆర్డర్ సేవలను అందించడానికి ఉపయోగిస్తాము. అవసరమైన సేవలకు మాత్రమే సమాచార ప్రాప్యత పరిమితం చేయాలి. మీ లాగిన్ వివరాలను రహస్యంగా ఉంచండి. మీ ఖాతా గురించి సందేహాలు ఉన్నా లేదా అనధికార ప్రాప్యత అనిపించినా SLGAN సపోర్ట్‌ను సంప్రదించండి. చాట్ లేదా సపోర్ట్ సందేశాల్లో సున్నితమైన ఆర్థిక సమాచారాన్ని పంపవద్దు.",
+                    tr("Your information is used to operate account, address, wishlist, and order features. Access to information should be limited to what is needed to provide these services. Please keep your sign-in credentials private and contact SLGAN support if you have questions or believe your account has been accessed without permission. Do not submit sensitive financial information in chat or support messages.", appLanguage),
                     color = appThemedColor(Color(0xFF667085)), fontSize = 16.sp, lineHeight = 23.sp
                 )
             }
@@ -6300,10 +6294,7 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                     )
                     Spacer(Modifier.height(10.dp))
                     Text(
-                        if (appLanguage == "English")
-                            "Sri Lakshmi Ganapathi Ayurveda Nilayam was established in 1900 by Sri Vidya Raju Allamraju Perraju Garu at Uppada Kothapalli."
-                        else
-                            "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం 1900లో శ్రీ విద్యా రాజు అల్లంరాజు పేర్రాజు గారిచే ఉప్పాడ కొత్తపల్లిలో స్థాపించబడింది.",
+                        tr("Sri Lakshmi Ganapathi Ayurveda Nilayam was established in 1900 by Sri Vidya Raju Allamraju Perraju Garu at Uppada Kothapalli.", appLanguage),
                         color = appThemedColor(Color(0xFF514638)),
                         fontSize = 15.sp,
                         lineHeight = 23.sp
