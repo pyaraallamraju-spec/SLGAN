@@ -2500,7 +2500,7 @@ private fun AdminProductsScreen(
                                             .addOnSuccessListener { Toast.makeText(context, if (visible) "Product shown" else "Product hidden", Toast.LENGTH_SHORT).show() }
                                             .addOnFailureListener { error -> Toast.makeText(context, error.localizedMessage ?: "Could not update product visibility", Toast.LENGTH_LONG).show() }
                                     },
-                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AdminInk, uncheckedThumbColor = Color.White, uncheckedTrackColor = AdminMuted),
+                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Color(0xFF2E7D32), uncheckedThumbColor = Color.White, uncheckedTrackColor = Color(0xFFC62828)),
                                     modifier = Modifier.height(30.dp)
                                 )
                             }
@@ -2934,10 +2934,11 @@ private fun AdminProductEditor(
                         onCheckedChange = { productStock = if (it) 1 else 0 },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = Color.White,
-                            checkedTrackColor = AdminInk,
-                            checkedBorderColor = AdminInk,
+                            checkedTrackColor = Color(0xFF2E7D32),
+                            checkedBorderColor = Color(0xFF2E7D32),
                             uncheckedThumbColor = Color.White,
-                            uncheckedTrackColor = AdminInk
+                            uncheckedTrackColor = Color(0xFFC62828),
+                            uncheckedBorderColor = Color(0xFFC62828)
                         )
                     )
                 }
@@ -2979,9 +2980,9 @@ private fun AdminProductEditor(
                     onCheckedChange = { signature = it; message = null },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
-                        checkedTrackColor = AdminInk,
+                        checkedTrackColor = Color(0xFF2E7D32),
                         uncheckedThumbColor = Color.White,
-                        uncheckedTrackColor = AdminInk
+                        uncheckedTrackColor = Color(0xFFC62828)
                     )
                 )
             }
@@ -3531,11 +3532,11 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                     },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
-                        checkedTrackColor = AdminInk,
-                        checkedBorderColor = AdminInk,
-                        uncheckedThumbColor = AdminInk,
-                        uncheckedTrackColor = AdminLightGray,
-                        uncheckedBorderColor = Color(0xFFB5B5B5)
+                        checkedTrackColor = Color(0xFF2E7D32),
+                        checkedBorderColor = Color(0xFF2E7D32),
+                        uncheckedThumbColor = Color.White,
+                        uncheckedTrackColor = Color(0xFFC62828),
+                        uncheckedBorderColor = Color(0xFFC62828)
                     )
                 )
             }
@@ -4136,7 +4137,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                                         }
                                     },
                                     enabled = !isUpdating,
-                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = AdminInk, checkedBorderColor = AdminInk, uncheckedTrackColor = AdminLightGray, uncheckedBorderColor = Color(0xFFB5B5B5))
+                                    colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Color(0xFF2E7D32), checkedBorderColor = Color(0xFF2E7D32), uncheckedThumbColor = Color.White, uncheckedTrackColor = Color(0xFFC62828), uncheckedBorderColor = Color(0xFFC62828))
                                 )
                                 IconButton(onClick = { viewingCustomer = customer }, modifier = Modifier.size(36.dp)) { Icon(Icons.Default.Visibility, "View customer details", tint = Color(0xFFB5B5B5), modifier = Modifier.size(19.dp)) }
                                 IconButton(onClick = { editingCustomer = customer }, modifier = Modifier.size(36.dp)) { Icon(Icons.Default.Edit, "Edit customer details", tint = Color(0xFFB5B5B5), modifier = Modifier.size(19.dp)) }
