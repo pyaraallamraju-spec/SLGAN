@@ -7895,8 +7895,21 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                         }
                     }
                     }
-                    Spacer(Modifier.height(14.dp))
-                    Text(tr("Use medicines only with guidance from a qualified healthcare professional.", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, lineHeight = 16.sp)
+                    Spacer(Modifier.height(12.dp))
+                    Card(
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 28.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = CardDefaults.cardColors(containerColor = appThemedColor(Color(0xFFEAF2E9))),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                    ) {
+                        Text(
+                            tr("Use medicines only with guidance from a qualified healthcare professional.", LocalAppLanguage.current),
+                            color = Muted,
+                            fontSize = 12.sp,
+                            lineHeight = 18.sp,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp)
+                        )
+                    }
                 }
             }
             }
