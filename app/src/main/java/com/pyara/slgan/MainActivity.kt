@@ -9125,10 +9125,29 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
 
     val relatedMedicines = remember(selectedDisease, products) {
         val chosen = selectedDisease?.takeIf { it != "All Diseases" }
-        if (chosen == null) emptyList() else products.filter { product ->
-            product.cures.split(",", ";", "|", "\n").any { it.trim().equals(chosen, ignoreCase = true) } ||
-                product.cures.contains(chosen, ignoreCase = true)
-        }.distinctBy { it.name.trim().lowercase(Locale.ROOT) }
+        if (chosen == null) emptyList() else {
+            fun normalizeDisease(value: String): String =
+                value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]+"), " ").trim().replace(Regex("\\s+"), " ")
+            val chosenKey = normalizeDisease(chosen)
+            val diseaseAliases = buildSet {
+                add(chosenKey)
+                if (chosenKey.contains("tuberculosis") || chosenKey == "tb") {
+                    add("tuberculosis")
+                    add("tb")
+                }
+                if (chosenKey.contains("influenza") || chosenKey == "flu") {
+                    add("influenza")
+                    add("flu")
+                }
+            }
+            products.filter { product ->
+                product.isActive && !product.isHidden && product.cures.isNotBlank() &&
+                    product.cures.split(",", ";", "|", "\\n")
+                        .map(::normalizeDisease)
+                        .filter { it.isNotBlank() }
+                        .any { cure -> diseaseAliases.any { alias -> cure == alias || Regex("(^| )" + Regex.escape(alias) + "( |$)").containsMatchIn(cure) } }
+            }.distinctBy { it.id.ifBlank { it.name.trim().lowercase(Locale.ROOT) } }
+        }
     }
 
     LaunchedEffect(selectedDisease) {
@@ -9438,9 +9457,11 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                     }
                                     val isAllDiseases = selectedDisease == "All Diseases"
                                     val displayedSuggestions = when {
-                                        suggestedMedicineNames.isNotEmpty() -> suggestedMedicineNames
                                         isAllDiseases -> products.filter { it.isActive && !it.isHidden }.map { it.name }.distinct()
-                                        else -> relatedMedicines.map { it.name }
+                                        else -> (suggestedMedicineNames + relatedMedicines.map { it.name })
+                                            .map { it.trim() }
+                                            .filter { it.isNotBlank() }
+                                            .distinctBy { it.lowercase(Locale.ROOT) }
                                     }
                                     if (isAllDiseases) {
                                         Text(
