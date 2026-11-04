@@ -7584,7 +7584,7 @@ private fun ProductDetailsPage(
                             value = ratingReview,
                             onValueChange = { if (it.length <= 1000) ratingReview = it; ratingMessage = null },
                             modifier = Modifier.fillMaxWidth(),
-                            label = { Text(tr("Your review (optional)", LocalAppLanguage.current)) },
+                            label = { Text(tr("Your review", LocalAppLanguage.current) + " *") },
                             placeholder = { Text(tr("Share your experience with this product", LocalAppLanguage.current)) },
                             minLines = 4, maxLines = 6, shape = RoundedCornerShape(18.dp),
                             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = appThemedColor(Color(0xFF2E7D32)), unfocusedBorderColor = appThemedColor(Color(0xFF9AA99C)), focusedLabelColor = appThemedColor(Color(0xFF26743A)), cursorColor = appThemedColor(Color(0xFF26743A)))
@@ -7600,6 +7600,7 @@ private fun ProductDetailsPage(
                                     val user = ratingUser
                                     if (user == null) ratingMessage = "Please sign in to submit a review."
                                     else if (selectedRating !in 1..5) ratingMessage = "Please select a star rating."
+                                    else if (ratingReview.isBlank()) ratingMessage = "Please enter your review."
                                     else {
                                         ratingSaving = true
                                         val db = FirebaseFirestore.getInstance()
