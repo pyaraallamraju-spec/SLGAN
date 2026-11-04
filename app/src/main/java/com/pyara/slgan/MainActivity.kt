@@ -6721,7 +6721,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Column(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(0.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink)
-                            Text(tr("Deliver to: ${address[", LocalAppLanguage.current)label"]?.toString().orEmpty().ifBlank { "Saved address" }}", color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            Text(tr("Deliver to:", LocalAppLanguage.current) + " " + (address["label"]?.toString().orEmpty().ifBlank { tr("Saved address", LocalAppLanguage.current) }), color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                             TextButton(onClick = {
                                  val user = FirebaseAuth.getInstance().currentUser
                                  if (user == null) {
@@ -7250,7 +7250,7 @@ private fun OrdersPage(
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(tr("Current Orders", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
-                Text(tr("Placed today · ${today.format(java.time.format.DateTimeFormatter.ofPattern(", LocalAppLanguage.current)dd MMM yyyy"))}", color = Muted, fontSize = 12.sp)
+                Text(tr("Placed today", LocalAppLanguage.current) + " · " + today.format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy")), color = Muted, fontSize = 12.sp)
             }
             Box(
                 Modifier.shadow(4.dp, RoundedCornerShape(50.dp))
