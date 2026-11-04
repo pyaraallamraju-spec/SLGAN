@@ -8226,7 +8226,7 @@ private fun AccountsPage(
     Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(rememberScrollState())) {
         Column(
             Modifier.fillMaxWidth().background(appThemedColor(Color(0xFFF3F5FA)))
-                .padding(start = 20.dp, end = 20.dp, top = 22.dp, bottom = 24.dp),
+                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(Modifier.size(78.dp), contentAlignment = Alignment.BottomEnd) {
@@ -8254,7 +8254,7 @@ private fun AccountsPage(
                     }
                 }
             }
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(8.dp))
             if (nickname.isNotBlank()) {
                 Text(nickname, color = Ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, textAlign = TextAlign.Center)
             }
