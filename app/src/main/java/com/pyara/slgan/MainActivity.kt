@@ -7676,8 +7676,22 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 val addresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
                 savedAddresses = addresses
                 if (confirmedDeliveryAddress == null) {
-                    val preferred = addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
+                    val homeAddress = addresses.firstOrNull { it["label"]?.toString()?.equals("Home", ignoreCase = true) == true }
+                    val preferred = homeAddress
+                        ?: addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
                         ?: addresses.firstOrNull()
+                    if (homeAddress != null && (homeAddress["isDefault"] != true || homeAddress["default"] != true)) {
+                        val batch = FirebaseFirestore.getInstance().batch()
+                        addresses.forEach { item ->
+                            val id = item["_id"]?.toString().orEmpty()
+                            if (id.isNotBlank()) {
+                                val makeDefault = id == homeAddress["_id"]?.toString()
+                                batch.update(FirebaseFirestore.getInstance().collection("addresses").document(id),
+                                    "isDefault", makeDefault, "default", makeDefault)
+                            }
+                        }
+                        batch.commit()
+                    }
                     if (preferred != null) {
                         confirmedDeliveryAddress = preferred
                         selectedDeliveryAddressId = preferred["_id"]?.toString()
@@ -10342,7 +10356,8 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                         Toast.makeText(context, error.localizedMessage ?: "Could not load saved addresses", Toast.LENGTH_LONG).show()
                     } else if (snapshot != null) {
                         addresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
-                        val preferred = addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
+                        val preferred = addresses.firstOrNull { it["label"]?.toString()?.equals("Home", ignoreCase = true) == true }
+                            ?: addresses.firstOrNull { it["isDefault"] == true || it["default"] == true }
                             ?: addresses.firstOrNull()
                         selectedAddressId = preferred?.get("_id")?.toString()
                         loading = false
