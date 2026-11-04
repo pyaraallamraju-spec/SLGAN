@@ -9124,7 +9124,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         diseaseImageUrl = ""
         diseasePrecautions = ""
         suggestedMedicineNames = emptyList()
-        if (selectedDisease != null && selectedDisease != "All Diseases") {
+        if (selectedDisease != null) {
             detailLoading = true
             FirebaseFirestore.getInstance().collection("diseases")
                 .whereEqualTo("diseases_name", selectedDisease).limit(1).get()
@@ -9143,6 +9143,15 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 else -> null
                             }
                         }.orEmpty()
+                    if (selectedDisease == "All Diseases" && diseasePrecautions.isBlank()) {
+                        diseasePrecautions = listOf(
+                            "Do not self-diagnose or start medicines based only on general information.",
+                            "Consult a qualified healthcare professional for diagnosis and a treatment plan suited to the specific condition.",
+                            "Use medicines only as prescribed; do not stop prescribed treatment without medical advice.",
+                            "Maintain appropriate hygiene, balanced nutrition, safe physical activity, and recommended vaccinations where applicable.",
+                            "Seek urgent medical care for severe symptoms such as breathing difficulty, chest pain, confusion, severe dehydration, or sudden worsening."
+                        ).joinToString("\n")
+                    }
                     suggestedMedicineNames = listOf("suggested_medicines", "suggestedMedicines", "recommended_medicines", "medicines")
                         .firstNotNullOfOrNull { key ->
                             val value = data?.get(key)
@@ -9415,7 +9424,18 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                         Spacer(Modifier.width(10.dp))
                                         Text(tr("Suggested Medicines", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
-                                    val displayedSuggestions = if (suggestedMedicineNames.isNotEmpty()) suggestedMedicineNames else relatedMedicines.map { it.name }
+                                    val isAllDiseases = selectedDisease == "All Diseases"
+                                    val displayedSuggestions = when {
+                                        suggestedMedicineNames.isNotEmpty() -> suggestedMedicineNames
+                                        isAllDiseases -> products.filter { it.isActive && !it.isHidden }.map { it.name }.distinct()
+                                        else -> relatedMedicines.map { it.name }
+                                    }
+                                    if (isAllDiseases) {
+                                        Text(
+                                            tr("SLGAN catalogue products are shown for reference only. There is no single medicine suitable for all diseases. Choose treatment only after a qualified healthcare professional identifies the condition.", LocalAppLanguage.current),
+                                            color = Muted, fontSize = 12.sp, lineHeight = 18.sp
+                                        )
+                                    }
                                     if (detailLoading) CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.dp, color = Forest)
                                     else if (displayedSuggestions.isEmpty()) Text(tr("Information not available.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                                     else displayedSuggestions.forEach { medicine ->
