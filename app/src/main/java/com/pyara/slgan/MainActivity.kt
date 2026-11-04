@@ -7965,8 +7965,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Image(
                         painter = painterResource(id = R.drawable.delivery_address_bg),
                         contentDescription = null,
-                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight().fillMaxWidth(0.56f),
-                        contentScale = ContentScale.FillBounds
+                        modifier = Modifier.align(Alignment.BottomEnd).padding(end = 8.dp, bottom = 4.dp).width(170.dp).height(85.dp),
+                        contentScale = ContentScale.Fit,
+                        alpha = 0.72f
                     )
                     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
