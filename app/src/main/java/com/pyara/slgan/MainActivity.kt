@@ -472,7 +472,7 @@ private fun tr(text: String, language: String): String {
         "Chat with us" to "మాతో చాట్ చేయండి",
         "Repeat Order" to "మళ్లీ ఆర్డర్ చేయండి",
         "VIEW CART ON NEXT STEP" to "తదుపరి దశలో కార్ట్ చూడండి",
-        "Back to Order History" to "ఆర్డర్ చరిత్రకు తిరిగి వెళ్లండి"
+        "Back to Order History" to "ఆర్డర్ చరిత్రకు తిరిగి వెళ్లండి",
         "Confirm password" to "పాస్‌వర్డ్‌ను నిర్ధారించండి",
         "Create account" to "ఖాతా సృష్టించండి",
         "Already have an account? Sign in" to "ఇప్పటికే ఖాతా ఉందా? సైన్ ఇన్ చేయండి",
@@ -1224,7 +1224,7 @@ private fun tr(text: String, language: String): String {
         "Chat with us" to "हमसे चैट करें",
         "Repeat Order" to "फिर से ऑर्डर करें",
         "VIEW CART ON NEXT STEP" to "अगले चरण में कार्ट देखें",
-        "Back to Order History" to "ऑर्डर इतिहास पर वापस जाएँ"
+        "Back to Order History" to "ऑर्डर इतिहास पर वापस जाएँ",
         "Confirm password" to "पासवर्ड की पुष्टि करें",
         "Create account" to "खाता बनाएँ",
         "Already have an account? Sign in" to "पहले से खाता है? साइन इन करें",
