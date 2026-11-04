@@ -924,6 +924,32 @@ private fun tr(text: String, language: String): String {
         "Saved! Thank you for your review." to "సేవ్ అయింది! మీ సమీక్షకు ధన్యవాదాలు.",
         "Review saved successfully" to "సమీక్ష విజయవంతంగా సేవ్ అయింది",
         "Could not save rating. Please try again." to "రేటింగ్‌ను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
+        "Help & Support · Telugu + English" to "సహాయం మరియు మద్దతు · తెలుగు + English",
+        "Quick answers for products, orders and delivery. AI replies become available when the secure support service is configured." to "ఉత్పత్తులు, ఆర్డర్లు మరియు డెలివరీ గురించి త్వరిత సమాధానాలు. సురక్షిత మద్దతు సేవ ఏర్పాటు చేసిన తర్వాత AI సమాధానాలు అందుబాటులో ఉంటాయి.",
+        "Thinking…" to "సమాధానం సిద్ధం చేస్తోంది…",
+        "Type in Telugu or English…" to "తెలుగు లేదా English‌లో టైప్ చేయండి…",
+        "AI can make mistakes. For medical advice or dosage, consult a qualified clinician." to "AI సమాధానాల్లో తప్పులు ఉండవచ్చు. వైద్య సలహా లేదా మోతాదు కోసం అర్హత కలిగిన వైద్యుడిని సంప్రదించండి.",
+        "SLGAN support assistant" to "SLGAN సహాయక సేవ",
+        "Send message" to "సందేశం పంపండి",
+        "Account profile picture" to "ఖాతా ప్రొఫైల్ చిత్రం",
+        "Account profile" to "ఖాతా ప్రొఫైల్",
+        "Edit profile picture" to "ప్రొఫైల్ చిత్రాన్ని సవరించండి",
+        "Could not load saved addresses" to "సేవ్ చేసిన చిరునామాలను లోడ్ చేయలేకపోయాం",
+        "Default delivery address updated" to "డిఫాల్ట్ డెలివరీ చిరునామా నవీకరించబడింది",
+        "Could not update default address" to "డిఫాల్ట్ చిరునామాను నవీకరించలేకపోయాం",
+        "Add address" to "చిరునామా జోడించండి",
+        "Selected address" to "ఎంచుకున్న చిరునామా",
+        "Select address" to "చిరునామాను ఎంచుకోండి",
+        "Address Options" to "చిరునామా ఎంపికలు",
+        "Share address" to "చిరునామాను షేర్ చేయండి",
+        "Couldn't detect your location. Please enter the address manually." to "మీ స్థానాన్ని గుర్తించలేకపోయాం. దయచేసి చిరునామాను మాన్యువల్‌గా నమోదు చేయండి.",
+        "Address not found. Try entering a nearby area and city to place the pin." to "చిరునామా కనబడలేదు. పిన్‌ను ఉంచడానికి సమీప ప్రాంతం మరియు నగరాన్ని నమోదు చేయండి.",
+        "Please wait for the map or enter a nearby area and city to select your delivery pin." to "మ్యాప్ కోసం వేచి ఉండండి లేదా డెలివరీ పిన్ ఎంచుకోవడానికి సమీప ప్రాంతం మరియు నగరాన్ని నమోదు చేయండి.",
+        "Please sign in to save an address." to "చిరునామాను సేవ్ చేయడానికి సైన్ ఇన్ చేయండి.",
+        "Could not save address. Please try again." to "చిరునామాను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
+        "Could not verify saved addresses. Please try again." to "సేవ్ చేసిన చిరునామాలను ధృవీకరించలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
+        "Address deleted" to "చిరునామా తొలగించబడింది",
+        "Address saved successfully" to "చిరునామా విజయవంతంగా సేవ్ అయింది",
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -1526,6 +1552,32 @@ private fun tr(text: String, language: String): String {
         "Saved! Thank you for your review." to "सहेजा गया! आपकी समीक्षा के लिए धन्यवाद।",
         "Review saved successfully" to "समीक्षा सफलतापूर्वक सहेजी गई",
         "Could not save rating. Please try again." to "रेटिंग सहेजी नहीं जा सकी। फिर कोशिश करें।",
+        "Help & Support · Telugu + English" to "सहायता और समर्थन · तेलुगु + English",
+        "Quick answers for products, orders and delivery. AI replies become available when the secure support service is configured." to "उत्पादों, ऑर्डर और डिलीवरी के लिए त्वरित उत्तर। सुरक्षित सहायता सेवा कॉन्फ़िगर होने पर AI उत्तर उपलब्ध होंगे।",
+        "Thinking…" to "उत्तर तैयार किया जा रहा है…",
+        "Type in Telugu or English…" to "तेलुगु या English में लिखें…",
+        "AI can make mistakes. For medical advice or dosage, consult a qualified clinician." to "AI से गलतियाँ हो सकती हैं। चिकित्सा सलाह या खुराक के लिए योग्य चिकित्सक से परामर्श करें।",
+        "SLGAN support assistant" to "SLGAN सहायता सहायक",
+        "Send message" to "संदेश भेजें",
+        "Account profile picture" to "खाता प्रोफ़ाइल चित्र",
+        "Account profile" to "खाता प्रोफ़ाइल",
+        "Edit profile picture" to "प्रोफ़ाइल चित्र संपादित करें",
+        "Could not load saved addresses" to "सहेजे गए पते लोड नहीं हो सके",
+        "Default delivery address updated" to "डिफ़ॉल्ट डिलीवरी पता अपडेट किया गया",
+        "Could not update default address" to "डिफ़ॉल्ट पता अपडेट नहीं हो सका",
+        "Add address" to "पता जोड़ें",
+        "Selected address" to "चयनित पता",
+        "Select address" to "पता चुनें",
+        "Address Options" to "पता विकल्प",
+        "Share address" to "पता साझा करें",
+        "Couldn't detect your location. Please enter the address manually." to "आपका स्थान नहीं मिल सका। कृपया पता स्वयं दर्ज करें।",
+        "Address not found. Try entering a nearby area and city to place the pin." to "पता नहीं मिला। पिन लगाने के लिए पास का क्षेत्र और शहर दर्ज करें।",
+        "Please wait for the map or enter a nearby area and city to select your delivery pin." to "मानचित्र की प्रतीक्षा करें या डिलीवरी पिन चुनने के लिए पास का क्षेत्र और शहर दर्ज करें।",
+        "Please sign in to save an address." to "पता सहेजने के लिए साइन इन करें।",
+        "Could not save address. Please try again." to "पता सहेजा नहीं जा सका। फिर प्रयास करें।",
+        "Could not verify saved addresses. Please try again." to "सहेजे गए पतों की पुष्टि नहीं हो सकी। फिर प्रयास करें।",
+        "Address deleted" to "पता हटा दिया गया",
+        "Address saved successfully" to "पता सफलतापूर्वक सहेजा गया",
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -9386,9 +9438,9 @@ private fun AccountsPage(
                     contentAlignment = Alignment.Center
                 ) {
                     if (profileBitmap != null) {
-                        Image(bitmap = profileBitmap!!, contentDescription = "Account profile picture", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+                        Image(bitmap = profileBitmap!!, contentDescription = tr("Account profile picture", LocalAppLanguage.current), modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
                     } else {
-                        Icon(Icons.Default.Person, contentDescription = "Account profile", tint = Muted, modifier = Modifier.size(44.dp))
+                        Icon(Icons.Default.Person, contentDescription = tr("Account profile", LocalAppLanguage.current), tint = Muted, modifier = Modifier.size(44.dp))
                     }
                 }
                 Surface(
@@ -9400,7 +9452,7 @@ private fun AccountsPage(
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         if (profilePicSaving) CircularProgressIndicator(modifier = Modifier.size(13.dp), color = Color.White, strokeWidth = 2.dp)
-                        else Icon(Icons.Default.Edit, contentDescription = "Edit profile picture", tint = Ink, modifier = Modifier.size(13.dp))
+                        else Icon(Icons.Default.Edit, contentDescription = tr("Edit profile picture", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(13.dp))
                     }
                 }
             }
@@ -9742,9 +9794,9 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Forest) }
             Column(Modifier.weight(1f)) {
                 Text(tr("SLGAN Assistant", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
-                Text(if (appLanguage == "English") "Help & Support · Telugu + English" else "సహాయం · తెలుగు + English", color = Muted, fontSize = 12.sp)
+                Text(tr("Help & Support · Telugu + English", appLanguage), color = Muted, fontSize = 12.sp)
             }
-            Surface(shape = RoundedCornerShape(14.dp), color = appThemedColor(Color(0xFFF1F1F1)), modifier = Modifier.size(44.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFE5E8EF)))) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.SupportAgent, contentDescription = "SLGAN support assistant", tint = Ink, modifier = Modifier.size(27.dp)) } }
+            Surface(shape = RoundedCornerShape(14.dp), color = appThemedColor(Color(0xFFF1F1F1)), modifier = Modifier.size(44.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFE5E8EF)))) { Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.SupportAgent, contentDescription = tr("SLGAN support assistant", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(27.dp)) } }
         }
         Card(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
@@ -9753,9 +9805,9 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(Modifier.padding(14.dp)) {
-                Text(if (appLanguage == "English") "How Can We Help?" else "మీకు ఎలా సహాయం చేయగలం?", color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(tr("How Can We Help?", appLanguage), color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Spacer(Modifier.height(4.dp))
-                Text(if (appLanguage == "English") "Quick answers for products, orders and delivery. AI replies become available when the secure support service is configured." else "Products, orders, delivery కోసం త్వరిత సమాధానాలు. Secure AI service configure చేసిన తర్వాత AI సమాధానాలు కూడా అందుబాటులో ఉంటాయి.", color = Muted, fontSize = 12.sp, lineHeight = 17.sp)
+                Text(tr("Quick answers for products, orders and delivery. AI replies become available when the secure support service is configured.", appLanguage), color = Muted, fontSize = 12.sp, lineHeight = 17.sp)
             }
         }
         Spacer(Modifier.height(12.dp))
@@ -9778,7 +9830,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
             if (sending) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     CircularProgressIndicator(Modifier.size(16.dp), color = Forest, strokeWidth = 2.dp)
-                    Text(if (appLanguage == "English") "Thinking…" else "సమాధానం సిద్ధం చేస్తోంది…", color = Muted, fontSize = 12.sp)
+                    Text(tr("Thinking…", appLanguage), color = Muted, fontSize = 12.sp)
                 }
             }
         }
@@ -9812,7 +9864,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                     value = input,
                     onValueChange = { input = it.take(1000) },
                     modifier = Modifier.weight(1f),
-                    placeholder = { Text(if (appLanguage == "English") "Type in Telugu or English…" else "తెలుగు లేదా English‌లో టైప్ చేయండి…", fontSize = 13.sp) },
+                    placeholder = { Text(tr("Type in Telugu or English…", appLanguage), fontSize = 13.sp) },
                     shape = RoundedCornerShape(16.dp),
                     maxLines = 4,
                     enabled = !sending
@@ -9879,7 +9931,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
                         }
                     }
                 ) {
-                    Icon(Icons.Default.Send, contentDescription = "Send message", tint = if (input.isNotBlank() && !sending) Forest else Muted)
+                    Icon(Icons.Default.Send, contentDescription = tr("Send message", LocalAppLanguage.current), tint = if (input.isNotBlank() && !sending) Forest else Muted)
                 }
             }
             Spacer(Modifier.height(3.dp))
@@ -10071,7 +10123,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                         .clickable { showAddAddressSheet = true },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add address", tint = appThemedColor(DefaultBtn.content), modifier = Modifier.size(28.dp))
+                    Icon(Icons.Default.Add, contentDescription = tr("Add address", LocalAppLanguage.current), tint = appThemedColor(DefaultBtn.content), modifier = Modifier.size(28.dp))
                 }
             }
             Spacer(Modifier.height(6.dp))
@@ -10209,7 +10261,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     ) {
                                         Icon(
                                             Icons.Default.MoreHoriz,
-                                            contentDescription = "Address Options",
+                                            contentDescription = tr("Address Options", LocalAppLanguage.current),
                                             tint = Ink,
                                             modifier = Modifier.padding(7.dp).size(18.dp)
                                         )
@@ -10230,7 +10282,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     ) {
                                         Icon(
                                             Icons.Default.Share,
-                                            contentDescription = "Share address",
+                                            contentDescription = tr("Share address", LocalAppLanguage.current),
                                             tint = Ink,
                                             modifier = Modifier.padding(7.dp).size(18.dp)
                                         )
