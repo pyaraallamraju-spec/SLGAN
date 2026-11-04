@@ -402,7 +402,76 @@ private fun tr(text: String, language: String): String {
         "Search products" to "ఉత్పత్తులను వెతకండి", "Shop By Category" to "వర్గాల వారీగా కొనండి", "Could not load products: ${'$' }productsError" to "ఉత్పత్తులను లోడ్ చేయలేకపోయాం: ${'$' }productsError",
         "Made with care for your everyday rituals." to "మీ రోజువారీ అవసరాల కోసం శ్రద్ధగా తయారు చేయబడింది.", "Your cart" to "మీ కార్ట్", "Subtotal" to "మొత్తం", "Checkout" to "చెక్‌అవుట్", "Demo only: checkout and payments are not connected." to "ఇది డెమో మాత్రమే: చెక్‌అవుట్ మరియు చెల్లింపులు ఇంకా కనెక్ట్ కాలేదు.", "Find the collection for your routine." to "మీ అవసరానికి తగిన ఉత్పత్తుల సమాహారాన్ని కనుగొనండి.",
         "Language preference saved." to "భాష ప్రాధాన్యత సేవ్ అయింది.", "Couldn't save language. Please try again." to "భాషను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
-        "English" to "English", "Telugu" to "తెలుగు", "Hindi" to "హిందీ"
+        "English" to "English", "Telugu" to "తెలుగు", "Hindi" to "హిందీ",
+        "Clear your cart?" to "మీ కార్ట్‌ను ఖాళీ చేయాలా?",
+        "Clear cart" to "కార్ట్ ఖాళీ చేయండి",
+        "Checkout" to "చెక్‌అవుట్",
+        "Your Cart Is Empty" to "మీ కార్ట్ ఖాళీగా ఉంది",
+        "Explore our Ayurvedic products and add your favourites." to "మా ఆయుర్వేద ఉత్పత్తులను చూసి మీకు నచ్చినవి జోడించండి.",
+        "Your Ayurvedic Order" to "మీ ఆయుర్వేద ఆర్డర్",
+        "Save for later" to "తర్వాత కోసం సేవ్ చేయండి",
+        "You Might Also Like" to "మీకు ఇవి కూడా నచ్చవచ్చు",
+        "ADD" to "జోడించండి",
+        "Bill Details" to "బిల్లు వివరాలు",
+        "Items total" to "వస్తువుల మొత్తం",
+        "Delivery charge" to "డెలివరీ ఛార్జీ",
+        "Confirmed at order" to "ఆర్డర్ సమయంలో నిర్ధారిస్తాం",
+        "Grand Total" to "మొత్తం చెల్లించాల్సిన మొత్తం",
+        "No online payment is collected in this app." to "ఈ యాప్‌లో ఆన్‌లైన్ చెల్లింపులు స్వీకరించబడవు.",
+        "Instructions" to "సూచనలు",
+        "Add any special instructions for your order" to "మీ ఆర్డర్‌కు సంబంధించిన ప్రత్యేక సూచనలు జోడించండి",
+        "Delivery Instructions" to "డెలివరీ సూచనలు",
+        "Ordering For Someone Else?" to "మరొకరి కోసం ఆర్డర్ చేస్తున్నారా?",
+        "Recipient details can be added at checkout." to "చెక్‌అవుట్‌లో స్వీకర్త వివరాలను జోడించవచ్చు.",
+        "Cancellation Policy" to "రద్దు విధానం",
+        "Product Design" to "ఉత్పత్తి రూపకల్పన",
+        "Change" to "మార్చండి",
+        "No address added" to "చిరునామా జోడించలేదు",
+        "Add" to "జోడించండి",
+        "TOTAL" to "మొత్తం",
+        "Place order  ›" to "ఆర్డర్ చేయండి  ›",
+        "Choose Delivery Address" to "డెలివరీ చిరునామాను ఎంచుకోండి",
+        "Select the saved address for this order." to "ఈ ఆర్డర్ కోసం సేవ్ చేసిన చిరునామాను ఎంచుకోండి.",
+        "No saved addresses found. Add a delivery address from your profile before placing an order." to "సేవ్ చేసిన చిరునామాలు లేవు. ఆర్డర్ చేయడానికి ముందు మీ ప్రొఫైల్‌లో డెలివరీ చిరునామా జోడించండి.",
+        "Default address" to "డిఫాల్ట్ చిరునామా",
+        "Add New Address" to "కొత్త చిరునామా జోడించండి",
+        "Confirm Address" to "చిరునామాను నిర్ధారించండి",
+        "Search your orders" to "మీ ఆర్డర్లను వెతకండి",
+        "Your Failed Orders" to "విఫలమైన మీ ఆర్డర్లు",
+        "ORDER ID" to "ఆర్డర్ ID",
+        "Current Orders" to "ప్రస్తుత ఆర్డర్లు",
+        "Loading your orders…" to "మీ ఆర్డర్లు లోడ్ అవుతున్నాయి…",
+        "No orders placed today" to "ఈరోజు ఇంకా ఆర్డర్లు చేయలేదు",
+        "Click to order  →" to "ఆర్డర్ చేయడానికి క్లిక్ చేయండి  →",
+        "Reorder" to "మళ్లీ ఆర్డర్ చేయండి",
+        "Previous Orders" to "మునుపటి ఆర్డర్లు",
+        "Your order history" to "మీ ఆర్డర్ చరిత్ర",
+        "No previous orders yet. Orders from earlier days will appear here." to "ఇంకా మునుపటి ఆర్డర్లు లేవు. గత ఆర్డర్లు ఇక్కడ కనిపిస్తాయి.",
+        "Rate Your Order" to "మీ ఆర్డర్‌కు రేటింగ్ ఇవ్వండి",
+        "How was your order experience?" to "మీ ఆర్డర్ అనుభవం ఎలా ఉంది?",
+        "Submit" to "సమర్పించండి",
+        "Order Info" to "ఆర్డర్ సమాచారం",
+        "Delete order" to "ఆర్డర్ తొలగించండి",
+        "Share order items" to "ఆర్డర్ వస్తువులను షేర్ చేయండి",
+        "Delete order?" to "ఆర్డర్ తొలగించాలా?",
+        "Delete" to "తొలగించండి",
+        "Order Summary" to "ఆర్డర్ సారాంశం",
+        "Download Invoice" to "ఇన్‌వాయిస్ డౌన్‌లోడ్ చేయండి",
+        "MRP / subtotal" to "MRP / ఉప మొత్తం",
+        "Delivery charges" to "డెలివరీ ఛార్జీలు",
+        "FREE" to "ఉచితం",
+        "Bill total" to "బిల్లు మొత్తం",
+        "Order Details" to "ఆర్డర్ వివరాలు",
+        "Order ID" to "ఆర్డర్ ID",
+        "Payment" to "చెల్లింపు",
+        "Phone" to "ఫోన్",
+        "Order placed" to "ఆర్డర్ చేసిన తేదీ",
+        "Need help with your order?" to "మీ ఆర్డర్ గురించి సహాయం కావాలా?",
+        "About any issues related to your order" to "మీ ఆర్డర్‌కు సంబంధించిన సమస్యల గురించి",
+        "Chat with us" to "మాతో చాట్ చేయండి",
+        "Repeat Order" to "మళ్లీ ఆర్డర్ చేయండి",
+        "VIEW CART ON NEXT STEP" to "తదుపరి దశలో కార్ట్ చూడండి",
+        "Back to Order History" to "ఆర్డర్ చరిత్రకు తిరిగి వెళ్లండి"
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -483,7 +552,76 @@ private fun tr(text: String, language: String): String {
         "Search products" to "उत्पाद खोजें", "Shop By Category" to "श्रेणी के अनुसार खरीदें", "Could not load products: ${'$' }productsError" to "उत्पाद लोड नहीं हो सके: ${'$' }productsError",
         "Made with care for your everyday rituals." to "आपकी रोज़मर्रा की ज़रूरतों के लिए सावधानी से बनाया गया।", "Your cart" to "आपकी कार्ट", "Subtotal" to "उप-योग", "Checkout" to "चेकआउट", "Demo only: checkout and payments are not connected." to "यह केवल डेमो है: चेकआउट और भुगतान जुड़े नहीं हैं।", "Find the collection for your routine." to "अपनी दिनचर्या के लिए उत्पाद खोजें।",
         "Language preference saved." to "भाषा प्राथमिकता सहेजी गई।", "Couldn't save language. Please try again." to "भाषा सहेजी नहीं जा सकी। फिर प्रयास करें।",
-        "English" to "English", "Telugu" to "तेलुगु", "Hindi" to "हिन्दी"
+        "English" to "English", "Telugu" to "तेलुगु", "Hindi" to "हिन्दी",
+        "Clear your cart?" to "अपनी कार्ट खाली करें?",
+        "Clear cart" to "कार्ट खाली करें",
+        "Checkout" to "चेकआउट",
+        "Your Cart Is Empty" to "आपकी कार्ट खाली है",
+        "Explore our Ayurvedic products and add your favourites." to "हमारे आयुर्वेदिक उत्पाद देखें और पसंदीदा उत्पाद जोड़ें।",
+        "Your Ayurvedic Order" to "आपका आयुर्वेदिक ऑर्डर",
+        "Save for later" to "बाद के लिए सेव करें",
+        "You Might Also Like" to "आपको ये भी पसंद आ सकते हैं",
+        "ADD" to "जोड़ें",
+        "Bill Details" to "बिल विवरण",
+        "Items total" to "आइटम का कुल",
+        "Delivery charge" to "डिलीवरी शुल्क",
+        "Confirmed at order" to "ऑर्डर के समय पुष्टि होगी",
+        "Grand Total" to "कुल राशि",
+        "No online payment is collected in this app." to "इस ऐप में ऑनलाइन भुगतान नहीं लिया जाता।",
+        "Instructions" to "निर्देश",
+        "Add any special instructions for your order" to "अपने ऑर्डर के लिए विशेष निर्देश जोड़ें",
+        "Delivery Instructions" to "डिलीवरी निर्देश",
+        "Ordering For Someone Else?" to "क्या किसी और के लिए ऑर्डर कर रहे हैं?",
+        "Recipient details can be added at checkout." to "चेकआउट पर प्राप्तकर्ता का विवरण जोड़ सकते हैं।",
+        "Cancellation Policy" to "रद्द करने की नीति",
+        "Product Design" to "उत्पाद डिज़ाइन",
+        "Change" to "बदलें",
+        "No address added" to "कोई पता नहीं जोड़ा गया",
+        "Add" to "जोड़ें",
+        "TOTAL" to "कुल",
+        "Place order  ›" to "ऑर्डर करें  ›",
+        "Choose Delivery Address" to "डिलीवरी पता चुनें",
+        "Select the saved address for this order." to "इस ऑर्डर के लिए सेव किया गया पता चुनें।",
+        "No saved addresses found. Add a delivery address from your profile before placing an order." to "कोई सेव किया हुआ पता नहीं मिला। ऑर्डर देने से पहले प्रोफ़ाइल में डिलीवरी पता जोड़ें।",
+        "Default address" to "डिफ़ॉल्ट पता",
+        "Add New Address" to "नया पता जोड़ें",
+        "Confirm Address" to "पता पुष्टि करें",
+        "Search your orders" to "अपने ऑर्डर खोजें",
+        "Your Failed Orders" to "आपके असफल ऑर्डर",
+        "ORDER ID" to "ऑर्डर ID",
+        "Current Orders" to "वर्तमान ऑर्डर",
+        "Loading your orders…" to "आपके ऑर्डर लोड हो रहे हैं…",
+        "No orders placed today" to "आज कोई ऑर्डर नहीं दिया गया",
+        "Click to order  →" to "ऑर्डर करने के लिए क्लिक करें  →",
+        "Reorder" to "दोबारा ऑर्डर करें",
+        "Previous Orders" to "पिछले ऑर्डर",
+        "Your order history" to "आपका ऑर्डर इतिहास",
+        "No previous orders yet. Orders from earlier days will appear here." to "अभी तक कोई पुराने ऑर्डर नहीं हैं। पुराने ऑर्डर यहाँ दिखाई देंगे।",
+        "Rate Your Order" to "अपने ऑर्डर को रेट करें",
+        "How was your order experience?" to "आपका ऑर्डर अनुभव कैसा रहा?",
+        "Submit" to "जमा करें",
+        "Order Info" to "ऑर्डर जानकारी",
+        "Delete order" to "ऑर्डर हटाएँ",
+        "Share order items" to "ऑर्डर के आइटम साझा करें",
+        "Delete order?" to "ऑर्डर हटाएँ?",
+        "Delete" to "हटाएँ",
+        "Order Summary" to "ऑर्डर सारांश",
+        "Download Invoice" to "इनवॉइस डाउनलोड करें",
+        "MRP / subtotal" to "MRP / उप-योग",
+        "Delivery charges" to "डिलीवरी शुल्क",
+        "FREE" to "मुफ़्त",
+        "Bill total" to "बिल कुल",
+        "Order Details" to "ऑर्डर विवरण",
+        "Order ID" to "ऑर्डर ID",
+        "Payment" to "भुगतान",
+        "Phone" to "फ़ोन",
+        "Order placed" to "ऑर्डर की तारीख",
+        "Need help with your order?" to "अपने ऑर्डर में मदद चाहिए?",
+        "About any issues related to your order" to "आपके ऑर्डर से जुड़ी किसी भी समस्या के बारे में",
+        "Chat with us" to "हमसे चैट करें",
+        "Repeat Order" to "फिर से ऑर्डर करें",
+        "VIEW CART ON NEXT STEP" to "अगले चरण में कार्ट देखें",
+        "Back to Order History" to "ऑर्डर इतिहास पर वापस जाएँ"
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -6318,8 +6456,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     if (showClearCartConfirmation) {
         AlertDialog(
             onDismissRequest = { showClearCartConfirmation = false },
-            title = { Text("Clear your cart?", color = Ink, fontWeight = FontWeight.Bold) },
-            text = { Text("This will remove all ${selected.sumOf { cart[it.id] ?: 0 }} items from your cart. You can add them again later.", color = Muted) },
+            title = { Text(tr("Clear your cart?", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold) },
+            text = { Text(tr("This will remove all ${selected.sumOf { cart[it.id] ?: 0 }} items from your cart. You can add them again later.", LocalAppLanguage.current), color = Muted) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -6327,13 +6465,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         onClearCart()
                     },
                     colors = ButtonDefaults.textButtonColors(contentColor = Ink)
-                ) { Text("Clear cart", fontWeight = FontWeight.Bold) }
+                ) { Text(tr("Clear cart", LocalAppLanguage.current), fontWeight = FontWeight.Bold) }
             },
             dismissButton = {
                 TextButton(
                     onClick = { showClearCartConfirmation = false },
                     colors = ButtonDefaults.textButtonColors(contentColor = Muted)
-                ) { Text("Cancel") }
+                ) { Text(tr("Cancel", LocalAppLanguage.current)) }
             },
             containerColor = appThemedColor(Color.White)
         )
@@ -6349,25 +6487,25 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA)))) {
         Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(42.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onBack), contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+                Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink)
             }
             Spacer(Modifier.width(12.dp))
-            Text("Checkout", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(tr("Checkout", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
             Surface(shape = RoundedCornerShape(24.dp), color = appThemedColor(Color(0xFFF6F7FA))) {
                 Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = appThemedColor(Color(0xFF27864A)), modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(6.dp))
-                    Text("$itemCount items", color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
+                    Text(tr("$itemCount items", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
                 }
             }
         }
         if (selected.isEmpty()) {
             Column(Modifier.fillMaxSize().padding(22.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                Box(Modifier.size(100.dp).background(appThemedColor(Color.White), CircleShape), contentAlignment = Alignment.Center) { Text("🛍️", fontSize = 48.sp) }
+                Box(Modifier.size(100.dp).background(appThemedColor(Color.White), CircleShape), contentAlignment = Alignment.Center) { Text(tr("🛍️", LocalAppLanguage.current), fontSize = 48.sp) }
                 Spacer(Modifier.height(18.dp))
-                Text("Your Cart Is Empty", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Your Cart Is Empty", LocalAppLanguage.current), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
-                Text("Explore our Ayurvedic products and add your favourites.", color = Muted, fontSize = 14.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                Text(tr("Explore our Ayurvedic products and add your favourites.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
             }
         } else {
             Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -6381,8 +6519,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
-                                Text("Your Ayurvedic Order", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                                Text("Review ${selected.size} products before placing order", color = Muted, fontSize = 12.sp)
+                                Text(tr("Your Ayurvedic Order", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                                Text(tr("Review ${selected.size} products before placing order", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                             }
                             IconButton(
                                 onClick = { showClearCartConfirmation = true },
@@ -6390,7 +6528,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(appThemedColor(Color(0xFFE1E5EC)))
                             ) {
-                                Icon(Icons.Default.DeleteSweep, contentDescription = "Clear cart", tint = Ink, modifier = Modifier.size(22.dp))
+                                Icon(Icons.Default.DeleteSweep, contentDescription = tr("Clear cart", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
                             }
                         }
                         Divider(color = appThemedColor(Color(0xFFEFF1F5)))
@@ -6408,14 +6546,14 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     Spacer(Modifier.height(4.dp))
                                     Text(product.subtitle.ifBlank { product.quantity }, color = Muted, fontSize = 13.sp)
                                     Spacer(Modifier.height(8.dp))
-                                    Text("Save for later", color = Muted, fontSize = 12.sp, textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline)
+                                    Text(tr("Save for later", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline)
                                 }
                                 Spacer(Modifier.width(6.dp))
                                 Column(horizontalAlignment = Alignment.End) {
                                     Row(Modifier.background(appThemedColor(Color(0xFFE1E5EC)), RoundedCornerShape(10.dp)).padding(horizontal = 2.dp), verticalAlignment = Alignment.CenterVertically) {
-                                        IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = "Decrease quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
+                                        IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = tr("Decrease quantity", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(16.dp)) }
                                         Text(quantity.toString(), color = Ink, fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                                        IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = "Increase quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
+                                        IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = tr("Increase quantity", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(16.dp)) }
                                     }
                                     Spacer(Modifier.height(10.dp))
                                     Text(money(product.price * quantity), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
@@ -6428,7 +6566,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 if (recommendations.isNotEmpty()) {
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.padding(14.dp)) {
-                            Text("You Might Also Like", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                            Text(tr("You Might Also Like", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                             Spacer(Modifier.height(12.dp))
                             LazyRow(
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -6457,7 +6595,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                             ) {
                                                 Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
                                                 Spacer(Modifier.width(2.dp))
-                                                Text("ADD", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                                Text(tr("ADD", LocalAppLanguage.current), fontWeight = FontWeight.Bold, fontSize = 12.sp)
                                             }
                                         }
                                     }
@@ -6468,26 +6606,26 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(16.dp)) {
-                        Text("Bill Details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Bill Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(16.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text("Items total", color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                            Text(tr("Items total", LocalAppLanguage.current), color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
                             Text(money(total), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                         }
                         Spacer(Modifier.height(12.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text("Delivery charge", color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                            Text("Confirmed at order", color = Muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                            Text(tr("Delivery charge", LocalAppLanguage.current), color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                            Text(tr("Confirmed at order", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
                         }
                         Spacer(Modifier.height(12.dp))
                         Divider(color = appThemedColor(Color(0xFFEFF1F5)))
                         Spacer(Modifier.height(12.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text("Grand Total", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+                            Text(tr("Grand Total", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
                             Text(money(total), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                         }
                         Spacer(Modifier.height(8.dp))
-                        Text("No online payment is collected in this app.", color = Muted, fontSize = 12.sp)
+                        Text(tr("No online payment is collected in this app.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                     }
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
@@ -6497,8 +6635,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 value = userInstructions,
                                 onValueChange = { userInstructions = it },
                                 modifier = Modifier.weight(1f),
-                                label = { Text("Instructions") },
-                                placeholder = { Text("Add any special instructions for your order") },
+                                label = { Text(tr("Instructions", LocalAppLanguage.current)) },
+                                placeholder = { Text(tr("Add any special instructions for your order", LocalAppLanguage.current)) },
                                 enabled = userInstructionsEnabled,
                                 readOnly = !userInstructionsEnabled,
                                 minLines = 2,
@@ -6529,7 +6667,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(14.dp)) {
-                        Text("Delivery Instructions", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Delivery Instructions", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(10.dp))
                         listOf("Call before delivery", "Avoid calling").forEach { instruction ->
                             Row(Modifier.fillMaxWidth().clickable { selectedInstruction = if (selectedInstruction == instruction) "" else instruction }.padding(vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -6542,14 +6680,14 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(14.dp)) {
-                        Text("Ordering For Someone Else?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        Text("Recipient details can be added at checkout.", color = Muted, fontSize = 13.sp)
+                        Text(tr("Ordering For Someone Else?", LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Recipient details can be added at checkout.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                         Spacer(Modifier.height(8.dp))
-                        Text("Cancellation Policy", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        Text("Orders are saved as pending verification. Please contact the shop for changes after placing an order.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                        Text(tr("Cancellation Policy", LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Orders are saved as pending verification. Please contact the shop for changes after placing an order.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                         Spacer(Modifier.height(10.dp))
-                        Text("Product Design", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                        Text("Product images, bottle designs and packaging shown in the app are for illustration and design reference only. The actual product appearance, bottle shape, label, colour and packaging may vary from the images displayed. The contents and product details will correspond to the product supplied.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                        Text(tr("Product Design", LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Product images, bottle designs and packaging shown in the app are for illustration and design reference only. The actual product appearance, bottle shape, label, colour and packaging may vary from the images displayed. The contents and product details will correspond to the product supplied.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                     }
                 }
             }
@@ -6583,7 +6721,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Column(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(0.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink)
-                            Text("Deliver to: ${address["label"]?.toString().orEmpty().ifBlank { "Saved address" }}", color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            Text(tr("Deliver to: ${address[", LocalAppLanguage.current)label"]?.toString().orEmpty().ifBlank { "Saved address" }}", color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                             TextButton(onClick = {
                                  val user = FirebaseAuth.getInstance().currentUser
                                  if (user == null) {
@@ -6607,7 +6745,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                              errorMessage = error.localizedMessage ?: "Could not load saved addresses."
                                          }
                                  }
-                             }) { Text("Change", color = Ink) }
+                             }) { Text(tr("Change", LocalAppLanguage.current), color = Ink) }
                         }
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             Text(
@@ -6645,9 +6783,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     ) {
                         Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink)
                         Spacer(Modifier.width(8.dp))
-                        Text("No address added", color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                        Text(tr("No address added", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                         TextButton(onClick = onAddAddress) {
-                            Text("Add", color = Ink, fontWeight = FontWeight.Bold)
+                            Text(tr("Add", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -6655,7 +6793,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(0.7f)) {
                     Text(money(total), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("TOTAL", color = Muted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 }
                 Button(onClick = {
                     errorMessage = null
@@ -6735,7 +6873,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         }
                     }
                 }, modifier = Modifier.weight(1.3f).height(DefaultBtn.height), shape = RoundedCornerShape(DefaultBtn.cornerRadius), border = BorderStroke(1.dp, appThemedColor(DefaultBtn.border)), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(DefaultBtn.background), contentColor = appThemedColor(DefaultBtn.content))) {
-                    Text("Place order  ›", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = appThemedColor(DefaultBtn.content))
+                    Text(tr("Place order  ›", LocalAppLanguage.current), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = appThemedColor(DefaultBtn.content))
                 }
             }
         }
@@ -6750,12 +6888,12 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         ) {
             Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f)) {
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("Choose Delivery Address", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                    Text("Select the saved address for this order.", color = Muted, fontSize = 14.sp)
+                    Text(tr("Choose Delivery Address", LocalAppLanguage.current), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("Select the saved address for this order.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                     if (loadingDeliveryAddresses) {
                         Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) { AppLoader("Loading addresses…", compact = true) }
                     } else if (savedAddresses.isEmpty()) {
-                        Text("No saved addresses found. Add a delivery address from your profile before placing an order.", color = Muted, fontSize = 14.sp)
+                        Text(tr("No saved addresses found. Add a delivery address from your profile before placing an order.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                     } else savedAddresses.forEach { address ->
                         val addressId = address["_id"]?.toString().orEmpty()
                         val label = address["label"]?.toString().orEmpty().ifBlank { "Delivery address" }
@@ -6772,7 +6910,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     Text(listOf("name", "fullName", "receiverName", "recipientName", "customerName").firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty().ifBlank { FirebaseAuth.getInstance().currentUser?.displayName?.trim().orEmpty() }.ifBlank { "Name not provided" }, color = Ink, fontSize = 14.sp)
                                     Text(addressText.ifBlank { "Address details unavailable" }, color = Muted, fontSize = 13.sp)
                                     address["phone"]?.toString()?.takeIf { it.isNotBlank() }?.let { Text(it, color = Muted, fontSize = 13.sp) }
-                                    if (address["isDefault"] == true || address["default"] == true) Text("Default address", color = Forest, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                                    if (address["isDefault"] == true || address["default"] == true) Text(tr("Default address", LocalAppLanguage.current), color = Forest, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                                 }
                             }
                         }
@@ -6793,7 +6931,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         ) {
                             Icon(Icons.Default.Add, contentDescription = null, tint = Ink)
                             Spacer(Modifier.width(8.dp))
-                            Text("Add New Address", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Ink)
+                            Text(tr("Add New Address", LocalAppLanguage.current), fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Ink)
                         }
                         Spacer(Modifier.height(8.dp))
                         Button(onClick = {
@@ -6809,7 +6947,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             errorMessage = null
                         }
                         }, enabled = !loadingDeliveryAddresses && !submitting && savedAddresses.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = Ink)) {
-                            Text("Confirm Address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(tr("Confirm Address", LocalAppLanguage.current), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -6956,7 +7094,7 @@ private fun OrdersPage(
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF4F5FA))).verticalScroll(rememberScrollState())) {
         Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(Modifier.size(42.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onHome), contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
+                Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink)
             }
             Spacer(Modifier.width(12.dp))
             Text(pageTitle, color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
@@ -6976,7 +7114,7 @@ private fun OrdersPage(
             onValueChange = { orderSearch = it },
             modifier = Modifier.fillMaxWidth().height(60.dp),
             textStyle = LocalTextStyle.current.copy(fontSize = 16.sp, lineHeight = 22.sp),
-            placeholder = { Text("Search your orders", color = Muted, fontSize = 13.sp) },
+            placeholder = { Text(tr("Search your orders", LocalAppLanguage.current), color = Muted, fontSize = 13.sp) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Muted, modifier = Modifier.size(22.dp)) },
             singleLine = true,
             shape = RectangleShape,
@@ -6990,10 +7128,10 @@ private fun OrdersPage(
                     Icon(Icons.Default.ErrorOutline, contentDescription = null, tint = appThemedColor(Color(0xFFE76F35)), modifier = Modifier.size(38.dp))
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
-                        Text("Your Failed Orders", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text("${failedOrders.size} order(s)", color = Muted, fontSize = 13.sp)
+                        Text(tr("Your Failed Orders", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("${failedOrders.size} order(s)", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                     }
-                    OutlinedButton(onClick = { selectedOrder = failedOrders.firstOrNull() }, shape = RoundedCornerShape(12.dp)) { Text("View", color = Forest) }
+                    OutlinedButton(onClick = { selectedOrder = failedOrders.firstOrNull() }, shape = RoundedCornerShape(12.dp)) { Text(tr("View", LocalAppLanguage.current), color = Forest) }
                 }
             }
             Spacer(Modifier.height(16.dp))
@@ -7050,7 +7188,7 @@ private fun OrdersPage(
                     }
                     if (latestOrderId != null) {
                         Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            Text("ORDER ID", color = Muted, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                            Text(tr("ORDER ID", LocalAppLanguage.current), color = Muted, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
                             Text(
                                 latestOrderId!!,
                                 color = Ink,
@@ -7111,8 +7249,8 @@ private fun OrdersPage(
 
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Current Orders", fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
-                Text("Placed today · ${today.format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"))}", color = Muted, fontSize = 12.sp)
+                Text(tr("Current Orders", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
+                Text(tr("Placed today · ${today.format(java.time.format.DateTimeFormatter.ofPattern(", LocalAppLanguage.current)dd MMM yyyy"))}", color = Muted, fontSize = 12.sp)
             }
             Box(
                 Modifier.shadow(4.dp, RoundedCornerShape(50.dp))
@@ -7128,7 +7266,7 @@ private fun OrdersPage(
                 Row(Modifier.fillMaxWidth().padding(22.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
                     CircularProgressIndicator(color = Forest, modifier = Modifier.size(22.dp), strokeWidth = 2.dp)
                     Spacer(Modifier.width(12.dp))
-                    Text("Loading your orders…", color = Muted, fontSize = 13.sp)
+                    Text(tr("Loading your orders…", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                 }
             }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
@@ -7137,12 +7275,12 @@ private fun OrdersPage(
                 verticalArrangement = Arrangement.spacedBy(2.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("No orders placed today", color = appThemedColor(Color(0xFF4A4A4A)), fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                Text(tr("No orders placed today", LocalAppLanguage.current), color = appThemedColor(Color(0xFF4A4A4A)), fontSize = 16.sp, fontWeight = FontWeight.Medium)
                 TextButton(
                     onClick = onCategories,
                     modifier = Modifier.height(28.dp),
                     contentPadding = PaddingValues(0.dp)
-                ) { Text("Click to order  →", color = Ink, fontWeight = FontWeight.Bold) }
+                ) { Text(tr("Click to order  →", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold) }
             }
             else -> currentOrders.forEach { order ->
                 val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
@@ -7163,7 +7301,7 @@ private fun OrdersPage(
                                 onClick = { orderOptions = order },
                                 modifier = Modifier.size(40.dp)
                             ) {
-                                Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
+                                Icon(Icons.Default.MoreVert, contentDescription = tr("Order options", LocalAppLanguage.current), tint = Ink)
                             }
                         }
                         val orderItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
@@ -7268,7 +7406,7 @@ private fun OrdersPage(
                                 ) {
                                     Icon(Icons.Default.Refresh, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
                                     Spacer(Modifier.width(6.dp))
-                                    Text("Reorder", color = Ink, fontWeight = FontWeight.Bold, maxLines = 1)
+                                    Text(tr("Reorder", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, maxLines = 1)
                                 }
                             }
                         }
@@ -7280,8 +7418,8 @@ private fun OrdersPage(
         Spacer(Modifier.height(22.dp))
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Previous Orders", fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
-                Text("Your order history", color = Muted, fontSize = 12.sp)
+                Text(tr("Previous Orders", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
+                Text(tr("Your order history", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
             }
             Box(
                 Modifier.shadow(4.dp, RoundedCornerShape(50.dp))
@@ -7298,7 +7436,7 @@ private fun OrdersPage(
                 Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Muted, modifier = Modifier.size(24.dp))
                     Spacer(Modifier.width(10.dp))
-                    Text("No previous orders yet. Orders from earlier days will appear here.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                    Text(tr("No previous orders yet. Orders from earlier days will appear here.", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                 }
             }
             else -> historicalOrders.forEach { order ->
@@ -7318,7 +7456,7 @@ private fun OrdersPage(
                                 Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available", color = Muted, fontSize = 11.sp)
                             }
                             IconButton(onClick = { orderOptions = order }, modifier = Modifier.size(34.dp)) {
-                                Icon(Icons.Default.MoreVert, contentDescription = "Order options", tint = Ink)
+                                Icon(Icons.Default.MoreVert, contentDescription = tr("Order options", LocalAppLanguage.current), tint = Ink)
                             }
                         }
                         if (orderItems.isNotEmpty()) {
@@ -7331,7 +7469,7 @@ private fun OrdersPage(
                                         else Text(product?.emoji ?: "🌿", fontSize = 24.sp)
                                     }
                                 }
-                                if (orderItems.size > 3) Box(Modifier.size(66.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFE2E2E2))), contentAlignment = Alignment.Center) { Text("+" + (orderItems.size - 3), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                                if (orderItems.size > 3) Box(Modifier.size(66.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFE2E2E2))), contentAlignment = Alignment.Center) { Text(tr("+", LocalAppLanguage.current) + (orderItems.size - 3), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
                             }
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -7363,7 +7501,7 @@ private fun OrdersPage(
                                     Toast.LENGTH_LONG
                                 ).show()
                                 if (addedCount > 0) onCart()
-                            }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) { Text("Reorder", color = Ink, fontWeight = FontWeight.Medium) }
+                            }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)) { Text(tr("Reorder", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Medium) }
                             if (!invoiceUrl.isNullOrBlank()) {
                                 IconButton(
                                     onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
@@ -7384,33 +7522,33 @@ private fun OrdersPage(
     rateOrder?.let { order ->
         AlertDialog(
             onDismissRequest = { rateOrder = null },
-            title = { Text("Rate Your Order", color = Forest, fontWeight = FontWeight.Bold) },
+            title = { Text(tr("Rate Your Order", LocalAppLanguage.current), color = Forest, fontWeight = FontWeight.Bold) },
             text = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("How was your order experience?", color = Muted)
+                    Text(tr("How was your order experience?", LocalAppLanguage.current), color = Muted)
                     Spacer(Modifier.height(12.dp))
                     Row(horizontalArrangement = Arrangement.Center) {
                         (1..5).forEach { star ->
                             IconButton(onClick = { selectedRating = star }) {
-                                Icon(if (star <= selectedRating) Icons.Default.Star else Icons.Default.StarBorder, contentDescription = "$star stars", tint = Gold, modifier = Modifier.size(30.dp))
+                                Icon(if (star <= selectedRating) Icons.Default.Star else Icons.Default.StarBorder, contentDescription = tr("$star stars", LocalAppLanguage.current), tint = Gold, modifier = Modifier.size(30.dp))
                             }
                         }
                     }
-                    Text("$selectedRating out of 5", color = Ink, fontWeight = FontWeight.SemiBold)
+                    Text(tr("$selectedRating out of 5", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.SemiBold)
                 }
             },
-            confirmButton = { TextButton(onClick = { rateOrder = null; Toast.makeText(context, "Thanks for your feedback!", Toast.LENGTH_SHORT).show() }) { Text("Submit") } },
-            dismissButton = { TextButton(onClick = { rateOrder = null }) { Text("Cancel") } }
+            confirmButton = { TextButton(onClick = { rateOrder = null; Toast.makeText(context, "Thanks for your feedback!", Toast.LENGTH_SHORT).show() }) { Text(tr("Submit", LocalAppLanguage.current)) } },
+            dismissButton = { TextButton(onClick = { rateOrder = null }) { Text(tr("Cancel", LocalAppLanguage.current)) } }
         )
     }
 
     orderOptions?.let { order ->
         ModalBottomSheet(onDismissRequest = { orderOptions = null }, containerColor = appThemedColor(Color.White), contentColor = Ink) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Order Info", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Order Info", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Row(Modifier.fillMaxWidth().clickable { confirmDeleteOrder = order; orderOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink)
-                    Spacer(Modifier.width(12.dp)); Text("Delete order", color = Ink, fontSize = 16.sp)
+                    Spacer(Modifier.width(12.dp)); Text(tr("Delete order", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
                 }
                 Row(Modifier.fillMaxWidth().clickable {
                     val items = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
@@ -7425,14 +7563,14 @@ private fun OrdersPage(
                     orderOptions = null
                 }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Share, contentDescription = null, tint = Ink)
-                    Spacer(Modifier.width(12.dp)); Text("Share order items", color = Ink, fontSize = 16.sp)
+                    Spacer(Modifier.width(12.dp)); Text(tr("Share order items", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
                 }
                 Spacer(Modifier.height(8.dp))
             }
         }
     }
     confirmDeleteOrder?.let { order ->
-        AlertDialog(onDismissRequest = { confirmDeleteOrder = null }, title = { Text("Delete order?", color = Ink, fontWeight = FontWeight.Bold) }, text = { Text("This will remove the order from your order history. This action cannot be undone.", color = Muted) }, confirmButton = {
+        AlertDialog(onDismissRequest = { confirmDeleteOrder = null }, title = { Text(tr("Delete order?", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold) }, text = { Text(tr("This will remove the order from your order history. This action cannot be undone.", LocalAppLanguage.current), color = Muted) }, confirmButton = {
             TextButton(onClick = {
                 val id = order["_documentId"]?.toString().orEmpty()
                 if (id.isBlank()) Toast.makeText(context, "Could not identify this order.", Toast.LENGTH_LONG).show()
@@ -7440,8 +7578,8 @@ private fun OrdersPage(
                     .addOnSuccessListener { Toast.makeText(context, "Order deleted", Toast.LENGTH_SHORT).show() }
                     .addOnFailureListener { e -> Toast.makeText(context, e.localizedMessage ?: "Could not delete order", Toast.LENGTH_LONG).show() }
                 confirmDeleteOrder = null
-            }) { Text("Delete", color = appThemedColor(Color(0xFFC62828))) }
-        }, dismissButton = { TextButton(onClick = { confirmDeleteOrder = null }) { Text("Cancel", color = Ink) } })
+            }) { Text(tr("Delete", LocalAppLanguage.current), color = appThemedColor(Color(0xFFC62828))) }
+        }, dismissButton = { TextButton(onClick = { confirmDeleteOrder = null }) { Text(tr("Cancel", LocalAppLanguage.current), color = Ink) } })
     }
 
     selectedOrder?.let { order ->
@@ -7462,22 +7600,22 @@ private fun OrdersPage(
             Column(Modifier.fillMaxSize().background(appThemedColor(Color.White))) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { selectedOrder = null }, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape)) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back to Order History", tint = Ink)
+                        Icon(Icons.Default.ArrowBack, contentDescription = tr("Back to Order History", LocalAppLanguage.current), tint = Ink)
                     }
                     Spacer(Modifier.weight(1f))
                     IconButton(onClick = { confirmDeleteOrder = order }, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape)) {
-                        Icon(Icons.Default.DeleteOutline, contentDescription = "Delete order", tint = Ink)
+                        Icon(Icons.Default.DeleteOutline, contentDescription = tr("Delete order", LocalAppLanguage.current), tint = Ink)
                     }
                 }
                 Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 28.dp)) {
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
-                        Text("Order Summary", color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Order Summary", LocalAppLanguage.current), color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(6.dp))
                         Text(if (status.equals("delivered", true) || status.equals("completed", true)) "Arrived at $created" else "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", color = Muted, fontSize = 16.sp)
                         Spacer(Modifier.height(12.dp))
                         if (!invoiceUrl.isNullOrBlank() && (status.equals("accepted", true) || status.equals("approved", true))) {
                             Row(Modifier.clickable { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) } }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Text("Download Invoice", color = Forest, fontSize = 17.sp, fontWeight = FontWeight.Medium)
+                                Text(tr("Download Invoice", LocalAppLanguage.current), color = Forest, fontSize = 17.sp, fontWeight = FontWeight.Medium)
                                 Spacer(Modifier.width(8.dp))
                                 Icon(Icons.Default.FileDownload, contentDescription = null, tint = Forest)
                             }
@@ -7485,7 +7623,7 @@ private fun OrdersPage(
                     }
                     Spacer(Modifier.height(24.dp))
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
-                        Text("${invoiceItems.size} item(s) in this order", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("${invoiceItems.size} item(s) in this order", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(12.dp))
                         invoiceItems.forEach { item ->
                             val productId = item["productId"]?.toString().orEmpty()
@@ -7502,10 +7640,10 @@ private fun OrdersPage(
                                 Column(Modifier.weight(1f)) {
                                     Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
                                     val packSize = product?.subtitle?.takeIf { it.isNotBlank() }
-                                    Text("${packSize ?: "Item"} × $quantity", color = Muted, fontSize = 14.sp)
+                                    Text(tr("${packSize ?: ", LocalAppLanguage.current)Item"} × $quantity", color = Muted, fontSize = 14.sp)
                                 }
                                 Column(horizontalAlignment = Alignment.End) {
-                                    Text("₹" + String.format("%.0f", (item["lineTotal"] as? Number)?.toDouble() ?: (unitPrice * quantity)), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                    Text(tr("₹", LocalAppLanguage.current) + String.format("%.0f", (item["lineTotal"] as? Number)?.toDouble() ?: (unitPrice * quantity)), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
                             Divider(color = appThemedColor(Color(0xFFF0F1F4)))
@@ -7513,21 +7651,21 @@ private fun OrdersPage(
                     }
                     Spacer(Modifier.height(12.dp))
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp)) {
-                        Text("Bill Details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Bill Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(18.dp))
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text("MRP / subtotal", color = Muted); Text("₹" + String.format("%.0f", subtotal), color = Ink) }
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text(tr("MRP / subtotal", LocalAppLanguage.current), color = Muted); Text(tr("₹", LocalAppLanguage.current) + String.format("%.0f", subtotal), color = Ink) }
                         Spacer(Modifier.height(12.dp))
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text("Delivery charges", color = Muted); Text("FREE", color = Ink) }
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text(tr("Delivery charges", LocalAppLanguage.current), color = Muted); Text(tr("FREE", LocalAppLanguage.current), color = Ink) }
                         Spacer(Modifier.height(12.dp))
                         Divider(color = appThemedColor(Color(0xFFE5E7EB)))
                         Spacer(Modifier.height(12.dp))
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text("Bill total", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold); Text("₹" + String.format("%.0f", total), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text(tr("Bill total", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold); Text(tr("₹", LocalAppLanguage.current) + String.format("%.0f", total), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
                     }
                     Divider(color = appThemedColor(Color(0xFFE5E7EB)), thickness = 7.dp)
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Text("Order Details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Order Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Column {
-                            Text("Order ID", color = Muted, fontSize = 14.sp)
+                            Text(tr("Order ID", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                             Spacer(Modifier.height(5.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(orderId, color = Ink, fontSize = 16.sp, modifier = Modifier.weight(1f))
@@ -7535,24 +7673,24 @@ private fun OrdersPage(
                                     val clipboard = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
                                     clipboard.setPrimaryClip(android.content.ClipData.newPlainText("Order ID", orderId))
                                     Toast.makeText(context, "Order ID copied", Toast.LENGTH_SHORT).show()
-                                }) { Icon(Icons.Default.ContentCopy, contentDescription = "Copy order ID", tint = Muted) }
+                                }) { Icon(Icons.Default.ContentCopy, contentDescription = tr("Copy order ID", LocalAppLanguage.current), tint = Muted) }
                             }
                         }
                         Column {
-                            Text("Payment", color = Muted, fontSize = 14.sp)
+                            Text(tr("Payment", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                             Spacer(Modifier.height(5.dp))
                             Text(paymentStatus.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = Ink, fontSize = 16.sp)
                         }
-                        if (phone.isNotBlank()) Column { Text("Phone", color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
-                        Column { Text("Order placed", color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
+                        if (phone.isNotBlank()) Column { Text(tr("Phone", LocalAppLanguage.current), color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
+                        Column { Text(tr("Order placed", LocalAppLanguage.current), color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
                     }
                     Spacer(Modifier.height(20.dp))
                     Column(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 20.dp, vertical = 16.dp)) {
-                        Text("Need help with your order?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        Text(tr("Need help with your order?", LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(3.dp))
-                        Text("About any issues related to your order", color = Muted, fontSize = 13.sp)
+                        Text(tr("About any issues related to your order", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                         TextButton(onClick = { selectedOrder = null; onTabChange?.invoke("Help") }, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)) {
-                            Text("Chat with us", color = Ink, fontWeight = FontWeight.Medium)
+                            Text(tr("Chat with us", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Medium)
                         }
                     }
                 }
@@ -7583,9 +7721,9 @@ private fun OrdersPage(
                         colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = Ink)
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Repeat Order", color = appThemedColor(Color(0xFF000000)), fontSize = 20.sp, lineHeight = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                            Text(tr("Repeat Order", LocalAppLanguage.current), color = appThemedColor(Color(0xFF000000)), fontSize = 20.sp, lineHeight = 24.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                             Spacer(Modifier.height(3.dp))
-                            Text("VIEW CART ON NEXT STEP", color = appThemedColor(Color(0xFF000000)), fontSize = 11.sp, lineHeight = 14.sp, maxLines = 1)
+                            Text(tr("VIEW CART ON NEXT STEP", LocalAppLanguage.current), color = appThemedColor(Color(0xFF000000)), fontSize = 11.sp, lineHeight = 14.sp, maxLines = 1)
                         }
                     }
                 }
