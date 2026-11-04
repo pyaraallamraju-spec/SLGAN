@@ -336,7 +336,7 @@ private fun tr(text: String, language: String): String {
         "Sign out" to "సైన్ అవుట్", "Enter delivery details below." to "డెలివరీ వివరాలను క్రింద నమోదు చేయండి.",
                         "Home" to "ఇల్లు", "Work" to "పని", "Other" to "ఇతర",
                                                         "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Ghrutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
-        "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Bhasmas" to "భస్మాలు",
+        "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Rasayogas" to "రసయోగాలు", "Rasayoga" to "రసయోగం", "Bhasmas" to "భస్మాలు",
         "Voice search" to "వాయిస్ సెర్చ్",
         "Voice search is not available on this device." to "ఈ పరికరంలో వాయిస్ సెర్చ్ అందుబాటులో లేదు.",
         "Sign in with your registered email and password." to "మీ నమోదైన ఇమెయిల్ మరియు పాస్‌వర్డ్‌తో సైన్ ఇన్ చేయండి.",
@@ -348,6 +348,7 @@ private fun tr(text: String, language: String): String {
         "Usage" to "వాడే విధానం",
         "Cures" to "ఉపయోగ సూచనలు",
         "Major ingredients" to "ప్రధాన పదార్థాలు",
+        "About" to "వివరాలు", "Net quantity" to "నికర పరిమాణం", "Price inclusive of applicable taxes" to "వర్తించే పన్నులతో సహా ధర",
         "No online payment. Place your order and we will confirm delivery details." to "ఆన్‌లైన్ చెల్లింపు లేదు. ఆర్డర్ చేయండి; డెలివరీ వివరాలను మేము నిర్ధారిస్తాము.",
         "Place order" to "ఆర్డర్ చేయండి",
         "Customer name *" to "కస్టమర్ పేరు *",
@@ -417,7 +418,7 @@ private fun tr(text: String, language: String): String {
         "Area / village / locality" to "क्षेत्र / गाँव / इलाका", "Landmark (optional)" to "नज़दीकी पहचान (वैकल्पिक)",
         "City / town *" to "शहर / कस्बा *", "State *" to "राज्य *", "PIN code *" to "पिन कोड *",
                 "No addresses yet" to "अभी कोई पता नहीं", "All" to "सभी", "Lehyas" to "लेह्य", "Ghrutas" to "घृत",
-        "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Bhasmas" to "भस्म",
+        "Pills" to "गोलियाँ", "Tailas" to "तेल", "Churnas" to "चूर्ण", "Rasayanas" to "रसायन", "Rasayogas" to "रसयोग", "Rasayoga" to "रसयोग", "Bhasmas" to "भस्म",
         "Voice search" to "वॉइस सर्च",
         "Voice search is not available on this device." to "इस डिवाइस पर वॉइस सर्च उपलब्ध नहीं है।",
         "Sign in with your registered email and password." to "अपने पंजीकृत ईमेल और पासवर्ड से साइन इन करें।",
@@ -428,7 +429,7 @@ private fun tr(text: String, language: String): String {
         "Description" to "विवरण",
         "Usage" to "उपयोग विधि",
         "Cures" to "उपयोग संबंधी जानकारी",
-        "Major ingredients" to "मुख्य सामग्री",
+        "Major ingredients" to "मुख्य सामग्री", "About" to "विवरण", "Net quantity" to "शुद्ध मात्रा", "Price inclusive of applicable taxes" to "लागू कर सहित कीमत",
         "No online payment. Place your order and we will confirm delivery details." to "ऑनलाइन भुगतान उपलब्ध नहीं है। ऑर्डर दें; हम डिलीवरी विवरण की पुष्टि करेंगे।",
         "Place order" to "ऑर्डर करें",
         "Customer name *" to "ग्राहक का नाम *",
@@ -509,6 +510,9 @@ private fun localizedProductName(name: String, language: String): String {
     if (language == "English") return name
     val telugu = mapOf(
         "Mahakanakasindhura Rasam" to "మహాకనకసింధూర రసం",
+        "Kaamsya (Kanchu)" to "కాంస్య (కంచు)",
+        "Kaamsya Kanchu" to "కాంస్య కంచు",
+        "Kravyadi Rasam" to "క్రవ్యాది రసం",
         "Siddha Makaradhwajam" to "సిద్ధ మకరధ్వజం",
         "Poornachandrodayam" to "పూర్ణచంద్రోదయం",
         "Mahavatavidhwamsa Rasam" to "మహావాతవిధ్వంస రసం",
@@ -597,6 +601,9 @@ private fun localizedProductName(name: String, language: String): String {
     )
     val hindi = mapOf(
         "Mahakanakasindhura Rasam" to "महाकनकसिंधूर रस",
+        "Kaamsya (Kanchu)" to "कांस्य (कंचु)",
+        "Kaamsya Kanchu" to "कांस्य कंचु",
+        "Kravyadi Rasam" to "क्रव्यादि रस",
         "Siddha Makaradhwajam" to "सिद्ध मकरध्वज",
         "Poornachandrodayam" to "पूर्णचन्द्रोदय",
         "Mahavatavidhwamsa Rasam" to "महावातविध्वंस रस",
@@ -5570,7 +5577,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                                                 },
                                                                 fontSize = 9.sp
                                                             )
-                                                            Text(product.category, color = appThemedColor(Color.Black), fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                                            Text(tr(product.category, LocalAppLanguage.current), color = appThemedColor(Color.Black), fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                                         }
                                                     }
                                                 }
@@ -6016,10 +6023,10 @@ private fun ProductDetailsPage(
                                 ProductRatingLine(product, ratingSummary, showEmptyLabel = true)
                             }
                             Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.Bold)
-                            Text(if (product.subtitle.isNotBlank()) "Net quantity: ${product.subtitle}" else "Net quantity: See product pack", color = Muted, fontSize = 15.sp)
+                            Text(if (product.subtitle.isNotBlank()) "${tr("Net quantity", currentLanguage)}: ${product.subtitle}" else "${tr("Net quantity", currentLanguage)}: ${tr("See product pack", currentLanguage)}", color = Muted, fontSize = 15.sp)
                             if (product.price > 0.0) {
                                 Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 5.dp).background(appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(9.dp)).padding(horizontal = 10.dp, vertical = 5.dp))
-                                Text("Price inclusive of applicable taxes", color = Muted, fontSize = 13.sp)
+                                Text(tr("Price inclusive of applicable taxes", currentLanguage), color = Muted, fontSize = 13.sp)
                             } else Text(tr("Price not available yet.", currentLanguage), color = Muted, fontSize = 15.sp)
                         }
                     }
@@ -6058,7 +6065,7 @@ private fun ProductDetailsPage(
                                                     verticalArrangement = Arrangement.spacedBy(4.dp)
                                                 ) {
                                                     Icon(icon, contentDescription = label, tint = if (selected) Color.White else Ink, modifier = Modifier.size(19.dp))
-                                                    Text(label, color = if (selected) Color.White else Ink, fontSize = 10.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 12.sp, textAlign = TextAlign.Center)
+                                                    Text(tr(label, currentLanguage), color = if (selected) Color.White else Ink, fontSize = 10.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 12.sp, textAlign = TextAlign.Center)
                                                 }
                                                 if (selected) Box(Modifier.align(Alignment.BottomCenter).offset(y = 17.dp).size(30.dp).background(appThemedColor(Color.White), CircleShape))
                                             }
