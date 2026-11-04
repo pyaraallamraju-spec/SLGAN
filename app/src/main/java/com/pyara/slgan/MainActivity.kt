@@ -1046,6 +1046,32 @@ private fun tr(text: String, language: String): String {
         "Select gender" to "లింగాన్ని ఎంచుకోండి",
         "Loading profile…" to "ప్రొఫైల్ లోడ్ అవుతోంది…",
         "Please wait a moment" to "దయచేసి కొద్దిసేపు వేచి ఉండండి",
+        "Connect with SLGAN" to "SLGANతో కనెక్ట్ అవ్వండి",
+        "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam on social media for updates and information." to "తాజా సమాచారం మరియు వివరాల కోసం శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయాన్ని సోషల్ మీడియాలో అనుసరించండి.",
+        "View live followers on Instagram" to "Instagramలో తాజా ఫాలోవర్ల సంఖ్య చూడండి",
+        "Loading your wishlist…" to "మీ విష్‌లిస్ట్ లోడ్ అవుతోంది…",
+        "Could not save rating." to "రేటింగ్‌ను సేవ్ చేయలేకపోయాం.",
+        "Please sign in to rate this product." to "ఈ ఉత్పత్తికి రేటింగ్ ఇవ్వడానికి సైన్ ఇన్ చేయండి.",
+        "Rating saved" to "రేటింగ్ సేవ్ అయింది",
+        "Out of Stock" to "స్టాక్‌లో లేదు",
+        "Order successful" to "ఆర్డర్ విజయవంతమైంది",
+        "Order failed" to "ఆర్డర్ విఫలమైంది",
+        "Your order has been saved" to "మీ ఆర్డర్ సేవ్ అయింది",
+        "Please review your order" to "దయచేసి మీ ఆర్డర్‌ను పరిశీలించండి",
+        "Your order was saved." to "మీ ఆర్డర్ సేవ్ అయింది.",
+        "Your order could not be placed." to "మీ ఆర్డర్‌ను నమోదు చేయలేకపోయాం.",
+        "ORDER STATUS" to "ఆర్డర్ స్థితి",
+        "Pending verification" to "ధృవీకరణ పెండింగ్‌లో ఉంది",
+        "Any changes on this screen may be lost if you continue" to "కొనసాగితే ఈ స్క్రీన్‌లో చేసిన మార్పులు కోల్పోవచ్చు",
+        "Other" to "ఇతర",
+        "Sri Lakshmi Ganapathi Ayurveda Nilayam was established in 1900 by Sri Vidya Raju Allamraju Perraju Garu at Uppada Kothapalli." to "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం 1900లో శ్రీ విద్యా రాజు అల్లంరాజు పేర్రాజు గారిచే ఉప్పాడ కొత్తపల్లిలో స్థాపించబడింది.",
+        "Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN) respects your privacy. We use account information such as your name, contact details, wishlist, and order information to provide app features and support your purchases. We do not ask you to share your password or one-time verification codes with anyone." to "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం (SLGAN) మీ గోప్యతను గౌరవిస్తుంది. యాప్ సేవలు మరియు కొనుగోళ్లకు మద్దతు ఇవ్వడానికి మీ పేరు, సంప్రదింపు వివరాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సమాచారాన్ని ఉపయోగిస్తాము. మీ పాస్‌వర్డ్ లేదా ఒకసారి ఉపయోగించే ధృవీకరణ కోడ్‌లను ఎవరితోనూ పంచుకోవాలని మేము అడగము.",
+        "Your information is used to operate account, address, wishlist, and order features. Access to information should be limited to what is needed to provide these services. Please keep your sign-in credentials private and contact SLGAN support if you have questions or believe your account has been accessed without permission. Do not submit sensitive financial information in chat or support messages." to "మీ సమాచారం ఖాతా, చిరునామా, విష్‌లిస్ట్ మరియు ఆర్డర్ సేవలను నిర్వహించడానికి ఉపయోగించబడుతుంది. ఈ సేవలకు అవసరమైన సమాచారానికే ప్రాప్యత పరిమితం చేయాలి. మీ సైన్-ఇన్ వివరాలను రహస్యంగా ఉంచండి. మీకు సందేహాలు ఉన్నా లేదా మీ ఖాతాను అనుమతి లేకుండా ఉపయోగించారని భావించినా SLGAN మద్దతును సంప్రదించండి. చాట్ లేదా మద్దతు సందేశాల్లో సున్నితమైన ఆర్థిక సమాచారాన్ని పంపవద్దు.",
+        "Tap the heart on any product to save it here." to "ఏదైనా ఉత్పత్తిపై ఉన్న హార్ట్ గుర్తును నొక్కితే ఇక్కడ సేవ్ అవుతుంది.",
+        "${savedProducts.size} saved products" to "${savedProducts.size} సేవ్ చేసిన ఉత్పత్తులు",
+        "Please sign in to like products." to "ఉత్పత్తులను ఇష్టమైన వాటిలో చేర్చడానికి సైన్ ఇన్ చేయండి.",
+        "Could not remove like." to "ఇష్టమైన వాటి నుంచి తొలగించలేకపోయాం.",
+        "Could not like product." to "ఉత్పత్తిని ఇష్టమైన వాటిలో చేర్చలేకపోయాం.",
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -1770,6 +1796,32 @@ private fun tr(text: String, language: String): String {
         "Select gender" to "लिंग चुनें",
         "Loading profile…" to "प्रोफ़ाइल लोड हो रही है…",
         "Please wait a moment" to "कृपया एक क्षण प्रतीक्षा करें",
+        "Connect with SLGAN" to "SLGAN से जुड़ें",
+        "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam on social media for updates and information." to "अपडेट और जानकारी के लिए श्री लक्ष्मी गणपति आयुर्वेद निलयम को सोशल मीडिया पर फ़ॉलो करें।",
+        "View live followers on Instagram" to "Instagram पर लाइव फ़ॉलोअर्स देखें",
+        "Loading your wishlist…" to "आपकी इच्छा-सूची लोड हो रही है…",
+        "Could not save rating." to "रेटिंग सहेजी नहीं जा सकी।",
+        "Please sign in to rate this product." to "इस उत्पाद को रेट करने के लिए साइन इन करें।",
+        "Rating saved" to "रेटिंग सहेजी गई",
+        "Out of Stock" to "स्टॉक में नहीं",
+        "Order successful" to "ऑर्डर सफल",
+        "Order failed" to "ऑर्डर विफल",
+        "Your order has been saved" to "आपका ऑर्डर सहेजा गया है",
+        "Please review your order" to "कृपया अपना ऑर्डर जाँचें",
+        "Your order was saved." to "आपका ऑर्डर सहेजा गया।",
+        "Your order could not be placed." to "आपका ऑर्डर नहीं किया जा सका।",
+        "ORDER STATUS" to "ऑर्डर स्थिति",
+        "Pending verification" to "सत्यापन लंबित",
+        "Any changes on this screen may be lost if you continue" to "जारी रखने पर इस स्क्रीन के बदलाव खो सकते हैं",
+        "Other" to "अन्य",
+        "Sri Lakshmi Ganapathi Ayurveda Nilayam was established in 1900 by Sri Vidya Raju Allamraju Perraju Garu at Uppada Kothapalli." to "श्री लक्ष्मी गणपति आयुर्वेद निलयम की स्थापना 1900 में श्री विद्या राजू अल्लमराजू पेर्राजू गरु ने उप्पाडा कोठापल्ली में की थी।",
+        "Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN) respects your privacy. We use account information such as your name, contact details, wishlist, and order information to provide app features and support your purchases. We do not ask you to share your password or one-time verification codes with anyone." to "श्री लक्ष्मी गणपति आयुर्वेद निलयम (SLGAN) आपकी गोपनीयता का सम्मान करता है। ऐप सुविधाएँ देने और आपकी खरीदारी में सहायता के लिए हम आपका नाम, संपर्क विवरण, इच्छा-सूची और ऑर्डर जानकारी उपयोग करते हैं। हम आपसे पासवर्ड या एक बार उपयोग होने वाले सत्यापन कोड किसी के साथ साझा करने के लिए नहीं कहते।",
+        "Your information is used to operate account, address, wishlist, and order features. Access to information should be limited to what is needed to provide these services. Please keep your sign-in credentials private and contact SLGAN support if you have questions or believe your account has been accessed without permission. Do not submit sensitive financial information in chat or support messages." to "आपकी जानकारी का उपयोग खाता, पता, इच्छा-सूची और ऑर्डर सुविधाएँ चलाने के लिए किया जाता है। जानकारी तक पहुँच इन सेवाओं के लिए आवश्यक सीमा तक ही होनी चाहिए। अपने साइन-इन विवरण निजी रखें और कोई प्रश्न हो या खाते में अनधिकृत पहुँच का संदेह हो तो SLGAN सहायता से संपर्क करें। चैट या सहायता संदेशों में संवेदनशील वित्तीय जानकारी न भेजें।",
+        "Tap the heart on any product to save it here." to "किसी भी उत्पाद पर दिल का निशान दबाकर उसे यहाँ सहेजें।",
+        "${savedProducts.size} saved products" to "${savedProducts.size} सहेजे गए उत्पाद",
+        "Please sign in to like products." to "उत्पाद पसंद करने के लिए साइन इन करें।",
+        "Could not remove like." to "पसंद से हटाया नहीं जा सका।",
+        "Could not like product." to "उत्पाद पसंद नहीं किया जा सका।",
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -6040,11 +6092,11 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                if (isEnglish) "Connect with SLGAN" else "SLGANతో కనెక్ట్ అవ్వండి",
+                tr("Connect with SLGAN", appLanguage),
                 color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold
             )
             Text(
-                if (isEnglish) "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam on social media for updates and information." else "తాజా సమాచారం మరియు వివరాల కోసం శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయాన్ని సోషల్ మీడియాలో అనుసరించండి.",
+                tr("Follow Sri Lakshmi Ganapathi Ayurveda Nilayam on social media for updates and information.", appLanguage),
                 color = Muted, fontSize = 14.sp, lineHeight = 21.sp
             )
             Card(
@@ -6071,7 +6123,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
                         Text("Instagram", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                         Text("@slganilayam", color = Muted, fontSize = 13.sp)
                         Text(
-                            if (isEnglish) "View live followers on Instagram" else "Instagramలో తాజా ఫాలోవర్ల సంఖ్య చూడండి",
+                            tr("View live followers on Instagram", appLanguage),
                             color = Muted, fontSize = 12.sp
                         )
                     }
@@ -6243,7 +6295,7 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                     Text("1900", color = appThemedColor(Color(0xFF8A642D)), fontSize = 30.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        if (appLanguage == "English") "Our Heritage" else "మా వారసత్వం",
+                        tr("Our Heritage", appLanguage),
                         color = Ink, fontSize = 19.sp, fontWeight = FontWeight.SemiBold
                     )
                     Spacer(Modifier.height(10.dp))
@@ -6311,7 +6363,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
         ) {
             Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
             Text(
-                if (isEnglish) "We are happy to hear from you. Contact us or visit our location." else "మీ సందేహాలు మరియు వివరాల కోసం మమ్మల్ని సంప్రదించండి లేదా మా చిరునామాకు రండి.",
+                tr("We are happy to hear from you. Contact us or visit our location.", appLanguage),
                 color = Muted, fontSize = 14.sp, lineHeight = 21.sp
             )
             Card(
@@ -6438,7 +6490,7 @@ private fun WishlistPage(
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
                 Text(tr("Your wishlist", appLanguage), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
-                Text(if (appLanguage == "English") "${savedProducts.size} saved products" else "${savedProducts.size} సేవ్ చేసిన ఉత్పత్తులు", color = Muted, fontSize = 12.sp)
+                Text(tr("${savedProducts.size} saved products", appLanguage), color = Muted, fontSize = 12.sp)
             }
             Icon(Icons.Default.Favorite, contentDescription = null, tint = appThemedColor(Color(0xFFD32F2F)), modifier = Modifier.padding(end = 12.dp).size(24.dp))
         }
@@ -6476,7 +6528,7 @@ private fun WishlistPage(
                 Text(tr("Your wishlist is empty", appLanguage), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    if (appLanguage == "English") "Tap the heart on any product to save it here." else "ఏదైనా ఉత్పత్తిపై ఉన్న హార్ట్ గుర్తును నొక్కితే ఇక్కడ సేవ్ అవుతుంది.",
+                    tr("Tap the heart on any product to save it here.", appLanguage),
                     color = Muted, fontSize = 14.sp, textAlign = TextAlign.Center, lineHeight = 20.sp
                 )
                 Spacer(Modifier.height(20.dp))
@@ -8319,13 +8371,13 @@ private fun OrdersPage(
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
                             Text(
-                                if (latestOrderSuccess) "Order successful" else "Order failed",
+                                if (latestOrderSuccess) tr("Order successful", LocalAppLanguage.current) else tr("Order failed", LocalAppLanguage.current),
                                 fontWeight = FontWeight.ExtraBold,
                                 fontSize = 20.sp,
                                 color = if (latestOrderSuccess) successGreen else appThemedColor(Color(0xFFB3261E))
                             )
                             Text(
-                                if (latestOrderSuccess) "Your order has been saved" else "Please review your order",
+                                if (latestOrderSuccess) tr("Your order has been saved", LocalAppLanguage.current) else tr("Please review your order", LocalAppLanguage.current),
                                 fontSize = 12.sp,
                                 color = Muted
                             )
@@ -8347,7 +8399,7 @@ private fun OrdersPage(
                     }
                     HorizontalDivider(color = if (latestOrderSuccess) appThemedColor(Color(0xFFD5E5CF)) else appThemedColor(Color(0xFFE8C9C7)), thickness = 1.dp)
                     Text(
-                        latestOrderMessage ?: if (latestOrderSuccess) "Your order was saved." else "Your order could not be placed.",
+                        latestOrderMessage ?: if (latestOrderSuccess) tr("Your order was saved.", LocalAppLanguage.current) else tr("Your order could not be placed.", LocalAppLanguage.current),
                         color = Ink,
                         fontSize = 15.sp,
                         lineHeight = 22.sp
@@ -8503,7 +8555,7 @@ private fun OrdersPage(
                                         verticalArrangement = Arrangement.spacedBy(0.dp)
                                     ) {
                                         Text(
-                                            "ORDER STATUS",
+                                            tr("ORDER STATUS", LocalAppLanguage.current),
                                             color = statusColor.copy(alpha = 0.78f),
                                             fontSize = 9.sp,
                                             lineHeight = 10.sp,
@@ -8511,7 +8563,7 @@ private fun OrdersPage(
                                             letterSpacing = 1.1.sp
                                         )
                                         Text(
-                                            if (isPending) "Pending verification" else status.replace('_', ' ').replaceFirstChar { it.uppercase() },
+                                            if (isPending) tr("Pending verification", LocalAppLanguage.current) else status.replace('_', ' ').replaceFirstChar { it.uppercase() },
                                             color = statusColor,
                                             fontSize = 14.sp,
                                             lineHeight = 16.sp,
@@ -10870,7 +10922,7 @@ private fun AddAddressDetailsPage(
             },
             text = {
                 Text(
-                    "Any changes on this screen may be lost if you continue",
+                    tr("Any changes on this screen may be lost if you continue", LocalAppLanguage.current),
                     textAlign = TextAlign.Center,
                     color = Muted
                 )
