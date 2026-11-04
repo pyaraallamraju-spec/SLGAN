@@ -7199,7 +7199,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Medium, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+            Text(localizedProductName(product.name, LocalAppLanguage.current, product.nameTe, product.nameHi), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Medium, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             Spacer(Modifier.height(6.dp))
             Row(
                 modifier = Modifier.fillMaxWidth().height(26.dp),
@@ -7412,7 +7412,7 @@ private fun ProductDetailsPage(
                                 Spacer(Modifier.weight(1f))
                                 ProductRatingLine(product, ratingSummary, showEmptyLabel = true)
                             }
-                            Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.Bold)
+                            Text(localizedProductName(product.name, currentLanguage, product.nameTe, product.nameHi), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.Bold)
                             Text(if (product.subtitle.isNotBlank()) "${tr("Net quantity", currentLanguage)}: ${product.subtitle}" else "${tr("Net quantity", currentLanguage)}: ${tr("See product pack", currentLanguage)}", color = Muted, fontSize = 15.sp)
                             if (product.price > 0.0) {
                                 Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 5.dp).background(appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(9.dp)).padding(horizontal = 10.dp, vertical = 5.dp))
@@ -7555,7 +7555,7 @@ private fun ProductDetailsPage(
                             Column(Modifier.weight(1f)) {
                                 Text(tr("Write A Review", LocalAppLanguage.current), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                                 Spacer(Modifier.height(2.dp))
-                                Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                                Text(localizedProductName(product.name, currentLanguage, product.nameTe, product.nameHi), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                             }
                             IconButton(onClick = { if (!ratingSaving) showReviewDialog = false }) { Icon(Icons.Default.Close, contentDescription = tr("Close review", LocalAppLanguage.current), tint = Muted) }
                         }
@@ -7745,7 +7745,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 }
                                 Spacer(Modifier.width(12.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                                    Text(localizedProductName(product.name, LocalAppLanguage.current, product.nameTe, product.nameHi), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 3, overflow = TextOverflow.Ellipsis)
                                     Spacer(Modifier.height(4.dp))
                                     Text(product.subtitle.ifBlank { product.quantity }, color = Muted, fontSize = 13.sp)
                                     Spacer(Modifier.height(8.dp))
@@ -7780,7 +7780,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF5F6FA))), contentScale = ContentScale.Crop)
                                         else Box(Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 35.sp) }
                                         Spacer(Modifier.height(7.dp))
-                                        Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+                                        Text(localizedProductName(product.name, LocalAppLanguage.current, product.nameTe, product.nameHi), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
                                         Text(money(product.price), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
                                         Spacer(Modifier.height(5.dp))
                                         Surface(
@@ -9499,7 +9499,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                         }
                                         Column(Modifier.fillMaxWidth().padding(horizontal = 7.dp, vertical = 5.dp)) {
                                             Text(
-                                                localizedProductName(product.name, LocalAppLanguage.current),
+                                                localizedProductName(product.name, LocalAppLanguage.current, product.nameTe, product.nameHi),
                                                 color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
                                                 modifier = Modifier.fillMaxWidth().height(42.dp),
                                                 maxLines = 3, overflow = TextOverflow.Ellipsis, lineHeight = 16.sp,
