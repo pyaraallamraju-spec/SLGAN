@@ -2322,7 +2322,9 @@ private fun AyurvedicApp() {
     var latestOrderSuccess by remember { mutableStateOf<Boolean?>(null) }
     var latestOrderInvoiceUrl by remember { mutableStateOf<String?>(null) }
     var latestOrderMessage by remember { mutableStateOf<String?>(null) }
-    var appLanguage by remember { mutableStateOf("English") }
+    val languagePreferences = remember { appContext.getSharedPreferences("slgan_preferences", android.content.Context.MODE_PRIVATE) }
+    var appLanguage by remember { mutableStateOf(languagePreferences.getString("app_language", "English")?.takeIf { it in listOf("English", "Telugu", "Hindi") } ?: "English") }
+    LaunchedEffect(appLanguage) { languagePreferences.edit().putString("app_language", appLanguage).apply() }
     var selectedCategory by remember { mutableStateOf("All") }
     var search by remember { mutableStateOf("") }
     var liveProducts by remember { mutableStateOf<List<Product>>(emptyList()) }
@@ -6083,7 +6085,7 @@ private fun ShopScreen(
             "SocialMedia" -> SocialMediaPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "ContactSLGAN" -> ContactSLGANPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "AccountPrivacy" -> AccountPrivacyPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
-            else -> HomePage(Modifier.padding(padding), category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
+            else -> HomePage(Modifier.padding(padding), appLanguage, { appLanguage = it }, category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
         }
     }
 }
@@ -6570,7 +6572,7 @@ private fun WishlistPage(
 }
 
 @Composable
-private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
+private fun HomePage(modifier: Modifier, appLanguage: String, onLanguageChange: (String) -> Unit, category: String, onCategoryChange: (String) -> Unit, search: String, onSearchChange: (String) -> Unit, cart: Map<String, Int>, products: List<Product>, productRatings: Map<String, ProductRatingSummary>, productLikes: Map<String, ProductLikeSummary>, onToggleLike: (Product) -> Unit, productsLoading: Boolean, productsError: String?, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit) {
     var databaseCategories by remember { mutableStateOf<List<String>>(emptyList()) }
     DisposableEffect(Unit) {
         val registration = FirebaseFirestore.getInstance().collection("categories")
@@ -6607,13 +6609,12 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
     }
     val currentUser = remember { FirebaseAuth.getInstance().currentUser }
     var welcomeNickname by remember(currentUser?.uid) { mutableStateOf("") }
-    var greetingLanguage by remember { mutableStateOf("English") }
     var greetingLoadingLanguage by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(greetingLoadingLanguage) {
-        val requestedLanguage = greetingLoadingLanguage ?: return@LaunchedEffect
-        kotlinx.coroutines.delay(350)
-        greetingLanguage = requestedLanguage
-        greetingLoadingLanguage = null
+        if (greetingLoadingLanguage != null) {
+            kotlinx.coroutines.delay(350)
+            greetingLoadingLanguage = null
+        }
     }
     DisposableEffect(currentUser?.uid) {
         var registration: ListenerRegistration? = null
@@ -6682,7 +6683,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    val greeting = when (greetingLanguage) {
+                    val greeting = when (appLanguage) {
                         "Telugu" -> if (welcomeNickname.isNotBlank()) "స్వాగతం, $welcomeNickname" else "SLGAN కు స్వాగతం"
                         "Hindi" -> if (welcomeNickname.isNotBlank()) "स्वागत है, $welcomeNickname" else "SLGAN में आपका स्वागत है"
                         else -> if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN"
@@ -6704,6 +6705,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                 .background(appThemedColor(Color(0xFFEAF2E9)))
                                 .clickable(enabled = greetingLoadingLanguage == null) {
                                     greetingLoadingLanguage = language
+                                    onLanguageChange(language)
                                 },
                             contentAlignment = Alignment.Center
                         ) {
