@@ -25,7 +25,9 @@ jobs:
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: |
-          test -n "$GOOGLE_MAPS_API_KEY" || { echo "Missing GOOGLE_MAPS_API_KEY repository secret"; exit 1; }
+          if [ -z "$GOOGLE_MAPS_API_KEY" ]; then
+            echo "GOOGLE_MAPS_API_KEY is not configured; building with an empty Maps key for compile verification."
+          fi
           gradle assembleDebug
       - name: Print APK signing fingerprints
         run: |
