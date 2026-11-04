@@ -4731,7 +4731,8 @@ private fun ShopScreen(
 private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () -> Unit) {
     val context = LocalContext.current
     val isEnglish = appLanguage == "English"
-    val facebookUrl = "https://www.facebook.com/share/1FsyJYWAjd/"
+    val instagramUrl = "https://www.instagram.com/slganilayam/"
+    val facebookUrl = "https://www.facebook.com/slganilayam"
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF7F7F7)))) {
         Row(
             Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 8.dp, vertical = 12.dp),
@@ -4753,6 +4754,45 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
                 if (isEnglish) "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam on social media for updates and information." else "తాజా సమాచారం మరియు వివరాల కోసం శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయాన్ని సోషల్ మీడియాలో అనుసరించండి.",
                 color = Muted, fontSize = 14.sp, lineHeight = 21.sp
             )
+            Card(
+                Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Row(
+                    Modifier.fillMaxWidth().padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        Modifier.size(48.dp).background(
+                            appThemedColor(Color(0xFFFCE7F3)),
+                            RoundedCornerShape(14.dp)
+                        ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("◎", color = appThemedColor(Color(0xFFE1306C)), fontSize = 34.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Spacer(Modifier.width(14.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text("Instagram", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("@slganilayam", color = Muted, fontSize = 13.sp)
+                        Text(
+                            if (isEnglish) "View live followers on Instagram" else "Instagramలో తాజా ఫాలోవర్ల సంఖ్య చూడండి",
+                            color = Muted, fontSize = 12.sp
+                        )
+                    }
+                    Button(
+                        onClick = {
+                            runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(instagramUrl))) }
+                                .onFailure { Toast.makeText(context, if (isEnglish) "Unable to open Instagram." else "Instagram తెరవడం సాధ్యం కాలేదు.", Toast.LENGTH_SHORT).show() }
+                        },
+                        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
+                    ) {
+                        Text(if (isEnglish) "Follow" else "ఫాలో")
+                    }
+                }
+            }
             Card(
                 Modifier.fillMaxWidth().clickable {
                     runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl))) }
