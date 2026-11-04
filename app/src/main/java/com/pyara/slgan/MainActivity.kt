@@ -5262,6 +5262,14 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
     }
     val currentUser = remember { FirebaseAuth.getInstance().currentUser }
     var welcomeNickname by remember(currentUser?.uid) { mutableStateOf("") }
+    var greetingLanguage by remember { mutableStateOf("English") }
+    var greetingLoadingLanguage by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(greetingLoadingLanguage) {
+        val requestedLanguage = greetingLoadingLanguage ?: return@LaunchedEffect
+        kotlinx.coroutines.delay(350)
+        greetingLanguage = requestedLanguage
+        greetingLoadingLanguage = null
+    }
     DisposableEffect(currentUser?.uid) {
         var registration: ListenerRegistration? = null
         currentUser?.uid?.let { uid ->
@@ -5324,7 +5332,48 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 18.dp)
             ) {
                 Spacer(Modifier.height(8.dp))
-                Text(if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN", fontSize = 19.sp, fontWeight = FontWeight.SemiBold, color = Ink)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    val greeting = when (greetingLanguage) {
+                        "Telugu" -> if (welcomeNickname.isNotBlank()) "స్వాగతం, $welcomeNickname" else "SLGAN కు స్వాగతం"
+                        "Hindi" -> if (welcomeNickname.isNotBlank()) "स्वागत है, $welcomeNickname" else "SLGAN में आपका स्वागत है"
+                        else -> if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN"
+                    }
+                    Text(
+                        greeting,
+                        modifier = Modifier.weight(1f),
+                        fontSize = 19.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Ink,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    listOf("Telugu" to "తె", "English" to "E", "Hindi" to "हि").forEach { (language, initial) ->
+                        Box(
+                            modifier = Modifier
+                                .size(25.dp)
+                                .clip(CircleShape)
+                                .background(appThemedColor(Color(0xFFEAF2E9)))
+                                .clickable(enabled = greetingLoadingLanguage == null) {
+                                    greetingLoadingLanguage = language
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            if (greetingLoadingLanguage == language) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(13.dp),
+                                    color = Forest,
+                                    strokeWidth = 1.7.dp
+                                )
+                            } else {
+                                Text(initial, color = Ink, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                }
                 Text(tr("Rooted in Tradition. Inspired by Nature.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                 Spacer(Modifier.height(12.dp))
                 HomeBannerSlider(products = products, onViewProduct = { productName ->
