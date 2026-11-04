@@ -1075,6 +1075,19 @@ private fun tr(text: String, language: String): String {
         "Please sign in to like products." to "ఉత్పత్తులను ఇష్టమైన వాటిలో చేర్చడానికి సైన్ ఇన్ చేయండి.",
         "Could not remove like." to "ఇష్టమైన వాటి నుంచి తొలగించలేకపోయాం.",
         "Could not like product." to "ఉత్పత్తిని ఇష్టమైన వాటిలో చేర్చలేకపోయాం.",
+"OR" to "లేదా", "LIVE" to "ప్రత్యక్షం", "OVERVIEW" to "సారాంశం", "MANAGEMENT" to "నిర్వహణ",
+        "Disease Library" to "వ్యాధుల జాబితా", "Manage diseases shown in the customer app" to "కస్టమర్ యాప్‌లో చూపే వ్యాధులను నిర్వహించండి",
+        "Could not load diseases" to "వ్యాధులను లోడ్ చేయలేకపోయాం", "TOTAL" to "మొత్తం",
+        "Instagram" to "ఇన్‌స్టాగ్రామ్", "Facebook" to "ఫేస్‌బుక్", "Estd. 1900" to "స్థాపితం 1900",
+        "Sri Lakshmi Ganapathi Ayurveda Nilayam" to "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం",
+        "Could not load products" to "ఉత్పత్తులను లోడ్ చేయలేకపోయాం", "Latest details could not be refreshed" to "తాజా వివరాలను రిఫ్రెష్ చేయలేకపోయాం",
+        "Could not load customers" to "కస్టమర్లను లోడ్ చేయలేకపోయాం", "Could not load orders" to "ఆర్డర్లను లోడ్ చేయలేకపోయాం",
+        "products" to "ఉత్పత్తులు", "disease catalogue items" to "వ్యాధుల జాబితా అంశాలు", "Showing" to "చూపిస్తోంది",
+        "of" to "లో", "orders • newest first" to "ఆర్డర్లు • కొత్తవి ముందు", "SORT" to "క్రమబద్ధీకరణ",
+        "ORDER ITEMS" to "ఆర్డర్ వస్తువులు", "Qty" to "పరిమాణం", "each" to "ప్రతి ఒక్కటి", "more items" to "మరిన్ని వస్తువులు",
+        "Order ID" to "ఆర్డర్ ID", "Email" to "ఇమెయిల్", "Order time" to "ఆర్డర్ సమయం",
+        "Information not available" to "సమాచారం అందుబాటులో లేదు",
+        "Check that the latest Firestore rules are published." to "తాజా Firestore నియమాలు ప్రచురించబడ్డాయో తనిఖీ చేయండి."
 
         "Tap to rate" to "రేటింగ్ ఇవ్వడానికి నొక్కండి",
         "Your review" to "మీ సమీక్ష",
@@ -1846,6 +1859,19 @@ private fun tr(text: String, language: String): String {
         "Please sign in to like products." to "उत्पाद पसंद करने के लिए साइन इन करें।",
         "Could not remove like." to "पसंद से हटाया नहीं जा सका।",
         "Could not like product." to "उत्पाद पसंद नहीं किया जा सका।",
+"OR" to "या", "LIVE" to "लाइव", "OVERVIEW" to "अवलोकन", "MANAGEMENT" to "प्रबंधन",
+        "Disease Library" to "रोग सूची", "Manage diseases shown in the customer app" to "ग्राहक ऐप में दिखाए जाने वाले रोगों का प्रबंधन करें",
+        "Could not load diseases" to "रोग लोड नहीं हो सके", "TOTAL" to "कुल",
+        "Instagram" to "इंस्टाग्राम", "Facebook" to "फेसबुक", "Estd. 1900" to "स्थापित 1900",
+        "Sri Lakshmi Ganapathi Ayurveda Nilayam" to "श्री लक्ष्मी गणपति आयुर्वेद निलयम",
+        "Could not load products" to "उत्पाद लोड नहीं हो सके", "Latest details could not be refreshed" to "नवीनतम विवरण रीफ़्रेश नहीं हो सके",
+        "Could not load customers" to "ग्राहक लोड नहीं हो सके", "Could not load orders" to "ऑर्डर लोड नहीं हो सके",
+        "products" to "उत्पाद", "disease catalogue items" to "रोग सूची आइटम", "Showing" to "दिखा रहे हैं",
+        "of" to "में से", "orders • newest first" to "ऑर्डर • नवीनतम पहले", "SORT" to "क्रमबद्ध करें",
+        "ORDER ITEMS" to "ऑर्डर आइटम", "Qty" to "मात्रा", "each" to "प्रति", "more items" to "और आइटम",
+        "Order ID" to "ऑर्डर ID", "Email" to "ईमेल", "Order time" to "ऑर्डर समय",
+        "Information not available" to "जानकारी उपलब्ध नहीं है",
+        "Check that the latest Firestore rules are published." to "जाँचें कि नवीनतम Firestore नियम प्रकाशित हैं।"
 
         "Tap to rate" to "रेटिंग देने के लिए टैप करें",
         "Your review" to "आपकी समीक्षा",
@@ -3269,7 +3295,7 @@ private fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
-            Text("  OR  ", color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
+            Text(tr("OR", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
             Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
         }
         OutlinedButton(
@@ -3845,7 +3871,7 @@ private fun AdminProductsScreen(
         }
         when {
             loading -> AppLoader("Loading products…", compact = true, messageColor = AdminInk)
-            loadError != null && products.isEmpty() -> Text("Could not load products: $loadError", Modifier.padding(18.dp), color = AdminInk)
+            loadError != null && products.isEmpty() -> Text(tr("Could not load products", LocalAppLanguage.current) + ": $loadError", Modifier.padding(18.dp), color = AdminInk)
             filtered.isEmpty() -> EmptyState("📦", "No products found", if (searchText.isBlank()) "Tap + to create your first product." else "Try another product name or category.")
             else -> LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(horizontal = 10.dp, vertical = 2.dp), verticalArrangement = Arrangement.spacedBy(1.dp)) {
                 items(filtered, key = { it.id }) { product ->
@@ -4052,7 +4078,7 @@ private fun AdminProductDetailsScreen(
                         }
                     }
                 }
-                if (detailsError != null) Text("Latest details could not be refreshed: ${detailsError}", color = AdminMuted, fontSize = 12.sp)
+                if (detailsError != null) Text(tr("Latest details could not be refreshed", LocalAppLanguage.current) + ": ${detailsError}", color = AdminMuted, fontSize = 12.sp)
             }
         }
     }
@@ -4586,7 +4612,7 @@ private fun AdminDashboardScreen(
                         Text(tr("Current records across your store", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
                     }
                     Surface(shape = RoundedCornerShape(9.dp), color = AdminLightGray) {
-                        Text("LIVE", modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                        Text(tr("LIVE", LocalAppLanguage.current), modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp), color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
                     }
                 }
                 Spacer(Modifier.height(18.dp))
@@ -4622,7 +4648,7 @@ private fun AdminDashboardScreen(
         }
 
         Spacer(Modifier.height(20.dp))
-        Text("OVERVIEW", color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.5.sp)
+        Text(tr("OVERVIEW", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.5.sp)
         Spacer(Modifier.height(10.dp))
 
         // Compact metric tiles
@@ -4681,7 +4707,7 @@ private fun AdminDashboardScreen(
         }
 
         Spacer(Modifier.height(22.dp))
-        Text("MANAGEMENT", color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.5.sp)
+        Text(tr("MANAGEMENT", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.5.sp)
         Spacer(Modifier.height(10.dp))
 
         @Composable
@@ -5221,7 +5247,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                 IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back to dashboard", tint = AdminInk) }
                 Column(Modifier.weight(1f)) {
                     Text(tr("Diseases", LocalAppLanguage.current), color = AdminInk, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("${records.size} disease catalogue items", color = AdminMuted, fontSize = 12.sp)
+                    Text("${records.size} ${tr("disease catalogue items", LocalAppLanguage.current)}", color = AdminMuted, fontSize = 12.sp)
                 }
             }
             Card(
@@ -5239,8 +5265,8 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
-                        Text("Disease Library", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text("Manage diseases shown in the customer app", color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp)
+                        Text(tr("Disease Library", LocalAppLanguage.current), color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Manage diseases shown in the customer app", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp)
                     }
                     Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
                         Button(
@@ -5299,9 +5325,9 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
             loadError != null -> Column(Modifier.fillMaxWidth().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Default.CloudOff, contentDescription = null, tint = AdminMuted, modifier = Modifier.size(36.dp))
                 Spacer(Modifier.height(8.dp))
-                Text("Could not load diseases", color = AdminInk, fontWeight = FontWeight.Bold)
+                Text(tr("Could not load diseases", LocalAppLanguage.current), color = AdminInk, fontWeight = FontWeight.Bold)
                 Text(loadError.orEmpty(), color = AdminInk, fontSize = 12.sp)
-                Text("Check that the latest Firestore rules are published.", color = AdminMuted, fontSize = 12.sp)
+                Text(tr("Check that the latest Firestore rules are published.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
             }
             filtered.isEmpty() -> EmptyState("🌿", if (search.isBlank()) "No diseases added yet" else "No matching diseases", "Use Add to create your first disease entry.")
             else -> LazyColumn(
@@ -5472,13 +5498,13 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
             }
         }
         Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("SORT: $sortBy", color = AdminMuted, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
+            Text(tr("SORT", LocalAppLanguage.current) + ": $sortBy", color = AdminMuted, fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
             Spacer(Modifier.weight(1f))
-            Text("Showing ${visibleCustomers.size} of ${customers.size}", color = AdminMuted, fontSize = 10.sp)
+            Text(tr("Showing", LocalAppLanguage.current) + " ${visibleCustomers.size} " + tr("of", LocalAppLanguage.current) + " ${customers.size}", color = AdminMuted, fontSize = 10.sp)
         }
         when {
             loading -> AppLoader("Loading customers…", compact = true, messageColor = AdminInk)
-            error != null -> Text("Could not load customers: $error", color = AdminInk, modifier = Modifier.padding(16.dp))
+            error != null -> Text(tr("Could not load customers", LocalAppLanguage.current) + ": $error", color = AdminInk, modifier = Modifier.padding(16.dp))
             visibleCustomers.isEmpty() -> EmptyState("👥", if (search.isBlank() && statusFilter == "All") "No customers yet" else "No matching customers", "Try changing your search or filters.")
             else -> LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(horizontal = 12.dp, vertical = 5.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(visibleCustomers, key = { it["uid"].toString() }) { customer ->
@@ -5561,7 +5587,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                     Text(tr("Customer ID: $uid", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
                 }
             },
-            confirmButton = { TextButton(onClick = { viewingCustomer = null }) { Text("Close", color = AdminInk) } }
+            confirmButton = { TextButton(onClick = { viewingCustomer = null }) { Text(tr("Close", LocalAppLanguage.current), color = AdminInk) } }
         )
     }
 
@@ -5641,7 +5667,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                         OutlinedTextField(
                             value = mobile,
                             onValueChange = { mobile = it.filter(Char::isDigit).take(15) },
-                            label = { Text("Mobile number") },
+                            label = { Text(tr("Mobile number", LocalAppLanguage.current)) },
                             modifier = Modifier.weight(0.58f),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
@@ -5732,7 +5758,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
             Column(Modifier.weight(1f)) {
                 Text(tr("Manage Orders", LocalAppLanguage.current), color = AdminInk, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                Text("${filteredOrders.size} of ${orders.size} orders • newest first", color = AdminInk.copy(alpha = 0.65f), fontSize = 12.sp)
+                Text("${filteredOrders.size} " + tr("of", LocalAppLanguage.current) + " ${orders.size} " + tr("orders • newest first", LocalAppLanguage.current), color = AdminInk.copy(alpha = 0.65f), fontSize = 12.sp)
             }
             Icon(Icons.Default.Inventory2, contentDescription = "Orders", tint = AdminInk, modifier = Modifier.size(27.dp))
         }
@@ -5748,7 +5774,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(orders.size.toString(), color = AdminInk, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("TOTAL", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                    Text(tr("TOTAL", LocalAppLanguage.current), color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                 }
             }
         }
@@ -5829,7 +5855,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         }
         when {
             loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { AppLoader("Loading orders…") }
-            error != null -> Text("Could not load orders: " + error, color = AdminInk, modifier = Modifier.padding(20.dp))
+            error != null -> Text(tr("Could not load orders", LocalAppLanguage.current) + ": " + error, color = AdminInk, modifier = Modifier.padding(20.dp))
             orders.isEmpty() -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(tr("No orders yet", LocalAppLanguage.current), color = AdminMuted, fontSize = 18.sp) }
             filteredOrders.isEmpty() -> Box(Modifier.fillMaxSize().padding(20.dp), contentAlignment = Alignment.Center) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -5880,7 +5906,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                     }
                                 }
                                 HorizontalDivider(color = Color(0xFFB5B5B5).copy(alpha = 0.55f))
-                                Text("ORDER ITEMS (" + itemRows.size + ")", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                                Text(tr("ORDER ITEMS", LocalAppLanguage.current) + " (" + itemRows.size + ")", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
                                 if (itemRows.isEmpty()) {
                                     Text(tr("Item details are not available for this order.", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp)
                                 } else {
@@ -5898,13 +5924,13 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                                 Spacer(Modifier.width(9.dp))
                                                 Column(Modifier.weight(1f)) {
                                                     Text(name, color = AdminInk, fontSize = 11.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                                    Text("Qty: " + qty + (price?.let { " • ₹" + String.format(java.util.Locale.US, "%.2f", it) + " each" } ?: ""), color = AdminMuted, fontSize = 9.sp)
+                                                    Text(tr("Qty", LocalAppLanguage.current) + ": " + qty + (price?.let { " • ₹" + String.format(java.util.Locale.US, "%.2f", it) + " " + tr("each", LocalAppLanguage.current) } ?: ""), color = AdminMuted, fontSize = 9.sp)
                                                 }
                                                 Text(lineTotal?.let { "₹" + String.format(java.util.Locale.US, "%.2f", it) } ?: "—", color = AdminInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                                             }
                                         }
                                     }
-                                    if (itemRows.size > 3) Text("+ " + (itemRows.size - 3) + " more items", color = AdminMuted, fontSize = 10.sp)
+                                    if (itemRows.size > 3) Text("+ " + (itemRows.size - 3) + " " + tr("more items", LocalAppLanguage.current), color = AdminMuted, fontSize = 10.sp)
                                 }
                                 HorizontalDivider(color = Color(0xFFB5B5B5).copy(alpha = 0.55f))
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -5926,9 +5952,9 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                 }
                                 if (expanded) {
                                     HorizontalDivider(color = AdminLightGray)
-                                    Text("Order ID: " + displayId, color = AdminInk, fontSize = 11.sp)
-                                    Text("Email: " + (order["email"]?.toString().orEmpty().ifBlank { "Information not available" }), color = AdminMuted, fontSize = 11.sp)
-                                    Text("Order time: " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Information not available"), color = AdminMuted, fontSize = 11.sp)
+                                    Text(tr("Order ID", LocalAppLanguage.current) + ": " + displayId, color = AdminInk, fontSize = 11.sp)
+                                    Text(tr("Email", LocalAppLanguage.current) + ": " + (order["email"]?.toString().orEmpty().ifBlank { tr("Information not available", LocalAppLanguage.current) }), color = AdminMuted, fontSize = 11.sp)
+                                    Text(tr("Order time", LocalAppLanguage.current) + ": " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: tr("Information not available", LocalAppLanguage.current)), color = AdminMuted, fontSize = 11.sp)
                                     if (pending) {
                                         Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
                                             OutlinedButton(
@@ -6045,7 +6071,7 @@ private fun ShopScreen(
                     Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Ink, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     Spacer(Modifier.weight(1f))
                     Spacer(Modifier.width(8.dp))
-                    Text("Estd. 1900", color = Muted, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.Medium, maxLines = 1)
+                    Text(tr("Estd. 1900", LocalAppLanguage.current), color = Muted, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.Medium, maxLines = 1)
                 }
             }
             Spacer(Modifier.weight(1f))
@@ -6174,7 +6200,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
                     }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
-                        Text("Instagram", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Instagram", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                         Text("@slganilayam", color = Muted, fontSize = 13.sp)
                         Text(
                             tr("View live followers on Instagram", appLanguage),
@@ -6210,7 +6236,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
                     }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
-                        Text("Facebook", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Facebook", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                         Text(tr("Follow us on Facebook", appLanguage), color = Muted, fontSize = 13.sp)
                     }
                     Icon(Icons.Default.OpenInNew, contentDescription = if (isEnglish) "Open Facebook" else "Facebook తెరవండి", tint = Ink)
@@ -6406,7 +6432,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
             Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()).padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Sri Lakshmi Ganapathi Ayurveda Nilayam", LocalAppLanguage.current), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
             Text(
                 tr("We are happy to hear from you. Contact us or visit our location.", appLanguage),
                 color = Muted, fontSize = 14.sp, lineHeight = 21.sp
@@ -9583,7 +9609,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
             Row(Modifier.fillMaxWidth().background(appThemedColor(Color(0xFFF3F5FA))).padding(horizontal = 10.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(tr(selectedCategory, LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
                 Spacer(Modifier.weight(1f))
-                Text("${selectedProducts.size} products", color = Muted, fontSize = 11.sp, maxLines = 1)
+                Text("${selectedProducts.size} ${tr("products", LocalAppLanguage.current)}", color = Muted, fontSize = 11.sp, maxLines = 1)
             }
             LazyColumn(
                 modifier = Modifier.fillMaxWidth().weight(1f),
@@ -9847,7 +9873,7 @@ private fun AccountsPage(
                 Text(email, color = Ink, fontSize = 14.sp, textAlign = TextAlign.Center)
             }
             Spacer(Modifier.height(5.dp))
-            Text("Sri Lakshmi Ganapathi Ayurveda Nilayam", color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+            Text(tr("Sri Lakshmi Ganapathi Ayurveda Nilayam", LocalAppLanguage.current), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
         }
 
         Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
