@@ -7953,57 +7953,75 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .ifBlank { address["mobile"]?.toString().orEmpty() }
                     .ifBlank { address["receiverPhone"]?.toString().orEmpty() }
                     .ifBlank { phone }
-                Card(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 2.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), shape = RoundedCornerShape(14.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))) {
-                    Column(Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(0.dp)) {
+                Box(
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(Brush.linearGradient(listOf(Color(0xFFF7FDEB), Color(0xFFE5F7D5), Color(0xFFD5F0BD))))
+                        .border(1.dp, appThemedColor(Color(0xFF62A94A)), RoundedCornerShape(24.dp))
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.delivery_address_bg),
+                        contentDescription = null,
+                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight().fillMaxWidth(0.56f),
+                        contentScale = ContentScale.FillBounds
+                    )
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink)
-                            Text(tr("Deliver to:", LocalAppLanguage.current) + " " + (address["label"]?.toString().orEmpty().ifBlank { tr("Saved address", LocalAppLanguage.current) }), color = Ink, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                            TextButton(onClick = {
-                                 val user = FirebaseAuth.getInstance().currentUser
-                                 if (user == null) {
-                                     errorMessage = "Please sign in again before choosing an address."
-                                 } else {
-                                     errorMessage = null
-                                     loadingDeliveryAddresses = true
-                                     showCheckout = true
-                                     FirebaseFirestore.getInstance().collection("addresses").whereEqualTo("userId", user.uid).get()
-                                         .addOnSuccessListener { snapshot ->
-                                             savedAddresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
-                                             if (selectedDeliveryAddressId == null || savedAddresses.none { it["_id"]?.toString() == selectedDeliveryAddressId }) {
-                                                 selectedDeliveryAddressId = (confirmedDeliveryAddress?.get("_id")?.toString()
-                                                     ?: savedAddresses.firstOrNull { it["isDefault"] == true || it["default"] == true }?.get("_id")?.toString()
-                                                     ?: savedAddresses.firstOrNull()?.get("_id")?.toString())
-                                             }
-                                             loadingDeliveryAddresses = false
-                                         }
-                                         .addOnFailureListener { error ->
-                                             loadingDeliveryAddresses = false
-                                             errorMessage = error.localizedMessage ?: "Could not load saved addresses."
-                                         }
-                                 }
-                             }) { Text(tr("Change", LocalAppLanguage.current), color = Ink) }
+                            Icon(Icons.Default.LocationOn, contentDescription = null, tint = appThemedColor(Color(0xFF238B3B)), modifier = Modifier.size(27.dp))
+                            Spacer(Modifier.width(7.dp))
+                            Text(tr("Delivery address", LocalAppLanguage.current), color = appThemedColor(Color(0xFF176B2D)), fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+                            OutlinedButton(
+                                onClick = {
+                                    val user = FirebaseAuth.getInstance().currentUser
+                                    if (user == null) {
+                                        errorMessage = "Please sign in again before choosing an address."
+                                    } else {
+                                        errorMessage = null
+                                        loadingDeliveryAddresses = true
+                                        showCheckout = true
+                                        FirebaseFirestore.getInstance().collection("addresses").whereEqualTo("userId", user.uid).get()
+                                            .addOnSuccessListener { snapshot ->
+                                                savedAddresses = snapshot.documents.map { doc -> doc.data.orEmpty() + ("_id" to doc.id) }
+                                                if (selectedDeliveryAddressId == null || savedAddresses.none { it["_id"]?.toString() == selectedDeliveryAddressId }) {
+                                                    selectedDeliveryAddressId = (confirmedDeliveryAddress?.get("_id")?.toString()
+                                                        ?: savedAddresses.firstOrNull { it["isDefault"] == true || it["default"] == true }?.get("_id")?.toString()
+                                                        ?: savedAddresses.firstOrNull()?.get("_id")?.toString())
+                                                }
+                                                loadingDeliveryAddresses = false
+                                            }
+                                            .addOnFailureListener { error ->
+                                                loadingDeliveryAddresses = false
+                                                errorMessage = error.localizedMessage ?: "Could not load saved addresses."
+                                            }
+                                    }
+                                },
+                                contentPadding = PaddingValues(horizontal = 11.dp, vertical = 3.dp),
+                                shape = RoundedCornerShape(50),
+                                border = BorderStroke(1.dp, appThemedColor(Color(0xFF238B3B))),
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = appThemedColor(Color(0xFF175F2B)))
+                            ) {
+                                Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(15.dp))
+                                Spacer(Modifier.width(4.dp))
+                                Text(tr("Change", LocalAppLanguage.current), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            }
                         }
-                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                recipientName,
-                                color = Ink,
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.Medium,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                recipientMobile,
-                                color = Muted,
-                                fontSize = 13.sp,
-                                textAlign = TextAlign.End
-                            )
+                        Column(Modifier.fillMaxWidth(0.76f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Person, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(19.dp))
+                                Spacer(Modifier.width(9.dp))
+                                Text(recipientName, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Call, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
+                                Spacer(Modifier.width(9.dp))
+                                Text(recipientMobile, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                            }
+                            Row(verticalAlignment = Alignment.Top) {
+                                Icon(Icons.Default.LocationOn, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(19.dp))
+                                Spacer(Modifier.width(9.dp))
+                                Text(confirmedText.ifBlank { tr("Complete address not available", LocalAppLanguage.current) }, color = Ink, fontSize = 13.sp, lineHeight = 18.sp)
+                            }
                         }
-                        Text(
-                            confirmedText.ifBlank { "Complete address not available" },
-                            color = Muted,
-                            fontSize = 13.sp,
-                            lineHeight = 18.sp
-                        )
                     }
                 }
             } else {
