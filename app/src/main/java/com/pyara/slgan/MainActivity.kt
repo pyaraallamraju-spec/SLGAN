@@ -617,6 +617,64 @@ private fun tr(text: String, language: String): String {
         "Choose date" to "తేదీని ఎంచుకోండి",
         "Save profile" to "ప్రొఫైల్‌ను సేవ్ చేయండి",
         "Couldn't save profile. Please try again." to "ప్రొఫైల్‌ను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
+        "Request To Delete Account" to "ఖాతా తొలగింపు కోసం అభ్యర్థించండి",
+        "Request to closure of your account" to "మీ ఖాతాను మూసివేయమని అభ్యర్థించండి",
+        "Request account deletion" to "ఖాతా తొలగింపు అభ్యర్థన",
+        "This will open a request email to SLGAN support. Your account will not be deleted automatically. Do you want to continue?" to "ఇది SLGAN మద్దతుకు అభ్యర్థన ఇమెయిల్‌ను తెరుస్తుంది. మీ ఖాతా ఆటోమేటిక్‌గా తొలగించబడదు. కొనసాగించాలా?",
+        "No email app is available." to "ఇమెయిల్ యాప్ అందుబాటులో లేదు.",
+        "About Us" to "మా గురించి",
+        "Our Heritage" to "మన వారసత్వం",
+        "Contact SLGAN" to "SLGANను సంప్రదించండి",
+        "We are happy to hear from you. Contact us or visit our location." to "మీ నుంచి వినడం మాకు ఆనందం. మమ్మల్ని సంప్రదించండి లేదా మా చిరునామాను సందర్శించండి.",
+        "Business Address" to "వ్యాపార చిరునామా",
+        "Get directions" to "దారి చూపించండి",
+        "Call SLGAN" to "SLGANకు కాల్ చేయండి",
+        "Your Information" to "మీ సమాచారం",
+        "About And Support" to "మా గురించి మరియు సహాయం",
+        "Other Information" to "ఇతర సమాచారం",
+        "Your wellness, rooted in tradition" to "సంప్రదాయంలో పాతుకుపోయిన మీ ఆరోగ్యం",
+        "Explore our Ayurvedic collection and updates." to "మా ఆయుర్వేద ఉత్పత్తులు మరియు తాజా సమాచారాన్ని చూడండి.",
+        "Help and support" to "సహాయం మరియు మద్దతు",
+        "Personal information" to "వ్యక్తిగత సమాచారం",
+        "Share the app" to "యాప్‌ను షేర్ చేయండి",
+        "Please sign in again to save your language." to "మీ భాషను సేవ్ చేయడానికి మళ్లీ సైన్ ఇన్ చేయండి.",
+        "Language preference saved." to "భాష ప్రాధాన్యత సేవ్ అయింది.",
+        "Couldn't save language. Please try again." to "భాషను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
+        "Log out from?" to "ఎక్కడి నుంచి లాగ్ అవుట్ చేయాలి?",
+        "Choose where you want to end your SLGAN session." to "మీ SLGAN సెషన్‌ను ఎక్కడ ముగించాలో ఎంచుకోండి.",
+        "Sign out from current device" to "ప్రస్తుత పరికరం నుంచి సైన్ అవుట్ చేయండి",
+        "All devices" to "అన్ని పరికరాలు",
+        "Could not open this image. Please choose another." to "ఈ చిత్రాన్ని తెరవలేకపోయాం. దయచేసి మరొకదాన్ని ఎంచుకోండి.",
+        "Profile picture updated." to "ప్రొఫైల్ చిత్రం నవీకరించబడింది.",
+        "Please try again" to "దయచేసి మళ్లీ ప్రయత్నించండి",
+        "Could not process image. Please choose another." to "చిత్రాన్ని ప్రాసెస్ చేయలేకపోయాం. దయచేసి మరొకదాన్ని ఎంచుకోండి.",
+        "Account profile picture" to "ఖాతా ప్రొఫైల్ చిత్రం",
+        "Account profile" to "ఖాతా ప్రొఫైల్",
+        "Edit profile picture" to "ప్రొఫైల్ చిత్రాన్ని సవరించండి",
+        "Selected" to "ఎంచుకున్నారు",
+        "Not selected" to "ఎంచుకోలేదు",
+        "Current Device" to "ప్రస్తుత పరికరం",
+        "All Devices" to "అన్ని పరికరాలు",
+        "Requires secure server support" to "సురక్షిత సర్వర్ మద్దతు అవసరం",
+        "SLGAN Assistant" to "SLGAN సహాయకుడు",
+        "Help & Support · Telugu + English" to "సహాయం మరియు మద్దతు · తెలుగు + English",
+        "Send message" to "సందేశం పంపండి",
+        "Your order was saved." to "మీ ఆర్డర్ సేవ్ అయింది.",
+        "Your order could not be placed." to "మీ ఆర్డర్‌ను నమోదు చేయలేకపోయాం.",
+        "Order successful" to "ఆర్డర్ విజయవంతమైంది",
+        "Order failed" to "ఆర్డర్ విఫలమైంది",
+        "ORDER STATUS" to "ఆర్డర్ స్థితి",
+        "Pending verification" to "ధృవీకరణ పెండింగ్‌లో ఉంది",
+        "Date not available" to "తేదీ అందుబాటులో లేదు",
+        "Unable to share order items" to "ఆర్డర్ వస్తువులను షేర్ చేయలేకపోయాం",
+        "Could not identify this order." to "ఈ ఆర్డర్‌ను గుర్తించలేకపోయాం.",
+        "Order deleted" to "ఆర్డర్ తొలగించబడింది",
+        "Could not delete order" to "ఆర్డర్‌ను తొలగించలేకపోయాం",
+        "Order ID copied" to "ఆర్డర్ ID కాపీ చేయబడింది",
+        "Show all disease options" to "అన్ని వ్యాధి ఎంపికలను చూపించండి",
+        "Close disease details and clear search" to "వ్యాధి వివరాలను మూసివేసి శోధనను క్లియర్ చేయండి",
+        "Clear search" to "శోధనను క్లియర్ చేయండి",
+        "ADD" to "జోడించండి",
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -912,6 +970,64 @@ private fun tr(text: String, language: String): String {
         "Choose date" to "तिथि चुनें",
         "Save profile" to "प्रोफ़ाइल सहेजें",
         "Couldn't save profile. Please try again." to "प्रोफ़ाइल सहेजी नहीं जा सकी। फिर प्रयास करें।",
+        "Request To Delete Account" to "खाता हटाने का अनुरोध करें",
+        "Request to closure of your account" to "अपना खाता बंद करने का अनुरोध करें",
+        "Request account deletion" to "खाता हटाने का अनुरोध",
+        "This will open a request email to SLGAN support. Your account will not be deleted automatically. Do you want to continue?" to "इससे SLGAN सहायता के लिए अनुरोध ईमेल खुलेगा। आपका खाता अपने आप नहीं हटेगा। क्या आप जारी रखना चाहते हैं?",
+        "No email app is available." to "कोई ईमेल ऐप उपलब्ध नहीं है।",
+        "About Us" to "हमारे बारे में",
+        "Our Heritage" to "हमारी विरासत",
+        "Contact SLGAN" to "SLGAN से संपर्क करें",
+        "We are happy to hear from you. Contact us or visit our location." to "हमें आपसे सुनकर खुशी होगी। हमसे संपर्क करें या हमारे स्थान पर आएँ।",
+        "Business Address" to "व्यावसायिक पता",
+        "Get directions" to "रास्ता देखें",
+        "Call SLGAN" to "SLGAN को कॉल करें",
+        "Your Information" to "आपकी जानकारी",
+        "About And Support" to "हमारे बारे में और सहायता",
+        "Other Information" to "अन्य जानकारी",
+        "Your wellness, rooted in tradition" to "परंपरा में निहित आपका स्वास्थ्य",
+        "Explore our Ayurvedic collection and updates." to "हमारे आयुर्वेदिक उत्पाद और अपडेट देखें।",
+        "Help and support" to "सहायता और समर्थन",
+        "Personal information" to "व्यक्तिगत जानकारी",
+        "Share the app" to "ऐप साझा करें",
+        "Please sign in again to save your language." to "अपनी भाषा सहेजने के लिए फिर से साइन इन करें।",
+        "Language preference saved." to "भाषा प्राथमिकता सहेजी गई।",
+        "Couldn't save language. Please try again." to "भाषा सहेजी नहीं जा सकी। फिर प्रयास करें।",
+        "Log out from?" to "कहाँ से लॉग आउट करना है?",
+        "Choose where you want to end your SLGAN session." to "चुनें कि आप अपना SLGAN सत्र कहाँ समाप्त करना चाहते हैं।",
+        "Sign out from current device" to "वर्तमान डिवाइस से साइन आउट करें",
+        "All devices" to "सभी डिवाइस",
+        "Could not open this image. Please choose another." to "यह चित्र नहीं खुल सका। कृपया दूसरा चुनें।",
+        "Profile picture updated." to "प्रोफ़ाइल चित्र अपडेट किया गया।",
+        "Please try again" to "कृपया फिर प्रयास करें",
+        "Could not process image. Please choose another." to "चित्र संसाधित नहीं हो सका। कृपया दूसरा चुनें।",
+        "Account profile picture" to "खाता प्रोफ़ाइल चित्र",
+        "Account profile" to "खाता प्रोफ़ाइल",
+        "Edit profile picture" to "प्रोफ़ाइल चित्र संपादित करें",
+        "Selected" to "चयनित",
+        "Not selected" to "चयनित नहीं",
+        "Current Device" to "वर्तमान डिवाइस",
+        "All Devices" to "सभी डिवाइस",
+        "Requires secure server support" to "सुरक्षित सर्वर सहायता आवश्यक है",
+        "SLGAN Assistant" to "SLGAN सहायक",
+        "Help & Support · Telugu + English" to "सहायता और समर्थन · तेलुगु + English",
+        "Send message" to "संदेश भेजें",
+        "Your order was saved." to "आपका ऑर्डर सहेजा गया।",
+        "Your order could not be placed." to "आपका ऑर्डर नहीं किया जा सका।",
+        "Order successful" to "ऑर्डर सफल",
+        "Order failed" to "ऑर्डर विफल",
+        "ORDER STATUS" to "ऑर्डर स्थिति",
+        "Pending verification" to "सत्यापन लंबित",
+        "Date not available" to "तारीख उपलब्ध नहीं",
+        "Unable to share order items" to "ऑर्डर की वस्तुएँ साझा नहीं की जा सकीं",
+        "Could not identify this order." to "इस ऑर्डर की पहचान नहीं हो सकी।",
+        "Order deleted" to "ऑर्डर हटा दिया गया",
+        "Could not delete order" to "ऑर्डर हटाया नहीं जा सका",
+        "Order ID copied" to "ऑर्डर ID कॉपी किया गया",
+        "Show all disease options" to "सभी रोग विकल्प दिखाएँ",
+        "Close disease details and clear search" to "रोग विवरण बंद करें और खोज साफ़ करें",
+        "Clear search" to "खोज साफ़ करें",
+        "ADD" to "जोड़ें",
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -5308,9 +5424,9 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
                 Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink, modifier = Modifier.size(36.dp))
                 Spacer(Modifier.width(18.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(if (isEnglish) "Request To Delete Account" else "ఖాతా తొలగించమని అభ్యర్థించండి", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("Request To Delete Account", appLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(4.dp))
-                    Text(if (isEnglish) "Request to closure of your account" else "మీ ఖాతా మూసివేయడానికి అభ్యర్థించండి", color = Muted, fontSize = 14.sp)
+                    Text(tr("Request to closure of your account", appLanguage), color = Muted, fontSize = 14.sp)
                 }
                 Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Ink)
             }
@@ -5319,8 +5435,8 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
     if (showDeleteConfirmation) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirmation = false },
-            title = { Text(if (isEnglish) "Request account deletion" else "ఖాతా తొలగింపు అభ్యర్థన") },
-            text = { Text(if (isEnglish) "This will open a request email to SLGAN support. Your account will not be deleted automatically. Do you want to continue?" else "ఇది SLGAN సపోర్ట్‌కు అభ్యర్థన ఇమెయిల్‌ను తెరుస్తుంది. మీ ఖాతా ఆటోమేటిక్‌గా తొలగించబడదు. కొనసాగించాలా?") },
+            title = { Text(tr("Request account deletion", appLanguage)) },
+            text = { Text(tr("This will open a request email to SLGAN support. Your account will not be deleted automatically. Do you want to continue?", appLanguage)) },
             confirmButton = {
                 TextButton(onClick = {
                     showDeleteConfirmation = false
@@ -5332,10 +5448,10 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
                     runCatching { context.startActivity(emailIntent) }.onFailure {
                         Toast.makeText(context, if (isEnglish) "No email app is available." else "ఇమెయిల్ యాప్ అందుబాటులో లేదు.", Toast.LENGTH_SHORT).show()
                     }
-                }) { Text(if (isEnglish) "Continue" else "కొనసాగించు") }
+                }) { Text(tr("Continue", appLanguage)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirmation = false }) { Text(if (isEnglish) "Cancel" else "రద్దు") }
+                TextButton(onClick = { showDeleteConfirmation = false }) { Text(tr("Cancel", appLanguage)) }
             }
         )
     }
@@ -5416,7 +5532,7 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                         .setPositiveButton("OK", null).show()
                 }.padding(horizontal = 22.dp, vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
-            ) { Text(if (appLanguage == "English") "Privacy Policy" else "గోప్యతా విధానం", color = Ink, fontSize = 19.sp) }
+            ) { Text(tr("Privacy Policy", appLanguage), color = Ink, fontSize = 19.sp) }
             Divider(color = appThemedColor(Color(0xFFE4E6EB)), thickness = 1.dp)
             Row(
                 Modifier.fillMaxWidth().clickable {
@@ -5426,7 +5542,7 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                         .setPositiveButton("OK", null).show()
                 }.padding(horizontal = 22.dp, vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
-            ) { Text(if (appLanguage == "English") "Terms & Conditions" else "నిబంధనలు మరియు షరతులు", color = Ink, fontSize = 19.sp) }
+            ) { Text(tr("Terms & Conditions", appLanguage), color = Ink, fontSize = 19.sp) }
             Divider(color = appThemedColor(Color(0xFFE4E6EB)), thickness = 1.dp)
         }
     }
@@ -5444,7 +5560,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
-            Text(if (isEnglish) "Contact SLGAN" else "SLGANను సంప్రదించండి", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Contact SLGAN", appLanguage), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
         Divider(color = appThemedColor(Color(0xFFB5B5B5)), thickness = 1.dp)
         Column(
@@ -5466,7 +5582,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink, modifier = Modifier.size(25.dp))
                         Spacer(Modifier.width(10.dp))
-                        Text(if (isEnglish) "Business Address" else "వ్యాపార చిరునామా", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Business Address", appLanguage), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
                     Text(
                         "C/O Sri Lakshmi Ganapathi Ayurveda Nilayam\nUppada Kothapalli\nPincode: 533447\nKakinada District, Andhra Pradesh",
@@ -5483,7 +5599,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                     ) {
                         Icon(Icons.Default.Map, contentDescription = null)
                         Spacer(Modifier.width(8.dp))
-                        Text(if (isEnglish) "Get directions" else "దారి చూపించండి")
+                        Text(tr("Get directions", appLanguage))
                     }
                 }
             }
@@ -5497,7 +5613,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.Phone, contentDescription = null, tint = Ink, modifier = Modifier.size(24.dp))
                         Spacer(Modifier.width(10.dp))
-                        Text(if (isEnglish) "Phone Number" else "ఫోన్ నంబర్", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Phone Number", appLanguage), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
                     Text(businessPhone, color = Ink, fontSize = 18.sp)
                     OutlinedButton(
@@ -5511,7 +5627,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                     ) {
                         Icon(Icons.Default.Phone, contentDescription = null, tint = Ink)
                         Spacer(Modifier.width(8.dp))
-                        Text(if (isEnglish) "Call SLGAN" else "SLGANకు కాల్ చేయండి", color = Ink)
+                        Text(tr("Call SLGAN", appLanguage), color = Ink)
                     }
                 }
             }
@@ -5579,7 +5695,7 @@ private fun WishlistPage(
             }
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
-                Text(if (appLanguage == "English") "Your wishlist" else "మీ విష్‌లిస్ట్", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Your wishlist", appLanguage), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
                 Text(if (appLanguage == "English") "${savedProducts.size} saved products" else "${savedProducts.size} సేవ్ చేసిన ఉత్పత్తులు", color = Muted, fontSize = 12.sp)
             }
             Icon(Icons.Default.Favorite, contentDescription = null, tint = appThemedColor(Color(0xFFD32F2F)), modifier = Modifier.padding(end = 12.dp).size(24.dp))
@@ -5598,9 +5714,9 @@ private fun WishlistPage(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(if (appLanguage == "English") "Couldn't load your wishlist" else "విష్‌లిస్ట్ లోడ్ కాలేదు", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Couldn't load your wishlist", appLanguage), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
-                Text(if (appLanguage == "English") "Please check your connection and try again." else "ఇంటర్నెట్ కనెక్షన్ తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.", color = Muted, textAlign = TextAlign.Center)
+                Text(tr("Please check your connection and try again.", appLanguage), color = Muted, textAlign = TextAlign.Center)
             }
         } else if (savedProducts.isEmpty()) {
             Column(
@@ -5615,7 +5731,7 @@ private fun WishlistPage(
                     Icon(Icons.Default.FavoriteBorder, contentDescription = null, tint = Forest, modifier = Modifier.size(42.dp))
                 }
                 Spacer(Modifier.height(18.dp))
-                Text(if (appLanguage == "English") "Your wishlist is empty" else "మీ విష్‌లిస్ట్ ఖాళీగా ఉంది", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Your wishlist is empty", appLanguage), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
                 Text(
                     if (appLanguage == "English") "Tap the heart on any product to save it here." else "ఏదైనా ఉత్పత్తిపై ఉన్న హార్ట్ గుర్తును నొక్కితే ఇక్కడ సేవ్ అవుతుంది.",
@@ -5623,7 +5739,7 @@ private fun WishlistPage(
                 )
                 Spacer(Modifier.height(20.dp))
                 Button(onClick = onBack, shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = Forest)) {
-                    Text(if (appLanguage == "English") "Continue shopping" else "షాపింగ్ కొనసాగించండి", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(tr("Continue shopping", appLanguage), color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
         } else {
@@ -8828,16 +8944,16 @@ private fun AccountsPage(
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Your wellness, rooted in tradition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("Your wellness, rooted in tradition", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(4.dp))
-                    Text("Explore our Ayurvedic collection and updates.", color = Muted, fontSize = 12.sp)
+                    Text(tr("Explore our Ayurvedic collection and updates.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
                 }
             }
         }
         Spacer(Modifier.height(18.dp))
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Column {
-                Text("Your Information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Your Information", LocalAppLanguage.current), modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information") { onTabChange("Profile") }
                 AccountMenuRow(Icons.Default.LocationOn, "Address book") { onTabChange("AddressBook") }
                 AccountMenuRow(Icons.Default.ReceiptLong, "My orders") { onTabChange("MyOrders") }
@@ -8852,7 +8968,7 @@ private fun AccountsPage(
         Spacer(Modifier.height(16.dp))
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Column {
-                Text("About And Support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("About And Support", LocalAppLanguage.current), modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.HelpOutline, "Help and support") { onTabChange("Help") }
                 AccountMenuRow(Icons.Default.Info, "About SLGAN") { onTabChange("About") }
                 AccountMenuRow(Icons.Default.Phone, "Contact SLGAN") { onTabChange("ContactSLGAN") }
@@ -8861,7 +8977,7 @@ private fun AccountsPage(
         Spacer(Modifier.height(14.dp))
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Column {
-                Text("Other Information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Other Information", LocalAppLanguage.current), modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.Share, "Share the app") {
                     val shareText = "Try Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN). Browse our Ayurvedic product collection."
                     val sendIntent = Intent(Intent.ACTION_SEND).apply {
