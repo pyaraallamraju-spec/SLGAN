@@ -352,13 +352,13 @@ private fun tr(text: String, language: String): String {
         "Place order" to "ఆర్డర్ చేయండి",
         "Customer name *" to "కస్టమర్ పేరు *",
         "Email for invoice *" to "ఇన్‌వాయిస్ కోసం ఇమెయిల్ *",
-        "Phone number" to "ఫోన్ నంబర్",
+        "Phone Number" to "ఫోన్ నంబర్",
                 "Payment: none. This order request does not collect payment." to "చెల్లింపు లేదు. ఈ ఆర్డర్ అభ్యర్థనలో డబ్బు వసూలు చేయబడదు.",
         "Cancel" to "రద్దు చేయండి",
         "My Orders" to "నా ఆర్డర్లు",
         "You have no previous orders yet." to "మీకు ఇంకా పాత ఆర్డర్లు లేవు.",
         "View / Download Invoice" to "ఇన్‌వాయిస్ చూడండి / డౌన్‌లోడ్ చేయండి",
-        "Previous orders" to "మునుపటి ఆర్డర్లు",
+        "Previous Orders" to "మునుపటి ఆర్డర్లు",
         "View complete invoice" to "పూర్తి ఇన్‌వాయిస్ చూడండి",
         "Open invoice PDF" to "ఇన్‌వాయిస్ PDF తెరవండి",
         "ORDER INVOICE" to "ఆర్డర్ ఇన్‌వాయిస్",
@@ -398,7 +398,7 @@ private fun tr(text: String, language: String): String {
         "Estd. 1900 by Vidyaraju Sri Allamraju Perraju Sharma" to "పెర్రాజు శర్మచే 1900లో స్థాపితం", "Nature's care, rooted in tradition." to "ప్రకృతి సంరక్షణ,\nసంప్రదాయ మూలాలతో.", "Sri Lakshmi Ganapathi Ayurveda Nilayam" to "శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయం",
         "OUR HERITAGE" to "మన వారసత్వం", "DISCOVER SLGAN" to "SLGANను తెలుసుకోండి", "SLGAN SIGNATURE PRODUCT" to "SLGAN ప్రత్యేక ఉత్పత్తి",
         "Traditional Ayurvedic care, rooted in nature" to "ప్రకృతిలో పాతుకుపోయిన సంప్రదాయ ఆయుర్వేద సంరక్షణ", "A signature SLGAN product" to "SLGAN ప్రత్యేక ఉత్పత్తి",
-        "Search products" to "ఉత్పత్తులను వెతకండి", "Shop by category" to "వర్గాల వారీగా కొనండి", "Could not load products: ${'$' }productsError" to "ఉత్పత్తులను లోడ్ చేయలేకపోయాం: ${'$' }productsError",
+        "Search products" to "ఉత్పత్తులను వెతకండి", "Shop By Category" to "వర్గాల వారీగా కొనండి", "Could not load products: ${'$' }productsError" to "ఉత్పత్తులను లోడ్ చేయలేకపోయాం: ${'$' }productsError",
         "Made with care for your everyday rituals." to "మీ రోజువారీ అవసరాల కోసం శ్రద్ధగా తయారు చేయబడింది.", "Your cart" to "మీ కార్ట్", "Subtotal" to "మొత్తం", "Checkout" to "చెక్‌అవుట్", "Demo only: checkout and payments are not connected." to "ఇది డెమో మాత్రమే: చెక్‌అవుట్ మరియు చెల్లింపులు ఇంకా కనెక్ట్ కాలేదు.", "Find the collection for your routine." to "మీ అవసరానికి తగిన ఉత్పత్తుల సమాహారాన్ని కనుగొనండి.",
         "Language preference saved." to "భాష ప్రాధాన్యత సేవ్ అయింది.", "Couldn't save language. Please try again." to "భాషను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
         "English" to "English", "Telugu" to "తెలుగు", "Hindi" to "హిందీ"
@@ -433,13 +433,13 @@ private fun tr(text: String, language: String): String {
         "Place order" to "ऑर्डर करें",
         "Customer name *" to "ग्राहक का नाम *",
         "Email for invoice *" to "इनवॉइस के लिए ईमेल *",
-        "Phone number" to "फ़ोन नंबर",
+        "Phone Number" to "फ़ोन नंबर",
                 "Payment: none. This order request does not collect payment." to "कोई भुगतान नहीं। इस ऑर्डर अनुरोध में पैसे नहीं लिए जाते।",
         "Cancel" to "रद्द करें",
         "My Orders" to "मेरे ऑर्डर",
         "You have no previous orders yet." to "आपके अभी तक कोई पुराने ऑर्डर नहीं हैं।",
         "View / Download Invoice" to "इनवॉइस देखें / डाउनलोड करें",
-        "Previous orders" to "पिछले ऑर्डर",
+        "Previous Orders" to "पिछले ऑर्डर",
         "View complete invoice" to "पूरा इनवॉइस देखें",
         "Open invoice PDF" to "इनवॉइस PDF खोलें",
         "ORDER INVOICE" to "ऑर्डर इनवॉइस",
@@ -479,7 +479,7 @@ private fun tr(text: String, language: String): String {
         "Estd. 1900 by Vidyaraju Sri Allamraju Perraju Sharma" to "पेर्राजू शर्मा द्वारा 1900 में स्थापित", "Nature's care, rooted in tradition." to "प्रकृति की देखभाल,\nपरंपरा की जड़ों से।", "Sri Lakshmi Ganapathi Ayurveda Nilayam" to "श्री लक्ष्मी गणपति आयुर्वेद निलयम",
         "OUR HERITAGE" to "हमारी विरासत", "DISCOVER SLGAN" to "SLGAN को जानें", "SLGAN SIGNATURE PRODUCT" to "SLGAN विशेष उत्पाद",
         "Traditional Ayurvedic care, rooted in nature" to "प्रकृति से जुड़ी पारंपरिक आयुर्वेदिक देखभाल", "A signature SLGAN product" to "SLGAN विशेष उत्पाद",
-        "Search products" to "उत्पाद खोजें", "Shop by category" to "श्रेणी के अनुसार खरीदें", "Could not load products: ${'$' }productsError" to "उत्पाद लोड नहीं हो सके: ${'$' }productsError",
+        "Search products" to "उत्पाद खोजें", "Shop By Category" to "श्रेणी के अनुसार खरीदें", "Could not load products: ${'$' }productsError" to "उत्पाद लोड नहीं हो सके: ${'$' }productsError",
         "Made with care for your everyday rituals." to "आपकी रोज़मर्रा की ज़रूरतों के लिए सावधानी से बनाया गया।", "Your cart" to "आपकी कार्ट", "Subtotal" to "उप-योग", "Checkout" to "चेकआउट", "Demo only: checkout and payments are not connected." to "यह केवल डेमो है: चेकआउट और भुगतान जुड़े नहीं हैं।", "Find the collection for your routine." to "अपनी दिनचर्या के लिए उत्पाद खोजें।",
         "Language preference saved." to "भाषा प्राथमिकता सहेजी गई।", "Couldn't save language. Please try again." to "भाषा सहेजी नहीं जा सकी। फिर प्रयास करें।",
         "English" to "English", "Telugu" to "तेलुगु", "Hindi" to "हिन्दी"
@@ -2825,7 +2825,7 @@ private fun AdminProductEditor(
             Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text("Product information", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text("Product Information", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text("Product name *") }, isError = invalidName, singleLine = true)
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -3189,7 +3189,7 @@ private fun AdminDashboardScreen(
             Column(Modifier.fillMaxWidth().padding(17.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        Text("Live overview", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("Live Overview", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                         Text("Current records across your store", color = AdminMuted, fontSize = 12.sp)
                     }
                     Surface(shape = RoundedCornerShape(9.dp), color = AdminLightGray) {
@@ -3318,7 +3318,7 @@ private fun AdminDashboardScreen(
         ManagementRow(Icons.Default.ReceiptLong, "Orders Management", "View and manage customer orders", onOrdersClick)
         ManagementRow(Icons.Default.MedicalServices, "Diseases Management", "Manage disease records", onDiseasesClick)
         ManagementRow(Icons.Default.PeopleAlt, "Customers Management", "View registered customers", onCustomersClick)
-        ManagementRow(Icons.Default.Palette, "App themes", "Apply Default or Theme 1 across the app", onThemesClick)
+        ManagementRow(Icons.Default.Palette, "App Themes", "Apply Default or Theme 1 across the app", onThemesClick)
         ManagementRow(Icons.Default.ViewCarousel, "Sliders & Banners", "Manage home page slider images and visibility", onBannersClick)
         Spacer(Modifier.height(18.dp))
     }
@@ -3347,7 +3347,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
             Column(Modifier.weight(1f)) {
                 Text("SLGAN ADMIN", color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
-                Text("App themes", color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                Text("App Themes", color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
             }
         }
         Text("Choose the appearance for the customer app. The admin screens keep their separate neutral theme.", color = AdminMuted, fontSize = 13.sp)
@@ -3507,13 +3507,13 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = AdminInk, modifier = Modifier.size(24.dp))
                 }
             }
-            Column { Text("HOME PAGE SLIDERS", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose active design", color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
+            Column { Text("HOME PAGE SLIDERS", color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text("Choose Active Design", color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
         }
         Spacer(Modifier.height(8.dp))
         Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(containerColor = AdminSurface), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("Show slider on Home", color = AdminInk, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text("Show Slider On Home", color = AdminInk, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     Text(if (sliderEnabled) "Slider is visible on the home page" else "Slider is hidden from the home page", color = AdminMuted, fontSize = 12.sp)
                 }
                 Switch(
@@ -3846,7 +3846,7 @@ private fun AdminDiseasesScreen(onBack: () -> Unit) {
                     }
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
-                        Text("Disease library", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("Disease Library", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                         Text("Manage diseases shown in the customer app", color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp)
                     }
                     Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.Center) {
@@ -4156,7 +4156,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         AlertDialog(
             onDismissRequest = { viewingCustomer = null },
             containerColor = AdminSurface,
-            title = { Text("Customer details", color = AdminInk, fontWeight = FontWeight.Bold) },
+            title = { Text("Customer Details", color = AdminInk, fontWeight = FontWeight.Bold) },
             text = {
                 Column(Modifier.heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(displayName, color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 17.sp)
@@ -4212,7 +4212,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
         AlertDialog(
             onDismissRequest = { if (!savingCustomer) editingCustomer = null },
             containerColor = AdminSurface,
-            title = { Text("Edit customer", color = AdminInk, fontWeight = FontWeight.Bold) },
+            title = { Text("Edit Customer", color = AdminInk, fontWeight = FontWeight.Bold) },
             text = {
                 Column(Modifier.heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedTextField(firstName, { firstName = it }, label = { Text("First name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
@@ -4350,7 +4350,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                 }
                 Spacer(Modifier.width(13.dp))
                 Column(Modifier.weight(1f)) {
-                    Text("Orders library", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("Orders Library", color = AdminInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     Text("Review and manage customer orders", color = AdminMuted, fontSize = 12.sp, lineHeight = 17.sp)
                 }
                 Column(horizontalAlignment = Alignment.End) {
@@ -4395,7 +4395,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.FilterList, contentDescription = null, tint = AdminInk, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(7.dp))
-                    Text("Filter orders by status", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                    Text("Filter Orders By Status", color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                 }
                 Spacer(Modifier.height(7.dp))
                 Row(
@@ -4738,7 +4738,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
-            Text(if (isEnglish) "Social media" else "సోషల్ మీడియా", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(if (isEnglish) "Social Media" else "సోషల్ మీడియా", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
         Divider(color = appThemedColor(Color(0xFFE4E6EB)), thickness = 1.dp)
         Column(
@@ -4793,11 +4793,11 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
-            Text(if (isEnglish) "Account privacy" else "ఖాతా గోప్యత", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(if (isEnglish) "Account Privacy" else "ఖాతా గోప్యత", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
         Divider(color = appThemedColor(Color(0xFFE4E6EB)), thickness = 1.dp)
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 24.dp)) {
-            Text(if (isEnglish) "Account privacy and policy" else "ఖాతా గోప్యత మరియు విధానం", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+            Text(if (isEnglish) "Account Privacy And Policy" else "ఖాతా గోప్యత మరియు విధానం", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(12.dp))
             Text(
                 if (isEnglish)
@@ -4833,7 +4833,7 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
                 Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink, modifier = Modifier.size(36.dp))
                 Spacer(Modifier.width(18.dp))
                 Column(Modifier.weight(1f)) {
-                    Text(if (isEnglish) "Request to delete account" else "ఖాతా తొలగించమని అభ్యర్థించండి", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text(if (isEnglish) "Request To Delete Account" else "ఖాతా తొలగించమని అభ్యర్థించండి", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(4.dp))
                     Text(if (isEnglish) "Request to closure of your account" else "మీ ఖాతా మూసివేయడానికి అభ్యర్థించండి", color = Muted, fontSize = 14.sp)
                 }
@@ -4991,7 +4991,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.LocationOn, contentDescription = null, tint = Ink, modifier = Modifier.size(25.dp))
                         Spacer(Modifier.width(10.dp))
-                        Text(if (isEnglish) "Business address" else "వ్యాపార చిరునామా", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        Text(if (isEnglish) "Business Address" else "వ్యాపార చిరునామా", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
                     Text(
                         "C/O Sri Lakshmi Ganapathi Ayurveda Nilayam\nUppada Kothapalli\nPincode: 533447\nKakinada District, Andhra Pradesh",
@@ -5022,7 +5022,7 @@ private fun ContactSLGANPage(modifier: Modifier, appLanguage: String, onBack: ()
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.Phone, contentDescription = null, tint = Ink, modifier = Modifier.size(24.dp))
                         Spacer(Modifier.width(10.dp))
-                        Text(if (isEnglish) "Phone number" else "ఫోన్ నంబర్", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        Text(if (isEnglish) "Phone Number" else "ఫోన్ నంబర్", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                     }
                     Text(businessPhone, color = Ink, fontSize = 18.sp)
                     OutlinedButton(
@@ -5351,7 +5351,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                 Spacer(Modifier.height(20.dp))
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                     Icon(Icons.Default.GridView, contentDescription = null, tint = appThemedColor(Color.Black), modifier = Modifier.size(20.dp))
-                    Text(tr("Shop by category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                    Text(tr("Shop By Category", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 }
                 Spacer(Modifier.height(8.dp))
                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -5400,7 +5400,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                     }
                 }
                 Spacer(Modifier.height(18.dp))
-                if (search.isNotBlank()) Text("Search results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
+                if (search.isNotBlank()) Text("Search Results", fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, color = Ink)
                 if (productsLoading) {
                     Spacer(Modifier.height(18.dp))
                     AppLoader(message = "Loading products…", compact = true)
@@ -5957,7 +5957,7 @@ private fun ProductDetailsPage(
                         }, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.Share, contentDescription = "Share product", tint = Color.Black) }
                     }
                     IconButton(onClick = { showReviewDialog = true }, modifier = Modifier.align(Alignment.BottomStart).padding(start = 24.dp, bottom = 22.dp).size(48.dp).background(appThemedColor(Color.White), CircleShape)) {
-                        Icon(Icons.Default.Info, contentDescription = "Product information", tint = Ink)
+                        Icon(Icons.Default.Info, contentDescription = "Product Information", tint = Ink)
                     }
                     Box(Modifier.align(Alignment.BottomCenter).padding(bottom = 18.dp).background(Color.White.copy(alpha = 0.85f), RoundedCornerShape(50.dp)).padding(horizontal = 12.dp, vertical = 5.dp)) {
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -6035,13 +6035,13 @@ private fun ProductDetailsPage(
                                 ) {
                                     Text(selectedDetailsTab, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                                     Text(detailContent.ifBlank { "Information not available." }, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
-                                    if (selectedDetailsTab == "About" && product.description.isNotBlank()) Text("Product information", color = Muted, fontSize = 11.sp)
+                                    if (selectedDetailsTab == "About" && product.description.isNotBlank()) Text("Product Information", color = Muted, fontSize = 11.sp)
                                 }
                             }
                             Row(Modifier.fillMaxWidth().clickable { showReviewDialog = true }.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Star, contentDescription = null, tint = Gold, modifier = Modifier.size(24.dp))
                                 Spacer(Modifier.width(10.dp))
-                                Text("Customer ratings & reviews", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                                Text("Customer Ratings & Reviews", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                                 Icon(Icons.Default.ChevronRight, contentDescription = null, tint = Muted)
                             }
                             if (customerReviews.isNotEmpty()) customerReviews.take(3).forEach { (customerName, reviewText) ->
@@ -6116,7 +6116,7 @@ private fun ProductDetailsPage(
                     Column(Modifier.fillMaxWidth().navigationBarsPadding().imePadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp).padding(top = 6.dp, bottom = 20.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
-                                Text("Write a review", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                                Text("Write A Review", color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                                 Spacer(Modifier.height(2.dp))
                                 Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                             }
@@ -6269,7 +6269,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             Column(Modifier.fillMaxSize().padding(22.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                 Box(Modifier.size(100.dp).background(appThemedColor(Color.White), CircleShape), contentAlignment = Alignment.Center) { Text("🛍️", fontSize = 48.sp) }
                 Spacer(Modifier.height(18.dp))
-                Text("Your cart is empty", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Text("Your Cart Is Empty", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
                 Text("Explore our Ayurvedic products and add your favourites.", color = Muted, fontSize = 14.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
             }
@@ -6285,7 +6285,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
-                                Text("Your Ayurvedic order", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                                Text("Your Ayurvedic Order", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                                 Text("Review ${selected.size} products before placing order", color = Muted, fontSize = 12.sp)
                             }
                             IconButton(
@@ -6332,7 +6332,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 if (recommendations.isNotEmpty()) {
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.padding(14.dp)) {
-                            Text("You might also like", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                            Text("You Might Also Like", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                             Spacer(Modifier.height(12.dp))
                             LazyRow(
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -6372,7 +6372,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(16.dp)) {
-                        Text("Bill details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text("Bill Details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(16.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             Text("Items total", color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
@@ -6387,7 +6387,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Divider(color = appThemedColor(Color(0xFFEFF1F5)))
                         Spacer(Modifier.height(12.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                            Text("Grand total", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+                            Text("Grand Total", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
                             Text(money(total), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                         }
                         Spacer(Modifier.height(8.dp))
@@ -6433,7 +6433,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(14.dp)) {
-                        Text("Delivery instructions", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                        Text("Delivery Instructions", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(10.dp))
                         listOf("Call before delivery", "Avoid calling").forEach { instruction ->
                             Row(Modifier.fillMaxWidth().clickable { selectedInstruction = if (selectedInstruction == instruction) "" else instruction }.padding(vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -6446,10 +6446,10 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(14.dp)) {
-                        Text("Ordering for someone else?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text("Ordering For Someone Else?", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         Text("Recipient details can be added at checkout.", color = Muted, fontSize = 13.sp)
                         Spacer(Modifier.height(8.dp))
-                        Text("Cancellation policy", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text("Cancellation Policy", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         Text("Orders are saved as pending verification. Please contact the shop for changes after placing an order.", color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                         Spacer(Modifier.height(10.dp))
                         Text("Product Design", color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
@@ -6654,7 +6654,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         ) {
             Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f)) {
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("Choose delivery address", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                    Text("Choose Delivery Address", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
                     Text("Select the saved address for this order.", color = Muted, fontSize = 14.sp)
                     if (loadingDeliveryAddresses) {
                         Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) { AppLoader("Loading addresses…", compact = true) }
@@ -6697,7 +6697,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         ) {
                             Icon(Icons.Default.Add, contentDescription = null, tint = Ink)
                             Spacer(Modifier.width(8.dp))
-                            Text("Add new address", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Ink)
+                            Text("Add New Address", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Ink)
                         }
                         Spacer(Modifier.height(8.dp))
                         Button(onClick = {
@@ -6713,7 +6713,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             errorMessage = null
                         }
                         }, enabled = !loadingDeliveryAddresses && !submitting && savedAddresses.isNotEmpty(), modifier = Modifier.fillMaxWidth().height(54.dp), shape = RoundedCornerShape(14.dp), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = Ink)) {
-                            Text("Confirm address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text("Confirm Address", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -6894,7 +6894,7 @@ private fun OrdersPage(
                     Icon(Icons.Default.ErrorOutline, contentDescription = null, tint = appThemedColor(Color(0xFFE76F35)), modifier = Modifier.size(38.dp))
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
-                        Text("Your failed orders", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        Text("Your Failed Orders", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                         Text("${failedOrders.size} order(s)", color = Muted, fontSize = 13.sp)
                     }
                     OutlinedButton(onClick = { selectedOrder = failedOrders.firstOrNull() }, shape = RoundedCornerShape(12.dp)) { Text("View", color = Forest) }
@@ -7015,7 +7015,7 @@ private fun OrdersPage(
 
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Current orders", fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
+                Text("Current Orders", fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
                 Text("Placed today · ${today.format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"))}", color = Muted, fontSize = 12.sp)
             }
             Box(
@@ -7184,7 +7184,7 @@ private fun OrdersPage(
         Spacer(Modifier.height(22.dp))
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text("Previous orders", fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
+                Text("Previous Orders", fontSize = 17.sp, fontWeight = FontWeight.SemiBold, color = Ink)
                 Text("Your order history", color = Muted, fontSize = 12.sp)
             }
             Box(
@@ -7288,7 +7288,7 @@ private fun OrdersPage(
     rateOrder?.let { order ->
         AlertDialog(
             onDismissRequest = { rateOrder = null },
-            title = { Text("Rate your order", color = Forest, fontWeight = FontWeight.Bold) },
+            title = { Text("Rate Your Order", color = Forest, fontWeight = FontWeight.Bold) },
             text = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("How was your order experience?", color = Muted)
@@ -7311,7 +7311,7 @@ private fun OrdersPage(
     orderOptions?.let { order ->
         ModalBottomSheet(onDismissRequest = { orderOptions = null }, containerColor = appThemedColor(Color.White), contentColor = Ink) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Order info", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("Order Info", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Row(Modifier.fillMaxWidth().clickable { confirmDeleteOrder = order; orderOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink)
                     Spacer(Modifier.width(12.dp)); Text("Delete order", color = Ink, fontSize = 16.sp)
@@ -7375,7 +7375,7 @@ private fun OrdersPage(
                 }
                 Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 28.dp)) {
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
-                        Text("Order summary", color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
+                        Text("Order Summary", color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(6.dp))
                         Text(if (status.equals("delivered", true) || status.equals("completed", true)) "Arrived at $created" else "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", color = Muted, fontSize = 16.sp)
                         Spacer(Modifier.height(12.dp))
@@ -7417,7 +7417,7 @@ private fun OrdersPage(
                     }
                     Spacer(Modifier.height(12.dp))
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp)) {
-                        Text("Bill details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text("Bill Details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(18.dp))
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text("MRP / subtotal", color = Muted); Text("₹" + String.format("%.0f", subtotal), color = Ink) }
                         Spacer(Modifier.height(12.dp))
@@ -7429,7 +7429,7 @@ private fun OrdersPage(
                     }
                     Divider(color = appThemedColor(Color(0xFFE5E7EB)), thickness = 7.dp)
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Text("Order details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text("Order Details", color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
                         Column {
                             Text("Order ID", color = Muted, fontSize = 14.sp)
                             Spacer(Modifier.height(5.dp))
@@ -7740,7 +7740,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 Column(Modifier.fillMaxWidth().padding(0.dp)) {
                     val detailTabs = listOf(
                         Triple("Description", Icons.Default.Info, "About"),
-                        Triple("Suggested medicines", Icons.Default.MedicalServices, "Medicines"),
+                        Triple("Suggested Medicines", Icons.Default.MedicalServices, "Medicines"),
                         Triple("Precautions", Icons.Default.HealthAndSafety, "Care")
                     )
                     Column(Modifier.fillMaxWidth()) {
@@ -7799,11 +7799,11 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                             Icon(Icons.Default.Info, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
                                         }
                                         Spacer(Modifier.width(10.dp))
-                                        Text("About this condition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                        Text("About This Condition", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp, modifier = Modifier.padding(start = 44.dp))
                                 }
-                                "Suggested medicines" -> {
+                                "Suggested Medicines" -> {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Box(
                                             Modifier.size(34.dp)
@@ -7814,7 +7814,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                             Icon(Icons.Default.MedicalServices, contentDescription = null, tint = Ink, modifier = Modifier.size(20.dp))
                                         }
                                         Spacer(Modifier.width(10.dp))
-                                        Text("Suggested medicines", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                                        Text("Suggested Medicines", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
                                     val displayedSuggestions = if (suggestedMedicineNames.isNotEmpty()) suggestedMedicineNames else relatedMedicines.map { it.name }
                                     if (detailLoading) CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.dp, color = Forest)
@@ -8301,7 +8301,7 @@ private fun AccountsPage(
         Spacer(Modifier.height(18.dp))
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Column {
-                Text("Your information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                Text("Your Information", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.PersonOutline, "Personal information") { onTabChange("Profile") }
                 AccountMenuRow(Icons.Default.LocationOn, "Address book") { onTabChange("AddressBook") }
                 AccountMenuRow(Icons.Default.ReceiptLong, "My orders") { onTabChange("MyOrders") }
@@ -8316,7 +8316,7 @@ private fun AccountsPage(
         Spacer(Modifier.height(16.dp))
         Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), shape = RoundedCornerShape(20.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
             Column {
-                Text("About and support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                Text("About And Support", modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.HelpOutline, "Help and support") { onTabChange("Help") }
                 AccountMenuRow(Icons.Default.Info, "About SLGAN") { onTabChange("About") }
                 AccountMenuRow(Icons.Default.Phone, "Contact SLGAN") { onTabChange("ContactSLGAN") }
@@ -8335,8 +8335,8 @@ private fun AccountsPage(
                     }
                     context.startActivity(Intent.createChooser(sendIntent, "Share SLGAN"))
                 }
-                AccountMenuRow(Icons.Default.Groups, "Social media", onClick = { onTabChange("SocialMedia") })
-                AccountMenuRow(Icons.Default.Lock, "Account privacy", onClick = { onTabChange("AccountPrivacy") })
+                AccountMenuRow(Icons.Default.Groups, "Social Media", onClick = { onTabChange("SocialMedia") })
+                AccountMenuRow(Icons.Default.Lock, "Account Privacy", onClick = { onTabChange("AccountPrivacy") })
                 AccountMenuRow(Icons.Default.NotificationsNone, "Notification preferences") {
                     android.app.AlertDialog.Builder(context)
                         .setTitle("Notification preferences")
@@ -8367,7 +8367,7 @@ private fun AccountsPage(
                     .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 28.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("Choose your language", color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                Text("Choose Your Language", color = Color(0xFF25282D), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
                 Spacer(Modifier.height(5.dp))
                 Text("Select your preferred language for SLGAN.", color = Color(0xFF707780), fontSize = 14.sp)
                 Spacer(Modifier.height(20.dp))
@@ -8603,7 +8603,7 @@ private fun HelpPage(modifier: Modifier, onBack: () -> Unit, appLanguage: String
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(Modifier.padding(14.dp)) {
-                Text(if (appLanguage == "English") "How can we help?" else "మీకు ఎలా సహాయం చేయగలం?", color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(if (appLanguage == "English") "How Can We Help?" else "మీకు ఎలా సహాయం చేయగలం?", color = Ink, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 Spacer(Modifier.height(4.dp))
                 Text(if (appLanguage == "English") "Quick answers for products, orders and delivery. AI replies become available when the secure support service is configured." else "Products, orders, delivery కోసం త్వరిత సమాధానాలు. Secure AI service configure చేసిన తర్వాత AI సమాధానాలు కూడా అందుబాటులో ఉంటాయి.", color = Muted, fontSize = 12.sp, lineHeight = 17.sp)
             }
@@ -8853,7 +8853,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     addressOptions?.let { address ->
         ModalBottomSheet(onDismissRequest = { addressOptions = null }, containerColor = appThemedColor(Color.White), contentColor = Ink) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text("Address options", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("Address Options", color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Row(Modifier.fillMaxWidth().clickable { confirmDeleteAddress = address; addressOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink); Spacer(Modifier.width(12.dp)); Text("Delete address", color = Ink, fontSize = 16.sp)
                 }
@@ -8912,7 +8912,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 22.dp)) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("Saved addresses", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                Text("Saved Addresses", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                 Box(
                     Modifier.size(44.dp)
                         .shadow(5.dp, RoundedCornerShape(DefaultBtn.cornerRadius))
@@ -9059,7 +9059,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     ) {
                                         Icon(
                                             Icons.Default.MoreHoriz,
-                                            contentDescription = "Address options",
+                                            contentDescription = "Address Options",
                                             tint = Ink,
                                             modifier = Modifier.padding(7.dp).size(18.dp)
                                         )
@@ -9521,7 +9521,7 @@ private fun AddAddressDetailsPage(
         ) {
             Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Address details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text("Address Details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Box {
                         OutlinedButton(
                             onClick = { citySearch = ""; cityMenu = true },
@@ -9590,7 +9590,7 @@ private fun AddAddressDetailsPage(
                                             }
                                         }
                                     }
-                                    Text(if (citySearch.isBlank()) "Other cities" else "Search results", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
+                                    Text(if (citySearch.isBlank()) "Other cities" else "Search Results", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
                                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)) {
                                         items(cities.filter { it.contains(citySearch.trim(), ignoreCase = true) }) { item ->
                                             Surface(
@@ -9730,7 +9730,7 @@ private fun AddAddressDetailsPage(
             }
             Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Contact details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text("Contact Details", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = false
@@ -9785,7 +9785,7 @@ private fun AddAddressDetailsPage(
                         modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) "Receiver's phone number*" else "Your phone number*") },
                         isError = phoneError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         leadingIcon = { Text("+91", color = Ink, fontWeight = FontWeight.SemiBold) },
-                        trailingIcon = { Icon(Icons.Default.ContactPhone, contentDescription = "Phone number", tint = Muted) }
+                        trailingIcon = { Icon(Icons.Default.ContactPhone, contentDescription = "Phone Number", tint = Muted) }
                     )
                     if (phoneError) Text("Please enter a valid phone number", color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     Text("Save address as", color = Muted, fontSize = 15.sp)
@@ -9871,7 +9871,7 @@ private fun ReviewAddressPage(
             IconButton(onClick = onEdit, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE1E6EF)), CircleShape)) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back to address details", tint = Ink)
             }
-            Text("Review address", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text("Review Address", modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
         if (initialLatitude != null && initialLongitude != null) {
             GoogleMapPicker(
@@ -9897,7 +9897,7 @@ private fun ReviewAddressPage(
             Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Delivery details", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Text("Delivery Details", modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
             TextButton(onClick = onEdit) { Text("Edit", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
         }
         Divider(color = appThemedColor(Color(0xFFE6E8EE)))
