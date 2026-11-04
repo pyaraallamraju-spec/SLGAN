@@ -1087,8 +1087,7 @@ private fun tr(text: String, language: String): String {
         "ORDER ITEMS" to "ఆర్డర్ వస్తువులు", "Qty" to "పరిమాణం", "each" to "ప్రతి ఒక్కటి", "more items" to "మరిన్ని వస్తువులు",
         "Order ID" to "ఆర్డర్ ID", "Email" to "ఇమెయిల్", "Order time" to "ఆర్డర్ సమయం",
         "Information not available" to "సమాచారం అందుబాటులో లేదు",
-        "Check that the latest Firestore rules are published." to "తాజా Firestore నియమాలు ప్రచురించబడ్డాయో తనిఖీ చేయండి."
-
+        "Check that the latest Firestore rules are published." to "తాజా Firestore నియమాలు ప్రచురించబడ్డాయో తనిఖీ చేయండి."",
         "Tap to rate" to "రేటింగ్ ఇవ్వడానికి నొక్కండి",
         "Your review" to "మీ సమీక్ష",
         "Review" to "సమీక్ష",
@@ -1871,8 +1870,7 @@ private fun tr(text: String, language: String): String {
         "ORDER ITEMS" to "ऑर्डर आइटम", "Qty" to "मात्रा", "each" to "प्रति", "more items" to "और आइटम",
         "Order ID" to "ऑर्डर ID", "Email" to "ईमेल", "Order time" to "ऑर्डर समय",
         "Information not available" to "जानकारी उपलब्ध नहीं है",
-        "Check that the latest Firestore rules are published." to "जाँचें कि नवीनतम Firestore नियम प्रकाशित हैं।"
-
+        "Check that the latest Firestore rules are published." to "जाँचें कि नवीनतम Firestore नियम प्रकाशित हैं।"",
         "Tap to rate" to "रेटिंग देने के लिए टैप करें",
         "Your review" to "आपकी समीक्षा",
         "Review" to "समीक्षा",
@@ -6147,7 +6145,7 @@ private fun ShopScreen(
             "SocialMedia" -> SocialMediaPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "ContactSLGAN" -> ContactSLGANPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
             "AccountPrivacy" -> AccountPrivacyPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
-            else -> HomePage(Modifier.padding(padding), appLanguage, { appLanguage = it }, category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
+            else -> HomePage(Modifier.padding(padding), appLanguage, onLanguageChange, category, onCategoryChange, search, onSearchChange, cart, products, productRatings, productLikes, onToggleLike, productsLoading, productsError, onAdd, onProductClick)
         }
     }
 }
