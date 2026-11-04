@@ -865,6 +865,65 @@ private fun tr(text: String, language: String): String {
         "Order rejected." to "ఆర్డర్ తిరస్కరించబడింది.",
         "Order approved." to "ఆర్డర్ ఆమోదించబడింది.",
         "Try again" to "మళ్లీ ప్రయత్నించండి",
+        "Social Media" to "సోషల్ మీడియా",
+        "Connect with SLGAN" to "SLGANతో కనెక్ట్ అవ్వండి",
+        "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam on social media for updates and information." to "తాజా సమాచారం మరియు అప్‌డేట్‌ల కోసం శ్రీ లక్ష్మీ గణపతి ఆయుర్వేద నిలయాన్ని సోషల్ మీడియాలో అనుసరించండి.",
+        "View live followers on Instagram" to "Instagramలో తాజా ఫాలోవర్ల సంఖ్య చూడండి",
+        "Follow" to "అనుసరించండి",
+        "Follow us on Facebook" to "Facebookలో మమ్మల్ని అనుసరించండి",
+        "Open Facebook" to "Facebook తెరవండి",
+        "Account Privacy" to "ఖాతా గోప్యత",
+        "Account Privacy And Policy" to "ఖాతా గోప్యత మరియు విధానం",
+        "Read less" to "తక్కువ చదవండి",
+        "Read more" to "మరింత చదవండి",
+        "About Us" to "మా గురించి",
+        "Our Heritage" to "మన వారసత్వం",
+        "Contact SLGAN" to "SLGANను సంప్రదించండి",
+        "We are happy to hear from you. Contact us or visit our location." to "మీ నుంచి వినడం మాకు ఆనందం. మమ్మల్ని సంప్రదించండి లేదా మా చిరునామాను సందర్శించండి.",
+        "Business Address" to "వ్యాపార చిరునామా",
+        "Get directions" to "దారి చూపించండి",
+        "Call SLGAN" to "SLGANకు కాల్ చేయండి",
+        "Your wishlist" to "మీ విష్‌లిస్ట్",
+        "saved products" to "సేవ్ చేసిన ఉత్పత్తులు",
+        "Tap the heart on any product to save it here." to "ఏదైనా ఉత్పత్తిపై హార్ట్ గుర్తును నొక్కి ఇక్కడ సేవ్ చేయండి.",
+        "Continue shopping" to "షాపింగ్ కొనసాగించండి",
+        "Patent Product" to "పేటెంట్ ఉత్పత్తి",
+        "Signature product" to "ప్రత్యేక ఉత్పత్తి",
+        "Add another" to "మరొకటి జోడించండి",
+        "Order successful" to "ఆర్డర్ విజయవంతమైంది",
+        "Order failed" to "ఆర్డర్ విఫలమైంది",
+        "Your order has been saved" to "మీ ఆర్డర్ సేవ్ అయింది",
+        "Please review your order" to "దయచేసి మీ ఆర్డర్‌ను పరిశీలించండి",
+        "Your order was saved." to "మీ ఆర్డర్ సేవ్ అయింది.",
+        "Your order could not be placed." to "మీ ఆర్డర్‌ను నమోదు చేయలేకపోయాం.",
+        "ORDER STATUS" to "ఆర్డర్ స్థితి",
+        "Pending verification" to "ధృవీకరణ పెండింగ్‌లో ఉంది",
+        "Arrived at $created" to "$created న డెలివరీ అయింది",
+        "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}" to "ఆర్డర్ స్థితి: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}",
+        "Date not available" to "తేదీ అందుబాటులో లేదు",
+        "Unable to share order items" to "ఆర్డర్ వస్తువులను షేర్ చేయలేకపోయాం",
+        "Could not identify this order." to "ఈ ఆర్డర్‌ను గుర్తించలేకపోయాం.",
+        "Order deleted" to "ఆర్డర్ తొలగించబడింది",
+        "Could not delete order" to "ఆర్డర్‌ను తొలగించలేకపోయాం",
+        "Order ID copied" to "ఆర్డర్ ID కాపీ చేయబడింది",
+        "Show all disease options" to "అన్ని వ్యాధి ఎంపికలను చూపించండి",
+        "Close disease details and clear search" to "వ్యాధి వివరాలను మూసివేసి శోధనను క్లియర్ చేయండి",
+        "Collapse $title" to "$title మూసివేయండి",
+        "Expand $title" to "$title విస్తరించండి",
+        "Clear search" to "శోధనను క్లియర్ చేయండి",
+        "Decrease quantity" to "పరిమాణాన్ని తగ్గించండి",
+        "Increase quantity" to "పరిమాణాన్ని పెంచండి",
+        "Add to Cart" to "కార్ట్‌కు జోడించండి",
+        "Out of stock" to "స్టాక్ లేదు",
+        "Information not available." to "సమాచారం అందుబాటులో లేదు.",
+        "Customer Ratings & Reviews" to "కస్టమర్ రేటింగ్‌లు మరియు సమీక్షలు",
+        "Write A Review" to "సమీక్ష రాయండి",
+        "Close review" to "సమీక్షను మూసివేయండి",
+        "Your review (optional)" to "మీ సమీక్ష (ఐచ్ఛికం)",
+        "Share your experience with this product" to "ఈ ఉత్పత్తితో మీ అనుభవాన్ని పంచుకోండి",
+        "Saved! Thank you for your review." to "సేవ్ అయింది! మీ సమీక్షకు ధన్యవాదాలు.",
+        "Review saved successfully" to "సమీక్ష విజయవంతంగా సేవ్ అయింది",
+        "Could not save rating. Please try again." to "రేటింగ్‌ను సేవ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.",
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -1408,6 +1467,65 @@ private fun tr(text: String, language: String): String {
         "Order rejected." to "ऑर्डर अस्वीकार किया गया।",
         "Order approved." to "ऑर्डर स्वीकृत किया गया।",
         "Try again" to "फिर प्रयास करें",
+        "Social Media" to "सोशल मीडिया",
+        "Connect with SLGAN" to "SLGAN से जुड़ें",
+        "Follow Sri Lakshmi Ganapathi Ayurveda Nilayam on social media for updates and information." to "अपडेट और जानकारी के लिए श्री लक्ष्मी गणपति आयुर्वेद निलयम को सोशल मीडिया पर फ़ॉलो करें।",
+        "View live followers on Instagram" to "Instagram पर लाइव फ़ॉलोअर्स देखें",
+        "Follow" to "फ़ॉलो करें",
+        "Follow us on Facebook" to "Facebook पर हमें फ़ॉलो करें",
+        "Open Facebook" to "Facebook खोलें",
+        "Account Privacy" to "खाता गोपनीयता",
+        "Account Privacy And Policy" to "खाता गोपनीयता और नीति",
+        "Read less" to "कम पढ़ें",
+        "Read more" to "और पढ़ें",
+        "About Us" to "हमारे बारे में",
+        "Our Heritage" to "हमारी विरासत",
+        "Contact SLGAN" to "SLGAN से संपर्क करें",
+        "We are happy to hear from you. Contact us or visit our location." to "हमें आपसे सुनकर खुशी होगी। हमसे संपर्क करें या हमारे स्थान पर आएँ।",
+        "Business Address" to "व्यावसायिक पता",
+        "Get directions" to "रास्ता देखें",
+        "Call SLGAN" to "SLGAN को कॉल करें",
+        "Your wishlist" to "आपकी इच्छा-सूची",
+        "saved products" to "सहेजे गए उत्पाद",
+        "Tap the heart on any product to save it here." to "किसी भी उत्पाद पर दिल का निशान दबाकर उसे यहाँ सहेजें।",
+        "Continue shopping" to "खरीदारी जारी रखें",
+        "Patent Product" to "पेटेंट उत्पाद",
+        "Signature product" to "विशेष उत्पाद",
+        "Add another" to "एक और जोड़ें",
+        "Order successful" to "ऑर्डर सफल",
+        "Order failed" to "ऑर्डर विफल",
+        "Your order has been saved" to "आपका ऑर्डर सहेजा गया है",
+        "Please review your order" to "कृपया अपना ऑर्डर जाँचें",
+        "Your order was saved." to "आपका ऑर्डर सहेजा गया।",
+        "Your order could not be placed." to "आपका ऑर्डर नहीं किया जा सका।",
+        "ORDER STATUS" to "ऑर्डर स्थिति",
+        "Pending verification" to "सत्यापन लंबित",
+        "Arrived at $created" to "$created को डिलीवर हुआ",
+        "Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}" to "ऑर्डर स्थिति: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}",
+        "Date not available" to "तारीख उपलब्ध नहीं",
+        "Unable to share order items" to "ऑर्डर की वस्तुएँ साझा नहीं की जा सकीं",
+        "Could not identify this order." to "इस ऑर्डर की पहचान नहीं हो सकी।",
+        "Order deleted" to "ऑर्डर हटा दिया गया",
+        "Could not delete order" to "ऑर्डर हटाया नहीं जा सका",
+        "Order ID copied" to "ऑर्डर ID कॉपी किया गया",
+        "Show all disease options" to "सभी रोग विकल्प दिखाएँ",
+        "Close disease details and clear search" to "रोग विवरण बंद करें और खोज साफ़ करें",
+        "Collapse $title" to "$title बंद करें",
+        "Expand $title" to "$title विस्तृत करें",
+        "Clear search" to "खोज साफ़ करें",
+        "Decrease quantity" to "मात्रा घटाएँ",
+        "Increase quantity" to "मात्रा बढ़ाएँ",
+        "Add to Cart" to "कार्ट में जोड़ें",
+        "Out of stock" to "स्टॉक में नहीं",
+        "Information not available." to "जानकारी उपलब्ध नहीं है।",
+        "Customer Ratings & Reviews" to "ग्राहक रेटिंग और समीक्षाएँ",
+        "Write A Review" to "समीक्षा लिखें",
+        "Close review" to "समीक्षा बंद करें",
+        "Your review (optional)" to "आपकी समीक्षा (वैकल्पिक)",
+        "Share your experience with this product" to "इस उत्पाद के साथ अपना अनुभव साझा करें",
+        "Saved! Thank you for your review." to "सहेजा गया! आपकी समीक्षा के लिए धन्यवाद।",
+        "Review saved successfully" to "समीक्षा सफलतापूर्वक सहेजी गई",
+        "Could not save rating. Please try again." to "रेटिंग सहेजी नहीं जा सकी। फिर कोशिश करें।",
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
@@ -5301,7 +5419,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search orders", tint = AdminInk) },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) IconButton(onClick = { searchQuery = "" }) {
-                    Icon(Icons.Default.Close, contentDescription = "Clear search")
+                    Icon(Icons.Default.Close, contentDescription = tr("Clear search", LocalAppLanguage.current))
                 }
             },
             shape = RoundedCornerShape(16.dp),
@@ -5670,7 +5788,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
-            Text(if (isEnglish) "Social Media" else "సోషల్ మీడియా", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Social Media", appLanguage), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
         Divider(color = appThemedColor(Color(0xFFE4E6EB)), thickness = 1.dp)
         Column(
@@ -5720,7 +5838,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
                         },
                         contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
                     ) {
-                        Text(if (isEnglish) "Follow" else "ఫాలో")
+                        Text(tr("Follow", appLanguage))
                     }
                 }
             }
@@ -5743,7 +5861,7 @@ private fun SocialMediaPage(modifier: Modifier, appLanguage: String, onBack: () 
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
                         Text("Facebook", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                        Text(if (isEnglish) "Follow us on Facebook" else "Facebookలో మమ్మల్ని అనుసరించండి", color = Muted, fontSize = 13.sp)
+                        Text(tr("Follow us on Facebook", appLanguage), color = Muted, fontSize = 13.sp)
                     }
                     Icon(Icons.Default.OpenInNew, contentDescription = if (isEnglish) "Open Facebook" else "Facebook తెరవండి", tint = Ink)
                 }
@@ -5764,11 +5882,11 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink) }
-            Text(if (isEnglish) "Account Privacy" else "ఖాతా గోప్యత", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Account Privacy", appLanguage), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
         }
         Divider(color = appThemedColor(Color(0xFFE4E6EB)), thickness = 1.dp)
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 24.dp)) {
-            Text(if (isEnglish) "Account Privacy And Policy" else "ఖాతా గోప్యత మరియు విధానం", color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+            Text(tr("Account Privacy And Policy", appLanguage), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.height(12.dp))
             Text(
                 if (isEnglish)
@@ -5792,7 +5910,7 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
                 Modifier.clickable { expanded = !expanded }.padding(vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(if (expanded) { if (isEnglish) "Read less" else "తక్కువ చదవండి" } else { if (isEnglish) "Read more" else "మరింత చదవండి" }, color = appThemedColor(Color(0xFF27851F)), fontSize = 17.sp, fontWeight = FontWeight.Medium)
+                Text(if (expanded) tr("Read less", appLanguage) else tr("Read more", appLanguage), color = appThemedColor(Color(0xFF27851F)), fontSize = 17.sp, fontWeight = FontWeight.Medium)
                 Spacer(Modifier.width(6.dp))
                 Icon(if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, contentDescription = null, tint = appThemedColor(Color(0xFF27851F)))
             }
@@ -6848,7 +6966,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
     if (product.signature) {
         Image(
             painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-            contentDescription = "Signature product",
+            contentDescription = tr("Signature product", LocalAppLanguage.current),
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(top = 12.dp, start = 12.dp)
@@ -8638,7 +8756,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                 }) {
                                     Icon(
                                         if (dropdownExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                                        contentDescription = "Show all disease options",
+                                        contentDescription = tr("Show all disease options", LocalAppLanguage.current),
                                         tint = Muted
                                     )
                                 }
@@ -8747,7 +8865,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     query = ""
                     dropdownExpanded = false
                 }) {
-                    Icon(Icons.Default.Close, contentDescription = "Close disease details and clear search", tint = Ink)
+                    Icon(Icons.Default.Close, contentDescription = tr("Close disease details and clear search", LocalAppLanguage.current), tint = Ink)
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -9014,7 +9132,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(22.dp), tint = Muted) },
                 trailingIcon = {
                     if (searchQuery.isNotBlank()) IconButton(onClick = { searchQuery = "" }) {
-                        Icon(Icons.Default.Close, contentDescription = "Clear search")
+                        Icon(Icons.Default.Close, contentDescription = tr("Clear search", LocalAppLanguage.current))
                     }
                 },
                 singleLine = true,
@@ -9137,9 +9255,9 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                     verticalAlignment = Alignment.CenterVertically,
                                                     horizontalArrangement = Arrangement.SpaceEvenly
                                                 ) {
-                                                    IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = "Decrease quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
+                                                    IconButton(onClick = { onRemove(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Remove, contentDescription = tr("Decrease quantity", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(16.dp)) }
                                                     Text(quantityInCart.toString(), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                                    IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = "Increase quantity", tint = Ink, modifier = Modifier.size(16.dp)) }
+                                                    IconButton(onClick = { onAdd(product.id) }, modifier = Modifier.size(28.dp)) { Icon(Icons.Default.Add, contentDescription = tr("Increase quantity", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(16.dp)) }
                                                 }
                                             }
                                         }
@@ -10692,7 +10810,7 @@ private fun AddAddressDetailsPage(
                                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
                                         trailingIcon = {
                                             if (areaSearch.isNotEmpty()) IconButton(onClick = { areaSearch = "" }) {
-                                                Icon(Icons.Default.Close, contentDescription = "Clear search", tint = Muted)
+                                                Icon(Icons.Default.Close, contentDescription = tr("Clear search", LocalAppLanguage.current), tint = Muted)
                                             }
                                         },
                                         singleLine = true,
