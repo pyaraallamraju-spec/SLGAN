@@ -8474,17 +8474,24 @@ private fun OrdersPage(
                 }
             }
             ordersError != null -> Text(ordersError!!, color = MaterialTheme.colorScheme.error)
-            currentOrders.isEmpty() -> Column(
-                Modifier.fillMaxWidth().background(appThemedColor(Color(0xFFF4F5FA))).padding(horizontal = 16.dp, vertical = 18.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalAlignment = Alignment.Start
+            currentOrders.isEmpty() -> Card(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
             ) {
-                Text(tr("No orders placed today", LocalAppLanguage.current), color = appThemedColor(Color(0xFF4A4A4A)), fontSize = 16.sp, fontWeight = FontWeight.Medium)
-                TextButton(
-                    onClick = onCategories,
-                    modifier = Modifier.height(28.dp),
-                    contentPadding = PaddingValues(0.dp)
-                ) { Text(tr("Click to order  →", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold) }
+                Column(
+                    Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 18.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(tr("No orders placed today", LocalAppLanguage.current), color = appThemedColor(Color(0xFF4A4A4A)), fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                    TextButton(
+                        onClick = onCategories,
+                        modifier = Modifier.height(32.dp),
+                        contentPadding = PaddingValues(0.dp)
+                    ) { Text(tr("Click to order  →", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold) }
+                }
             }
             else -> currentOrders.forEach { order ->
                 val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
