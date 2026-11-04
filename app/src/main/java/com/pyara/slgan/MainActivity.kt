@@ -7640,7 +7640,7 @@ private fun OrdersPage(
                                 Column(Modifier.weight(1f)) {
                                     Text(name, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
                                     val packSize = product?.subtitle?.takeIf { it.isNotBlank() }
-                                    Text(tr("${packSize ?: ", LocalAppLanguage.current)Item"} × $quantity", color = Muted, fontSize = 14.sp)
+                                    Text("${packSize ?: tr("Item", LocalAppLanguage.current)} × $quantity", color = Muted, fontSize = 14.sp)
                                 }
                                 Column(horizontalAlignment = Alignment.End) {
                                     Text(tr("₹", LocalAppLanguage.current) + String.format("%.0f", (item["lineTotal"] as? Number)?.toDouble() ?: (unitPrice * quantity)), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
