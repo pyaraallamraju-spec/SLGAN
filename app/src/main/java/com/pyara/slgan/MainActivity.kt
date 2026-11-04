@@ -6003,8 +6003,9 @@ private fun ShopScreen(
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 20.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Column(horizontalAlignment = Alignment.End) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = Ink, fontSize = 12.sp, lineHeight = 17.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Spacer(Modifier.width(8.dp))
                     Text("Estd. 1900", color = Muted, fontSize = 9.sp, lineHeight = 12.sp, fontWeight = FontWeight.Medium, maxLines = 1)
                 }
             }
