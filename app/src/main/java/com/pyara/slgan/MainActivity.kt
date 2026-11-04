@@ -5531,7 +5531,7 @@ private fun HomePage(modifier: Modifier, category: String, onCategoryChange: (St
                                             localizedProductName(product.name, LocalAppLanguage.current),
                                             fontSize = 13.sp,
                                             color = Ink,
-                                            fontWeight = FontWeight.Bold,
+                                            fontWeight = FontWeight.Medium,
                                             maxLines = 2,
                                             minLines = 2,
                                             lineHeight = 15.sp,
@@ -5802,7 +5802,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Medium, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             Spacer(Modifier.height(6.dp))
             Row(
                 modifier = Modifier.fillMaxWidth().height(26.dp),
@@ -6095,14 +6095,14 @@ private fun ProductDetailsPage(
                 }
             }
         }
-        Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Box(Modifier.size(62.dp).border(1.dp, appThemedColor(Color(0xFFD5DCE7)), RoundedCornerShape(16.dp)).clickable(onClick = onCartClick).padding(8.dp), contentAlignment = Alignment.Center) {
+        Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 14.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Box(Modifier.size(52.dp).border(1.dp, appThemedColor(Color(0xFFD5DCE7)), RoundedCornerShape(12.dp)).clickable(onClick = onCartClick).padding(6.dp), contentAlignment = Alignment.Center) {
                 BadgedBox(badge = { if (cartCount > 0) Badge(containerColor = appThemedColor(Color(0xFF2E7D32)), contentColor = Color.White) { Text(cartCount.toString(), color = Color.White) } }) {
-                    Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = appThemedColor(Color.Black), modifier = Modifier.size(28.dp))
+                    Icon(Icons.Default.ShoppingCart, contentDescription = "View cart", tint = appThemedColor(Color.Black), modifier = Modifier.size(24.dp))
                 }
             }
-            Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(62.dp), shape = RoundedCornerShape(16.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFD5DCE7))), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color.White), contentColor = Ink, disabledContainerColor = Color.White, disabledContentColor = Ink)) {
-                Text(if (product.productStock == 0) "Out of stock" else if (cartCount > 0) "Add another" else "Add to Cart", color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+            Button(onClick = { if (product.price > 0.0) onAdd(product.id) }, enabled = product.price > 0.0 && product.productStock != 0, modifier = Modifier.weight(1f).height(52.dp), shape = RoundedCornerShape(12.dp), border = BorderStroke(1.dp, appThemedColor(Color(0xFFD5DCE7))), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color.White), contentColor = Ink, disabledContainerColor = Color.White, disabledContentColor = Ink)) {
+                Text(if (product.productStock == 0) "Out of stock" else if (cartCount > 0) "Add another" else "Add to Cart", color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold)
             }
         }
         NavigationBar(
