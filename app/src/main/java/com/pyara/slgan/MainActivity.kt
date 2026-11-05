@@ -1040,7 +1040,7 @@ private fun tr(text: String, language: String): String {
         "Price inclusive of applicable taxes" to "వర్తించే పన్నులతో సహా ధర",
         "This will remove all \${selected.sumOf { cart[it.id] ?: 0 }} items from your cart. You can add them again later." to "ఇది మీ కార్ట్‌లోని \${selected.sumOf { cart[it.id] ?: 0 }} వస్తువులను తొలగిస్తుంది. మీరు వాటిని తర్వాత మళ్లీ జోడించవచ్చు.",
         "\$itemCount items" to "\$itemCount వస్తువులు",
-        "Review {count} products before placing order" to "ఆర్డర్ చేయడానికి ముందు {count} ఉత్పత్తులను పరిశీలించండి",
+        "Review cart before placing order" to "ఆర్డర్ చేయడానికి ముందు కార్ట్‌ను పరిశీలించండి",
         "{count} items" to "{count} వస్తువులు",
         "Orders are saved as pending verification. Please contact the shop for changes after placing an order." to "ఆర్డర్లు ధృవీకరణ పెండింగ్‌లో సేవ్ అవుతాయి. ఆర్డర్ చేసిన తర్వాత మార్పుల కోసం దుకాణాన్ని సంప్రదించండి.",
         "Product images, bottle designs and packaging shown in the app are for illustration and design reference only. The actual product appearance, bottle shape, label, colour and packaging may vary from the images displayed. The contents and product details will correspond to the product supplied." to "యాప్‌లో చూపించే ఉత్పత్తి చిత్రాలు, సీసా డిజైన్‌లు మరియు ప్యాకేజింగ్ కేవలం నమూనా మరియు డిజైన్ సూచన కోసం మాత్రమే. అసలు ఉత్పత్తి రూపం, సీసా ఆకారం, లేబుల్, రంగు మరియు ప్యాకేజింగ్ చూపిన చిత్రాల కంటే భిన్నంగా ఉండవచ్చు. సరఫరా చేసే ఉత్పత్తికి అనుగుణంగా దాని విషయాలు మరియు వివరాలు ఉంటాయి.",
@@ -1833,7 +1833,7 @@ private fun tr(text: String, language: String): String {
         "Price inclusive of applicable taxes" to "लागू कर सहित कीमत",
         "This will remove all \${selected.sumOf { cart[it.id] ?: 0 }} items from your cart. You can add them again later." to "इससे आपके कार्ट के सभी \${selected.sumOf { cart[it.id] ?: 0 }} आइटम हट जाएँगे। आप उन्हें बाद में फिर जोड़ सकते हैं।",
         "\$itemCount items" to "\$itemCount आइटम",
-        "Review {count} products before placing order" to "ऑर्डर देने से पहले {count} उत्पादों की समीक्षा करें",
+        "Review cart before placing order" to "ऑर्डर देने से पहले कार्ट की समीक्षा करें",
         "{count} items" to "{count} आइटम",
         "Orders are saved as pending verification. Please contact the shop for changes after placing an order." to "ऑर्डर सत्यापन लंबित स्थिति में सहेजे जाते हैं। ऑर्डर देने के बाद बदलाव के लिए दुकान से संपर्क करें।",
         "Product images, bottle designs and packaging shown in the app are for illustration and design reference only. The actual product appearance, bottle shape, label, colour and packaging may vary from the images displayed. The contents and product details will correspond to the product supplied." to "ऐप में दिखाए गए उत्पाद चित्र, बोतल डिज़ाइन और पैकेजिंग केवल उदाहरण और डिज़ाइन संदर्भ के लिए हैं। वास्तविक उत्पाद का रूप, बोतल का आकार, लेबल, रंग और पैकेजिंग प्रदर्शित चित्रों से भिन्न हो सकते हैं। सामग्री और उत्पाद विवरण आपूर्ति किए गए उत्पाद के अनुरूप होंगे।",
@@ -7878,7 +7878,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(tr("Your Ayurvedic Order", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                                Text(tr("Review {count} products before placing order", LocalAppLanguage.current).replace("{count}", selected.size.toString()), color = Muted, fontSize = 12.sp)
+                                Text(tr("Review cart before placing order", LocalAppLanguage.current).replace("{count}", selected.size.toString()), color = Muted, fontSize = 12.sp)
                             }
                             IconButton(
                                 onClick = { showClearCartConfirmation = true },
