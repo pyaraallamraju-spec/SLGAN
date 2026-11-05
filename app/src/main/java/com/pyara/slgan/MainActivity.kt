@@ -9076,6 +9076,17 @@ private fun OrdersPage(
         ModalBottomSheet(onDismissRequest = { orderOptions = null }, containerColor = appThemedColor(Color.White), contentColor = Ink) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(tr("Order Info", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Row(
+                    Modifier.fillMaxWidth().clickable {
+                        selectedOrder = order
+                        orderOptions = null
+                    }.padding(vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink)
+                    Spacer(Modifier.width(12.dp))
+                    Text(tr("View Order", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
+                }
                 Row(Modifier.fillMaxWidth().clickable { confirmDeleteOrder = order; orderOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink)
                     Spacer(Modifier.width(12.dp)); Text(tr("Delete order", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
