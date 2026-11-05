@@ -9558,7 +9558,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                                 Icon(Icons.Default.Check, contentDescription = null, tint = Color.White, modifier = Modifier.size(14.dp))
                                             }
                                             Spacer(Modifier.width(10.dp))
-                                            Text(medicine, color = Ink, fontSize = 14.sp, lineHeight = 20.sp)
+                                            Text(localizedProductName(medicine, LocalAppLanguage.current), color = Ink, fontSize = 14.sp, lineHeight = 20.sp)
                                         }
                                     }
                                 }
