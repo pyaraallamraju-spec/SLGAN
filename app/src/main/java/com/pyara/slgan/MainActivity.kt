@@ -8058,11 +8058,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         contentScale = ContentScale.Fit,
                         alpha = 0.72f
                     )
-                    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.LocationOn, contentDescription = null, tint = appThemedColor(Color(0xFF238B3B)), modifier = Modifier.size(27.dp))
-                            Spacer(Modifier.width(7.dp))
-                            Text(tr("Delivery address", LocalAppLanguage.current), color = appThemedColor(Color(0xFF176B2D)), fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                             OutlinedButton(
                                 onClick = {
                                     val user = FirebaseAuth.getInstance().currentUser
@@ -8098,19 +8095,19 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Text(tr("Change", LocalAppLanguage.current), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                             }
                         }
-                        Column(Modifier.fillMaxWidth(0.76f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Column(Modifier.fillMaxWidth(0.82f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Person, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(19.dp))
+                                Icon(Icons.Default.Person, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(9.dp))
-                                Text(recipientName, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                Text(recipientName, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Normal, maxLines = 2, overflow = TextOverflow.Ellipsis)
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Call, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(9.dp))
-                                Text(recipientMobile, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                                Text(recipientMobile, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Normal)
                             }
                             Row(verticalAlignment = Alignment.Top) {
-                                Icon(Icons.Default.LocationOn, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(19.dp))
+                                Icon(Icons.Default.LocationOn, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(9.dp))
                                 Text(confirmedText.ifBlank { tr("Complete address not available", LocalAppLanguage.current) }, color = Ink, fontSize = 13.sp, lineHeight = 18.sp)
                             }
