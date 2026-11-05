@@ -12051,7 +12051,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     containerColor = appThemedColor(DefaultBtn.background),
                     contentColor = appThemedColor(DefaultBtn.content)
                 ),
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp, pressedElevation = 10.dp, focusedElevation = 8.dp, hoveredElevation = 10.dp, disabledElevation = 0.dp)
             ) {
                 if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp) else Icon(Icons.Default.Save, null, tint = appThemedColor(DefaultBtn.content))
                 Spacer(Modifier.width(8.dp))
