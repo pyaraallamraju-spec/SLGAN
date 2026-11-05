@@ -8162,7 +8162,12 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         alpha = 0.72f
                     )
                     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Person, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
+                                Spacer(Modifier.width(9.dp))
+                                Text(recipientName, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Normal, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                            }
                             OutlinedButton(
                                 onClick = {
                                     val user = FirebaseAuth.getInstance().currentUser
@@ -8198,12 +8203,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Text(tr("Change", LocalAppLanguage.current), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                             }
                         }
-                        Column(Modifier.fillMaxWidth(0.82f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Person, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
-                                Spacer(Modifier.width(9.dp))
-                                Text(recipientName, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Normal, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                            }
+                        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Call, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(9.dp))
