@@ -7885,26 +7885,29 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 onClick = { showClearCartConfirmation = true },
                                 modifier = Modifier
                                     .height(42.dp)
-                                    .shadow(4.dp, RoundedCornerShape(14.dp))
-                                    .clip(RoundedCornerShape(14.dp))
+                                    .shadow(9.dp, RoundedCornerShape(18.dp))
+                                    .clip(RoundedCornerShape(18.dp))
                                     .background(
-                                        Brush.horizontalGradient(
-                                            listOf(Color(0xFFF7F7F7), DefaultBtn.background, Color(0xFFD6D6D6), Color(0xFFF2F2F2))
+                                        Brush.linearGradient(
+                                            colors = listOf(Color(0xFFF7F7F7), DefaultBtn.background, Color(0xFFD6D6D6), Color(0xFFF2F2F2))
                                         )
                                     )
-                                    .border(BorderStroke(1.dp, DefaultBtn.border), RoundedCornerShape(14.dp))
+                                    .drawBehind {
+                                        drawLine(
+                                            color = DefaultBtn.border,
+                                            start = androidx.compose.ui.geometry.Offset(12.dp.toPx(), size.height - 2.dp.toPx()),
+                                            end = androidx.compose.ui.geometry.Offset(size.width - 12.dp.toPx(), size.height - 2.dp.toPx()),
+                                            strokeWidth = 3.dp.toPx(),
+                                            cap = androidx.compose.ui.graphics.StrokeCap.Round
+                                        )
+                                    }
+                                    .border(BorderStroke(1.5.dp, DefaultBtn.border), RoundedCornerShape(18.dp))
                                     .padding(horizontal = 10.dp),
-                                shape = RoundedCornerShape(14.dp),
+                                shape = RoundedCornerShape(18.dp),
                                 border = null,
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = DefaultBtn.content
-                                ),
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = DefaultBtn.content),
                                 contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
-                                elevation = ButtonDefaults.buttonElevation(
-                                    defaultElevation = 0.dp,
-                                    pressedElevation = 1.dp
-                                )
+                                elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 1.dp)
                             ) {
                                 Icon(Icons.Default.DeleteSweep, contentDescription = null, tint = DefaultBtn.content, modifier = Modifier.size(17.dp))
                                 Spacer(Modifier.width(5.dp))
