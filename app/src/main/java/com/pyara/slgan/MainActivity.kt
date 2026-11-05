@@ -8301,21 +8301,20 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .background(
                         Brush.linearGradient(
                             colors = listOf(
-                                Color(0xFFEAF5E9),
-                                Color(0xFFCDE8C8),
-                                Color(0xFFA8D5A5),
-                                Color(0xFFE4F3DF)
+                                Cream,
+                                PaleGreen,
+                                Cream
                             )
                         )
                     )
-                    .border(BorderStroke(1.5.dp, Color(0xFF9BCB96)), RoundedCornerShape(18.dp)),
+                    .border(BorderStroke(1.5.dp, Gold.copy(alpha = 0.75f)), RoundedCornerShape(18.dp)),
                     shape = RoundedCornerShape(18.dp),
                     border = null,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
-                        contentColor = Color(0xFF174B25),
+                        contentColor = Forest,
                         disabledContainerColor = Color.Transparent,
-                        disabledContentColor = Color(0xFF78927A)
+                        disabledContentColor = Muted
                     ),
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 0.dp,
@@ -8326,30 +8325,22 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     if (submitting) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(19.dp),
-                            color = Color(0xFF174B25),
+                            color = Forest,
                             strokeWidth = 2.dp
                         )
                     } else {
-                        Box(contentAlignment = Alignment.Center) {
-                            Icon(
-                                Icons.Default.ShoppingCart,
-                                contentDescription = null,
-                                tint = Color(0xFF174B25),
-                                modifier = Modifier.size(22.dp)
-                            )
-                            Icon(
-                                Icons.Default.Check,
-                                contentDescription = null,
-                                tint = Color(0xFF174B25),
-                                modifier = Modifier.size(10.dp).align(Alignment.Center)
-                            )
-                        }
+                        Icon(
+                            Icons.Default.ReceiptLong,
+                            contentDescription = null,
+                            tint = Forest,
+                            modifier = Modifier.size(23.dp)
+                        )
                         Spacer(Modifier.width(9.dp))
                         Text(
                             tr("Place order  ›", LocalAppLanguage.current).removeSuffix("  ›"),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF174B25)
+                            color = Forest
                         )
                     }
                 }
