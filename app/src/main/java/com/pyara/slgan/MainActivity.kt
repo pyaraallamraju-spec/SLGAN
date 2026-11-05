@@ -9173,6 +9173,19 @@ private fun OrdersPage(
         }
     }
 
+private fun localizedDiseaseDescription(description: String, language: String): String {
+    if (language == "English") return description
+    val normalized = description.trim().lowercase(Locale.ROOT)
+    if (normalized.startsWith("a disease is a condition that disrupts the normal structure or functioning of the body or mind.")) {
+        return when (language) {
+            "Telugu" -> "వ్యాధి అనేది శరీరం లేదా మనస్సు యొక్క సాధారణ నిర్మాణం లేదా పనితీరుకు అంతరాయం కలిగించే పరిస్థితి. వ్యాధులు ఇన్ఫెక్షన్లు, వంశపారంపర్య లేదా జన్యు కారణాలు, రోగనిరోధక వ్యవస్థ సమస్యలు, పర్యావరణ ప్రభావాలు, గాయాలు మరియు శరీర అవయవాలు లేదా ప్రక్రియల్లో మార్పులు వంటి అనేక కారణాల వల్ల రావచ్చు. నొప్పి, జ్వరం, అలసట, వాపు లేదా శరీర విధుల్లో మార్పులు వంటి లక్షణాలు కనిపించవచ్చు. కొన్ని వ్యాధులు స్వల్పకాలికమైనవి కాగా, మరికొన్ని దీర్ఘకాలికంగా ఉండి నిరంతర సంరక్షణ అవసరం కావచ్చు. నివారణ, నిర్ధారణ మరియు చికిత్స వ్యాధిని బట్టి మారుతాయి. ఆరోగ్యకరమైన అలవాట్లు, టీకాలు, వైద్య పరీక్షలు, మందులు లేదా అర్హత కలిగిన వైద్య నిపుణుడు సూచించే ఇతర సంరక్షణ ఇందులో భాగం కావచ్చు. ఇది సాధారణ అవగాహన కోసం మాత్రమే; వైద్య నిర్ధారణకు లేదా అర్హత కలిగిన వైద్య నిపుణుడి సలహాకు ప్రత్యామ్నాయం కాదు."
+            "Hindi" -> "रोग एक ऐसी स्थिति है जो शरीर या मन की सामान्य संरचना या कार्यप्रणाली में बाधा डालती है। रोग संक्रमण, वंशानुगत या आनुवंशिक कारणों, प्रतिरक्षा प्रणाली की समस्याओं, पर्यावरणीय प्रभावों, चोटों तथा शरीर के अंगों या प्रक्रियाओं में बदलाव सहित कई कारणों से हो सकते हैं। इनके लक्षणों में दर्द, बुखार, थकान, सूजन या शरीर के सामान्य कार्यों में बदलाव शामिल हो सकते हैं। कुछ स्थितियाँ अल्पकालिक होती हैं, जबकि अन्य दीर्घकालिक होती हैं और निरंतर देखभाल की आवश्यकता होती है। रोकथाम, निदान और उपचार संबंधित रोग के अनुसार अलग-अलग होते हैं। इनमें स्वस्थ आदतें, टीकाकरण, चिकित्सकीय जाँच, दवाएँ या योग्य स्वास्थ्य पेशेवर द्वारा सुझाई गई अन्य देखभाल शामिल हो सकती है। यह केवल सामान्य शैक्षिक जानकारी है; यह चिकित्सकीय निदान या योग्य स्वास्थ्य पेशेवर की सलाह का विकल्प नहीं है।"
+            else -> description
+        }
+    }
+    return description
+}
+
 @Composable
 private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: List<Product>, loading: Boolean, error: String?, onHome: () -> Unit) {
     val scrollState = rememberScrollState()
@@ -9508,7 +9521,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                         Spacer(Modifier.width(10.dp))
                                         Text(tr("About This Condition", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                                     }
-                                    Text(when { detailLoading -> "Loading disease information…"; diseaseDescription.isNotBlank() -> diseaseDescription; else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp, modifier = Modifier.padding(start = 44.dp))
+                                    Text(when { detailLoading -> tr("Loading disease information…", LocalAppLanguage.current); diseaseDescription.isNotBlank() -> localizedDiseaseDescription(diseaseDescription, LocalAppLanguage.current); else -> tr("Information not available.", LocalAppLanguage.current) }, color = Muted, fontSize = 14.sp, lineHeight = 22.sp, modifier = Modifier.padding(start = 44.dp))
                                 }
                                 "Suggested Medicines" -> {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
