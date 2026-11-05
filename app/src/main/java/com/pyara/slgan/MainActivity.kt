@@ -8673,13 +8673,13 @@ private fun OrdersPage(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
-                    Modifier.fillMaxWidth().padding(18.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    Modifier.fillMaxWidth().padding(14.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(48.dp)
+                                .size(38.dp)
                                 .shadow(if (latestOrderSuccess) 3.dp else 0.dp, CircleShape)
                                 .background(if (latestOrderSuccess) successGreen else appThemedColor(Color(0xFFB3261E)), CircleShape),
                             contentAlignment = Alignment.Center
@@ -8688,7 +8688,7 @@ private fun OrdersPage(
                                 if (latestOrderSuccess) Icons.Default.Check else Icons.Default.Error,
                                 contentDescription = null,
                                 tint = Color.White,
-                                modifier = Modifier.size(29.dp)
+                                modifier = Modifier.size(22.dp)
                             )
                         }
                         Spacer(Modifier.width(12.dp))
@@ -8696,7 +8696,7 @@ private fun OrdersPage(
                             Text(
                                 if (latestOrderSuccess) tr("Order successful", LocalAppLanguage.current) else tr("Order failed", LocalAppLanguage.current),
                                 fontWeight = FontWeight.ExtraBold,
-                                fontSize = 20.sp,
+                                fontSize = 17.sp,
                                 color = if (latestOrderSuccess) successGreen else appThemedColor(Color(0xFFB3261E))
                             )
                             Text(
@@ -8706,17 +8706,17 @@ private fun OrdersPage(
                             )
                         }
                         if (latestOrderSuccess) {
-                            Icon(Icons.Default.Spa, contentDescription = null, tint = appThemedColor(Color(0xFFB8DCA8)), modifier = Modifier.size(30.dp))
+                            Icon(Icons.Default.Spa, contentDescription = null, tint = appThemedColor(Color(0xFFB8DCA8)), modifier = Modifier.size(22.dp))
                         }
                     }
                     if (latestOrderId != null) {
-                        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            Text(tr("ORDER ID", LocalAppLanguage.current), color = Muted, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(tr("ORDER ID", LocalAppLanguage.current), color = Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp)
                             Text(
                                 latestOrderId!!,
                                 color = Ink,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
+                                fontSize = 13.sp
                             )
                         }
                     }
