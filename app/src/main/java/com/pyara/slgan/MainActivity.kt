@@ -8253,11 +8253,21 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }
             }
-            Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(0.7f)) {
-                    Text(money(total), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+            Row(
+                Modifier.fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(appThemedColor(Color.White))
+                    .border(1.dp, appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(20.dp))
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(Modifier.weight(0.72f)) {
+                    Text(money(total), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
+                Box(Modifier.width(1.dp).height(42.dp).background(appThemedColor(Color(0xFFB5B5B5))))
+                Spacer(Modifier.width(12.dp))
                 Button(onClick = {
                     errorMessage = null
                     val user = FirebaseAuth.getInstance().currentUser
