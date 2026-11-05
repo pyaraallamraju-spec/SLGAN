@@ -7513,14 +7513,14 @@ private fun ProductDetailsPage(
                 Column(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Spacer(Modifier.weight(1f))
-                                ProductRatingLine(product, ratingSummary, showEmptyLabel = true)
-                            }
                             Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.Bold)
                             Text(if (product.subtitle.isNotBlank()) "${tr("Net quantity", currentLanguage)}: ${product.subtitle}" else "${tr("Net quantity", currentLanguage)}: ${tr("See product pack", currentLanguage)}", color = Muted, fontSize = 15.sp)
                             if (product.price > 0.0) {
-                                Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 5.dp).background(appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(9.dp)).padding(horizontal = 10.dp, vertical = 5.dp))
+                                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                    Text("₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(top = 5.dp).background(appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(9.dp)).padding(horizontal = 10.dp, vertical = 5.dp))
+                                    Spacer(Modifier.weight(1f))
+                                    ProductRatingLine(product, ratingSummary, showEmptyLabel = true)
+                                }
                                 Text(tr("Price inclusive of applicable taxes", currentLanguage), color = Muted, fontSize = 13.sp)
                             } else Text(tr("Price not available yet.", currentLanguage), color = Muted, fontSize = 15.sp)
                         }
