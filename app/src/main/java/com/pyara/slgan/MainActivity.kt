@@ -8301,28 +8301,28 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .background(
                         Brush.linearGradient(
                             colors = listOf(
-                                Cream,
-                                PaleGreen,
-                                Cream,
-                                appThemedColor(Color.White)
+                                Color(0xFFF7F7F7),
+                                DefaultBtn.background,
+                                Color(0xFFD6D6D6),
+                                Color(0xFFF2F2F2)
                             )
                         )
                     )
                     .drawBehind {
                         drawLine(
-                            color = Forest.copy(alpha = 0.55f),
+                            color = DefaultBtn.border,
                             start = androidx.compose.ui.geometry.Offset(18.dp.toPx(), size.height - 2.dp.toPx()),
                             end = androidx.compose.ui.geometry.Offset(size.width - 18.dp.toPx(), size.height - 2.dp.toPx()),
                             strokeWidth = 3.dp.toPx(),
                             cap = androidx.compose.ui.graphics.StrokeCap.Round
                         )
                     }
-                    .border(BorderStroke(1.5.dp, Leaf.copy(alpha = 0.65f)), RoundedCornerShape(18.dp)),
+                    .border(BorderStroke(1.5.dp, DefaultBtn.border), RoundedCornerShape(18.dp)),
                     shape = RoundedCornerShape(18.dp),
                     border = null,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
-                        contentColor = Forest,
+                        contentColor = DefaultBtn.content,
                         disabledContainerColor = Color.Transparent,
                         disabledContentColor = Muted
                     ),
@@ -8335,7 +8335,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     if (submitting) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(19.dp),
-                            color = Forest,
+                            color = DefaultBtn.content,
                             strokeWidth = 2.dp
                         )
                     } else {
@@ -8346,14 +8346,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             Icon(
                                 Icons.Default.LocalShipping,
                                 contentDescription = null,
-                                tint = Forest,
+                                tint = DefaultBtn.content,
                                 modifier = Modifier.size(39.dp)
-                            )
-                            Icon(
-                                Icons.Default.Eco,
-                                contentDescription = null,
-                                tint = Leaf,
-                                modifier = Modifier.size(14.dp).align(Alignment.TopEnd)
                             )
                         }
                         Spacer(Modifier.width(8.dp))
@@ -8361,13 +8355,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             tr("Place order", LocalAppLanguage.current),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Ink
+                            color = DefaultBtn.content
                         )
                         Spacer(Modifier.width(5.dp))
                         Icon(
                             Icons.Default.ArrowForward,
                             contentDescription = null,
-                            tint = Forest,
+                            tint = DefaultBtn.content,
                             modifier = Modifier.size(21.dp)
                         )
                     }
