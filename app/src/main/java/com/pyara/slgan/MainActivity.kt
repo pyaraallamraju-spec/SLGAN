@@ -7885,35 +7885,19 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             }
                             Button(
                                 onClick = { showClearCartConfirmation = true },
-                                modifier = Modifier
-                                    .height(42.dp)
-                                    .shadow(9.dp, RoundedCornerShape(18.dp))
-                                    .clip(RoundedCornerShape(18.dp))
-                                    .background(
-                                        Brush.linearGradient(
-                                            colors = listOf(Color(0xFFF7F7F7), DefaultBtn.background, Color(0xFFD6D6D6), Color(0xFFF2F2F2))
-                                        )
-                                    )
-                                    .drawBehind {
-                                        drawLine(
-                                            color = DefaultBtn.border,
-                                            start = androidx.compose.ui.geometry.Offset(12.dp.toPx(), size.height - 2.dp.toPx()),
-                                            end = androidx.compose.ui.geometry.Offset(size.width - 12.dp.toPx(), size.height - 2.dp.toPx()),
-                                            strokeWidth = 3.dp.toPx(),
-                                            cap = androidx.compose.ui.graphics.StrokeCap.Round
-                                        )
-                                    }
-                                    .border(BorderStroke(1.5.dp, DefaultBtn.border), RoundedCornerShape(18.dp))
-                                    .padding(horizontal = 10.dp),
-                                shape = RoundedCornerShape(18.dp),
-                                border = null,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = DefaultBtn.content),
-                                contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
+                                modifier = Modifier.height(40.dp),
+                                shape = RoundedCornerShape(14.dp),
+                                border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = appThemedColor(Color(0xFFE2E2E2)),
+                                    contentColor = Ink
+                                ),
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
                                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 1.dp)
                             ) {
-                                Icon(Icons.Default.DeleteSweep, contentDescription = null, tint = DefaultBtn.content, modifier = Modifier.size(17.dp))
+                                Icon(Icons.Default.DeleteSweep, contentDescription = null, tint = Ink, modifier = Modifier.size(17.dp))
                                 Spacer(Modifier.width(5.dp))
-                                Text(tr("Clear cart", LocalAppLanguage.current), color = DefaultBtn.content, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                Text(tr("Clear cart", LocalAppLanguage.current), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1)
                             }
                         }
                         Divider(color = appThemedColor(Color(0xFFEFF1F5)))
