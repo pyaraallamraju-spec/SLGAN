@@ -8066,6 +8066,21 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Text(instruction, color = Ink, fontSize = 14.sp, modifier = Modifier.weight(1f))
                             }
                         }
+                        if (userInstructions.isNotBlank() && !userInstructionsEnabled) {
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                tr("Your instruction", LocalAppLanguage.current),
+                                color = Muted,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Text(
+                                userInstructions.trim(),
+                                color = Ink,
+                                fontSize = 14.sp,
+                                lineHeight = 20.sp
+                            )
+                        }
                     }
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
