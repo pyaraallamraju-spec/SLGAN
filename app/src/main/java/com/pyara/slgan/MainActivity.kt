@@ -7959,37 +7959,42 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(14.dp)) {
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                tr("Instructions", LocalAppLanguage.current),
+                                color = Ink,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                modifier = Modifier.weight(1f)
+                            )
+                            IconButton(
+                                onClick = { userInstructionsEnabled = !userInstructionsEnabled },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Edit,
+                                    contentDescription = if (userInstructionsEnabled) "Hide instructions" else "Show instructions",
+                                    tint = appThemedColor(if (userInstructionsEnabled) Color(0xFF2E7D32) else Color(0xFFD32F2F))
+                                )
+                            }
+                        }
+                        if (userInstructionsEnabled) {
+                            Spacer(Modifier.height(6.dp))
                             OutlinedTextField(
                                 value = userInstructions,
                                 onValueChange = { userInstructions = it },
-                                modifier = Modifier.weight(1f),
-                                label = { Text(tr("Instructions", LocalAppLanguage.current)) },
+                                modifier = Modifier.fillMaxWidth(),
                                 placeholder = { Text(tr("Add any special instructions for your order", LocalAppLanguage.current)) },
-                                enabled = userInstructionsEnabled,
-                                readOnly = !userInstructionsEnabled,
                                 minLines = 2,
                                 maxLines = 4,
                                 shape = RoundedCornerShape(12.dp),
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = appThemedColor(Color(0xFFB5B5B5)),
                                     unfocusedBorderColor = appThemedColor(Color(0xFFB5B5B5)),
-                                    disabledBorderColor = appThemedColor(Color(0xFFB5B5B5)),
                                     focusedTextColor = Ink,
                                     unfocusedTextColor = Ink,
-                                    disabledTextColor = Ink,
                                     cursorColor = Ink
                                 )
                             )
-                            IconButton(
-                                onClick = { userInstructionsEnabled = !userInstructionsEnabled },
-                                modifier = Modifier.size(44.dp)
-                            ) {
-                                Icon(
-                                    Icons.Default.Edit,
-                                    contentDescription = if (userInstructionsEnabled) "Finish editing instructions" else "Edit instructions",
-                                    tint = appThemedColor(if (userInstructionsEnabled) Color(0xFF2E7D32) else Color(0xFFD32F2F))
-                                )
-                            }
                         }
                     }
                 }
