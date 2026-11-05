@@ -1093,7 +1093,7 @@ private fun tr(text: String, language: String): String {
         "ORDER ITEMS" to "ఆర్డర్ వస్తువులు", "Qty" to "పరిమాణం", "each" to "ప్రతి ఒక్కటి", "more items" to "మరిన్ని వస్తువులు",
         "Order ID" to "ఆర్డర్ ID", "Email" to "ఇమెయిల్", "Order time" to "ఆర్డర్ సమయం",
         "Information not available" to "సమాచారం అందుబాటులో లేదు",
-        "Check that the latest Firestore rules are published." to "తాజా Firestore నియమాలు ప్రచురించబడ్డాయో తనిఖీ చేయండి."",
+        "Check that the latest Firestore rules are published." to "తాజా Firestore నియమాలు ప్రచురించబడ్డాయో తనిఖీ చేయండి.",
         "Tap to rate" to "రేటింగ్ ఇవ్వడానికి నొక్కండి",
         "Your review" to "మీ సమీక్ష",
         "Review" to "సమీక్ష",
@@ -1882,7 +1882,7 @@ private fun tr(text: String, language: String): String {
         "ORDER ITEMS" to "ऑर्डर आइटम", "Qty" to "मात्रा", "each" to "प्रति", "more items" to "और आइटम",
         "Order ID" to "ऑर्डर ID", "Email" to "ईमेल", "Order time" to "ऑर्डर समय",
         "Information not available" to "जानकारी उपलब्ध नहीं है",
-        "Check that the latest Firestore rules are published." to "जाँचें कि नवीनतम Firestore नियम प्रकाशित हैं।"",
+        "Check that the latest Firestore rules are published." to "जाँचें कि नवीनतम Firestore नियम प्रकाशित हैं।",
         "Tap to rate" to "रेटिंग देने के लिए टैप करें",
         "Your review" to "आपकी समीक्षा",
         "Review" to "समीक्षा",
@@ -9150,6 +9150,14 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         }
     }
 
+    val defaultAllDiseasePrecautions = listOf(
+        tr("Do not self-diagnose or start medicines based only on general information.", LocalAppLanguage.current),
+        tr("Consult a qualified healthcare professional for diagnosis and a treatment plan suited to the specific condition.", LocalAppLanguage.current),
+        tr("Use medicines only as prescribed; do not stop prescribed treatment without medical advice.", LocalAppLanguage.current),
+        tr("Maintain appropriate hygiene, balanced nutrition, safe physical activity, and recommended vaccinations where applicable.", LocalAppLanguage.current),
+        tr("Seek urgent medical care for severe symptoms such as breathing difficulty, chest pain, confusion, severe dehydration, or sudden worsening.", LocalAppLanguage.current)
+    )
+    
     LaunchedEffect(selectedDisease) {
         diseaseDescription = ""
         diseaseImageUrl = ""
@@ -9175,13 +9183,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             }
                         }.orEmpty()
                     if (selectedDisease == "All Diseases" && diseasePrecautions.isBlank()) {
-                        diseasePrecautions = listOf(
-                            tr("Do not self-diagnose or start medicines based only on general information.", LocalAppLanguage.current),
-                            tr("Consult a qualified healthcare professional for diagnosis and a treatment plan suited to the specific condition.", LocalAppLanguage.current),
-                            tr("Use medicines only as prescribed; do not stop prescribed treatment without medical advice.", LocalAppLanguage.current),
-                            tr("Maintain appropriate hygiene, balanced nutrition, safe physical activity, and recommended vaccinations where applicable.", LocalAppLanguage.current),
-                            tr("Seek urgent medical care for severe symptoms such as breathing difficulty, chest pain, confusion, severe dehydration, or sudden worsening.", LocalAppLanguage.current)
-                        ).joinToString("\n")
+                        diseasePrecautions = defaultAllDiseasePrecautions.joinToString("\n")
                     }
                     suggestedMedicineNames = listOf("suggested_medicines", "suggestedMedicines", "recommended_medicines", "medicines")
                         .firstNotNullOfOrNull { key ->
