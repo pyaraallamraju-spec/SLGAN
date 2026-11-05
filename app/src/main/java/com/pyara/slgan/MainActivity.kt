@@ -5870,14 +5870,14 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                     FilterChip(
                         selected = statusFilter == "Accepted",
                         onClick = { statusFilter = "Accepted" },
-                        label = { Text("Accepted  ${acceptedCount}") },
+                        label = { Text(tr("Accepted", LocalAppLanguage.current) + "  ${acceptedCount}") },
                         leadingIcon = { Icon(Icons.Default.CheckCircle, null, modifier = Modifier.size(16.dp)) },
                         colors = FilterChipDefaults.filterChipColors(selectedContainerColor = AdminInk, selectedLabelColor = Color.White, selectedLeadingIconColor = Color.White)
                     )
                     FilterChip(
                         selected = statusFilter == "Rejected",
                         onClick = { statusFilter = "Rejected" },
-                        label = { Text("Rejected  ${rejectedCount}") },
+                        label = { Text(tr("Rejected", LocalAppLanguage.current) + "  ${rejectedCount}") },
                         leadingIcon = { Icon(Icons.Default.Cancel, null, modifier = Modifier.size(16.dp)) },
                         colors = FilterChipDefaults.filterChipColors(selectedContainerColor = AdminInk, selectedLabelColor = Color.White, selectedLeadingIconColor = Color.White)
                     )
@@ -5932,7 +5932,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                     Column(horizontalAlignment = Alignment.End) {
                                         Text("₹" + String.format(java.util.Locale.US, "%.2f", total), color = AdminInk, fontWeight = FontWeight.ExtraBold, fontSize = 17.sp)
                                         Surface(shape = RoundedCornerShape(7.dp), color = AdminLightGray, border = BorderStroke(0.5.dp, Color(0xFFB5B5B5))) {
-                                            Text(status.replace("_", " ").replaceFirstChar { it.uppercase() }, Modifier.padding(horizontal = 8.dp, vertical = 5.dp), color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 9.sp, maxLines = 1)
+                                            Text(tr(status.replace("_", " ").split(" ").joinToString(" ") { it.replaceFirstChar { ch -> ch.uppercase() } }, LocalAppLanguage.current), Modifier.padding(horizontal = 8.dp, vertical = 5.dp), color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 9.sp, maxLines = 1)
                                         }
                                     }
                                 }
@@ -6016,7 +6016,7 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                             }
                                         }
                                     } else {
-                                        Text("This order has already been " + status.replace("_", " ") + ".", color = AdminMuted, fontSize = 11.sp)
+                                        Text(tr("This order has already been", LocalAppLanguage.current) + " " + tr(status.replace("_", " ").split(" ").joinToString(" ") { it.replaceFirstChar { ch -> ch.uppercase() } }, LocalAppLanguage.current) + ".", color = AdminMuted, fontSize = 11.sp)
                                     }
                                 }
                             }
@@ -8931,7 +8931,7 @@ private fun OrdersPage(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(Modifier.width(5.dp))
-                            Text(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, color = orderStatusTint, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                            Text(tr(status.replace('_', ' ').split(" ").joinToString(" ") { it.replaceFirstChar { ch -> ch.uppercase() } }, LocalAppLanguage.current), color = orderStatusTint, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.weight(1f))
                             TextButton(onClick = {
                                 val addedCount = addOrderItemsToCart(orderItems)
