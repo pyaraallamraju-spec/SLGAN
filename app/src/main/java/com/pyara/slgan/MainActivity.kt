@@ -9087,10 +9087,6 @@ private fun OrdersPage(
                     Spacer(Modifier.width(12.dp))
                     Text(tr("View Order", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
                 }
-                Row(Modifier.fillMaxWidth().clickable { confirmDeleteOrder = order; orderOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink)
-                    Spacer(Modifier.width(12.dp)); Text(tr("Delete order", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
-                }
                 Row(Modifier.fillMaxWidth().clickable {
                     val items = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
                     val textItems = items.map { item ->
