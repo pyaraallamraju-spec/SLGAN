@@ -2012,7 +2012,17 @@ private fun localizedProductName(name: String, language: String): String {
         "Bruhat Vaata Chintamani" to "బృహత్ వాత చింతామణి",
         "Maha Panchabhana Rasam" to "మహా పంచభాణ రసం",
         "Tippasattu" to "తిప్పసత్తు",
-        "Siddha Makaradhwajam" to "సిద్ధ మకరధ్వజం"
+        "Siddha Makaradhwajam" to "సిద్ధ మకరధ్వజం",
+        "Karupura Silajith" to "కర్పూర శిలాజిత్",
+        "Karpoora Silajith" to "కర్పూర శిలాజిత్",
+        "Karpura Silajith" to "కర్పూర శిలాజిత్",
+        "Sammohan asthra" to "సమ్మోహనాస్త్రం",
+        "Sammohan Astra" to "సమ్మోహనాస్త్రం",
+        "Sammohanāstra" to "సమ్మోహనాస్త్రం",
+        "Sootikaavaata Raksham" to "సూతికావాత రక్షం",
+        "Sootika Vata Raksham" to "సూతికావాత రక్షం",
+        "Sootikavata Raksham" to "సూతికావాత రక్షం",
+        "Vykranta" to "విక్రాంత"
     )
     val hindi = mapOf(
         "Mahakanakasindhura Rasam" to "महाकनकसिंधूर रस",
@@ -2103,7 +2113,17 @@ private fun localizedProductName(name: String, language: String): String {
         "Bruhat Vaata Chintamani" to "बृहत वात चिंतामणि",
         "Maha Panchabhana Rasam" to "महा पंचभाण रस",
         "Tippasattu" to "तिप्पसत्तु",
-        "Siddha Makaradhwajam" to "सिद्ध मकरध्वज"
+        "Siddha Makaradhwajam" to "सिद्ध मकरध्वज",
+        "Karupura Silajith" to "कर्पूर शिलाजीत",
+        "Karpoora Silajith" to "कर्पूर शिलाजीत",
+        "Karpura Silajith" to "कर्पूर शिलाजीत",
+        "Sammohan asthra" to "सम्मोहनास्त्र",
+        "Sammohan Astra" to "सम्मोहनास्त्र",
+        "Sammohanāstra" to "सम्मोहनास्त्र",
+        "Sootikaavaata Raksham" to "सूतिका वात रक्षम्",
+        "Sootika Vata Raksham" to "सूतिका वात रक्षम्",
+        "Sootikavata Raksham" to "सूतिका वात रक्षम्",
+        "Vykranta" to "विक्रांत"
     )
     fun key(value: String) = value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
     return when (language) {
