@@ -8293,8 +8293,65 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             }
                         }
                     }
-                }, modifier = Modifier.weight(1.3f).height(DefaultBtn.height), shape = RoundedCornerShape(DefaultBtn.cornerRadius), border = BorderStroke(1.dp, appThemedColor(DefaultBtn.border)), colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(DefaultBtn.background), contentColor = appThemedColor(DefaultBtn.content))) {
-                    Text(tr("Place order  ›", LocalAppLanguage.current), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = appThemedColor(DefaultBtn.content))
+                }, modifier = Modifier
+                    .weight(1.3f)
+                    .height(DefaultBtn.height)
+                    .shadow(7.dp, RoundedCornerShape(50))
+                    .clip(RoundedCornerShape(50))
+                    .background(
+                        Brush.linearGradient(
+                            colors = listOf(
+                                Color(0xFFF7FFF5),
+                                Color(0xFFE7F6E2),
+                                Color(0xFFD9EFD2),
+                                Color(0xFFF9FFF7)
+                            )
+                        )
+                    )
+                    .border(BorderStroke(1.5.dp, Color(0xFFD2E8C9)), RoundedCornerShape(50)),
+                    shape = RoundedCornerShape(50),
+                    border = null,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Color(0xFF174B25),
+                        disabledContainerColor = Color.Transparent,
+                        disabledContentColor = Color(0xFF78927A)
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 0.dp,
+                        pressedElevation = 1.dp,
+                        disabledElevation = 0.dp
+                    )
+                ) {
+                    if (submitting) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(19.dp),
+                            color = Color(0xFF174B25),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                Icons.Default.ShoppingCart,
+                                contentDescription = null,
+                                tint = Color(0xFF174B25),
+                                modifier = Modifier.size(22.dp)
+                            )
+                            Icon(
+                                Icons.Default.Check,
+                                contentDescription = null,
+                                tint = Color(0xFF174B25),
+                                modifier = Modifier.size(10.dp).align(Alignment.Center)
+                            )
+                        }
+                        Spacer(Modifier.width(9.dp))
+                        Text(
+                            tr("Place order  ›", LocalAppLanguage.current).removeSuffix("  ›"),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF174B25)
+                        )
+                    }
                 }
             }
         }
