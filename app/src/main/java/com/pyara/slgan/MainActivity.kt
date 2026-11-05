@@ -9122,8 +9122,16 @@ private fun OrdersPage(
     selectedOrder?.let { order ->
         val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
         val invoiceNo = order["invoiceNumber"]?.toString() ?: orderId
-        val customerName = order["customerName"]?.toString().orEmpty()
-        val phone = order["phone"]?.toString().orEmpty()
+        fun orderText(vararg keys: String): String =
+            keys.firstNotNullOfOrNull { key -> order[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+        val customerName = orderText("customerName", "name", "fullName")
+        val customerEmail = orderText("email", "customerEmail", "emailAddress")
+        val phone = orderText("phone", "customerPhone", "mobile")
+        val deliveryRecipient = orderText("deliveryRecipientName", "recipientName", "receiverName").ifBlank { customerName }
+        val deliveryPhone = orderText("deliveryPhone", "recipientPhone", "shippingPhone").ifBlank { phone }
+        val deliveryAddress = orderText("deliveryAddress", "shippingAddress", "address", "addressText", "fullAddress")
+        val deliveryAddressLabel = orderText("deliveryAddressLabel", "addressLabel")
+        val deliveryInstructions = orderText("deliveryInstruction", "deliveryInstructions", "user_instructions", "instructions")
         val status = order["orderStatus"]?.toString() ?: "received"
         val paymentStatus = order["paymentStatus"]?.toString() ?: "not_collected"
         val total = (order["grandTotal"] as? Number)?.toDouble() ?: (order["subtotal"] as? Number)?.toDouble() ?: 0.0
@@ -9220,6 +9228,37 @@ private fun OrdersPage(
                         }
                         if (phone.isNotBlank()) Column { Text(tr("Phone", LocalAppLanguage.current), color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
                         Column { Text(tr("Order placed", LocalAppLanguage.current), color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
+                    }
+                    Divider(color = appThemedColor(Color(0xFFE5E7EB)), thickness = 7.dp)
+                    Column(
+                        Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+                        Text(tr("Customer & Delivery Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        if (customerName.isNotBlank()) Column {
+                            Text(tr("Customer name", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(customerName, color = Ink, fontSize = 16.sp)
+                        }
+                        if (customerEmail.isNotBlank()) Column {
+                            Text(tr("Email", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(customerEmail, color = Ink, fontSize = 16.sp)
+                        }
+                        if (deliveryRecipient.isNotBlank()) Column {
+                            Text(tr("Delivery recipient", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(deliveryRecipient, color = Ink, fontSize = 16.sp)
+                        }
+                        if (deliveryPhone.isNotBlank()) Column {
+                            Text(tr("Delivery phone", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(deliveryPhone, color = Ink, fontSize = 16.sp)
+                        }
+                        if (deliveryAddress.isNotBlank()) Column {
+                            Text(tr(if (deliveryAddressLabel.isNotBlank()) "Delivery address · $deliveryAddressLabel" else "Delivery address", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(deliveryAddress, color = Ink, fontSize = 16.sp)
+                        }
+                        if (deliveryInstructions.isNotBlank()) Column {
+                            Text(tr("Delivery instructions", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(deliveryInstructions, color = Ink, fontSize = 16.sp)
+                        }
                     }
                     Spacer(Modifier.height(20.dp))
                     Column(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 20.dp, vertical = 16.dp)) {
