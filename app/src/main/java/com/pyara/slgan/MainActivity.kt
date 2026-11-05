@@ -7575,8 +7575,8 @@ private fun ProductDetailsPage(
                                         .padding(14.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-                                    Text(selectedDetailsTab, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                    Text(detailContent.ifBlank { "Information not available." }, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
+                                    Text(tr(selectedDetailsTab, currentLanguage), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                    Text(detailContent.ifBlank { tr("Information not available.", currentLanguage) }, color = Muted, fontSize = 13.sp, lineHeight = 19.sp)
                                     if (selectedDetailsTab == "About" && product.description.isNotBlank()) Text(tr("Product Information", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
                                 }
                             }
