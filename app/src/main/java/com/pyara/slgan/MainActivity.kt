@@ -8318,7 +8318,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         orderMessage = "Order saved: $orderId"
                                         submitting = false
                                         confirmedDeliveryAddress = null
-                                        onOrderResult(orderId, true, null, "Order saved. Payment has not been collected; the shop must verify the order.")
+                                        onOrderResult(orderId, true, null, "Order saved. Opening secure Cashfree checkout…")
+                                        context.startActivity(
+                                            android.content.Intent(context, CashfreePaymentActivity::class.java)
+                                                .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
+                                        )
                                         userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
                                             val idToken = tokenResult.token
                                             if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
