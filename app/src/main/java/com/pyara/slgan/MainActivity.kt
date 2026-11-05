@@ -8341,35 +8341,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }, modifier = Modifier
                     .weight(1.3f)
-                    .height(DefaultBtn.height)
-                    .shadow(9.dp, RoundedCornerShape(18.dp))
-                    .clip(RoundedCornerShape(18.dp))
-                    .background(
-                        Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFFF7F7F7),
-                                DefaultBtn.background,
-                                Color(0xFFD6D6D6),
-                                Color(0xFFF2F2F2)
-                            )
-                        )
-                    )
-                    .drawBehind {
-                        drawLine(
-                            color = DefaultBtn.border,
-                            start = androidx.compose.ui.geometry.Offset(18.dp.toPx(), size.height - 2.dp.toPx()),
-                            end = androidx.compose.ui.geometry.Offset(size.width - 18.dp.toPx(), size.height - 2.dp.toPx()),
-                            strokeWidth = 3.dp.toPx(),
-                            cap = androidx.compose.ui.graphics.StrokeCap.Round
-                        )
-                    }
-                    .border(BorderStroke(1.5.dp, DefaultBtn.border), RoundedCornerShape(18.dp)),
-                    shape = RoundedCornerShape(18.dp),
-                    border = null,
+                    .height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = DefaultBtn.content,
-                        disabledContainerColor = Color.Transparent,
+                        containerColor = appThemedColor(Color(0xFFE2E2E2)),
+                        contentColor = Ink,
+                        disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)),
                         disabledContentColor = Muted
                     ),
                     elevation = ButtonDefaults.buttonElevation(
@@ -8386,14 +8364,14 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         )
                     } else {
                         Box(
-                            modifier = Modifier.size(width = 48.dp, height = 38.dp),
+                            modifier = Modifier.size(width = 28.dp, height = 28.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.LocalShipping,
                                 contentDescription = null,
                                 tint = DefaultBtn.content,
-                                modifier = Modifier.size(39.dp)
+                                modifier = Modifier.size(23.dp)
                             )
                         }
                         Spacer(Modifier.width(8.dp))
