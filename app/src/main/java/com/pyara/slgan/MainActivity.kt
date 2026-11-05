@@ -638,6 +638,7 @@ private fun tr(text: String, language: String): String {
         "Explore our Ayurvedic collection and updates." to "మా ఆయుర్వేద ఉత్పత్తులు మరియు తాజా సమాచారాన్ని చూడండి.",
         "Help and support" to "సహాయం మరియు మద్దతు",
         "Personal information" to "వ్యక్తిగత సమాచారం",
+        "My orders" to "నా ఆర్డర్లు", "My cart" to "నా కార్ట్", "Need help?" to "సహాయం కావాలా?", "Address book" to "చిరునామా పుస్తకం", "My Wishlist" to "నా విష్‌లిస్ట్", "Diseases and remedies" to "వ్యాధులు మరియు నివారణలు",
         "Share the app" to "యాప్‌ను షేర్ చేయండి",
         "Please sign in again to save your language." to "మీ భాషను సేవ్ చేయడానికి మళ్లీ సైన్ ఇన్ చేయండి.",
         "Language preference saved." to "భాష ప్రాధాన్యత సేవ్ అయింది.",
@@ -1430,6 +1431,7 @@ private fun tr(text: String, language: String): String {
         "Explore our Ayurvedic collection and updates." to "हमारे आयुर्वेदिक उत्पाद और अपडेट देखें।",
         "Help and support" to "सहायता और समर्थन",
         "Personal information" to "व्यक्तिगत जानकारी",
+        "My orders" to "मेरे ऑर्डर", "My cart" to "मेरी कार्ट", "Need help?" to "मदद चाहिए?", "Address book" to "पता पुस्तिका", "My Wishlist" to "मेरी विशलिस्ट", "Diseases and remedies" to "रोग और उपचार",
         "Share the app" to "ऐप साझा करें",
         "Please sign in again to save your language." to "अपनी भाषा सहेजने के लिए फिर से साइन इन करें।",
         "Language preference saved." to "भाषा प्राथमिकता सहेजी गई।",
@@ -9888,7 +9890,7 @@ private fun AccountMenuRow(
         Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(23.dp))
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            Text(tr(title, LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
             if (!subtitle.isNullOrBlank()) {
                 Spacer(Modifier.height(3.dp))
                 Text(subtitle, color = Muted, fontSize = 12.sp)
@@ -10030,7 +10032,7 @@ private fun AccountsPage(
                     Column(Modifier.fillMaxSize().padding(horizontal = 4.dp, vertical = 3.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
                         Icon(icon, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp))
                         Spacer(Modifier.height(4.dp))
-                        Text(label, color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+                        Text(tr(label, LocalAppLanguage.current), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
                     }
                 }
             }
