@@ -56,6 +56,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -8110,7 +8112,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .orEmpty()
                     .ifBlank { tr("Address", LocalAppLanguage.current) }
                 Card(
-                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 3.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                     border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))
@@ -8143,11 +8145,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 AnimatedVisibility(
                     visible = showDeliveryAddressDetails,
-                    enter = slideInVertically(initialOffsetY = { -it / 2 }) + fadeIn(),
-                    exit = slideOutVertically(targetOffsetY = { -it / 2 }) + fadeOut()
+                    enter = expandVertically(expandFrom = Alignment.Top, animationSpec = tween(320, easing = FastOutSlowInEasing)) + fadeIn(tween(220)),
+                    exit = shrinkVertically(shrinkTowards = Alignment.Top, animationSpec = tween(260, easing = FastOutSlowInEasing)) + fadeOut(tween(180))
                 ) {
                 Box(
-                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                         .clip(RoundedCornerShape(24.dp))
                         .background(Brush.linearGradient(listOf(Color(0xFFF7FDEB), Color(0xFFE5F7D5), Color(0xFFD5F0BD))))
                         .border(1.dp, appThemedColor(Color(0xFF62A94A)), RoundedCornerShape(24.dp))
@@ -8159,7 +8161,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         contentScale = ContentScale.Fit,
                         alpha = 0.72f
                     )
-                    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                             OutlinedButton(
                                 onClick = {
