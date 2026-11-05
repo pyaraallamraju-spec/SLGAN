@@ -11651,7 +11651,8 @@ private fun AddAddressDetailsPage(
                     disabledContentColor = appThemedColor(DefaultBtn.content)
                 ),
                 border = BorderStroke(1.dp, appThemedColor(DefaultBtn.border)),
-                shape = RoundedCornerShape(DefaultBtn.cornerRadius)
+                shape = RoundedCornerShape(DefaultBtn.cornerRadius),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp, pressedElevation = 10.dp, focusedElevation = 8.dp, hoveredElevation = 10.dp, disabledElevation = 0.dp)
             ) {
                 if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp)
                 else Text(tr("Next", LocalAppLanguage.current), color = appThemedColor(DefaultBtn.content), fontSize = 18.sp, fontWeight = FontWeight.Bold)
