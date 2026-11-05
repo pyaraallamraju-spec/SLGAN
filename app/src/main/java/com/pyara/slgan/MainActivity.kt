@@ -7883,37 +7883,19 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Text(tr("Your Ayurvedic Order", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                                 Text(tr("Review cart before placing order", LocalAppLanguage.current).replace("{count}", selected.size.toString()), color = Muted, fontSize = 12.sp)
                             }
-                            Button(
+                            IconButton(
                                 onClick = { showClearCartConfirmation = true },
-                                modifier = Modifier
-                                    .height(42.dp)
-                                    .shadow(9.dp, RoundedCornerShape(18.dp))
-                                    .clip(RoundedCornerShape(18.dp))
-                                    .background(
-                                        Brush.linearGradient(
-                                            colors = listOf(Color(0xFFF7F7F7), DefaultBtn.background, Color(0xFFD6D6D6), Color(0xFFF2F2F2))
-                                        )
-                                    )
-                                    .drawBehind {
-                                        drawLine(
-                                            color = DefaultBtn.border,
-                                            start = androidx.compose.ui.geometry.Offset(12.dp.toPx(), size.height - 2.dp.toPx()),
-                                            end = androidx.compose.ui.geometry.Offset(size.width - 12.dp.toPx(), size.height - 2.dp.toPx()),
-                                            strokeWidth = 3.dp.toPx(),
-                                            cap = androidx.compose.ui.graphics.StrokeCap.Round
-                                        )
-                                    }
-                                    .border(BorderStroke(1.5.dp, DefaultBtn.border), RoundedCornerShape(18.dp))
-                                    .padding(horizontal = 10.dp),
-                                shape = RoundedCornerShape(18.dp),
-                                border = null,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = DefaultBtn.content),
-                                contentPadding = PaddingValues(horizontal = 2.dp, vertical = 0.dp),
-                                elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 1.dp)
+                                modifier = Modifier.size(42.dp)
+                                    .clip(RoundedCornerShape(14.dp))
+                                    .background(appThemedColor(Color(0xFFE2E2E2)))
+                                    .border(1.dp, appThemedColor(Color(0xFFB5B5B5)), RoundedCornerShape(14.dp))
                             ) {
-                                Icon(Icons.Default.DeleteSweep, contentDescription = null, tint = DefaultBtn.content, modifier = Modifier.size(17.dp))
-                                Spacer(Modifier.width(5.dp))
-                                Text(tr("Clear cart", LocalAppLanguage.current), color = DefaultBtn.content, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1)
+                                Icon(
+                                    Icons.Default.Delete,
+                                    contentDescription = tr("Clear cart", LocalAppLanguage.current),
+                                    tint = Ink,
+                                    modifier = Modifier.size(21.dp)
+                                )
                             }
                         }
                         Divider(color = appThemedColor(Color(0xFFEFF1F5)))
@@ -8253,11 +8235,21 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }
             }
-            Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(0.7f)) {
-                    Text(money(total), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+            Row(
+                Modifier.fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(appThemedColor(Color.White))
+                    .border(1.dp, appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(20.dp))
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(Modifier.weight(0.72f)) {
+                    Text(money(total), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
+                Box(Modifier.width(1.dp).height(42.dp).background(appThemedColor(Color(0xFFB5B5B5))))
+                Spacer(Modifier.width(12.dp))
                 Button(onClick = {
                     errorMessage = null
                     val user = FirebaseAuth.getInstance().currentUser
@@ -8337,35 +8329,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }, modifier = Modifier
                     .weight(1.3f)
-                    .height(DefaultBtn.height)
-                    .shadow(9.dp, RoundedCornerShape(18.dp))
-                    .clip(RoundedCornerShape(18.dp))
-                    .background(
-                        Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFFF7F7F7),
-                                DefaultBtn.background,
-                                Color(0xFFD6D6D6),
-                                Color(0xFFF2F2F2)
-                            )
-                        )
-                    )
-                    .drawBehind {
-                        drawLine(
-                            color = DefaultBtn.border,
-                            start = androidx.compose.ui.geometry.Offset(18.dp.toPx(), size.height - 2.dp.toPx()),
-                            end = androidx.compose.ui.geometry.Offset(size.width - 18.dp.toPx(), size.height - 2.dp.toPx()),
-                            strokeWidth = 3.dp.toPx(),
-                            cap = androidx.compose.ui.graphics.StrokeCap.Round
-                        )
-                    }
-                    .border(BorderStroke(1.5.dp, DefaultBtn.border), RoundedCornerShape(18.dp)),
-                    shape = RoundedCornerShape(18.dp),
-                    border = null,
+                    .height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = DefaultBtn.content,
-                        disabledContainerColor = Color.Transparent,
+                        containerColor = appThemedColor(Color(0xFFE2E2E2)),
+                        contentColor = Ink,
+                        disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)),
                         disabledContentColor = Muted
                     ),
                     elevation = ButtonDefaults.buttonElevation(
