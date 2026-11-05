@@ -11863,7 +11863,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                         } else {
                             mobileNumber = savedPhone.filter(Char::isDigit)
                         }
-                        snapshot.getString("languagePreference")?.let(onLanguageChange)
                         isLoading = false
                     } else {
                         isLoading = false
