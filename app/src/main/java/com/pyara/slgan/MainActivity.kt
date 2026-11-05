@@ -8296,20 +8296,20 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }, modifier = Modifier
                     .weight(1.3f)
                     .height(DefaultBtn.height)
-                    .shadow(7.dp, RoundedCornerShape(50))
-                    .clip(RoundedCornerShape(50))
+                    .shadow(6.dp, RoundedCornerShape(18.dp))
+                    .clip(RoundedCornerShape(18.dp))
                     .background(
                         Brush.linearGradient(
                             colors = listOf(
-                                Color(0xFFF7FFF5),
-                                Color(0xFFE7F6E2),
-                                Color(0xFFD9EFD2),
-                                Color(0xFFF9FFF7)
+                                Color(0xFFEAF5E9),
+                                Color(0xFFCDE8C8),
+                                Color(0xFFA8D5A5),
+                                Color(0xFFE4F3DF)
                             )
                         )
                     )
-                    .border(BorderStroke(1.5.dp, Color(0xFFD2E8C9)), RoundedCornerShape(50)),
-                    shape = RoundedCornerShape(50),
+                    .border(BorderStroke(1.5.dp, Color(0xFF9BCB96)), RoundedCornerShape(18.dp)),
+                    shape = RoundedCornerShape(18.dp),
                     border = null,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
