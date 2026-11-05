@@ -8859,9 +8859,9 @@ private fun OrdersPage(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clip(RoundedCornerShape(18.dp))
+                                        .clip(RoundedCornerShape(9.dp))
                                         .background(statusBackground)
-                                        .border(1.dp, if (isPending) appThemedColor(Color(0xFFF0DFA6)) else appThemedColor(Color(0xFFD4EAD8)), RoundedCornerShape(18.dp))
+                                        .border(1.dp, if (isPending) appThemedColor(Color(0xFFF0DFA6)) else appThemedColor(Color(0xFFD4EAD8)), RoundedCornerShape(9.dp))
                                         .padding(horizontal = 14.dp, vertical = 8.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(12.dp)
