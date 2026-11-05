@@ -11733,17 +11733,50 @@ private fun ReviewAddressPage(
         Button(
             onClick = onSave,
             enabled = hasCompleteAddress,
-            modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp).height(60.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp)
+                .height(60.dp)
+                .shadow(7.dp, RoundedCornerShape(50))
+                .clip(RoundedCornerShape(50))
+                .background(
+                    Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFFF7FFF5),
+                            Color(0xFFE7F6E2),
+                            Color(0xFFD9EFD2),
+                            Color(0xFFF9FFF7)
+                        )
+                    )
+                )
+                .border(BorderStroke(1.5.dp, Color.White.copy(alpha = 0.95f)), RoundedCornerShape(50)),
+            shape = RoundedCornerShape(50),
+            border = null,
             colors = ButtonDefaults.buttonColors(
-                containerColor = appThemedColor(Color(0xFFE2E2E2)),
-                contentColor = Ink,
-                disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)),
-                disabledContentColor = appThemedColor(Color(0xFF777777))
+                containerColor = Color.Transparent,
+                contentColor = Color(0xFF174B25),
+                disabledContainerColor = Color.Transparent,
+                disabledContentColor = Color(0xFF78927A)
             ),
-            border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
-            shape = RoundedCornerShape(18.dp)
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 1.dp,
+                disabledElevation = 0.dp
+            )
         ) {
-            Text(tr("Save Address", LocalAppLanguage.current), color = if (hasCompleteAddress) Ink else appThemedColor(Color(0xFF777777)), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Icon(
+                Icons.Default.Save,
+                contentDescription = null,
+                tint = if (hasCompleteAddress) Color(0xFF174B25) else Color(0xFF78927A),
+                modifier = Modifier.size(21.dp)
+            )
+            Spacer(Modifier.width(9.dp))
+            Text(
+                tr("Save Address", LocalAppLanguage.current),
+                color = if (hasCompleteAddress) Color(0xFF174B25) else Color(0xFF78927A),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
