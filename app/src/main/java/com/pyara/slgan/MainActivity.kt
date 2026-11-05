@@ -7716,6 +7716,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     var savedAddresses by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
     var selectedDeliveryAddressId by remember { mutableStateOf<String?>(null) }
     var confirmedDeliveryAddress by remember { mutableStateOf<Map<String, Any>?>(null) }
+    var showDeliveryAddressDetails by remember { mutableStateOf(false) }
     var loadingDeliveryAddresses by remember { mutableStateOf(false) }
     val signedInUser = FirebaseAuth.getInstance().currentUser
     var customerName by remember(signedInUser?.uid) { mutableStateOf(signedInUser?.displayName.orEmpty()) }
@@ -8050,6 +8051,47 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .ifBlank { address["mobile"]?.toString().orEmpty() }
                     .ifBlank { address["receiverPhone"]?.toString().orEmpty() }
                     .ifBlank { phone }
+                val addressLabel = listOf("label", "addressLabel", "addressType", "type", "tag")
+                    .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
+                    .orEmpty()
+                    .ifBlank { tr("Address", LocalAppLanguage.current) }
+                Card(
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 3.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
+                    border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))
+                ) {
+                    Row(
+                        Modifier.fillMaxWidth().padding(start = 12.dp, end = 4.dp, top = 5.dp, bottom = 5.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            buildString {
+                                append(tr("Deliver to", LocalAppLanguage.current))
+                                append(" ")
+                                append(addressLabel)
+                            },
+                            color = Ink,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.weight(1f),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        IconButton(onClick = { showDeliveryAddressDetails = !showDeliveryAddressDetails }) {
+                            Icon(
+                                if (showDeliveryAddressDetails) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
+                                contentDescription = if (showDeliveryAddressDetails) "Hide delivery address" else "Show delivery address",
+                                tint = appThemedColor(Color(0xFF238B3B))
+                            )
+                        }
+                    }
+                }
+                AnimatedVisibility(
+                    visible = showDeliveryAddressDetails,
+                    enter = slideInVertically(initialOffsetY = { -it / 2 }) + fadeIn(),
+                    exit = slideOutVertically(targetOffsetY = { -it / 2 }) + fadeOut()
+                ) {
                 Box(
                     Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)
                         .clip(RoundedCornerShape(24.dp))
@@ -8118,6 +8160,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             }
                         }
                     }
+                }
                 }
             } else {
                 Card(
