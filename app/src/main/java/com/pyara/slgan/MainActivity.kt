@@ -8673,13 +8673,13 @@ private fun OrdersPage(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
-                    Modifier.fillMaxWidth().padding(18.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    Modifier.fillMaxWidth().padding(14.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(48.dp)
+                                .size(38.dp)
                                 .shadow(if (latestOrderSuccess) 3.dp else 0.dp, CircleShape)
                                 .background(if (latestOrderSuccess) successGreen else appThemedColor(Color(0xFFB3261E)), CircleShape),
                             contentAlignment = Alignment.Center
@@ -8688,7 +8688,7 @@ private fun OrdersPage(
                                 if (latestOrderSuccess) Icons.Default.Check else Icons.Default.Error,
                                 contentDescription = null,
                                 tint = Color.White,
-                                modifier = Modifier.size(29.dp)
+                                modifier = Modifier.size(22.dp)
                             )
                         }
                         Spacer(Modifier.width(12.dp))
@@ -8696,7 +8696,7 @@ private fun OrdersPage(
                             Text(
                                 if (latestOrderSuccess) tr("Order successful", LocalAppLanguage.current) else tr("Order failed", LocalAppLanguage.current),
                                 fontWeight = FontWeight.ExtraBold,
-                                fontSize = 20.sp,
+                                fontSize = 17.sp,
                                 color = if (latestOrderSuccess) successGreen else appThemedColor(Color(0xFFB3261E))
                             )
                             Text(
@@ -8706,17 +8706,17 @@ private fun OrdersPage(
                             )
                         }
                         if (latestOrderSuccess) {
-                            Icon(Icons.Default.Spa, contentDescription = null, tint = appThemedColor(Color(0xFFB8DCA8)), modifier = Modifier.size(30.dp))
+                            Icon(Icons.Default.Spa, contentDescription = null, tint = appThemedColor(Color(0xFFB8DCA8)), modifier = Modifier.size(22.dp))
                         }
                     }
                     if (latestOrderId != null) {
-                        Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            Text(tr("ORDER ID", LocalAppLanguage.current), color = Muted, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(tr("ORDER ID", LocalAppLanguage.current), color = Muted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.6.sp)
                             Text(
                                 latestOrderId!!,
                                 color = Ink,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
+                                fontSize = 13.sp
                             )
                         }
                     }
@@ -8859,9 +8859,9 @@ private fun OrdersPage(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clip(RoundedCornerShape(18.dp))
+                                        .clip(RoundedCornerShape(9.dp))
                                         .background(statusBackground)
-                                        .border(1.dp, if (isPending) appThemedColor(Color(0xFFF0DFA6)) else appThemedColor(Color(0xFFD4EAD8)), RoundedCornerShape(18.dp))
+                                        .border(1.dp, if (isPending) appThemedColor(Color(0xFFF0DFA6)) else appThemedColor(Color(0xFFD4EAD8)), RoundedCornerShape(9.dp))
                                         .padding(horizontal = 14.dp, vertical = 8.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -9076,9 +9076,16 @@ private fun OrdersPage(
         ModalBottomSheet(onDismissRequest = { orderOptions = null }, containerColor = appThemedColor(Color.White), contentColor = Ink) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(tr("Order Info", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Row(Modifier.fillMaxWidth().clickable { confirmDeleteOrder = order; orderOptions = null }.padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.DeleteOutline, contentDescription = null, tint = Ink)
-                    Spacer(Modifier.width(12.dp)); Text(tr("Delete order", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
+                Row(
+                    Modifier.fillMaxWidth().clickable {
+                        selectedOrder = order
+                        orderOptions = null
+                    }.padding(vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink)
+                    Spacer(Modifier.width(12.dp))
+                    Text(tr("View Order", LocalAppLanguage.current), color = Ink, fontSize = 16.sp)
                 }
                 Row(Modifier.fillMaxWidth().clickable {
                     val items = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
@@ -9115,8 +9122,16 @@ private fun OrdersPage(
     selectedOrder?.let { order ->
         val orderId = order["orderId"]?.toString() ?: order["_documentId"]?.toString().orEmpty()
         val invoiceNo = order["invoiceNumber"]?.toString() ?: orderId
-        val customerName = order["customerName"]?.toString().orEmpty()
-        val phone = order["phone"]?.toString().orEmpty()
+        fun orderText(vararg keys: String): String =
+            keys.firstNotNullOfOrNull { key -> order[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+        val customerName = orderText("customerName", "name", "fullName")
+        val customerEmail = orderText("email", "customerEmail", "emailAddress")
+        val phone = orderText("phone", "customerPhone", "mobile")
+        val deliveryRecipient = orderText("deliveryRecipientName", "recipientName", "receiverName").ifBlank { customerName }
+        val deliveryPhone = orderText("deliveryPhone", "recipientPhone", "shippingPhone").ifBlank { phone }
+        val deliveryAddress = orderText("deliveryAddress", "shippingAddress", "address", "addressText", "fullAddress")
+        val deliveryAddressLabel = orderText("deliveryAddressLabel", "addressLabel")
+        val deliveryInstructions = orderText("deliveryInstruction", "deliveryInstructions", "user_instructions", "instructions")
         val status = order["orderStatus"]?.toString() ?: "received"
         val paymentStatus = order["paymentStatus"]?.toString() ?: "not_collected"
         val total = (order["grandTotal"] as? Number)?.toDouble() ?: (order["subtotal"] as? Number)?.toDouble() ?: 0.0
@@ -9213,6 +9228,37 @@ private fun OrdersPage(
                         }
                         if (phone.isNotBlank()) Column { Text(tr("Phone", LocalAppLanguage.current), color = Muted, fontSize = 14.sp); Text(phone, color = Ink, fontSize = 16.sp) }
                         Column { Text(tr("Order placed", LocalAppLanguage.current), color = Muted, fontSize = 14.sp); Text(created, color = Ink, fontSize = 16.sp) }
+                    }
+                    Divider(color = appThemedColor(Color(0xFFE5E7EB)), thickness = 7.dp)
+                    Column(
+                        Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+                        Text(tr("Customer & Delivery Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        if (customerName.isNotBlank()) Column {
+                            Text(tr("Customer name", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(customerName, color = Ink, fontSize = 16.sp)
+                        }
+                        if (customerEmail.isNotBlank()) Column {
+                            Text(tr("Email", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(customerEmail, color = Ink, fontSize = 16.sp)
+                        }
+                        if (deliveryRecipient.isNotBlank()) Column {
+                            Text(tr("Delivery recipient", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(deliveryRecipient, color = Ink, fontSize = 16.sp)
+                        }
+                        if (deliveryPhone.isNotBlank()) Column {
+                            Text(tr("Delivery phone", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(deliveryPhone, color = Ink, fontSize = 16.sp)
+                        }
+                        if (deliveryAddress.isNotBlank()) Column {
+                            Text(tr(if (deliveryAddressLabel.isNotBlank()) "Delivery address · $deliveryAddressLabel" else "Delivery address", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(deliveryAddress, color = Ink, fontSize = 16.sp)
+                        }
+                        if (deliveryInstructions.isNotBlank()) Column {
+                            Text(tr("Delivery instructions", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(deliveryInstructions, color = Ink, fontSize = 16.sp)
+                        }
                     }
                     Spacer(Modifier.height(20.dp))
                     Column(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 20.dp, vertical = 16.dp)) {
