@@ -1,5 +1,6 @@
 package com.pyara.slgan
 
+
 import android.app.Activity
 import android.os.Bundle
 import android.Manifest
@@ -2016,6 +2017,8 @@ private fun tr(text: String, language: String): String {
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
+
+private const val CASHFREE_LIVE_BACKEND_READY = false
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -5038,6 +5041,7 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
     val db = remember { FirebaseFirestore.getInstance() }
     val context = LocalContext.current
     var sandboxEnabled by remember { mutableStateOf(true) }
+    var liveEnabled by remember { mutableStateOf(false) }
     var codEnabled by remember { mutableStateOf(true) }
     var loading by remember { mutableStateOf(true) }
     var saving by remember { mutableStateOf(false) }
@@ -5048,6 +5052,7 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
             .addSnapshotListener { snapshot, error ->
                 if (error == null) {
                     sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
+                    liveEnabled = snapshot?.getBoolean("liveEnabled") ?: false
                     codEnabled = snapshot?.getBoolean("codEnabled") ?: true
                     message = null
                 } else {
@@ -5063,7 +5068,6 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
         message = null
         val values = mapOf<String, Any>(
             field to enabled,
-            "onlineEnabled" to false,
             "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
             "updatedBy" to (FirebaseAuth.getInstance().currentUser?.uid ?: "")
         )
@@ -5113,11 +5117,11 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
                     }
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(tr("Online Payment", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                        Text(tr("Live payments are inactive until the production backend is ready.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
-                        Text(tr("Inactive · Production setup pending", LocalAppLanguage.current), color = Color(0xFF9A5A00), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Live Online Payment", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Cashfree production checkout. Keep disabled until the production Worker and credentials are deployed and tested.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
+                        Text(if (CASHFREE_LIVE_BACKEND_READY) tr("Production backend ready", LocalAppLanguage.current) else tr("Inactive · Production setup pending", LocalAppLanguage.current), color = Color(0xFF9A5A00), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                     }
-                    Switch(checked = false, onCheckedChange = {}, enabled = false)
+                    Switch(checked = liveEnabled, onCheckedChange = { saveOption("liveEnabled", it) }, enabled = !saving && CASHFREE_LIVE_BACKEND_READY)
                 }
             }
             Card(
@@ -8178,6 +8182,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     var showPaymentMethodSheet by remember { mutableStateOf(false) }
     var selectedPaymentMethod by remember { mutableStateOf("cod") }
     var sandboxEnabled by remember { mutableStateOf(true) }
+    var liveEnabled by remember { mutableStateOf(false) }
     var codEnabled by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var orderMessage by remember { mutableStateOf<String?>(null) }
@@ -8188,6 +8193,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             .addSnapshotListener { snapshot, error ->
                 if (error == null) {
                     sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
+                    liveEnabled = snapshot?.getBoolean("liveEnabled") ?: false
                     codEnabled = snapshot?.getBoolean("codEnabled") ?: true
                 } else {
                     android.util.Log.w("SLGANPayments", "Could not load payment options.", error)
@@ -8196,10 +8202,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         onDispose { listener.remove() }
     }
 
-    val availablePaymentMethods = remember(sandboxEnabled, codEnabled) {
+    val availablePaymentMethods = remember(sandboxEnabled, liveEnabled, codEnabled) {
         listOfNotNull(
             if (codEnabled) Triple("cod", "Cash on Delivery", "Pay when your order arrives.") else null,
-            if (sandboxEnabled) Triple("sandbox", "Sandbox", "Pay securely using Cashfree Sandbox.") else null
+            if (sandboxEnabled) Triple("sandbox", "Sandbox", "Pay securely using Cashfree Sandbox.") else null,
+            if (liveEnabled && CASHFREE_LIVE_BACKEND_READY) Triple("live", "Live Online Payment", "Pay securely using Cashfree.") else null
         )
     }
     LaunchedEffect(availablePaymentMethods) {
@@ -8790,8 +8797,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     "subtotal" to total,
                                     "grandTotal" to total,
                                     "currency" to "INR",
-                                    "paymentMethod" to if (selectedPaymentMethod == "sandbox") "cashfree" else "cod",
-                                    "paymentEnvironment" to if (selectedPaymentMethod == "sandbox") "sandbox" else "none",
+                                    "paymentMethod" to if (selectedPaymentMethod == "sandbox" || selectedPaymentMethod == "live") "cashfree" else "cod",
+                                    "paymentEnvironment" to when (selectedPaymentMethod) { "sandbox" -> "sandbox"; "live" -> "production"; else -> "none" },
                                     "paymentStatus" to "not_collected",
                                     "orderStatus" to "pending_verification",
                                     "invoiceNumber" to orderId,
@@ -8805,11 +8812,14 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         submitting = false
                                         showPaymentMethodSheet = false
                                         confirmedDeliveryAddress = null
-                                        if (selectedPaymentMethod == "sandbox") {
-                                            onOrderResult(orderId, true, null, "Order saved. Opening Cashfree Sandbox checkout…")
+                                        if (selectedPaymentMethod == "sandbox" || selectedPaymentMethod == "live") {
+                                            val environment = if (selectedPaymentMethod == "live") "production" else "sandbox"
+                                            val checkoutLabel = if (environment == "production") "Live" else "Sandbox"
+                                            onOrderResult(orderId, true, null, "Order saved. Opening Cashfree $checkoutLabel checkout…")
                                             context.startActivity(
                                                 android.content.Intent(context, CashfreePaymentActivity::class.java)
                                                     .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
+                                                    .putExtra(CashfreePaymentActivity.EXTRA_ENVIRONMENT, environment)
                                             )
                                         } else {
                                             onOrderResult(orderId, true, null, "Cash on Delivery order saved.")
