@@ -8310,7 +8310,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         orderMessage = "Order saved: $orderId"
                                         submitting = false
                                         confirmedDeliveryAddress = null
-                                        onOrderResult(orderId, true, null, "Order saved. Payment has not been collected; the shop must verify the order.")
+                                        onOrderResult(orderId, true, null, "Order saved. Opening secure Cashfree checkout…")
+                                        context.startActivity(
+                                            android.content.Intent(context, CashfreePaymentActivity::class.java)
+                                                .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
+                                        )
                                         userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
                                             val idToken = tokenResult.token
                                             if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
@@ -8352,14 +8356,14 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         )
                     } else {
                         Box(
-                            modifier = Modifier.size(width = 48.dp, height = 38.dp),
+                            modifier = Modifier.size(width = 28.dp, height = 28.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 Icons.Default.LocalShipping,
                                 contentDescription = null,
                                 tint = DefaultBtn.content,
-                                modifier = Modifier.size(39.dp)
+                                modifier = Modifier.size(23.dp)
                             )
                         }
                         Spacer(Modifier.width(8.dp))
