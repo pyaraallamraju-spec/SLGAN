@@ -1932,6 +1932,76 @@ class MainActivity : ComponentActivity() {
 }
 
 
+private fun transliterateLatinToTelugu(value: String): String {
+    val consonants = listOf(
+        "ksh" to "క్ష", "chh" to "ఛ", "Sh" to "ష", "sh" to "శ",
+        "kh" to "ఖ", "gh" to "ఘ", "ch" to "చ", "jh" to "ఝ",
+        "th" to "థ", "dh" to "ధ", "ph" to "ఫ", "bh" to "భ",
+        "ng" to "ఙ", "ny" to "ఞ", "jn" to "జ్ఞ",
+        "k" to "క", "g" to "గ", "c" to "క", "j" to "జ",
+        "T" to "ట", "D" to "డ", "N" to "ణ", "t" to "త", "d" to "ద",
+        "n" to "న", "p" to "ప", "b" to "బ", "m" to "మ",
+        "y" to "య", "r" to "ర", "l" to "ల", "v" to "వ",
+        "w" to "వ", "s" to "స", "h" to "హ", "f" to "ఫ",
+        "z" to "జ", "q" to "క", "x" to "క్స"
+    ).sortedByDescending { it.first.length }
+    val vowels = listOf(
+        "aa" to "ా", "A" to "ా", "ee" to "ీ", "ii" to "ీ",
+        "oo" to "ూ", "uu" to "ూ", "ai" to "ై", "au" to "ౌ",
+        "R" to "ృ", "ri" to "ృ", "e" to "ె", "i" to "ి",
+        "o" to "ొ", "u" to "ు", "a" to ""
+    ).sortedByDescending { it.first.length }
+    val independentVowels = mapOf(
+        "aa" to "ఆ", "A" to "ఆ", "ee" to "ఈ", "ii" to "ఈ",
+        "oo" to "ఊ", "uu" to "ఊ", "ai" to "ఐ", "au" to "ఔ",
+        "R" to "ఋ", "ri" to "ఋ", "a" to "అ", "i" to "ఇ",
+        "u" to "ఉ", "e" to "ఎ", "o" to "ఒ"
+    )
+    val input = value.trim()
+    if (input.none { it in 'A'..'Z' || it in 'a'..'z' }) return input
+    val out = StringBuilder()
+    var index = 0
+    while (index < input.length) {
+        val current = input[index]
+        if (!current.isLetter()) {
+            out.append(current)
+            index++
+            continue
+        }
+        val consonant = consonants.firstOrNull { (token, _) ->
+            input.startsWith(token, index, ignoreCase = false) ||
+                (token.all { it.isLowerCase() } && input.startsWith(token, index, ignoreCase = true))
+        }
+        if (consonant != null) {
+            out.append(consonant.second)
+            index += consonant.first.length
+            val vowel = vowels.firstOrNull { (token, _) ->
+                input.startsWith(token, index, ignoreCase = false) ||
+                    (token.all { it.isLowerCase() } && input.startsWith(token, index, ignoreCase = true))
+            }
+            if (vowel != null) {
+                out.append(vowel.second)
+                index += vowel.first.length
+            } else {
+                out.append('్')
+            }
+            continue
+        }
+        val vowel = vowels.firstOrNull { (token, _) ->
+            input.startsWith(token, index, ignoreCase = false) ||
+                (token.all { it.isLowerCase() } && input.startsWith(token, index, ignoreCase = true))
+        }
+        if (vowel != null) {
+            out.append(independentVowels[vowel.first] ?: vowel.second)
+            index += vowel.first.length
+        } else {
+            out.append(current)
+            index++
+        }
+    }
+    return out.toString()
+}
+
 private fun localizedProductName(name: String, language: String): String {
     if (language == "English") return name
     val telugu = mapOf(
@@ -2138,7 +2208,7 @@ private fun localizedProductName(name: String, language: String): String {
     )
     fun key(value: String) = value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
     return when (language) {
-        "Telugu" -> telugu.entries.firstOrNull { key(it.key) == key(name) }?.value ?: name
+        "Telugu" -> telugu.entries.firstOrNull { key(it.key) == key(name) }?.value ?: transliterateLatinToTelugu(name)
         "Hindi" -> hindi.entries.firstOrNull { key(it.key) == key(name) }?.value ?: name
         else -> name
     }
