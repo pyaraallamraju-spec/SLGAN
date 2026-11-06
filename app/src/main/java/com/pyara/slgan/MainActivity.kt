@@ -12487,7 +12487,6 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 "mobileNumber" to (selectedCountry.third + mobileNumber.filter(Char::isDigit)),
                                 "updatedAt" to System.currentTimeMillis()
                             ) + if (onProfileComplete != null) mapOf("profileCompletionRequired" to false) else emptyMap()) { error ->
-                            )) { error ->
                                 isSaving = false
                                 if (error == null) {
                                     saveMessage = null
