@@ -8283,10 +8283,15 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .ifBlank { address["mobile"]?.toString().orEmpty() }
                     .ifBlank { address["receiverPhone"]?.toString().orEmpty() }
                     .ifBlank { phone }
-                val addressLabel = listOf("label", "addressLabel", "addressType", "type", "tag")
+                val rawAddressLabel = listOf("label", "addressLabel", "addressType", "type", "tag")
                     .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
                     .orEmpty()
-                    .ifBlank { tr("Address", LocalAppLanguage.current) }
+                val addressLabel = when (rawAddressLabel.trim().lowercase(Locale.ROOT)) {
+                    "home", "home address" -> tr("Home", LocalAppLanguage.current)
+                    "work", "office", "work address" -> tr("Work", LocalAppLanguage.current)
+                    "other", "other address" -> tr("Other", LocalAppLanguage.current)
+                    else -> rawAddressLabel.ifBlank { tr("Address", LocalAppLanguage.current) }
+                }
                 Card(
                     Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
                     shape = RoundedCornerShape(18.dp),
