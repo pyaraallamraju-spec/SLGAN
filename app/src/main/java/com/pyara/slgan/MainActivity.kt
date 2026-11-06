@@ -6672,23 +6672,23 @@ private fun WishlistPage(
     val savedProducts = products.filter { it.id in savedProductIds }
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF1F2F5)))) {
         Row(
-            modifier = Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
+            modifier = Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(
                 onClick = onBack,
                 shape = CircleShape,
                 color = Color.White,
-                border = BorderStroke(1.dp, appThemedColor(Color(0xFFE5E8EF))),
-                modifier = Modifier.size(56.dp)
+                border = BorderStroke(1.dp, appThemedColor(Color(0xFFE8EAF0))),
+                modifier = Modifier.size(42.dp)
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(28.dp))
+                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink, modifier = Modifier.size(24.dp))
                 }
             }
-            Spacer(Modifier.width(16.dp))
+            Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                Text(tr("Your wishlist", appLanguage), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Your wishlist", appLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
                 Text(tr("${savedProducts.size} saved products", appLanguage), color = Muted, fontSize = 12.sp)
             }
             Icon(Icons.Default.Favorite, contentDescription = null, tint = appThemedColor(Color(0xFFD32F2F)), modifier = Modifier.padding(end = 12.dp).size(24.dp))
