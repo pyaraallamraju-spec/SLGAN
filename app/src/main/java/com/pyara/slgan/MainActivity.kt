@@ -8959,95 +8959,58 @@ private fun OrdersPage(
                                 }
                             }
                         }
-                        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                val isPending = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
-                                val statusColor = if (isPending) appThemedColor(Color(0xFF76551A)) else appThemedColor(Color(0xFF237344))
-                                val statusBackground = if (isPending) appThemedColor(Color(0xFFFFFCF2)) else appThemedColor(Color(0xFFEEF8F0))
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clip(RoundedCornerShape(9.dp))
-                                        .background(statusBackground)
-                                        .border(1.dp, if (isPending) appThemedColor(Color(0xFFF0DFA6)) else appThemedColor(Color(0xFFD4EAD8)), RoundedCornerShape(9.dp))
-                                        .padding(horizontal = 14.dp, vertical = 8.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(38.dp)
-                                            .clip(CircleShape)
-                                            .background(if (isPending) appThemedColor(Color(0xFFFFE9A8)) else appThemedColor(Color(0xFFDDF1E2))),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            if (isPending) Icons.Default.Schedule else Icons.Default.CheckCircle,
-                                            contentDescription = null,
-                                            tint = statusColor,
-                                            modifier = Modifier.size(20.dp)
-                                        )
-                                    }
-                                    Column(
-                                        modifier = Modifier.weight(1f),
-                                        verticalArrangement = Arrangement.spacedBy(0.dp)
-                                    ) {
-                                        Text(
-                                            tr("ORDER STATUS", LocalAppLanguage.current),
-                                            color = statusColor.copy(alpha = 0.78f),
-                                            fontSize = 9.sp,
-                                            lineHeight = 10.sp,
-                                            fontWeight = FontWeight.ExtraBold,
-                                            letterSpacing = 1.1.sp
-                                        )
-                                        Text(
-                                            if (isPending) tr("Pending verification", LocalAppLanguage.current) else status.replace('_', ' ').replaceFirstChar { it.uppercase() },
-                                            color = statusColor,
-                                            fontSize = 14.sp,
-                                            lineHeight = 16.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis
-                                        )
-                                    }
-                                }
-                                Spacer(Modifier.weight(1f))
-                                if (!invoiceUrl.isNullOrBlank()) {
-                                    IconButton(
-                                        onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
-                                        modifier = Modifier.size(40.dp).background(PaleGreen, CircleShape)
-                                    ) {
-                                        Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Forest)
-                                    }
-                                }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            val isFailedStatus = status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)
+                            val isPendingStatus = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
+                            val orderStatusTint = when {
+                                isFailedStatus -> appThemedColor(Color(0xFFC62828))
+                                isPendingStatus -> appThemedColor(Color(0xFFC58B00))
+                                else -> appThemedColor(Color(0xFF27864A))
                             }
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                            Icon(
+                                when {
+                                    isFailedStatus -> Icons.Default.Cancel
+                                    isPendingStatus -> Icons.Default.Schedule
+                                    else -> Icons.Default.CheckCircle
+                                },
+                                contentDescription = null,
+                                tint = orderStatusTint,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(Modifier.width(5.dp))
+                            Text(
+                                tr(if (isPendingStatus) "Pending Verification" else status.replace('_', ' ').split(" ").joinToString(" ") { it.replaceFirstChar { ch -> ch.uppercase() } }, LocalAppLanguage.current),
+                                color = orderStatusTint,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f, fill = false)
+                            )
+                            Spacer(Modifier.weight(1f))
+                            TextButton(
+                                onClick = {
+                                    val addedCount = addOrderItemsToCart(orderItems)
+                                    Toast.makeText(
+                                        context,
+                                        if (addedCount > 0) "$addedCount item(s) added to cart" else "No ordered products matched the current catalogue. Please refresh products and try again.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    if (addedCount > 0) onCart()
+                                },
+                                contentPadding = PaddingValues(horizontal = 5.dp, vertical = 4.dp)
                             ) {
-                                Button(
-                                    onClick = {
-                                        val addedCount = addOrderItemsToCart(orderItems)
-                                        Toast.makeText(
-                                            context,
-                                            if (addedCount > 0) "$addedCount item(s) added to cart" else "No ordered products matched the current catalogue. Please refresh products and try again.",
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        if (addedCount > 0) onCart()
-                                    },
-                                    modifier = Modifier.weight(1f).height(46.dp),
-                                    shape = RoundedCornerShape(14.dp),
-                                    border = null,
-                                    colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = Ink),
-                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+                                Text(tr("Reorder", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Medium)
+                            }
+                            if (!invoiceUrl.isNullOrBlank()) {
+                                IconButton(
+                                    onClick = { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) },
+                                    modifier = Modifier.size(38.dp).background(appThemedColor(Color.White), CircleShape)
                                 ) {
-                                    Icon(Icons.Default.Refresh, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
-                                    Spacer(Modifier.width(6.dp))
-                                    Text(tr("Reorder", LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold, maxLines = 1)
+                                    Icon(Icons.Default.PictureAsPdf, contentDescription = tr("Open invoice PDF", LocalAppLanguage.current), tint = Ink)
                                 }
                             }
                         }
