@@ -2435,6 +2435,7 @@ private fun AyurvedicApp() {
     var adminDiseasesOpen by remember { mutableStateOf(false) }
     var adminBannersOpen by remember { mutableStateOf(false) }
     var adminThemesOpen by remember { mutableStateOf(false) }
+    var adminPaymentsOpen by remember { mutableStateOf(false) }
     var adminRoleResolved by remember { mutableStateOf(false) }
     var showSplash by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
@@ -2748,6 +2749,7 @@ private fun AyurvedicApp() {
     var lastBackPressedAt by remember { mutableStateOf(0L) }
     BackHandler(enabled = !showSplash && authResolved) {
         when {
+            isAdmin && adminPaymentsOpen -> adminPaymentsOpen = false
             isAdmin && adminThemesOpen -> adminThemesOpen = false
             isAdmin && adminBannersOpen -> adminBannersOpen = false
             isAdmin && adminCustomersOpen -> adminCustomersOpen = false
@@ -2970,6 +2972,7 @@ private fun AyurvedicApp() {
             else if (isAdmin && adminCustomersOpen) AdminCustomersScreen(onBack = { adminCustomersOpen = false })
             else if (isAdmin && adminDiseasesOpen) AdminDiseasesScreen(onBack = { adminDiseasesOpen = false })
             else if (isAdmin && adminBannersOpen) BannerManagementScreen(onBack = { adminBannersOpen = false })
+            else if (isAdmin && adminPaymentsOpen) PaymentsManagementScreen(onBack = { adminPaymentsOpen = false })
             else if (isAdmin && adminThemesOpen) ThemeManagementScreen(onBack = { adminThemesOpen = false })
             else if (isAdmin && adminOrdersOpen) AdminOrdersScreen(onBack = { adminOrdersOpen = false })
             else if (isAdmin && adminProductsOpen) AdminProductsScreen(
@@ -2988,8 +2991,10 @@ private fun AyurvedicApp() {
                 onDiseasesClick = { adminDiseasesOpen = true },
                 onBannersClick = { adminBannersOpen = true },
                 onThemesClick = { adminThemesOpen = true },
+                onPaymentsClick = { adminPaymentsOpen = true },
                 onSignOut = {
                     auth.signOut()
+                    adminPaymentsOpen = false
                     adminProductsOpen = false
                     adminOrdersOpen = false
                     adminCustomersOpen = false
@@ -4808,6 +4813,7 @@ private fun AdminDashboardScreen(
     onDiseasesClick: () -> Unit,
     onBannersClick: () -> Unit,
     onThemesClick: () -> Unit,
+    onPaymentsClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
     var orderCount by remember { mutableIntStateOf(0) }
@@ -5020,8 +5026,147 @@ private fun AdminDashboardScreen(
         ManagementRow(Icons.Default.ReceiptLong, "Orders Management", "View and manage customer orders", onOrdersClick)
         ManagementRow(Icons.Default.MedicalServices, "Diseases Management", "Manage disease records", onDiseasesClick)
         ManagementRow(Icons.Default.PeopleAlt, "Customers Management", "View registered customers", onCustomersClick)
+        ManagementRow(Icons.Default.CreditCard, "Payments", "Choose which payment methods customers can use", onPaymentsClick)
         ManagementRow(Icons.Default.Palette, "App Themes", "Apply Default or Theme 1 across the app", onThemesClick)
         ManagementRow(Icons.Default.ViewCarousel, "Sliders & Banners", "Manage home page slider images and visibility", onBannersClick)
+        Spacer(Modifier.height(18.dp))
+    }
+}
+
+@Composable
+private fun PaymentsManagementScreen(onBack: () -> Unit) {
+    val db = remember { FirebaseFirestore.getInstance() }
+    val context = LocalContext.current
+    var sandboxEnabled by remember { mutableStateOf(true) }
+    var codEnabled by remember { mutableStateOf(true) }
+    var loading by remember { mutableStateOf(true) }
+    var saving by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf<String?>(null) }
+
+    DisposableEffect(db) {
+        val listener = db.collection("appSettings").document("paymentMethods")
+            .addSnapshotListener { snapshot, error ->
+                if (error == null) {
+                    sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
+                    codEnabled = snapshot?.getBoolean("codEnabled") ?: true
+                    message = null
+                } else {
+                    message = error.localizedMessage ?: "Could not load payment settings."
+                }
+                loading = false
+            }
+        onDispose { listener.remove() }
+    }
+
+    fun saveOption(field: String, enabled: Boolean) {
+        saving = true
+        message = null
+        val values = mapOf<String, Any>(
+            field to enabled,
+            "onlineEnabled" to false,
+            "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
+            "updatedBy" to (FirebaseAuth.getInstance().currentUser?.uid ?: "")
+        )
+        db.collection("appSettings").document("paymentMethods")
+            .set(values, com.google.firebase.firestore.SetOptions.merge())
+            .addOnSuccessListener {
+                saving = false
+                Toast.makeText(context, "Payment settings saved.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { error ->
+                saving = false
+                message = error.localizedMessage ?: "Could not save payment settings."
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            }
+    }
+
+    Column(
+        Modifier.fillMaxSize().background(AdminBackground)
+            .verticalScroll(rememberScrollState()).padding(16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
+            Column(Modifier.weight(1f)) {
+                Text(tr("SLGAN ADMIN", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
+                Text(tr("Payment Settings", LocalAppLanguage.current), color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+            }
+        }
+        Text(
+            tr("Choose which payment methods appear in the customer Place an Order sheet.", LocalAppLanguage.current),
+            color = AdminMuted, fontSize = 13.sp
+        )
+        Spacer(Modifier.height(16.dp))
+        if (loading) {
+            Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = AdminInk)
+            }
+        } else {
+            Card(
+                Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(1.dp)
+            ) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.Language, null, tint = AdminInk, modifier = Modifier.size(22.dp))
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(tr("Online Payment", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Live payments are inactive until the production backend is ready.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
+                        Text(tr("Inactive · Production setup pending", LocalAppLanguage.current), color = Color(0xFF9A5A00), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Switch(checked = false, onCheckedChange = {}, enabled = false)
+                }
+            }
+            Card(
+                Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(1.dp)
+            ) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.CreditCard, null, tint = AdminInk, modifier = Modifier.size(22.dp))
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(tr("Sandbox", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Cashfree test checkout. No live customer payment is collected.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
+                        Text(if (sandboxEnabled) tr("Shown at checkout", LocalAppLanguage.current) else tr("Hidden at checkout", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp)
+                    }
+                    Switch(checked = sandboxEnabled, onCheckedChange = { saveOption("sandboxEnabled", it) }, enabled = !saving)
+                }
+            }
+            Card(
+                Modifier.fillMaxWidth().padding(bottom = 12.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(1.dp)
+            ) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.LocalShipping, null, tint = AdminInk, modifier = Modifier.size(22.dp))
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(tr("Cash on Delivery (COD)", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Customers pay when the order is delivered.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
+                        Text(if (codEnabled) tr("Shown at checkout", LocalAppLanguage.current) else tr("Hidden at checkout", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp)
+                    }
+                    Switch(checked = codEnabled, onCheckedChange = { saveOption("codEnabled", it) }, enabled = !saving)
+                }
+            }
+        }
+        if (saving) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                CircularProgressIndicator(Modifier.size(16.dp), color = AdminInk, strokeWidth = 2.dp)
+                Spacer(Modifier.width(8.dp))
+                Text(tr("Saving payment settings…", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
+            }
+        }
+        if (message != null) Text(message!!, color = Color(0xFFB3261E), fontSize = 12.sp, modifier = Modifier.padding(top = 8.dp))
         Spacer(Modifier.height(18.dp))
     }
 }
@@ -8032,8 +8177,36 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     var submitting by remember { mutableStateOf(false) }
     var showPaymentMethodSheet by remember { mutableStateOf(false) }
     var selectedPaymentMethod by remember { mutableStateOf("cod") }
+    var sandboxEnabled by remember { mutableStateOf(true) }
+    var codEnabled by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var orderMessage by remember { mutableStateOf<String?>(null) }
+
+    DisposableEffect(Unit) {
+        val listener = FirebaseFirestore.getInstance().collection("appSettings")
+            .document("paymentMethods")
+            .addSnapshotListener { snapshot, error ->
+                if (error == null) {
+                    sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
+                    codEnabled = snapshot?.getBoolean("codEnabled") ?: true
+                } else {
+                    android.util.Log.w("SLGANPayments", "Could not load payment options.", error)
+                }
+            }
+        onDispose { listener.remove() }
+    }
+
+    val availablePaymentMethods = remember(sandboxEnabled, codEnabled) {
+        listOfNotNull(
+            if (codEnabled) Triple("cod", "Cash on Delivery", "Pay when your order arrives.") else null,
+            if (sandboxEnabled) Triple("sandbox", "Sandbox", "Pay securely using Cashfree Sandbox.") else null
+        )
+    }
+    LaunchedEffect(availablePaymentMethods) {
+        if (availablePaymentMethods.none { it.first == selectedPaymentMethod }) {
+            selectedPaymentMethod = availablePaymentMethods.firstOrNull()?.first.orEmpty()
+        }
+    }
 
     LaunchedEffect(signedInUser?.uid) {
         val user = signedInUser
@@ -8617,7 +8790,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     "subtotal" to total,
                                     "grandTotal" to total,
                                     "currency" to "INR",
-                                    "paymentMethod" to if (selectedPaymentMethod == "online") "cashfree" else "cod",
+                                    "paymentMethod" to if (selectedPaymentMethod == "sandbox") "cashfree" else "cod",
+                                    "paymentEnvironment" to if (selectedPaymentMethod == "sandbox") "sandbox" else "none",
                                     "paymentStatus" to "not_collected",
                                     "orderStatus" to "pending_verification",
                                     "invoiceNumber" to orderId,
@@ -8631,8 +8805,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         submitting = false
                                         showPaymentMethodSheet = false
                                         confirmedDeliveryAddress = null
-                                        if (selectedPaymentMethod == "online") {
-                                            onOrderResult(orderId, true, null, "Order saved. Opening secure Cashfree checkout…")
+                                        if (selectedPaymentMethod == "sandbox") {
+                                            onOrderResult(orderId, true, null, "Order saved. Opening Cashfree Sandbox checkout…")
                                             context.startActivity(
                                                 android.content.Intent(context, CashfreePaymentActivity::class.java)
                                                     .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
@@ -8672,10 +8846,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             ) {
                 Text(tr("Select payment method", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
                 Text(tr("Choose how you would like to pay for this order.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
-                listOf(
-                    Triple("cod", "Cash on Delivery", "Pay when your order arrives."),
-                    Triple("online", "Online Payment", "Pay securely using Cashfree.")
-                ).forEach { (method, title, description) ->
+                if (availablePaymentMethods.isEmpty()) {
+                    Text(
+                        tr("No payment methods are currently available. Please contact the store.", LocalAppLanguage.current),
+                        color = Muted, fontSize = 13.sp
+                    )
+                }
+                availablePaymentMethods.forEach { (method, title, description) ->
                     val selectedMethod = selectedPaymentMethod == method
                     Row(
                         Modifier.fillMaxWidth()
@@ -8709,7 +8886,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     ) { Text(tr("Cancel", LocalAppLanguage.current)) }
                     Button(
                         onClick = { submitSelectedOrder() },
-                        enabled = !submitting,
+                        enabled = !submitting && availablePaymentMethods.any { it.first == selectedPaymentMethod },
                         modifier = Modifier.weight(1.3f).height(52.dp),
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFF245B32)), contentColor = Color.White)
