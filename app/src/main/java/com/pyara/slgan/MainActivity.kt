@@ -5117,7 +5117,7 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
                     }
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(tr("Online Payment", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Live Online Payment", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                         Text(tr("Cashfree production checkout. Keep disabled until the production Worker and credentials are deployed and tested.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
                         Text(if (CASHFREE_LIVE_BACKEND_READY) tr("Production backend ready", LocalAppLanguage.current) else tr("Inactive · Production setup pending", LocalAppLanguage.current), color = Color(0xFF9A5A00), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                     }
