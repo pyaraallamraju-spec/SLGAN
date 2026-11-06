@@ -10078,7 +10078,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                             Spacer(Modifier.height(4.dp))
                                             Text(
                                                 if (product.price > 0.0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
-                                                color = appThemedColor(Color.Black), fontSize = 14.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1
+                                                color = appThemedColor(Color.Black), fontSize = 13.sp, fontWeight = FontWeight.Medium, maxLines = 1
                                             )
                                             Spacer(Modifier.height(6.dp))
                                             if (quantityInCart == 0) {
