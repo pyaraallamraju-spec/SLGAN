@@ -7973,7 +7973,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(16.dp)) {
-                        Text(tr("Bill Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Bill Details", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(16.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             Text(tr("Items total", LocalAppLanguage.current), color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
