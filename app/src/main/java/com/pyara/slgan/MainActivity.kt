@@ -10796,7 +10796,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
     } else {
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF2F4FA)))) {
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-            Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 22.dp)) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 14.dp)) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(tr("Saved Addresses", LocalAppLanguage.current), modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                 Box(
@@ -10812,7 +10812,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
             }
             Spacer(Modifier.height(6.dp))
             Text(tr("Keep delivery locations for future orders.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(12.dp))
             if (loading) {
                 Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) {
                     AppLoader("Loading addresses…", compact = true)
@@ -10861,7 +10861,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     val addressId = address["_id"]?.toString().orEmpty()
                     val isSelected = selectedAddressId == addressId
                     Card(
-                        modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp).clickable {
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).clickable {
                             setDefaultAddress(addressId)
                         },
                         shape = RoundedCornerShape(20.dp),
@@ -10869,7 +10869,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
                     ) {
                         Row(
-                            Modifier.fillMaxWidth().padding(14.dp),
+                            Modifier.fillMaxWidth().padding(12.dp),
                             verticalAlignment = Alignment.Top
                         ) {
                             Column(
@@ -10899,15 +10899,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                             Spacer(Modifier.width(14.dp))
                             Column(Modifier.weight(1f)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(
-                                        label.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() },
-                                        modifier = Modifier.weight(1f),
-                                        color = Ink,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
+                                    Spacer(Modifier.weight(1f))
                                     Box(
                                         modifier = Modifier.size(34.dp)
                                             .background(
@@ -10925,15 +10917,15 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                         )
                                     }
                                 }
-                                Text(name, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 5.dp))
+                                Text(name, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
                                 if (phone.isNotBlank()) {
-                                    Text(phone, color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 3.dp))
+                                    Text(phone, color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 2.dp))
                                 }
                                 if (addressText.isNotBlank()) {
-                                    Text(addressText, color = Muted, fontSize = 14.sp, lineHeight = 20.sp, softWrap = true, modifier = Modifier.padding(top = 5.dp))
+                                    Text(addressText, color = Muted, fontSize = 14.sp, lineHeight = 20.sp, softWrap = true, modifier = Modifier.padding(top = 3.dp))
                                 }
                                 Row(
-                                    Modifier.padding(top = 8.dp),
+                                    Modifier.padding(top = 6.dp),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
