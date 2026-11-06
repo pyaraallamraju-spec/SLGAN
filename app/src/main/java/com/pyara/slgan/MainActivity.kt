@@ -7984,7 +7984,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(tr("Your Ayurvedic Order", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                                Text(tr("Your Ayurvedic Order", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.SemiBold)
                                 Text(tr("Review cart before placing order", LocalAppLanguage.current).replace("{count}", selected.size.toString()), color = Muted, fontSize = 12.sp)
                             }
                             IconButton(
@@ -8007,16 +8007,16 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             val quantity = cart[product.id] ?: 0
                             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                                 if (product.imageUrl.isNotBlank()) {
-                                    AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.size(86.dp).clip(RoundedCornerShape(16.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentScale = ContentScale.Crop)
+                                    AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentScale = ContentScale.Crop)
                                 } else {
-                                    Box(Modifier.size(86.dp).clip(RoundedCornerShape(16.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 34.sp) }
+                                    Box(Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 26.sp) }
                                 }
                                 Spacer(Modifier.width(12.dp))
                                 Column(Modifier.weight(1f)) {
                                     Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 3, overflow = TextOverflow.Ellipsis)
-                                    Spacer(Modifier.height(4.dp))
+                                    Spacer(Modifier.height(2.dp))
                                     Text(product.subtitle.ifBlank { product.quantity }, color = Muted, fontSize = 13.sp)
-                                    Spacer(Modifier.height(8.dp))
+                                    Spacer(Modifier.height(4.dp))
                                     Text(tr("Save for later", LocalAppLanguage.current), color = Muted, fontSize = 12.sp, textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline)
                                 }
                                 Spacer(Modifier.width(6.dp))
@@ -8037,7 +8037,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 if (recommendations.isNotEmpty()) {
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.padding(14.dp)) {
-                            Text(tr("You Might Also Like", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                            Text(tr("You Might Also Like", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.height(12.dp))
                             LazyRow(
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -9265,7 +9265,7 @@ private fun OrdersPage(
                 }
                 Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 28.dp)) {
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
-                        Text(tr("Order Summary", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Order Summary", LocalAppLanguage.current), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(6.dp))
                         Text(if (status.equals("delivered", true) || status.equals("completed", true)) tr("Arrived at $created", LocalAppLanguage.current) else tr("Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", LocalAppLanguage.current), color = Muted, fontSize = 16.sp)
                         Spacer(Modifier.height(12.dp))
@@ -9279,7 +9279,7 @@ private fun OrdersPage(
                     }
                     Spacer(Modifier.height(24.dp))
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
-                        Text(tr("${invoiceItems.size} item(s) in this order", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("${invoiceItems.size} item(s) in this order", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(12.dp))
                         invoiceItems.forEach { item ->
                             val productId = item["productId"]?.toString().orEmpty()
@@ -9307,7 +9307,7 @@ private fun OrdersPage(
                     }
                     Spacer(Modifier.height(12.dp))
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp)) {
-                        Text(tr("Bill Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Bill Details", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(18.dp))
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text(tr("MRP / subtotal", LocalAppLanguage.current), color = Muted); Text(tr("₹", LocalAppLanguage.current) + String.format("%.0f", subtotal), color = Ink) }
                         Spacer(Modifier.height(12.dp))
@@ -9319,7 +9319,7 @@ private fun OrdersPage(
                     }
                     Divider(color = appThemedColor(Color(0xFFE5E7EB)), thickness = 7.dp)
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Text(tr("Order Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Order Details", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                         Column {
                             Text(tr("Order ID", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                             Spacer(Modifier.height(5.dp))
@@ -9345,7 +9345,7 @@ private fun OrdersPage(
                         Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 20.dp),
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
-                        Text(tr("Customer & Delivery Details", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Customer & Delivery Details", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                         if (customerName.isNotBlank()) Column {
                             Text(tr("Customer name", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                             Text(customerName, color = Ink, fontSize = 16.sp)
@@ -9373,7 +9373,7 @@ private fun OrdersPage(
                     }
                     Spacer(Modifier.height(20.dp))
                     Column(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 20.dp, vertical = 16.dp)) {
-                        Text(tr("Need help with your order?", LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                        Text(tr("Need help with your order?", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Medium)
                         Spacer(Modifier.height(3.dp))
                         Text(tr("About any issues related to your order", LocalAppLanguage.current), color = Muted, fontSize = 13.sp)
                         TextButton(onClick = { selectedOrder = null; onTabChange?.invoke("Help") }, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 2.dp)) {
