@@ -356,6 +356,14 @@ private fun tr(text: String, language: String): String {
         "Major ingredients" to "ప్రధాన పదార్థాలు",
         "About" to "వివరాలు", "Medicines" to "మందులు", "Care" to "జాగ్రత్తలు", "Net quantity" to "నికర పరిమాణం", "Price inclusive of applicable taxes" to "వర్తించే పన్నులతో సహా ధర",
         "No online payment. Place your order and we will confirm delivery details." to "ఆన్‌లైన్ చెల్లింపు లేదు. ఆర్డర్ చేయండి; డెలివరీ వివరాలను మేము నిర్ధారిస్తాము.",
+        "Select payment method" to "చెల్లింపు విధానాన్ని ఎంచుకోండి",
+        "Choose how you would like to pay for this order." to "ఈ ఆర్డర్‌కు ఎలా చెల్లించాలో ఎంచుకోండి.",
+        "Cash on Delivery" to "వస్తువు అందినప్పుడు నగదు చెల్లించండి",
+        "Online Payment" to "ఆన్‌లైన్ చెల్లింపు",
+        "Pay when your order arrives." to "మీ ఆర్డర్ అందినప్పుడు చెల్లించండి.",
+        "Pay securely using Cashfree." to "Cashfree ద్వారా సురక్షితంగా చెల్లించండి.",
+        "Go" to "కొనసాగించండి",
+        "Order total" to "ఆర్డర్ మొత్తం",
         "Place order" to "ఆర్డర్ చేయండి",
         "Customer name *" to "కస్టమర్ పేరు *",
         "Email for invoice *" to "ఇన్‌వాయిస్ కోసం ఇమెయిల్ *",
@@ -7955,6 +7963,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     var email by remember(signedInUser?.uid) { mutableStateOf(signedInUser?.email.orEmpty()) }
     var phone by remember(signedInUser?.uid) { mutableStateOf("") }
     var submitting by remember { mutableStateOf(false) }
+    var showPaymentMethodSheet by remember { mutableStateOf(false) }
+    var selectedPaymentMethod by remember { mutableStateOf("cod") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var orderMessage by remember { mutableStateOf<String?>(null) }
 
@@ -8444,22 +8454,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }
             }
-            Row(
-                Modifier.fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(appThemedColor(Color.White))
-                    .border(1.dp, appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(20.dp))
-                    .padding(horizontal = 14.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(Modifier.weight(0.72f)) {
-                    Text(money(total), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                }
-                Box(Modifier.width(1.dp).height(42.dp).background(appThemedColor(Color(0xFFB5B5B5))))
-                Spacer(Modifier.width(12.dp))
-                Button(onClick = {
+            val submitSelectedOrder: () -> Unit = {
                     errorMessage = null
                     val user = FirebaseAuth.getInstance().currentUser
                     if (user == null) {
@@ -8507,6 +8502,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     "subtotal" to total,
                                     "grandTotal" to total,
                                     "currency" to "INR",
+                                    "paymentMethod" to if (selectedPaymentMethod == "online") "cashfree" else "cod",
                                     "paymentStatus" to "not_collected",
                                     "orderStatus" to "pending_verification",
                                     "invoiceNumber" to orderId,
@@ -8518,24 +8514,58 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     .addOnSuccessListener {
                                         orderMessage = "Order saved: $orderId"
                                         submitting = false
+                                        showPaymentMethodSheet = false
                                         confirmedDeliveryAddress = null
-                                        onOrderResult(orderId, true, null, "Order saved. Opening secure Cashfree checkout…")
-                                        context.startActivity(
-                                            android.content.Intent(context, CashfreePaymentActivity::class.java)
-                                                .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
-                                        )
-                                        userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
-                                            val idToken = tokenResult.token
-                                            if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
-                                                orderMessage = if (emailSent) "Order saved: $orderId. Email service confirmed the request." else "Order saved: $orderId. Email failed: $detail"
-                                                Toast.makeText(context, if (emailSent) "Order saved. Email service confirmed." else "Order saved, but email failed. " + detail.take(160), Toast.LENGTH_LONG).show()
-                                            }
-                                        }.addOnFailureListener { error -> orderMessage = "Order saved: $orderId. Email failed: ${error.localizedMessage ?: "Could not get Firebase ID token."}" }
+                                        if (selectedPaymentMethod == "online") {
+                                            onOrderResult(orderId, true, null, "Order saved. Opening secure Cashfree checkout…")
+                                            context.startActivity(
+                                                android.content.Intent(context, CashfreePaymentActivity::class.java)
+                                                    .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
+                                            )
+                                        } else {
+                                            onOrderResult(orderId, true, null, "Cash on Delivery order saved.")
+                                            userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
+                                                val idToken = tokenResult.token
+                                                if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
+                                                    orderMessage = if (emailSent) "COD order saved: $orderId. Confirmation email sent." else "COD order saved: $orderId. Email failed: $detail"
+                                                    Toast.makeText(context, if (emailSent) "Order saved. Confirmation email sent." else "Order saved, but email failed. " + detail.take(160), Toast.LENGTH_LONG).show()
+                                                }
+                                            }.addOnFailureListener { error -> orderMessage = "COD order saved: $orderId. Email failed: ${error.localizedMessage ?: "Could not get Firebase ID token."}" }
+                                        }
                                     }
                                     .addOnFailureListener { error ->
                                         submitting = false
                                         errorMessage = error.localizedMessage ?: "Could not save order. Please try again."
                                         onOrderResult("", false, null, errorMessage.orEmpty())
+                                    }
+                            }
+                        }
+                    }
+                            }
+            Row(
+                Modifier.fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(appThemedColor(Color.White))
+                    .border(1.dp, appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(20.dp))
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(Modifier.weight(0.72f)) {
+                    Text(money(total), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                }
+                Box(ModifieButton(onClick = {
+                    errorMessage = null
+                    val user = FirebaseAuth.getInstance().currentUser
+                    when {
+                        user == null -> errorMessage = "Please sign in again before placing an order."
+                        confirmedDeliveryAddress == null -> errorMessage = "Please choose a delivery address using Change before placing your order."
+                        customerName.isBlank() || !email.contains("@") -> errorMessage = "Enter your name and a valid email address."
+                        selected.isEmpty() -> errorMessage = "Your cart is empty."
+                        else -> showPaymentMethodSheet = true
+                    }
+                }())
                                     }
                             }
                         }
@@ -8591,6 +8621,71 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         )
                     }
                 }
+            }
+        }
+    }
+
+    if (showPaymentMethodSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { if (!submitting) showPaymentMethodSheet = false },
+            containerColor = appThemedColor(Color.White),
+            contentColor = Ink,
+            scrimColor = Color.Black.copy(alpha = 0.55f),
+            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        ) {
+            Column(
+                Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 22.dp, vertical = 18.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                Text(tr("Select payment method", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Choose how you would like to pay for this order.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                listOf(
+                    Triple("cod", "Cash on Delivery", "Pay when your order arrives."),
+                    Triple("online", "Online Payment", "Pay securely using Cashfree.")
+                ).forEach { (method, title, description) ->
+                    val selectedMethod = selectedPaymentMethod == method
+                    Row(
+                        Modifier.fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(appThemedColor(if (selectedMethod) Color(0xFFEAF4E8) else Color.White))
+                            .border(1.5.dp, appThemedColor(if (selectedMethod) Color(0xFF2E7D32) else Color(0xFFD5D9DE)), RoundedCornerShape(16.dp))
+                            .clickable(enabled = !submitting) { selectedPaymentMethod = method }
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            if (method == "cod") Icons.Default.LocalShipping else Icons.Default.CreditCard,
+                            contentDescription = null,
+                            tint = appThemedColor(Color(0xFF245B32)),
+                            modifier = Modifier.size(27.dp)
+                        )
+                        Spacer(Modifier.width(13.dp))
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text(tr(title, LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(tr(description, LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
+                        }
+                        Text(if (selectedMethod) "●" else "○", color = appThemedColor(if (selectedMethod) Color(0xFF2E7D32) else Color(0xFF7B818A)), fontSize = 23.sp)
+                    }
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    OutlinedButton(
+                        onClick = { showPaymentMethodSheet = false },
+                        enabled = !submitting,
+                        modifier = Modifier.weight(1f).height(52.dp),
+                        shape = RoundedCornerShape(14.dp)
+                    ) { Text(tr("Cancel", LocalAppLanguage.current)) }
+                    Button(
+                        onClick = { submitSelectedOrder() },
+                        enabled = !submitting,
+                        modifier = Modifier.weight(1.3f).height(52.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFF245B32)), contentColor = Color.White)
+                    ) {
+                        if (submitting) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                        else Text(tr("Go", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+                Text(tr("Order total", LocalAppLanguage.current) + ": " + money(total), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
