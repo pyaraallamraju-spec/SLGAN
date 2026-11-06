@@ -2428,6 +2428,7 @@ private fun AyurvedicApp() {
     var signedIn by remember { mutableStateOf(auth.currentUser != null) }
     var authResolved by remember { mutableStateOf(false) }
     var isAdmin by remember { mutableStateOf(false) }
+    var googleProfileCompletionRequired by remember { mutableStateOf(false) }
     var adminProductsOpen by remember { mutableStateOf(false) }
     var adminOrdersOpen by remember { mutableStateOf(false) }
     var adminCustomersOpen by remember { mutableStateOf(false) }
@@ -2464,6 +2465,7 @@ private fun AyurvedicApp() {
         val user = auth.currentUser
         if (!signedIn || user == null) {
             isAdmin = false
+            googleProfileCompletionRequired = false
             adminRoleResolved = true
             onDispose { }
         } else {
@@ -2485,6 +2487,7 @@ private fun AyurvedicApp() {
                         auth.signOut()
                     } else {
                         isAdmin = snapshot?.getBoolean("is_admin") == true
+                        googleProfileCompletionRequired = snapshot?.getBoolean("profileCompletionRequired") == true
                         adminRoleResolved = true
                     }
                 }
@@ -2541,10 +2544,15 @@ private fun AyurvedicApp() {
                                 if (user != null) {
                                     val displayName = user.displayName.orEmpty().trim()
                                     val nameParts = displayName.split(Regex("\\s+")).filter { it.isNotBlank() }
+                                    val isNewGoogleUser = task.result?.additionalUserInfo?.isNewUser == true
                                     val profile = mutableMapOf<String, Any>(
                                         "email" to (user.email ?: account.email.orEmpty()),
                                         "updatedAt" to System.currentTimeMillis()
                                     )
+                                    if (isNewGoogleUser) {
+                                        profile["profileCompletionRequired"] = true
+                                        googleProfileCompletionRequired = true
+                                    }
                                     if (nameParts.isNotEmpty()) profile["firstName"] = nameParts.first()
                                     if (nameParts.size > 1) profile["lastName"] = nameParts.drop(1).joinToString(" ")
                                     if (!user.photoUrl?.toString().isNullOrBlank()) profile["photoUrl"] = user.photoUrl.toString()
@@ -2950,6 +2958,15 @@ private fun AyurvedicApp() {
                 }
             )
             else if (!adminRoleResolved) Box(Modifier.fillMaxSize().background(Color.White), contentAlignment = Alignment.Center) { AppLoader("Checking account permissions…", messageColor = Ink) }
+            else if (!isAdmin && googleProfileCompletionRequired) ProfilePage(
+                modifier = Modifier.fillMaxSize(),
+                onSignOut = { auth.signOut(); googleProfileCompletionRequired = false },
+                appLanguage = appLanguage,
+                onLanguageChange = { appLanguage = it },
+                initialSection = "Profile",
+                onBack = null,
+                onProfileComplete = { googleProfileCompletionRequired = false }
+            )
             else if (isAdmin && adminCustomersOpen) AdminCustomersScreen(onBack = { adminCustomersOpen = false })
             else if (isAdmin && adminDiseasesOpen) AdminDiseasesScreen(onBack = { adminDiseasesOpen = false })
             else if (isAdmin && adminBannersOpen) BannerManagementScreen(onBack = { adminBannersOpen = false })
@@ -12191,7 +12208,7 @@ private fun ReviewAddressPage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, initialSection: String = "Profile", onBack: (() -> Unit)? = null) {
+private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, initialSection: String = "Profile", onBack: (() -> Unit)? = null, onProfileComplete: (() -> Unit)? = null) {
     val user = remember { FirebaseAuth.getInstance().currentUser }
     val uid = user?.uid
     val context = LocalContext.current
@@ -12448,13 +12465,11 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                             saveMessage = if (selectedCountry.first == "IN") "Enter a valid 10-digit Indian mobile number starting with 6–9."
                                 else if (selectedCountry.first in listOf("US", "CA")) "Enter a valid 10-digit mobile number."
                                 else "Enter a valid mobile number containing 7–15 digits."
-                        dateOfBirth.isBlank() ->
-                            saveMessage = "Date of birth is required."
-                        parsedDob == null ->
+                        dateOfBirth.isNotBlank() && parsedDob == null ->
                             saveMessage = "Please select a valid date of birth."
-                        parsedDob.isAfter(today) ->
+                        parsedDob != null && parsedDob.isAfter(today) ->
                             saveMessage = "Date of birth cannot be in the future."
-                        parsedDob.isBefore(today.minusYears(120)) ->
+                        parsedDob != null && parsedDob.isBefore(today.minusYears(120)) ->
                             saveMessage = "Please enter a valid date of birth."
                         currentUid == null ->
                             saveMessage = "Please sign in again to save your profile."
@@ -12471,11 +12486,13 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                                 "countryDialCode" to selectedCountry.third,
                                 "mobileNumber" to (selectedCountry.third + mobileNumber.filter(Char::isDigit)),
                                 "updatedAt" to System.currentTimeMillis()
+                            ) + if (onProfileComplete != null) mapOf("profileCompletionRequired" to false) else emptyMap()) { error ->
                             )) { error ->
                                 isSaving = false
                                 if (error == null) {
                                     saveMessage = null
                                     Toast.makeText(context, "Saved successfully.", Toast.LENGTH_SHORT).show()
+                                    onProfileComplete?.invoke()
                                 } else {
                                     saveMessage = "Couldn't save profile. Please try again."
                                     Toast.makeText(context, "Couldn't save profile. Please try again.", Toast.LENGTH_SHORT).show()
