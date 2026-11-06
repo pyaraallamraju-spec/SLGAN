@@ -1,6 +1,5 @@
 package com.pyara.slgan
 
-private const val CASHFREE_LIVE_BACKEND_READY = false
 
 import android.app.Activity
 import android.os.Bundle
@@ -2018,6 +2017,8 @@ private fun tr(text: String, language: String): String {
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
 }
+
+private const val CASHFREE_LIVE_BACKEND_READY = false
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
