@@ -8555,24 +8555,22 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Text(money(total), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
                     Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
-                Box(ModifieButton(onClick = {
-                    errorMessage = null
-                    val user = FirebaseAuth.getInstance().currentUser
-                    when {
-                        user == null -> errorMessage = "Please sign in again before placing an order."
-                        confirmedDeliveryAddress == null -> errorMessage = "Please choose a delivery address using Change before placing your order."
-                        customerName.isBlank() || !email.contains("@") -> errorMessage = "Enter your name and a valid email address."
-                        selected.isEmpty() -> errorMessage = "Your cart is empty."
-                        else -> showPaymentMethodSheet = true
-                    }
-                }())
-                                    }
-                            }
+                Box(Modifier.width(1.dp).height(42.dp).background(appThemedColor(Color(0xFFB5B5B5))))
+                Spacer(Modifier.width(12.dp))
+                Button(
+                    onClick = {
+                        errorMessage = null
+                        val user = FirebaseAuth.getInstance().currentUser
+                        when {
+                            user == null -> errorMessage = "Please sign in again before placing an order."
+                            confirmedDeliveryAddress == null -> errorMessage = "Please choose a delivery address using Change before placing your order."
+                            customerName.isBlank() || !email.contains("@") -> errorMessage = "Enter your name and a valid email address."
+                            selected.isEmpty() -> errorMessage = "Your cart is empty."
+                            else -> showPaymentMethodSheet = true
                         }
-                    }
-                }, modifier = Modifier
-                    .weight(1.3f)
-                    .height(56.dp),
+                    },
+                    enabled = !submitting,
+                    modifier = Modifier.weight(1.3f).height(56.dp),
                     shape = RoundedCornerShape(16.dp),
                     border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
                     colors = ButtonDefaults.buttonColors(
@@ -8581,45 +8579,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)),
                         disabledContentColor = Muted
                     ),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 0.dp,
-                        pressedElevation = 1.dp,
-                        disabledElevation = 0.dp
-                    )
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp, pressedElevation = 1.dp, disabledElevation = 0.dp)
                 ) {
-                    if (submitting) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(19.dp),
-                            color = DefaultBtn.content,
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Box(
-                            modifier = Modifier.size(width = 28.dp, height = 28.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                Icons.Default.LocalShipping,
-                                contentDescription = null,
-                                tint = DefaultBtn.content,
-                                modifier = Modifier.size(23.dp)
-                            )
-                        }
-                        Spacer(Modifier.width(8.dp))
-                        Text(
-                            tr("Place order", LocalAppLanguage.current),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = DefaultBtn.content
-                        )
-                        Spacer(Modifier.width(5.dp))
-                        Icon(
-                            Icons.Default.ArrowForward,
-                            contentDescription = null,
-                            tint = DefaultBtn.content,
-                            modifier = Modifier.size(21.dp)
-                        )
-                    }
+                    Text(tr("Place order", LocalAppLanguage.current), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = DefaultBtn.content)
+                    Spacer(Modifier.width(5.dp))
+                    Icon(Icons.Default.ArrowForward, contentDescription = null, tint = DefaultBtn.content, modifier = Modifier.size(21.dp))
                 }
             }
         }
