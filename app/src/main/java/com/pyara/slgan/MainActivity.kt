@@ -11973,7 +11973,7 @@ private fun ReviewAddressPage(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onEdit, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE1E6EF)), CircleShape)) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back to address details", tint = Ink)
+                Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink)
             }
             Text(tr("Review Address", LocalAppLanguage.current), modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
@@ -12008,15 +12008,15 @@ private fun ReviewAddressPage(
         Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Default.Person, contentDescription = tr("Receiver", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
-                Text(tr("  Receiver:  $receiverName", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Text("${tr("Receiver", LocalAppLanguage.current)}:  $receiverName", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Phone, contentDescription = "Mobile number", tint = Ink, modifier = Modifier.size(22.dp))
-                Text(tr("  Mobile:  $receiverPhone", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Icon(Icons.Default.Phone, contentDescription = tr("Mobile number", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
+                Text("${tr("Mobile", LocalAppLanguage.current)}:  $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Home, contentDescription = "Complete address", tint = Ink, modifier = Modifier.size(22.dp))
-                Text(tr("  Complete address:  $fullAddress", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Icon(Icons.Default.Home, contentDescription = tr("Complete address", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
+                Text("${tr("Complete address", LocalAppLanguage.current)}:  $fullAddress", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
         }
         val hasCompleteAddress = fullAddress.isNotBlank() &&
