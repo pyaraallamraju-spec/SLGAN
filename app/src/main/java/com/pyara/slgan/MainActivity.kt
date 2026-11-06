@@ -7006,12 +7006,9 @@ private fun HomePage(modifier: Modifier, appLanguage: String, onLanguageChange: 
                                             } else {
                                                 Text(product.emoji, fontSize = 43.sp)
                                             }
-                                            Image(
-                                                painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-                                                contentDescription = tr("Patent Product", LocalAppLanguage.current),
-                                                modifier = Modifier.align(Alignment.TopStart).padding(5.dp).size(38.dp),
-                                                contentScale = ContentScale.Fit
-                                            )
+                                            if (product.signature) {
+                                                SignatureBadgeRibbon(Modifier.align(Alignment.TopStart))
+                                            }
                                             Row(
                                                 modifier = Modifier
                                                     .align(Alignment.TopEnd)
@@ -7262,6 +7259,34 @@ private fun ProductRatingLine(product: Product, summary: ProductRatingSummary, s
 }
 
 @Composable
+private fun SignatureBadgeRibbon(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .offset(x = (-25).dp, y = 15.dp)
+            .graphicsLayer { rotationZ = -45f }
+            .width(112.dp)
+            .height(24.dp)
+            .shadow(3.dp, RoundedCornerShape(4.dp))
+            .background(
+                Brush.horizontalGradient(
+                    listOf(Color(0xFF174B2A), Color(0xFF2E7D32), Color(0xFF174B2A))
+                ),
+                RoundedCornerShape(4.dp)
+            )
+            .border(1.dp, Color(0xFFD7B65B), RoundedCornerShape(4.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            "🌿  Signature",
+            color = Color.White,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.ExtraBold,
+            maxLines = 1
+        )
+    }
+}
+
+@Composable
 private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRatingSummary, likeSummary: ProductLikeSummary, onToggleLike: (Product) -> Unit, onAdd: (String) -> Unit, onProductClick: (Product) -> Unit, modifier: Modifier = Modifier) {
     Box(modifier) {
     Card(Modifier.fillMaxWidth().clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
@@ -7281,6 +7306,9 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                     if (imageLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp, color = Ink)
                 } else {
                     Text(product.emoji, fontSize = 42.sp)
+                }
+                if (product.signature) {
+                    SignatureBadgeRibbon(Modifier.align(Alignment.TopStart))
                 }
                 Row(
                     modifier = Modifier
@@ -7372,17 +7400,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
             }
         }
     }
-    if (product.signature) {
-        Image(
-            painter = painterResource(id = R.drawable.slgan_patent_product_gold_seal_transparent),
-            contentDescription = tr("Signature product", LocalAppLanguage.current),
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 12.dp, start = 12.dp)
-                .size(54.dp),
-            contentScale = ContentScale.Fit
-        )
-    }
+
     if (product.productStock == 0) {
         Box(
             Modifier.matchParentSize()
