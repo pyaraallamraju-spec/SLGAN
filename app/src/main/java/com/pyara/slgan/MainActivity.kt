@@ -7860,7 +7860,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         onClearCart()
                     },
                     colors = ButtonDefaults.textButtonColors(contentColor = Ink)
-                ) { Text(tr("Clear cart", LocalAppLanguage.current), fontWeight = FontWeight.Bold) }
+                ) { Text(tr("Clear cart", LocalAppLanguage.current), fontSize = 14.sp, fontWeight = FontWeight.Bold) }
             },
             dismissButton = {
                 TextButton(
