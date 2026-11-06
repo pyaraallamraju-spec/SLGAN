@@ -3477,18 +3477,35 @@ private fun LoginScreen(
             if (loading) {
                 CircularProgressIndicator(modifier = Modifier.size(22.dp), color = appThemedColor(Color(0xFFB88A36)), strokeWidth = 2.dp)
             } else if (isCreatingAccount) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().height(88.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(horizontal = 6.dp, vertical = 4.dp)
+                        .clip(RoundedCornerShape(38.dp))
+                        .background(appThemedColor(Color(0xFFFFF9EC)))
+                        .border(2.dp, appThemedColor(Color(0xFFB88A36)), RoundedCornerShape(38.dp))
+                        .padding(horizontal = 18.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text("🌿", fontSize = 19.sp)
-                    Spacer(Modifier.width(12.dp))
-                    Text(tr("Create account", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.Bold, color = appThemedColor(Color(0xFF4A3028)))
-                    Spacer(Modifier.width(12.dp))
-                    Icon(Icons.Default.ArrowForward, null, tint = appThemedColor(Color(0xFFB88A36)))
-                    Spacer(Modifier.width(12.dp))
-                    Text("🌿", fontSize = 19.sp)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("🌿", fontSize = 21.sp)
+                        Spacer(Modifier.width(14.dp))
+                        Text(
+                            tr("Create account", LocalAppLanguage.current),
+                            fontSize = 19.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = appThemedColor(Color(0xFF4A3028))
+                        )
+                        Spacer(Modifier.width(14.dp))
+                        Icon(Icons.Default.ArrowForward, null, tint = appThemedColor(Color(0xFFB88A36)), modifier = Modifier.size(25.dp))
+                        Spacer(Modifier.width(14.dp))
+                        Text("🍃", fontSize = 21.sp)
+                    }
                 }
             } else {
                 Image(
