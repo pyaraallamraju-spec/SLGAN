@@ -3512,17 +3512,30 @@ private fun LoginScreen(
             Text(tr("OR", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Medium)
             Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
         }
-        OutlinedButton(
+        Button(
             onClick = onGoogleSignIn,
             enabled = !loading,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(50.dp),
-            shape = RoundedCornerShape(14.dp),
-            border = BorderStroke(1.dp, Gold.copy(alpha = 0.75f)),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(64.dp),
+            shape = RoundedCornerShape(18.dp),
+            border = BorderStroke(1.5.dp, appThemedColor(Color(0xFFB88A36))),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 1.dp,
+                focusedElevation = 0.dp,
+                hoveredElevation = 0.dp,
+                disabledElevation = 0.dp
+            ),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = appThemedColor(Color(0xFFFFF8E8)),
+                contentColor = appThemedColor(Color(0xFF4A3028)),
+                disabledContainerColor = appThemedColor(Color(0xFFFFF8E8)).copy(alpha = 0.65f),
+                disabledContentColor = appThemedColor(Color(0xFF4A3028)).copy(alpha = 0.6f)
+            ),
+            contentPadding = PaddingValues(horizontal = 18.dp, vertical = 8.dp)
         ) {
-            Text("G", color = appThemedColor(Color(0xFF4285F4)), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            Text("G", color = appThemedColor(Color(0xFF4285F4)), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
             Spacer(Modifier.width(12.dp))
-            Text(if (loading) tr("Please wait…", LocalAppLanguage.current) else tr("Continue with Google", LocalAppLanguage.current), fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+            Text(if (loading) tr("Please wait…", LocalAppLanguage.current) else tr("Continue with Google", LocalAppLanguage.current), fontSize = 15.sp, fontWeight = FontWeight.Bold)
         }
         Spacer(Modifier.height(24.dp))
         }
