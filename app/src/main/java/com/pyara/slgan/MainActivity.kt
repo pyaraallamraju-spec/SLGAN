@@ -7903,9 +7903,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             val quantity = cart[product.id] ?: 0
                             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                                 if (product.imageUrl.isNotBlank()) {
-                                    AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.size(86.dp).clip(RoundedCornerShape(16.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentScale = ContentScale.Crop)
+                                    AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.size(72.dp).clip(RoundedCornerShape(14.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentScale = ContentScale.Crop)
                                 } else {
-                                    Box(Modifier.size(86.dp).clip(RoundedCornerShape(16.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 34.sp) }
+                                    Box(Modifier.size(72.dp).clip(RoundedCornerShape(14.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 30.sp) }
                                 }
                                 Spacer(Modifier.width(12.dp))
                                 Column(Modifier.weight(1f)) {
