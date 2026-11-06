@@ -538,6 +538,7 @@ private fun tr(text: String, language: String): String {
         "Your order could not be placed." to "మీ ఆర్డర్‌ను నమోదు చేయలేకపోయాం.",
         "ORDER STATUS" to "ఆర్డర్ స్థితి",
         "Pending verification" to "ధృవీకరణ పెండింగ్‌లో ఉంది",
+        "Received" to "స్వీకరించబడింది",
         "Show all disease options" to "అన్ని వ్యాధి ఎంపికలను చూపించండి",
         "DISEASE DETAILS" to "వ్యాధి వివరాలు",
         "Close disease details and clear search" to "వ్యాధి వివరాలను మూసివేసి శోధనను క్లియర్ చేయండి",
@@ -1357,6 +1358,7 @@ private fun tr(text: String, language: String): String {
         "Your order could not be placed." to "आपका ऑर्डर नहीं किया जा सका।",
         "ORDER STATUS" to "ऑर्डर स्थिति",
         "Pending verification" to "सत्यापन लंबित",
+        "Received" to "प्राप्त हुआ",
         "Show all disease options" to "सभी रोग विकल्प दिखाएँ",
         "DISEASE DETAILS" to "रोग विवरण",
         "Close disease details and clear search" to "रोग विवरण बंद करें और खोज साफ़ करें",
@@ -9289,7 +9291,7 @@ private fun OrdersPage(
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
                         Text(tr("Order Summary", LocalAppLanguage.current), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(6.dp))
-                        Text(if (status.equals("delivered", true) || status.equals("completed", true)) tr("Arrived at $created", LocalAppLanguage.current) else tr("Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", LocalAppLanguage.current), color = Muted, fontSize = 16.sp)
+                        Text(if (status.equals("delivered", true) || status.equals("completed", true)) tr("Arrived at $created", LocalAppLanguage.current) else "${tr("Order status", LocalAppLanguage.current)}: ${tr(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, LocalAppLanguage.current)}", color = Muted, fontSize = 16.sp)
                         Spacer(Modifier.height(12.dp))
                         if (!invoiceUrl.isNullOrBlank() && (status.equals("accepted", true) || status.equals("approved", true))) {
                             Row(Modifier.clickable { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) } }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
