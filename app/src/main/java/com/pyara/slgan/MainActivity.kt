@@ -339,6 +339,7 @@ private fun tr(text: String, language: String): String {
         "Saved successfully." to "విజయవంతంగా సేవ్ అయింది.", "Saving…" to "సేవ్ అవుతోంది…", "Loading profile…" to "ప్రొఫైల్ లోడ్ అవుతోంది…",
         "Sign out" to "సైన్ అవుట్", "Enter delivery details below." to "డెలివరీ వివరాలను క్రింద నమోదు చేయండి.",
                         "Home" to "ఇల్లు", "Work" to "పని", "Other" to "ఇతర",
+        "Deliver to" to "డెలివరీ చిరునామా:",
                                                         "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Ghrutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
         "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Rasayogas" to "రసయోగాలు", "Rasayoga" to "రసయోగం", "Bhasmas" to "భస్మాలు",
         "Voice search" to "వాయిస్ సెర్చ్",
@@ -1169,6 +1170,7 @@ private fun tr(text: String, language: String): String {
         "Saving…" to "सहेज रहे हैं…", "Loading profile…" to "प्रोफ़ाइल लोड हो रही है…", "Sign out" to "साइन आउट",
         "Enter delivery details below." to "नीचे डिलीवरी विवरण दर्ज करें।",
         "Home" to "घर", "Work" to "काम", "Other" to "अन्य",
+        "Deliver to" to "डिलीवरी पता:",
         "Recipient name *" to "प्राप्तकर्ता का नाम *", "House / flat, building, street *" to "मकान / फ्लैट, भवन, सड़क *",
         "Area / village / locality" to "क्षेत्र / गाँव / इलाका", "Landmark (optional)" to "नज़दीकी पहचान (वैकल्पिक)",
         "City / town *" to "शहर / कस्बा *", "State *" to "राज्य *", "PIN code *" to "पिन कोड *",
@@ -8300,7 +8302,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             buildString {
                                 append(tr("Deliver to", LocalAppLanguage.current))
                                 append(" ")
-                                append(addressLabel)
+                                append(tr(addressLabel, LocalAppLanguage.current))
                             },
                             color = Ink,
                             fontSize = 13.sp,
@@ -8613,7 +8615,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Icon(if (isSelected) Icons.Default.RadioButtonChecked else Icons.Default.RadioButtonUnchecked, contentDescription = null, tint = if (isSelected) appThemedColor(Color(0xFF2E7D32)) else Muted)
                                 Spacer(Modifier.width(10.dp))
                                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                    Text(label, color = Ink, fontWeight = FontWeight.Bold)
+                                    Text(tr(label, LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Bold)
                                     Text(addressName, color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                                     if (addressPhone.isNotBlank()) Text(addressPhone, color = Muted, fontSize = 13.sp)
                                     Text(addressText.ifBlank { tr("Address details unavailable", LocalAppLanguage.current) }, color = Muted, fontSize = 13.sp, lineHeight = 18.sp)
