@@ -3822,7 +3822,7 @@ private fun HomeBannerSlider(
                                 horizontalArrangement = Arrangement.spacedBy(7.dp)
                             ) {
                                 Text(
-                                    "View Products",
+                                    tr("View Products", LocalAppLanguage.current),
                                     color = Ink,
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
