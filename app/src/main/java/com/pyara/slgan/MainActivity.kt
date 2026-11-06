@@ -637,6 +637,12 @@ private fun tr(text: String, language: String): String {
         "This will open a request email to SLGAN support. Your account will not be deleted automatically. Do you want to continue?" to "ఇది SLGAN మద్దతుకు అభ్యర్థన ఇమెయిల్‌ను తెరుస్తుంది. మీ ఖాతా ఆటోమేటిక్‌గా తొలగించబడదు. కొనసాగించాలా?",
         "No email app is available." to "ఇమెయిల్ యాప్ అందుబాటులో లేదు.",
         "About Us" to "మా గురించి",
+        "About SLGAN" to "SLGAN గురించి",
+        "Notification preferences" to "నోటిఫికేషన్ ప్రాధాన్యతలు",
+        "Notification controls are not connected in this version of SLGAN." to "SLGAN యొక్క ఈ వెర్షన్‌లో నోటిఫికేషన్ నియంత్రణలు అందుబాటులో లేవు.",
+        "OK" to "సరే",
+        "Log out" to "లాగ్ అవుట్",
+        "This app can sign out this device only. Signing out all devices requires secure server support." to "ఈ యాప్ ఈ పరికరం నుంచే సైన్ అవుట్ చేయగలదు. అన్ని పరికరాల నుంచి సైన్ అవుట్ చేయడానికి సురక్షిత సర్వర్ మద్దతు అవసరం.",
         "Our Heritage" to "మన వారసత్వం",
         "Contact SLGAN" to "SLGANను సంప్రదించండి",
         "We are happy to hear from you. Contact us or visit our location." to "మీ నుంచి వినడం మాకు ఆనందం. మమ్మల్ని సంప్రదించండి లేదా మా చిరునామాను సందర్శించండి.",
@@ -1464,6 +1470,12 @@ private fun tr(text: String, language: String): String {
         "This will open a request email to SLGAN support. Your account will not be deleted automatically. Do you want to continue?" to "इससे SLGAN सहायता के लिए अनुरोध ईमेल खुलेगा। आपका खाता अपने आप नहीं हटेगा। क्या आप जारी रखना चाहते हैं?",
         "No email app is available." to "कोई ईमेल ऐप उपलब्ध नहीं है।",
         "About Us" to "हमारे बारे में",
+        "About SLGAN" to "SLGAN के बारे में",
+        "Notification preferences" to "सूचना प्राथमिकताएँ",
+        "Notification controls are not connected in this version of SLGAN." to "SLGAN के इस संस्करण में सूचना नियंत्रण उपलब्ध नहीं हैं।",
+        "OK" to "ठीक है",
+        "Log out" to "लॉग आउट",
+        "This app can sign out this device only. Signing out all devices requires secure server support." to "यह ऐप केवल इस डिवाइस से साइन आउट कर सकता है। सभी डिवाइस से साइन आउट करने के लिए सुरक्षित सर्वर सहायता आवश्यक है।",
         "Our Heritage" to "हमारी विरासत",
         "Contact SLGAN" to "SLGAN से संपर्क करें",
         "We are happy to hear from you. Contact us or visit our location." to "हमें आपसे सुनकर खुशी होगी। हमसे संपर्क करें या हमारे स्थान पर आएँ।",
@@ -6531,7 +6543,7 @@ private fun AccountPrivacyPage(modifier: Modifier, appLanguage: String, onBack: 
 @Composable
 private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Unit) {
     val context = LocalContext.current
-    val title = if (appLanguage == "English") "About Us" else "మా గురించి"
+    val title = tr("About Us", appLanguage)
     val versionName = remember {
         runCatching {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "1.0.0"
@@ -6597,7 +6609,7 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                     android.app.AlertDialog.Builder(context)
                         .setTitle(if (appLanguage == "English") "Privacy Policy" else "గోప్యతా విధానం")
                         .setMessage(if (appLanguage == "English") "SLGAN uses account information to provide sign-in, wishlist, and order features. Keep your password and verification codes private. Contact the business for questions about your account data." else "సైన్-ఇన్, చిరునామాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సేవల కోసం SLGAN ఖాతా సమాచారాన్ని ఉపయోగిస్తుంది. మీ పాస్‌వర్డ్ మరియు OTPలను రహస్యంగా ఉంచండి. ఖాతా సమాచారం గురించి ప్రశ్నల కోసం వ్యాపారాన్ని సంప్రదించండి.")
-                        .setPositiveButton("OK", null).show()
+                        .setPositiveButton(tr("OK", LocalAppLanguage.current), null).show()
                 }.padding(horizontal = 22.dp, vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) { Text(tr("Privacy Policy", appLanguage), color = Ink, fontSize = 19.sp) }
@@ -10369,7 +10381,7 @@ private fun AccountsPage(
             Column {
                 Text(tr("About And Support", LocalAppLanguage.current), modifier = Modifier.padding(start = 16.dp, top = 18.dp, bottom = 12.dp), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
                 AccountMenuRow(Icons.Default.HelpOutline, "Help and support") { onTabChange("Help") }
-                AccountMenuRow(Icons.Default.Info, "About SLGAN") { onTabChange("About") }
+                AccountMenuRow(Icons.Default.Info, tr("About SLGAN", LocalAppLanguage.current)) { onTabChange("About") }
                 AccountMenuRow(Icons.Default.Phone, "Contact SLGAN") { onTabChange("ContactSLGAN") }
             }
         }
@@ -10388,14 +10400,14 @@ private fun AccountsPage(
                 }
                 AccountMenuRow(Icons.Default.Groups, "Social Media", onClick = { onTabChange("SocialMedia") })
                 AccountMenuRow(Icons.Default.Lock, "Account Privacy", onClick = { onTabChange("AccountPrivacy") })
-                AccountMenuRow(Icons.Default.NotificationsNone, "Notification preferences") {
+                AccountMenuRow(Icons.Default.NotificationsNone, tr("Notification preferences", LocalAppLanguage.current)) {
                     android.app.AlertDialog.Builder(context)
-                        .setTitle("Notification preferences")
-                        .setMessage("Notification controls are not connected in this version of SLGAN.")
+                        .setTitle(tr("Notification preferences", LocalAppLanguage.current))
+                        .setMessage(tr("Notification controls are not connected in this version of SLGAN.", LocalAppLanguage.current))
                         .setPositiveButton("OK", null)
                         .show()
                 }
-                AccountMenuRow(Icons.Default.Logout, "Log out") { showLogoutDialog = true }
+                AccountMenuRow(Icons.Default.Logout, tr("Log out", LocalAppLanguage.current)) { showLogoutDialog = true }
             }
         }
         Spacer(Modifier.height(24.dp))
@@ -10560,7 +10572,7 @@ private fun AccountsPage(
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable {
                         showLogoutDialog = false
-                        Toast.makeText(context, "This app can sign out this device only. Signing out all devices requires secure server support.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, tr("This app can sign out this device only. Signing out all devices requires secure server support.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
                     },
                     shape = RoundedCornerShape(18.dp),
                     border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
