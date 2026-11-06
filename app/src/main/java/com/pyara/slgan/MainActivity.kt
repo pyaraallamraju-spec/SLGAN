@@ -1144,6 +1144,12 @@ private fun tr(text: String, language: String): String {
         "Arrived at" to "చేరుకున్న సమయం",
         "Order status" to "ఆర్డర్ స్థితి",
         "item(s) in this order" to "ఈ ఆర్డర్‌లోని వస్తువులు",
+        "Customer & Delivery Details" to "కస్టమర్ మరియు డెలివరీ వివరాలు",
+        "Customer name" to "కస్టమర్ పేరు",
+        "Delivery recipient" to "డెలివరీ స్వీకర్త",
+        "Delivery phone" to "డెలివరీ ఫోన్ నంబర్",
+        "Delivery address" to "డెలివరీ చిరునామా",
+        "Delivery instructions" to "డెలివరీ సూచనలు",
         "Collapse" to "మూసివేయండి",
         "Expand" to "విస్తరించండి",
         "Customer ID" to "కస్టమర్ ID",
@@ -1964,6 +1970,12 @@ private fun tr(text: String, language: String): String {
         "Arrived at" to "पहुँचने का समय",
         "Order status" to "ऑर्डर की स्थिति",
         "item(s) in this order" to "इस ऑर्डर में आइटम",
+        "Customer & Delivery Details" to "ग्राहक और डिलीवरी विवरण",
+        "Customer name" to "ग्राहक का नाम",
+        "Delivery recipient" to "डिलीवरी प्राप्तकर्ता",
+        "Delivery phone" to "डिलीवरी फ़ोन नंबर",
+        "Delivery address" to "डिलीवरी पता",
+        "Delivery instructions" to "डिलीवरी निर्देश",
         "Collapse" to "समेटें",
         "Expand" to "विस्तार करें",
         "Customer ID" to "ग्राहक ID",
@@ -9392,7 +9404,7 @@ private fun OrdersPage(
                             Text(deliveryPhone, color = Ink, fontSize = 16.sp)
                         }
                         if (deliveryAddress.isNotBlank()) Column {
-                            Text(tr(if (deliveryAddressLabel.isNotBlank()) "Delivery address · $deliveryAddressLabel" else "Delivery address", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                            Text(if (deliveryAddressLabel.isNotBlank()) "${tr("Delivery address", LocalAppLanguage.current)} · ${tr(deliveryAddressLabel, LocalAppLanguage.current)}" else tr("Delivery address", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                             Text(deliveryAddress, color = Ink, fontSize = 16.sp)
                         }
                         if (deliveryInstructions.isNotBlank()) Column {
