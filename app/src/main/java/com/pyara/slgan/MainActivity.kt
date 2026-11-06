@@ -3353,7 +3353,7 @@ private fun LoginScreen(
             )
         )
         Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(5.dp))
         OutlinedTextField(
             value = password,
             onValueChange = onPasswordChange,
@@ -3533,7 +3533,7 @@ private fun LoginScreen(
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 8.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(Modifier.weight(1f).height(1.dp).background(Gold.copy(alpha = 0.55f)))
