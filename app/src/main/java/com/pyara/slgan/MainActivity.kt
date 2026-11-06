@@ -7043,7 +7043,7 @@ private fun HomePage(modifier: Modifier, appLanguage: String, onLanguageChange: 
                                 onSearchChange("")
                                 onCategoryChange(item)
                             },
-                            label = { Text(item, fontSize = 11.sp) },
+                            label = { Text(tr(item, LocalAppLanguage.current), fontSize = 11.sp) },
                             leadingIcon = {
                                 Text(
                                     text = when (item.trim().lowercase()) {
