@@ -10995,7 +10995,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     tint = appThemedColor(Color(0xFFB5B5B5)),
                                     modifier = Modifier.size(26.dp)
                                 )
-                                Spacer(Modifier.height(3.dp))
+                                Spacer(Modifier.height(1.dp))
                                 Text(
                                     tr(label.trim().ifBlank { "Other" }.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, LocalAppLanguage.current),
                                     color = Muted,
@@ -11006,7 +11006,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                             Spacer(Modifier.width(14.dp))
                             Column(Modifier.weight(1f)) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Spacer(Modifier.weight(1f))
+                                    Text(name, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
                                     Box(
                                         modifier = Modifier.size(34.dp)
                                             .background(
@@ -11024,7 +11024,6 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                         )
                                     }
                                 }
-                                Text(name, color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
                                 if (phone.isNotBlank()) {
                                     Text(phone, color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 2.dp))
                                 }
