@@ -9025,7 +9025,7 @@ private fun OrdersPage(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             val isFailedStatus = status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)
-                            val isPendingStatus = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
+                            val isPendingStatus = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true)
                             val orderStatusTint = when {
                                 isFailedStatus -> appThemedColor(Color(0xFFC62828))
                                 isPendingStatus -> appThemedColor(Color(0xFFC58B00))
@@ -9139,7 +9139,7 @@ private fun OrdersPage(
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             val isFailedStatus = status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true)
-                            val isPendingStatus = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) || status.equals("received", ignoreCase = true)
+                            val isPendingStatus = status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true)
                             val orderStatusTint = when {
                                 isFailedStatus -> appThemedColor(Color(0xFFC62828))
                                 isPendingStatus -> appThemedColor(Color(0xFFC58B00))
@@ -9291,7 +9291,12 @@ private fun OrdersPage(
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
                         Text(tr("Order Summary", LocalAppLanguage.current), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(6.dp))
-                        Text(if (status.equals("delivered", true) || status.equals("completed", true)) tr("Arrived at $created", LocalAppLanguage.current) else "${tr("Order status", LocalAppLanguage.current)}: ${tr(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, LocalAppLanguage.current)}", color = Muted, fontSize = 16.sp)
+                        val orderSummaryStatusColor = when {
+                            status.contains("reject", ignoreCase = true) || status.contains("cancel", ignoreCase = true) || status.contains("fail", ignoreCase = true) -> Color(0xFFC62828)
+                            status.contains("pending", ignoreCase = true) || status.contains("verification", ignoreCase = true) -> Color(0xFFC58B00)
+                            else -> Color(0xFF27864A)
+                        }
+                        Text(if (status.equals("delivered", true) || status.equals("completed", true)) tr("Arrived at $created", LocalAppLanguage.current) else "${tr("Order status", LocalAppLanguage.current)}: ${tr(status.replace('_', ' ').replaceFirstChar { it.uppercase() }, LocalAppLanguage.current)}", color = orderSummaryStatusColor, fontSize = 16.sp)
                         Spacer(Modifier.height(12.dp))
                         if (!invoiceUrl.isNullOrBlank() && (status.equals("accepted", true) || status.equals("approved", true))) {
                             Row(Modifier.clickable { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(invoiceUrl))) } }.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
