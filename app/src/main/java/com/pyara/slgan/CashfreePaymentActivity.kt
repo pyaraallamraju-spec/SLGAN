@@ -21,11 +21,17 @@ class CashfreePaymentActivity : ComponentActivity(), CFCheckoutResponseCallback 
     private val workerUrl = "https://slgan-cashfree-api.amruth4official.workers.dev"
     private val executor = Executors.newSingleThreadExecutor()
     private var documentId: String = ""
+    private var environment: String = ENVIRONMENT_SANDBOX
     private var paymentStarted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         documentId = intent.getStringExtra(EXTRA_DOCUMENT_ID).orEmpty()
+        environment = intent.getStringExtra(EXTRA_ENVIRONMENT).orEmpty().ifBlank { ENVIRONMENT_SANDBOX }
+        if (environment != ENVIRONMENT_SANDBOX && environment != ENVIRONMENT_PRODUCTION) {
+            finishWithMessage("Invalid payment environment.")
+            return
+        }
         if (documentId.isBlank()) {
             finishWithMessage("Order reference is missing.")
             return
@@ -61,8 +67,13 @@ class CashfreePaymentActivity : ComponentActivity(), CFCheckoutResponseCallback 
             runOnUiThread {
                 try {
                     CFPaymentGatewayService.getInstance().setCheckoutCallback(this)
+                    val cashfreeEnvironment = if (environment == ENVIRONMENT_PRODUCTION) {
+                        CFSession.Environment.PRODUCTION
+                    } else {
+                        CFSession.Environment.SANDBOX
+                    }
                     val session = CFSession.CFSessionBuilder()
-                        .setEnvironment(CFSession.Environment.SANDBOX)
+                        .setEnvironment(cashfreeEnvironment)
                         .setPaymentSessionID(sessionId)
                         .setOrderId(orderId)
                         .build()
@@ -150,7 +161,9 @@ class CashfreePaymentActivity : ComponentActivity(), CFCheckoutResponseCallback 
                 setRequestProperty("Authorization", "Bearer $idToken")
                 setRequestProperty("Content-Type", "application/json")
             }
-            val payload = JSONObject().put("documentId", documentId)
+            val payload = JSONObject()
+                .put("documentId", documentId)
+                .put("environment", environment)
             connection.outputStream.use { it.write(payload.toString().toByteArray(Charsets.UTF_8)) }
             val status = connection.responseCode
             val stream = if (status in 200..299) connection.inputStream else connection.errorStream
@@ -179,6 +192,9 @@ class CashfreePaymentActivity : ComponentActivity(), CFCheckoutResponseCallback 
 
     companion object {
         const val EXTRA_DOCUMENT_ID = "com.pyara.slgan.CASHFREE_DOCUMENT_ID"
+        const val EXTRA_ENVIRONMENT = "com.pyara.slgan.CASHFREE_ENVIRONMENT"
+        private const val ENVIRONMENT_SANDBOX = "sandbox"
+        private const val ENVIRONMENT_PRODUCTION = "production"
         private const val TAG = "SLGANCashfree"
     }
 }
