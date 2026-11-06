@@ -8935,7 +8935,7 @@ private fun OrdersPage(
                             Box(Modifier.size(42.dp).shadow(4.dp, CircleShape).background(appThemedColor(Color(0xFFF1F1F1)), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp)) }
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
+                                Text(orderId, fontWeight = FontWeight.SemiBold, color = Ink, fontSize = 14.sp)
                                 Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · h:mm a", java.util.Locale.getDefault()).format(it) } ?: tr("Date not available", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
                             }
                             IconButton(
@@ -9056,7 +9056,7 @@ private fun OrdersPage(
                             Box(Modifier.size(42.dp).background(appThemedColor(Color(0xFFF1F1F1)), CircleShape), contentAlignment = Alignment.Center) { Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = Ink, modifier = Modifier.size(22.dp)) }
                             Spacer(Modifier.width(11.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(orderId, fontWeight = FontWeight.ExtraBold, color = Ink, fontSize = 14.sp)
+                                Text(orderId, fontWeight = FontWeight.SemiBold, color = Ink, fontSize = 14.sp)
                                 Text(timestamp?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy · hh:mm a", java.util.Locale.getDefault()).format(it) } ?: tr("Date not available", LocalAppLanguage.current), color = Muted, fontSize = 11.sp)
                             }
                             IconButton(onClick = { orderOptions = order }, modifier = Modifier.size(34.dp)) {
