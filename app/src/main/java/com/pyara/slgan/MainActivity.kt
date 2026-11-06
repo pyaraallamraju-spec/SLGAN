@@ -3211,6 +3211,8 @@ private fun LoginScreen(
     onVerifyPhoneOtp: () -> Unit
 ) {
     var showPassword by remember { mutableStateOf(false) }
+    // Warm bronze-brown sampled to complement the botanical leaves in the Sign In artwork.
+    val loginFieldAccent = appThemedColor(Color(0xFF8A5A2B))
     Box(Modifier.fillMaxSize().background(Color.White)) {
         Image(
             painter = painterResource(R.drawable.slgan_login_background),
@@ -3334,8 +3336,9 @@ private fun LoginScreen(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            placeholder = { Text(tr("Email address", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
-            leadingIcon = { Icon(Icons.Default.Email, null, tint = Ink) },
+            placeholder = { Text(tr("Email address", LocalAppLanguage.current), color = loginFieldAccent.copy(alpha = 0.78f), fontSize = 15.sp) },
+            leadingIcon = { Icon(Icons.Default.Email, null, tint = loginFieldAccent) },
+            textStyle = androidx.compose.ui.text.TextStyle(color = loginFieldAccent),
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             shape = RectangleShape,
@@ -3344,7 +3347,9 @@ private fun LoginScreen(
                 unfocusedBorderColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                cursorColor = Ink
+                focusedTextColor = loginFieldAccent,
+                unfocusedTextColor = loginFieldAccent,
+                cursorColor = loginFieldAccent
             )
         )
         Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
@@ -3353,14 +3358,15 @@ private fun LoginScreen(
             value = password,
             onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-            placeholder = { Text(tr("Password", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
-            leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
+            placeholder = { Text(tr("Password", LocalAppLanguage.current), color = loginFieldAccent.copy(alpha = 0.78f), fontSize = 15.sp) },
+            leadingIcon = { Icon(Icons.Default.Lock, null, tint = loginFieldAccent) },
+            textStyle = androidx.compose.ui.text.TextStyle(color = loginFieldAccent),
             trailingIcon = {
                 IconButton(onClick = { showPassword = !showPassword }) {
                     Icon(
                         if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                         contentDescription = if (showPassword) "Hide password" else "Show password",
-                        tint = Ink
+                        tint = loginFieldAccent
                     )
                 }
             },
@@ -3373,7 +3379,9 @@ private fun LoginScreen(
                 unfocusedBorderColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
-                cursorColor = Ink
+                focusedTextColor = loginFieldAccent,
+                unfocusedTextColor = loginFieldAccent,
+                cursorColor = loginFieldAccent
             )
         )
         Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
@@ -3384,14 +3392,15 @@ private fun LoginScreen(
                 value = confirmPassword,
                 onValueChange = onConfirmPasswordChange,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
-                placeholder = { Text(tr("Confirm password", LocalAppLanguage.current), color = Muted, fontSize = 15.sp) },
-                leadingIcon = { Icon(Icons.Default.Lock, null, tint = Ink) },
+                placeholder = { Text(tr("Confirm password", LocalAppLanguage.current), color = loginFieldAccent.copy(alpha = 0.78f), fontSize = 15.sp) },
+                leadingIcon = { Icon(Icons.Default.Lock, null, tint = loginFieldAccent) },
+                textStyle = androidx.compose.ui.text.TextStyle(color = loginFieldAccent),
                 trailingIcon = {
                     IconButton(onClick = { showConfirmPassword = !showConfirmPassword }) {
                         Icon(
                             if (showConfirmPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                             contentDescription = if (showConfirmPassword) "Hide confirm password" else "Show confirm password",
-                            tint = Ink
+                            tint = loginFieldAccent
                         )
                     }
                 },
@@ -3404,7 +3413,9 @@ private fun LoginScreen(
                     unfocusedBorderColor = Color.Transparent,
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-                    cursorColor = Forest
+                    focusedTextColor = loginFieldAccent,
+                    unfocusedTextColor = loginFieldAccent,
+                    cursorColor = loginFieldAccent
                 )
             )
             Box(Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(1.dp).background(Muted.copy(alpha = 0.45f)))
