@@ -11262,31 +11262,6 @@ private fun AddAddressDetailsPage(
 ) {
     val context = LocalContext.current
     val user = FirebaseAuth.getInstance().currentUser
-    val contactPicker = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val contactUri = result.data?.data
-            if (contactUri != null) {
-                val selectedNumber = runCatching {
-                    context.contentResolver.query(
-                        contactUri,
-                        arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),
-                        null,
-                        null,
-                        null
-                    )?.use { cursor ->
-                        if (cursor.moveToFirst()) cursor.getString(0) else null
-                    }
-                }.getOrNull()
-                if (!selectedNumber.isNullOrBlank()) {
-                    val digits = selectedNumber.filter(Char::isDigit)
-                    receiverPhone = if (digits.startsWith("91") && digits.length == 12) digits.drop(2) else digits.takeLast(10)
-                    phoneError = false
-                } else {
-                    Toast.makeText(context, "No phone number found for this contact.", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
     var city by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("city")?.toString().orEmpty()) }
     var area by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("area")?.toString().orEmpty()) }
     var fullAddress by remember(editAddress?.get("_id")) { mutableStateOf(listOf("address", "addressText", "fullAddress", "completeAddress", "complete_address", "formattedAddress", "formatted_address", "complete address").firstNotNullOfOrNull { key -> editAddress?.get(key)?.toString()?.trim()?.takeIf { it.isNotBlank() } } ?: listOf("addressLine1", "addressLine2", "landmark", "street", "area", "city", "state", "pincode", "postalCode").mapNotNull { key -> editAddress?.get(key)?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ")) }
@@ -11329,6 +11304,31 @@ private fun AddAddressDetailsPage(
     var addressError by remember { mutableStateOf(false) }
     var nameError by remember { mutableStateOf(false) }
     var phoneError by remember { mutableStateOf(false) }
+    val contactPicker = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val contactUri = result.data?.data
+            if (contactUri != null) {
+                val selectedNumber = runCatching {
+                    context.contentResolver.query(
+                        contactUri,
+                        arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),
+                        null,
+                        null,
+                        null
+                    )?.use { cursor ->
+                        if (cursor.moveToFirst()) cursor.getString(0) else null
+                    }
+                }.getOrNull()
+                if (!selectedNumber.isNullOrBlank()) {
+                    val digits = selectedNumber.filter(Char::isDigit)
+                    receiverPhone = if (digits.startsWith("91") && digits.length == 12) digits.drop(2) else digits.takeLast(10)
+                    phoneError = false
+                } else {
+                    Toast.makeText(context, "No phone number found for this contact.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     var showReview by remember { mutableStateOf(false) }
     var showExitConfirmation by remember { mutableStateOf(false) }
     var cityMenu by remember { mutableStateOf(false) }
