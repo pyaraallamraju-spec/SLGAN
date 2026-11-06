@@ -615,6 +615,10 @@ private fun tr(text: String, language: String): String {
         "Your phone number*" to "మీ ఫోన్ నంబర్*",
         "Please enter a valid phone number" to "దయచేసి సరైన ఫోన్ నంబర్ నమోదు చేయండి",
         "Save address as" to "చిరునామాను ఇలా సేవ్ చేయండి",
+        "Home" to "ఇల్లు",
+        "Work" to "పని",
+        "Hotel" to "హోటల్",
+        "Other" to "ఇతర",
         "Next" to "తదుపరి",
         "Review Address" to "చిరునామాను పరిశీలించండి",
         "Finding the nearest area on the map…" to "మ్యాప్‌లో సమీప ప్రాంతాన్ని కనుగొంటున్నాం…",
@@ -1448,6 +1452,10 @@ private fun tr(text: String, language: String): String {
         "Your phone number*" to "आपका फ़ोन नंबर*",
         "Please enter a valid phone number" to "कृपया सही फ़ोन नंबर दर्ज करें",
         "Save address as" to "पता इस रूप में सहेजें",
+        "Home" to "घर",
+        "Work" to "कार्यस्थल",
+        "Hotel" to "होटल",
+        "Other" to "अन्य",
         "Next" to "अगला",
         "Review Address" to "पते की समीक्षा करें",
         "Finding the nearest area on the map…" to "मानचित्र पर निकटतम क्षेत्र खोज रहे हैं…",
@@ -11871,7 +11879,7 @@ private fun AddAddressDetailsPage(
                                         },
                                         contentDescription = null, tint = appThemedColor(Color(0xFFB5B5B5)), modifier = Modifier.size(18.dp)
                                     )
-                                    Text(option, color = Ink, fontSize = 13.sp, modifier = Modifier.padding(start = 5.dp), maxLines = 1)
+                                    Text(tr(option, LocalAppLanguage.current), color = Ink, fontSize = 13.sp, modifier = Modifier.padding(start = 5.dp), maxLines = 1)
                                 }
                             }
                         }
