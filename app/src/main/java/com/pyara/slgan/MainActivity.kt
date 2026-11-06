@@ -364,6 +364,7 @@ private fun tr(text: String, language: String): String {
         "You have no previous orders yet." to "మీకు ఇంకా పాత ఆర్డర్లు లేవు.",
         "View / Download Invoice" to "ఇన్‌వాయిస్ చూడండి / డౌన్‌లోడ్ చేయండి",
         "Previous Orders" to "మునుపటి ఆర్డర్లు",
+        "Order History" to "ఆర్డర్ చరిత్ర",
         "View complete invoice" to "పూర్తి ఇన్‌వాయిస్ చూడండి",
         "Open invoice PDF" to "ఇన్‌వాయిస్ PDF తెరవండి",
         "ORDER INVOICE" to "ఆర్డర్ ఇన్‌వాయిస్",
@@ -1188,6 +1189,7 @@ private fun tr(text: String, language: String): String {
         "You have no previous orders yet." to "आपके अभी तक कोई पुराने ऑर्डर नहीं हैं।",
         "View / Download Invoice" to "इनवॉइस देखें / डाउनलोड करें",
         "Previous Orders" to "पिछले ऑर्डर",
+        "Order History" to "ऑर्डर इतिहास",
         "View complete invoice" to "पूरा इनवॉइस देखें",
         "Open invoice PDF" to "इनवॉइस PDF खोलें",
         "ORDER INVOICE" to "ऑर्डर इनवॉइस",
@@ -8788,7 +8790,7 @@ private fun OrdersPage(
                 Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink)
             }
             Spacer(Modifier.width(12.dp))
-            Text(pageTitle, color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+            Text(tr(pageTitle, LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
             Surface(shape = RoundedCornerShape(24.dp), color = appThemedColor(Color(0xFFF6F7FA))) {
                 Text(
                     "${visibleOrders.size} ${if (visibleOrders.size == 1) "order" else "orders"}",
