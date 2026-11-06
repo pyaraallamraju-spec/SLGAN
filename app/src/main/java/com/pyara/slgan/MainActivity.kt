@@ -12178,14 +12178,20 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     }
                 },
                 enabled = !isSaving && !isLoading,
-                modifier = Modifier.fillMaxWidth().height(DefaultBtn.height),
-                shape = RoundedCornerShape(DefaultBtn.cornerRadius),
-                border = BorderStroke(1.dp, appThemedColor(DefaultBtn.border)),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = appThemedColor(DefaultBtn.background),
-                    contentColor = appThemedColor(DefaultBtn.content)
+                    containerColor = appThemedColor(Color(0xFFE2E2E2)),
+                    contentColor = Ink,
+                    disabledContainerColor = appThemedColor(Color(0xFFE2E2E2)),
+                    disabledContentColor = Muted
                 ),
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp, pressedElevation = 10.dp, focusedElevation = 8.dp, hoveredElevation = 10.dp, disabledElevation = 0.dp)
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 0.dp,
+                    pressedElevation = 1.dp,
+                    disabledElevation = 0.dp
+                )
             ) {
                 if (isSaving) CircularProgressIndicator(modifier = Modifier.size(20.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp) else Icon(Icons.Default.Save, null, tint = appThemedColor(DefaultBtn.content))
                 Spacer(Modifier.width(8.dp))
