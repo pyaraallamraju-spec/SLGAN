@@ -8952,9 +8952,9 @@ private fun OrdersPage(
                                 orderItems.forEach { item ->
                                     val productId = item["productId"]?.toString().orEmpty()
                                     val product = products.firstOrNull { it.id == productId }
-                                    Box(Modifier.size(82.dp).shadow(4.dp, RoundedCornerShape(14.dp)).clip(RoundedCornerShape(14.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentAlignment = Alignment.Center) {
-                                        if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = product?.name ?: item["productName"]?.toString(), modifier = Modifier.fillMaxSize().padding(6.dp), contentScale = ContentScale.Fit)
-                                        else Text(product?.emoji ?: "🌿", fontSize = 28.sp)
+                                    Box(Modifier.size(60.dp).shadow(3.dp, RoundedCornerShape(12.dp)).clip(RoundedCornerShape(14.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentAlignment = Alignment.Center) {
+                                        if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = product?.name ?: item["productName"]?.toString(), modifier = Modifier.fillMaxSize().padding(4.dp), contentScale = ContentScale.Fit)
+                                        else Text(product?.emoji ?: "🌿", fontSize = 22.sp)
                                     }
                                 }
                             }
@@ -9105,12 +9105,12 @@ private fun OrdersPage(
                                 orderItems.take(3).forEach { item ->
                                     val productId = item["productId"]?.toString().orEmpty()
                                     val product = products.firstOrNull { it.id == productId }
-                                    Box(Modifier.size(66.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentAlignment = Alignment.Center) {
+                                    Box(Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentAlignment = Alignment.Center) {
                                         if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = product?.name ?: item["productName"]?.toString(), modifier = Modifier.fillMaxSize().padding(5.dp), contentScale = ContentScale.Fit)
-                                        else Text(product?.emoji ?: "🌿", fontSize = 24.sp)
+                                        else Text(product?.emoji ?: "🌿", fontSize = 22.sp)
                                     }
                                 }
-                                if (orderItems.size > 3) Box(Modifier.size(66.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFE2E2E2))), contentAlignment = Alignment.Center) { Text(tr("+", LocalAppLanguage.current) + (orderItems.size - 3), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                                if (orderItems.size > 3) Box(Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFE2E2E2))), contentAlignment = Alignment.Center) { Text(tr("+", LocalAppLanguage.current) + (orderItems.size - 3), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
                             }
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
