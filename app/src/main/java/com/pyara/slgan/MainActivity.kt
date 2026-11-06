@@ -7394,7 +7394,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 modifier = Modifier.fillMaxWidth().height(44.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = appThemedColor(Color.Black), fontWeight = FontWeight.ExtraBold, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                Text(tr("₹", LocalAppLanguage.current) + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price), color = appThemedColor(Color.Black), fontWeight = FontWeight.Medium, fontSize = 16.sp, modifier = Modifier.weight(1f))
                 if (count == 0) FilledIconButton(onClick = { onAdd(product.id) }, enabled = product.productStock != 0, modifier = Modifier.size(44.dp), shape = CircleShape, colors = IconButtonDefaults.filledIconButtonColors(containerColor = appThemedColor(Color(0xFF2E7D32)), contentColor = Color.White)) { Icon(Icons.Default.Add, "Add " + product.name, tint = Color.White, modifier = Modifier.size(24.dp)) }
                 else Text(count.toString() + tr(" in cart", LocalAppLanguage.current), fontSize = 10.sp, color = appThemedColor(Color(0xFF2E7D32)), fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterVertically).clickable(enabled = false) {})
             }
