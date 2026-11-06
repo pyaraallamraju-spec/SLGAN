@@ -7885,7 +7885,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink)
             }
             Spacer(Modifier.width(12.dp))
-            Text(tr("Checkout", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(tr("Checkout", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
             Surface(shape = RoundedCornerShape(24.dp), color = appThemedColor(Color(0xFFF6F7FA))) {
                 Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = appThemedColor(Color(0xFF27864A)), modifier = Modifier.size(18.dp))
@@ -8658,7 +8658,7 @@ private fun OrdersPage(
                 Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink)
             }
             Spacer(Modifier.width(12.dp))
-            Text(pageTitle, color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text(pageTitle, color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
             Surface(shape = RoundedCornerShape(24.dp), color = appThemedColor(Color(0xFFF6F7FA))) {
                 Text(
                     "${visibleOrders.size} ${if (visibleOrders.size == 1) "order" else "orders"}",
@@ -9192,7 +9192,7 @@ private fun OrdersPage(
                 }
                 Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 28.dp)) {
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 2.dp)) {
-                        Text(tr("Order Summary", LocalAppLanguage.current), color = Ink, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Order Summary", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(6.dp))
                         Text(if (status.equals("delivered", true) || status.equals("completed", true)) tr("Arrived at $created", LocalAppLanguage.current) else tr("Order status: ${status.replace('_', ' ').replaceFirstChar { it.uppercase() }}", LocalAppLanguage.current), color = Muted, fontSize = 16.sp)
                         Spacer(Modifier.height(12.dp))
@@ -9614,7 +9614,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     Text(tr("DISEASE DETAILS", LocalAppLanguage.current), color = Ink, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
-                    Text(detailDiseaseName, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(detailDiseaseName, color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
                 }
                 IconButton(onClick = {
                     selectedDisease = null
