@@ -4669,10 +4669,10 @@ private fun AdminDashboardScreen(
 
     val metrics = remember(productCount, orderCount, diseaseCount, customerCount) {
         listOf(
-            Triple("Products", productCount, Icons.Default.Inventory2),
-            Triple("Orders", orderCount, Icons.Default.ReceiptLong),
-            Triple("Diseases", diseaseCount, Icons.Default.MedicalServices),
-            Triple("Customers", customerCount, Icons.Default.PeopleAlt)
+            Triple(tr("Products", LocalAppLanguage.current), productCount, Icons.Default.Inventory2),
+            Triple(tr("Orders", LocalAppLanguage.current), orderCount, Icons.Default.ReceiptLong),
+            Triple(tr("Diseases", LocalAppLanguage.current), diseaseCount, Icons.Default.MedicalServices),
+            Triple(tr("Customers", LocalAppLanguage.current), customerCount, Icons.Default.PeopleAlt)
         )
     }
     val metricLoading = listOf(productsLoading, ordersLoading, diseasesLoading, customersLoading)
@@ -4836,8 +4836,8 @@ private fun AdminDashboardScreen(
                     }
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(title, color = AdminInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                        Text(subtitle, color = AdminMuted, fontSize = 11.sp)
+                        Text(tr(title, LocalAppLanguage.current), color = AdminInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        Text(tr(subtitle, LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp)
                     }
                     Icon(Icons.Default.ChevronRight, null, tint = AdminMuted)
                 }
