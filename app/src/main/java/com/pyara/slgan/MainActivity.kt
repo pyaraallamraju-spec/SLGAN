@@ -378,6 +378,7 @@ private fun tr(text: String, language: String): String {
         "Close" to "మూసివేయండి",
         "Open PDF" to "PDF తెరవండి",
         "Diseases" to "వ్యాధులు",
+        "All Diseases" to "అన్ని వ్యాధులు",
         "Select a disease to view." to "అందుబాటులో ఉన్న జాబితా నుంచి వ్యాధిని ఎంచుకోండి.",
         "Select disease" to "వ్యాధిని ఎంచుకోండి",
         "Loading diseases from database…" to "డేటాబేస్ నుంచి వ్యాధులు లోడ్ అవుతున్నాయి…",
@@ -1195,6 +1196,7 @@ private fun tr(text: String, language: String): String {
         "Close" to "बंद करें",
         "Open PDF" to "PDF खोलें",
         "Diseases" to "रोग",
+        "All Diseases" to "सभी रोग",
         "Find a disease from the available list." to "सूची में से रोग खोजें।",
         "Select disease" to "रोग चुनें",
         "Loading diseases from database…" to "डेटाबेस से रोग लोड हो रहे हैं…",
@@ -9542,8 +9544,10 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
     val availableDiseases = remember(diseases) {
         (listOf("All Diseases") + diseases.filterNot { it.equals("All Diseases", ignoreCase = true) }).distinct()
     }
-    val matches = remember(availableDiseases, query) {
-        if (query.isBlank()) availableDiseases else availableDiseases.filter { it.contains(query.trim(), ignoreCase = true) }
+    val localizedAllDiseases = tr("All Diseases", LocalAppLanguage.current)
+    val matches = remember(availableDiseases, query, localizedAllDiseases) {
+        if (query.isBlank() || query.equals("All Diseases", ignoreCase = true) || query.equals(localizedAllDiseases, ignoreCase = true)) availableDiseases
+        else availableDiseases.filter { it.contains(query.trim(), ignoreCase = true) }
     }
 
     Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(scrollState)) {
@@ -9578,7 +9582,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             )
                         }
                         OutlinedTextField(
-                            value = query,
+                            value = if (query.equals("All Diseases", ignoreCase = true)) localizedAllDiseases else query,
                             onValueChange = {
                                 query = it
                                 selectedDisease = null
@@ -9631,7 +9635,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                     matches.forEach { disease ->
                         DropdownMenuItem(
                             colors = MenuDefaults.itemColors(textColor = Ink),
-                            text = { Text(disease, color = Ink, fontWeight = FontWeight.Medium) },
+                            text = { Text(tr(disease, LocalAppLanguage.current), color = Ink, fontWeight = FontWeight.Medium) },
                             leadingIcon = {
                                 val normalizedDisease = disease.trim().lowercase(Locale.ROOT)
                                     .replace(Regex("[^a-z0-9 ]"), " ")
@@ -9698,7 +9702,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     Text(tr("DISEASE DETAILS", LocalAppLanguage.current), color = Ink, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
-                    Text(detailDiseaseName, color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(tr(detailDiseaseName, LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
                 }
                 IconButton(onClick = {
                     selectedDisease = null
