@@ -8342,7 +8342,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         contentScale = ContentScale.Fit,
                         alpha = 0.72f
                     )
-                    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp), verticalArrangement = Arrangement.spacedBy(0.dp)) {
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Person, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
