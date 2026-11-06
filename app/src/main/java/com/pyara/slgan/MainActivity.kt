@@ -6618,7 +6618,7 @@ private fun AboutPage(modifier: Modifier, appLanguage: String, onBack: () -> Uni
                     android.app.AlertDialog.Builder(context)
                         .setTitle(if (appLanguage == "English") "Privacy Policy" else "గోప్యతా విధానం")
                         .setMessage(if (appLanguage == "English") "SLGAN uses account information to provide sign-in, wishlist, and order features. Keep your password and verification codes private. Contact the business for questions about your account data." else "సైన్-ఇన్, చిరునామాలు, విష్‌లిస్ట్ మరియు ఆర్డర్ సేవల కోసం SLGAN ఖాతా సమాచారాన్ని ఉపయోగిస్తుంది. మీ పాస్‌వర్డ్ మరియు OTPలను రహస్యంగా ఉంచండి. ఖాతా సమాచారం గురించి ప్రశ్నల కోసం వ్యాపారాన్ని సంప్రదించండి.")
-                        .setPositiveButton(tr("OK", LocalAppLanguage.current), null).show()
+                        .setPositiveButton(tr("OK", appLanguage), null).show()
                 }.padding(horizontal = 22.dp, vertical = 20.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) { Text(tr("Privacy Policy", appLanguage), color = Ink, fontSize = 19.sp) }
@@ -10409,10 +10409,11 @@ private fun AccountsPage(
                 }
                 AccountMenuRow(Icons.Default.Groups, "Social Media", onClick = { onTabChange("SocialMedia") })
                 AccountMenuRow(Icons.Default.Lock, "Account Privacy", onClick = { onTabChange("AccountPrivacy") })
-                AccountMenuRow(Icons.Default.NotificationsNone, tr("Notification preferences", LocalAppLanguage.current)) {
+                val notificationLanguage = LocalAppLanguage.current
+                AccountMenuRow(Icons.Default.NotificationsNone, tr("Notification preferences", notificationLanguage)) {
                     android.app.AlertDialog.Builder(context)
-                        .setTitle(tr("Notification preferences", LocalAppLanguage.current))
-                        .setMessage(tr("Notification controls are not connected in this version of SLGAN.", LocalAppLanguage.current))
+                        .setTitle(tr("Notification preferences", notificationLanguage))
+                        .setMessage(tr("Notification controls are not connected in this version of SLGAN.", notificationLanguage))
                         .setPositiveButton("OK", null)
                         .show()
                 }
@@ -10578,10 +10579,11 @@ private fun AccountsPage(
                         Icon(Icons.Default.ChevronRight, contentDescription = tr("Sign out from current device", LocalAppLanguage.current), tint = Color(0xFF25282D))
                     }
                 }
+                val logoutLanguage = LocalAppLanguage.current
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable {
                         showLogoutDialog = false
-                        Toast.makeText(context, tr("This app can sign out this device only. Signing out all devices requires secure server support.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, tr("This app can sign out this device only. Signing out all devices requires secure server support.", logoutLanguage), Toast.LENGTH_LONG).show()
                     },
                     shape = RoundedCornerShape(18.dp),
                     border = BorderStroke(1.dp, Color(0xFFB5B5B5)),
@@ -11118,6 +11120,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                 if (addressText.isNotBlank()) {
                                     Text(addressText, color = Muted, fontSize = 14.sp, lineHeight = 20.sp, softWrap = true, modifier = Modifier.padding(top = 3.dp))
                                 }
+                                val addressShareLanguage = LocalAppLanguage.current
                                 Row(
                                     Modifier.padding(top = 6.dp),
                                     horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -11138,13 +11141,13 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     }
                                     Surface(
                                         onClick = {
-                                            val shareText = listOf(tr(label, LocalAppLanguage.current), addressText, phone.takeIf { it.isNotBlank() }?.let { "${tr("Phone number", LocalAppLanguage.current)}: $it" })
+                                            val shareText = listOf(tr(label, addressShareLanguage), addressText, phone.takeIf { it.isNotBlank() }?.let { "${tr("Phone number", addressShareLanguage)}: $it" })
                                                 .filterNotNull().filter { it.isNotBlank() }.joinToString("\n")
                                             val sendIntent = Intent(Intent.ACTION_SEND).apply {
                                                 type = "text/plain"
                                                 putExtra(Intent.EXTRA_TEXT, shareText)
                                             }
-                                            context.startActivity(Intent.createChooser(sendIntent, tr("Share address", LocalAppLanguage.current)))
+                                            context.startActivity(Intent.createChooser(sendIntent, tr("Share address", addressShareLanguage)))
                                         },
                                         shape = CircleShape,
                                         color = Color.White,
