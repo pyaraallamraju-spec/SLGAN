@@ -3524,9 +3524,6 @@ private fun LoginScreen(
             Spacer(Modifier.width(12.dp))
             Text(if (loading) tr("Please wait…", LocalAppLanguage.current) else tr("Continue with Google", LocalAppLanguage.current), fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
         }
-        Spacer(Modifier.height(8.dp))
-        Text(tr("Sign in with your registered email and password.", LocalAppLanguage.current), fontSize = 13.sp, color = Muted, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
-        Spacer(Modifier.height(12.dp))
         Spacer(Modifier.height(24.dp))
         }
     }
