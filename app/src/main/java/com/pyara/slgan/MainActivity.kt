@@ -18,6 +18,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import android.content.Intent
 import android.net.Uri
+import android.provider.ContactsContract
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.webkit.JavascriptInterface
@@ -11261,6 +11262,31 @@ private fun AddAddressDetailsPage(
 ) {
     val context = LocalContext.current
     val user = FirebaseAuth.getInstance().currentUser
+    val contactPicker = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val contactUri = result.data?.data
+            if (contactUri != null) {
+                val selectedNumber = runCatching {
+                    context.contentResolver.query(
+                        contactUri,
+                        arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER),
+                        null,
+                        null,
+                        null
+                    )?.use { cursor ->
+                        if (cursor.moveToFirst()) cursor.getString(0) else null
+                    }
+                }.getOrNull()
+                if (!selectedNumber.isNullOrBlank()) {
+                    val digits = selectedNumber.filter(Char::isDigit)
+                    receiverPhone = if (digits.startsWith("91") && digits.length == 12) digits.drop(2) else digits.takeLast(10)
+                    phoneError = false
+                } else {
+                    Toast.makeText(context, "No phone number found for this contact.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     var city by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("city")?.toString().orEmpty()) }
     var area by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("area")?.toString().orEmpty()) }
     var fullAddress by remember(editAddress?.get("_id")) { mutableStateOf(listOf("address", "addressText", "fullAddress", "completeAddress", "complete_address", "formattedAddress", "formatted_address", "complete address").firstNotNullOfOrNull { key -> editAddress?.get(key)?.toString()?.trim()?.takeIf { it.isNotBlank() } } ?: listOf("addressLine1", "addressLine2", "landmark", "street", "area", "city", "state", "pincode", "postalCode").mapNotNull { key -> editAddress?.get(key)?.toString()?.trim()?.takeIf { it.isNotBlank() } }.joinToString(", ")) }
@@ -11856,7 +11882,13 @@ private fun AddAddressDetailsPage(
                         modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) tr("Receiver's phone number*", LocalAppLanguage.current) else tr("Your phone number*", LocalAppLanguage.current)) },
                         isError = phoneError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         leadingIcon = { Text("+91", color = Ink, fontWeight = FontWeight.SemiBold) },
-                        trailingIcon = { Icon(Icons.Default.ContactPhone, contentDescription = "Phone Number", tint = Muted) }
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                contactPicker.launch(Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI))
+                            }) {
+                                Icon(Icons.Default.ContactPhone, contentDescription = tr("Select phone number from contacts", LocalAppLanguage.current), tint = Muted)
+                            }
+                        }
                     )
                     if (phoneError) Text(tr("Please enter a valid phone number", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     Text(tr("Save address as", LocalAppLanguage.current), color = Muted, fontSize = 15.sp)
