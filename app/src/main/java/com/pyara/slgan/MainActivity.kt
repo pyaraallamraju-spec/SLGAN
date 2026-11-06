@@ -8143,13 +8143,14 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .orEmpty()
                     .ifBlank { tr("Address", LocalAppLanguage.current) }
                 Card(
-                    Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                    shape = RoundedCornerShape(12.dp),
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+                    shape = RoundedCornerShape(18.dp),
                     colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                     border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))
                 ) {
+                    Column(Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
                     Row(
-                        Modifier.fillMaxWidth().padding(start = 12.dp, end = 4.dp, top = 5.dp, bottom = 5.dp),
+                        Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -8173,14 +8174,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             )
                         }
                     }
-                }
                 AnimatedVisibility(
                     visible = showDeliveryAddressDetails,
                     enter = expandVertically(expandFrom = Alignment.Top, animationSpec = tween(320, easing = FastOutSlowInEasing)) + fadeIn(tween(220)),
                     exit = shrinkVertically(shrinkTowards = Alignment.Top, animationSpec = tween(260, easing = FastOutSlowInEasing)) + fadeOut(tween(180))
                 ) {
                 Box(
-                    Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                    Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp)
                         .clip(RoundedCornerShape(24.dp))
                         .background(Brush.linearGradient(listOf(Color(0xFFF7FDEB), Color(0xFFE5F7D5), Color(0xFFD5F0BD))))
                         .border(1.dp, appThemedColor(Color(0xFF62A94A)), RoundedCornerShape(24.dp))
@@ -8248,6 +8248,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         }
                     }
                 }
+                }
+
+                    }
                 }
             } else {
                 Card(
