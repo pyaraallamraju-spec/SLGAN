@@ -9580,7 +9580,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                 Spacer(Modifier.width(10.dp))
                 Column(Modifier.weight(1f)) {
                     Text(tr("DISEASE DETAILS", LocalAppLanguage.current), color = Ink, fontSize = 10.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
-                    Text(detailDiseaseName, color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(detailDiseaseName, color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
                 }
                 IconButton(onClick = {
                     selectedDisease = null
