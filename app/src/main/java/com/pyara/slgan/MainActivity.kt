@@ -8039,7 +8039,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                     Column(Modifier.padding(14.dp)) {
-                        Text(tr("Delivery Instructions", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(tr("Delivery Instructions", LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold)
                         Spacer(Modifier.height(10.dp))
                         listOf("Call before delivery", "Avoid calling").forEach { instruction ->
                             Row(Modifier.fillMaxWidth().clickable { selectedInstruction = if (selectedInstruction == instruction) "" else instruction }.padding(vertical = 3.dp), verticalAlignment = Alignment.CenterVertically) {
