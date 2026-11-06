@@ -10874,7 +10874,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                         ) {
                             Column(
                                 Modifier.width(66.dp).border(1.dp, appThemedColor(Color(0xFFD9DDE7)), RoundedCornerShape(14.dp))
-                                    .background(appThemedColor(Color.White), RoundedCornerShape(14.dp)).padding(vertical = 8.dp),
+                                    .background(appThemedColor(Color.White), RoundedCornerShape(14.dp)).padding(vertical = 5.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Icon(
@@ -10886,9 +10886,9 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     },
                                     contentDescription = null,
                                     tint = appThemedColor(Color(0xFFB5B5B5)),
-                                    modifier = Modifier.size(28.dp)
+                                    modifier = Modifier.size(26.dp)
                                 )
-                                Spacer(Modifier.height(5.dp))
+                                Spacer(Modifier.height(3.dp))
                                 Text(
                                     tr(label.trim().ifBlank { "Other" }.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, LocalAppLanguage.current),
                                     color = Muted,
