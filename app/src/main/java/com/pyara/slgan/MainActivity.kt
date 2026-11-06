@@ -4723,12 +4723,13 @@ private fun AdminDashboardScreen(
         }
     }
 
-    val metrics = remember(productCount, orderCount, diseaseCount, customerCount) {
+    val currentLanguage = LocalAppLanguage.current
+    val metrics = remember(productCount, orderCount, diseaseCount, customerCount, currentLanguage) {
         listOf(
-            Triple(tr("Products", LocalAppLanguage.current), productCount, Icons.Default.Inventory2),
-            Triple(tr("Orders", LocalAppLanguage.current), orderCount, Icons.Default.ReceiptLong),
-            Triple(tr("Diseases", LocalAppLanguage.current), diseaseCount, Icons.Default.MedicalServices),
-            Triple(tr("Customers", LocalAppLanguage.current), customerCount, Icons.Default.PeopleAlt)
+            Triple(tr("Products", currentLanguage), productCount, Icons.Default.Inventory2),
+            Triple(tr("Orders", currentLanguage), orderCount, Icons.Default.ReceiptLong),
+            Triple(tr("Diseases", currentLanguage), diseaseCount, Icons.Default.MedicalServices),
+            Triple(tr("Customers", currentLanguage), customerCount, Icons.Default.PeopleAlt)
         )
     }
     val metricLoading = listOf(productsLoading, ordersLoading, diseasesLoading, customersLoading)
@@ -9550,12 +9551,13 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
     val availableDiseases = remember(diseases) {
         (listOf("All Diseases") + diseases.filterNot { it.equals("All Diseases", ignoreCase = true) }).distinct()
     }
-    val localizedAllDiseases = tr("All Diseases", LocalAppLanguage.current)
-    val matches = remember(availableDiseases, query, localizedAllDiseases, LocalAppLanguage.current) {
+    val diseaseLanguage = LocalAppLanguage.current
+    val localizedAllDiseases = tr("All Diseases", diseaseLanguage)
+    val matches = remember(availableDiseases, query, localizedAllDiseases, diseaseLanguage) {
         if (query.isBlank() || query.equals("All Diseases", ignoreCase = true) || query.equals(localizedAllDiseases, ignoreCase = true)) availableDiseases
         else availableDiseases.filter { disease ->
             disease.contains(query.trim(), ignoreCase = true) ||
-                tr(disease, LocalAppLanguage.current).contains(query.trim(), ignoreCase = true)
+                tr(disease, diseaseLanguage).contains(query.trim(), ignoreCase = true)
         }
     }
 
@@ -9678,7 +9680,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             },
                             onClick = {
                                 selectedDisease = disease
-                                query = tr(disease, LocalAppLanguage.current)
+                                query = tr(disease, diseaseLanguage)
                                 dropdownExpanded = false
                             }
                         )
