@@ -8502,71 +8502,6 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         }
     }
 
-    if (showPaymentMethodSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { if (!submitting) showPaymentMethodSheet = false },
-            containerColor = appThemedColor(Color.White),
-            contentColor = Ink,
-            scrimColor = Color.Black.copy(alpha = 0.55f),
-            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-        ) {
-            Column(
-                Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 22.dp, vertical = 18.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp)
-            ) {
-                Text(tr("Select payment method", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
-                Text(tr("Choose how you would like to pay for this order.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
-                listOf(
-                    Triple("cod", "Cash on Delivery", "Pay when your order arrives."),
-                    Triple("online", "Online Payment", "Pay securely using Cashfree.")
-                ).forEach { (method, title, description) ->
-                    val selectedMethod = selectedPaymentMethod == method
-                    Row(
-                        Modifier.fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(appThemedColor(if (selectedMethod) Color(0xFFEAF4E8) else Color.White))
-                            .border(1.5.dp, appThemedColor(if (selectedMethod) Color(0xFF2E7D32) else Color(0xFFD5D9DE)), RoundedCornerShape(16.dp))
-                            .clickable(enabled = !submitting) { selectedPaymentMethod = method }
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            if (method == "cod") Icons.Default.LocalShipping else Icons.Default.CreditCard,
-                            contentDescription = null,
-                            tint = appThemedColor(Color(0xFF245B32)),
-                            modifier = Modifier.size(27.dp)
-                        )
-                        Spacer(Modifier.width(13.dp))
-                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            Text(tr(title, LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                            Text(tr(description, LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
-                        }
-                        Text(if (selectedMethod) "●" else "○", color = appThemedColor(if (selectedMethod) Color(0xFF2E7D32) else Color(0xFF7B818A)), fontSize = 23.sp)
-                    }
-                }
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    OutlinedButton(
-                        onClick = { showPaymentMethodSheet = false },
-                        enabled = !submitting,
-                        modifier = Modifier.weight(1f).height(52.dp),
-                        shape = RoundedCornerShape(14.dp)
-                    ) { Text(tr("Cancel", LocalAppLanguage.current)) }
-                    Button(
-                        onClick = { submitSelectedOrder() },
-                        enabled = !submitting,
-                        modifier = Modifier.weight(1.3f).height(52.dp),
-                        shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFF245B32)), contentColor = Color.White)
-                    ) {
-                        if (submitting) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
-                        else Text(tr("Go", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                    }
-                }
-                Text(tr("Order total", LocalAppLanguage.current) + ": " + money(total), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-            }
-        }
-    }
-
     val submitSelectedOrder: () -> Unit = {
                     errorMessage = null
                     val user = FirebaseAuth.getInstance().currentUser
@@ -8655,6 +8590,73 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         }
                     }
                             }
+
+    if (showPaymentMethodSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { if (!submitting) showPaymentMethodSheet = false },
+            containerColor = appThemedColor(Color.White),
+            contentColor = Ink,
+            scrimColor = Color.Black.copy(alpha = 0.55f),
+            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+        ) {
+            Column(
+                Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 22.dp, vertical = 18.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                Text(tr("Select payment method", LocalAppLanguage.current), color = Ink, fontSize = 21.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Choose how you would like to pay for this order.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
+                listOf(
+                    Triple("cod", "Cash on Delivery", "Pay when your order arrives."),
+                    Triple("online", "Online Payment", "Pay securely using Cashfree.")
+                ).forEach { (method, title, description) ->
+                    val selectedMethod = selectedPaymentMethod == method
+                    Row(
+                        Modifier.fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(appThemedColor(if (selectedMethod) Color(0xFFEAF4E8) else Color.White))
+                            .border(1.5.dp, appThemedColor(if (selectedMethod) Color(0xFF2E7D32) else Color(0xFFD5D9DE)), RoundedCornerShape(16.dp))
+                            .clickable(enabled = !submitting) { selectedPaymentMethod = method }
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            if (method == "cod") Icons.Default.LocalShipping else Icons.Default.CreditCard,
+                            contentDescription = null,
+                            tint = appThemedColor(Color(0xFF245B32)),
+                            modifier = Modifier.size(27.dp)
+                        )
+                        Spacer(Modifier.width(13.dp))
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text(tr(title, LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text(tr(description, LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
+                        }
+                        Text(if (selectedMethod) "●" else "○", color = appThemedColor(if (selectedMethod) Color(0xFF2E7D32) else Color(0xFF7B818A)), fontSize = 23.sp)
+                    }
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    OutlinedButton(
+                        onClick = { showPaymentMethodSheet = false },
+                        enabled = !submitting,
+                        modifier = Modifier.weight(1f).height(52.dp),
+                        shape = RoundedCornerShape(14.dp)
+                    ) { Text(tr("Cancel", LocalAppLanguage.current)) }
+                    Button(
+                        onClick = { submitSelectedOrder() },
+                        enabled = !submitting,
+                        modifier = Modifier.weight(1.3f).height(52.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFF245B32)), contentColor = Color.White)
+                    ) {
+                        if (submitting) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                        else Text(tr("Go", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+                Text(tr("Order total", LocalAppLanguage.current) + ": " + money(total), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+    }
+
+
 
     if (showCheckout) {
         ModalBottomSheet(
