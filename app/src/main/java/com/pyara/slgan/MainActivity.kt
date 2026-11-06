@@ -352,7 +352,7 @@ private fun tr(text: String, language: String): String {
         "Usage" to "వాడే విధానం",
         "Cures" to "ఉపయోగ సూచనలు",
         "Major ingredients" to "ప్రధాన పదార్థాలు",
-        "About" to "వివరాలు", "Net quantity" to "నికర పరిమాణం", "Price inclusive of applicable taxes" to "వర్తించే పన్నులతో సహా ధర",
+        "About" to "వివరాలు", "Medicines" to "మందులు", "Care" to "జాగ్రత్తలు", "Net quantity" to "నికర పరిమాణం", "Price inclusive of applicable taxes" to "వర్తించే పన్నులతో సహా ధర",
         "No online payment. Place your order and we will confirm delivery details." to "ఆన్‌లైన్ చెల్లింపు లేదు. ఆర్డర్ చేయండి; డెలివరీ వివరాలను మేము నిర్ధారిస్తాము.",
         "Place order" to "ఆర్డర్ చేయండి",
         "Customer name *" to "కస్టమర్ పేరు *",
@@ -9758,7 +9758,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                                         verticalArrangement = Arrangement.spacedBy(4.dp)
                                     ) {
                                         Icon(icon, contentDescription = shortLabel, tint = if (selected) Color.White else Ink, modifier = Modifier.size(19.dp))
-                                        Text(shortLabel, color = if (selected) Color.White else Ink, fontSize = 10.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 12.sp, textAlign = TextAlign.Center)
+                                        Text(tr(shortLabel, LocalAppLanguage.current), color = if (selected) Color.White else Ink, fontSize = 10.sp, fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium, maxLines = 2, lineHeight = 12.sp, textAlign = TextAlign.Center)
                                     }
                                     if (selected) Box(Modifier.align(Alignment.BottomCenter).offset(y = 17.dp).size(30.dp).background(appThemedColor(Color.White), CircleShape))
                                 }
