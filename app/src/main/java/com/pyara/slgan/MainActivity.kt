@@ -8454,94 +8454,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     }
                 }
             }
-            val submitSelectedOrder: () -> Unit = {
-                    errorMessage = null
-                    val user = FirebaseAuth.getInstance().currentUser
-                    if (user == null) {
-                        errorMessage = "Please sign in again before placing an order."
-                    } else if (confirmedDeliveryAddress == null) {
-                        errorMessage = "Please choose a delivery address using Change before placing your order."
-                    } else if (customerName.isBlank() || !email.contains("@")) {
-                        errorMessage = "Enter your name and a valid email address."
-                    } else {
-                        submitting = true
-                        val userForOrder = FirebaseAuth.getInstance().currentUser
-                        if (userForOrder == null) {
-                            submitting = false
-                            errorMessage = "Please sign in again before placing an order."
-                        } else {
-                            val address = confirmedDeliveryAddress!!
-                            val addressText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
-                                .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
-                                .joinToString(", ")
-                                .ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
-                            if (addressText.isBlank()) {
-                                submitting = false
-                                errorMessage = "The selected address has no address details. Please edit or choose another address."
-                            } else {
-                                val orderId = "SLGAN-" + java.util.UUID.randomUUID().toString().take(8).uppercase()
-                                val itemPayload = selected.map { product ->
-                                    mapOf("productId" to product.id, "productName" to product.name, "unitPrice" to product.price, "quantity" to (cart[product.id] ?: 0), "lineTotal" to (product.price * (cart[product.id] ?: 0)))
-                                }
-                                val now = com.google.firebase.Timestamp.now()
-                                val orderFields = mapOf<String, Any>(
-                                    "orderId" to orderId,
-                                    "customerId" to userForOrder.uid,
-                                    "customerName" to customerName.trim(),
-                                    "email" to email.trim(),
-                                    "phone" to phone.trim().ifBlank { address["phone"]?.toString().orEmpty() },
-                                    "deliveryAddressId" to address["_id"]?.toString().orEmpty(),
-                                    "deliveryAddress" to addressText,
-                                    "shippingAddress" to addressText,
-                                    "deliveryAddressLabel" to address["label"]?.toString().orEmpty(),
-                                    "deliveryRecipientName" to address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() },
-                                    "deliveryPhone" to address["phone"]?.toString().orEmpty(),
-                                    "deliveryInstruction" to selectedInstruction,
-                                    "user_instructions" to userInstructions.trim(),
-                                    "items" to itemPayload,
-                                    "subtotal" to total,
-                                    "grandTotal" to total,
-                                    "currency" to "INR",
-                                    "paymentMethod" to if (selectedPaymentMethod == "online") "cashfree" else "cod",
-                                    "paymentStatus" to "not_collected",
-                                    "orderStatus" to "pending_verification",
-                                    "invoiceNumber" to orderId,
-                                    "invoiceStatus" to "not_generated",
-                                    "createdAt" to now,
-                                    "updatedAt" to now
-                                )
-                                FirebaseFirestore.getInstance().collection("orders").document(orderId).set(orderFields)
-                                    .addOnSuccessListener {
-                                        orderMessage = "Order saved: $orderId"
-                                        submitting = false
-                                        showPaymentMethodSheet = false
-                                        confirmedDeliveryAddress = null
-                                        if (selectedPaymentMethod == "online") {
-                                            onOrderResult(orderId, true, null, "Order saved. Opening secure Cashfree checkout…")
-                                            context.startActivity(
-                                                android.content.Intent(context, CashfreePaymentActivity::class.java)
-                                                    .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
-                                            )
-                                        } else {
-                                            onOrderResult(orderId, true, null, "Cash on Delivery order saved.")
-                                            userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
-                                                val idToken = tokenResult.token
-                                                if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
-                                                    orderMessage = if (emailSent) "COD order saved: $orderId. Confirmation email sent." else "COD order saved: $orderId. Email failed: $detail"
-                                                    Toast.makeText(context, if (emailSent) "Order saved. Confirmation email sent." else "Order saved, but email failed. " + detail.take(160), Toast.LENGTH_LONG).show()
-                                                }
-                                            }.addOnFailureListener { error -> orderMessage = "COD order saved: $orderId. Email failed: ${error.localizedMessage ?: "Could not get Firebase ID token."}" }
-                                        }
-                                    }
-                                    .addOnFailureListener { error ->
-                                        submitting = false
-                                        errorMessage = error.localizedMessage ?: "Could not save order. Please try again."
-                                        onOrderResult("", false, null, errorMessage.orEmpty())
-                                    }
-                            }
-                        }
-                    }
-                            }
+
             Row(
                 Modifier.fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp)
@@ -8653,6 +8566,95 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             }
         }
     }
+
+    val submitSelectedOrder: () -> Unit = {
+                    errorMessage = null
+                    val user = FirebaseAuth.getInstance().currentUser
+                    if (user == null) {
+                        errorMessage = "Please sign in again before placing an order."
+                    } else if (confirmedDeliveryAddress == null) {
+                        errorMessage = "Please choose a delivery address using Change before placing your order."
+                    } else if (customerName.isBlank() || !email.contains("@")) {
+                        errorMessage = "Enter your name and a valid email address."
+                    } else {
+                        submitting = true
+                        val userForOrder = FirebaseAuth.getInstance().currentUser
+                        if (userForOrder == null) {
+                            submitting = false
+                            errorMessage = "Please sign in again before placing an order."
+                        } else {
+                            val address = confirmedDeliveryAddress!!
+                            val addressText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
+                                .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
+                                .joinToString(", ")
+                                .ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
+                            if (addressText.isBlank()) {
+                                submitting = false
+                                errorMessage = "The selected address has no address details. Please edit or choose another address."
+                            } else {
+                                val orderId = "SLGAN-" + java.util.UUID.randomUUID().toString().take(8).uppercase()
+                                val itemPayload = selected.map { product ->
+                                    mapOf("productId" to product.id, "productName" to product.name, "unitPrice" to product.price, "quantity" to (cart[product.id] ?: 0), "lineTotal" to (product.price * (cart[product.id] ?: 0)))
+                                }
+                                val now = com.google.firebase.Timestamp.now()
+                                val orderFields = mapOf<String, Any>(
+                                    "orderId" to orderId,
+                                    "customerId" to userForOrder.uid,
+                                    "customerName" to customerName.trim(),
+                                    "email" to email.trim(),
+                                    "phone" to phone.trim().ifBlank { address["phone"]?.toString().orEmpty() },
+                                    "deliveryAddressId" to address["_id"]?.toString().orEmpty(),
+                                    "deliveryAddress" to addressText,
+                                    "shippingAddress" to addressText,
+                                    "deliveryAddressLabel" to address["label"]?.toString().orEmpty(),
+                                    "deliveryRecipientName" to address["name"]?.toString().orEmpty().ifBlank { address["fullName"]?.toString().orEmpty() },
+                                    "deliveryPhone" to address["phone"]?.toString().orEmpty(),
+                                    "deliveryInstruction" to selectedInstruction,
+                                    "user_instructions" to userInstructions.trim(),
+                                    "items" to itemPayload,
+                                    "subtotal" to total,
+                                    "grandTotal" to total,
+                                    "currency" to "INR",
+                                    "paymentMethod" to if (selectedPaymentMethod == "online") "cashfree" else "cod",
+                                    "paymentStatus" to "not_collected",
+                                    "orderStatus" to "pending_verification",
+                                    "invoiceNumber" to orderId,
+                                    "invoiceStatus" to "not_generated",
+                                    "createdAt" to now,
+                                    "updatedAt" to now
+                                )
+                                FirebaseFirestore.getInstance().collection("orders").document(orderId).set(orderFields)
+                                    .addOnSuccessListener {
+                                        orderMessage = "Order saved: $orderId"
+                                        submitting = false
+                                        showPaymentMethodSheet = false
+                                        confirmedDeliveryAddress = null
+                                        if (selectedPaymentMethod == "online") {
+                                            onOrderResult(orderId, true, null, "Order saved. Opening secure Cashfree checkout…")
+                                            context.startActivity(
+                                                android.content.Intent(context, CashfreePaymentActivity::class.java)
+                                                    .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
+                                            )
+                                        } else {
+                                            onOrderResult(orderId, true, null, "Cash on Delivery order saved.")
+                                            userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
+                                                val idToken = tokenResult.token
+                                                if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
+                                                    orderMessage = if (emailSent) "COD order saved: $orderId. Confirmation email sent." else "COD order saved: $orderId. Email failed: $detail"
+                                                    Toast.makeText(context, if (emailSent) "Order saved. Confirmation email sent." else "Order saved, but email failed. " + detail.take(160), Toast.LENGTH_LONG).show()
+                                                }
+                                            }.addOnFailureListener { error -> orderMessage = "COD order saved: $orderId. Email failed: ${error.localizedMessage ?: "Could not get Firebase ID token."}" }
+                                        }
+                                    }
+                                    .addOnFailureListener { error ->
+                                        submitting = false
+                                        errorMessage = error.localizedMessage ?: "Could not save order. Please try again."
+                                        onOrderResult("", false, null, errorMessage.orEmpty())
+                                    }
+                            }
+                        }
+                    }
+                            }
 
     if (showCheckout) {
         ModalBottomSheet(
