@@ -8350,6 +8350,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Text(recipientName, color = Ink, fontSize = 13.sp, fontWeight = FontWeight.Normal, maxLines = 2, overflow = TextOverflow.Ellipsis)
                             }
                             OutlinedButton(
+                                modifier = Modifier.height(30.dp),
                                 onClick = {
                                     val user = FirebaseAuth.getInstance().currentUser
                                     if (user == null) {
@@ -8374,7 +8375,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                             }
                                     }
                                 },
-                                contentPadding = PaddingValues(horizontal = 11.dp, vertical = 3.dp),
+                                contentPadding = PaddingValues(horizontal = 11.dp, vertical = 0.dp),
                                 shape = RoundedCornerShape(50),
                                 border = BorderStroke(1.dp, appThemedColor(Color(0xFF238B3B))),
                                 colors = ButtonDefaults.outlinedButtonColors(contentColor = appThemedColor(Color(0xFF175F2B)))
@@ -8384,7 +8385,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 Text(tr("Change", LocalAppLanguage.current), fontSize = 13.sp, fontWeight = FontWeight.Bold)
                             }
                         }
-                        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Call, contentDescription = null, tint = appThemedColor(Color(0xFF245B32)), modifier = Modifier.size(18.dp))
                                 Spacer(Modifier.width(9.dp))
