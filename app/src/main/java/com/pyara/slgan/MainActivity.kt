@@ -11014,8 +11014,16 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                     val name = address["name"]?.toString().orEmpty()
                         .ifBlank { address["fullName"]?.toString().orEmpty() }
                         .ifBlank { address["receiverName"]?.toString().orEmpty() }
-                        .ifBlank { "Delivery address" }
-                    val label = address["label"]?.toString().orEmpty().ifBlank { "HOME" }
+                        .ifBlank { tr("Delivery address", LocalAppLanguage.current) }
+                    val rawLabel = address["label"]?.toString().orEmpty().ifBlank { "HOME" }
+                    val normalizedLabel = rawLabel.trim().lowercase(Locale.ROOT)
+                    val label = when (normalizedLabel) {
+                        "home", "home address" -> "Home"
+                        "work", "office", "work address" -> "Work"
+                        "hotel" -> "Hotel"
+                        "other", "other address" -> "Other"
+                        else -> rawLabel.trim().replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+                    }
                     val phone = address["phone"]?.toString().orEmpty()
                         .ifBlank { address["mobile"]?.toString().orEmpty() }
                         .ifBlank { address["receiverPhone"]?.toString().orEmpty() }
@@ -11068,7 +11076,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                 )
                                 Spacer(Modifier.height(1.dp))
                                 Text(
-                                    tr(label.trim().ifBlank { "Other" }.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }, LocalAppLanguage.current),
+                                    tr(label.ifBlank { "Other" }, LocalAppLanguage.current),
                                     color = Muted,
                                     fontSize = 10.sp,
                                     maxLines = 1
@@ -11089,7 +11097,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     ) {
                                         Icon(
                                             if (isSelected) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
-                                            contentDescription = if (isSelected) "Selected address" else "Select address",
+                                            contentDescription = tr(if (isSelected) "Selected address" else "Select address", LocalAppLanguage.current),
                                             tint = if (isSelected) Color.White else appThemedColor(Color(0xFFB5B5B5)),
                                             modifier = Modifier.size(23.dp)
                                         )
@@ -11121,13 +11129,13 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                                     }
                                     Surface(
                                         onClick = {
-                                            val shareText = listOf(label, addressText, phone.takeIf { it.isNotBlank() }?.let { "Phone number: $it" })
+                                            val shareText = listOf(tr(label, LocalAppLanguage.current), addressText, phone.takeIf { it.isNotBlank() }?.let { "${tr("Phone number", LocalAppLanguage.current)}: $it" })
                                                 .filterNotNull().filter { it.isNotBlank() }.joinToString("\n")
                                             val sendIntent = Intent(Intent.ACTION_SEND).apply {
                                                 type = "text/plain"
                                                 putExtra(Intent.EXTRA_TEXT, shareText)
                                             }
-                                            context.startActivity(Intent.createChooser(sendIntent, "Share address"))
+                                            context.startActivity(Intent.createChooser(sendIntent, tr("Share address", LocalAppLanguage.current)))
                                         },
                                         shape = CircleShape,
                                         color = Color.White,
