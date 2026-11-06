@@ -7933,7 +7933,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 if (recommendations.isNotEmpty()) {
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.padding(14.dp)) {
-                            Text(tr("You Might Also Like", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                            Text(tr("You Might Also Like", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.height(12.dp))
                             LazyRow(
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
