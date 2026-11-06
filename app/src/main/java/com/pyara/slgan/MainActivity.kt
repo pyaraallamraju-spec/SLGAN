@@ -3515,27 +3515,39 @@ private fun LoginScreen(
         Button(
             onClick = onGoogleSignIn,
             enabled = !loading,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(64.dp),
-            shape = RoundedCornerShape(18.dp),
-            border = BorderStroke(1.5.dp, appThemedColor(Color(0xFFB88A36))),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(68.dp),
+            shape = RoundedCornerShape(34.dp),
+            border = BorderStroke(2.dp, appThemedColor(Color(0xFFB88A36))),
             elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 0.dp,
+                defaultElevation = 2.dp,
                 pressedElevation = 1.dp,
-                focusedElevation = 0.dp,
-                hoveredElevation = 0.dp,
+                focusedElevation = 2.dp,
+                hoveredElevation = 2.dp,
                 disabledElevation = 0.dp
             ),
             colors = ButtonDefaults.buttonColors(
-                containerColor = appThemedColor(Color(0xFFFFF8E8)),
-                contentColor = appThemedColor(Color(0xFF4A3028)),
-                disabledContainerColor = appThemedColor(Color(0xFFFFF8E8)).copy(alpha = 0.65f),
-                disabledContentColor = appThemedColor(Color(0xFF4A3028)).copy(alpha = 0.6f)
+                containerColor = appThemedColor(Color(0xFFFFF9EC)).copy(alpha = 0.96f),
+                contentColor = appThemedColor(Color(0xFF20372A)),
+                disabledContainerColor = appThemedColor(Color(0xFFFFF9EC)).copy(alpha = 0.65f),
+                disabledContentColor = appThemedColor(Color(0xFF20372A)).copy(alpha = 0.6f)
             ),
-            contentPadding = PaddingValues(horizontal = 18.dp, vertical = 8.dp)
+            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 7.dp)
         ) {
-            Text("G", color = appThemedColor(Color(0xFF4285F4)), fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-            Spacer(Modifier.width(12.dp))
-            Text(if (loading) tr("Please wait…", LocalAppLanguage.current) else tr("Continue with Google", LocalAppLanguage.current), fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text("🌿", fontSize = 20.sp)
+            Spacer(Modifier.width(8.dp))
+            Text("G", color = Color(0xFF4285F4), fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
+            Spacer(Modifier.width(10.dp))
+            Box(Modifier.width(1.dp).height(28.dp).background(appThemedColor(Color(0xFFB88A36)).copy(alpha = 0.75f)))
+            Spacer(Modifier.width(10.dp))
+            Text(
+                if (loading) tr("Please wait…", LocalAppLanguage.current) else tr("Continue with Google", LocalAppLanguage.current),
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                softWrap = false
+            )
+            Spacer(Modifier.width(8.dp))
+            Text("🍃", fontSize = 20.sp)
         }
         Spacer(Modifier.height(24.dp))
         }
