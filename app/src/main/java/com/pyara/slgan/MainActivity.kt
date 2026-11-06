@@ -7951,11 +7951,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
 
     Column(modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA)))) {
         Row(Modifier.fillMaxWidth().background(appThemedColor(Color.White)).padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(42.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onBack), contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink)
+            Box(Modifier.size(36.dp).border(1.dp, appThemedColor(Color(0xFFE8EAF0)), CircleShape).clickable(onClick = onBack), contentAlignment = Alignment.Center) {
+                Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(20.dp))
             }
-            Spacer(Modifier.width(12.dp))
-            Text(tr("Checkout", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.weight(1f))
+            Spacer(Modifier.width(10.dp))
+            Text(tr("Checkout", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
             Surface(shape = RoundedCornerShape(24.dp), color = appThemedColor(Color(0xFFF6F7FA))) {
                 Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = appThemedColor(Color(0xFF27864A)), modifier = Modifier.size(18.dp))
