@@ -9308,7 +9308,7 @@ private fun OrdersPage(
                     }
                     Spacer(Modifier.height(24.dp))
                     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
-                        Text(tr("${invoiceItems.size} item(s) in this order", LocalAppLanguage.current), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                        Text("${invoiceItems.size} ${tr("item(s) in this order", LocalAppLanguage.current)}", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(12.dp))
                         invoiceItems.forEach { item ->
                             val productId = item["productId"]?.toString().orEmpty()
