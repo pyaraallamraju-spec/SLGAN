@@ -7880,7 +7880,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
-                                Text(tr("Your Ayurvedic Order", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+                                Text(tr("Your Ayurvedic Order", LocalAppLanguage.current), color = Ink, fontSize = 19.sp, fontWeight = FontWeight.SemiBold)
                                 Text(tr("Review cart before placing order", LocalAppLanguage.current).replace("{count}", selected.size.toString()), color = Muted, fontSize = 12.sp)
                             }
                             IconButton(
