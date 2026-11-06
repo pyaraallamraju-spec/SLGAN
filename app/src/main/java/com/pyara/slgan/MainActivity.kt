@@ -11196,7 +11196,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                 }
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    "Do you want this order at your current location?",
+                    tr("Do you want this order at your current location?", LocalAppLanguage.current),
                     color = Ink,
                     fontSize = 19.sp,
                     lineHeight = 24.sp,
