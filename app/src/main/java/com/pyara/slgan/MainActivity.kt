@@ -379,6 +379,12 @@ private fun tr(text: String, language: String): String {
         "Open PDF" to "PDF తెరవండి",
         "Diseases" to "వ్యాధులు",
         "All Diseases" to "అన్ని వ్యాధులు",
+        "Tuberculosis (TB)" to "క్షయవ్యాధి (టీబీ)",
+        "Tuberculosis" to "క్షయవ్యాధి",
+        "Cough" to "దగ్గు",
+        "Flu" to "ఫ్లూ",
+        "Fever" to "జ్వరం",
+        "Obesity" to "ఊబకాయం",
         "Select a disease to view." to "అందుబాటులో ఉన్న జాబితా నుంచి వ్యాధిని ఎంచుకోండి.",
         "Select disease" to "వ్యాధిని ఎంచుకోండి",
         "Loading diseases from database…" to "డేటాబేస్ నుంచి వ్యాధులు లోడ్ అవుతున్నాయి…",
@@ -9545,9 +9551,12 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
         (listOf("All Diseases") + diseases.filterNot { it.equals("All Diseases", ignoreCase = true) }).distinct()
     }
     val localizedAllDiseases = tr("All Diseases", LocalAppLanguage.current)
-    val matches = remember(availableDiseases, query, localizedAllDiseases) {
+    val matches = remember(availableDiseases, query, localizedAllDiseases, LocalAppLanguage.current) {
         if (query.isBlank() || query.equals("All Diseases", ignoreCase = true) || query.equals(localizedAllDiseases, ignoreCase = true)) availableDiseases
-        else availableDiseases.filter { it.contains(query.trim(), ignoreCase = true) }
+        else availableDiseases.filter { disease ->
+            disease.contains(query.trim(), ignoreCase = true) ||
+                tr(disease, LocalAppLanguage.current).contains(query.trim(), ignoreCase = true)
+        }
     }
 
     Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(scrollState)) {
@@ -9582,7 +9591,11 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             )
                         }
                         OutlinedTextField(
-                            value = if (query.equals("All Diseases", ignoreCase = true)) localizedAllDiseases else query,
+                            value = when {
+                                selectedDisease != null -> tr(selectedDisease.orEmpty(), LocalAppLanguage.current)
+                                query.equals("All Diseases", ignoreCase = true) -> localizedAllDiseases
+                                else -> query
+                            },
                             onValueChange = {
                                 query = it
                                 selectedDisease = null
@@ -9665,7 +9678,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
                             },
                             onClick = {
                                 selectedDisease = disease
-                                query = disease
+                                query = tr(disease, LocalAppLanguage.current)
                                 dropdownExpanded = false
                             }
                         )
