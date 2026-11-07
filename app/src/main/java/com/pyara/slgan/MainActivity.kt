@@ -582,6 +582,13 @@ private fun tr(text: String, language: String): String {
         "How Can We Help?" to "మేము మీకు ఎలా సహాయం చేయగలం?",
         "Send message" to "సందేశం పంపండి",
         "Address Options" to "చిరునామా ఎంపికలు",
+        "Loading addresses…" to "చిరునామాలు లోడ్ అవుతున్నాయి…",
+        "Phone number" to "ఫోన్ నంబర్",
+        "Default delivery address updated" to "డిఫాల్ట్ డెలివరీ చిరునామా నవీకరించబడింది",
+        "Could not update default address" to "డిఫాల్ట్ చిరునామాను నవీకరించలేకపోయాం",
+        "Share address" to "చిరునామాను షేర్ చేయండి",
+        "Selected address" to "ఎంచుకున్న చిరునామా",
+        "Select address" to "చిరునామాను ఎంచుకోండి",
         "Delete address" to "చిరునామాను తొలగించండి",
         "Edit address" to "చిరునామాను సవరించండి",
         "Set as delivery address" to "డెలివరీ చిరునామాగా సెట్ చేయండి",
@@ -1009,6 +1016,13 @@ private fun tr(text: String, language: String): String {
         "Selected address" to "ఎంచుకున్న చిరునామా",
         "Select address" to "చిరునామాను ఎంచుకోండి",
         "Address Options" to "చిరునామా ఎంపికలు",
+        "Loading addresses…" to "చిరునామాలు లోడ్ అవుతున్నాయి…",
+        "Phone number" to "ఫోన్ నంబర్",
+        "Default delivery address updated" to "డిఫాల్ట్ డెలివరీ చిరునామా నవీకరించబడింది",
+        "Could not update default address" to "డిఫాల్ట్ చిరునామాను నవీకరించలేకపోయాం",
+        "Share address" to "చిరునామాను షేర్ చేయండి",
+        "Selected address" to "ఎంచుకున్న చిరునామా",
+        "Select address" to "చిరునామాను ఎంచుకోండి",
         "Share address" to "చిరునామాను షేర్ చేయండి",
         "Couldn't detect your location. Please enter the address manually." to "మీ స్థానాన్ని గుర్తించలేకపోయాం. దయచేసి చిరునామాను మాన్యువల్‌గా నమోదు చేయండి.",
         "Address not found. Try entering a nearby area and city to place the pin." to "చిరునామా కనబడలేదు. పిన్‌ను ఉంచడానికి సమీప ప్రాంతం మరియు నగరాన్ని నమోదు చేయండి.",
@@ -1420,6 +1434,13 @@ private fun tr(text: String, language: String): String {
         "How Can We Help?" to "हम आपकी कैसे मदद कर सकते हैं?",
         "Send message" to "संदेश भेजें",
         "Address Options" to "पता विकल्प",
+        "Loading addresses…" to "पते लोड हो रहे हैं…",
+        "Phone number" to "फ़ोन नंबर",
+        "Default delivery address updated" to "डिफ़ॉल्ट डिलीवरी पता अपडेट किया गया",
+        "Could not update default address" to "डिफ़ॉल्ट पता अपडेट नहीं हो सका",
+        "Share address" to "पता साझा करें",
+        "Selected address" to "चुना गया पता",
+        "Select address" to "पता चुनें",
         "Delete address" to "पता हटाएँ",
         "Edit address" to "पता संपादित करें",
         "Set as delivery address" to "डिलीवरी पता सेट करें",
@@ -1847,6 +1868,13 @@ private fun tr(text: String, language: String): String {
         "Selected address" to "चयनित पता",
         "Select address" to "पता चुनें",
         "Address Options" to "पता विकल्प",
+        "Loading addresses…" to "पते लोड हो रहे हैं…",
+        "Phone number" to "फ़ोन नंबर",
+        "Default delivery address updated" to "डिफ़ॉल्ट डिलीवरी पता अपडेट किया गया",
+        "Could not update default address" to "डिफ़ॉल्ट पता अपडेट नहीं हो सका",
+        "Share address" to "पता साझा करें",
+        "Selected address" to "चुना गया पता",
+        "Select address" to "पता चुनें",
         "Share address" to "पता साझा करें",
         "Couldn't detect your location. Please enter the address manually." to "आपका स्थान नहीं मिल सका। कृपया पता स्वयं दर्ज करें।",
         "Address not found. Try entering a nearby area and city to place the pin." to "पता नहीं मिला। पिन लगाने के लिए पास का क्षेत्र और शहर दर्ज करें।",
@@ -8965,7 +8993,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     Text(tr("Choose Delivery Address", LocalAppLanguage.current), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.Bold)
                     Text(tr("Select the saved address for this order.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                     if (loadingDeliveryAddresses) {
-                        Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) { AppLoader("Loading addresses…", compact = true) }
+                        Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) { AppLoader(tr("Loading addresses…", LocalAppLanguage.current), compact = true) }
                     } else if (savedAddresses.isEmpty()) {
                         Text(tr("No saved addresses found. Add a delivery address from your profile before placing an order.", LocalAppLanguage.current), color = Muted, fontSize = 14.sp)
                     } else savedAddresses.forEach { address ->
@@ -11410,7 +11438,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
             Spacer(Modifier.height(12.dp))
             if (loading) {
                 Box(Modifier.fillMaxWidth().padding(12.dp), contentAlignment = Alignment.Center) {
-                    AppLoader("Loading addresses…", compact = true)
+                    AppLoader(tr("Loading addresses…", LocalAppLanguage.current), compact = true)
                 }
             } else if (addresses.isEmpty()) {
                 Card(
