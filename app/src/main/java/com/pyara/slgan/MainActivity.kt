@@ -1224,8 +1224,7 @@ private fun tr(text: String, language: String): String {
         "Keep the existing look" to "ప్రస్తుత రూపాన్ని అలాగే ఉంచండి",
         "Deep botanical green, herbal imagery and gold accents" to "ముదురు ఆకుపచ్చ, మూలికల చిత్రాలు మరియు బంగారు అలంకరణలు",
         "Fresh botanical, natural look" to "తాజా సహజమైన రూపం",
-        "Uses the selected app theme’s AdminInk and AdminInk palette, with high-contrast text and button styling." to "ఎంచుకున్న యాప్ థీమ్‌కు అనుగుణంగా స్పష్టమైన టెక్స్ట్ మరియు బటన్ రంగాలను ఉపయోగిస్తుంది."
-
+        "Uses the selected app theme’s AdminInk and AdminInk palette, with high-contrast text and button styling." to "ఎంచుకున్న యాప్ థీమ్‌కు అనుగుణంగా స్పష్టమైన టెక్స్ట్ మరియు బటన్ రంగాలను ఉపయోగిస్తుంది.",
         "Save" to "సేవ్ చేయండి",
         "Apply" to "వర్తింపజేయండి",
         "Latest" to "తాజావి",
@@ -2117,8 +2116,7 @@ private fun tr(text: String, language: String): String {
         "Keep the existing look" to "मौजूदा रूप बनाए रखें",
         "Deep botanical green, herbal imagery and gold accents" to "गहरा हरा, जड़ी-बूटियों की छवियाँ और सुनहरे रंग",
         "Fresh botanical, natural look" to "ताज़ा प्राकृतिक रूप",
-        "Uses the selected app theme’s AdminInk and AdminInk palette, with high-contrast text and button styling." to "चुनी गई ऐप थीम के अनुरूप स्पष्ट टेक्स्ट और बटन रंगों का उपयोग करता है।"
-
+        "Uses the selected app theme’s AdminInk and AdminInk palette, with high-contrast text and button styling." to "चुनी गई ऐप थीम के अनुरूप स्पष्ट टेक्स्ट और बटन रंगों का उपयोग करता है।",
         "Save" to "सहेजें",
         "Apply" to "लागू करें",
         "Latest" to "नवीनतम",
