@@ -438,7 +438,8 @@ private fun tr(text: String, language: String): String {
         "Bill Details" to "బిల్లు వివరాలు",
         "Items total" to "వస్తువుల మొత్తం",
         "Delivery charge" to "డెలివరీ ఛార్జీ",
-        "Confirmed at order" to "ఆర్డర్ సమయంలో నిర్ధారిస్తాం",
+        "Up to 1 kg: ₹200; every additional 100 g: ₹20." to "1 కిలో వరకు: ₹200; అదనంగా ప్రతి 100 గ్రాములకు: ₹20.",
+        "Total packed weight" to "మొత్తం ప్యాక్ చేసిన బరువు",
         "Grand Total" to "మొత్తం చెల్లించాల్సిన మొత్తం",
         "No online payment is collected in this app." to "ఈ యాప్‌లో ఆన్‌లైన్ చెల్లింపులు స్వీకరించబడవు.",
         "Online payment is available." to "ఆన్‌లైన్ చెల్లింపు అందుబాటులో ఉంది.",
@@ -8469,7 +8470,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     val subtotal = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     val totalWeightGrams = selected.sumOf { productPackWeightGrams(it) * (cart[it.id] ?: 0) }
     val extraWeightUnits = if (totalWeightGrams > 1000.0) kotlin.math.ceil((totalWeightGrams - 1000.0) / 100.0).toInt() else 0
-    val deliveryCharge = 200 + (extraWeightUnits * 20)
+    val deliveryCharge = if (selected.isEmpty()) 0 else 200 + (extraWeightUnits * 20)
     val total = subtotal + deliveryCharge
     var showCheckout by remember { mutableStateOf(false) }
     var showClearCartConfirmation by remember { mutableStateOf(false) }
@@ -8737,13 +8738,22 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Spacer(Modifier.height(16.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             Text(tr("Items total", LocalAppLanguage.current), color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                            Text(money(total), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                            Text(money(subtotal), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                         }
                         Spacer(Modifier.height(12.dp))
                         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                             Text(tr("Delivery charge", LocalAppLanguage.current), color = Muted, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                            Text(tr("Confirmed at order", LocalAppLanguage.current), color = Muted, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                            Text(money(deliveryCharge.toDouble()), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                         }
+                        Text(
+                            tr("Up to 1 kg: ₹200; every additional 100 g: ₹20.", LocalAppLanguage.current),
+                            color = Muted, fontSize = 11.sp, lineHeight = 15.sp
+                        )
+                        Text(
+                            tr("Total packed weight", LocalAppLanguage.current) + ": " +
+                                String.format(java.util.Locale.US, "%.0f g", totalWeightGrams),
+                            color = Muted, fontSize = 11.sp
+                        )
                         Spacer(Modifier.height(12.dp))
                         Divider(color = appThemedColor(Color(0xFFEFF1F5)))
                         Spacer(Modifier.height(12.dp))
