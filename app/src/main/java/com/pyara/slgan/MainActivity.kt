@@ -440,6 +440,7 @@ private fun tr(text: String, language: String): String {
         "Confirmed at order" to "ఆర్డర్ సమయంలో నిర్ధారిస్తాం",
         "Grand Total" to "మొత్తం చెల్లించాల్సిన మొత్తం",
         "No online payment is collected in this app." to "ఈ యాప్‌లో ఆన్‌లైన్ చెల్లింపులు స్వీకరించబడవు.",
+        "Online payment is available." to "ఆన్‌లైన్ చెల్లింపు అందుబాటులో ఉంది.",
         "Instructions" to "సూచనలు",
         "Add any special instructions for your order" to "మీ ఆర్డర్‌కు సంబంధించిన ప్రత్యేక సూచనలు జోడించండి",
         "Delivery Instructions" to "డెలివరీ సూచనలు",
@@ -1277,6 +1278,7 @@ private fun tr(text: String, language: String): String {
         "Confirmed at order" to "ऑर्डर के समय पुष्टि होगी",
         "Grand Total" to "कुल राशि",
         "No online payment is collected in this app." to "इस ऐप में ऑनलाइन भुगतान नहीं लिया जाता।",
+        "Online payment is available." to "ऑनलाइन भुगतान उपलब्ध है।",
         "Instructions" to "निर्देश",
         "Add any special instructions for your order" to "अपने ऑर्डर के लिए विशेष निर्देश जोड़ें",
         "Delivery Instructions" to "डिलीवरी निर्देश",
@@ -5057,6 +5059,7 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
                 if (error == null) {
                     sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
                     codEnabled = snapshot?.getBoolean("codEnabled") ?: true
+                    livePaymentEnabled = snapshot?.getBoolean("onlineEnabled") ?: false
                     message = null
                 } else {
                     message = error.localizedMessage ?: "Could not load payment settings."
@@ -8191,6 +8194,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     var selectedPaymentMethod by remember { mutableStateOf("cod") }
     var sandboxEnabled by remember { mutableStateOf(true) }
     var codEnabled by remember { mutableStateOf(true) }
+    var livePaymentEnabled by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var orderMessage by remember { mutableStateOf<String?>(null) }
 
@@ -8454,7 +8458,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             Text(money(total), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                         }
                         Spacer(Modifier.height(8.dp))
-                        Text(tr("No online payment is collected in this app.", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
+                        Text(
+                            tr(
+                                if (livePaymentEnabled) "Online payment is available." else "No online payment is collected in this app.",
+                                LocalAppLanguage.current
+                            ),
+                            color = Muted, fontSize = 12.sp
+                        )
                     }
                 }
                 Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
