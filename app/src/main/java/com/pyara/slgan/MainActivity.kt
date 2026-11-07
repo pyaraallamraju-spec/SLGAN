@@ -5059,7 +5059,6 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
                 if (error == null) {
                     sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
                     codEnabled = snapshot?.getBoolean("codEnabled") ?: true
-                    livePaymentEnabled = snapshot?.getBoolean("onlineEnabled") ?: false
                     message = null
                 } else {
                     message = error.localizedMessage ?: "Could not load payment settings."
@@ -8205,6 +8204,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 if (error == null) {
                     sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
                     codEnabled = snapshot?.getBoolean("codEnabled") ?: true
+                    livePaymentEnabled = snapshot?.getBoolean("onlineEnabled") ?: false
                 } else {
                     android.util.Log.w("SLGANPayments", "Could not load payment options.", error)
                 }
