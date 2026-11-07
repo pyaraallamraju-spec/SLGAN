@@ -1226,6 +1226,17 @@ private fun tr(text: String, language: String): String {
         "Fresh botanical, natural look" to "తాజా సహజమైన రూపం",
         "Uses the selected app theme’s AdminInk and AdminInk palette, with high-contrast text and button styling." to "ఎంచుకున్న యాప్ థీమ్‌కు అనుగుణంగా స్పష్టమైన టెక్స్ట్ మరియు బటన్ రంగాలను ఉపయోగిస్తుంది."
 
+        "Save" to "సేవ్ చేయండి",
+        "Apply" to "వర్తింపజేయండి",
+        "Latest" to "తాజావి",
+        "Name A–Z" to "పేరు A–Z",
+        "Name Z–A" to "పేరు Z–A",
+        "Slider is visible on the home page" to "హోమ్ పేజీలో స్లైడర్ కనిపిస్తుంది",
+        "Slider is hidden from the home page" to "హోమ్ పేజీ నుంచి స్లైడర్ దాచబడింది",
+        "Selected slider" to "ఎంచుకున్న స్లైడర్",
+        "Select slider" to "స్లైడర్ ఎంచుకోండి",
+        "Traditional wisdom · Natural wellness" to "సంప్రదాయ జ్ఞానం · సహజ ఆరోగ్యం"
+
     )
     val hi = mapOf(
         "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
@@ -2107,6 +2118,17 @@ private fun tr(text: String, language: String): String {
         "Deep botanical green, herbal imagery and gold accents" to "गहरा हरा, जड़ी-बूटियों की छवियाँ और सुनहरे रंग",
         "Fresh botanical, natural look" to "ताज़ा प्राकृतिक रूप",
         "Uses the selected app theme’s AdminInk and AdminInk palette, with high-contrast text and button styling." to "चुनी गई ऐप थीम के अनुरूप स्पष्ट टेक्स्ट और बटन रंगों का उपयोग करता है।"
+
+        "Save" to "सहेजें",
+        "Apply" to "लागू करें",
+        "Latest" to "नवीनतम",
+        "Name A–Z" to "नाम A–Z",
+        "Name Z–A" to "नाम Z–A",
+        "Slider is visible on the home page" to "होम पेज पर स्लाइडर दिखाई देता है",
+        "Slider is hidden from the home page" to "होम पेज से स्लाइडर छिपा हुआ है",
+        "Selected slider" to "चुना गया स्लाइडर",
+        "Select slider" to "स्लाइडर चुनें",
+        "Traditional wisdom · Natural wellness" to "पारंपरिक ज्ञान · प्राकृतिक स्वास्थ्य"
 
     )
     return when (language) { "Telugu" -> te[text] ?: text; "Hindi" -> hi[text] ?: text; else -> text }
@@ -4906,6 +4928,7 @@ private fun AdminProductEditor(
     }
 }
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 private fun AdminDashboardScreen(
     email: String,
@@ -5439,8 +5462,8 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                             }
                             Spacer(Modifier.width(8.dp))
                             Column(Modifier.weight(1f)) {
-                                Text("Sri Lakshmi Ganapathi", color = mainText, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                                Text("Ayurveda Nilayam", color = secondary, fontSize = 9.sp)
+                                Text(tr("Sri Lakshmi Ganapathi", LocalAppLanguage.current), color = mainText, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text(tr("Ayurveda Nilayam", LocalAppLanguage.current), color = secondary, fontSize = 9.sp)
                             }
                             Surface(shape = RoundedCornerShape(7.dp), color = accent) {
                                 Text("3", Modifier.padding(horizontal = 9.dp, vertical = 5.dp), color = bg, fontSize = 10.sp, fontWeight = FontWeight.Bold)
@@ -5508,7 +5531,7 @@ private fun ThemeManagementScreen(onBack: () -> Unit) {
                             if (saving && selectedTheme == id) CircularProgressIndicator(Modifier.size(16.dp), color = if (dark) Color(0xFF0B1118) else Color.White, strokeWidth = 2.dp)
                             else Icon(Icons.Default.Check, null, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(5.dp))
-                            Text("Apply $name", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text(tr("Apply", LocalAppLanguage.current) + " " + tr(name, LocalAppLanguage.current), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -5658,7 +5681,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                     }
                     Spacer(Modifier.height(10.dp))
                     Text(tr(when (design) { 1 -> "Slider 1 · Current banner"; 2 -> "Slider 2 · Nature’s Goodness"; 3 -> "Slider 3 · AdminBackground & Green"; else -> "Slider 4 · Theme-Adaptive Signature" }, LocalAppLanguage.current), color = AdminInk, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Text(when (design) { 1 -> "Keep the existing look"; 2 -> "Deep botanical green, herbal imagery and gold accents"; 3 -> "Fresh botanical, natural look"; else -> "Uses the selected app theme’s AdminInk and AdminInk palette, with high-contrast text and button styling." }, color = AdminMuted, fontSize = 12.sp)
+                    Text(tr(when (design) { 1 -> "Keep the existing look"; 2 -> "Deep botanical green, herbal imagery and gold accents"; 3 -> "Fresh botanical, natural look"; else -> "Uses the selected app theme’s AdminInk and AdminInk palette, with high-contrast text and button styling." }, LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
                     if (activeDesign == design) Text(tr("SELECTED", LocalAppLanguage.current), color = AdminInk, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold)
                 }
             }
@@ -6098,7 +6121,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                 }
                 DropdownMenu(expanded = sortMenuExpanded, onDismissRequest = { sortMenuExpanded = false }) {
                     listOf("Latest", "Name A–Z", "Name Z–A").forEach { option ->
-                        DropdownMenuItem(text = { Text(option, color = AdminInk) }, onClick = { sortBy = option; sortMenuExpanded = false })
+                        DropdownMenuItem(text = { Text(tr(option, LocalAppLanguage.current), color = AdminInk) }, onClick = { sortBy = option; sortMenuExpanded = false })
                     }
                 }
             }
@@ -6108,7 +6131,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                 FilterChip(
                     selected = statusFilter == status,
                     onClick = { statusFilter = status },
-                    label = { Text(when (status) { "All" -> "All (${customers.size})"; "Enabled" -> "Enabled ($enabledCount)"; else -> "Disabled ($disabledCount)" }, fontSize = 11.sp) },
+                    label = { Text(when (status) { "All" -> tr("All", LocalAppLanguage.current) + " (${customers.size})"; "Enabled" -> tr("Enabled", LocalAppLanguage.current) + " ($enabledCount)"; else -> tr("Disabled", LocalAppLanguage.current) + " ($disabledCount)" }, fontSize = 11.sp) },
                     shape = RoundedCornerShape(10.dp),
                     colors = FilterChipDefaults.filterChipColors(selectedContainerColor = AdminInk, selectedLabelColor = Color.White, containerColor = Color.White, labelColor = AdminInk)
                 )
@@ -6305,7 +6328,7 @@ private fun AdminCustomersScreen(onBack: () -> Unit) {
                         savingCustomer = false
                         Toast.makeText(context, "Could not update customer: " + (exception.localizedMessage ?: "permission denied"), Toast.LENGTH_LONG).show()
                     }
-                }) { Text(if (savingCustomer) "Saving…" else "Save", color = AdminInk) }
+                }) { Text(tr(if (savingCustomer) "Saving…" else "Save", LocalAppLanguage.current), color = AdminInk) }
             },
             dismissButton = { TextButton(enabled = !savingCustomer, onClick = { editingCustomer = null }) { Text(tr("Cancel", LocalAppLanguage.current), color = AdminMuted) } }
         )
@@ -6442,14 +6465,14 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                     FilterChip(
                         selected = statusFilter == "All",
                         onClick = { statusFilter = "All" },
-                        label = { Text("All  ${orders.size}") },
+                        label = { Text(tr("All", LocalAppLanguage.current) + "  ${orders.size}") },
                         leadingIcon = { Icon(Icons.Default.ListAlt, null, modifier = Modifier.size(16.dp)) },
                         colors = FilterChipDefaults.filterChipColors(selectedContainerColor = AdminLightGray, selectedLabelColor = AdminInk, selectedLeadingIconColor = AdminInk)
                     )
                     FilterChip(
                         selected = statusFilter == "Pending",
                         onClick = { statusFilter = "Pending" },
-                        label = { Text("Pending  ${pendingCount}") },
+                        label = { Text(tr("Pending", LocalAppLanguage.current) + "  ${pendingCount}") },
                         leadingIcon = { Icon(Icons.Default.Schedule, null, modifier = Modifier.size(16.dp)) },
                         colors = FilterChipDefaults.filterChipColors(selectedContainerColor = AdminInk, selectedLabelColor = Color.White, selectedLeadingIconColor = Color.White)
                     )
