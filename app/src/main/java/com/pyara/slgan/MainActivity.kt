@@ -8564,14 +8564,14 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     else -> rawAddressLabel.ifBlank { tr("Address", LocalAppLanguage.current) }
                 }
                 Card(
-                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+                    Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 0.dp),
                     shape = RoundedCornerShape(18.dp),
                     colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
                     border = BorderStroke(1.dp, appThemedColor(Color(0xFFE2E5EA)))
                 ) {
-                    Column(Modifier.fillMaxWidth().padding(bottom = 8.dp)) {
+                    Column(Modifier.fillMaxWidth().padding(bottom = 3.dp)) {
                     Row(
-                        Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
+                        Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 7.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -8601,7 +8601,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     exit = shrinkVertically(shrinkTowards = Alignment.Top, animationSpec = tween(260, easing = FastOutSlowInEasing)) + fadeOut(tween(180))
                 ) {
                 Box(
-                    Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 4.dp)
+                    Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 2.dp)
                         .clip(RoundedCornerShape(24.dp))
                         .background(Brush.linearGradient(listOf(Color(0xFFF7FDEB), Color(0xFFE5F7D5), Color(0xFFD5F0BD))))
                         .border(1.dp, appThemedColor(Color(0xFF62A94A)), RoundedCornerShape(24.dp))
@@ -8697,7 +8697,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
 
             Row(
                 Modifier.fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp)
+                    .padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 8.dp)
                     .clip(RoundedCornerShape(20.dp))
                     .background(appThemedColor(Color.White))
                     .border(1.dp, appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(20.dp))
