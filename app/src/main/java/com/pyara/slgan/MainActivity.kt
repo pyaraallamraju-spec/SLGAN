@@ -8903,8 +8903,13 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         shape = RoundedCornerShape(14.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFF245B32)), contentColor = Color.White)
                     ) {
-                        if (submitting) CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
-                        else Text(tr("Go", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        if (submitting) {
+                            CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
+                            Spacer(Modifier.width(9.dp))
+                            Text(tr("Saving order…", LocalAppLanguage.current), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        } else {
+                            Text(tr("Go", LocalAppLanguage.current), fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                        }
                     }
                 }
                 Text(tr("Order total", LocalAppLanguage.current) + ": " + money(total), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
