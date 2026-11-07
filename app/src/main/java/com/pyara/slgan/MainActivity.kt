@@ -8759,10 +8759,22 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             errorMessage = "Please sign in again before placing an order."
                         } else {
                             val address = confirmedDeliveryAddress!!
-                            val addressText = listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode")
-                                .mapNotNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
-                                .joinToString(", ")
-                                .ifBlank { (address["address"] ?: address["addressText"] ?: address["fullAddress"] ?: address["completeAddress"] ?: address["formattedAddress"])?.toString().orEmpty() }
+                            val completeAddress = listOf("completeAddress", "complete_address", "formattedAddress", "formatted_address", "fullAddress", "full_address")
+                                .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+                            val addressKeys = listOf(
+                                "address", "addressText", "addressLine1", "addressLine2", "houseNo", "houseNumber",
+                                "building", "apartment", "street", "streetName", "road", "landmark", "area", "locality",
+                                "village", "town", "city", "district", "state", "pincode", "postalCode", "zipCode", "country"
+                            )
+                            val addressParts = addressKeys.mapNotNull { key ->
+                                address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() }
+                            }.distinctBy { it.lowercase(Locale.ROOT) }
+                            val addressText = (listOf(completeAddress).filter { it.isNotBlank() } + addressParts)
+                                .distinctBy { it.lowercase(Locale.ROOT) }
+                                .fold(mutableListOf<String>()) { result, part ->
+                                    if (result.none { it.contains(part, ignoreCase = true) || part.contains(it, ignoreCase = true) }) result.add(part)
+                                    result
+                                }.joinToString(", ")
                             if (addressText.isBlank()) {
                                 submitting = false
                                 errorMessage = "The selected address has no address details. Please edit or choose another address."
@@ -8979,7 +8991,23 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Spacer(Modifier.height(8.dp))
                         Button(onClick = {
                         val address = savedAddresses.firstOrNull { it["_id"]?.toString() == selectedDeliveryAddressId }
-                        val textAddress = address?.let { listOf("addressLine1", "addressLine2", "landmark", "city", "state", "pincode").mapNotNull { key -> it[key]?.toString()?.trim()?.takeIf { value -> value.isNotBlank() } }.joinToString(", ").ifBlank { (it["address"] ?: it["addressText"] ?: it["fullAddress"] ?: it["completeAddress"] ?: it["formattedAddress"])?.toString().orEmpty() } }.orEmpty()
+                        val textAddress = address?.let {
+                            val complete = listOf("completeAddress", "complete_address", "formattedAddress", "formatted_address", "fullAddress", "full_address")
+                                .firstNotNullOfOrNull { key -> it[key]?.toString()?.trim()?.takeIf { value -> value.isNotBlank() } }.orEmpty()
+                            val keys = listOf(
+                                "address", "addressText", "addressLine1", "addressLine2", "houseNo", "houseNumber",
+                                "building", "apartment", "street", "streetName", "road", "landmark", "area", "locality",
+                                "village", "town", "city", "district", "state", "pincode", "postalCode", "zipCode", "country"
+                            )
+                            val parts = keys.mapNotNull { key -> it[key]?.toString()?.trim()?.takeIf { value -> value.isNotBlank() } }
+                                .distinctBy { value -> value.lowercase(Locale.ROOT) }
+                            (listOf(complete).filter { value -> value.isNotBlank() } + parts)
+                                .distinctBy { value -> value.lowercase(Locale.ROOT) }
+                                .fold(mutableListOf<String>()) { result, part ->
+                                    if (result.none { existing -> existing.contains(part, ignoreCase = true) || part.contains(existing, ignoreCase = true) }) result.add(part)
+                                    result
+                                }.joinToString(", ")
+                        }.orEmpty()
                         if (address == null) errorMessage = if (savedAddresses.isEmpty()) "Please add a delivery address first." else "Please select a delivery address."
                         else if (textAddress.isBlank()) errorMessage = "Please edit this address and add complete address details."
                         else {
