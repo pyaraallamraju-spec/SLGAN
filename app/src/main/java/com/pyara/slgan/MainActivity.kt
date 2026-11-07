@@ -8726,9 +8726,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .padding(horizontal = 14.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column(Modifier.weight(0.72f)) {
+                Column(
+                    Modifier.weight(0.72f),
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Text(money(total), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                     Text("${tr("Delivery", LocalAppLanguage.current)} ${money(deliveryCharge)}", color = Muted, fontSize = 10.sp, maxLines = 1)
                 }
                 Box(Modifier.width(1.dp).height(42.dp).background(appThemedColor(Color(0xFFB5B5B5))))
