@@ -8824,12 +8824,15 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                                     .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
                                             )
                                         } else {
+                                            // COD: dismiss the payment sheet and stop the loader before showing
+                                            // the order-saved confirmation. Email delivery runs afterward and
+                                            // must not delay or control the order confirmation.
                                             onOrderResult(orderId, true, null, "Cash on Delivery order saved.")
+                                            Toast.makeText(context, "Order saved successfully. Order ID: $orderId", Toast.LENGTH_LONG).show()
                                             userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
                                                 val idToken = tokenResult.token
                                                 if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
                                                     orderMessage = if (emailSent) "COD order saved: $orderId. Confirmation email sent." else "COD order saved: $orderId. Email failed: $detail"
-                                                    Toast.makeText(context, if (emailSent) "Order saved. Confirmation email sent." else "Order saved, but email failed. " + detail.take(160), Toast.LENGTH_LONG).show()
                                                 }
                                             }.addOnFailureListener { error -> orderMessage = "COD order saved: $orderId. Email failed: ${error.localizedMessage ?: "Could not get Firebase ID token."}" }
                                         }
