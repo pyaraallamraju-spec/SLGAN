@@ -273,19 +273,25 @@ function buildInvoicePdf(orderId, order, items, total) {
   body.appendParagraph("This document confirms receipt of your order request and is not a final tax invoice. No online payment is recorded as collected by this document. Delivery charges, applicable taxes and the final tax invoice, if required, will be confirmed by the seller.")
     .setForegroundColor(muted).setFontFamily("Arial").setFontSize(8).setLineSpacing(115);
 
-  body.appendParagraph("For Sri Lakshmi Ganapathi Ayurveda Nilayam").setForegroundColor(ink)
-    .setBold(true).setFontFamily("Arial").setFontSize(9).setSpacingBefore(18).setSpacingAfter(4);
-  body.appendParagraph("______________________________").setForegroundColor(muted)
-    .setFontFamily("Arial").setFontSize(9).setSpacingAfter(0);
-  body.appendParagraph("Authorized Signatory").setForegroundColor(muted)
-    .setFontFamily("Arial").setFontSize(8).setSpacingAfter(4);
+  const signatory = body.appendTable([["", ""]]);
+  signatory.setBorderColor("#FFFFFF").setBorderWidth(0);
+  const signatoryText = signatory.getCell(0, 0);
+  signatoryText.setPaddingTop(4).setPaddingBottom(4).setPaddingLeft(0).setPaddingRight(8);
+  signatoryText.appendParagraph("For Sri Lakshmi Ganapathi Ayurveda Nilayam")
+    .setForegroundColor(ink).setBold(true).setFontFamily("Arial").setFontSize(9);
+  signatoryText.appendParagraph("______________________________")
+    .setForegroundColor(muted).setFontFamily("Arial").setFontSize(9);
+  signatoryText.appendParagraph("Authorized Signatory")
+    .setForegroundColor(muted).setFontFamily("Arial").setFontSize(8);
 
   // The stamp is a public, versioned image in this repository; fetch it at
   // document-generation time so the email PDF carries the same approved seal.
   const stampUrl = "https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/functions/slgan_signature_stamp.png";
   const stampResponse = UrlFetchApp.fetch(stampUrl, { muteHttpExceptions: true });
   if (stampResponse.getResponseCode() >= 200 && stampResponse.getResponseCode() < 300) {
-    const stamp = body.appendImage(stampResponse.getBlob().setName("slgan_signature_stamp.png"));
+    const stampCell = signatory.getCell(0, 1);
+    stampCell.setPaddingTop(0).setPaddingBottom(0).setPaddingLeft(8).setPaddingRight(0);
+    const stamp = stampCell.appendImage(stampResponse.getBlob().setName("slgan_signature_stamp.png"));
     stamp.setWidth(112).setHeight(112);
   } else {
     console.error("SLGAN signature stamp could not be fetched; HTTP " + stampResponse.getResponseCode());
