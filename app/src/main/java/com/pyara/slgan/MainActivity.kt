@@ -609,6 +609,16 @@ private fun tr(text: String, language: String): String {
         "Edit address details" to "చిరునామా వివరాలను సవరించండి",
         "Add address details" to "చిరునామా వివరాలను జోడించండి",
         "Address Details" to "చిరునామా వివరాలు",
+        "No phone number found for this contact." to "ఈ కాంటాక్ట్‌కు ఫోన్ నంబర్ కనుగొనబడలేదు.",
+        "Couldn't detect your location. Please enter the address manually." to "మీ స్థానాన్ని గుర్తించలేకపోయాం. దయచేసి చిరునామాను మాన్యువల్‌గా నమోదు చేయండి.",
+        "Address not found. Try entering a nearby area and city to place the pin." to "చిరునామా కనుగొనబడలేదు. మ్యాప్‌లో పిన్ పెట్టడానికి సమీప ప్రాంతం మరియు నగరాన్ని నమోదు చేయండి.",
+        "Please wait for the map or enter a nearby area and city to select your delivery pin." to "దయచేసి మ్యాప్ కోసం వేచి ఉండండి లేదా డెలివరీ పిన్ ఎంచుకోవడానికి సమీప ప్రాంతం మరియు నగరాన్ని నమోదు చేయండి.",
+        "Please sign in to save an address." to "చిరునామాను సేవ్ చేయడానికి దయచేసి సైన్ ఇన్ చేయండి.",
+        "You can save only one address. Please edit or delete the existing one." to "మీరు ఒక చిరునామాను మాత్రమే సేవ్ చేయగలరు. ఇప్పటికే ఉన్న చిరునామాను సవరించండి లేదా తొలగించండి.",
+        "Couldn't save address. Please try again." to "చిరునామాను సేవ్ చేయలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
+        "Couldn't verify saved addresses. Please try again." to "సేవ్ చేసిన చిరునామాలను ధృవీకరించలేకపోయాం. దయచేసి మళ్లీ ప్రయత్నించండి.",
+        "Clear name" to "పేరును క్లియర్ చేయండి",
+        "Select phone number from contacts" to "కాంటాక్ట్‌ల నుండి ఫోన్ నంబర్ ఎంచుకోండి",
         "Select a city" to "నగరాన్ని ఎంచుకోండి",
         "Select" to "ఎంచుకోండి",
         "Search for a city" to "నగరం కోసం వెతకండి",
@@ -1461,6 +1471,16 @@ private fun tr(text: String, language: String): String {
         "Edit address details" to "पते का विवरण संपादित करें",
         "Add address details" to "पते का विवरण जोड़ें",
         "Address Details" to "पते का विवरण",
+        "No phone number found for this contact." to "इस संपर्क के लिए फ़ोन नंबर नहीं मिला।",
+        "Couldn't detect your location. Please enter the address manually." to "आपकी लोकेशन नहीं मिल सकी। कृपया पता मैन्युअल रूप से दर्ज करें।",
+        "Address not found. Try entering a nearby area and city to place the pin." to "पता नहीं मिला। मैप पर पिन लगाने के लिए पास का इलाका और शहर दर्ज करें।",
+        "Please wait for the map or enter a nearby area and city to select your delivery pin." to "कृपया मैप का इंतज़ार करें या डिलीवरी पिन चुनने के लिए पास का इलाका और शहर दर्ज करें।",
+        "Please sign in to save an address." to "पता सहेजने के लिए कृपया साइन इन करें।",
+        "You can save only one address. Please edit or delete the existing one." to "आप केवल एक पता सहेज सकते हैं। मौजूदा पते को संपादित करें या हटाएँ।",
+        "Couldn't save address. Please try again." to "पता सहेजा नहीं जा सका। कृपया फिर से कोशिश करें।",
+        "Couldn't verify saved addresses. Please try again." to "सहेजे गए पतों की पुष्टि नहीं हो सकी। कृपया फिर से कोशिश करें।",
+        "Clear name" to "नाम साफ़ करें",
+        "Select phone number from contacts" to "संपर्कों से फ़ोन नंबर चुनें",
         "Select a city" to "शहर चुनें",
         "Select" to "चुनें",
         "Search for a city" to "शहर खोजें",
@@ -5389,7 +5409,7 @@ private fun BannerManagementScreen(onBack: () -> Unit) {
                 color = Color.White
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = AdminInk, modifier = Modifier.size(24.dp))
+                    Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = AdminInk, modifier = Modifier.size(24.dp))
                 }
             }
             Column { Text(tr("HOME PAGE SLIDERS", LocalAppLanguage.current), color = AdminInk, fontSize = 12.sp, fontWeight = FontWeight.ExtraBold); Text(tr("Choose Active Design", LocalAppLanguage.current), color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold) }
@@ -11761,7 +11781,7 @@ private fun AddAddressDetailsPage(
                     receiverPhone = if (digits.startsWith("91") && digits.length == 12) digits.drop(2) else digits.takeLast(10)
                     phoneError = false
                 } else {
-                    Toast.makeText(context, "No phone number found for this contact.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, tr("No phone number found for this contact.", LocalAppLanguage.current), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -11825,7 +11845,7 @@ private fun AddAddressDetailsPage(
             fullAddress = detected.getAddressLine(0).orEmpty()
                 .split(",").drop(2).joinToString(",").trim().ifBlank { detected.getAddressLine(0).orEmpty() }
         } else {
-            Toast.makeText(context, "Couldn't detect your location. Please enter the address manually.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, tr("Couldn't detect your location. Please enter the address manually.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -11864,7 +11884,7 @@ private fun AddAddressDetailsPage(
             if (area.isBlank()) area = found.subLocality ?: found.thoroughfare ?: found.featureName.orEmpty()
             if (city.isBlank()) city = found.locality ?: found.subAdminArea ?: found.adminArea.orEmpty()
         } else {
-            Toast.makeText(context, "Address not found. Try entering a nearby area and city to place the pin.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, tr("Address not found. Try entering a nearby area and city to place the pin.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -11918,7 +11938,7 @@ private fun AddAddressDetailsPage(
             label = label,
             onSave = { customLabel ->
                 if (mapLatitude == null || mapLongitude == null) {
-                    Toast.makeText(context, "Please wait for the map or enter a nearby area and city to select your delivery pin.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, tr("Please wait for the map or enter a nearby area and city to select your delivery pin.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
                     return@ReviewAddressPage
                 }
                 cityError = city.isBlank()
@@ -11931,7 +11951,7 @@ private fun AddAddressDetailsPage(
                     return@ReviewAddressPage
                 }
                 if (user == null) {
-                    Toast.makeText(context, "Please sign in to save an address.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, tr("Please sign in to save an address.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
                     return@ReviewAddressPage
                 }
                 val finalLabel = customLabel?.trim()?.takeIf { it.isNotBlank() } ?: label.trim().ifBlank { "Other" }
@@ -11966,7 +11986,7 @@ private fun AddAddressDetailsPage(
                             saving = false
                             Toast.makeText(
                                 context,
-                                "You can save only one $normalizedLabel address. Please edit or delete the existing one.",
+                                tr("You can save only one address. Please edit or delete the existing one.", LocalAppLanguage.current),
                                 Toast.LENGTH_LONG
                             ).show()
                             return@addOnSuccessListener
@@ -11987,12 +12007,12 @@ private fun AddAddressDetailsPage(
                             onSaved(data + ("_id" to docId.orEmpty()))
                         }.addOnFailureListener {
                             saving = false
-                            Toast.makeText(context, "Couldn't save address. Please try again.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, tr("Couldn't save address. Please try again.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
                         }
                     }
                     .addOnFailureListener {
                         saving = false
-                        Toast.makeText(context, "Couldn't verify saved addresses. Please try again.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, tr("Couldn't verify saved addresses. Please try again.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
                     }
             }
         )
@@ -12067,7 +12087,7 @@ private fun AddAddressDetailsPage(
                             contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
                             Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink)
-                            Text(city.ifBlank { "Select a city" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 15.sp)
+                            Text(city.ifBlank { tr("Select a city", LocalAppLanguage.current) }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 15.sp)
                             Text(tr("Select", LocalAppLanguage.current), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                         }
                         if (cityMenu) {
@@ -12151,7 +12171,7 @@ private fun AddAddressDetailsPage(
                             contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
                             Icon(Icons.Default.Place, contentDescription = null, tint = Ink)
-                            Text(area.ifBlank { "Select an area, street" }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 14.sp)
+                            Text(area.ifBlank { tr("Select an area, street", LocalAppLanguage.current) }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 14.sp)
                             Text(tr("Select", LocalAppLanguage.current), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                         }
                         if (areaMenu) {
@@ -12311,7 +12331,7 @@ private fun AddAddressDetailsPage(
                         isError = nameError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         trailingIcon = {
                             if (receiverName.isNotEmpty()) IconButton(onClick = { receiverName = ""; nameError = false }) {
-                                Icon(Icons.Default.Cancel, contentDescription = "Clear name", tint = Muted)
+                                Icon(Icons.Default.Cancel, contentDescription = tr("Clear name", LocalAppLanguage.current), tint = Muted)
                             }
                         }
                     )
