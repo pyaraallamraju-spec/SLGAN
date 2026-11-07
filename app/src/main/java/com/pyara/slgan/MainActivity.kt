@@ -7199,8 +7199,12 @@ private fun HomePage(modifier: Modifier, appLanguage: String, onLanguageChange: 
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
+                    val displayNickname = when {
+                        appLanguage == "Telugu" && welcomeNickname.equals("Amruth", ignoreCase = true) -> "అమృత్"
+                        else -> welcomeNickname
+                    }
                     val greeting = when (appLanguage) {
-                        "Telugu" -> if (welcomeNickname.isNotBlank()) "స్వాగతం, $welcomeNickname" else "SLGAN కు స్వాగతం"
+                        "Telugu" -> if (displayNickname.isNotBlank()) "స్వాగతం, $displayNickname" else "SLGAN కు స్వాగతం"
                         "Hindi" -> if (welcomeNickname.isNotBlank()) "स्वागत है, $welcomeNickname" else "SLGAN में आपका स्वागत है"
                         else -> if (welcomeNickname.isNotBlank()) "Welcome, $welcomeNickname" else "Welcome to SLGAN"
                     }
