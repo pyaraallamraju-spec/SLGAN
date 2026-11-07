@@ -210,7 +210,7 @@ function buildInvoicePdf(orderId, order, items, total) {
   var logoCell = header.getCell(0,0), contactCell = header.getCell(0,1);
   logoCell.setWidth(118); contactCell.setWidth(365);
   [logoCell,contactCell].forEach(function(cell) {
-    cell.setBorderWidth(0); cell.setPaddingTop(2); cell.setPaddingBottom(8);
+     cell.setPaddingTop(2); cell.setPaddingBottom(8);
     cell.setPaddingLeft(3); cell.setPaddingRight(3); cell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
   });
   try {
@@ -313,7 +313,7 @@ function buildInvoicePdf(orderId, order, items, total) {
   // Stamp and signatory share one row, with stamp to the left of the signatory.
   var sign=body.appendTable([["",""]]); sign.setBorderWidth(0);
   var stampCell=sign.getCell(0,0), signCell=sign.getCell(0,1);
-  [stampCell,signCell].forEach(function(cell){cell.setBorderWidth(0);cell.setPaddingTop(8);cell.setPaddingBottom(2);cell.setPaddingLeft(4);cell.setPaddingRight(4);});
+  [stampCell,signCell].forEach(function(cell){cell.setPaddingTop(8);cell.setPaddingBottom(2);cell.setPaddingLeft(4);cell.setPaddingRight(4);});
   try {
     var stampUrl="https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/functions/slgan_signature_stamp.png";
     var stampResponse=UrlFetchApp.fetch(stampUrl,{muteHttpExceptions:true});
