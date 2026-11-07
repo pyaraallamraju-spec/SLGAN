@@ -4295,7 +4295,7 @@ private fun AdminProductsScreen(
                                 }
                                 Spacer(Modifier.width(7.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(product.name, color = AdminInk, fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                    Text(localizedProductName(product.name, LocalAppLanguage.current), color = AdminInk, fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
                                     Text(product.subtitle.ifBlank { product.category }, color = AdminMuted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     if (product.isHidden) Text(tr("Hidden", LocalAppLanguage.current), color = AdminMuted, fontSize = 9.sp)
                                 }
