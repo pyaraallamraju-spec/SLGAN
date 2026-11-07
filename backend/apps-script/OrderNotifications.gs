@@ -169,7 +169,8 @@ function sendOrderConfirmation(documentId, displayOrderId, order) {
 }
 
 function buildInvoicePdf(orderId, order, items, total) {
-  // Branded provisional order invoice. Email, authentication and Firestore workflows are unchanged.
+  // Compact A4 provisional order confirmation. Keep the logo within a fixed box
+  // while preserving its original aspect ratio to prevent page overflow.
   var doc = DocumentApp.create("SLGAN " + orderId + " invoice");
   var body = doc.getBody();
   var green = "#174B35", deep = "#103D2B", pale = "#EEF4EF";
@@ -182,88 +183,82 @@ function buildInvoicePdf(orderId, order, items, total) {
     if (value == null) return "";
     if (Array.isArray(value)) return value.map(cleanText).filter(Boolean).join(", ");
     if (typeof value === "object") {
-      var preferred = ["fullAddress","addressLine1","addressLine2","houseNo","flatNo","building","street","landmark","area","locality","village","city","district","state","postalCode","pincode","pinCode"];
+      var keys = ["fullAddress","addressLine1","addressLine2","houseNo","flatNo","building","street","landmark","area","locality","village","city","district","state","postalCode","pincode","pinCode"];
       var parts = [];
-      preferred.forEach(function(key) {
+      keys.forEach(function(key) {
         if (value[key] != null && String(value[key]).trim()) parts.push(String(value[key]).trim());
       });
       if (!parts.length) Object.keys(value).forEach(function(key) {
-        if (value[key] != null && typeof value[key] !== "object" && String(value[key]).trim()) parts.push(String(value[key]).trim());
+        var v = value[key];
+        if (v != null && typeof v !== "object" && String(v).trim()) parts.push(String(v).trim());
       });
       return parts.join(", ");
     }
     return String(value).trim();
   };
-  var address = cleanText(order.shippingAddress || order.deliveryAddress || order.address);
-  if (!address) address = "Full delivery address not provided in order record";
-  var customerLines = [
-    cleanText(order.customerName) || "Customer",
-    cleanText(order.email),
-    cleanText(order.phone || order.deliveryPhone)
-  ].filter(Boolean);
+  var address = cleanText(order.shippingAddress || order.deliveryAddress || order.address) || "Not provided in order record";
+  var customerLines = [cleanText(order.customerName) || "Customer", cleanText(order.email), cleanText(order.phone || order.deliveryPhone)].filter(Boolean);
   body.clear();
-  body.setMarginTop(30); body.setMarginBottom(32); body.setMarginLeft(34); body.setMarginRight(34);
+  body.setMarginTop(24); body.setMarginBottom(24); body.setMarginLeft(30); body.setMarginRight(30);
 
-  // Header: logo on the left, contact information aligned on the right.
+  // Compact branded header: the image is scaled proportionally to fit 58 x 58 px.
   var header = body.appendTable([["", ""]]);
   header.setBorderWidth(0);
   var logoCell = header.getCell(0,0), contactCell = header.getCell(0,1);
-  logoCell.setWidth(118); contactCell.setWidth(365);
+  logoCell.setWidth(76); contactCell.setWidth(440);
   [logoCell,contactCell].forEach(function(cell) {
-     cell.setPaddingTop(2); cell.setPaddingBottom(8);
-    cell.setPaddingLeft(3); cell.setPaddingRight(3); cell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
+    cell.setPaddingTop(0); cell.setPaddingBottom(3); cell.setPaddingLeft(4); cell.setPaddingRight(4);
+    cell.setVerticalAlignment(DocumentApp.VerticalAlignment.CENTER);
   });
+  var logoAdded = false;
   try {
     var logoUrl = "https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/app/src/main/res/drawable-nodpi/slgan_logo_true_transparent.png";
     var logoResponse = UrlFetchApp.fetch(logoUrl, {muteHttpExceptions:true});
     if (logoResponse.getResponseCode() >= 200 && logoResponse.getResponseCode() < 300) {
-      var logoP = logoCell.getChild(0).asParagraph();
-      logoP.appendInlineImage(logoResponse.getBlob()).setWidth(92);
-    } else {
-      logoCell.getChild(0).asParagraph().appendText("SLGAN").setBold(true).setForegroundColor(green).setFontSize(18);
+      var img = logoCell.getChild(0).asParagraph().appendInlineImage(logoResponse.getBlob());
+      var iw = img.getWidth(), ih = img.getHeight();
+      if (iw > 0 && ih > 0) {
+        var scale = Math.min(58 / iw, 58 / ih, 1);
+        img.setWidth(Math.max(1, Math.round(iw * scale)));
+        img.setHeight(Math.max(1, Math.round(ih * scale)));
+        logoAdded = true;
+      }
     }
-  } catch (logoError) {
-    logoCell.getChild(0).asParagraph().appendText("SLGAN").setBold(true).setForegroundColor(green).setFontSize(18);
-    console.warn("Invoice logo unavailable: " + logoError);
-  }
-  var contactP = contactCell.getChild(0).asParagraph();
-  contactP.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
-  contactP.appendText("SRI LAKSHMI GANAPATHI\n").setBold(true).setForegroundColor(green).setFontSize(15);
-  contactP.appendText("AYURVEDA NILAYAM  |  ESTD. 1900\n").setBold(true).setForegroundColor(muted).setFontSize(9);
-  contactP.appendText("U. Kothapalli – 533447, Andhra Pradesh\n").setForegroundColor(muted).setFontSize(8);
-  contactP.appendText("Phone: 9908355501\n").setForegroundColor(ink).setFontSize(9);
-  contactP.appendText("Email: info.slgan@gmail.com").setForegroundColor(ink).setFontSize(9);
+  } catch (logoError) { console.warn("Invoice logo unavailable: " + logoError); }
+  if (!logoAdded) logoCell.getChild(0).asParagraph().appendText("SLGAN").setBold(true).setForegroundColor(green).setFontSize(17);
+  var cp = contactCell.getChild(0).asParagraph();
+  cp.setAlignment(DocumentApp.HorizontalAlignment.RIGHT).setSpacingBefore(0).setSpacingAfter(0).setLineSpacing(1);
+  cp.appendText("SRI LAKSHMI GANAPATHI\n").setBold(true).setForegroundColor(green).setFontSize(14);
+  cp.appendText("AYURVEDA NILAYAM  |  ESTD. 1900 BY PERRAJU SHARMA\n").setBold(true).setForegroundColor(muted).setFontSize(8);
+  cp.appendText("U. Kothapalli – 533447, Andhra Pradesh  |  Phone: 9908355501\n").setForegroundColor(ink).setFontSize(8);
+  cp.appendText("Email: info.slgan@gmail.com").setForegroundColor(ink).setFontSize(8);
 
   var rule = body.appendParagraph(" ");
-  rule.setBackgroundColor(green); rule.setSpacingBefore(2); rule.setSpacingAfter(12);
-
+  rule.setBackgroundColor(green).setSpacingBefore(2).setSpacingAfter(7).setFontSize(3);
   var title = body.appendParagraph("ORDER CONFIRMATION");
-  title.setForegroundColor(deep).setFontSize(17).setBold(true);
-  title.setSpacingAfter(3);
+  title.setForegroundColor(deep).setFontSize(16).setBold(true).setSpacingBefore(0).setSpacingAfter(1);
   var subtitle = body.appendParagraph("PROVISIONAL INVOICE  •  NOT A FINAL TAX INVOICE");
-  subtitle.setForegroundColor(muted).setFontSize(8).setBold(true).setSpacingAfter(12);
+  subtitle.setForegroundColor(muted).setFontSize(7).setBold(true).setSpacingAfter(7);
 
   var ref = body.appendTable([["ORDER REFERENCE","ORDER DATE"],[String(orderId),dateText]]);
-  ref.setBorderColor(line).setBorderWidth(0.7);
+  ref.setBorderColor(line).setBorderWidth(0.6);
   for (var r=0;r<2;r++) for (var c=0;c<2;c++) {
-    var cell=ref.getCell(r,c); cell.setPaddingTop(7); cell.setPaddingBottom(7); cell.setPaddingLeft(8); cell.setPaddingRight(8);
-    cell.setBackgroundColor(r===0?pale:white);
-    var p=cell.getChild(0).asParagraph(); p.setFontFamily("Arial").setFontSize(r===0?8:10).setForegroundColor(r===0?green:ink).setBold(r===0);
+    var rc=ref.getCell(r,c); rc.setPaddingTop(4); rc.setPaddingBottom(4); rc.setPaddingLeft(7); rc.setPaddingRight(7);
+    rc.setBackgroundColor(r===0?pale:white);
+    var rp=rc.getChild(0).asParagraph(); rp.setFontFamily("Arial").setFontSize(r===0?7:9).setForegroundColor(r===0?green:ink).setBold(r===0).setSpacingBefore(0).setSpacingAfter(0).setLineSpacing(1);
   }
-
   var section = function(label) {
-    var p=body.appendParagraph(label); p.setForegroundColor(green).setFontSize(9).setBold(true);
-    p.setSpacingBefore(13).setSpacingAfter(5);
+    var p=body.appendParagraph(label);
+    p.setForegroundColor(green).setFontSize(8).setBold(true).setSpacingBefore(7).setSpacingAfter(3);
   };
   section("CUSTOMER & DELIVERY DETAILS");
-  var details=body.appendTable([["CUSTOMER DETAILS","COMPLETE DELIVERY ADDRESS"],[customerLines.join("\n"),address]]);
-  details.setBorderColor(line).setBorderWidth(0.7);
+  var details=body.appendTable([["CUSTOMER DETAILS","DELIVERY ADDRESS"],[customerLines.join("\n"),address]]);
+  details.setBorderColor(line).setBorderWidth(0.6);
+  details.getCell(0,0).setWidth(220); details.getCell(0,1).setWidth(296);
   for (var dr=0;dr<2;dr++) for (var dc=0;dc<2;dc++) {
-    var cell=details.getCell(dr,dc); cell.setPaddingTop(8); cell.setPaddingBottom(8); cell.setPaddingLeft(8); cell.setPaddingRight(8);
-    cell.setBackgroundColor(dr===0?pale:white);
-    cell.setVerticalAlignment(DocumentApp.VerticalAlignment.TOP);
-    var p=cell.getChild(0).asParagraph(); p.setFontFamily("Arial").setFontSize(dr===0?8:9).setForegroundColor(dr===0?green:ink).setBold(dr===0);
-    p.setLineSpacing(115);
+    var dcell=details.getCell(dr,dc); dcell.setPaddingTop(5); dcell.setPaddingBottom(5); dcell.setPaddingLeft(7); dcell.setPaddingRight(7);
+    dcell.setBackgroundColor(dr===0?pale:white).setVerticalAlignment(DocumentApp.VerticalAlignment.TOP);
+    var dp=dcell.getChild(0).asParagraph(); dp.setFontFamily("Arial").setFontSize(dr===0?7:8).setForegroundColor(dr===0?green:ink).setBold(dr===0).setSpacingBefore(0).setSpacingAfter(0).setLineSpacing(1.05);
   }
 
   section("ITEM DETAILS");
@@ -274,14 +269,13 @@ function buildInvoicePdf(orderId, order, items, total) {
     var amount=Number(item.lineTotal!=null?item.lineTotal:unit*qty)||0;
     rows.push([cleanText(item.productName||item.name)||"Product",String(qty),money(unit),money(amount)]);
   });
-  var table=body.appendTable(rows); table.setBorderColor(line).setBorderWidth(0.6);
+  var table=body.appendTable(rows); table.setBorderColor(line).setBorderWidth(0.5);
   for (var ir=0;ir<table.getNumRows();ir++) for (var ic=0;ic<4;ic++) {
-    var cell=table.getCell(ir,ic); cell.setPaddingTop(7); cell.setPaddingBottom(7); cell.setPaddingLeft(6); cell.setPaddingRight(6);
-    cell.setBackgroundColor(ir===0?green:(ir%2===0?pale:white));
-    var p=cell.getChild(0).asParagraph(); p.setFontFamily("Arial").setFontSize(ir===0?8:9).setForegroundColor(ir===0?white:ink).setBold(ir===0||ic===0);
-    if(ic>0) p.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
+    var tcell=table.getCell(ir,ic); tcell.setPaddingTop(4); tcell.setPaddingBottom(4); tcell.setPaddingLeft(5); tcell.setPaddingRight(5);
+    tcell.setBackgroundColor(ir===0?green:(ir%2===0?pale:white));
+    var tp=tcell.getChild(0).asParagraph(); tp.setFontFamily("Arial").setFontSize(ir===0?7:8).setForegroundColor(ir===0?white:ink).setBold(ir===0||ic===0).setSpacingBefore(0).setSpacingAfter(0).setLineSpacing(1);
+    if(ic>0) tp.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
   }
-
   var subtotal=Number(order.subtotal!=null?order.subtotal:total)||0;
   var delivery=Number(order.deliveryCharges)||0;
   var discount=Number(order.discountAmount!=null?order.discountAmount:order.discount)||0;
@@ -291,46 +285,46 @@ function buildInvoicePdf(orderId, order, items, total) {
   if(discount) totalRows.push(["Discount","−"+money(discount)]);
   if(tax) totalRows.push(["Tax",money(tax)]);
   totalRows.push(["ORDER TOTAL",money(total)]);
-  var totals=body.appendTable(totalRows); totals.setBorderColor(line).setBorderWidth(0.5);
+  var totals=body.appendTable(totalRows); totals.setBorderColor(line).setBorderWidth(0.4);
   for(var tr=0;tr<totals.getNumRows();tr++) for(var tc=0;tc<2;tc++) {
-    var cell=totals.getCell(tr,tc); cell.setPaddingTop(6); cell.setPaddingBottom(6); cell.setPaddingLeft(8); cell.setPaddingRight(8);
-    cell.setBackgroundColor(tr===totals.getNumRows()-1?pale:white);
-    var p=cell.getChild(0).asParagraph(); p.setFontFamily("Arial").setFontSize(tr===totals.getNumRows()-1?11:9);
-    p.setForegroundColor(tr===totals.getNumRows()-1?green:muted).setBold(tr===totals.getNumRows()-1||tc===1);
-    p.setAlignment(tc===0?DocumentApp.HorizontalAlignment.LEFT:DocumentApp.HorizontalAlignment.RIGHT);
+    var totalCell=totals.getCell(tr,tc); totalCell.setPaddingTop(3); totalCell.setPaddingBottom(3); totalCell.setPaddingLeft(7); totalCell.setPaddingRight(7);
+    totalCell.setBackgroundColor(tr===totals.getNumRows()-1?pale:white);
+    var totalP=totalCell.getChild(0).asParagraph(); totalP.setFontFamily("Arial").setFontSize(tr===totals.getNumRows()-1?10:8);
+    totalP.setForegroundColor(tr===totals.getNumRows()-1?green:muted).setBold(tr===totals.getNumRows()-1||tc===1).setSpacingBefore(0).setSpacingAfter(0).setLineSpacing(1);
+    totalP.setAlignment(tc===0?DocumentApp.HorizontalAlignment.LEFT:DocumentApp.HorizontalAlignment.RIGHT);
   }
 
   var status=body.appendParagraph("ORDER STATUS: "+cleanText(order.orderStatus||"Pending verification").replace(/_/g," ").toUpperCase());
-  status.setForegroundColor(green).setFontSize(9).setBold(true).setSpacingBefore(12);
+  status.setForegroundColor(green).setFontSize(8).setBold(true).setSpacingBefore(7).setSpacingAfter(1);
   var payment=body.appendParagraph("PAYMENT: "+cleanText(order.paymentStatus||"Not collected").replace(/_/g," ").toUpperCase());
-  payment.setForegroundColor(muted).setFontSize(8).setSpacingAfter(8);
-
+  payment.setForegroundColor(muted).setFontSize(7).setSpacingBefore(0).setSpacingAfter(4);
   var note=body.appendParagraph("IMPORTANT NOTE");
-  note.setForegroundColor(ink).setFontSize(8).setBold(true).setSpacingBefore(8);
+  note.setForegroundColor(ink).setFontSize(7).setBold(true).setSpacingBefore(3).setSpacingAfter(2);
   var disclaimer=body.appendParagraph("This document confirms receipt of the order request and is not a final tax invoice. No online payment is recorded as collected. Delivery charges and applicable taxes are shown only where confirmed in the order record. The seller will confirm final details before dispatch.");
-  disclaimer.setForegroundColor(muted).setFontSize(8).setLineSpacing(115);
+  disclaimer.setForegroundColor(muted).setFontSize(7).setLineSpacing(1.05).setSpacingBefore(0).setSpacingAfter(3);
 
-  // Stamp and signatory share one row, with stamp to the left of the signatory.
   var sign=body.appendTable([["",""]]); sign.setBorderWidth(0);
   var stampCell=sign.getCell(0,0), signCell=sign.getCell(0,1);
-  [stampCell,signCell].forEach(function(cell){cell.setPaddingTop(8);cell.setPaddingBottom(2);cell.setPaddingLeft(4);cell.setPaddingRight(4);});
+  [stampCell,signCell].forEach(function(cell){cell.setPaddingTop(2);cell.setPaddingBottom(0);cell.setPaddingLeft(4);cell.setPaddingRight(4);});
   try {
     var stampUrl="https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/functions/slgan_signature_stamp.png";
     var stampResponse=UrlFetchApp.fetch(stampUrl,{muteHttpExceptions:true});
-    if(stampResponse.getResponseCode()>=200&&stampResponse.getResponseCode()<300) stampCell.getChild(0).asParagraph().appendInlineImage(stampResponse.getBlob()).setWidth(76);
+    if(stampResponse.getResponseCode()>=200&&stampResponse.getResponseCode()<300) {
+      var stampImage=stampCell.getChild(0).asParagraph().appendInlineImage(stampResponse.getBlob());
+      var sw=stampImage.getWidth(), sh=stampImage.getHeight(), ss=(sw>0&&sh>0)?Math.min(72/sw,42/sh,1):1;
+      stampImage.setWidth(Math.max(1,Math.round(sw*ss))).setHeight(Math.max(1,Math.round(sh*ss)));
+    }
   } catch(stampError) { console.warn("Invoice stamp unavailable: "+stampError); }
-  var signP=signCell.getChild(0).asParagraph(); signP.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
-  signP.appendText("For Sri Lakshmi Ganapathi\n").setForegroundColor(ink).setFontSize(9).setBold(true);
-  signP.appendText("Authorised Signatory").setForegroundColor(muted).setFontSize(8);
-
+  var signP=signCell.getChild(0).asParagraph(); signP.setAlignment(DocumentApp.HorizontalAlignment.RIGHT).setSpacingBefore(0).setSpacingAfter(0);
+  signP.appendText("For Sri Lakshmi Ganapathi\n").setForegroundColor(ink).setFontSize(8).setBold(true);
+  signP.appendText("Authorised Signatory").setForegroundColor(muted).setFontSize(7);
   var footer=body.appendParagraph("Thank you for choosing Sri Lakshmi Ganapathi Ayurveda Nilayam.");
-  footer.setAlignment(DocumentApp.HorizontalAlignment.CENTER).setForegroundColor(green).setFontSize(8).setItalic(true).setSpacingBefore(12);
+  footer.setAlignment(DocumentApp.HorizontalAlignment.CENTER).setForegroundColor(green).setFontSize(7).setItalic(true).setSpacingBefore(5).setSpacingAfter(0);
   doc.saveAndClose();
   var file=DriveApp.getFileById(doc.getId());
   try { return file.getAs(MimeType.PDF).setName(orderId+".pdf"); }
   finally { file.setTrashed(true); }
 }
-
 function invoiceHtml(orderId, order, items, total) {
   const rows = items.map(function(it) {
     const name = it.productName || it.name || "Product";
