@@ -40,7 +40,7 @@ function doPost(e) {
       } catch (adminErr) {
         adminNotification = "Customer email sent; admin notification failed: " + String(adminErr && adminErr.message || adminErr).slice(0, 180);
         try {
-          firestorePatch("orders/" + encodeURIComponent(orderId), {
+          firestorePatch("orders/" + encodeURIComponent(documentId), {
             adminEmailStatus: { stringValue: "failed" },
             adminEmailError: { stringValue: String(adminErr && adminErr.message || adminErr).slice(0, 300) },
             updatedAt: { timestampValue: new Date().toISOString() }
@@ -155,7 +155,7 @@ function sendOrderConfirmation(documentId, displayOrderId, order) {
     return "Order confirmation and PDF attachment emailed.";
   } catch (err) {
     try {
-      firestorePatch("orders/" + encodeURIComponent(orderId), {
+      firestorePatch("orders/" + encodeURIComponent(documentId), {
         invoiceStatus: { stringValue: "failed" },
         invoiceEmailStatus: { stringValue: "failed" },
         invoiceEmailError: { stringValue: String(err && err.message || err).slice(0, 300) },
