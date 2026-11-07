@@ -6550,19 +6550,30 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                             if (directOrderAddress.isBlank()) {
                                 val addressId = order["deliveryAddressId"]?.toString()?.trim().orEmpty()
                                 val userId = (order["customerId"] ?: order["userId"])?.toString()?.trim().orEmpty()
-                                if (addressId.isNotBlank()) {
-                                    db.collection("addresses").document(addressId).get()
-                                        .addOnSuccessListener { snapshot ->
-                                            if (snapshot.exists()) fetchedOrderAddress = extractOrderAddress(snapshot.data.orEmpty())
-                                        }
-                                } else if (userId.isNotBlank()) {
+
+                                fun loadCustomerSavedAddress() {
+                                    if (userId.isBlank()) return
                                     db.collection("addresses").whereEqualTo("userId", userId).get()
                                         .addOnSuccessListener { snapshot ->
                                             val preferred = snapshot.documents.firstOrNull { it.getString("label").equals("Home", true) }
                                                 ?: snapshot.documents.firstOrNull { it.getBoolean("isDefault") == true || it.getBoolean("default") == true }
                                                 ?: snapshot.documents.firstOrNull()
-                                            if (preferred != null) fetchedOrderAddress = extractOrderAddress(preferred.data.orEmpty())
+                                            if (preferred != null) {
+                                                fetchedOrderAddress = extractOrderAddress(preferred.data.orEmpty())
+                                            }
                                         }
+                                }
+
+                                if (addressId.isNotBlank()) {
+                                    db.collection("addresses").document(addressId).get()
+                                        .addOnSuccessListener { snapshot ->
+                                            val resolved = if (snapshot.exists()) extractOrderAddress(snapshot.data.orEmpty()) else ""
+                                            if (resolved.isNotBlank()) fetchedOrderAddress = resolved
+                                            else loadCustomerSavedAddress()
+                                        }
+                                        .addOnFailureListener { loadCustomerSavedAddress() }
+                                } else {
+                                    loadCustomerSavedAddress()
                                 }
                             }
                         }
