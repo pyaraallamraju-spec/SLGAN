@@ -11887,7 +11887,7 @@ private fun AddAddressDetailsPage(
     onSaved: (Map<String, Any>) -> Unit
 ) {
     val context = LocalContext.current
-    val addressLanguage = addressLanguage
+    val addressLanguage = LocalAppLanguage.current
     val user = FirebaseAuth.getInstance().currentUser
     var city by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("city")?.toString().orEmpty()) }
     var area by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("area")?.toString().orEmpty()) }
