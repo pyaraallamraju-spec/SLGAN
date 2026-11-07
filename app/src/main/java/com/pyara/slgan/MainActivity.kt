@@ -12653,7 +12653,13 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     Spacer(Modifier.width(14.dp))
                     Column(Modifier.weight(1f)) {
                         Text(
-                            listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ").ifBlank { nickname.ifBlank { "SLGAN Customer" } },
+                            listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ") { namePart ->
+                                if (LocalAppLanguage.current == "Telugu" && namePart.equals("Amruth", ignoreCase = true)) "అమృత్" else namePart
+                            }.ifBlank {
+                                nickname.takeIf { it.isNotBlank() }?.let { savedNickname ->
+                                    if (LocalAppLanguage.current == "Telugu" && savedNickname.equals("Amruth", ignoreCase = true)) "అమృత్" else savedNickname
+                                } ?: "SLGAN Customer"
+                            },
                             color = Ink, fontWeight = FontWeight.Bold
                         )
                         Text(user?.email.orEmpty(), color = Muted, fontSize = 12.sp)
