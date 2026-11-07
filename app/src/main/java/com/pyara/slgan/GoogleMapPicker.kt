@@ -49,10 +49,21 @@ internal fun GoogleMapPicker(
     modifier: Modifier = Modifier,
     initialLatitude: Double,
     initialLongitude: Double,
+    language: String = "English",
     onLocationSelected: (Double, Double) -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    fun mapText(english: String): String = if (language == "Telugu") {
+        when (english) {
+            "Enter an address or place name." -> "చిరునామా లేదా ప్రదేశం పేరు నమోదు చేయండి."
+            "No matching address found. Try a nearby landmark or a more specific address." -> "సరిపోలే చిరునామా కనుగొనబడలేదు. సమీపంలోని గుర్తింపు స్థలం లేదా మరింత స్పష్టమైన చిరునామాను ప్రయత్నించండి."
+            "Search address or place" -> "చిరునామా లేదా ప్రదేశం వెతకండి"
+            "Search address" -> "చిరునామా వెతకండి"
+            "Delivery location" -> "డెలివరీ స్థానం"
+            else -> english
+        }
+    } else english
     val initialPosition = LatLng(initialLatitude, initialLongitude)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(initialPosition, 16f)
@@ -66,7 +77,7 @@ internal fun GoogleMapPicker(
     fun searchAddress() {
         val query = searchQuery.trim()
         if (query.isBlank()) {
-            searchError = "Enter an address or place name."
+            searchError = mapText("Enter an address or place name.")
             searchResults = emptyList()
             return
         }
@@ -78,14 +89,14 @@ internal fun GoogleMapPicker(
                     if (!Geocoder.isPresent()) emptyList()
                     else {
                         @Suppress("DEPRECATION")
-                        Geocoder(context, Locale.getDefault()).getFromLocationName(query, 6)
+                        Geocoder(context, if (language == "Telugu") Locale.forLanguageTag("te-IN") else Locale.ENGLISH).getFromLocationName(query, 6)
                             ?.toList().orEmpty()
                     }
                 }.getOrDefault(emptyList())
             }
             searching = false
             searchResults = results
-            if (results.isEmpty()) searchError = "No matching address found. Try a nearby landmark or a more specific address."
+            if (results.isEmpty()) searchError = mapText("No matching address found. Try a nearby landmark or a more specific address.")
         }
     }
 
@@ -131,7 +142,7 @@ internal fun GoogleMapPicker(
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             shape = RoundedCornerShape(12.dp),
-            placeholder = { Text("Search address or place") },
+            placeholder = { Text(mapText("Search address or place")) },
             leadingIcon = { Icon(Icons.Default.LocationOn, contentDescription = null) },
             trailingIcon = {
                 IconButton(onClick = { searchAddress() }, enabled = !searching) {
@@ -141,7 +152,7 @@ internal fun GoogleMapPicker(
                             strokeWidth = 2.dp
                         )
                     } else {
-                        Icon(Icons.Default.Search, contentDescription = "Search address")
+                        Icon(Icons.Default.Search, contentDescription = mapText("Search address"))
                     }
                 }
             }
@@ -184,7 +195,7 @@ internal fun GoogleMapPicker(
         ) {
             Marker(
                 state = markerState,
-                title = "Delivery location",
+                title = mapText("Delivery location"),
                 draggable = true
             )
         }
