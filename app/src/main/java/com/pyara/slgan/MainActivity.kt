@@ -12473,15 +12473,15 @@ private fun ReviewAddressPage(
         Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Default.Person, contentDescription = tr("Receiver", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
-                Text("${tr("Receiver", LocalAppLanguage.current)}:  $receiverName", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Text(receiverName, color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Default.Phone, contentDescription = tr("Mobile number", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
-                Text("${tr("Mobile", LocalAppLanguage.current)}:  $receiverPhone", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Text(receiverPhone, color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Default.Home, contentDescription = tr("Complete address", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
-                Text("${tr("Complete address", LocalAppLanguage.current)}:  $fullAddress", color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                Text(fullAddress, color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
         }
         val hasCompleteAddress = fullAddress.isNotBlank() &&
