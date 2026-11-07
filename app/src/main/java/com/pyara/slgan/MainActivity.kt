@@ -51,6 +51,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.BorderStroke
@@ -6547,6 +6548,8 @@ private fun ShopScreen(
 ) {
     val cartCount = products.sumOf { product -> (cart[product.id] ?: 0).coerceAtLeast(0) }
     val accountsScrollState = rememberScrollState()
+    // Keep the profile's scroll position while its subpages temporarily replace it.
+    val profileScrollState = rememberScrollState()
     Scaffold(containerColor = if (selectedTab == "Orders" || selectedTab == "MyOrders") Color.White else Cream, topBar = {
         Row(Modifier.fillMaxWidth().shadow(6.dp).background(appThemedColor(Color.White)).padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(painter = painterResource(id = R.drawable.slgan_screen_logo), contentDescription = "SLGAN logo", contentScale = ContentScale.Fit, modifier = Modifier.size(42.dp).clip(CircleShape).background(appThemedColor(Color.White)))
@@ -6642,7 +6645,7 @@ private fun ShopScreen(
                 onLanguageChange = onLanguageChange
             )
             "Help" -> HelpPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
-            "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, onBack = { onTabChange("Accounts") })
+            "Profile" -> ProfilePage(Modifier.padding(padding), onSignOut, appLanguage, onLanguageChange, onBack = { onTabChange("Accounts") }, scrollState = profileScrollState)
             "AddressBook" -> AddressBookPage(Modifier.padding(padding), onBack = { onTabChange("Accounts") })
             "Wishlist" -> WishlistPage(Modifier.padding(padding), products, productRatings, productLikes, cart, onToggleLike, onAdd, onProductClick, onBack = { onTabChange("Accounts") }, appLanguage = appLanguage)
             "About" -> AboutPage(Modifier.padding(padding), appLanguage) { onTabChange("Accounts") }
@@ -12617,7 +12620,7 @@ private fun ReviewAddressPage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, initialSection: String = "Profile", onBack: (() -> Unit)? = null, onProfileComplete: (() -> Unit)? = null) {
+private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: String, onLanguageChange: (String) -> Unit, initialSection: String = "Profile", onBack: (() -> Unit)? = null, onProfileComplete: (() -> Unit)? = null, scrollState: ScrollState? = null) {
     val user = remember { FirebaseAuth.getInstance().currentUser }
     val uid = user?.uid
     val context = LocalContext.current
@@ -12697,7 +12700,7 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
     Column(
         modifier.fillMaxSize()
             .background(appThemedColor(Color(0xFFF3F5FA)))
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState ?: rememberScrollState())
             .padding(horizontal = if (initialSection == "Profile") 0.dp else 16.dp, vertical = if (initialSection == "Profile") 0.dp else 18.dp)
             .padding(bottom = if (initialSection == "Profile") 28.dp else 0.dp)
     ) {
