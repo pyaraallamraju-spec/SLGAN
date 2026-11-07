@@ -23,15 +23,16 @@ function doPost(e) {
     const user = verifyFirebaseUser(String(input.idToken || ""));
     const action = String(input.action || "orderPlaced");
     if (action === "orderPlaced") {
-      const orderId = clean(input.orderId || input.documentId, 80);
-      if (!orderId) throw new Error("Missing order ID.");
-      const order = firestoreGet("orders/" + encodeURIComponent(orderId));
+      const documentId = clean(input.documentId || input.orderId, 120);
+      if (!documentId) throw new Error("Missing Firestore order document ID.");
+      const order = firestoreGet("orders/" + encodeURIComponent(documentId));
       if (order.customerId !== user.localId) throw new Error("Order does not belong to the signed-in customer.");
-      const result = sendOrderConfirmation(orderId, order);
+      const displayOrderId = clean(order.orderId || input.orderId || documentId, 80);
+      const result = sendOrderConfirmation(documentId, displayOrderId, order);
       let adminNotification = "Admin notification not configured.";
       try {
-        adminNotification = sendAdminOrderNotification(orderId, order);
-        firestorePatch("orders/" + encodeURIComponent(orderId), {
+        adminNotification = sendAdminOrderNotification(displayOrderId, order);
+        firestorePatch("orders/" + encodeURIComponent(documentId), {
           adminEmailStatus: { stringValue: "sent" },
           adminEmailSentAt: { timestampValue: new Date().toISOString() },
           updatedAt: { timestampValue: new Date().toISOString() }
@@ -51,10 +52,11 @@ function doPost(e) {
     }
     if (action === "statusUpdated") {
       if (!isAdmin(user.localId)) throw new Error("Only an authorized administrator may send order status updates.");
-      const orderId = clean(input.orderId || input.documentId, 80);
+      const documentId = clean(input.documentId || input.orderId, 120);
       const status = clean(input.status, 40).toLowerCase();
-      if (!orderId || !["accepted", "rejected"].includes(status)) throw new Error("Invalid order ID or status.");
-      const order = firestoreGet("orders/" + encodeURIComponent(orderId));
+      if (!documentId || !["accepted", "rejected"].includes(status)) throw new Error("Invalid order document ID or status.");
+      const order = firestoreGet("orders/" + encodeURIComponent(documentId));
+      const displayOrderId = clean(order.orderId || documentId, 80);
       if (String(order.orderStatus || "").toLowerCase() !== status) throw new Error("The order status has not been saved yet.");
       const message = status === "accepted"
         ? "Your order has been accepted by Sri Lakshmi Ganapathi Ayurvedic Nilayam. We will contact you about dispatch and delivery."
@@ -63,9 +65,9 @@ function doPost(e) {
         "Your SLGAN order status has changed.",
         '<p style="margin:0 0 16px">Dear ' + escapeHtml(order.customerName || "Customer") + ',</p>' +
         '<p style="margin:0 0 18px">' + escapeHtml(message) + '</p>' +
-        emailInfoTable([["Order ID", orderId], ["Current status", status.toUpperCase()]]) +
+        emailInfoTable([["Order ID", displayOrderId], ["Current status", status.toUpperCase()]]) +
         emailButton("Visit SLGAN", "https://slgan-a364e.web.app/"));
-      GmailApp.sendEmail(order.email, "SLGAN order status: " + status.toUpperCase() + " — " + orderId,
+      GmailApp.sendEmail(order.email, "SLGAN order status: " + status.toUpperCase() + " — " + displayOrderId,
         "Dear " + (order.customerName || "Customer") + ",\\n\\n" + message +
         "\\n\\nOrder ID: " + orderId + "\\nCurrent status: " + status.toUpperCase() +
         "\\n\\nSri Lakshmi Ganapathi Ayurvedic Nilayam",
@@ -74,9 +76,11 @@ function doPost(e) {
     }
     if (action === "retryInvoice") {
       if (!isAdmin(user.localId)) throw new Error("Only an authorized administrator may retry invoice emails.");
-      const orderId = clean(input.orderId || input.documentId, 80);
-      const order = firestoreGet("orders/" + encodeURIComponent(orderId));
-      return jsonOut({ success: true, ok: true, message: sendOrderConfirmation(orderId, order) });
+      const documentId = clean(input.documentId || input.orderId, 120);
+      if (!documentId) throw new Error("Missing Firestore order document ID.");
+      const order = firestoreGet("orders/" + encodeURIComponent(documentId));
+      const displayOrderId = clean(order.orderId || documentId, 80);
+      return jsonOut({ success: true, ok: true, message: sendOrderConfirmation(documentId, displayOrderId, order) });
     }
     throw new Error("Unsupported action.");
   } catch (err) {
@@ -111,13 +115,13 @@ function sendAdminOrderNotification(orderId, order) {
   return "Admin notification sent.";
 }
 
-function sendOrderConfirmation(orderId, order) {
+function sendOrderConfirmation(documentId, displayOrderId, order) {
   if (!order.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(order.email))) throw new Error("The order has no valid customer email.");
   const props = PropertiesService.getScriptProperties();
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    const docPath = "orders/" + encodeURIComponent(orderId);
+    const docPath = "orders/" + encodeURIComponent(documentId);
     const latest = firestoreGet(docPath);
     if (latest.invoiceEmailStatus === "sent" && latest.invoiceStatus === "generated") {
       return "Invoice email was already sent.";
@@ -125,10 +129,10 @@ function sendOrderConfirmation(orderId, order) {
     const items = Array.isArray(order.items) ? order.items : [];
     if (!items.length) throw new Error("The order contains no items.");
     const total = Number(order.grandTotal != null ? order.grandTotal : order.subtotal) || 0;
-    const pdf = buildInvoicePdf(orderId, order, items, total);
+    const pdf = buildInvoicePdf(displayOrderId, order, items, total);
     GmailApp.sendEmail(
       String(order.email),
-      "SLGAN order confirmation and invoice — " + orderId,
+      "SLGAN order confirmation and invoice — " + displayOrderId,
       "Thank you for your order with Sri Lakshmi Ganapathi Ayurvedic Nilayam. Your order confirmation PDF is attached. Order status: " + (order.orderStatus || "pending verification") + ". No online payment has been collected.",
       {
         htmlBody: emailFrame("Order confirmed", "Thank you for choosing Sri Lakshmi Ganapathi Ayurveda Nilayam.",
