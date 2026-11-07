@@ -165,138 +165,27 @@ function sendOrderConfirmation(orderId, order) {
 }
 
 function buildInvoicePdf(orderId, order, items, total) {
-  // Keep the Apps Script email workflow visually aligned with the approved
-  // forest-green Firebase invoice design, including the SLGAN rubber stamp.
   const doc = DocumentApp.create("SLGAN " + orderId + " invoice");
   const body = doc.getBody();
-  body.clear();
-  body.setMarginTop(34).setMarginBottom(36).setMarginLeft(38).setMarginRight(38);
-
-  const green = "#244F43";
-  const pale = "#F1F5F2";
-  const ink = "#252B2A";
-  const muted = "#69736F";
-  const white = "#FFFFFF";
-  const dateText = Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a");
-  const moneyText = function(value) { return "₹" + (Number(value) || 0).toFixed(2); };
-
-  const brand = body.appendParagraph("SRI LAKSHMI GANAPATHI");
-  brand.setHeading(DocumentApp.ParagraphHeading.TITLE);
-  brand.setForegroundColor(white).setBackgroundColor(green).setBold(true)
-    .setFontFamily("Arial").setFontSize(20).setSpacingBefore(0).setSpacingAfter(0)
-    .setIndentStart(12).setIndentEnd(12);
-  const subBrand = body.appendParagraph("AYURVEDA NILAYAM  |  ESTD. 1900");
-  subBrand.setForegroundColor(white).setBackgroundColor(green).setFontFamily("Arial")
-    .setFontSize(10).setBold(true).setIndentStart(12).setIndentEnd(12)
-    .setSpacingBefore(0).setSpacingAfter(12);
-  const title = body.appendParagraph("ORDER CONFIRMATION  |  PROVISIONAL INVOICE");
-  title.setForegroundColor(green).setBold(true).setFontFamily("Arial").setFontSize(13)
-    .setSpacingBefore(10).setSpacingAfter(8);
-
-  const refTable = body.appendTable([
-    ["ORDER REFERENCE", "DATE"],
-    [String(orderId), dateText]
-  ]);
-  refTable.setBorderColor("#DCE4DF").setBorderWidth(1);
-  for (let r = 0; r < refTable.getNumRows(); r++) {
-    for (let c = 0; c < refTable.getRow(r).getNumCells(); c++) {
-      const cell = refTable.getCell(r).getCell(c);
-      cell.setPaddingTop(6).setPaddingBottom(6).setPaddingLeft(8).setPaddingRight(8);
-      cell.setBackgroundColor(r === 0 ? pale : white);
-      cell.getChild(0).asParagraph().setFontFamily("Arial").setFontSize(r === 0 ? 8 : 9)
-        .setBold(r === 0 || c === 0).setForegroundColor(r === 0 ? green : ink);
-    }
-  }
-
-  body.appendParagraph("CUSTOMER & DELIVERY DETAILS").setForegroundColor(green)
-    .setBold(true).setFontFamily("Arial").setFontSize(9).setSpacingBefore(14).setSpacingAfter(5);
-  const details = body.appendTable([
-    ["BILLED TO", "DELIVERY ADDRESS"],
-    [String(order.customerName || "Customer") + "\\n" + String(order.email || "") + "\\n" + String(order.phone || order.deliveryPhone || ""),
-     String(order.shippingAddress || order.deliveryAddress || "")]
-  ]);
-  details.setBorderColor("#DCE4DF").setBorderWidth(1);
-  for (let r = 0; r < details.getNumRows(); r++) {
-    for (let c = 0; c < details.getRow(r).getNumCells(); c++) {
-      const cell = details.getCell(r).getCell(c);
-      cell.setPaddingTop(7).setPaddingBottom(7).setPaddingLeft(8).setPaddingRight(8)
-        .setBackgroundColor(r === 0 ? pale : white);
-      cell.getChild(0).asParagraph().setFontFamily("Arial").setFontSize(r === 0 ? 8 : 9)
-        .setBold(r === 0).setForegroundColor(r === 0 ? green : ink);
-    }
-  }
-
-  body.appendParagraph("ORDER ITEMS").setForegroundColor(green).setBold(true)
-    .setFontFamily("Arial").setFontSize(9).setSpacingBefore(14).setSpacingAfter(5);
-  const rows = [["ITEM DESCRIPTION", "QTY", "UNIT PRICE", "AMOUNT"]];
+  body.appendParagraph("Sri Lakshmi Ganapathi Ayurvedic Nilayam").setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  body.appendParagraph("ORDER CONFIRMATION / PROVISIONAL INVOICE").setHeading(DocumentApp.ParagraphHeading.HEADING2);
+  body.appendParagraph("Order ID: " + orderId);
+  body.appendParagraph("Date: " + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a"));
+  body.appendParagraph("Customer: " + (order.customerName || ""));
+  body.appendParagraph("Email: " + (order.email || ""));
+  body.appendParagraph("Phone: " + (order.phone || order.deliveryPhone || ""));
+  body.appendParagraph("Delivery address: " + (order.shippingAddress || order.deliveryAddress || ""));
+  const tableRows = [["Product", "Qty", "Unit price", "Amount"]];
   items.forEach(function(it) {
     const qty = Number(it.quantity) || 0;
     const unit = Number(it.unitPrice != null ? it.unitPrice : it.price) || 0;
     const line = Number(it.lineTotal != null ? it.lineTotal : unit * qty) || 0;
-    rows.push([String(it.productName || it.name || "Product"), String(qty), moneyText(unit), moneyText(line)]);
+    tableRows.push([String(it.productName || it.name || "Product"), String(qty), "₹" + unit.toFixed(2), "₹" + line.toFixed(2)]);
   });
-  const table = body.appendTable(rows);
-  table.setBorderColor("#DCE4DF").setBorderWidth(0.5);
-  for (let r = 0; r < table.getNumRows(); r++) {
-    for (let c = 0; c < table.getRow(r).getNumCells(); c++) {
-      const cell = table.getCell(r).getCell(c);
-      cell.setPaddingTop(6).setPaddingBottom(6).setPaddingLeft(6).setPaddingRight(6);
-      cell.setBackgroundColor(r === 0 ? green : (r % 2 === 0 ? "#F7F9F7" : white));
-      const p = cell.getChild(0).asParagraph();
-      p.setFontFamily("Arial").setFontSize(r === 0 ? 8 : 9)
-        .setBold(r === 0 || c === 0).setForegroundColor(r === 0 ? white : ink);
-      if (c > 0) p.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
-    }
-  }
-
-  const totalTable = body.appendTable([
-    ["PRODUCT TOTAL", moneyText(total)],
-    ["ORDER TOTAL", moneyText(total)]
-  ]);
-  totalTable.setBorderColor("#DCE4DF").setBorderWidth(0);
-  for (let r = 0; r < totalTable.getNumRows(); r++) {
-    for (let c = 0; c < 2; c++) {
-      const cell = totalTable.getCell(r).getCell(c);
-      cell.setPaddingTop(7).setPaddingBottom(7).setPaddingLeft(8).setPaddingRight(8)
-        .setBackgroundColor(r === 1 ? pale : white);
-      cell.getChild(0).asParagraph().setFontFamily("Arial").setFontSize(r === 1 ? 11 : 9)
-        .setBold(true).setForegroundColor(r === 1 ? green : muted)
-        .setAlignment(c === 0 ? DocumentApp.HorizontalAlignment.LEFT : DocumentApp.HorizontalAlignment.RIGHT);
-    }
-  }
-
-  const status = String(order.orderStatus || "pending verification").replace(/_/g, " ").toUpperCase();
-  body.appendParagraph("ORDER STATUS: " + status).setForegroundColor(green).setBold(true)
-    .setFontFamily("Arial").setFontSize(9).setSpacingBefore(10).setSpacingAfter(8);
-  body.appendParagraph("IMPORTANT INFORMATION").setForegroundColor(ink).setBold(true)
-    .setFontFamily("Arial").setFontSize(8).setSpacingBefore(8).setSpacingAfter(4);
-  body.appendParagraph("This document confirms receipt of your order request and is not a final tax invoice. No online payment is recorded as collected by this document. Delivery charges, applicable taxes and the final tax invoice, if required, will be confirmed by the seller.")
-    .setForegroundColor(muted).setFontFamily("Arial").setFontSize(8).setLineSpacing(115);
-
-  const signatory = body.appendTable([["", ""]]);
-  signatory.setBorderColor("#FFFFFF").setBorderWidth(0);
-  const signatoryText = signatory.getCell(0, 0);
-  signatoryText.setPaddingTop(4).setPaddingBottom(4).setPaddingLeft(0).setPaddingRight(8);
-  signatoryText.appendParagraph("For Sri Lakshmi Ganapathi Ayurveda Nilayam")
-    .setForegroundColor(ink).setBold(true).setFontFamily("Arial").setFontSize(9);
-  signatoryText.appendParagraph("______________________________")
-    .setForegroundColor(muted).setFontFamily("Arial").setFontSize(9);
-  signatoryText.appendParagraph("Authorized Signatory")
-    .setForegroundColor(muted).setFontFamily("Arial").setFontSize(8);
-
-  // The stamp is a public, versioned image in this repository; fetch it at
-  // document-generation time so the email PDF carries the same approved seal.
-  const stampUrl = "https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/functions/slgan_signature_stamp.png";
-  const stampResponse = UrlFetchApp.fetch(stampUrl, { muteHttpExceptions: true });
-  if (stampResponse.getResponseCode() >= 200 && stampResponse.getResponseCode() < 300) {
-    const stampCell = signatory.getCell(0, 1);
-    stampCell.setPaddingTop(0).setPaddingBottom(0).setPaddingLeft(8).setPaddingRight(0);
-    const stamp = stampCell.appendImage(stampResponse.getBlob().setName("slgan_signature_stamp.png"));
-    stamp.setWidth(112).setHeight(112);
-  } else {
-    console.error("SLGAN signature stamp could not be fetched; HTTP " + stampResponse.getResponseCode());
-  }
-
+  body.appendTable(tableRows);
+  body.appendParagraph("Product total: ₹" + total.toFixed(2)).setHeading(DocumentApp.ParagraphHeading.HEADING2);
+  body.appendParagraph("Order status: " + (order.orderStatus || "pending verification"));
+  body.appendParagraph("No online payment was collected. This document confirms receipt of the order request; it is not a final tax invoice. Delivery charges, applicable taxes and the final tax invoice, if required, will be confirmed by the seller.");
   doc.saveAndClose();
   const file = DriveApp.getFileById(doc.getId());
   const pdf = file.getAs(MimeType.PDF).setName(orderId + ".pdf");
