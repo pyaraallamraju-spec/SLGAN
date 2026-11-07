@@ -165,34 +165,241 @@ function sendOrderConfirmation(orderId, order) {
 }
 
 function buildInvoicePdf(orderId, order, items, total) {
-  const doc = DocumentApp.create("SLGAN " + orderId + " invoice");
-  const body = doc.getBody();
-  body.appendParagraph("Sri Lakshmi Ganapathi Ayurvedic Nilayam").setHeading(DocumentApp.ParagraphHeading.HEADING1);
-  body.appendParagraph("ORDER CONFIRMATION / PROVISIONAL INVOICE").setHeading(DocumentApp.ParagraphHeading.HEADING2);
-  body.appendParagraph("Order ID: " + orderId);
-  body.appendParagraph("Date: " + Utilities.formatDate(new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a"));
-  body.appendParagraph("Customer: " + (order.customerName || ""));
-  body.appendParagraph("Email: " + (order.email || ""));
-  body.appendParagraph("Phone: " + (order.phone || order.deliveryPhone || ""));
-  body.appendParagraph("Delivery address: " + (order.shippingAddress || order.deliveryAddress || ""));
-  const tableRows = [["Product", "Qty", "Unit price", "Amount"]];
-  items.forEach(function(it) {
-    const qty = Number(it.quantity) || 0;
-    const unit = Number(it.unitPrice != null ? it.unitPrice : it.price) || 0;
-    const line = Number(it.lineTotal != null ? it.lineTotal : unit * qty) || 0;
-    tableRows.push([String(it.productName || it.name || "Product"), String(qty), "₹" + unit.toFixed(2), "₹" + line.toFixed(2)]);
-  });
-  body.appendTable(tableRows);
-  body.appendParagraph("Product total: ₹" + total.toFixed(2)).setHeading(DocumentApp.ParagraphHeading.HEADING2);
-  body.appendParagraph("Order status: " + (order.orderStatus || "pending verification"));
-  body.appendParagraph("No online payment was collected. This document confirms receipt of the order request; it is not a final tax invoice. Delivery charges, applicable taxes and the final tax invoice, if required, will be confirmed by the seller.");
-  doc.saveAndClose();
-  const file = DriveApp.getFileById(doc.getId());
-  const pdf = file.getAs(MimeType.PDF).setName(orderId + ".pdf");
-  file.setTrashed(true);
-  return pdf;
-}
+  // Simple, isolated invoice renderer. Email and Firestore workflows stay untouched.
+  var doc = DocumentApp.create("SLGAN " + orderId + " invoice");
+  var body = doc.getBody();
+  var green = "#244F43";
+  var pale = "#EAF1ED";
+  var ink = "#252B2A";
+  var muted = "#68736D";
+  var white = "#FFFFFF";
+  var money = function(value) {
+    return "₹" + (Number(value) || 0).toFixed(2);
+  };
+  var dateText = Utilities.formatDate(
+    new Date(), "Asia/Kolkata", "dd MMM yyyy, hh:mm a"
+  );
 
+  body.clear();
+  body.setMarginTop(32);
+  body.setMarginBottom(32);
+  body.setMarginLeft(36);
+  body.setMarginRight(36);
+
+  var brand = body.appendParagraph("SRI LAKSHMI GANAPATHI");
+  brand.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  brand.setForegroundColor(green);
+  brand.setFontFamily("Arial");
+  brand.setFontSize(19);
+  brand.setBold(true);
+  brand.setSpacingAfter(2);
+
+  var sub = body.appendParagraph("AYURVEDA NILAYAM  |  ESTD. 1900");
+  sub.setForegroundColor(muted);
+  sub.setFontFamily("Arial");
+  sub.setFontSize(9);
+  sub.setBold(true);
+  sub.setSpacingAfter(16);
+
+  var heading = body.appendParagraph("ORDER CONFIRMATION / PROVISIONAL INVOICE");
+  heading.setForegroundColor(green);
+  heading.setFontFamily("Arial");
+  heading.setFontSize(12);
+  heading.setBold(true);
+  heading.setSpacingAfter(10);
+
+  var reference = body.appendTable([
+    ["ORDER ID", "DATE"],
+    [String(orderId), dateText]
+  ]);
+  reference.setBorderColor("#D5DFD9");
+  reference.setBorderWidth(1);
+  for (var r = 0; r < reference.getNumRows(); r++) {
+    for (var c = 0; c < reference.getRow(r).getNumCells(); c++) {
+      var cell = reference.getCell(r, c);
+      cell.setPaddingTop(6);
+      cell.setPaddingBottom(6);
+      cell.setPaddingLeft(7);
+      cell.setPaddingRight(7);
+      cell.setBackgroundColor(r === 0 ? pale : white);
+      var paragraph = cell.getChild(0).asParagraph();
+      paragraph.setFontFamily("Arial");
+      paragraph.setFontSize(r === 0 ? 8 : 9);
+      paragraph.setForegroundColor(r === 0 ? green : ink);
+      paragraph.setBold(r === 0);
+    }
+  }
+
+  var detailsHeading = body.appendParagraph("CUSTOMER & DELIVERY DETAILS");
+  detailsHeading.setForegroundColor(green);
+  detailsHeading.setFontFamily("Arial");
+  detailsHeading.setFontSize(9);
+  detailsHeading.setBold(true);
+  detailsHeading.setSpacingBefore(14);
+  detailsHeading.setSpacingAfter(5);
+
+  var details = body.appendTable([
+    ["CUSTOMER", "DELIVERY ADDRESS"],
+    [
+      String(order.customerName || "Customer") + "\n" +
+        String(order.email || "") + "\n" +
+        String(order.phone || order.deliveryPhone || ""),
+      String(order.shippingAddress || order.deliveryAddress || "")
+    ]
+  ]);
+  details.setBorderColor("#D5DFD9");
+  details.setBorderWidth(1);
+  for (var dr = 0; dr < details.getNumRows(); dr++) {
+    for (var dc = 0; dc < details.getRow(dr).getNumCells(); dc++) {
+      var detailCell = details.getCell(dr, dc);
+      detailCell.setPaddingTop(6);
+      detailCell.setPaddingBottom(6);
+      detailCell.setPaddingLeft(7);
+      detailCell.setPaddingRight(7);
+      detailCell.setBackgroundColor(dr === 0 ? pale : white);
+      var detailParagraph = detailCell.getChild(0).asParagraph();
+      detailParagraph.setFontFamily("Arial");
+      detailParagraph.setFontSize(dr === 0 ? 8 : 9);
+      detailParagraph.setForegroundColor(dr === 0 ? green : ink);
+      detailParagraph.setBold(dr === 0);
+    }
+  }
+
+  var itemsHeading = body.appendParagraph("ORDER ITEMS");
+  itemsHeading.setForegroundColor(green);
+  itemsHeading.setFontFamily("Arial");
+  itemsHeading.setFontSize(9);
+  itemsHeading.setBold(true);
+  itemsHeading.setSpacingBefore(14);
+  itemsHeading.setSpacingAfter(5);
+
+  var rows = [["PRODUCT", "QTY", "UNIT PRICE", "AMOUNT"]];
+  items.forEach(function(item) {
+    var quantity = Number(item.quantity) || 0;
+    var unitPrice = Number(
+      item.unitPrice != null ? item.unitPrice : item.price
+    ) || 0;
+    var lineTotal = Number(
+      item.lineTotal != null ? item.lineTotal : unitPrice * quantity
+    ) || 0;
+    rows.push([
+      String(item.productName || item.name || "Product"),
+      String(quantity),
+      money(unitPrice),
+      money(lineTotal)
+    ]);
+  });
+
+  var itemTable = body.appendTable(rows);
+  itemTable.setBorderColor("#D5DFD9");
+  itemTable.setBorderWidth(0.5);
+  for (var ir = 0; ir < itemTable.getNumRows(); ir++) {
+    for (var ic = 0; ic < itemTable.getRow(ir).getNumCells(); ic++) {
+      var itemCell = itemTable.getCell(ir, ic);
+      itemCell.setPaddingTop(6);
+      itemCell.setPaddingBottom(6);
+      itemCell.setPaddingLeft(5);
+      itemCell.setPaddingRight(5);
+      itemCell.setBackgroundColor(ir === 0 ? green : (ir % 2 === 0 ? pale : white));
+      var itemParagraph = itemCell.getChild(0).asParagraph();
+      itemParagraph.setFontFamily("Arial");
+      itemParagraph.setFontSize(ir === 0 ? 8 : 9);
+      itemParagraph.setForegroundColor(ir === 0 ? white : ink);
+      itemParagraph.setBold(ir === 0 || ic === 0);
+      if (ic > 0) {
+        itemParagraph.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
+      }
+    }
+  }
+
+  var totals = body.appendTable([
+    ["PRODUCT TOTAL", money(total)],
+    ["ORDER TOTAL", money(total)]
+  ]);
+  totals.setBorderColor("#FFFFFF");
+  totals.setBorderWidth(0);
+  for (var tr = 0; tr < totals.getNumRows(); tr++) {
+    for (var tc = 0; tc < 2; tc++) {
+      var totalCell = totals.getCell(tr, tc);
+      totalCell.setPaddingTop(6);
+      totalCell.setPaddingBottom(6);
+      totalCell.setPaddingLeft(7);
+      totalCell.setPaddingRight(7);
+      totalCell.setBackgroundColor(tr === 1 ? pale : white);
+      var totalParagraph = totalCell.getChild(0).asParagraph();
+      totalParagraph.setFontFamily("Arial");
+      totalParagraph.setFontSize(tr === 1 ? 11 : 9);
+      totalParagraph.setForegroundColor(tr === 1 ? green : muted);
+      totalParagraph.setBold(true);
+      totalParagraph.setAlignment(
+        tc === 0 ? DocumentApp.HorizontalAlignment.LEFT :
+          DocumentApp.HorizontalAlignment.RIGHT
+      );
+    }
+  }
+
+  var status = body.appendParagraph(
+    "ORDER STATUS: " +
+      String(order.orderStatus || "pending verification").replace(/_/g, " ").toUpperCase()
+  );
+  status.setForegroundColor(green);
+  status.setFontFamily("Arial");
+  status.setFontSize(9);
+  status.setBold(true);
+  status.setSpacingBefore(12);
+
+  var noteTitle = body.appendParagraph("IMPORTANT INFORMATION");
+  noteTitle.setForegroundColor(ink);
+  noteTitle.setFontFamily("Arial");
+  noteTitle.setFontSize(8);
+  noteTitle.setBold(true);
+  noteTitle.setSpacingBefore(8);
+
+  var note = body.appendParagraph(
+    "This document confirms receipt of your order request and is not a final tax invoice. " +
+    "No online payment is recorded as collected by this document. Delivery charges, " +
+    "applicable taxes and the final tax invoice, if required, will be confirmed by the seller."
+  );
+  note.setForegroundColor(muted);
+  note.setFontFamily("Arial");
+  note.setFontSize(8);
+
+  var signoff = body.appendParagraph("For Sri Lakshmi Ganapathi Ayurveda Nilayam");
+  signoff.setForegroundColor(ink);
+  signoff.setFontFamily("Arial");
+  signoff.setFontSize(9);
+  signoff.setBold(true);
+  signoff.setSpacingBefore(18);
+
+  // Optional stamp: a fetch failure must not prevent the customer email.
+  try {
+    var stampUrl = "https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/functions/slgan_signature_stamp.png";
+    var response = UrlFetchApp.fetch(stampUrl, { muteHttpExceptions: true });
+    if (response.getResponseCode() >= 200 && response.getResponseCode() < 300) {
+      var stampParagraph = body.appendParagraph("");
+      var stampImage = stampParagraph.appendInlineImage(response.getBlob());
+      stampImage.setWidth(92);
+      stampImage.setHeight(92);
+    } else {
+      console.warn("Invoice stamp unavailable; continuing without stamp.");
+    }
+  } catch (stampError) {
+    console.warn("Invoice stamp fetch failed; continuing without stamp: " + stampError);
+  }
+
+  var signature = body.appendParagraph("Authorized Signatory");
+  signature.setForegroundColor(muted);
+  signature.setFontFamily("Arial");
+  signature.setFontSize(8);
+
+  doc.saveAndClose();
+  var documentFile = DriveApp.getFileById(doc.getId());
+  try {
+    return documentFile.getAs(MimeType.PDF).setName(orderId + ".pdf");
+  } finally {
+    documentFile.setTrashed(true);
+  }
+}
 function invoiceHtml(orderId, order, items, total) {
   const rows = items.map(function(it) {
     const name = it.productName || it.name || "Product";
