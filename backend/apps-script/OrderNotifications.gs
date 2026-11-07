@@ -329,8 +329,9 @@ function buildInvoicePdf(orderId, order, items, total) {
     cell.setPaddingTop(4); cell.setPaddingBottom(0); cell.setPaddingLeft(5); cell.setPaddingRight(5);
     cell.setVerticalAlignment(DocumentApp.VerticalAlignment.TOP);
   });
-  setPara(infoCell.getChild(0).asParagraph(),{color:C.green,size:8,bold:true,font:"Arial",after:3});
-  infoCell.getChild(0).asParagraph().setText("ORDER STATUS: "+cleanText(order.orderStatus||"Pending verification").replace(/_/g," ").toUpperCase());
+  var statusP = infoCell.getChild(0).asParagraph();
+  statusP.setText("ORDER STATUS: "+cleanText(order.orderStatus||"Pending verification").replace(/_/g," ").toUpperCase());
+  setPara(statusP,{color:C.green,size:8,bold:true,font:"Arial",after:3});
   setPara(infoCell.appendParagraph("PAYMENT: "+cleanText(order.paymentStatus||"Not collected").replace(/_/g," ").toUpperCase()),{color:C.muted,size:7,font:"Arial",after:7});
   setPara(infoCell.appendParagraph("IMPORTANT NOTE"),{color:C.ink,size:7,bold:true,font:"Arial",after:2});
   setPara(infoCell.appendParagraph("This document confirms receipt of the order request and is not a final tax invoice. No online payment is recorded as collected. Delivery charges and applicable taxes are shown only where confirmed in the order record. The seller will confirm final details before dispatch."),{color:C.muted,size:7,font:"Arial",line:1.05});
