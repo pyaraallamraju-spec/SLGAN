@@ -59,11 +59,19 @@ jobs:
           if [ -z "$GOOGLE_MAPS_API_KEY" ]; then
             echo "GOOGLE_MAPS_API_KEY is not configured; building with an empty Maps key for compile verification."
           fi
-          gradle assembleDebug
-      - name: Print APK signing fingerprints
+          SLGAN_DEBUG_KEYSTORE="$HOME/.android/debug.keystore" gradle assembleDebug
+      - name: Verify APK uses the persistent debug signing key
         run: |
           APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)"
-          "$APKSIGNER" verify --print-certs app/build/outputs/apk/debug/app-debug.apk
+          KEY_SHA1="$(keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey | awk '/SHA1:/{print toupper($2); exit}' | tr -d ':')"
+          APK_SHA1="$("$APKSIGNER" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | awk '/certificate SHA-1 digest:/{print toupper($NF); exit}' | tr -d ':')"
+          echo "Persistent keystore SHA-1: $KEY_SHA1"
+          echo "APK signer SHA-1:          $APK_SHA1"
+          if [ -z "$KEY_SHA1" ] || [ "$KEY_SHA1" != "$APK_SHA1" ]; then
+            echo "ERROR: APK is not signed with the persistent SLGAN debug keystore."
+            exit 1
+          fi
+          echo "Verified: APK uses the persistent SLGAN debug signing key."
       - name: Rename APK to SLGAN.apk
         run: cp app/build/outputs/apk/debug/app-debug.apk SLGAN.apk
       - name: Upload debug APK
