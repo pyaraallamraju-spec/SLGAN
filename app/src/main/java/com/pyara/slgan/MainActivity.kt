@@ -6604,18 +6604,6 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                         }
                                     }
                                 }
-                                if (cardDeliveryAddress.isNotBlank()) {
-                                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
-                                        Icon(Icons.Default.LocationOn, contentDescription = tr("Delivery address", LocalAppLanguage.current), tint = AdminMuted, modifier = Modifier.size(15.dp).padding(top = 1.dp))
-                                        Spacer(Modifier.width(6.dp))
-                                        Column(Modifier.weight(1f)) {
-                                            Text(tr("Delivery address", LocalAppLanguage.current), color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                                            Text(cardDeliveryAddress, color = AdminInk, fontSize = 11.sp, lineHeight = 15.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
-                                        }
-                                    }
-                                } else {
-                                    Text(tr("Delivery address not available", LocalAppLanguage.current), color = AdminMuted, fontSize = 10.sp)
-                                }
                                 HorizontalDivider(color = Color(0xFFB5B5B5).copy(alpha = 0.55f))
                                 Text(tr("ORDER ITEMS", LocalAppLanguage.current) + " (" + itemRows.size + ")", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
                                 if (itemRows.isEmpty()) {
@@ -6665,6 +6653,18 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                     HorizontalDivider(color = AdminLightGray)
                                     Text(tr("Order ID", LocalAppLanguage.current) + ": " + displayId, color = AdminInk, fontSize = 11.sp)
                                     Text(tr("Email", LocalAppLanguage.current) + ": " + (order["email"]?.toString().orEmpty().ifBlank { tr("Information not available", LocalAppLanguage.current) }), color = AdminMuted, fontSize = 11.sp)
+                                    if (cardDeliveryAddress.isNotBlank()) {
+                                        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+                                            Icon(Icons.Default.LocationOn, contentDescription = tr("Delivery address", LocalAppLanguage.current), tint = AdminMuted, modifier = Modifier.size(15.dp).padding(top = 1.dp))
+                                            Spacer(Modifier.width(6.dp))
+                                            Column(Modifier.weight(1f)) {
+                                                Text(tr("Delivery address", LocalAppLanguage.current), color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                                Text(cardDeliveryAddress, color = AdminInk, fontSize = 11.sp, lineHeight = 15.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                                            }
+                                        }
+                                    } else {
+                                        Text(tr("Delivery address not available", LocalAppLanguage.current), color = AdminMuted, fontSize = 10.sp)
+                                    }
                                     Text(tr("Order time", LocalAppLanguage.current) + ": " + (ts?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: tr("Information not available", LocalAppLanguage.current)), color = AdminMuted, fontSize = 11.sp)
                                     if (pending) {
                                         Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
