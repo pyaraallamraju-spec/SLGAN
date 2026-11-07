@@ -6390,6 +6390,32 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
         val ts = row["createdAt"] as? com.google.firebase.Timestamp
         if (ts == null) "Date not available" else dateFormat.format(ts.toDate())
     }
+    fun extractOrderAddress(data: Map<*, *>): String {
+        val directKeys = listOf(
+            "deliveryAddress", "shippingAddress", "completeAddress", "complete_address",
+            "formattedAddress", "formatted_address", "fullAddress", "full_address",
+            "addressText", "address", "addressLine"
+        )
+        directKeys.firstNotNullOfOrNull { key ->
+            data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() }
+        }?.let { return it }
+        val nestedKeys = listOf("deliveryDetails", "shippingDetails", "addressDetails", "customerAddress", "address")
+        nestedKeys.forEach { key ->
+            val nested = data[key] as? Map<*, *>
+            if (nested != null) {
+                val nestedAddress = extractOrderAddress(nested)
+                if (nestedAddress.isNotBlank()) return nestedAddress
+            }
+        }
+        val partKeys = listOf(
+            "houseNo", "houseNumber", "building", "apartment", "addressLine1", "addressLine2",
+            "street", "streetName", "road", "landmark", "area", "locality", "village",
+            "town", "city", "district", "state", "pincode", "postalCode", "zipCode", "country"
+        )
+        return partKeys.mapNotNull { key ->
+            data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() }
+        }.distinct().joinToString(", ")
+    }
 
     Column(Modifier.fillMaxSize().background(AdminBackground)) {
         Row(Modifier.fillMaxWidth().background(Color.White).padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -6517,6 +6543,30 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                             ?: (order["subtotal"] as? Number)?.toDouble() ?: 0.0
                         val ts = order["createdAt"] as? com.google.firebase.Timestamp
                         val time = ts?.let { java.text.SimpleDateFormat("h:mm a", java.util.Locale.getDefault()).format(it.toDate()) } ?: "Time unavailable"
+                        val directOrderAddress = extractOrderAddress(order)
+                        var fetchedOrderAddress by remember(docId) { mutableStateOf("") }
+                        LaunchedEffect(docId, order["deliveryAddressId"], order["customerId"], order["userId"]) {
+                            fetchedOrderAddress = ""
+                            if (directOrderAddress.isBlank()) {
+                                val addressId = order["deliveryAddressId"]?.toString()?.trim().orEmpty()
+                                val userId = (order["customerId"] ?: order["userId"])?.toString()?.trim().orEmpty()
+                                if (addressId.isNotBlank()) {
+                                    db.collection("addresses").document(addressId).get()
+                                        .addOnSuccessListener { snapshot ->
+                                            if (snapshot.exists()) fetchedOrderAddress = extractOrderAddress(snapshot.data.orEmpty())
+                                        }
+                                } else if (userId.isNotBlank()) {
+                                    db.collection("addresses").whereEqualTo("userId", userId).get()
+                                        .addOnSuccessListener { snapshot ->
+                                            val preferred = snapshot.documents.firstOrNull { it.getString("label").equals("Home", true) }
+                                                ?: snapshot.documents.firstOrNull { it.getBoolean("isDefault") == true || it.getBoolean("default") == true }
+                                                ?: snapshot.documents.firstOrNull()
+                                            if (preferred != null) fetchedOrderAddress = extractOrderAddress(preferred.data.orEmpty())
+                                        }
+                                }
+                            }
+                        }
+                        val cardDeliveryAddress = directOrderAddress.ifBlank { fetchedOrderAddress }
                         val itemRows = order["items"] as? List<*> ?: emptyList<Any>()
                         Card(
                             Modifier.fillMaxWidth(),
@@ -6542,6 +6592,18 @@ private fun AdminOrdersScreen(onBack: () -> Unit) {
                                             Text(tr(status.replace("_", " ").split(" ").joinToString(" ") { it.replaceFirstChar { ch -> ch.uppercase() } }, LocalAppLanguage.current), Modifier.padding(horizontal = 8.dp, vertical = 5.dp), color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 9.sp, maxLines = 1)
                                         }
                                     }
+                                }
+                                if (cardDeliveryAddress.isNotBlank()) {
+                                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+                                        Icon(Icons.Default.LocationOn, contentDescription = tr("Delivery address", LocalAppLanguage.current), tint = AdminMuted, modifier = Modifier.size(15.dp).padding(top = 1.dp))
+                                        Spacer(Modifier.width(6.dp))
+                                        Column(Modifier.weight(1f)) {
+                                            Text(tr("Delivery address", LocalAppLanguage.current), color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                            Text(cardDeliveryAddress, color = AdminInk, fontSize = 11.sp, lineHeight = 15.sp, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                                        }
+                                    }
+                                } else {
+                                    Text(tr("Delivery address not available", LocalAppLanguage.current), color = AdminMuted, fontSize = 10.sp)
                                 }
                                 HorizontalDivider(color = Color(0xFFB5B5B5).copy(alpha = 0.55f))
                                 Text(tr("ORDER ITEMS", LocalAppLanguage.current) + " (" + itemRows.size + ")", color = AdminMuted, fontSize = 9.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.sp)
