@@ -3359,7 +3359,7 @@ private fun LoginScreen(
 ) {
     var showPassword by remember { mutableStateOf(false) }
     // Warm bronze-brown sampled to complement the botanical leaves in the Sign In artwork.
-    val loginFieldAccent = appThemedColor(Color(0xFF8A5A2B))
+    val loginFieldAccent = appThemedColor(Color(0xFF402414))
     Box(Modifier.fillMaxSize().background(Color.White)) {
         Image(
             painter = painterResource(R.drawable.slgan_login_background),
