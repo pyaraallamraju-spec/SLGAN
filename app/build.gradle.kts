@@ -15,15 +15,24 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file(System.getenv("SLGAN_DEBUG_KEYSTORE") ?: "${System.getProperty("user.home")}/.android/debug.keystore")
+            storePassword = System.getenv("SLGAN_DEBUG_KEYSTORE_PASSWORD") ?: "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = System.getenv("SLGAN_DEBUG_KEYSTORE_PASSWORD") ?: "android"
+        }
+    }
     buildFeatures { compose = true; buildConfig = true }
     buildTypes {
         getByName("debug") {
-            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"${project.findProperty("chatbotApiBaseUrl") ?: ""}\"")
-            buildConfigField("String", "EMAIL_OTP_SCRIPT_URL", "\"${project.findProperty("emailOtpScriptUrl") ?: "https://script.google.com/macros/s/AKfycbzJcIIJsb_F5k0IMp0xRMy4bzPuIi1laNa33EhchPQh7arPSRogCwqdg7LWfK3ij55Y4A/exec"}\"")
+            signingConfig = signingConfigs.getByName("debug")
+            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"\${project.findProperty("chatbotApiBaseUrl") ?: ""}\\"")
+            buildConfigField("String", "EMAIL_OTP_SCRIPT_URL", "\"\${project.findProperty("emailOtpScriptUrl") ?: "https://script.google.com/macros/s/AKfycbzJcIIJsb_F5k0IMp0xRMy4bzPuIi1laNa33EhchPQh7arPSRogCwqdg7LWfK3ij55Y4A/exec"}\\"")
         }
         getByName("release") {
-            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"${project.findProperty("chatbotApiBaseUrl") ?: ""}\"")
-            buildConfigField("String", "EMAIL_OTP_SCRIPT_URL", "\"${project.findProperty("emailOtpScriptUrl") ?: "https://script.google.com/macros/s/AKfycbzJcIIJsb_F5k0IMp0xRMy4bzPuIi1laNa33EhchPQh7arPSRogCwqdg7LWfK3ij55Y4A/exec"}\"")
+            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"\${project.findProperty("chatbotApiBaseUrl") ?: ""}\\"")
+            buildConfigField("String", "EMAIL_OTP_SCRIPT_URL", "\"\${project.findProperty("emailOtpScriptUrl") ?: "https://script.google.com/macros/s/AKfycbzJcIIJsb_F5k0IMp0xRMy4bzPuIi1laNa33EhchPQh7arPSRogCwqdg7LWfK3ij55Y4A/exec"}\\"")
         }
     }
     compileOptions {
