@@ -12494,13 +12494,14 @@ private fun ReviewAddressPage(
                 Button(
                     onClick = {
                         val value = customLabel.trim()
-                        customLabelError = when {
+                        val validationError = when {
                             value.isBlank() -> tr("Please enter a label name.", LocalAppLanguage.current)
                             value.length < 2 -> tr("Label name must be at least 2 characters.", LocalAppLanguage.current)
                             value.length > 30 -> tr("Label name must be 30 characters or fewer.", LocalAppLanguage.current)
                             else -> null
                         }
-                        if (customLabelError == null) {
+                        customLabelError = validationError
+                        if (validationError == null) {
                             showCustomLabelDialog = false
                             onSave(value)
                         }
