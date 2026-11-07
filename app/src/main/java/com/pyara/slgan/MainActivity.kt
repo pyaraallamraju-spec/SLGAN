@@ -12670,6 +12670,7 @@ private fun ReviewAddressPage(
     onEdit: () -> Unit,
     onSave: (String?) -> Unit
 ) {
+    val addressLanguage = LocalAppLanguage.current
     val reviewLanguage = addressLanguage
     var showCustomLabelDialog by remember { mutableStateOf(false) }
     var customLabel by remember { mutableStateOf("") }
