@@ -294,30 +294,56 @@ function buildInvoicePdf(orderId, order, items, total) {
     totalP.setAlignment(tc===0?DocumentApp.HorizontalAlignment.LEFT:DocumentApp.HorizontalAlignment.RIGHT);
   }
 
-  var status=body.appendParagraph("ORDER STATUS: "+cleanText(order.orderStatus||"Pending verification").replace(/_/g," ").toUpperCase());
-  status.setForegroundColor(green).setFontSize(8).setBold(true).setSpacingBefore(7).setSpacingAfter(1);
-  var payment=body.appendParagraph("PAYMENT: "+cleanText(order.paymentStatus||"Not collected").replace(/_/g," ").toUpperCase());
-  payment.setForegroundColor(muted).setFontSize(7).setSpacingBefore(0).setSpacingAfter(4);
-  var note=body.appendParagraph("IMPORTANT NOTE");
-  note.setForegroundColor(ink).setFontSize(7).setBold(true).setSpacingBefore(3).setSpacingAfter(2);
-  var disclaimer=body.appendParagraph("This document confirms receipt of the order request and is not a final tax invoice. No online payment is recorded as collected. Delivery charges and applicable taxes are shown only where confirmed in the order record. The seller will confirm final details before dispatch.");
-  disclaimer.setForegroundColor(muted).setFontSize(7).setLineSpacing(1.05).setSpacingBefore(0).setSpacingAfter(3);
+  // Two-column closing section: left-side order information and right-side
+  // original business stamp/signature start on the exact same table row.
+  var closing = body.appendTable([["",""]]);
+  closing.setBorderWidth(0);
+  var infoCell = closing.getCell(0,0), stampCell = closing.getCell(0,1);
+  infoCell.setWidth(320); stampCell.setWidth(196);
+  [infoCell,stampCell].forEach(function(cell) {
+    cell.setPaddingTop(2); cell.setPaddingBottom(0);
+    cell.setPaddingLeft(4); cell.setPaddingRight(4);
+    cell.setVerticalAlignment(DocumentApp.VerticalAlignment.TOP);
+  });
 
-  var sign=body.appendTable([["",""]]); sign.setBorderWidth(0);
-  var stampCell=sign.getCell(0,0), signCell=sign.getCell(0,1);
-  [stampCell,signCell].forEach(function(cell){cell.setPaddingTop(2);cell.setPaddingBottom(0);cell.setPaddingLeft(4);cell.setPaddingRight(4);});
+  var status = infoCell.getChild(0).asParagraph();
+  status.setText("ORDER STATUS: " + cleanText(order.orderStatus || "Pending verification").replace(/_/g," ").toUpperCase());
+  status.setForegroundColor(green).setFontSize(8).setBold(true).setSpacingBefore(0).setSpacingAfter(3);
+  var payment = infoCell.appendParagraph("PAYMENT: " + cleanText(order.paymentStatus || "Not collected").replace(/_/g," ").toUpperCase());
+  payment.setForegroundColor(muted).setFontSize(7).setSpacingBefore(0).setSpacingAfter(7);
+  var note = infoCell.appendParagraph("IMPORTANT NOTE");
+  note.setForegroundColor(ink).setFontSize(7).setBold(true).setSpacingBefore(0).setSpacingAfter(2);
+  var disclaimer = infoCell.appendParagraph("This document confirms receipt of the order request and is not a final tax invoice. No online payment is recorded as collected. Delivery charges and applicable taxes are shown only where confirmed in the order record. The seller will confirm final details before dispatch.");
+  disclaimer.setForegroundColor(muted).setFontSize(7).setLineSpacing(1.05).setSpacingBefore(0).setSpacingAfter(0);
+
+  var stampHeading = stampCell.getChild(0).asParagraph();
+  stampHeading.setText("BUSINESS STAMP & SIGNATURE");
+  stampHeading.setForegroundColor(green).setFontSize(7).setBold(true).setSpacingBefore(0).setSpacingAfter(5);
+  var stampParagraph = stampCell.appendParagraph("");
+  stampParagraph.setAlignment(DocumentApp.HorizontalAlignment.CENTER).setSpacingBefore(0).setSpacingAfter(3);
   try {
-    var stampUrl="https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/functions/slgan_signature_stamp.png";
-    var stampResponse=UrlFetchApp.fetch(stampUrl,{muteHttpExceptions:true});
-    if(stampResponse.getResponseCode()>=200&&stampResponse.getResponseCode()<300) {
-      var stampImage=stampCell.getChild(0).asParagraph().appendInlineImage(stampResponse.getBlob());
-      var sw=stampImage.getWidth(), sh=stampImage.getHeight(), ss=(sw>0&&sh>0)?Math.min(72/sw,42/sh,1):1;
-      stampImage.setWidth(Math.max(1,Math.round(sw*ss))).setHeight(Math.max(1,Math.round(sh*ss)));
+    var stampUrl = "https://raw.githubusercontent.com/pyaraallamraju-spec/SLGAN/main/functions/slgan_signature_stamp.png";
+    var stampResponse = UrlFetchApp.fetch(stampUrl, {muteHttpExceptions:true});
+    if (stampResponse.getResponseCode() >= 200 && stampResponse.getResponseCode() < 300) {
+      var stampImage = stampParagraph.appendInlineImage(stampResponse.getBlob());
+      var sw = stampImage.getWidth(), sh = stampImage.getHeight();
+      if (sw > 0 && sh > 0) {
+        var stampScale = Math.min(72 / sw, 42 / sh, 1);
+        stampImage.setWidth(Math.max(1, Math.round(sw * stampScale)));
+        stampImage.setHeight(Math.max(1, Math.round(sh * stampScale)));
+      }
+    } else {
+      stampParagraph.appendText("Stamp unavailable").setForegroundColor(muted).setFontSize(7);
     }
-  } catch(stampError) { console.warn("Invoice stamp unavailable: "+stampError); }
-  var signP=signCell.getChild(0).asParagraph(); signP.setAlignment(DocumentApp.HorizontalAlignment.RIGHT).setSpacingBefore(0).setSpacingAfter(0);
-  signP.appendText("For Sri Lakshmi Ganapathi\n").setForegroundColor(ink).setFontSize(8).setBold(true);
-  signP.appendText("Authorised Signatory").setForegroundColor(muted).setFontSize(7);
+  } catch(stampError) {
+    console.warn("Invoice stamp unavailable: " + stampError);
+    stampParagraph.appendText("Stamp unavailable").setForegroundColor(muted).setFontSize(7);
+  }
+  var signP = stampCell.appendParagraph("For Sri Lakshmi Ganapathi");
+  signP.setAlignment(DocumentApp.HorizontalAlignment.CENTER).setForegroundColor(ink).setFontSize(8).setBold(true).setSpacingBefore(0).setSpacingAfter(1);
+  var signRole = stampCell.appendParagraph("Authorised Signatory");
+  signRole.setAlignment(DocumentApp.HorizontalAlignment.CENTER).setForegroundColor(muted).setFontSize(7).setSpacingBefore(0).setSpacingAfter(0);
+
   var footer=body.appendParagraph("Thank you for choosing Sri Lakshmi Ganapathi Ayurveda Nilayam.");
   footer.setAlignment(DocumentApp.HorizontalAlignment.CENTER).setForegroundColor(green).setFontSize(7).setItalic(true).setSpacingBefore(5).setSpacingAfter(0);
   doc.saveAndClose();
