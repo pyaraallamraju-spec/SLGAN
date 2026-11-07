@@ -9490,11 +9490,10 @@ private fun OrdersPage(
                                 color = orderStatusTint,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier.weight(1f, fill = false)
+                                maxLines = 2,
+                                overflow = TextOverflow.Clip,
+                                modifier = Modifier.weight(1f)
                             )
-                            Spacer(Modifier.weight(1f))
                             TextButton(
                                 onClick = {
                                     val addedCount = addOrderItemsToCart(orderItems)
