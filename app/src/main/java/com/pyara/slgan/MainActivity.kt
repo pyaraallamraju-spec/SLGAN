@@ -8001,6 +8001,21 @@ private fun ProductDetailsPage(
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                             Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.SemiBold)
+                            if (product.category.isNotBlank()) {
+                                Surface(
+                                    shape = RoundedCornerShape(8.dp),
+                                    color = appThemedColor(Color(0xFFE2E2E2)),
+                                    contentColor = Ink
+                                ) {
+                                    Text(
+                                        tr(product.category, currentLanguage),
+                                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                                        color = Ink,
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+                            }
                             Text(if (product.subtitle.isNotBlank()) "${tr("Net quantity", currentLanguage)}: ${product.subtitle}" else "${tr("Net quantity", currentLanguage)}: ${tr("See product pack", currentLanguage)}", color = Muted, fontSize = 15.sp)
                             if (product.price > 0.0) {
                                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
