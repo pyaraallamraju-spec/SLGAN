@@ -4942,8 +4942,9 @@ private fun AdminDashboardScreen(
     onLanguageChange: (String) -> Unit,
     onSignOut: () -> Unit
 ) {
+    val currentLanguage = LocalAppLanguage.current
     var showLanguageSheet by remember { mutableStateOf(false) }
-    var selectedLanguage by remember(LocalAppLanguage.current) { mutableStateOf(LocalAppLanguage.current) }
+    var selectedLanguage by remember(currentLanguage) { mutableStateOf(currentLanguage) }
     var languageSaving by remember { mutableStateOf(false) }
     val languageContext = LocalContext.current
     var orderCount by remember { mutableIntStateOf(0) }
@@ -4973,7 +4974,6 @@ private fun AdminDashboardScreen(
         }
     }
 
-    val currentLanguage = LocalAppLanguage.current
     val metrics = remember(productCount, orderCount, diseaseCount, customerCount, currentLanguage) {
         listOf(
             Triple(tr("Products", currentLanguage), productCount, Icons.Default.Inventory2),
@@ -11887,6 +11887,7 @@ private fun AddAddressDetailsPage(
     onSaved: (Map<String, Any>) -> Unit
 ) {
     val context = LocalContext.current
+    val addressLanguage = addressLanguage
     val user = FirebaseAuth.getInstance().currentUser
     var city by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("city")?.toString().orEmpty()) }
     var area by remember(editAddress?.get("_id")) { mutableStateOf(editAddress?.get("area")?.toString().orEmpty()) }
@@ -11950,7 +11951,7 @@ private fun AddAddressDetailsPage(
                     receiverPhone = if (digits.startsWith("91") && digits.length == 12) digits.drop(2) else digits.takeLast(10)
                     phoneError = false
                 } else {
-                    Toast.makeText(context, tr("No phone number found for this contact.", LocalAppLanguage.current), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, tr("No phone number found for this contact.", addressLanguage), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -12014,7 +12015,7 @@ private fun AddAddressDetailsPage(
             fullAddress = detected.getAddressLine(0).orEmpty()
                 .split(",").drop(2).joinToString(",").trim().ifBlank { detected.getAddressLine(0).orEmpty() }
         } else {
-            Toast.makeText(context, tr("Couldn't detect your location. Please enter the address manually.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, tr("Couldn't detect your location. Please enter the address manually.", addressLanguage), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -12053,7 +12054,7 @@ private fun AddAddressDetailsPage(
             if (area.isBlank()) area = found.subLocality ?: found.thoroughfare ?: found.featureName.orEmpty()
             if (city.isBlank()) city = found.locality ?: found.subAdminArea ?: found.adminArea.orEmpty()
         } else {
-            Toast.makeText(context, tr("Address not found. Try entering a nearby area and city to place the pin.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
+            Toast.makeText(context, tr("Address not found. Try entering a nearby area and city to place the pin.", addressLanguage), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -12107,7 +12108,7 @@ private fun AddAddressDetailsPage(
             label = label,
             onSave = { customLabel ->
                 if (mapLatitude == null || mapLongitude == null) {
-                    Toast.makeText(context, tr("Please wait for the map or enter a nearby area and city to select your delivery pin.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, tr("Please wait for the map or enter a nearby area and city to select your delivery pin.", addressLanguage), Toast.LENGTH_LONG).show()
                     return@ReviewAddressPage
                 }
                 cityError = city.isBlank()
@@ -12120,7 +12121,7 @@ private fun AddAddressDetailsPage(
                     return@ReviewAddressPage
                 }
                 if (user == null) {
-                    Toast.makeText(context, tr("Please sign in to save an address.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, tr("Please sign in to save an address.", addressLanguage), Toast.LENGTH_LONG).show()
                     return@ReviewAddressPage
                 }
                 val finalLabel = customLabel?.trim()?.takeIf { it.isNotBlank() } ?: label.trim().ifBlank { "Other" }
@@ -12155,7 +12156,7 @@ private fun AddAddressDetailsPage(
                             saving = false
                             Toast.makeText(
                                 context,
-                                tr("You can save only one address. Please edit or delete the existing one.", LocalAppLanguage.current),
+                                tr("You can save only one address. Please edit or delete the existing one.", addressLanguage),
                                 Toast.LENGTH_LONG
                             ).show()
                             return@addOnSuccessListener
@@ -12176,12 +12177,12 @@ private fun AddAddressDetailsPage(
                             onSaved(data + ("_id" to docId.orEmpty()))
                         }.addOnFailureListener {
                             saving = false
-                            Toast.makeText(context, tr("Couldn't save address. Please try again.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, tr("Couldn't save address. Please try again.", addressLanguage), Toast.LENGTH_LONG).show()
                         }
                     }
                     .addOnFailureListener {
                         saving = false
-                        Toast.makeText(context, tr("Couldn't verify saved addresses. Please try again.", LocalAppLanguage.current), Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, tr("Couldn't verify saved addresses. Please try again.", addressLanguage), Toast.LENGTH_LONG).show()
                     }
             }
         )
@@ -12197,11 +12198,11 @@ private fun AddAddressDetailsPage(
         AlertDialog(
             onDismissRequest = { showExitConfirmation = false },
             title = {
-                Text(tr("Are you sure?", LocalAppLanguage.current), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.ExtraBold)
+                Text(tr("Are you sure?", addressLanguage), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontWeight = FontWeight.ExtraBold)
             },
             text = {
                 Text(
-                    tr("Any changes on this screen may be lost if you continue", LocalAppLanguage.current),
+                    tr("Any changes on this screen may be lost if you continue", addressLanguage),
                     textAlign = TextAlign.Center,
                     color = Muted
                 )
@@ -12215,7 +12216,7 @@ private fun AddAddressDetailsPage(
                     colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(Color(0xFFE2E2E2)), contentColor = Ink),
                     border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
                     shape = RoundedCornerShape(12.dp)
-                ) { Text(tr("Yes", LocalAppLanguage.current), color = Ink) }
+                ) { Text(tr("Yes", addressLanguage), color = Ink) }
             },
             dismissButton = {
                 OutlinedButton(
@@ -12223,7 +12224,7 @@ private fun AddAddressDetailsPage(
                     border = BorderStroke(1.dp, appThemedColor(Color(0xFFB5B5B5))),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Ink),
                     shape = RoundedCornerShape(12.dp)
-                ) { Text(tr("No", LocalAppLanguage.current), color = Ink) }
+                ) { Text(tr("No", addressLanguage), color = Ink) }
             },
             shape = RoundedCornerShape(22.dp),
             containerColor = appThemedColor(Color.White)
@@ -12238,7 +12239,7 @@ private fun AddAddressDetailsPage(
             IconButton(onClick = { showExitConfirmation = true }, modifier = Modifier.size(40.dp).border(1.dp, appThemedColor(Color(0xFFE2E2E2)), RoundedCornerShape(10.dp))) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Ink)
             }
-            Text(if (editAddress != null) tr("Edit address details", LocalAppLanguage.current) else tr("Add address details", LocalAppLanguage.current), modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(if (editAddress != null) tr("Edit address details", addressLanguage) else tr("Add address details", addressLanguage), modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
         Column(
             Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = 14.dp, vertical = 10.dp),
@@ -12246,7 +12247,7 @@ private fun AddAddressDetailsPage(
         ) {
             Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(tr("Address Details", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("Address Details", addressLanguage), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Box {
                         OutlinedButton(
                             onClick = { citySearch = ""; cityMenu = true },
@@ -12256,8 +12257,8 @@ private fun AddAddressDetailsPage(
                             contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
                             Icon(Icons.Default.LocationCity, contentDescription = null, tint = Ink)
-                            Text(city.ifBlank { tr("Select a city", LocalAppLanguage.current) }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 15.sp)
-                            Text(tr("Select", LocalAppLanguage.current), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                            Text(city.ifBlank { tr("Select a city", addressLanguage) }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 15.sp)
+                            Text(tr("Select", addressLanguage), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                         }
                         if (cityMenu) {
                             ModalBottomSheet(
@@ -12272,12 +12273,12 @@ private fun AddAddressDetailsPage(
                                 }
                             ) {
                                 Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f).padding(horizontal = 16.dp)) {
-                                    Text(tr("Select a city", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
+                                    Text(tr("Select a city", addressLanguage), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
                                     OutlinedTextField(
                                         value = citySearch,
                                         onValueChange = { citySearch = it },
                                         modifier = Modifier.fillMaxWidth(),
-                                        placeholder = { Text(tr("Search for a city", LocalAppLanguage.current)) },
+                                        placeholder = { Text(tr("Search for a city", addressLanguage)) },
                                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
                                         singleLine = true,
                                         shape = RoundedCornerShape(12.dp),
@@ -12287,7 +12288,7 @@ private fun AddAddressDetailsPage(
                                             cursorColor = Ink
                                         )
                                     )
-                                    Text(tr("Top cities", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 8.dp))
+                                    Text(tr("Top cities", addressLanguage), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 8.dp))
                                     val topCities = listOf("New Delhi", "Mumbai", "Bengaluru", "Kolkata", "Hyderabad", "Ahmedabad")
                                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
                                         topCities.take(3).forEach { item ->
@@ -12315,7 +12316,7 @@ private fun AddAddressDetailsPage(
                                             }
                                         }
                                     }
-                                    Text(if (citySearch.isBlank()) tr("Other cities", LocalAppLanguage.current) else tr("Search Results", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
+                                    Text(if (citySearch.isBlank()) tr("Other cities", addressLanguage) else tr("Search Results", addressLanguage), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
                                     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)) {
                                         items(cities.filter { it.contains(citySearch.trim(), ignoreCase = true) }) { item ->
                                             Surface(
@@ -12330,7 +12331,7 @@ private fun AddAddressDetailsPage(
                             }
                         }
                     }
-                    if (cityError) Text(tr("Please select a city", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    if (cityError) Text(tr("Please select a city", addressLanguage), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     Box {
                         OutlinedButton(
                             onClick = { areaSearch = ""; areaMenu = true },
@@ -12340,8 +12341,8 @@ private fun AddAddressDetailsPage(
                             contentPadding = PaddingValues(horizontal = 10.dp)
                         ) {
                             Icon(Icons.Default.Place, contentDescription = null, tint = Ink)
-                            Text(area.ifBlank { tr("Select an area, street", LocalAppLanguage.current) }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 14.sp)
-                            Text(tr("Select", LocalAppLanguage.current), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                            Text(area.ifBlank { tr("Select an area, street", addressLanguage) }, modifier = Modifier.weight(1f).padding(start = 12.dp), color = Ink, fontSize = 14.sp)
+                            Text(tr("Select", addressLanguage), color = Ink, fontSize = 14.sp, fontWeight = FontWeight.Medium)
                         }
                         if (areaMenu) {
                             val localityResults = listOf(
@@ -12376,16 +12377,16 @@ private fun AddAddressDetailsPage(
                                 }
                             ) {
                                 Column(Modifier.fillMaxWidth().fillMaxHeight(0.88f).padding(horizontal = 16.dp)) {
-                                    Text(tr("Select an area, street", LocalAppLanguage.current), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
+                                    Text(tr("Select an area, street", addressLanguage), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(bottom = 10.dp))
                                     OutlinedTextField(
                                         value = areaSearch,
                                         onValueChange = { areaSearch = it },
                                         modifier = Modifier.fillMaxWidth(),
-                                        placeholder = { Text(tr("Search for an area, street", LocalAppLanguage.current)) },
+                                        placeholder = { Text(tr("Search for an area, street", addressLanguage)) },
                                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Ink) },
                                         trailingIcon = {
                                             if (areaSearch.isNotEmpty()) IconButton(onClick = { areaSearch = "" }) {
-                                                Icon(Icons.Default.Close, contentDescription = tr("Clear search", LocalAppLanguage.current), tint = Muted)
+                                                Icon(Icons.Default.Close, contentDescription = tr("Clear search", addressLanguage), tint = Muted)
                                             }
                                         },
                                         singleLine = true,
@@ -12437,17 +12438,17 @@ private fun AddAddressDetailsPage(
                             }
                         }
                     }
-                    if (areaError) Text(tr("Please select an area, street", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    if (areaError) Text(tr("Please select an area, street", addressLanguage), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     OutlinedTextField(
                         value = fullAddress, onValueChange = { fullAddress = it; addressError = false },
-                        modifier = Modifier.fillMaxWidth(), placeholder = { Text(tr("Enter complete address*", LocalAppLanguage.current)) },
+                        modifier = Modifier.fillMaxWidth(), placeholder = { Text(tr("Enter complete address*", addressLanguage)) },
                         isError = addressError, minLines = 2, shape = RoundedCornerShape(10.dp)
                     )
-                    if (addressError) Text(tr("Please enter complete address", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
-                    Text(tr("Example: Flat/house no., building, street, landmark", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
+                    if (addressError) Text(tr("Please enter complete address", addressLanguage), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    Text(tr("Example: Flat/house no., building, street, landmark", addressLanguage), color = Muted, fontSize = 12.sp)
                     OutlinedTextField(
                         value = mapLink, onValueChange = { mapLink = it },
-                        modifier = Modifier.fillMaxWidth(), placeholder = { Text(tr("Add Google Maps link (optional)", LocalAppLanguage.current)) },
+                        modifier = Modifier.fillMaxWidth(), placeholder = { Text(tr("Add Google Maps link (optional)", addressLanguage)) },
                         leadingIcon = { Icon(Icons.Default.Map, contentDescription = null, tint = Ink) },
                         singleLine = true, shape = RoundedCornerShape(10.dp)
                     )
@@ -12455,7 +12456,7 @@ private fun AddAddressDetailsPage(
             }
             Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                 Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(tr("Contact Details", LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    Text(tr("Contact Details", addressLanguage), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = false
@@ -12473,7 +12474,7 @@ private fun AddAddressDetailsPage(
                                 nameError = false
                                 phoneError = false
                             }, colors = RadioButtonDefaults.colors(selectedColor = Ink))
-                            Text(tr("Myself", LocalAppLanguage.current), color = Ink)
+                            Text(tr("Myself", addressLanguage), color = Ink)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
                             forSomeoneElse = true
@@ -12491,35 +12492,35 @@ private fun AddAddressDetailsPage(
                                 nameError = false
                                 phoneError = false
                             }, colors = RadioButtonDefaults.colors(selectedColor = Ink))
-                            Text(tr("Someone else", LocalAppLanguage.current), color = Ink)
+                            Text(tr("Someone else", addressLanguage), color = Ink)
                         }
                     }
                     OutlinedTextField(
                         value = receiverName, onValueChange = { receiverName = it; nameError = false },
-                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) tr("Receiver's name*", LocalAppLanguage.current) else tr("Your name*", LocalAppLanguage.current)) },
+                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) tr("Receiver's name*", addressLanguage) else tr("Your name*", addressLanguage)) },
                         isError = nameError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         trailingIcon = {
                             if (receiverName.isNotEmpty()) IconButton(onClick = { receiverName = ""; nameError = false }) {
-                                Icon(Icons.Default.Cancel, contentDescription = tr("Clear name", LocalAppLanguage.current), tint = Muted)
+                                Icon(Icons.Default.Cancel, contentDescription = tr("Clear name", addressLanguage), tint = Muted)
                             }
                         }
                     )
-                    if (nameError) Text(tr("Please enter receiver's name", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    if (nameError) Text(tr("Please enter receiver's name", addressLanguage), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
                     OutlinedTextField(
                         value = receiverPhone, onValueChange = { receiverPhone = it.filter { ch -> ch.isDigit() || ch == '+' }.take(16); phoneError = false },
-                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) tr("Receiver's phone number*", LocalAppLanguage.current) else tr("Your phone number*", LocalAppLanguage.current)) },
+                        modifier = Modifier.fillMaxWidth(), label = { Text(if (forSomeoneElse) tr("Receiver's phone number*", addressLanguage) else tr("Your phone number*", addressLanguage)) },
                         isError = phoneError, singleLine = true, shape = RoundedCornerShape(10.dp),
                         leadingIcon = { Text("+91", color = Ink, fontWeight = FontWeight.SemiBold) },
                         trailingIcon = {
                             IconButton(onClick = {
                                 contactPicker.launch(Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI))
                             }) {
-                                Icon(Icons.Default.ContactPhone, contentDescription = tr("Select phone number from contacts", LocalAppLanguage.current), tint = Muted)
+                                Icon(Icons.Default.ContactPhone, contentDescription = tr("Select phone number from contacts", addressLanguage), tint = Muted)
                             }
                         }
                     )
-                    if (phoneError) Text(tr("Please enter a valid phone number", LocalAppLanguage.current), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
-                    Text(tr("Save address as", LocalAppLanguage.current), color = Muted, fontSize = 15.sp)
+                    if (phoneError) Text(tr("Please enter a valid phone number", addressLanguage), color = appThemedColor(Color(0xFFE53945)), fontSize = 13.sp)
+                    Text(tr("Save address as", addressLanguage), color = Muted, fontSize = 15.sp)
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         listOf("Home", "Work", "Hotel", "Other").forEach { option ->
                             val selected = label.equals(option, ignoreCase = true)
@@ -12539,7 +12540,7 @@ private fun AddAddressDetailsPage(
                                         },
                                         contentDescription = null, tint = appThemedColor(Color(0xFFB5B5B5)), modifier = Modifier.size(18.dp)
                                     )
-                                    Text(tr(option, LocalAppLanguage.current), color = Ink, fontSize = 13.sp, modifier = Modifier.padding(start = 5.dp), maxLines = 1)
+                                    Text(tr(option, addressLanguage), color = Ink, fontSize = 13.sp, modifier = Modifier.padding(start = 5.dp), maxLines = 1)
                                 }
                             }
                         }
@@ -12575,7 +12576,7 @@ private fun AddAddressDetailsPage(
                 elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp, pressedElevation = 10.dp, focusedElevation = 8.dp, hoveredElevation = 10.dp, disabledElevation = 0.dp)
             ) {
                 if (saving) CircularProgressIndicator(Modifier.size(22.dp), color = appThemedColor(DefaultBtn.content), strokeWidth = 2.dp)
-                else Text(tr("Next", LocalAppLanguage.current), color = appThemedColor(DefaultBtn.content), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                else Text(tr("Next", addressLanguage), color = appThemedColor(DefaultBtn.content), fontSize = 18.sp, fontWeight = FontWeight.Bold)
             }
             }
     }
@@ -12596,7 +12597,7 @@ private fun ReviewAddressPage(
     onEdit: () -> Unit,
     onSave: (String?) -> Unit
 ) {
-    val reviewLanguage = LocalAppLanguage.current
+    val reviewLanguage = addressLanguage
     var showCustomLabelDialog by remember { mutableStateOf(false) }
     var customLabel by remember { mutableStateOf("") }
     var customLabelError by remember { mutableStateOf<String?>(null) }
@@ -12606,9 +12607,9 @@ private fun ReviewAddressPage(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onEdit, modifier = Modifier.size(48.dp).border(1.dp, appThemedColor(Color(0xFFE1E6EF)), CircleShape)) {
-                Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", LocalAppLanguage.current), tint = Ink)
+                Icon(Icons.Default.ArrowBack, contentDescription = tr("Back", addressLanguage), tint = Ink)
             }
-            Text(tr("Review Address", LocalAppLanguage.current), modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(tr("Review Address", addressLanguage), modifier = Modifier.padding(start = 14.dp), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
         if (initialLatitude != null && initialLongitude != null) {
             GoogleMapPicker(
@@ -12628,28 +12629,28 @@ private fun ReviewAddressPage(
                     .background(appThemedColor(Color(0xFFF1F2F4)), RoundedCornerShape(14.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                Text(tr("Finding the nearest area on the map…", LocalAppLanguage.current), color = Muted, textAlign = TextAlign.Center)
+                Text(tr("Finding the nearest area on the map…", addressLanguage), color = Muted, textAlign = TextAlign.Center)
             }
         }
         Row(
             Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(tr("Delivery Details", LocalAppLanguage.current), modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-            TextButton(onClick = onEdit) { Text(tr("Edit", LocalAppLanguage.current), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
+            Text(tr("Delivery Details", addressLanguage), modifier = Modifier.weight(1f), color = Ink, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+            TextButton(onClick = onEdit) { Text(tr("Edit", addressLanguage), color = Ink, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
         }
         Divider(color = appThemedColor(Color(0xFFE6E8EE)))
         Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Person, contentDescription = tr("Receiver", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.Person, contentDescription = tr("Receiver", addressLanguage), tint = Ink, modifier = Modifier.size(22.dp))
                 Text(receiverName, color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Phone, contentDescription = tr("Mobile number", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.Phone, contentDescription = tr("Mobile number", addressLanguage), tint = Ink, modifier = Modifier.size(22.dp))
                 Text(receiverPhone, color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.Home, contentDescription = tr("Complete address", LocalAppLanguage.current), tint = Ink, modifier = Modifier.size(22.dp))
+                Icon(Icons.Default.Home, contentDescription = tr("Complete address", addressLanguage), tint = Ink, modifier = Modifier.size(22.dp))
                 Text(fullAddress, color = Ink, fontSize = 15.sp, modifier = Modifier.weight(1f))
             }
         }
@@ -12706,7 +12707,7 @@ private fun ReviewAddressPage(
             )
             Spacer(Modifier.width(9.dp))
             Text(
-                tr("Save Address", LocalAppLanguage.current),
+                tr("Save Address", addressLanguage),
                 color = if (hasCompleteAddress) Color(0xFF174B25) else Color(0xFF78927A),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
@@ -12716,7 +12717,7 @@ private fun ReviewAddressPage(
     if (showCustomLabelDialog) {
         AlertDialog(
             onDismissRequest = { showCustomLabelDialog = false },
-            title = { Text(tr("Name this address", LocalAppLanguage.current), fontWeight = FontWeight.Bold, color = Ink) },
+            title = { Text(tr("Name this address", addressLanguage), fontWeight = FontWeight.Bold, color = Ink) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     OutlinedTextField(
@@ -12726,13 +12727,13 @@ private fun ReviewAddressPage(
                             customLabelError = null
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        label = { Text(tr("Label name *", LocalAppLanguage.current)) },
-                        placeholder = { Text(tr("For example: Parents, Friend", LocalAppLanguage.current)) },
+                        label = { Text(tr("Label name *", addressLanguage)) },
+                        placeholder = { Text(tr("For example: Parents, Friend", addressLanguage)) },
                         singleLine = true,
                         isError = customLabelError != null,
                         supportingText = {
                             Text(
-                                customLabelError ?: tr("Enter 2–30 characters.", LocalAppLanguage.current),
+                                customLabelError ?: tr("Enter 2–30 characters.", addressLanguage),
                                 color = if (customLabelError != null) appThemedColor(Color(0xFFE53945)) else Muted
                             )
                         },
@@ -12757,11 +12758,11 @@ private fun ReviewAddressPage(
                         }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(DefaultBtn.background), contentColor = appThemedColor(DefaultBtn.content))
-                ) { Text(tr("Save", LocalAppLanguage.current)) }
+                ) { Text(tr("Save", addressLanguage)) }
             },
             dismissButton = {
                 TextButton(onClick = { showCustomLabelDialog = false }) {
-                    Text(tr("Cancel", LocalAppLanguage.current), color = Ink)
+                    Text(tr("Cancel", addressLanguage), color = Ink)
                 }
             },
             containerColor = appThemedColor(Color.White)
