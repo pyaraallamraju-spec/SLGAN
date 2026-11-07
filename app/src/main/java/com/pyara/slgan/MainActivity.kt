@@ -12877,3 +12877,58 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
 }
 
 @Composable
+private fun AppLoader(
+    message: String,
+    compact: Boolean = false,
+    messageColor: Color = Ink
+) {
+    Column(
+        modifier = if (compact) Modifier.fillMaxWidth().padding(vertical = 18.dp)
+            else Modifier.fillMaxWidth().fillMaxHeight().padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(if (compact) 28.dp else 36.dp),
+            color = messageColor,
+            strokeWidth = 3.dp
+        )
+        Spacer(Modifier.height(12.dp))
+        Text(
+            text = message,
+            color = messageColor,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun EmptyState(
+    emoji: String,
+    title: String,
+    message: String
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 36.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(emoji, style = MaterialTheme.typography.headlineLarge)
+        Spacer(Modifier.height(12.dp))
+        Text(
+            title,
+            color = Ink,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+        Spacer(Modifier.height(6.dp))
+        Text(
+            message,
+            color = Muted,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center
+        )
+    }
+}
