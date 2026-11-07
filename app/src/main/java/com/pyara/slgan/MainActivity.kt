@@ -2318,6 +2318,14 @@ private fun localizedProductName(name: String, language: String): String {
 }
 
 private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1, val isHidden: Boolean = false, val isActive: Boolean = true)
+private fun productPackWeightGrams(product: Product): Double {
+    val match = Regex("""^\s*(\d+(?:\.\d+)?)\s*(kg|kgs|g|gm|gms|gram|grams)\s*$""", RegexOption.IGNORE_CASE)
+        .matchEntire(product.subtitle.trim()) ?: return 0.0
+    val amount = match.groupValues[1].toDoubleOrNull() ?: return 0.0
+    val unit = match.groupValues[2].lowercase(Locale.ROOT)
+    return amount * if (unit.startsWith("kg")) 1000.0 else 1.0
+}
+
 private data class ProductRatingSummary(val average: Double = 0.0, val count: Int = 0, val myRating: Int = 0)
 private data class ProductLikeSummary(val count: Int = 0, val likedByMe: Boolean = false)
 private val categories = listOf("All", "Lehyas", "Ghrutas", "Pills", "Tailas", "Churnas", "Rasayanas", "Bhasmas")
@@ -8162,7 +8170,11 @@ private fun ProductDetailsPage(
 private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<Product>, onAdd: (String) -> Unit, onRemove: (String) -> Unit, onOrderResult: (String, Boolean, String?, String) -> Unit, onProductClick: (Product) -> Unit, onAddAddress: () -> Unit, onClearCart: () -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     val selected = products.filter { (cart[it.id] ?: 0) > 0 }
-    val total = selected.sumOf { it.price * (cart[it.id] ?: 0) }
+    val subtotal = selected.sumOf { it.price * (cart[it.id] ?: 0) }
+    val totalWeightGrams = selected.sumOf { productPackWeightGrams(it) * (cart[it.id] ?: 0) }
+    val extraWeightUnits = if (totalWeightGrams > 1000.0) kotlin.math.ceil((totalWeightGrams - 1000.0) / 100.0).toInt() else 0
+    val deliveryCharge = 150 + (extraWeightUnits * 20)
+    val total = subtotal + deliveryCharge
     var showCheckout by remember { mutableStateOf(false) }
     var showClearCartConfirmation by remember { mutableStateOf(false) }
     var savedAddresses by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
@@ -8707,6 +8719,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                 Column(Modifier.weight(0.72f)) {
                     Text(money(total), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
                     Text(tr("TOTAL", LocalAppLanguage.current), color = Muted, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text("${tr("Delivery", LocalAppLanguage.current)} ${money(deliveryCharge)}", color = Muted, fontSize = 10.sp, maxLines = 1)
                 }
                 Box(Modifier.width(1.dp).height(42.dp).background(appThemedColor(Color(0xFFB5B5B5))))
                 Spacer(Modifier.width(12.dp))
@@ -8799,7 +8812,9 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     "deliveryInstruction" to selectedInstruction,
                                     "user_instructions" to userInstructions.trim(),
                                     "items" to itemPayload,
-                                    "subtotal" to total,
+                                    "subtotal" to subtotal,
+                                    "deliveryCharges" to deliveryCharge,
+                                    "deliveryWeightGrams" to totalWeightGrams,
                                     "grandTotal" to total,
                                     "currency" to "INR",
                                     "paymentMethod" to if (selectedPaymentMethod == "sandbox") "cashfree" else "cod",
@@ -8915,7 +8930,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         }
                     }
                 }
-                Text(tr("Order total", LocalAppLanguage.current) + ": " + money(total), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Order total", LocalAppLanguage.current) + ": " + money(total) + " (incl. " + tr("Delivery", LocalAppLanguage.current) + " " + money(deliveryCharge) + ")", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -9687,6 +9702,7 @@ private fun OrdersPage(
         val paymentStatus = order["paymentStatus"]?.toString() ?: "not_collected"
         val total = (order["grandTotal"] as? Number)?.toDouble() ?: (order["subtotal"] as? Number)?.toDouble() ?: 0.0
         val subtotal = (order["subtotal"] as? Number)?.toDouble() ?: total
+        val deliveryCharges = (order["deliveryCharges"] as? Number)?.toDouble() ?: 0.0
         val invoiceItems = ((listOf("items", "orderItems", "order_items", "cartItems", "cart_items", "products", "medicines").firstNotNullOfOrNull { key -> order[key] as? List<*> })?.mapNotNull { it as? Map<*, *> }).orEmpty()
         val created = (order["createdAt"] as? com.google.firebase.Timestamp)?.toDate()?.let { java.text.SimpleDateFormat("dd MMM yyyy, h:mm a", java.util.Locale.getDefault()).format(it) } ?: "Date not available"
         val invoiceUrl = order["invoiceUrl"]?.toString()
@@ -9756,7 +9772,7 @@ private fun OrdersPage(
                         Spacer(Modifier.height(18.dp))
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text(tr("MRP / subtotal", LocalAppLanguage.current), color = Muted); Text(tr("₹", LocalAppLanguage.current) + String.format("%.0f", subtotal), color = Ink) }
                         Spacer(Modifier.height(12.dp))
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text(tr("Delivery charges", LocalAppLanguage.current), color = Muted); Text(tr("FREE", LocalAppLanguage.current), color = Ink) }
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { Text(tr("Delivery charges", LocalAppLanguage.current), color = Muted); Text(if (order["deliveryCharges"] == null) tr("Not available", LocalAppLanguage.current) else "₹" + String.format("%.0f", deliveryCharges), color = Ink) }
                         Spacer(Modifier.height(12.dp))
                         Divider(color = appThemedColor(Color(0xFFE5E7EB)))
                         Spacer(Modifier.height(12.dp))
