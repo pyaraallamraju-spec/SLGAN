@@ -9049,6 +9049,38 @@ private fun OrdersPage(
     var loadingOrders by remember(user?.uid) { mutableStateOf(true) }
     var ordersError by remember(user?.uid) { mutableStateOf<String?>(null) }
     var selectedOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
+    var recoveredOrderDeliveryAddress by remember { mutableStateOf("") }
+    LaunchedEffect(selectedOrder?.get("deliveryAddressId"), selectedOrder?.get("_documentId")) {
+        recoveredOrderDeliveryAddress = ""
+        val order = selectedOrder ?: return@LaunchedEffect
+        val addressId = order["deliveryAddressId"]?.toString()?.trim().orEmpty()
+        if (addressId.isBlank()) return@LaunchedEffect
+        FirebaseFirestore.getInstance().collection("addresses").document(addressId).get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val data = document.data.orEmpty()
+                    val keys = listOf(
+                        "completeAddress", "complete_address", "formattedAddress", "formatted_address",
+                        "fullAddress", "full_address", "address", "addressText", "addressLine1", "addressLine2",
+                        "houseNo", "houseNumber", "building", "apartment", "street", "streetName", "road",
+                        "landmark", "area", "locality", "village", "town", "city", "district", "state",
+                        "pincode", "postalCode", "zipCode", "country"
+                    )
+                    val parts = keys.mapNotNull { key ->
+                        data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() }
+                    }.distinctBy { it.lowercase(Locale.ROOT) }
+                    val full = parts.fold(mutableListOf<String>()) { result, part ->
+                        if (result.none { existing -> existing.contains(part, ignoreCase = true) || part.contains(existing, ignoreCase = true) }) result.add(part)
+                        result
+                    }.joinToString(", ")
+                    val savedOrderAddress = listOf("deliveryAddress", "shippingAddress", "address", "addressText")
+                        .firstNotNullOfOrNull { key -> order[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+                    if (full.isNotBlank() && full.length > savedOrderAddress.length) {
+                        recoveredOrderDeliveryAddress = full
+                    }
+                }
+            }
+    }
     var orderOptions by remember { mutableStateOf<Map<String, Any?>?>(null) }
     var confirmDeleteOrder by remember { mutableStateOf<Map<String, Any?>?>(null) }
     var orderSearch by remember { mutableStateOf("") }
@@ -9640,7 +9672,7 @@ private fun OrdersPage(
         val phone = orderText("phone", "customerPhone", "mobile")
         val deliveryRecipient = orderText("deliveryRecipientName", "recipientName", "receiverName").ifBlank { customerName }
         val deliveryPhone = orderText("deliveryPhone", "recipientPhone", "shippingPhone").ifBlank { phone }
-        val deliveryAddress = orderText("deliveryAddress", "shippingAddress", "address", "addressText", "fullAddress")
+        val deliveryAddress = recoveredOrderDeliveryAddress.ifBlank { orderText("deliveryAddress", "shippingAddress", "address", "addressText", "fullAddress") }
         val deliveryAddressLabel = orderText("deliveryAddressLabel", "addressLabel")
         val deliveryInstructions = orderText("deliveryInstruction", "deliveryInstructions", "user_instructions", "instructions")
         val status = order["orderStatus"]?.toString() ?: "received"
