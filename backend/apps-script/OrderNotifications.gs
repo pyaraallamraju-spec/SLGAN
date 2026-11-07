@@ -69,7 +69,7 @@ function doPost(e) {
         emailButton("Visit SLGAN", "https://slgan-a364e.web.app/"));
       GmailApp.sendEmail(order.email, "SLGAN order status: " + status.toUpperCase() + " — " + displayOrderId,
         "Dear " + (order.customerName || "Customer") + ",\\n\\n" + message +
-        "\\n\\nOrder ID: " + orderId + "\\nCurrent status: " + status.toUpperCase() +
+        "\\n\\nOrder ID: " + displayOrderId + "\\nCurrent status: " + status.toUpperCase() +
         "\\n\\nSri Lakshmi Ganapathi Ayurvedic Nilayam",
         { htmlBody: statusHtml, name: "Sri Lakshmi Ganapathi Ayurveda Nilayam" });
       return jsonOut({ success: true, ok: true, message: "Order status email sent." });
@@ -138,7 +138,7 @@ function sendOrderConfirmation(documentId, displayOrderId, order) {
         htmlBody: emailFrame("Order confirmed", "Thank you for choosing Sri Lakshmi Ganapathi Ayurveda Nilayam.",
           '<p style="margin:0 0 16px">Dear ' + escapeHtml(order.customerName || "Customer") + ',</p>' +
           '<p style="margin:0 0 18px">Your order has been successfully received. Your order confirmation PDF is attached.</p>' +
-          emailInfoTable([["Order ID", orderId], ["Order status", order.orderStatus || "Pending verification"], ["Order total", "₹" + total.toFixed(2)]]) +
+          emailInfoTable([["Order ID", displayOrderId], ["Order status", order.orderStatus || "Pending verification"], ["Order total", "₹" + total.toFixed(2)]]) +
           emailButton("View SLGAN", "https://slgan-a364e.web.app/") +
           '<p style="font-size:13px;color:#687565;margin:18px 0 0">No online payment has been collected. We will contact you regarding order verification and dispatch.</p>'),
         attachments: [pdf],
