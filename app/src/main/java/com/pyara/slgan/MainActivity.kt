@@ -8735,7 +8735,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(money(total), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("${tr("Delivery", LocalAppLanguage.current)} ${money(deliveryCharge)}", color = Muted, fontSize = 10.sp, maxLines = 1)
+                    Text("${tr("Delivery", LocalAppLanguage.current)} ${money(deliveryCharge.toDouble())}", color = Muted, fontSize = 10.sp, maxLines = 1)
                 }
                 Box(Modifier.width(1.dp).height(42.dp).background(appThemedColor(Color(0xFFB5B5B5))))
                 Spacer(Modifier.width(12.dp))
@@ -8946,7 +8946,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         }
                     }
                 }
-                Text(tr("Order total", LocalAppLanguage.current) + ": " + money(total) + " (incl. " + tr("Delivery", LocalAppLanguage.current) + " " + money(deliveryCharge) + ")", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                Text(tr("Order total", LocalAppLanguage.current) + ": " + money(total) + " (incl. " + tr("Delivery", LocalAppLanguage.current) + " " + money(deliveryCharge.toDouble()) + ")", color = Ink, fontSize = 15.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -12379,6 +12379,7 @@ private fun ReviewAddressPage(
     onEdit: () -> Unit,
     onSave: (String?) -> Unit
 ) {
+    val reviewLanguage = LocalAppLanguage.current
     var showCustomLabelDialog by remember { mutableStateOf(false) }
     var customLabel by remember { mutableStateOf("") }
     var customLabelError by remember { mutableStateOf<String?>(null) }
@@ -12526,9 +12527,9 @@ private fun ReviewAddressPage(
                     onClick = {
                         val value = customLabel.trim()
                         val validationError = when {
-                            value.isBlank() -> tr("Please enter a label name.", LocalAppLanguage.current)
-                            value.length < 2 -> tr("Label name must be at least 2 characters.", LocalAppLanguage.current)
-                            value.length > 30 -> tr("Label name must be 30 characters or fewer.", LocalAppLanguage.current)
+                            value.isBlank() -> tr("Please enter a label name.", reviewLanguage)
+                            value.length < 2 -> tr("Label name must be at least 2 characters.", reviewLanguage)
+                            value.length > 30 -> tr("Label name must be 30 characters or fewer.", reviewLanguage)
                             else -> null
                         }
                         customLabelError = validationError
@@ -12654,10 +12655,10 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
                     Column(Modifier.weight(1f)) {
                         Text(
                             listOf(firstName, lastName).filter { it.isNotBlank() }.joinToString(" ") { namePart ->
-                                if (LocalAppLanguage.current == "Telugu" && namePart.equals("Amruth", ignoreCase = true)) "అమృత్" else namePart
+                                if (appLanguage == "Telugu" && namePart.equals("Amruth", ignoreCase = true)) "అమృత్" else namePart
                             }.ifBlank {
                                 nickname.takeIf { it.isNotBlank() }?.let { savedNickname ->
-                                    if (LocalAppLanguage.current == "Telugu" && savedNickname.equals("Amruth", ignoreCase = true)) "అమృత్" else savedNickname
+                                    if (appLanguage == "Telugu" && savedNickname.equals("Amruth", ignoreCase = true)) "అమృత్" else savedNickname
                                 } ?: "SLGAN Customer"
                             },
                             color = Ink, fontWeight = FontWeight.Bold
@@ -12876,65 +12877,3 @@ private fun ProfilePage(modifier: Modifier, onSignOut: () -> Unit, appLanguage: 
 }
 
 @Composable
-private fun AppLoader(message: String, compact: Boolean = false, messageColor: Color = Ink) {
-    val leafMotion = rememberInfiniteTransition(label = "herbalLeafLoader")
-    val leafRotation by leafMotion.animateFloat(
-        initialValue = -18f,
-        targetValue = 342f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "leafRotation"
-    )
-    val leafScale by leafMotion.animateFloat(
-        initialValue = 0.88f,
-        targetValue = 1.08f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(750, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "leafScale"
-    )
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = if (compact) 8.dp else 28.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .size(if (compact) 48.dp else 76.dp)
-                .background(appThemedColor(Color(0xFFF1F3F1)), CircleShape)
-                .border(2.dp, appThemedColor(Color(0xFFB5B5B5)), CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "🌿",
-                fontSize = if (compact) 25.sp else 39.sp,
-                color = appThemedColor(Color(0xFF2E7D32)),
-                modifier = Modifier.graphicsLayer {
-                    rotationZ = leafRotation
-                    scaleX = leafScale
-                    scaleY = leafScale
-                }
-            )
-        }
-        Spacer(Modifier.height(10.dp))
-        Text(message, color = messageColor, fontSize = if (compact) 13.sp else 15.sp, fontWeight = FontWeight.SemiBold)
-        if (!compact) {
-            Spacer(Modifier.height(4.dp))
-            Text(tr("Please wait a moment", LocalAppLanguage.current), color = Muted, fontSize = 12.sp)
-        }
-    }
-}
-
-@Composable
-private fun EmptyState(emoji: String, title: String, subtitle: String) {
-    Column(Modifier.fillMaxWidth().padding(top = 80.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(emoji, fontSize = 52.sp); Spacer(Modifier.height(12.dp))
-        Text(title, fontSize = 18.sp, color = Ink, fontWeight = FontWeight.Bold); Spacer(Modifier.height(6.dp))
-        Text(subtitle, fontSize = 13.sp, color = Muted)
-    }
-}
