@@ -8173,7 +8173,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     val subtotal = selected.sumOf { it.price * (cart[it.id] ?: 0) }
     val totalWeightGrams = selected.sumOf { productPackWeightGrams(it) * (cart[it.id] ?: 0) }
     val extraWeightUnits = if (totalWeightGrams > 1000.0) kotlin.math.ceil((totalWeightGrams - 1000.0) / 100.0).toInt() else 0
-    val deliveryCharge = 150 + (extraWeightUnits * 20)
+    val deliveryCharge = 200 + (extraWeightUnits * 20)
     val total = subtotal + deliveryCharge
     var showCheckout by remember { mutableStateOf(false) }
     var showClearCartConfirmation by remember { mutableStateOf(false) }
