@@ -8418,7 +8418,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                             enabled = product.price > 0.0 && product.productStock > 0,
                                             modifier = Modifier.fillMaxWidth().height(36.dp),
                                             shape = RoundedCornerShape(8.dp),
-                                            color = appThemedColor(Color(0xFFE1E5EC)),
+                                            color = appThemedColor(Color(0xFFE2E2E2)),
                                             contentColor = Ink
                                         ) {
                                             Row(
