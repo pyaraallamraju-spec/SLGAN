@@ -242,7 +242,10 @@ function buildInvoicePdf(orderId, order, items, total) {
       }
     }
   } catch(e) { console.warn("Invoice logo unavailable: "+e); }
-  if (!logoAdded) styleText(logoCell.getChild(0).asParagraph().appendText("SLGAN"), {color:C.green,size:16,bold:true,font:"Arial"});
+  if (!logoAdded) {
+    var fallbackLogo = logoCell.getChild(0).asParagraph().appendText("SLGAN");
+    fallbackLogo.setForegroundColor(C.green).setFontSize(16).setBold(true).setFontFamily("Arial");
+  }
   var cp=contactCell.getChild(0).asParagraph();
   cp.setAlignment(DocumentApp.HorizontalAlignment.RIGHT).setSpacingBefore(0).setSpacingAfter(0).setLineSpacing(1);
   cp.appendText("SRI LAKSHMI GANAPATHI\n").setBold(true).setForegroundColor(C.green).setFontSize(14).setFontFamily("Arial");
@@ -349,7 +352,8 @@ function buildInvoicePdf(orderId, order, items, total) {
         stamp.setHeight(Math.max(1,Math.round(sh*stampScale)));
       }
     } else {
-      styleText(stampP.appendText("Stamp image unavailable"),{color:C.muted,size:7,font:"Arial"});
+      var stampFallback = stampP.appendText("Stamp image unavailable");
+      stampFallback.setForegroundColor(C.muted).setFontSize(7).setFontFamily("Arial");
     }
   } catch(stampError) {
     console.warn("Invoice stamp unavailable: "+stampError);
