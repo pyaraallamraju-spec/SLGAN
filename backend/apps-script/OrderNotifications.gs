@@ -181,6 +181,8 @@ function buildInvoicePdf(orderId, order, items, total) {
   var styleText = function(p, options) {
     var t = p.editAsText();
     if (options.color) t.setForegroundColor(options.color);
+    // Explicitly reset text highlighting in every run before PDF export.
+    t.setBackgroundColor(options.background || "#FFFFFF");
     if (options.size) t.setFontSize(options.size);
     if (options.bold != null) t.setBold(options.bold);
     if (options.font) t.setFontFamily(options.font);
@@ -244,13 +246,13 @@ function buildInvoicePdf(orderId, order, items, total) {
   } catch(e) { console.warn("Invoice logo unavailable: "+e); }
   if (!logoAdded) {
     var fallbackLogo = logoCell.getChild(0).asParagraph().appendText("SLGAN");
-    fallbackLogo.setForegroundColor(C.green).setFontSize(16).setBold(true).setFontFamily("Arial");
+    fallbackLogo.setForegroundColor(C.green).setBackgroundColor(C.white).setFontSize(16).setBold(true).setFontFamily("Arial");
   }
   var cp=contactCell.getChild(0).asParagraph();
   cp.setAlignment(DocumentApp.HorizontalAlignment.RIGHT).setSpacingBefore(0).setSpacingAfter(0).setLineSpacing(1);
-  cp.appendText("SRI LAKSHMI GANAPATHI\n").setBold(true).setForegroundColor(C.green).setFontSize(14).setFontFamily("Arial");
-  cp.appendText("AYURVEDA NILAYAM  |  ESTD. 1900 BY PERRAJU SHARMA\n").setBold(true).setForegroundColor(C.muted).setFontSize(8).setFontFamily("Arial");
-  cp.appendText("U. Kothapalli – 533447, Andhra Pradesh  |  Phone: 9908355501\n").setForegroundColor(C.ink).setFontSize(8).setFontFamily("Arial");
+  cp.appendText("SRI LAKSHMI GANAPATHI\n").setBold(true).setForegroundColor(C.green).setBackgroundColor(C.white).setFontSize(14).setFontFamily("Arial");
+  cp.appendText("AYURVEDA NILAYAM  |  ESTD. 1900 BY PERRAJU SHARMA\n").setBold(true).setForegroundColor(C.muted).setBackgroundColor(C.white).setFontSize(8).setFontFamily("Arial");
+  cp.appendText("U. Kothapalli – 533447, Andhra Pradesh  |  Phone: 9908355501\n").setForegroundColor(C.ink).setBackgroundColor(C.white).setFontSize(8).setFontFamily("Arial");
   cp.appendText("Email: info.slgan@gmail.com").setForegroundColor(C.ink).setFontSize(8).setFontFamily("Arial");
 
   var rule=body.appendParagraph(" ");
@@ -264,7 +266,7 @@ function buildInvoicePdf(orderId, order, items, total) {
     var cell=ref.getCell(r,c);
     cell.setPaddingTop(5); cell.setPaddingBottom(5); cell.setPaddingLeft(8); cell.setPaddingRight(8);
     cell.setBackgroundColor(r===0?C.pale:C.white);
-    setPara(cell.getChild(0).asParagraph(),{color:r===0?C.green:C.ink,size:r===0?7:9,bold:r===0,font:"Arial"});
+    setPara(cell.getChild(0).asParagraph(),{color:r===0?C.green:C.ink,background:r===0?C.pale:C.white,size:r===0?7:9,bold:r===0,font:"Arial"});
   }
   var section=function(label) {
     setPara(body.appendParagraph(label),{color:C.green,size:8,bold:true,font:"Arial",before:7,after:3});
@@ -277,7 +279,7 @@ function buildInvoicePdf(orderId, order, items, total) {
     var dcell=details.getCell(dr,dc);
     dcell.setPaddingTop(5); dcell.setPaddingBottom(5); dcell.setPaddingLeft(8); dcell.setPaddingRight(8);
     dcell.setBackgroundColor(dr===0?C.pale:C.white).setVerticalAlignment(DocumentApp.VerticalAlignment.TOP);
-    setPara(dcell.getChild(0).asParagraph(),{color:dr===0?C.green:C.ink,size:dr===0?7:8,bold:dr===0,font:"Arial",line:1.05});
+    setPara(dcell.getChild(0).asParagraph(),{color:dr===0?C.green:C.ink,background:dr===0?C.pale:C.white,size:dr===0?7:8,bold:dr===0,font:"Arial",line:1.05});
   }
 
   section("ITEM DETAILS");
@@ -295,7 +297,7 @@ function buildInvoicePdf(orderId, order, items, total) {
     tcell.setPaddingTop(5); tcell.setPaddingBottom(5); tcell.setPaddingLeft(6); tcell.setPaddingRight(6);
     tcell.setBackgroundColor(ir===0?C.green:(ir%2===0?C.pale:C.white));
     var tp=tcell.getChild(0).asParagraph();
-    setPara(tp,{color:ir===0?C.white:C.ink,size:ir===0?7:8,bold:ir===0||ic===0,font:"Arial"});
+    setPara(tp,{color:ir===0?C.white:C.ink,background:ir===0?C.green:(ir%2===0?C.pale:C.white),size:ir===0?7:8,bold:ir===0||ic===0,font:"Arial"});
     if(ic>0) tp.setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
   }
 
@@ -316,7 +318,7 @@ function buildInvoicePdf(orderId, order, items, total) {
     var isTotal=tr===totals.getNumRows()-1;
     totalCell.setBackgroundColor(isTotal?C.pale:C.white);
     var totalP=totalCell.getChild(0).asParagraph();
-    setPara(totalP,{color:isTotal?C.green:C.ink,size:isTotal?10:8,bold:isTotal||tc===1,font:"Arial"});
+    setPara(totalP,{color:isTotal?C.green:C.ink,background:isTotal?C.pale:C.white,size:isTotal?10:8,bold:isTotal||tc===1,font:"Arial"});
     totalP.setAlignment(tc===0?DocumentApp.HorizontalAlignment.LEFT:DocumentApp.HorizontalAlignment.RIGHT);
   }
 
@@ -348,7 +350,7 @@ function buildInvoicePdf(orderId, order, items, total) {
       var stamp=stampP.appendInlineImage(stampResponse.getBlob());
       var sw=stamp.getWidth(), sh=stamp.getHeight();
       if(sw>0&&sh>0) {
-        var stampScale=Math.min(104/sw,68/sh,1);
+        var stampScale=Math.min(112/sw,88/sh,1);
         stamp.setWidth(Math.max(1,Math.round(sw*stampScale)));
         stamp.setHeight(Math.max(1,Math.round(sh*stampScale)));
       }
