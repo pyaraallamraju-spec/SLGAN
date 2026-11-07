@@ -11856,7 +11856,8 @@ private fun AddAddressDetailsPage(
             initialLongitude = mapLongitude,
             onLocationSelected = { latitude, longitude -> mapLatitude = latitude; mapLongitude = longitude; mapLocationResolved = true },
             onEdit = { showReview = false },
-            onSave = {
+            label = label,
+            onSave = { customLabel ->
                 if (mapLatitude == null || mapLongitude == null) {
                     Toast.makeText(context, "Please wait for the map or enter a nearby area and city to select your delivery pin.", Toast.LENGTH_LONG).show()
                     return@ReviewAddressPage
@@ -11874,6 +11875,7 @@ private fun AddAddressDetailsPage(
                     Toast.makeText(context, "Please sign in to save an address.", Toast.LENGTH_LONG).show()
                     return@ReviewAddressPage
                 }
+                val finalLabel = customLabel?.trim()?.takeIf { it.isNotBlank() } ?: label.trim().ifBlank { "Other" }
                 saving = true
                 val data = hashMapOf<String, Any>(
                     "userId" to user.uid,
@@ -11886,13 +11888,13 @@ private fun AddAddressDetailsPage(
                     "longitude" to (mapLongitude ?: 0.0),
                     "name" to receiverName.trim(),
                     "phone" to receiverPhone.trim(),
-                    "label" to label.trim().ifBlank { "Other" },
+                    "label" to finalLabel,
                     "isDefault" to (editAddress?.get("isDefault") as? Boolean ?: false),
                     "createdAt" to (editAddress?.get("createdAt") ?: com.google.firebase.Timestamp.now())
                 )
                 val addressCollection = FirebaseFirestore.getInstance().collection("addresses")
                 val existingId = editAddress?.get("_id")?.toString()
-                val normalizedLabel = label.trim().ifBlank { "Other" }
+                val normalizedLabel = finalLabel
                 addressCollection.whereEqualTo("userId", user.uid).get()
                     .addOnSuccessListener { snapshot ->
                         val duplicate = normalizedLabel.equals("Home", ignoreCase = true) ||
@@ -12339,12 +12341,16 @@ private fun ReviewAddressPage(
     fullAddress: String,
     receiverName: String,
     receiverPhone: String,
+    label: String,
     initialLatitude: Double?,
     initialLongitude: Double?,
     onLocationSelected: (Double, Double) -> Unit,
     onEdit: () -> Unit,
-    onSave: () -> Unit
+    onSave: (String?) -> Unit
 ) {
+    var showCustomLabelDialog by remember { mutableStateOf(false) }
+    var customLabel by remember { mutableStateOf("") }
+    var customLabelError by remember { mutableStateOf<String?>(null) }
     Column(Modifier.fillMaxSize().background(appThemedColor(Color.White)).verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 72.dp)) {
         Row(
             Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
@@ -12401,7 +12407,15 @@ private fun ReviewAddressPage(
             area.isNotBlank() && city.isNotBlank() &&
             receiverName.isNotBlank() && receiverPhone.isNotBlank()
         Button(
-            onClick = onSave,
+            onClick = {
+                if (label.equals("Other", ignoreCase = true)) {
+                    customLabel = ""
+                    customLabelError = null
+                    showCustomLabelDialog = true
+                } else {
+                    onSave(null)
+                }
+            },
             enabled = hasCompleteAddress,
             modifier = Modifier
                 .fillMaxWidth()
@@ -12448,6 +12462,59 @@ private fun ReviewAddressPage(
                 fontWeight = FontWeight.Bold
             )
         }
+    }
+    if (showCustomLabelDialog) {
+        AlertDialog(
+            onDismissRequest = { showCustomLabelDialog = false },
+            title = { Text(tr("Name this address", LocalAppLanguage.current), fontWeight = FontWeight.Bold, color = Ink) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    OutlinedTextField(
+                        value = customLabel,
+                        onValueChange = {
+                            customLabel = it.take(30)
+                            customLabelError = null
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(tr("Label name *", LocalAppLanguage.current)) },
+                        placeholder = { Text(tr("For example: Parents, Friend", LocalAppLanguage.current)) },
+                        singleLine = true,
+                        isError = customLabelError != null,
+                        supportingText = {
+                            Text(
+                                customLabelError ?: tr("Enter 2–30 characters.", LocalAppLanguage.current),
+                                color = if (customLabelError != null) appThemedColor(Color(0xFFE53945)) else Muted
+                            )
+                        },
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val value = customLabel.trim()
+                        customLabelError = when {
+                            value.isBlank() -> tr("Please enter a label name.", LocalAppLanguage.current)
+                            value.length < 2 -> tr("Label name must be at least 2 characters.", LocalAppLanguage.current)
+                            value.length > 30 -> tr("Label name must be 30 characters or fewer.", LocalAppLanguage.current)
+                            else -> null
+                        }
+                        if (customLabelError == null) {
+                            showCustomLabelDialog = false
+                            onSave(value)
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = appThemedColor(DefaultBtn.background), contentColor = appThemedColor(DefaultBtn.content))
+                ) { Text(tr("Save", LocalAppLanguage.current)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showCustomLabelDialog = false }) {
+                    Text(tr("Cancel", LocalAppLanguage.current), color = Ink)
+                }
+            },
+            containerColor = appThemedColor(Color.White)
+        )
     }
 }
 
