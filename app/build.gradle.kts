@@ -26,13 +26,12 @@ android {
     buildFeatures { compose = true; buildConfig = true }
     buildTypes {
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
-            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"\${project.findProperty("chatbotApiBaseUrl") ?: ""}\\"")
-            buildConfigField("String", "EMAIL_OTP_SCRIPT_URL", "\"\${project.findProperty("emailOtpScriptUrl") ?: "https://script.google.com/macros/s/AKfycbzJcIIJsb_F5k0IMp0xRMy4bzPuIi1laNa33EhchPQh7arPSRogCwqdg7LWfK3ij55Y4A/exec"}\\"")
+            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"${project.findProperty("chatbotApiBaseUrl") ?: ""}\"")
+            buildConfigField("String", "EMAIL_OTP_SCRIPT_URL", "\"${project.findProperty("emailOtpScriptUrl") ?: "https://script.google.com/macros/s/AKfycbzJcIIJsb_F5k0IMp0xRMy4bzPuIi1laNa33EhchPQh7arPSRogCwqdg7LWfK3ij55Y4A/exec"}\"")
         }
         getByName("release") {
-            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"\${project.findProperty("chatbotApiBaseUrl") ?: ""}\\"")
-            buildConfigField("String", "EMAIL_OTP_SCRIPT_URL", "\"\${project.findProperty("emailOtpScriptUrl") ?: "https://script.google.com/macros/s/AKfycbzJcIIJsb_F5k0IMp0xRMy4bzPuIi1laNa33EhchPQh7arPSRogCwqdg7LWfK3ij55Y4A/exec"}\\"")
+            buildConfigField("String", "CHATBOT_API_BASE_URL", "\"${project.findProperty("chatbotApiBaseUrl") ?: ""}\"")
+            buildConfigField("String", "EMAIL_OTP_SCRIPT_URL", "\"${project.findProperty("emailOtpScriptUrl") ?: "https://script.google.com/macros/s/AKfycbzJcIIJsb_F5k0IMp0xRMy4bzPuIi1laNa33EhchPQh7arPSRogCwqdg7LWfK3ij55Y4A/exec"}\"")
         }
     }
     compileOptions {
