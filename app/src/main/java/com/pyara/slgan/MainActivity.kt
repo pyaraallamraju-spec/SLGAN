@@ -10767,7 +10767,7 @@ private fun AccountsPage(
         }.getOrNull()
     }
 
-    Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(rememberScrollState())) {
+    Column(modifier = modifier.fillMaxSize().background(appThemedColor(Color(0xFFF3F5FA))).verticalScroll(scrollState)) {
         Column(
             Modifier.fillMaxWidth().background(appThemedColor(Color(0xFFF3F5FA)))
                 .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 12.dp),
