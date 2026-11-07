@@ -12448,6 +12448,7 @@ private fun ReviewAddressPage(
                     .height(440.dp),
                 initialLatitude = initialLatitude,
                 initialLongitude = initialLongitude,
+                language = reviewLanguage,
                 onLocationSelected = onLocationSelected
             )
         } else {
