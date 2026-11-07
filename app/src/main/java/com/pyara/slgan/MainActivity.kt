@@ -12359,7 +12359,7 @@ private fun ReviewAddressPage(
             GoogleMapPicker(
                 modifier = Modifier.fillMaxWidth()
                     .padding(horizontal = 12.dp)
-                    .height(300.dp),
+                    .height(440.dp),
                 initialLatitude = initialLatitude,
                 initialLongitude = initialLongitude,
                 onLocationSelected = onLocationSelected
@@ -12368,7 +12368,7 @@ private fun ReviewAddressPage(
             Box(
                 Modifier.fillMaxWidth().padding(horizontal = 12.dp)
                     .shadow(6.dp, RoundedCornerShape(14.dp))
-                    .height(300.dp)
+                    .height(440.dp)
                     .background(appThemedColor(Color(0xFFF1F2F4)), RoundedCornerShape(14.dp)),
                 contentAlignment = Alignment.Center
             ) {
