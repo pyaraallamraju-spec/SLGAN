@@ -4462,7 +4462,7 @@ private fun AdminProductDetailsScreen(
                                 Text(product.emoji, fontSize = 48.sp)
                             }
                         }
-                        Text(localizedProductName(product.name, LocalAppLanguage.current), color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(localizedProductName(product.name, product.teluguName, LocalAppLanguage.current), color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
                         Text(
                             if (product.price > 0) "₹" + if (product.price % 1.0 == 0.0) product.price.toLong().toString() else String.format("%.2f", product.price) else "Price not set",
                             color = AdminInk, fontSize = 21.sp, fontWeight = FontWeight.Bold
@@ -7727,7 +7727,7 @@ private fun HomePage(modifier: Modifier, appLanguage: String, onLanguageChange: 
                                         }
                                         Spacer(Modifier.height(10.dp))
                                         Text(
-                                            localizedProductName(product.name, LocalAppLanguage.current),
+                                            localizedProductName(product.name, product.teluguName, LocalAppLanguage.current),
                                             fontSize = 13.sp,
                                             color = Ink,
                                             fontWeight = FontWeight.Medium,
@@ -8032,7 +8032,7 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Text(localizedProductName(product.name, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Medium, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+            Text(localizedProductName(product.name, product.teluguName, LocalAppLanguage.current), fontSize = 13.sp, lineHeight = 15.sp, color = Ink, fontWeight = FontWeight.Medium, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
             Spacer(Modifier.height(6.dp))
             Row(
                 modifier = Modifier.fillMaxWidth().height(26.dp),
@@ -8673,7 +8673,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                 }
                                 Spacer(Modifier.width(12.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 3, overflow = TextOverflow.Ellipsis)
+                                    Text(localizedProductName(product.name, product.teluguName, LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 3, overflow = TextOverflow.Ellipsis)
                                     Spacer(Modifier.height(2.dp))
                                     Text(product.subtitle.ifBlank { product.quantity }, color = Muted, fontSize = 13.sp)
                                     Spacer(Modifier.height(4.dp))
@@ -8708,7 +8708,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF5F6FA))), contentScale = ContentScale.Crop)
                                         else Box(Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 35.sp) }
                                         Spacer(Modifier.height(7.dp))
-                                        Text(localizedProductName(product.name, LocalAppLanguage.current), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
+                                        Text(localizedProductName(product.name, product.teluguName, LocalAppLanguage.current), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
                                         Text(money(product.price), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
                                         Spacer(Modifier.height(5.dp))
                                         Surface(
@@ -10831,7 +10831,7 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                         }
                                         Column(Modifier.fillMaxWidth().padding(horizontal = 7.dp, vertical = 5.dp)) {
                                             Text(
-                                                localizedProductName(product.name, LocalAppLanguage.current),
+                                                localizedProductName(product.name, product.teluguName, LocalAppLanguage.current),
                                                 color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
                                                 modifier = Modifier.fillMaxWidth().height(42.dp),
                                                 maxLines = 3, overflow = TextOverflow.Ellipsis, lineHeight = 16.sp,
