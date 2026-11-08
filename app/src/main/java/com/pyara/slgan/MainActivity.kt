@@ -802,7 +802,7 @@ private fun tr(text: String, language: String): String {
         "Manage home page slider images and visibility" to "హోమ్ పేజీ స్లైడర్ చిత్రాలు మరియు కనిపించే విధానాన్ని నిర్వహించండి",
         "Choose the appearance for the customer app. The admin screens keep their separate neutral theme." to "కస్టమర్ యాప్ రూపాన్ని ఎంచుకోండి. అడ్మిన్ స్క్రీన్‌లు ప్రత్యేక న్యూట్రల్ థీమ్‌ను ఉపయోగిస్తాయి.",
         "Classic Maroon" to "క్లాసిక్ మెరూన్", "Botanical Green" to "బొటానికల్ గ్రీన్", "Dark Mode" to "డార్క్ మోడ్", "Green Mode" to "గ్రీన్ మోడ్",
-        "Add Product" to "ఉత్పత్తిని జోడించండి", "Edit Product" to "ఉత్పత్తిని సవరించండి", "Product Name" to "ఉత్పత్తి పేరు",
+        "Add Product" to "ఉత్పత్తిని జోడించండి", "Edit Product" to "ఉత్పత్తిని సవరించండి", "Product Name" to "ఉత్పత్తి పేరు", "Product name (Telugu)" to "ఉత్పత్తి పేరు (తెలుగు)",
         "Description" to "వివరణ", "Usage" to "వాడే విధానం", "Ingredients" to "పదార్థాలు", "Cures" to "ఉపయోగ సూచనలు",
         "Available" to "అందుబాటులో ఉంది", "Out of stock" to "స్టాక్ లేదు", "Active" to "యాక్టివ్", "Hidden" to "దాచబడింది",
         "Order ID" to "ఆర్డర్ ఐడి", "Order Status" to "ఆర్డర్ స్థితి", "Pending Verification" to "ధృవీకరణ పెండింగ్‌లో ఉంది",
@@ -1721,7 +1721,7 @@ private fun tr(text: String, language: String): String {
         "Manage home page slider images and visibility" to "होम पेज स्लाइडर चित्र और दृश्यता प्रबंधित करें",
         "Choose the appearance for the customer app. The admin screens keep their separate neutral theme." to "ग्राहक ऐप का रूप चुनें। एडमिन स्क्रीन अपनी अलग न्यूट्रल थीम रखती हैं।",
         "Classic Maroon" to "क्लासिक मैरून", "Botanical Green" to "बॉटनिकल ग्रीन", "Dark Mode" to "डार्क मोड", "Green Mode" to "ग्रीन मोड",
-        "Add Product" to "उत्पाद जोड़ें", "Edit Product" to "उत्पाद संपादित करें", "Product Name" to "उत्पाद का नाम",
+        "Add Product" to "उत्पाद जोड़ें", "Edit Product" to "उत्पाद संपादित करें", "Product Name" to "उत्पाद का नाम", "Product name (Telugu)" to "उत्पाद का नाम (तेलुगु)",
         "Description" to "विवरण", "Usage" to "उपयोग", "Ingredients" to "सामग्री", "Cures" to "लाभ",
         "Available" to "उपलब्ध", "Out of stock" to "स्टॉक में नहीं", "Active" to "सक्रिय", "Hidden" to "छिपा हुआ",
         "Order ID" to "ऑर्डर आईडी", "Order Status" to "ऑर्डर स्थिति", "Pending Verification" to "सत्यापन लंबित",
@@ -2250,107 +2250,6 @@ private fun localizedProductName(name: String, language: String): String = local
 
 private fun localizedProductName(name: String, teluguName: String, language: String): String {
     if (language == "English") return name
-    val telugu = mapOf(
-        "Mahakanakasindhura Rasam" to "మహాకనకసింధూర రసం",
-        "Kaamsya (Kanchu)" to "కాంస్య (కంచు)",
-        "Kaamsya Kanchu" to "కాంస్య కంచు",
-        "Kravyadi Rasam" to "క్రవ్యాది రసం",
-        "Siddha Makaradhwajam" to "సిద్ధ మకరధ్వజం",
-        "Poornachandrodayam" to "పూర్ణచంద్రోదయం",
-        "Mahavatavidhwamsa Rasam" to "మహావాతవిధ్వంస రసం",
-        "Mahavata Rasam" to "మహావాత రసం",
-        "Swarna Kanta Vallabha Rasam" to "స్వర్ణ కంఠవల్లభ రసం",
-        "Kanthavallabha Rasam" to "కంఠవల్లభ రసం",
-        "Pralayagni Rudra Rasam" to "ప్రళయాగ్ని రుద్ర రసం",
-        "Sleshantaka Rasam (name unclear)" to "శ్లేషాంతక రసం",
-        "Lokanatha Rasam" to "లోకనాథ రసం",
-        "Vyadhihara Rasam" to "వ్యాధిహర రసం",
-        "Hemasundara Rasam" to "హేమసుందర రసం",
-        "Sleshma Gajamkusam" to "శ్లేష్మ గజాంకుశం",
-        "Lakshmi Vilasa Rasam" to "లక్ష్మీ విలాస రసం",
-        "Vijaya Chintamani" to "విజయ చింతామణి",
-        "Rajita Loha Rasayanam" to "రజిత లోహ రసాయనం",
-        "Rasa Chintamani" to "రస చింతామణి",
-        "Swarna Tamra Rasayanam" to "స్వర్ణ తామ్ర రసాయనం",
-        "Tamra Rasayanam" to "తామ్ర రసాయనం",
-        "Tamra Vanga Rasayanam" to "తామ్ర వంగ రసాయనం",
-        "Chaturloha Rasayanam" to "చతుర్లోహ రసాయనం",
-        "Asta Loha Rasayanam" to "అష్ట లోహ రసాయనం",
-        "Raja Mruganka Rasam" to "రాజ మృగాంక రసం",
-        "Mahaloha Rasayanam" to "మహాలోహ రసాయనం",
-        "Loha Rasayanam" to "లోహ రసాయనం",
-        "Meha Vanga Raajeyem" to "మేహ వంగ రాజేయం",
-        "Rajita Meha Vanga Raajeyem" to "రజిత మేహ వంగ రాజేయం",
-        "Sootikaabharanam" to "సూతికాభరణం",
-        "Swarna Suryavarti" to "స్వర్ణ సూర్యవర్తి",
-        "Kanaka Bala Suryodayam" to "కనక బాల సూర్యోదయం",
-        "Mahila Priya" to "మహిళా ప్రియ",
-        "Swasaamrutam" to "శ్వాసామృతం",
-        "Jaambu Paanam" to "జాంబు పానం",
-        "Jeeva Satvam" to "జీవ సత్వం",
-        "Mahaabala" to "మహాబల",
-        "Ganeshamrutham" to "గణేశామృతం",
-        "Gadaa Sanjeevi" to "గదా సంజీవి",
-        "Maadeephala Rasayanam" to "మాదీఫల రసాయనం",
-        "Jambeera Rasayanam" to "జంబీర రసాయనం",
-        "Sitopaladi Churnam" to "సితోపలాది చూర్ణం",
-        "Talisadi Churnam" to "తాలిసాది చూర్ణం",
-        "Pushyanuga Churnam" to "పుష్యానుగ చూర్ణం",
-        "Gangadhara Churnam" to "గంగాధర చూర్ణం",
-        "Lavanadi Churnam" to "లవణాది చూర్ణం",
-        "Chaturjaataka Churnam" to "చతుర్జాతక చూర్ణం",
-        "Sudarshana Churnam" to "సుదర్శన చూర్ణం",
-        "Bhaskara Lavana Churnam" to "భాస్కర లవణ చూర్ణం",
-        "Maha Drakshaadi Churnam" to "మహా ద్రాక్షాది చూర్ణం",
-        "Rasottamaadi Churnam" to "రసోత్తమాది చూర్ణం",
-        "Hingvashtaka Churnam" to "హింగ్వాష్టక చూర్ణం",
-        "Chandanaadi Churnam" to "చందనాది చూర్ణం",
-        "Ashwagandha Churnam" to "అశ్వగంధ చూర్ణం",
-        "Triphala Churnam" to "త్రిఫల చూర్ణం",
-        "Dantadhavana Churnam" to "దంతధావన చూర్ణం",
-        "Vaasadi Dhoomapaanadi Churnam" to "వాసాది ధూమపానాది చూర్ణం",
-        "Tippasattu" to "తిప్పసత్తు",
-        "Patcha Karpuram" to "పచ్చ కర్పూరం",
-        "Garudamjanam" to "గరుడాంజనం",
-        "Saraswathi Ghritam" to "సరస్వతీ ఘృతం",
-        "Phala Ghritam" to "ఫల ఘృతం",
-        "Shatadhouta Ghritam" to "శతధౌత ఘృతం",
-        "Kalyana Ghritam" to "కల్యాణ ఘృతం",
-        "Surya-prabha Kashaya Ghritam" to "సూర్యప్రభ కషాయ ఘృతం",
-        "Bhringaraja Tailam" to "భృంగరాజ తైలం",
-        "Amlaki Tailam" to "ఆమలకి తైలం",
-        "Aragwadhadi Tailam" to "అరగ్వధాది తైలం",
-        "Chandanaadi Tailam" to "చందనాది తైలం",
-        "Narayana Tailam" to "నారాయణ తైలం",
-        "Vishnupushpi Tailam" to "విష్ణుపుష్పి తైలం",
-        "Amruthaadi Tailam" to "అమృతాది తైలం",
-        "Sahacharaadi Tailam" to "సహచరాది తైలం",
-        "Mahanarayana Tailam" to "మహానారాయణ తైలం",
-        "Bala Tailam" to "బల తైలం",
-        "Maha Vishagarbha Tailam" to "మహా విషగర్భ తైలం",
-        "Pinda Tailam" to "పిండ తైలం",
-        "Tamra Tailam" to "తామ్ర తైలం",
-        "Karna Roganthaka Tailam" to "కర్ణ రోగాంతక తైలం",
-        "Mahaa Moosha Tailam" to "మహా మూష తైలం",
-        "Vidangaadi Tailam" to "విడంగాది తైలం",
-        "Poorna Chandrodayam" to "పూర్ణ చంద్రోదయం",
-        "Vasantha Kusumakaram" to "వసంత కుసుమాకరం",
-        "Rajita Chandrodayam" to "రజిత చంద్రోదయం",
-        "Bruhat Vaata Chintamani" to "బృహత్ వాత చింతామణి",
-        "Maha Panchabhana Rasam" to "మహా పంచభాణ రసం",
-        "Tippasattu" to "తిప్పసత్తు",
-        "Siddha Makaradhwajam" to "సిద్ధ మకరధ్వజం",
-        "Karupura Silajith" to "కర్పూర శిలాజిత్",
-        "Karpoora Silajith" to "కర్పూర శిలాజిత్",
-        "Karpura Silajith" to "కర్పూర శిలాజిత్",
-        "Sammohan asthra" to "సమ్మోహనాస్త్రం",
-        "Sammohan Astra" to "సమ్మోహనాస్త్రం",
-        "Sammohanāstra" to "సమ్మోహనాస్త్రం",
-        "Sootikaavaata Raksham" to "సూతికావాత రక్షం",
-        "Sootika Vata Raksham" to "సూతికావాత రక్షం",
-        "Sootikavata Raksham" to "సూతికావాత రక్షం",
-        "Vykranta" to "విక్రాంత"
-    )
     val hindi = mapOf(
         "Mahakanakasindhura Rasam" to "महाकनकसिंधूर रस",
         "Kaamsya (Kanchu)" to "कांस्य (कंचु)",
@@ -2454,7 +2353,7 @@ private fun localizedProductName(name: String, teluguName: String, language: Str
     )
     fun key(value: String) = value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
     return when (language) {
-        "Telugu" -> teluguName.trim().takeIf { it.isNotBlank() } ?: telugu.entries.firstOrNull { key(it.key) == key(name) }?.value ?: name
+        "Telugu" -> teluguName.trim().takeIf { it.isNotBlank() } ?: name
         "Hindi" -> hindi.entries.firstOrNull { key(it.key) == key(name) }?.value ?: name
         else -> name
     }
@@ -4534,6 +4433,7 @@ private fun AdminProductEditor(
     val context = LocalContext.current
     val isNew = product == null
     var name by remember(product?.id) { mutableStateOf(product?.name.orEmpty()) }
+    var teluguName by remember(product?.id) { mutableStateOf(product?.teluguName.orEmpty()) }
     var category by remember(product?.id) { mutableStateOf(product?.category ?: "Lehyas") }
     // Keep the category selector usable immediately, even before Firestore responds
     // or when the categories collection is empty/unavailable.
@@ -4686,6 +4586,7 @@ private fun AdminProductEditor(
         ) {
             Text(tr("Product Information", LocalAppLanguage.current), color = AdminInk, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             OutlinedTextField(name, { name = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Product name *", LocalAppLanguage.current)) }, isError = invalidName, singleLine = true)
+            OutlinedTextField(teluguName, { teluguName = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Product name (Telugu)", LocalAppLanguage.current)) }, supportingText = { Text(tr("Optional. Enter the approved Telugu catalogue name.", LocalAppLanguage.current)) }, singleLine = true)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -4908,6 +4809,7 @@ private fun AdminProductEditor(
                     message = null
                     val fields = hashMapOf<String, Any>(
                         "product_name" to name.trim(),
+                        "product_name_te" to teluguName.trim(),
                         "product_category" to category.trim(),
                         "product_price" to (price.toDoubleOrNull() ?: 0.0),
                         "product_weight" to weight.trim(),
