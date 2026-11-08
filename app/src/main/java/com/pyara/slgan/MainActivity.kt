@@ -8231,7 +8231,7 @@ private fun ProductDetailsPage(
                 Column(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
-                            Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.SemiBold)
+                            Text(localizedProductName(product.name, product.teluguName, currentLanguage), color = Ink, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.SemiBold)
                             if (product.category.isNotBlank()) {
                                 Surface(
                                     shape = RoundedCornerShape(8.dp),
@@ -8398,7 +8398,7 @@ private fun ProductDetailsPage(
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
                                 Text(tr("Write A Review", LocalAppLanguage.current), color = Ink, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
-                                Text(localizedProductName(product.name, currentLanguage), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                Text(localizedProductName(product.name, product.teluguName, currentLanguage), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
                             }
                             IconButton(onClick = { if (!ratingSaving) showReviewDialog = false }, modifier = Modifier.size(40.dp).background(appThemedColor(Color(0xFFF0F2F0)), CircleShape)) {
                                 Icon(Icons.Default.Close, contentDescription = tr("Close review", LocalAppLanguage.current), tint = Muted)
