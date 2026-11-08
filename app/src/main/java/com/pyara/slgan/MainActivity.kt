@@ -2221,7 +2221,9 @@ private fun transliterateLatinToTelugu(value: String): String {
     return out.toString()
 }
 
-private fun localizedProductName(name: String, language: String): String {
+private fun localizedProductName(name: String, language: String): String = localizedProductName(name, "", language)
+
+private fun localizedProductName(name: String, teluguName: String, language: String): String {
     if (language == "English") return name
     val telugu = mapOf(
         "Mahakanakasindhura Rasam" to "మహాకనకసింధూర రసం",
@@ -2427,13 +2429,13 @@ private fun localizedProductName(name: String, language: String): String {
     )
     fun key(value: String) = value.lowercase(Locale.ROOT).replace(Regex("[^a-z0-9]"), "")
     return when (language) {
-        "Telugu" -> telugu.entries.firstOrNull { key(it.key) == key(name) }?.value ?: transliterateLatinToTelugu(name)
+        "Telugu" -> teluguName.trim().takeIf { it.isNotBlank() } ?: telugu.entries.firstOrNull { key(it.key) == key(name) }?.value ?: name
         "Hindi" -> hindi.entries.firstOrNull { key(it.key) == key(name) }?.value ?: name
         else -> name
     }
 }
 
-private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1, val isHidden: Boolean = false, val isActive: Boolean = true)
+private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1, val isHidden: Boolean = false, val isActive: Boolean = true, val teluguName: String = "")
 private fun productPackWeightGrams(product: Product): Double {
     val match = Regex("""^\s*(\d+(?:\.\d+)?)\s*(kg|kgs|g|gm|gms|gram|grams)\s*$""", RegexOption.IGNORE_CASE)
         .matchEntire(product.subtitle.trim()) ?: return 0.0
@@ -2474,6 +2476,7 @@ private fun localProductImageFor(context: android.content.Context, productName: 
 private fun productFromFirestore(data: Map<String, Any?>, context: android.content.Context, keepUnnamedForAdmin: Boolean = false): Product? {
     val id = data["id"]?.toString().orEmpty()
     val name = listOf("product_name", "name", "productName", "product_title", "title", "medicine_name", "productname", "item_name", "itemName", "medicineName", "display_name", "displayName").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    val teluguName = listOf("product_name_te", "name_te", "productNameTe", "telugu_name").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     if (name.isBlank() && !keepUnnamedForAdmin) return null
     val displayName = name.ifBlank { "Unnamed product (${id.take(8).ifBlank { "record" }})" }
     // Show only the pack weight beneath the product name, e.g. "5g".
@@ -2525,7 +2528,7 @@ private fun productFromFirestore(data: Map<String, Any?>, context: android.conte
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val majorIngredients = listOf("product_major_ingredients", "major_ingredients", "ingredients", "product_ingredients").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    return Product(id.ifBlank { displayName.hashCode().toString() }, displayName, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true, isActive = data["product_active"]?.toString()?.equals("false", ignoreCase = true) != true)
+    return Product(id.ifBlank { displayName.hashCode().toString() }, displayName, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true, isActive = data["product_active"]?.toString()?.equals("false", ignoreCase = true) != true, teluguName = teluguName)
 }
 @Composable
 private fun AyurvedicApp() {
@@ -4296,7 +4299,7 @@ private fun AdminProductsScreen(
                                 }
                                 Spacer(Modifier.width(7.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(localizedProductName(product.name, LocalAppLanguage.current), color = AdminInk, fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                    Text(localizedProductName(product.name, product.teluguName, LocalAppLanguage.current), color = AdminInk, fontSize = 11.sp, fontWeight = FontWeight.Bold, maxLines = 2, overflow = TextOverflow.Ellipsis)
                                     Text(product.subtitle.ifBlank { product.category }, color = AdminMuted, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     if (product.isHidden) Text(tr("Hidden", LocalAppLanguage.current), color = AdminMuted, fontSize = 9.sp)
                                 }
@@ -8204,7 +8207,7 @@ private fun ProductDetailsPage(
                             val productLink = "https://slgan-a364e.web.app/product?id=${Uri.encode(product.id)}"
                             val shareText = buildString {
                                 append("Check out this product from Sri Lakshmi Ganapathi Ayurveda Nilayam (SLGAN)\n\n")
-                                append(localizedProductName(product.name, currentLanguage))
+                                append(localizedProductName(product.name, product.teluguName, currentLanguage))
                                 if (product.subtitle.isNotBlank()) append("\nPack size: ${product.subtitle}")
                                 if (product.price > 0.0) append("\nPrice: ₹${String.format("%.2f", product.price)}")
                                 append("\n\nView product: $productLink")
@@ -10070,7 +10073,7 @@ private fun OrdersPage(
                                 }
                                 Spacer(Modifier.width(14.dp))
                                 Column(Modifier.weight(1f)) {
-                                    Text(localizedProductName(product?.name ?: name, LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                                    Text(localizedProductName(product?.name ?: name, product?.teluguName.orEmpty(), LocalAppLanguage.current), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
                                     val packSize = product?.subtitle?.takeIf { it.isNotBlank() }
                                     Text("${packSize ?: tr("Item", LocalAppLanguage.current)} × $quantity", color = Muted, fontSize = 14.sp)
                                 }
