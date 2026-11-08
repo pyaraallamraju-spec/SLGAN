@@ -2,8 +2,26 @@ name: Android build
 on:
   push:
     branches: [main]
+    paths:
+      - "app/**"
+      - "gradle/**"
+      - "*.gradle"
+      - "*.gradle.kts"
+      - "gradle.properties"
+      - "gradlew"
+      - "gradlew.bat"
+      - ".github/workflows/android.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "app/**"
+      - "gradle/**"
+      - "*.gradle"
+      - "*.gradle.kts"
+      - "gradle.properties"
+      - "gradlew"
+      - "gradlew.bat"
+      - ".github/workflows/android.yml"
   workflow_dispatch:
 
 # Serialize builds so first-time runs cannot generate competing debug keys.
@@ -75,9 +93,10 @@ jobs:
       - name: Rename APK to SLGAN.apk
         run: cp app/build/outputs/apk/debug/app-debug.apk SLGAN.apk
       - name: Upload debug APK
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: SLGAN-APK
           path: SLGAN.apk
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 1
