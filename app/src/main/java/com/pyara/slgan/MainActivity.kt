@@ -803,6 +803,10 @@ private fun tr(text: String, language: String): String {
         "Choose the appearance for the customer app. The admin screens keep their separate neutral theme." to "కస్టమర్ యాప్ రూపాన్ని ఎంచుకోండి. అడ్మిన్ స్క్రీన్‌లు ప్రత్యేక న్యూట్రల్ థీమ్‌ను ఉపయోగిస్తాయి.",
         "Classic Maroon" to "క్లాసిక్ మెరూన్", "Botanical Green" to "బొటానికల్ గ్రీన్", "Dark Mode" to "డార్క్ మోడ్", "Green Mode" to "గ్రీన్ మోడ్",
         "Add Product" to "ఉత్పత్తిని జోడించండి", "Edit Product" to "ఉత్పత్తిని సవరించండి", "Product Name" to "ఉత్పత్తి పేరు", "Product name (Telugu)" to "ఉత్పత్తి పేరు (తెలుగు)",
+        "Description (Telugu)" to "వివరణ (తెలుగు)",
+        "Usage / directions (Telugu)" to "వాడే విధానం (తెలుగు)",
+        "Cures / indications (Telugu)" to "ఉపయోగ సూచనలు (తెలుగు)",
+        "Major ingredients (Telugu)" to "ప్రధాన పదార్థాలు (తెలుగు)",
         "Optional. Enter the approved Telugu catalogue name." to "ఐచ్ఛికం. ఆమోదించిన తెలుగు కేటలాగ్ పేరును నమోదు చేయండి.",
         "Description" to "వివరణ", "Usage" to "వాడే విధానం", "Ingredients" to "పదార్థాలు", "Cures" to "ఉపయోగ సూచనలు",
         "Available" to "అందుబాటులో ఉంది", "Out of stock" to "స్టాక్ లేదు", "Active" to "యాక్టివ్", "Hidden" to "దాచబడింది",
@@ -2360,7 +2364,19 @@ private fun localizedProductName(name: String, teluguName: String, language: Str
     }
 }
 
-private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1, val isHidden: Boolean = false, val isActive: Boolean = true, val teluguName: String = "")
+private data class Product(val id: String, val name: String, val subtitle: String, val price: Double, val category: String, val emoji: String, val description: String, val imageUrl: String, val quantity: String, val usage: String, val cures: String, val majorIngredients: String, val signature: Boolean = false, val productStock: Int = 1, val isHidden: Boolean = false, val isActive: Boolean = true, val teluguName: String = "", val descriptionTe: String = "", val usageTe: String = "", val curesTe: String = "", val majorIngredientsTe: String = "")
+private fun localizedProductDescription(product: Product, language: String): String =
+    if (language == "Telugu") product.descriptionTe.trim().ifBlank { product.description } else product.description
+
+private fun localizedProductUsage(product: Product, language: String): String =
+    if (language == "Telugu") product.usageTe.trim().ifBlank { product.usage } else product.usage
+
+private fun localizedProductCures(product: Product, language: String): String =
+    if (language == "Telugu") product.curesTe.trim().ifBlank { product.cures } else product.cures
+
+private fun localizedProductIngredients(product: Product, language: String): String =
+    if (language == "Telugu") product.majorIngredientsTe.trim().ifBlank { product.majorIngredients } else product.majorIngredients
+
 private fun productPackWeightGrams(product: Product): Double {
     val match = Regex("""^\s*(\d+(?:\.\d+)?)\s*(kg|kgs|g|gm|gms|gram|grams)\s*$""", RegexOption.IGNORE_CASE)
         .matchEntire(product.subtitle.trim()) ?: return 0.0
@@ -2438,6 +2454,7 @@ private fun productFromFirestore(data: Map<String, Any?>, context: android.conte
         else -> "🌿"
     }
     val description = listOf("product_description", "description", "product_details", "details").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    val descriptionTe = data["product_description_te"]?.toString()?.trim().orEmpty()
     val remoteImageUrl = listOf("product_image", "image_url", "imageUrl", "image", "product_image_url").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.startsWith("https://") || it.startsWith("http://") } }.orEmpty()
     // Automatically find artwork in app/src/main/assets/drawable/products by matching its filename to the product name.
     val localProductImage = localProductImageFor(context, name)
@@ -2451,9 +2468,12 @@ private fun productFromFirestore(data: Map<String, Any?>, context: android.conte
     val imageUrl = if (isChyavanaprasha) localProductImage.ifBlank { remoteImageUrl } else remoteImageUrl.ifBlank { localProductImage }
     val quantity = listOf("product_quantity", "quantity", "stock").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
     val usage = listOf("product_usage", "usage", "how_to_use", "directions").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    val usageTe = data["product_usage_te"]?.toString()?.trim().orEmpty()
     val cures = listOf("product_cures", "cures", "benefits", "indications").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
+    val curesTe = data["product_cures_te"]?.toString()?.trim().orEmpty()
     val majorIngredients = listOf("product_major_ingredients", "major_ingredients", "ingredients", "product_ingredients").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
-    return Product(id.ifBlank { displayName.hashCode().toString() }, displayName, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true, isActive = data["product_active"]?.toString()?.equals("false", ignoreCase = true) != true, teluguName = teluguName)
+    val majorIngredientsTe = data["product_major_ingredients_te"]?.toString()?.trim().orEmpty()
+    return Product(id.ifBlank { displayName.hashCode().toString() }, displayName, details.ifBlank { "Traditional Ayurvedic product" }, price, category, emoji, description, imageUrl, quantity, usage, cures, majorIngredients, signature = data["signature"]?.toString()?.toIntOrNull() == 1 || data["signature"]?.toString()?.equals("true", ignoreCase = true) == true, productStock = data["product_stock"]?.toString()?.toIntOrNull()?.coerceIn(0, 1) ?: 1, isHidden = data["product_hidden"]?.toString()?.equals("true", ignoreCase = true) == true, isActive = data["product_active"]?.toString()?.equals("false", ignoreCase = true) != true, teluguName = teluguName, descriptionTe = descriptionTe, usageTe = usageTe, curesTe = curesTe, majorIngredientsTe = majorIngredientsTe)
 }
 @Composable
 private fun AyurvedicApp() {
@@ -3771,11 +3791,11 @@ private fun HomeBannerSlider(
         onDispose { registration.remove() }
     }
     if (!sliderEnabled) return
-    val slides = remember(products) {
+    val slides = remember(products, LocalAppLanguage.current) {
         val signatureSlides = products.filter { it.signature }.map { product ->
             HomeBannerSlide(
                 product.name,
-                product.description.ifBlank { "A signature SLGAN product" },
+                localizedProductDescription(product, LocalAppLanguage.current).ifBlank { tr("A signature SLGAN product", LocalAppLanguage.current) },
                 product.imageUrl.ifBlank {
                     when (product.name.lowercase().filter { it.isLetterOrDigit() }) {
                         "mahilapriya" -> "https://images.unsplash.com/photo-1547887538-e3a2f32cb1cc?auto=format&fit=crop&w=1200&q=85"
@@ -4566,6 +4586,10 @@ private fun AdminProductEditor(
     var usage by remember(product?.id) { mutableStateOf(product?.usage.orEmpty()) }
     var cures by remember(product?.id) { mutableStateOf(product?.cures.orEmpty()) }
     var ingredients by remember(product?.id) { mutableStateOf(product?.majorIngredients.orEmpty()) }
+    var descriptionTe by remember(product?.id) { mutableStateOf(product?.descriptionTe.orEmpty()) }
+    var usageTe by remember(product?.id) { mutableStateOf(product?.usageTe.orEmpty()) }
+    var curesTe by remember(product?.id) { mutableStateOf(product?.curesTe.orEmpty()) }
+    var ingredientsTe by remember(product?.id) { mutableStateOf(product?.majorIngredientsTe.orEmpty()) }
     var signature by remember(product?.id) { mutableStateOf(product?.signature ?: false) }
     var productStock by remember(product?.id) { mutableStateOf(product?.productStock ?: 1) }
     var saving by remember { mutableStateOf(false) }
@@ -4727,6 +4751,10 @@ private fun AdminProductEditor(
             OutlinedTextField(usage, { usage = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Usage / directions", LocalAppLanguage.current)) }, minLines = 2)
             OutlinedTextField(cures, { cures = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Cures / indications", LocalAppLanguage.current)) }, minLines = 2)
             OutlinedTextField(ingredients, { ingredients = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Major ingredients", LocalAppLanguage.current)) }, minLines = 2)
+            OutlinedTextField(descriptionTe, { descriptionTe = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Description (Telugu)", LocalAppLanguage.current)) }, minLines = 3)
+            OutlinedTextField(usageTe, { usageTe = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Usage / directions (Telugu)", LocalAppLanguage.current)) }, minLines = 2)
+            OutlinedTextField(curesTe, { curesTe = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Cures / indications (Telugu)", LocalAppLanguage.current)) }, minLines = 2)
+            OutlinedTextField(ingredientsTe, { ingredientsTe = it; message = null }, modifier = Modifier.fillMaxWidth(), label = { Text(tr("Major ingredients (Telugu)", LocalAppLanguage.current)) }, minLines = 2)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -4825,6 +4853,10 @@ private fun AdminProductEditor(
                         "product_usage" to usage.trim(),
                         "product_cures" to cures.trim(),
                         "product_major_ingredients" to ingredients.trim(),
+                        "product_description_te" to descriptionTe.trim(),
+                        "product_usage_te" to usageTe.trim(),
+                        "product_cures_te" to curesTe.trim(),
+                        "product_major_ingredients_te" to ingredientsTe.trim(),
                         "signature" to signature,
                         "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp()
                     )
@@ -8195,10 +8227,10 @@ private fun ProductDetailsPage(
                                 Triple("Usage", Icons.Default.Description, "Usage")
                             )
                             val detailContent = when (selectedDetailsTab) {
-                                "Cures" -> product.cures
-                                "Major ingredients" -> product.majorIngredients
-                                "Usage" -> product.usage
-                                else -> product.description
+                                "Cures" -> localizedProductCures(product, LocalAppLanguage.current)
+                                "Major ingredients" -> localizedProductIngredients(product, LocalAppLanguage.current)
+                                "Usage" -> localizedProductUsage(product, LocalAppLanguage.current)
+                                else -> localizedProductDescription(product, LocalAppLanguage.current)
                             }
                             Column(Modifier.fillMaxWidth()) {
                                 Box {
