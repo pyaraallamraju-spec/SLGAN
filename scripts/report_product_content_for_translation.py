@@ -57,7 +57,9 @@ def main():
     print("UNIQUE_TEXT_COUNTS=" + json.dumps({k: len(v) for k, v in report.items()}, sort_keys=True))
     payload = json.dumps(report, ensure_ascii=False, sort_keys=True).encode("utf-8")
     encoded = base64.b64encode(payload).decode("ascii")
-    print("REPORT_JSON_BASE64=" + encoded)
+    for index in range(0, len(encoded), 80):
+        chunk_number = index // 80
+        print(f"REPORT_CHUNK_{chunk_number:03d}=" + encoded[index:index + 80])
 
 
 if __name__ == "__main__":
