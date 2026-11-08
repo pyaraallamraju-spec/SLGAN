@@ -803,6 +803,7 @@ private fun tr(text: String, language: String): String {
         "Choose the appearance for the customer app. The admin screens keep their separate neutral theme." to "కస్టమర్ యాప్ రూపాన్ని ఎంచుకోండి. అడ్మిన్ స్క్రీన్‌లు ప్రత్యేక న్యూట్రల్ థీమ్‌ను ఉపయోగిస్తాయి.",
         "Classic Maroon" to "క్లాసిక్ మెరూన్", "Botanical Green" to "బొటానికల్ గ్రీన్", "Dark Mode" to "డార్క్ మోడ్", "Green Mode" to "గ్రీన్ మోడ్",
         "Add Product" to "ఉత్పత్తిని జోడించండి", "Edit Product" to "ఉత్పత్తిని సవరించండి", "Product Name" to "ఉత్పత్తి పేరు", "Product name (Telugu)" to "ఉత్పత్తి పేరు (తెలుగు)",
+        "Optional. Enter the approved Telugu catalogue name." to "ఐచ్ఛికం. ఆమోదించిన తెలుగు కేటలాగ్ పేరును నమోదు చేయండి.",
         "Description" to "వివరణ", "Usage" to "వాడే విధానం", "Ingredients" to "పదార్థాలు", "Cures" to "ఉపయోగ సూచనలు",
         "Available" to "అందుబాటులో ఉంది", "Out of stock" to "స్టాక్ లేదు", "Active" to "యాక్టివ్", "Hidden" to "దాచబడింది",
         "Order ID" to "ఆర్డర్ ఐడి", "Order Status" to "ఆర్డర్ స్థితి", "Pending Verification" to "ధృవీకరణ పెండింగ్‌లో ఉంది",
