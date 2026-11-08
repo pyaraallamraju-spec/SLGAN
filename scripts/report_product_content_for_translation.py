@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 
@@ -54,10 +55,9 @@ def main():
     print(f"DOCUMENTS_SCANNED={len(docs)}")
     print("POPULATED_DOCUMENT_COUNTS=" + json.dumps(populated_docs, ensure_ascii=False, sort_keys=True))
     print("UNIQUE_TEXT_COUNTS=" + json.dumps({k: len(v) for k, v in report.items()}, sort_keys=True))
-    for field in FIELDS:
-        print(f"BEGIN_{field.upper()}_JSON")
-        print(json.dumps(report[field], ensure_ascii=False, sort_keys=True))
-        print(f"END_{field.upper()}_JSON")
+    payload = json.dumps(report, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    encoded = base64.b64encode(payload).decode("ascii")
+    print("REPORT_JSON_BASE64=" + encoded)
 
 
 if __name__ == "__main__":
