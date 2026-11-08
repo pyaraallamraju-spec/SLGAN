@@ -332,7 +332,7 @@ private val LocalAppLanguage = staticCompositionLocalOf { "English" }
 private fun tr(text: String, language: String): String {
     if (language == "English") return text
     val te = mapOf(
-        "Home" to "హోమ్", "Categories" to "వర్గాలు", "Cart" to "కార్ట్", "Profile" to "ప్రొఫైల్",
+        "HomeTab" to "హోమ్", "Categories" to "వర్గాలు", "Cart" to "కార్ట్", "Profile" to "ప్రొఫైల్",
         "Your account" to "మీ ఖాతా", "Manage your personal details and delivery addresses." to "మీ వ్యక్తిగత వివరాలు, డెలివరీ చిరునామాలను నిర్వహించండి.",
         "Profile" to "ప్రొఫైల్", "First name" to "పేరు", "Last name" to "ఇంటి పేరు",
         "Nickname" to "ముద్దుపేరు", "Mobile number" to "మొబైల్ నంబర్", "Enter mobile number" to "మొబైల్ నంబర్ నమోదు చేయండి",
@@ -340,7 +340,7 @@ private fun tr(text: String, language: String): String {
         "Non-binary" to "నాన్-బైనరీ", "Prefer not to say" to "చెప్పదలచుకోలేదు", "Save profile" to "ప్రొఫైల్ సేవ్ చేయండి",
         "Saved successfully." to "విజయవంతంగా సేవ్ అయింది.", "Saving…" to "సేవ్ అవుతోంది…", "Loading profile…" to "ప్రొఫైల్ లోడ్ అవుతోంది…",
         "Sign out" to "సైన్ అవుట్", "Enter delivery details below." to "డెలివరీ వివరాలను క్రింద నమోదు చేయండి.",
-                        "Home" to "ఇల్లు", "Work" to "పని", "Other" to "ఇతర",
+                        "AddressHome" to "ఇల్లు", "Work" to "పని", "Other" to "ఇతర",
         "Deliver to" to "డెలివరీ చిరునామా:",
                                                         "All" to "అన్నీ", "Lehyas" to "లేహ్యాలు", "Ghrutas" to "ఘృతాలు", "Pills" to "మాత్రలు",
         "Tailas" to "తైలాలు", "Churnas" to "చూర్ణాలు", "Rasayanas" to "రసాయనాలు", "Rasayogas" to "రసయోగాలు", "Rasayoga" to "రసయోగం", "Bhasmas" to "భస్మాలు",
@@ -355,7 +355,7 @@ private fun tr(text: String, language: String): String {
         "Usage" to "వాడే విధానం",
         "Cures" to "ఉపయోగ సూచనలు",
         "Major ingredients" to "ప్రధాన పదార్థాలు",
-        "About" to "వివరాలు", "Medicines" to "మందులు", "Care" to "జాగ్రత్తలు", "Net quantity" to "నికర పరిమాణం", "Price inclusive of applicable taxes" to "వర్తించే పన్నులతో సహా ధర",
+        "ConditionAbout" to "వివరాలు", "Medicines" to "మందులు", "Care" to "జాగ్రత్తలు", "Net quantity" to "నికర పరిమాణం", "Price inclusive of applicable taxes" to "వర్తించే పన్నులతో సహా ధర",
         "No online payment. Place your order and we will confirm delivery details." to "ఆన్‌లైన్ చెల్లింపు లేదు. ఆర్డర్ చేయండి; డెలివరీ వివరాలను మేము నిర్ధారిస్తాము.",
         "Select payment method" to "చెల్లింపు విధానాన్ని ఎంచుకోండి",
         "Choose how you would like to pay for this order." to "ఈ ఆర్డర్‌కు ఎలా చెల్లించాలో ఎంచుకోండి.",
@@ -525,7 +525,7 @@ private fun tr(text: String, language: String): String {
         "Product Information" to "ఉత్పత్తి సమాచారం",
         "Save product" to "ఉత్పత్తిని సేవ్ చేయండి",
         "Information not available." to "సమాచారం అందుబాటులో లేదు.",
-        "About" to "గురించి",
+        "ProductAbout" to "గురించి",
         "Customer Ratings & Reviews" to "కస్టమర్ రేటింగ్‌లు మరియు సమీక్షలు",
         "View cart" to "కార్ట్ చూడండి",
         "Out of stock" to "స్టాక్ లేదు",
@@ -644,7 +644,6 @@ private fun tr(text: String, language: String): String {
         "Your phone number*" to "మీ ఫోన్ నంబర్*",
         "Please enter a valid phone number" to "దయచేసి సరైన ఫోన్ నంబర్ నమోదు చేయండి",
         "Save address as" to "చిరునామాను ఇలా సేవ్ చేయండి",
-        "Home" to "ఇల్లు",
         "Work" to "పని",
         "Hotel" to "హోటల్",
         "Other" to "ఇతర",
@@ -1265,7 +1264,7 @@ private fun tr(text: String, language: String): String {
 
     )
     val hi = mapOf(
-        "Home" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
+        "HomeTab" to "होम", "Categories" to "श्रेणियाँ", "Cart" to "कार्ट", "Profile" to "प्रोफ़ाइल",
         "Your account" to "आपका खाता", "Manage your personal details and delivery addresses." to "अपनी व्यक्तिगत जानकारी और डिलीवरी पते प्रबंधित करें।",
         "First name" to "पहला नाम", "Last name" to "उपनाम", "Nickname" to "उपनाम", "Mobile number" to "मोबाइल नंबर",
         "Enter mobile number" to "मोबाइल नंबर दर्ज करें", "Gender" to "लिंग", "Select gender" to "लिंग चुनें",
@@ -1273,7 +1272,7 @@ private fun tr(text: String, language: String): String {
         "Save profile" to "प्रोफ़ाइल सहेजें", "Saved successfully." to "सफलतापूर्वक सहेजा गया।",
         "Saving…" to "सहेज रहे हैं…", "Loading profile…" to "प्रोफ़ाइल लोड हो रही है…", "Sign out" to "साइन आउट",
         "Enter delivery details below." to "नीचे डिलीवरी विवरण दर्ज करें।",
-        "Home" to "घर", "Work" to "काम", "Other" to "अन्य",
+        "AddressHome" to "घर", "Work" to "काम", "Other" to "अन्य",
         "Deliver to" to "डिलीवरी पता:",
         "Recipient name *" to "प्राप्तकर्ता का नाम *", "House / flat, building, street *" to "मकान / फ्लैट, भवन, सड़क *",
         "Area / village / locality" to "क्षेत्र / गाँव / इलाका", "Landmark (optional)" to "नज़दीकी पहचान (वैकल्पिक)",
@@ -1290,7 +1289,7 @@ private fun tr(text: String, language: String): String {
         "Description" to "विवरण",
         "Usage" to "उपयोग विधि",
         "Cures" to "उपयोग संबंधी जानकारी",
-        "Major ingredients" to "मुख्य सामग्री", "About" to "विवरण", "Net quantity" to "शुद्ध मात्रा", "Price inclusive of applicable taxes" to "लागू कर सहित कीमत",
+        "Major ingredients" to "मुख्य सामग्री", "ConditionAbout" to "विवरण", "Net quantity" to "शुद्ध मात्रा", "Price inclusive of applicable taxes" to "लागू कर सहित कीमत",
         "No online payment. Place your order and we will confirm delivery details." to "ऑनलाइन भुगतान उपलब्ध नहीं है। ऑर्डर दें; हम डिलीवरी विवरण की पुष्टि करेंगे।",
         "Place order" to "ऑर्डर करें",
         "Customer name *" to "ग्राहक का नाम *",
@@ -1445,7 +1444,7 @@ private fun tr(text: String, language: String): String {
         "Product Information" to "उत्पाद जानकारी",
         "Save product" to "उत्पाद सहेजें",
         "Information not available." to "जानकारी उपलब्ध नहीं है।",
-        "About" to "जानकारी",
+        "ProductAbout" to "जानकारी",
         "Customer Ratings & Reviews" to "ग्राहक रेटिंग और समीक्षाएँ",
         "View cart" to "कार्ट देखें",
         "Out of stock" to "स्टॉक में नहीं",
@@ -1564,7 +1563,6 @@ private fun tr(text: String, language: String): String {
         "Your phone number*" to "आपका फ़ोन नंबर*",
         "Please enter a valid phone number" to "कृपया सही फ़ोन नंबर दर्ज करें",
         "Save address as" to "पता इस रूप में सहेजें",
-        "Home" to "घर",
         "Work" to "कार्यस्थल",
         "Hotel" to "होटल",
         "Other" to "अन्य",
@@ -6861,7 +6859,7 @@ private fun ShopScreen(
     }, bottomBar = {
         NavigationBar(modifier = Modifier.fillMaxWidth().shadow(8.dp), containerColor = appThemedColor(Color.White), contentColor = Forest) {
             listOf(
-                Triple("Home", Icons.Default.Home, "Home"),
+                Triple("HomeTab", Icons.Default.Home, "Home"),
                 Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
                 Triple("Categories", Icons.Default.GridView, "Categories"),
                 Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
@@ -8288,7 +8286,7 @@ private fun ProductDetailsPage(
                     Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White))) {
                         Column(Modifier.fillMaxWidth().padding(0.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                             val detailTabs = listOf(
-                                Triple("About", Icons.Default.Info, "About"),
+                                Triple("About", Icons.Default.Info, "ProductAbout"),
                                 Triple("Cures", Icons.Default.Eco, "Cures"),
                                 Triple("Major ingredients", Icons.Default.Spa, "Major ingredients"),
                                 Triple("Usage", Icons.Default.Description, "Usage")
@@ -8373,7 +8371,7 @@ private fun ProductDetailsPage(
             contentColor = Forest
         ) {
             listOf(
-                Triple("Home", Icons.Default.Home, "Home"),
+                Triple("HomeTab", Icons.Default.Home, "Home"),
                 Triple("Diseases", Icons.Default.MedicalInformation, "Diseases"),
                 Triple("Categories", Icons.Default.GridView, "Categories"),
                 Triple("Orders", Icons.Default.ReceiptLong, "Orders"),
@@ -8914,7 +8912,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                     .firstNotNullOfOrNull { key -> address[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }
                     .orEmpty()
                 val addressLabel = when (rawAddressLabel.trim().lowercase(Locale.ROOT)) {
-                    "home", "home address" -> tr("Home", LocalAppLanguage.current)
+                    "home", "home address" -> tr("AddressHome", LocalAppLanguage.current)
                     "work", "office", "work address" -> tr("Work", LocalAppLanguage.current)
                     "other", "other address" -> tr("Other", LocalAppLanguage.current)
                     else -> rawAddressLabel.ifBlank { tr("Address", LocalAppLanguage.current) }
@@ -10522,7 +10520,7 @@ private fun DiseasesPage(modifier: Modifier, diseases: List<String>, products: L
             ) {
                 Column(Modifier.fillMaxWidth().padding(0.dp)) {
                     val detailTabs = listOf(
-                        Triple("Description", Icons.Default.Info, "About"),
+                        Triple("Description", Icons.Default.Info, "ConditionAbout"),
                         Triple("Suggested Medicines", Icons.Default.MedicalServices, "Medicines"),
                         Triple("Precautions", Icons.Default.HealthAndSafety, "Care")
                     )
@@ -12653,7 +12651,7 @@ private fun AddAddressDetailsPage(
                                         },
                                         contentDescription = null, tint = appThemedColor(Color(0xFFB5B5B5)), modifier = Modifier.size(18.dp)
                                     )
-                                    Text(tr(option, addressLanguage), color = Ink, fontSize = 13.sp, modifier = Modifier.padding(start = 5.dp), maxLines = 1)
+                                    Text(tr(if (option == "Home") "AddressHome" else option, addressLanguage), color = Ink, fontSize = 13.sp, modifier = Modifier.padding(start = 5.dp), maxLines = 1)
                                 }
                             }
                         }
