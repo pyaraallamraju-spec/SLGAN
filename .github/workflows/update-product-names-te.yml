@@ -1,0 +1,29 @@
+name: Update Telugu product names only
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "data/product_names_te.json"
+      - "scripts/update_product_names_te.py"
+      - ".github/workflows/update-product-names-te.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  update-telugu-product-names:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Firebase Admin SDK
+        run: pip install firebase-admin
+      - name: Update only product_name_te in the live products collection
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: python scripts/update_product_names_te.py
