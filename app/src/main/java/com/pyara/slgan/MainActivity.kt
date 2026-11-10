@@ -2422,7 +2422,7 @@ private fun ProductImage(
             modifier = modifier,
             contentScale = contentScale,
             onError = {
-                if (!useLocalFallback && localFallback.isNotBlank() && localFallback != product.imageUrl) {
+                if (!useLocalFallback && product.imageUrl.isNotBlank() && localFallback.isNotBlank() && localFallback != product.imageUrl) {
                     useLocalFallback = true
                 } else {
                     imageFailed = true
