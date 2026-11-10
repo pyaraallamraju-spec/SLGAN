@@ -2398,6 +2398,47 @@ private fun localProductImageFor(context: android.content.Context, productName: 
     return match?.let { "file:///android_asset/$folder/${it.replace(" ", "%20")}" }.orEmpty()
 }
 
+
+@Composable
+private fun ProductImage(
+    product: Product,
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Crop
+) {
+    val context = LocalContext.current
+    val localFallback = remember(product.name) { localProductImageFor(context, product.name) }
+    var useLocalFallback by remember(product.imageUrl, localFallback) { mutableStateOf(false) }
+    var imageFailed by remember(product.imageUrl, localFallback) { mutableStateOf(false) }
+    val imageToShow = when {
+        imageFailed -> ""
+        useLocalFallback -> localFallback
+        else -> product.imageUrl.ifBlank { localFallback }
+    }
+
+    if (imageToShow.isNotBlank()) {
+        AsyncImage(
+            model = imageToShow,
+            contentDescription = product.name,
+            modifier = modifier,
+            contentScale = contentScale,
+            onError = {
+                if (!useLocalFallback && localFallback.isNotBlank() && localFallback != product.imageUrl) {
+                    useLocalFallback = true
+                } else {
+                    imageFailed = true
+                }
+            }
+        )
+    } else {
+        Box(
+            modifier = modifier.background(Color(0xFFF1F2F4)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(product.emoji.ifBlank { "🌿" }, fontSize = 38.sp)
+        }
+    }
+}
+
 private fun productFromFirestore(data: Map<String, Any?>, context: android.content.Context, keepUnnamedForAdmin: Boolean = false): Product? {
     val id = data["id"]?.toString().orEmpty()
     val name = listOf("product_name", "name", "productName", "product_title", "title", "medicine_name", "productname", "item_name", "itemName", "medicineName", "display_name", "displayName").firstNotNullOfOrNull { key -> data[key]?.toString()?.trim()?.takeIf { it.isNotBlank() } }.orEmpty()
@@ -7915,21 +7956,11 @@ private fun ProductCard(product: Product, count: Int, ratingSummary: ProductRati
     Card(Modifier.fillMaxWidth().clickable { onProductClick(product) }, shape = RoundedCornerShape(18.dp), colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)), elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
         Column(Modifier.padding(start = 11.dp, top = 11.dp, end = 11.dp, bottom = 4.dp)) {
             Box(Modifier.fillMaxWidth().height(98.dp).clip(RoundedCornerShape(14.dp)).background(appThemedColor(Color(0xFFF7F7F7))), contentAlignment = Alignment.Center) {
-                if (product.imageUrl.isNotBlank()) {
-                    var imageLoading by remember(product.imageUrl) { mutableStateOf(true) }
-                    AsyncImage(
-                        model = product.imageUrl,
-                        contentDescription = product.name,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                        onLoading = { imageLoading = true },
-                        onSuccess = { imageLoading = false },
-                        onError = { imageLoading = false }
-                    )
-                    if (imageLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp, color = Ink)
-                } else {
-                    Text(product.emoji, fontSize = 42.sp)
-                }
+                ProductImage(
+                    product = product,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
                 if (product.signature) {
                     SignatureBadgeRibbon(Modifier.align(Alignment.TopStart))
                 }
@@ -8106,26 +8137,11 @@ private fun ProductDetailsPage(
         Box(Modifier.fillMaxWidth().weight(1f)) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 Box(Modifier.fillMaxWidth().height(360.dp).background(appThemedColor(Color(0xFFF7F7F7)))) {
-                    if (product.imageUrl.isNotBlank()) {
-                        var detailImageLoading by remember(product.imageUrl) { mutableStateOf(true) }
-                        AsyncImage(
-                            model = product.imageUrl,
-                            contentDescription = product.name,
-                            modifier = Modifier.fillMaxWidth(1.3f).fillMaxHeight().align(Alignment.Center),
-                            contentScale = ContentScale.Crop,
-                            onLoading = { detailImageLoading = true },
-                            onSuccess = { detailImageLoading = false },
-                            onError = { detailImageLoading = false }
-                        )
-                        if (detailImageLoading) CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 2.dp, color = Ink)
-                    } else {
-                        Box(
-                            Modifier.fillMaxSize().background(appThemedColor(Color(0xFFF1F2F4))),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(product.emoji, fontSize = 112.sp)
-                        }
-                    }
+                    ProductImage(
+                        product = product,
+                        modifier = Modifier.fillMaxWidth(1.3f).fillMaxHeight().align(Alignment.Center),
+                        contentScale = ContentScale.Crop
+                    )
                     Row(Modifier.fillMaxWidth().align(Alignment.TopCenter).padding(horizontal = 22.dp, vertical = 28.dp), verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = onBack, modifier = Modifier.size(48.dp).background(Color.White.copy(alpha = 0.94f), CircleShape)) { Icon(Icons.Default.ArrowBack, contentDescription = "Back to products", tint = Color.Black) }
                         Spacer(Modifier.weight(1f))
