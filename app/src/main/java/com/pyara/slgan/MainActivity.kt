@@ -4260,8 +4260,7 @@ private fun AdminProductsScreen(
                         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                             Row(Modifier.weight(2.2f), verticalAlignment = Alignment.CenterVertically) {
                                 Box(Modifier.size(42.dp).clip(RoundedCornerShape(8.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
-                                    if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxSize().padding(2.dp), contentScale = ContentScale.Fit)
-                                    else Text(product.emoji, fontSize = 21.sp)
+                                    ProductImage(product = product, modifier = Modifier.fillMaxSize().padding(2.dp), contentScale = ContentScale.Fit)
                                 }
                                 Spacer(Modifier.width(7.dp))
                                 Column(Modifier.weight(1f)) {
@@ -7660,16 +7659,11 @@ private fun HomePage(modifier: Modifier, appLanguage: String, onLanguageChange: 
                                                 .background(appThemedColor(Color(0xFFF7F7F7))),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            if (product.imageUrl.isNotBlank()) {
-                                                AsyncImage(
-                                                    model = product.imageUrl,
-                                                    contentDescription = product.name,
-                                                    modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(11.dp)),
-                                                    contentScale = ContentScale.Crop
-                                                )
-                                            } else {
-                                                Text(product.emoji, fontSize = 43.sp)
-                                            }
+                                            ProductImage(
+                                                product = product,
+                                                modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(11.dp)),
+                                                contentScale = ContentScale.Crop
+                                            )
                                             if (product.signature) {
                                                 SignatureBadgeRibbon(Modifier.align(Alignment.TopStart))
                                             }
@@ -8610,11 +8604,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         selected.forEachIndexed { index, product ->
                             val quantity = cart[product.id] ?: 0
                             Row(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                                if (product.imageUrl.isNotBlank()) {
-                                    AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentScale = ContentScale.Crop)
-                                } else {
-                                    Box(Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 26.sp) }
-                                }
+                                ProductImage(product = product, modifier = Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentScale = ContentScale.Crop)
                                 Spacer(Modifier.width(12.dp))
                                 Column(Modifier.weight(1f)) {
                                     Text(localizedProductName(product.name, product.teluguName, LocalAppLanguage.current), color = Ink, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 3, overflow = TextOverflow.Ellipsis)
@@ -8649,8 +8639,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                             ) {
                                 items(recommendations.take(10), key = { it.id }) { product ->
                                     Column(Modifier.width(145.dp).clickable { onProductClick(product) }) {
-                                        if (product.imageUrl.isNotBlank()) AsyncImage(model = product.imageUrl, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF5F6FA))), contentScale = ContentScale.Crop)
-                                        else Box(Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF1F2F4))), contentAlignment = Alignment.Center) { Text(product.emoji, fontSize = 35.sp) }
+                                        ProductImage(product = product, modifier = Modifier.fillMaxWidth().height(105.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF5F6FA))), contentScale = ContentScale.Crop)
                                         Spacer(Modifier.height(7.dp))
                                         Text(localizedProductName(product.name, product.teluguName, LocalAppLanguage.current), color = Ink, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, minLines = 2)
                                         Text(money(product.price), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp)
