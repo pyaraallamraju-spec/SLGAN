@@ -3905,7 +3905,8 @@ private fun HomeBannerSlider(
                 label = "homeBannerSlide"
             ) { index ->
                 val slide = slides[index]
-                val productImage = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }?.imageUrl.orEmpty()
+                val bannerProduct = products.firstOrNull { it.name.trim().equals(slide.productName, ignoreCase = true) }
+                val productImage = bannerProduct?.imageUrl.orEmpty()
                 val normalizedBannerName = slide.productName.lowercase().filter { it.isLetterOrDigit() }
                 val isSwaasamrutamBanner = normalizedBannerName.contains("swaasamrutam") || normalizedBannerName.contains("swasaamrutam")
                 val isMahilaPriyaBanner = normalizedBannerName.contains("mahilapriya")
@@ -3944,11 +3945,27 @@ private fun HomeBannerSlider(
                             selectedDesign == 4 -> "Botanical herbal leaves background"
                             else -> slide.productName
                         },
-                        contentScale = if (isArtworkBanner || selectedDesign == 4 || slide.isCompanySlide) ContentScale.Crop else ContentScale.Crop,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize().then(
                             if (isArtworkBanner) Modifier.clickable { openProduct(slide.productName) } else Modifier
                         )
                     )
+                    if (!isArtworkBanner && bannerPainter.state is coil.compose.AsyncImagePainter.State.Error) {
+                        if (bannerProduct != null) {
+                            ProductImage(
+                                product = bannerProduct,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Image(
+                                painter = androidx.compose.ui.res.painterResource(R.drawable.slga_banner),
+                                contentDescription = "Sri Lakshmi Ganapathi Ayurveda Nilayam banner fallback",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
                     if (!isArtworkBanner && bannerPainter.state is coil.compose.AsyncImagePainter.State.Loading) {
                         Box(
                             Modifier.fillMaxSize().background(appThemedColor(Color(0x22FFFFFF))),
