@@ -4745,7 +4745,20 @@ private fun AdminProductEditor(
             }
             Text(tr("Product image", LocalAppLanguage.current), color = AdminInk, fontWeight = FontWeight.SemiBold)
             ProductImage(
-                product = (product ?: Product()).copy(name = name, imageUrl = imageUrl),
+                product = product?.copy(name = name, imageUrl = imageUrl) ?: Product(
+                    id = "",
+                    name = name,
+                    subtitle = "",
+                    price = 0.0,
+                    category = category,
+                    emoji = categoryOptions.firstOrNull { it.first.equals(category, ignoreCase = true) }?.second ?: "🌿",
+                    description = "",
+                    imageUrl = imageUrl,
+                    quantity = "",
+                    usage = "",
+                    cures = "",
+                    majorIngredients = ""
+                ),
                 modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)),
                 contentScale = ContentScale.Fit
             )
