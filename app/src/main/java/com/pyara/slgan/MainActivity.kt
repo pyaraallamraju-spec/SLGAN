@@ -9697,8 +9697,8 @@ private fun OrdersPage(
                                     val productId = item["productId"]?.toString().orEmpty()
                                     val product = products.firstOrNull { it.id == productId }
                                     Box(Modifier.size(60.dp).shadow(3.dp, RoundedCornerShape(12.dp)).clip(RoundedCornerShape(14.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentAlignment = Alignment.Center) {
-                                        if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = product?.name ?: item["productName"]?.toString(), modifier = Modifier.fillMaxSize().padding(4.dp), contentScale = ContentScale.Fit)
-                                        else Text(product?.emoji ?: "🌿", fontSize = 22.sp)
+                                        if (product != null) ProductImage(product = product, modifier = Modifier.fillMaxSize().padding(4.dp), contentScale = ContentScale.Fit)
+                                        else Text("🌿", fontSize = 22.sp)
                                     }
                                 }
                             }
@@ -9812,8 +9812,8 @@ private fun OrdersPage(
                                     val productId = item["productId"]?.toString().orEmpty()
                                     val product = products.firstOrNull { it.id == productId }
                                     Box(Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentAlignment = Alignment.Center) {
-                                        if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = product?.name ?: item["productName"]?.toString(), modifier = Modifier.fillMaxSize().padding(5.dp), contentScale = ContentScale.Fit)
-                                        else Text(product?.emoji ?: "🌿", fontSize = 22.sp)
+                                        if (product != null) ProductImage(product = product, modifier = Modifier.fillMaxSize().padding(5.dp), contentScale = ContentScale.Fit)
+                                        else Text("🌿", fontSize = 22.sp)
                                     }
                                 }
                                 if (orderItems.size > 3) Box(Modifier.size(60.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFE2E2E2))), contentAlignment = Alignment.Center) { Text(tr("+", LocalAppLanguage.current) + (orderItems.size - 3), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
@@ -10001,8 +10001,8 @@ private fun OrdersPage(
                             val unitPrice = (item["unitPrice"] as? Number)?.toDouble() ?: (item["price"] as? Number)?.toDouble() ?: 0.0
                             Row(Modifier.fillMaxWidth().padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Box(Modifier.size(76.dp).clip(RoundedCornerShape(12.dp)).background(appThemedColor(Color(0xFFF6F7FA))), contentAlignment = Alignment.Center) {
-                                    if (!product?.imageUrl.isNullOrBlank()) AsyncImage(model = product?.imageUrl, contentDescription = name, modifier = Modifier.fillMaxSize().padding(5.dp), contentScale = ContentScale.Fit)
-                                    else Text(product?.emoji ?: "🌿", fontSize = 28.sp)
+                                    if (product != null) ProductImage(product = product, modifier = Modifier.fillMaxSize().padding(5.dp), contentScale = ContentScale.Fit)
+                                    else Text("🌿", fontSize = 28.sp)
                                 }
                                 Spacer(Modifier.width(14.dp))
                                 Column(Modifier.weight(1f)) {
@@ -10746,16 +10746,11 @@ private fun CategoriesPage(modifier: Modifier, products: List<Product>, cart: Ma
                                                 .background(appThemedColor(Color(0xFFF7F7F7))),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            if (product.imageUrl.isNotBlank()) {
-                                                AsyncImage(
-                                                    model = product.imageUrl,
-                                                    contentDescription = product.name,
-                                                    modifier = Modifier.fillMaxSize(),
-                                                    contentScale = ContentScale.Crop
-                                                )
-                                            } else {
-                                                Text(product.emoji.ifBlank { "🌿" }, fontSize = 38.sp)
-                                            }
+                                            ProductImage(
+                                                product = product,
+                                                modifier = Modifier.fillMaxSize(),
+                                                contentScale = ContentScale.Crop
+                                            )
                                             Box(
                                                 Modifier.align(Alignment.TopEnd).padding(top = 2.dp, end = 7.dp)
                                             ) {
