@@ -4421,7 +4421,7 @@ private fun AdminProductDetailsScreen(
                     Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         val image = listOf("product_image_url", "image_url", "imageUrl", "image", "productImage").firstNotNullOfOrNull { key -> data[key]?.toString()?.takeIf { it.startsWith("http") } }.orEmpty()
                         if (image.isNotBlank()) {
-                            AsyncImage(model = image, contentDescription = product.name, modifier = Modifier.fillMaxWidth().height(220.dp).clip(RoundedCornerShape(16.dp)), contentScale = ContentScale.Crop)
+                            ProductImage(product = product.copy(imageUrl = image), modifier = Modifier.fillMaxWidth().height(220.dp).clip(RoundedCornerShape(16.dp)), contentScale = ContentScale.Crop)
                         } else {
                             Box(Modifier.fillMaxWidth().height(110.dp).clip(RoundedCornerShape(16.dp)).background(Color(0xFFF1F2F4)), contentAlignment = Alignment.Center) {
                                 Text(product.emoji, fontSize = 48.sp)
@@ -4573,6 +4573,7 @@ private fun AdminProductEditor(
     }
     var quantity by remember(product?.id) { mutableStateOf(product?.quantity?.ifBlank { "1" } ?: "1") }
     var imageUrl by remember(product?.id) { mutableStateOf(product?.imageUrl.orEmpty()) }
+    var imagePreviewFailed by remember(imageUrl) { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     var uploadingImage by remember(product?.id) { mutableStateOf(false) }
     val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -4744,8 +4745,21 @@ private fun AdminProductEditor(
                 }
             }
             Text(tr("Product image", LocalAppLanguage.current), color = AdminInk, fontWeight = FontWeight.SemiBold)
-            if (imageUrl.isNotBlank()) {
-                AsyncImage(model = imageUrl, contentDescription = "Product image preview", modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)), contentScale = ContentScale.Fit)
+            if (imageUrl.isNotBlank() && !imagePreviewFailed) {
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = "Product image preview",
+                    modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)),
+                    contentScale = ContentScale.Fit,
+                    onError = { imagePreviewFailed = true }
+                )
+            } else {
+                Box(
+                    Modifier.fillMaxWidth().height(110.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(categoryOptions.firstOrNull { it.first.equals(category, ignoreCase = true) }?.second ?: "🌿", fontSize = 42.sp)
+                }
             }
             OutlinedButton(
                 onClick = { imagePicker.launch("image/*") },
