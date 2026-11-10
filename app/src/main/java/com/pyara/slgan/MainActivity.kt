@@ -4573,7 +4573,6 @@ private fun AdminProductEditor(
     }
     var quantity by remember(product?.id) { mutableStateOf(product?.quantity?.ifBlank { "1" } ?: "1") }
     var imageUrl by remember(product?.id) { mutableStateOf(product?.imageUrl.orEmpty()) }
-    var imagePreviewFailed by remember(imageUrl) { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     var uploadingImage by remember(product?.id) { mutableStateOf(false) }
     val imagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -4745,22 +4744,11 @@ private fun AdminProductEditor(
                 }
             }
             Text(tr("Product image", LocalAppLanguage.current), color = AdminInk, fontWeight = FontWeight.SemiBold)
-            if (imageUrl.isNotBlank() && !imagePreviewFailed) {
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = "Product image preview",
-                    modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)),
-                    contentScale = ContentScale.Fit,
-                    onError = { imagePreviewFailed = true }
-                )
-            } else {
-                Box(
-                    Modifier.fillMaxWidth().height(110.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(categoryOptions.firstOrNull { it.first.equals(category, ignoreCase = true) }?.second ?: "🌿", fontSize = 42.sp)
-                }
-            }
+            ProductImage(
+                product = (product ?: Product()).copy(name = name, imageUrl = imageUrl),
+                modifier = Modifier.fillMaxWidth().height(170.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xFFF1F2F4)),
+                contentScale = ContentScale.Fit
+            )
             OutlinedButton(
                 onClick = { imagePicker.launch("image/*") },
                 enabled = !uploadingImage,
