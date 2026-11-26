@@ -64,11 +64,11 @@ test("trusted admins can create and update categories", async () => {
   await assertSucceeds(setDoc(category, { name: "Updated Category" }, { merge: true }));
 });
 
-test("customers cannot create orders with admin or backend-only fields", async () => {
-  const db = testEnv.authenticatedContext("customer-user").firestore();
-  await assertFails(setDoc(doc(db, "orders", "order-1"), {
-    orderId: "order-1",
-    customerId: "customer-user",
+
+function validOrder(orderId, customerId) {
+  return {
+    orderId,
+    customerId,
     customerName: "Test Customer",
     email: "test@example.com",
     phone: "9999999999",
@@ -80,7 +80,52 @@ test("customers cannot create orders with admin or backend-only fields", async (
     paymentMethod: "cod",
     paymentEnvironment: "none",
     orderStatus: "pending_verification",
+    invoiceNumber: orderId,
     invoiceStatus: "not_generated",
-    invoiceNumber: "ADMIN-CONTROLLED"
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+}
+
+test("customers can create a valid pending COD order", async () => {
+  const db = testEnv.authenticatedContext("customer-user").firestore();
+  await assertSucceeds(setDoc(
+    doc(db, "orders", "order-valid"),
+    validOrder("order-valid", "customer-user")
+  ));
+});
+
+test("customers cannot inject unsupported backend fields into orders", async () => {
+  const db = testEnv.authenticatedContext("customer-user").firestore();
+  await assertFails(setDoc(doc(db, "orders", "order-injected"), {
+    ...validOrder("order-injected", "customer-user"),
+    invoicePdfUrl: "https://attacker.example/fake-invoice.pdf"
   }));
+});
+
+test("customers can read their own orders but not another customer's orders", async () => {
+  await testEnv.withSecurityRulesDisabled(async context => {
+    await setDoc(doc(context.firestore(), "orders", "customer-order"), validOrder("customer-order", "customer-user"));
+    await setDoc(doc(context.firestore(), "orders", "other-order"), validOrder("other-order", "other-user"));
+  });
+  const customerDb = testEnv.authenticatedContext("customer-user").firestore();
+  await assertSucceeds(getDoc(doc(customerDb, "orders", "customer-order")));
+  await assertFails(getDoc(doc(customerDb, "orders", "other-order")));
+});
+
+test("only admins can change order status", async () => {
+  await seedAdmin();
+  await testEnv.withSecurityRulesDisabled(async context => {
+    await setDoc(doc(context.firestore(), "orders", "status-order"), validOrder("status-order", "customer-user"));
+  });
+  const customerDb = testEnv.authenticatedContext("customer-user").firestore();
+  await assertFails(setDoc(doc(customerDb, "orders", "status-order"), {
+    orderStatus: "accepted"
+  }, { merge: true }));
+
+  const adminDb = testEnv.authenticatedContext("admin-user").firestore();
+  await assertSucceeds(setDoc(doc(adminDb, "orders", "status-order"), {
+    orderStatus: "accepted",
+    updatedAt: new Date().toISOString()
+  }, { merge: true }));
 });
