@@ -18,6 +18,7 @@ permissions:
 jobs:
   update-telugu-product-names:
     if: github.ref == 'refs/heads/main' && inputs.confirm_live_update == 'YES'
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
