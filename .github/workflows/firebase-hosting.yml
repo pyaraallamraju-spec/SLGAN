@@ -22,6 +22,7 @@ jobs:
   deploy:
     # Never deploy from develop; manual production deployment requires explicit confirmation.
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || inputs.confirm_production_deploy == 'YES')
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
