@@ -13,82 +13,24 @@
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1034428021231-1evr3el4lukd9j8ahsbgq00bg46ogie3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pyara.slgan",
-            "certificate_hash": "6c3a9c98e28e5a2a673c4192d0bd2c2dd1cc0875"
-          }
-        },
-        {
-          "client_id": "1034428021231-6lh6hfngh93hgl48c1e1ml729b225mt6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pyara.slgan",
-            "certificate_hash": "437149e8d7be3b75425c25457261f826302d6e54"
-          }
-        },
-        {
-          "client_id": "1034428021231-jpp37soqej3b7p69au9gcjb2s7u8jiqj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pyara.slgan",
-            "certificate_hash": "329beeb41866bf973a80c9c4642aa2066f20530c"
-          }
-        },
-        {
-          "client_id": "1034428021231-kc12dd65s9f31qaq5qg8d6v67uo4qt1i.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pyara.slgan",
-            "certificate_hash": "fe6a3c8d1f440ac915a8905e59a7ec78a422dae1"
-          }
-        },
-        {
-          "client_id": "1034428021231-n357q7uac4la5po52u27bc44op68j36m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pyara.slgan",
-            "certificate_hash": "ca151337d851d34f5502d531f33000bcb008a92f"
-          }
-        },
-        {
-          "client_id": "1034428021231-sp5uu6u7mk49qs3pkogh29iouc5huoqa.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pyara.slgan",
-            "certificate_hash": "ba276a77f8b6631a380bd7afd6f8a611bec2b097"
-          }
-        },
-        {
-          "client_id": "1034428021231-tjt3qf1hpi6ubmlm80aa8eghjrdrrujb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pyara.slgan",
-            "certificate_hash": "ac72067d9995afdeeb731f06e2aee43b0dbf79d9"
-          }
-        },
-        {
-          "client_id": "1034428021231-cge5sicjk5mulb5j90p1fmh1lgpifgn8.apps.googleusercontent.com",
-          "client_type": 3
-        }
+        {"client_id":"1034428021231-0vi4ml3p7lne8lohjso2gmpchsl8ujne.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"c97a2e164b9d9f3ba12bb89efdc1d82a97d69028"}},
+        {"client_id":"1034428021231-1evr3el4lukd9j8ahsbgq00bg46ogie3.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"6c3a9c98e28e5a2a673c4192d0bd2c2dd1cc0875"}},
+        {"client_id":"1034428021231-71dkh642e3vtra3ge9gf28ochok2c29l.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"cb90e4139cd25b84d384d95a14814de87c870ed3"}},
+        {"client_id":"1034428021231-8cgkr3ttkkhj7pv750l6h0olbsgrv92o.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"7308aa85ce00cc51b0b8ca0bcc2d72eb2adaa826"}},
+        {"client_id":"1034428021231-gscse3bgb6l9u7n5n0jumvnk2uh6ffbd.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"efb6f9ca7fdaf4028397a54c432d9307e8058fca"}},
+        {"client_id":"1034428021231-i6hu92cqb7dnk0n6nmhgmv5u61stj1si.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"5cf914783c33fbb32cbf28bdd18207f8a91d9eb0"}},
+        {"client_id":"1034428021231-jpp37soqej3b7p69au9gcjb2s7u8jiqj.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"329beeb41866bf973a80c9c4642aa2066f20530c"}},
+        {"client_id":"1034428021231-kc12dd65s9f31qaq5qg8d6v67uo4qt1i.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"fe6a3c8d1f440ac915a8905e59a7ec78a422dae1"}},
+        {"client_id":"1034428021231-n357q7uac4la5po52u27bc44op68j36m.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"ca151337d851d34f5502d531f33000bcb008a92f"}},
+        {"client_id":"1034428021231-quelh0ln0ivmt183vacp0u1mjtkerc00.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"ba8f9048a5b8c3cbb033fbf44baf77c4fcc70e55"}},
+        {"client_id":"1034428021231-sp5uu6u7mk49qs3pkogh29iouc5huoqa.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"ba276a77f8b6631a380bd7afd6f8a611bec2b097"}},
+        {"client_id":"1034428021231-tjt3qf1hpi6ubmlm80aa8eghjrdrrujb.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"ac72067d9995afdeeb731f06e2aee43b0dbf79d9"}},
+        {"client_id":"1034428021231-u7jl444t26fq60h3vd4ancf6fqa22936.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"d904fe1c31578c6130f7d8b0c9e6e72f390031a5"}},
+        {"client_id":"1034428021231-ules9hiiqkmn6uf39tdb0sufifusrgb7.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.pyara.slgan","certificate_hash":"fe43ed08dfdadb5905583cb28f0c2892cc49aaeb"}},
+        {"client_id":"1034428021231-cge5sicjk5mulb5j90p1fmh1lgpifgn8.apps.googleusercontent.com","client_type":3}
       ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDZjCjajI25DZMWZUzHBJh_FztS2-r_E9U"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1034428021231-cge5sicjk5mulb5j90p1fmh1lgpifgn8.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
+      "api_key": [{"current_key":"AIzaSyDZjCjajI25DZMWZUzHBJh_FztS2-r_E9U"}],
+      "services": {"appinvite_service":{"other_platform_oauth_client":[{"client_id":"1034428021231-cge5sicjk5mulb5j90p1fmh1lgpifgn8.apps.googleusercontent.com","client_type":3}]}}
     }
   ],
   "configuration_version": "1"
