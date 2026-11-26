@@ -35,6 +35,7 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthCredential
@@ -140,6 +141,20 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+
+private fun saveSlganFcmToken(uid: String, token: String) {
+    if (uid.isBlank() || token.isBlank()) return
+    FirebaseFirestore.getInstance().collection("customers").document(uid)
+        .update(
+            "fcmTokens",
+            com.google.firebase.firestore.FieldValue.arrayUnion(token),
+            "updatedAt",
+            com.google.firebase.firestore.FieldValue.serverTimestamp()
+        )
+        .addOnFailureListener { error ->
+            android.util.Log.w("SLGAN_FCM", "Could not save device notification token", error)
+        }
+}
 
 private const val SLGAN_ORDER_EMAIL_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxzmv15O2r71h7FQkQ_CaI00GSHsyGPZ3QFIB08m8Xw8TxjJjYwFtuGFHz71iDPKEBR/exec"
 
@@ -10870,6 +10885,18 @@ private fun AccountsPage(
     var nickname by remember(user?.uid) { mutableStateOf("") }
     var profilePic by remember(user?.uid) { mutableStateOf("") }
     var profilePicSaving by remember { mutableStateOf(false) }
+    var notificationsEnabled by remember(user?.uid) { mutableStateOf(true) }
+    var notificationSaving by remember { mutableStateOf(false) }
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        if (granted && uid != null && notificationsEnabled) {
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { saveSlganFcmToken(uid, it) }
+        } else if (!granted) {
+            Toast.makeText(context, "Allow notifications in Android Settings to receive SLGAN updates.", Toast.LENGTH_LONG).show()
+        }
+    }
     var showLogoutDialog by remember { mutableStateOf(false) }
     var showLanguageSheet by remember { mutableStateOf(false) }
     var selectedLanguage by remember(appLanguage) { mutableStateOf(appLanguage) }
@@ -10881,7 +10908,26 @@ private fun AccountsPage(
             .addOnSuccessListener { snapshot ->
                 profilePic = snapshot.getString("profile_pic").orEmpty()
                 nickname = snapshot.getString("nickname")?.trim().orEmpty()
+                notificationsEnabled = snapshot.getBoolean("notificationsEnabled") ?: true
+                if (!snapshot.contains("notificationsEnabled")) {
+                    snapshot.reference.update("notificationsEnabled", true)
+                }
+                if (notificationsEnabled &&
+                    (Build.VERSION.SDK_INT < 33 || context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED)
+                ) {
+                    FirebaseMessaging.getInstance().token.addOnSuccessListener { saveSlganFcmToken(uid, it) }
+                }
             }
+        if (Build.VERSION.SDK_INT >= 33 &&
+            context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val prefs = context.getSharedPreferences("slgan_notification_preferences", android.content.Context.MODE_PRIVATE)
+            val promptKey = "permission_prompted_$uid"
+            if (!prefs.getBoolean(promptKey, false)) {
+                prefs.edit().putBoolean(promptKey, true).apply()
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
     val profileImagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri == null || user == null) return@rememberLauncherForActivityResult
@@ -11044,13 +11090,54 @@ private fun AccountsPage(
                 AccountMenuRow(Icons.Default.Groups, "Social Media", onClick = { onTabChange("SocialMedia") })
                 AccountMenuRow(Icons.Default.Lock, "Account Privacy", onClick = { onTabChange("AccountPrivacy") })
                 val notificationLanguage = LocalAppLanguage.current
-                AccountMenuRow(Icons.Default.NotificationsNone, tr("Notification preferences", notificationLanguage)) {
-                    android.app.AlertDialog.Builder(context)
-                        .setTitle(tr("Notification preferences", notificationLanguage))
-                        .setMessage(tr("Notification controls are not connected in this version of SLGAN.", notificationLanguage))
-                        .setPositiveButton("OK", null)
-                        .show()
+                Row(
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Default.NotificationsNone, contentDescription = null, tint = Ink, modifier = Modifier.size(23.dp))
+                    Spacer(Modifier.width(16.dp))
+                    Column(Modifier.weight(1f)) {
+                        Text(tr("Notification preferences", notificationLanguage), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+                        Spacer(Modifier.height(3.dp))
+                        Text(tr("Receive admin announcements", notificationLanguage), color = Muted, fontSize = 12.sp)
+                    }
+                    Switch(
+                        checked = notificationsEnabled,
+                        enabled = !notificationSaving,
+                        onCheckedChange = { enabled ->
+                            val uid = user?.uid
+                            if (uid == null) {
+                                Toast.makeText(context, "Please sign in again.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                notificationSaving = true
+                                FirebaseFirestore.getInstance().collection("customers").document(uid)
+                                    .update(
+                                        "notificationsEnabled", enabled,
+                                        "updatedAt", com.google.firebase.firestore.FieldValue.serverTimestamp()
+                                    )
+                                    .addOnSuccessListener {
+                                        notificationsEnabled = enabled
+                                        notificationSaving = false
+                                        if (enabled) {
+                                            if (Build.VERSION.SDK_INT >= 33 &&
+                                                context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                                            ) {
+                                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                            } else {
+                                                FirebaseMessaging.getInstance().token.addOnSuccessListener { saveSlganFcmToken(uid, it) }
+                                            }
+                                        }
+                                        Toast.makeText(context, if (enabled) "Admin notifications enabled." else "Admin notifications disabled.", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener { error ->
+                                        notificationSaving = false
+                                        Toast.makeText(context, "Could not save preference: ${error.localizedMessage ?: "Please try again"}", Toast.LENGTH_LONG).show()
+                                    }
+                            }
+                        }
+                    )
                 }
+                HorizontalDivider(color = PaleGreen.copy(alpha = 0.65f), thickness = 0.7.dp)
                 AccountMenuRow(Icons.Default.Logout, tr("Log out", LocalAppLanguage.current)) { showLogoutDialog = true }
             }
         }
