@@ -45,9 +45,11 @@ The current source sends a responsive SLGAN-branded HTML verification email usin
 
 ## Branded password reset email
 
-The same deployed Email OTP Apps Script Web App now supports a `passwordReset` action. It uses the Firebase service account already stored in Script Properties to generate a genuine Firebase password-reset action link, then sends it with Gmail using the SLGAN green, cream and gold HTML template and logo.
+The same deployed Email OTP Apps Script Web App now supports a `passwordReset` action. The Android client does not perform an external IP lookup; `userIp` is optional and the Apps Script omits it from the Firebase request when absent. It uses the Firebase service account already stored in Script Properties to generate a genuine Firebase password-reset action link, then sends it with Gmail using the SLGAN green, cream and gold HTML template and logo.
 
 No new Script Properties or separate deployment URL are required. The existing `FIREBASE_SERVICE_ACCOUNT_JSON` property is reused. The script requests the Google Identity Toolkit OAuth scope and calls the project-scoped Admin endpoint to generate the reset link. The service account must have the IAM permissions needed to look up users and send password-reset links (`firebaseauth.users.get` and `firebaseauth.users.sendEmail`) on project `slgan-a364e` (for example, through a role that includes these permissions, such as Firebase Authentication Admin). On the first redeployment, Apps Script may ask the owner to approve the additional Google service access.
+
+The latest `EmailOtp.gs` accepts password-reset requests without `userIp`; no third-party IP lookup service is required. GitHub Actions validates JavaScript syntax only and does not deploy the Apps Script Web App.
 
 After updating this file in the existing Apps Script project:
 1. Keep the existing Script Properties and deployment URL.
