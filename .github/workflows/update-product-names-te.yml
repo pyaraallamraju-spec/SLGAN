@@ -2,20 +2,25 @@ name: Update Telugu product names only
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "data/product_names_te.json"
-      - "scripts/update_product_names_te.py"
-      - ".github/workflows/update-product-names-te.yml"
+    inputs:
+      confirm_live_update:
+        description: "Type YES to update product_name_te in live Firestore"
+        required: true
+        type: choice
+        options:
+          - "NO"
+          - "YES"
+        default: "NO"
 
 permissions:
   contents: read
 
 jobs:
   update-telugu-product-names:
+    if: github.ref == 'refs/heads/main' && inputs.confirm_live_update == 'YES'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out source
         uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
