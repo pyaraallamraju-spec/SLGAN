@@ -16,6 +16,7 @@ jobs:
   import-products:
     # Live imports are blocked on develop and require an explicit manual confirmation on main.
     if: github.ref == 'refs/heads/main' && inputs.confirm_live_import == 'YES'
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
