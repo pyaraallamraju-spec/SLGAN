@@ -686,6 +686,7 @@ private fun tr(text: String, language: String): String {
         "About Us" to "మా గురించి",
         "About SLGAN" to "SLGAN గురించి",
         "Notification preferences" to "నోటిఫికేషన్ ప్రాధాన్యతలు",
+        "Receive admin announcements" to "అడ్మిన్ ప్రకటనలను స్వీకరించండి",
         "Notification controls are not connected in this version of SLGAN." to "SLGAN యొక్క ఈ వెర్షన్‌లో నోటిఫికేషన్ నియంత్రణలు అందుబాటులో లేవు.",
         "OK" to "సరే",
         "Log out" to "లాగ్ అవుట్",
@@ -1606,6 +1607,7 @@ private fun tr(text: String, language: String): String {
         "About Us" to "हमारे बारे में",
         "About SLGAN" to "SLGAN के बारे में",
         "Notification preferences" to "सूचना प्राथमिकताएँ",
+        "Receive admin announcements" to "एडमिन घोषणाएँ प्राप्त करें",
         "Notification controls are not connected in this version of SLGAN." to "SLGAN के इस संस्करण में सूचना नियंत्रण उपलब्ध नहीं हैं।",
         "OK" to "ठीक है",
         "Log out" to "लॉग आउट",
@@ -2579,6 +2581,11 @@ private fun AyurvedicApp() {
             onDispose { }
         } else {
             adminRoleResolved = false
+            if (Build.VERSION.SDK_INT < 33 ||
+                appContext.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+            ) {
+                FirebaseMessaging.getInstance().token.addOnSuccessListener { saveSlganFcmToken(user.uid, it) }
+            }
             val registration = FirebaseFirestore.getInstance()
                 .collection("customers").document(user.uid)
                 .addSnapshotListener { snapshot, error ->
