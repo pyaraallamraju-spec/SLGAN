@@ -44,7 +44,7 @@ service cloud.firestore {
           'is_admin', 'is_active', 'email', 'firstName', 'lastName',
           'nickname', 'gender', 'dateOfBirth', 'countryIso', 'countryFlag',
           'countryDialCode', 'mobileNumber', 'updatedAt',
-          'profileCompletionRequired'
+          'profileCompletionRequired', 'notificationsEnabled', 'fcmTokens'
         ])
         && request.resource.data.is_admin == false
         && request.resource.data.is_active == true;
@@ -65,8 +65,13 @@ service cloud.firestore {
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
             'email', 'firstName', 'lastName', 'nickname', 'gender',
             'dateOfBirth', 'countryIso', 'countryFlag', 'countryDialCode',
-            'mobileNumber', 'updatedAt', 'profileCompletionRequired'
+            'mobileNumber', 'updatedAt', 'profileCompletionRequired',
+            'notificationsEnabled', 'fcmTokens'
           ])
+          && (!('notificationsEnabled' in request.resource.data)
+            || request.resource.data.notificationsEnabled is bool)
+          && (!('fcmTokens' in request.resource.data)
+            || request.resource.data.fcmTokens is list)
           && (
             (!('is_admin' in resource.data)
               && request.resource.data.is_admin == false)
