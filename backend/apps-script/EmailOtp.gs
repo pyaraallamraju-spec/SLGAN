@@ -131,14 +131,7 @@ function passwordResetGenericMessage() {
   return "If an account exists for this email, a password reset link has been sent. Check your inbox and spam folder.";
 }
 
-function generateFirebasePasswordResetLink(email, userIp) {
-  const raw = PropertiesService.getScriptProperties().getProperty("FIREBASE_SERVICE_ACCOUNT_JSON");
-  if (!raw) throw new Error("Missing FIREBASE_SERVICE_ACCOUNT_JSON Script Property.");
-  const serviceAccount = JSON.parse(raw);
-  if (!serviceAccount.project_id || !serviceAccount.client_email || !serviceAccount.private_key) {
-    throw new Error("Firebase service-account JSON is incomplete.");
-  }
-
+function getIdentityToolkitAccessToken(serviceAccount) {
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: "RS256", typ: "JWT" };
   const claims = {
@@ -168,13 +161,24 @@ function generateFirebasePasswordResetLink(email, userIp) {
   if (tokenStatus < 200 || tokenStatus >= 300 || !tokenJson.access_token) {
     throw new Error("Could not obtain Google Identity Toolkit access token (HTTP " + tokenStatus + ").");
   }
+  return tokenJson.access_token;
+}
 
+function generateFirebasePasswordResetLink(email, userIp) {
+  const raw = PropertiesService.getScriptProperties().getProperty("FIREBASE_SERVICE_ACCOUNT_JSON");
+  if (!raw) throw new Error("Missing FIREBASE_SERVICE_ACCOUNT_JSON Script Property.");
+  const serviceAccount = JSON.parse(raw);
+  if (!serviceAccount.project_id || !serviceAccount.client_email || !serviceAccount.private_key) {
+    throw new Error("Firebase service-account JSON is incomplete.");
+  }
+
+  const accessToken = getIdentityToolkitAccessToken(serviceAccount);
   const linkEndpoint = IDENTITY_TOOLKIT_PROJECTS_URL +
     encodeURIComponent(serviceAccount.project_id) + "/accounts:sendOobCode";
   const linkResponse = UrlFetchApp.fetch(linkEndpoint, {
     method: "post",
     contentType: "application/json",
-    headers: { Authorization: "Bearer " + tokenJson.access_token },
+    headers: { Authorization: "Bearer " + accessToken },
     payload: JSON.stringify({
       requestType: "PASSWORD_RESET",
       email: email,
@@ -340,8 +344,35 @@ function createFirebaseCustomToken(email) {
     throw new Error("Service-account JSON is incomplete.");
   }
 
-  // Firebase Auth custom tokens require a stable UID. The email is normalized
-  // and valid as a UID; profile data is written by the Android client after sign-in.
+  // Reuse the Firebase Auth UID for an existing email/password or Google account.
+  // This prevents OTP sign-in from creating a second customer identity for the same email.
+  const accessToken = getIdentityToolkitAccessToken(serviceAccount);
+  const lookupUrl = IDENTITY_TOOLKIT_PROJECTS_URL +
+    encodeURIComponent(serviceAccount.project_id) + "/accounts:lookup";
+  const lookupResponse = UrlFetchApp.fetch(lookupUrl, {
+    method: "post",
+    contentType: "application/json",
+    headers: { Authorization: "Bearer " + accessToken },
+    payload: JSON.stringify({ email: [email] }),
+    muteHttpExceptions: true
+  });
+  const lookupStatus = lookupResponse.getResponseCode();
+  const lookupJson = JSON.parse(lookupResponse.getContentText() || "{}");
+  let uid = "";
+  if (lookupStatus >= 200 && lookupStatus < 300) {
+    const users = lookupJson.users || [];
+    if (users.length > 0 && users[0].localId) uid = String(users[0].localId);
+  } else {
+    const apiMessage = String(lookupJson.error && lookupJson.error.message || "");
+    if (!/USER_NOT_FOUND|EMAIL_NOT_FOUND/i.test(apiMessage)) {
+      throw new Error("Firebase account lookup failed (HTTP " + lookupStatus + "): " +
+        (apiMessage || "Unknown Identity Toolkit error.").slice(0, 180));
+    }
+  }
+
+  // New OTP-only accounts retain the established email-derived UID convention.
+  if (!uid) uid = email;
+
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: "RS256", typ: "JWT" };
   const claims = {
@@ -350,7 +381,7 @@ function createFirebaseCustomToken(email) {
     aud: FIREBASE_CUSTOM_TOKEN_AUDIENCE,
     iat: now,
     exp: now + 55 * 60,
-    uid: email
+    uid: uid
   };
   const unsigned = base64Url(JSON.stringify(header)) + "." + base64Url(JSON.stringify(claims));
   const signature = Utilities.computeRsaSha256Signature(unsigned, serviceAccount.private_key);
