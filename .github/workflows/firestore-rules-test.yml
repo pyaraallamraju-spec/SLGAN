@@ -1,0 +1,39 @@
+name: Firestore rules tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "firestore.rules"
+      - "rules-tests/**"
+      - "firebase.json"
+      - ".github/workflows/firestore-rules-test.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "firestore.rules"
+      - "rules-tests/**"
+      - "firebase.json"
+      - ".github/workflows/firestore-rules-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  firestore-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: rules-tests/package-lock.json
+      - name: Install rules test dependencies
+        working-directory: rules-tests
+        run: npm install
+      - name: Run Firestore emulator rules tests
+        run: npx --yes firebase-tools emulators:exec --only firestore --project demo-slgan-rules "npm --prefix rules-tests test"
