@@ -18,6 +18,7 @@ permissions:
 jobs:
   migrate-product-stock:
     if: github.ref == 'refs/heads/main' && inputs.confirm_live_migration == 'YES'
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
