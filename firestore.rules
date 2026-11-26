@@ -47,7 +47,11 @@ service cloud.firestore {
           'profileCompletionRequired', 'notificationsEnabled', 'fcmTokens'
         ])
         && request.resource.data.is_admin == false
-        && request.resource.data.is_active == true;
+        && request.resource.data.is_active == true
+        && (!('notificationsEnabled' in request.resource.data)
+          || request.resource.data.notificationsEnabled is bool)
+        && (!('fcmTokens' in request.resource.data)
+          || request.resource.data.fcmTokens is list);
 
       allow update: if request.auth != null && (
         // Trusted admins may edit customer profile fields and account status,
