@@ -1,3 +1,4 @@
+const { test, before, after, beforeEach } = require("node:test");
 const fs = require("node:fs");
 const path = require("node:path");
 const {
@@ -7,7 +8,7 @@ const {
 } = require("@firebase/rules-unit-testing");
 const { doc, getDoc, setDoc } = require("firebase/firestore");
 
-const projectId = "demo-slg an-rules".replace(/ /g, "");
+const projectId = "demo-slgan-rules";
 let testEnv;
 
 before(async () => {
