@@ -30,8 +30,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: rules-tests/package-lock.json
+      - name: Set up Java for the Firestore emulator
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
       - name: Install rules test dependencies
         working-directory: rules-tests
         run: npm install
