@@ -168,3 +168,56 @@ test("likes accept app fields and reject injected fields", async () => {
     injectedAdminFlag: true
   }));
 });
+
+
+test("addresses accept the Android editor fields and reject injected fields", async () => {
+  const db = testEnv.authenticatedContext("address-user").firestore();
+  const address = {
+    userId: "address-user",
+    city: "Kakinada",
+    area: "Uppada",
+    address: "House 1, Main Road",
+    addressText: "House 1, Main Road",
+    googleMapsLink: "",
+    latitude: 16.9,
+    longitude: 82.2,
+    name: "Test Customer",
+    phone: "9999999999",
+    label: "Home",
+    isDefault: true,
+    default: true,
+    createdAt: new Date().toISOString()
+  };
+  await assertSucceeds(setDoc(doc(db, "addresses", "address-valid"), address));
+  await assertFails(setDoc(doc(db, "addresses", "address-injected"), {
+    ...address,
+    adminApproved: true
+  }));
+});
+
+test("address owners can edit allowed fields but cannot change ownership or inject fields", async () => {
+  const db = testEnv.authenticatedContext("address-user").firestore();
+  const addressRef = doc(db, "addresses", "address-edit");
+  const address = {
+    userId: "address-user",
+    city: "Kakinada",
+    area: "Uppada",
+    address: "House 1, Main Road",
+    addressText: "House 1, Main Road",
+    googleMapsLink: "",
+    latitude: 16.9,
+    longitude: 82.2,
+    name: "Test Customer",
+    phone: "9999999999",
+    label: "Home",
+    isDefault: true,
+    default: true,
+    createdAt: new Date().toISOString()
+  };
+  await testEnv.withSecurityRulesDisabled(async context => {
+    await setDoc(doc(context.firestore(), "addresses", "address-edit"), address);
+  });
+  await assertSucceeds(setDoc(addressRef, { area: "New Area" }, { merge: true }));
+  await assertFails(setDoc(addressRef, { userId: "someone-else" }, { merge: true }));
+  await assertFails(setDoc(addressRef, { adminApproved: true }, { merge: true }));
+});
