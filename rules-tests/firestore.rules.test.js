@@ -129,3 +129,42 @@ test("only admins can change order status", async () => {
     updatedAt: new Date().toISOString()
   }, { merge: true }));
 });
+
+
+test("ratings accept app fields and reject injected fields", async () => {
+  const db = testEnv.authenticatedContext("rating-user").firestore();
+  const ratingRef = doc(db, "productRatings", "product-1_rating-user");
+  const validRating = {
+    productId: "product-1",
+    productName: "Test Product",
+    userId: "rating-user",
+    userName: "Test User",
+    rating: 5,
+    review: "",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  await assertSucceeds(setDoc(ratingRef, validRating));
+  await assertFails(setDoc(doc(db, "productRatings", "product-2_rating-user"), {
+    ...validRating,
+    productId: "product-2",
+    injectedAdminFlag: true
+  }));
+});
+
+test("likes accept app fields and reject injected fields", async () => {
+  const db = testEnv.authenticatedContext("like-user").firestore();
+  await assertSucceeds(setDoc(doc(db, "productLikes", "product-1_like-user"), {
+    productId: "product-1",
+    productName: "Test Product",
+    userId: "like-user",
+    createdAt: new Date().toISOString()
+  }));
+  await assertFails(setDoc(doc(db, "productLikes", "product-2_like-user"), {
+    productId: "product-2",
+    productName: "Test Product",
+    userId: "like-user",
+    createdAt: new Date().toISOString(),
+    injectedAdminFlag: true
+  }));
+});
