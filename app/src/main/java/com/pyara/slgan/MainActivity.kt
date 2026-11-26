@@ -3449,6 +3449,18 @@ private fun LoginScreen(
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
         Spacer(Modifier.height(8.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp)
+                .clip(RoundedCornerShape(30.dp))
+                .background(appThemedColor(Color(0xFFFFFCF4)).copy(alpha = 0.94f))
+                .border(2.dp, appThemedColor(Color(0xFFB88A36)), RoundedCornerShape(30.dp))
+                .padding(3.dp)
+                .border(1.dp, appThemedColor(Color(0xFFD8B56B)).copy(alpha = 0.9f), RoundedCornerShape(27.dp))
+                .padding(vertical = 14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -3695,6 +3707,7 @@ private fun LoginScreen(
             Text("🍃", fontSize = 20.sp)
         }
         Spacer(Modifier.height(24.dp))
+        }
         }
     }
 }
