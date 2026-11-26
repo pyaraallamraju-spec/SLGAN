@@ -249,6 +249,24 @@ test("customers can create profiles with app fields but cannot inject protected 
   }));
 });
 
+test("customers can create and update their own notification preference and FCM tokens", async () => {
+  const db = testEnv.authenticatedContext("notification-user").firestore();
+  const ref = doc(db, "customers", "notification-user");
+  const profile = {
+    is_admin: false,
+    is_active: true,
+    email: "notify@example.com",
+    notificationsEnabled: true,
+    fcmTokens: ["test-fcm-token"]
+  };
+  await assertSucceeds(setDoc(ref, profile));
+  await assertSucceeds(setDoc(ref, { notificationsEnabled: false }, { merge: true }));
+  await assertSucceeds(setDoc(ref, { fcmTokens: ["test-fcm-token", "second-token"] }, { merge: true }));
+  await assertFails(setDoc(ref, { notificationsEnabled: "off" }, { merge: true }));
+  await assertFails(setDoc(ref, { fcmTokens: "not-a-list" }, { merge: true }));
+  await assertFails(setDoc(doc(db, "customers", "another-user"), profile));
+});
+
 test("customers can edit own profile but cannot change role or status", async () => {
   const db = testEnv.authenticatedContext("profile-user").firestore();
   await testEnv.withSecurityRulesDisabled(async context => {
