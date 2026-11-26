@@ -79,8 +79,20 @@ service cloud.firestore {
       allow read: if request.auth != null
         && (isAdmin() || resource.data.customerId == request.auth.uid);
       allow create: if request.auth != null
+        // Accept only the fields written by the native checkout flow.
+        // This prevents clients from injecting admin-only or backend invoice fields.
+        && request.resource.data.keys().hasOnly([
+          'orderId', 'customerId', 'customerName', 'email', 'phone',
+          'deliveryAddressId', 'deliveryAddress', 'shippingAddress',
+          'deliveryAddressLabel', 'deliveryRecipientName', 'deliveryPhone',
+          'deliveryInstruction', 'user_instructions', 'items', 'subtotal',
+          'deliveryCharges', 'deliveryWeightGrams', 'grandTotal', 'currency',
+          'paymentMethod', 'paymentEnvironment', 'paymentStatus',
+          'orderStatus', 'invoiceNumber', 'invoiceStatus', 'createdAt', 'updatedAt'
+        ])
         && request.resource.data.customerId == request.auth.uid
         && request.resource.data.orderId is string
+        && request.resource.data.orderId == orderId
         && request.resource.data.orderId.size() > 0
         && request.resource.data.orderId.size() <= 40
         && request.resource.data.orderStatus == 'pending_verification'
