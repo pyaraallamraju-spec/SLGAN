@@ -2,18 +2,20 @@ name: Import catalogue data to Firebase
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "data/products_seed.json"
-      - "scripts/import_products.py"
-      - "data/diseases_seed.json"
-      - "scripts/import_diseases.py"
-      - "scripts/add_customer_admin_flag.py"
-      - "scripts/promote_initial_admin.py"
-      - ".github/workflows/import-products.yml"
+    inputs:
+      confirm_live_import:
+        description: "Type YES only when you intentionally approve a live Firestore import"
+        required: true
+        type: choice
+        options:
+          - "NO"
+          - "YES"
+        default: "NO"
 
 jobs:
   import-products:
+    # Live imports are blocked on develop and require an explicit manual confirmation on main.
+    if: github.ref == 'refs/heads/main' && inputs.confirm_live_import == 'YES'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
