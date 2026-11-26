@@ -29,6 +29,28 @@ The PDF is explicitly labelled a provisional order confirmation, not a final tax
 - Apps Script email quotas apply. Failed sends are recorded as failed; an admin can call the `retryInvoice` action through an authenticated request after deployment.
 - This uses Apps Script/Gmail and Firestore REST; it does not require Firebase Cloud Functions, a payment gateway, or a change to the Firebase billing plan.
 
+
+## Admin push notifications (Firebase Cloud Messaging)
+
+The current source also supports admin-to-customer push announcements without Firebase Cloud Functions or a Blaze upgrade.
+
+- Android Accounts → Notification preferences is ON by default. The choice is stored as `customers/{uid}.notificationsEnabled`.
+- Android registers each device's FCM token in `customers/{uid}.fcmTokens`. Turning the preference OFF excludes every registered device for that customer from future admin campaigns.
+- The Admin web panel has **Administration → Admin Notifications**. Admins can enter a title and message and send to opted-in customers.
+- The Apps Script `sendPush` action verifies the Firebase ID token and the caller's `is_admin == true` role, reads customer preferences, and sends messages through FCM HTTP v1. Service-account credentials remain in Apps Script Script Properties.
+
+### One-time setup for push delivery
+
+1. In Google Cloud Console for project `slgan-a364e`, enable the **Firebase Cloud Messaging API**.
+2. Ensure the service account stored in `FIREBASE_SERVICE_ACCOUNT_JSON` has permission to send Firebase Cloud Messaging HTTP v1 messages, in addition to its existing Firestore access.
+3. Copy the latest `backend/apps-script/OrderNotifications.gs` into the existing standalone **SLGAN Order Notifications** Apps Script project.
+4. Save, then choose **Deploy → Manage deployments → Edit → New version → Deploy**. Keep the existing Web App URL; the Android app and Admin web panel already call the shared `ORDER_EMAIL_WEB_APP_URL`.
+5. Publish the updated `firestore.rules` from Firebase Console (**Firestore Database → Rules**) so customers can save `notificationsEnabled` and `fcmTokens`. The repository commit alone does not publish rules.
+6. Build and install the new Android APK. Open Accounts once and allow Android's notification permission when prompted. A device whose Android notification permission is denied cannot display pushes even if the in-app preference is ON.
+7. Sign in as an administrator on the SLGAN web panel, open **Admin Notifications**, and send a short test message to a test customer device.
+
+No Cloud Functions, paid API, Firebase billing-plan change, or new server is required. Apps Script and FCM quotas/rate limits still apply. A campaign's result counts are reported in the Admin panel; a successful FCM send means accepted by FCM, not proof that the device displayed it.
+
 ## Updated branded email design
 
 The current source now uses the SLGAN green, cream and gold email layout with the repository logo for:
