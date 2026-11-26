@@ -5251,7 +5251,6 @@ private fun AdminDashboardScreen(
 private fun PaymentsManagementScreen(onBack: () -> Unit) {
     val db = remember { FirebaseFirestore.getInstance() }
     val context = LocalContext.current
-    var sandboxEnabled by remember { mutableStateOf(true) }
     var codEnabled by remember { mutableStateOf(true) }
     var loading by remember { mutableStateOf(true) }
     var saving by remember { mutableStateOf(false) }
@@ -5261,23 +5260,23 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
         val listener = db.collection("appSettings").document("paymentMethods")
             .addSnapshotListener { snapshot, error ->
                 if (error == null) {
-                    sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
                     codEnabled = snapshot?.getBoolean("codEnabled") ?: true
                     message = null
                 } else {
-                    message = error.localizedMessage ?: "Could not load payment settings."
+                    message = error.localizedMessage ?: "Could not load order settings."
                 }
                 loading = false
             }
         onDispose { listener.remove() }
     }
 
-    fun saveOption(field: String, enabled: Boolean) {
+    fun saveCodOption(enabled: Boolean) {
         saving = true
         message = null
         val values = mapOf<String, Any>(
-            field to enabled,
+            "codEnabled" to enabled,
             "onlineEnabled" to false,
+            "sandboxEnabled" to false,
             "updatedAt" to com.google.firebase.firestore.FieldValue.serverTimestamp(),
             "updatedBy" to (FirebaseAuth.getInstance().currentUser?.uid ?: "")
         )
@@ -5285,11 +5284,11 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
             .set(values, com.google.firebase.firestore.SetOptions.merge())
             .addOnSuccessListener {
                 saving = false
-                Toast.makeText(context, "Payment settings saved.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Order settings saved.", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { error ->
                 saving = false
-                message = error.localizedMessage ?: "Could not save payment settings."
+                message = error.localizedMessage ?: "Could not save order settings."
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             }
     }
@@ -5302,11 +5301,11 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, "Back", tint = AdminInk) }
             Column(Modifier.weight(1f)) {
                 Text(tr("SLGAN ADMIN", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp, fontWeight = FontWeight.ExtraBold, letterSpacing = 1.2.sp)
-                Text(tr("Payment Settings", LocalAppLanguage.current), color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                Text(tr("Order Settings", LocalAppLanguage.current), color = AdminInk, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
             }
         }
         Text(
-            tr("Choose which payment methods appear in the customer Place an Order sheet.", LocalAppLanguage.current),
+            tr("Online payment integration is disabled in the app and scheduled for Phase 3. Only Cash on Delivery can be offered in the current phase.", LocalAppLanguage.current),
             color = AdminMuted, fontSize = 13.sp
         )
         Spacer(Modifier.height(16.dp))
@@ -5323,34 +5322,15 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
             ) {
                 Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Default.Language, null, tint = AdminInk, modifier = Modifier.size(22.dp))
-                    }
-                    Spacer(Modifier.width(12.dp))
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(tr("Online Payment", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                        Text(tr("Live payments are inactive until the production backend is ready.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
-                        Text(tr("Inactive · Production setup pending", LocalAppLanguage.current), color = Color(0xFF9A5A00), fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                    }
-                    Switch(checked = false, onCheckedChange = {}, enabled = false)
-                }
-            }
-            Card(
-                Modifier.fillMaxWidth().padding(bottom = 12.dp),
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(1.dp)
-            ) {
-                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(AdminLightGray), contentAlignment = Alignment.Center) {
                         Icon(Icons.Default.CreditCard, null, tint = AdminInk, modifier = Modifier.size(22.dp))
                     }
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(tr("Sandbox", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                        Text(tr("Cashfree test checkout. No live customer payment is collected.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
-                        Text(if (sandboxEnabled) tr("Shown at checkout", LocalAppLanguage.current) else tr("Hidden at checkout", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp)
+                        Text(tr("Online payments", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Disabled · Planned for Phase 3", LocalAppLanguage.current), color = Color(0xFF9A5A00), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        Text(tr("Cashfree Sandbox and Live checkout are unavailable in the current app.", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp)
                     }
-                    Switch(checked = sandboxEnabled, onCheckedChange = { saveOption("sandboxEnabled", it) }, enabled = !saving)
+                    Switch(checked = false, onCheckedChange = {}, enabled = false)
                 }
             }
             Card(
@@ -5367,9 +5347,9 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(tr("Cash on Delivery (COD)", LocalAppLanguage.current), color = AdminInk, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                         Text(tr("Customers pay when the order is delivered.", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
-                        Text(if (codEnabled) tr("Shown at checkout", LocalAppLanguage.current) else tr("Hidden at checkout", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp)
+                        Text(if (codEnabled) tr("Available at checkout", LocalAppLanguage.current) else tr("Unavailable at checkout", LocalAppLanguage.current), color = AdminMuted, fontSize = 11.sp)
                     }
-                    Switch(checked = codEnabled, onCheckedChange = { saveOption("codEnabled", it) }, enabled = !saving)
+                    Switch(checked = codEnabled, onCheckedChange = { saveCodOption(it) }, enabled = !saving)
                 }
             }
         }
@@ -5377,7 +5357,7 @@ private fun PaymentsManagementScreen(onBack: () -> Unit) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                 CircularProgressIndicator(Modifier.size(16.dp), color = AdminInk, strokeWidth = 2.dp)
                 Spacer(Modifier.width(8.dp))
-                Text(tr("Saving payment settings…", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
+                Text(tr("Saving order settings…", LocalAppLanguage.current), color = AdminMuted, fontSize = 12.sp)
             }
         }
         if (message != null) Text(message!!, color = Color(0xFFB3261E), fontSize = 12.sp, modifier = Modifier.padding(top = 8.dp))
@@ -8459,9 +8439,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
     var submitting by remember { mutableStateOf(false) }
     var showPaymentMethodSheet by remember { mutableStateOf(false) }
     var selectedPaymentMethod by remember { mutableStateOf("cod") }
-    var sandboxEnabled by remember { mutableStateOf(true) }
     var codEnabled by remember { mutableStateOf(true) }
-    var livePaymentEnabled by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var orderMessage by remember { mutableStateOf<String?>(null) }
 
@@ -8470,9 +8448,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
             .document("paymentMethods")
             .addSnapshotListener { snapshot, error ->
                 if (error == null) {
-                    sandboxEnabled = snapshot?.getBoolean("sandboxEnabled") ?: true
                     codEnabled = snapshot?.getBoolean("codEnabled") ?: true
-                    livePaymentEnabled = snapshot?.getBoolean("onlineEnabled") ?: false
                 } else {
                     android.util.Log.w("SLGANPayments", "Could not load payment options.", error)
                 }
@@ -8480,10 +8456,11 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
         onDispose { listener.remove() }
     }
 
-    val availablePaymentMethods = remember(sandboxEnabled, codEnabled) {
+    // Online payment gateways are intentionally disabled until Phase 3.
+    // Cash on Delivery remains the only available order method in the current phase.
+    val availablePaymentMethods = remember(codEnabled) {
         listOfNotNull(
-            if (codEnabled) Triple("cod", "Cash on Delivery", "Pay when your order arrives.") else null,
-            if (sandboxEnabled) Triple("sandbox", "Sandbox", "Pay securely using Cashfree Sandbox.") else null
+            if (codEnabled) Triple("cod", "Cash on Delivery", "Pay when your order arrives.") else null
         )
     }
     LaunchedEffect(availablePaymentMethods) {
@@ -8732,7 +8709,7 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                         Spacer(Modifier.height(8.dp))
                         Text(
                             tr(
-                                if (livePaymentEnabled) "Online payment is available." else "No online payment is collected in this app.",
+                                "Online payments are disabled for now. Planned for Phase 3.",
                                 LocalAppLanguage.current
                             ),
                             color = Muted, fontSize = 12.sp
@@ -9101,8 +9078,8 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                     "deliveryWeightGrams" to totalWeightGrams,
                                     "grandTotal" to total,
                                     "currency" to "INR",
-                                    "paymentMethod" to if (selectedPaymentMethod == "sandbox") "cashfree" else "cod",
-                                    "paymentEnvironment" to if (selectedPaymentMethod == "sandbox") "sandbox" else "none",
+                                    "paymentMethod" to "cod",
+                                    "paymentEnvironment" to "none",
                                     "paymentStatus" to "not_collected",
                                     "orderStatus" to "pending_verification",
                                     "invoiceNumber" to orderId,
@@ -9116,25 +9093,15 @@ private fun CartPage(modifier: Modifier, cart: Map<String, Int>, products: List<
                                         submitting = false
                                         showPaymentMethodSheet = false
                                         confirmedDeliveryAddress = null
-                                        if (selectedPaymentMethod == "sandbox") {
-                                            onOrderResult(orderId, true, null, "Order saved. Opening Cashfree Sandbox checkout…")
-                                            context.startActivity(
-                                                android.content.Intent(context, CashfreePaymentActivity::class.java)
-                                                    .putExtra(CashfreePaymentActivity.EXTRA_DOCUMENT_ID, orderId)
-                                            )
-                                        } else {
-                                            // COD: dismiss the payment sheet and stop the loader before showing
-                                            // the order-saved confirmation. Email delivery runs afterward and
-                                            // must not delay or control the order confirmation.
-                                            onOrderResult(orderId, true, null, "Cash on Delivery order saved.")
-                                            Toast.makeText(context, "Order saved successfully. Order ID: $orderId", Toast.LENGTH_LONG).show()
-                                            userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
-                                                val idToken = tokenResult.token
-                                                if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
-                                                    orderMessage = if (emailSent) "COD order saved: $orderId. Confirmation email sent." else "COD order saved: $orderId. Email failed: $detail"
-                                                }
-                                            }.addOnFailureListener { error -> orderMessage = "COD order saved: $orderId. Email failed: ${error.localizedMessage ?: "Could not get Firebase ID token."}" }
-                                        }
+                                        // COD is the only enabled order method until payment integration returns in Phase 3.
+                                        onOrderResult(orderId, true, null, "Cash on Delivery order saved.")
+                                        Toast.makeText(context, "Order saved successfully. Order ID: $orderId", Toast.LENGTH_LONG).show()
+                                        userForOrder.getIdToken(false).addOnSuccessListener { tokenResult ->
+                                            val idToken = tokenResult.token
+                                            if (!idToken.isNullOrBlank()) requestSlganOrderEmail(idToken, orderId) { emailSent, detail ->
+                                                orderMessage = if (emailSent) "COD order saved: $orderId. Confirmation email sent." else "COD order saved: $orderId. Email failed: $detail"
+                                            }
+                                        }.addOnFailureListener { error -> orderMessage = "COD order saved: $orderId. Email failed: ${error.localizedMessage ?: "Could not get Firebase ID token."}" }
                                     }
                                     .addOnFailureListener { error ->
                                         submitting = false
