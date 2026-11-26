@@ -13,6 +13,7 @@ const OTP_EXPIRY_MS = 5 * 60 * 1000;
 const OTP_RESEND_WAIT_MS = 60 * 1000;
 const OTP_MAX_ATTEMPTS = 5;
 const OTP_DAILY_SEND_LIMIT = 5;
+const OTP_GLOBAL_DAILY_SEND_LIMIT = 100;
 const FIREBASE_CUSTOM_TOKEN_AUDIENCE =
   "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit";
 
@@ -244,12 +245,20 @@ function sendOtp(email) {
     const daily = JSON.parse(props.getProperty(dayKey) || '{"date":"","count":0}');
     const today = Utilities.formatDate(new Date(), "UTC", "yyyy-MM-dd");
     if (daily.date !== today) { daily.date = today; daily.count = 0; }
+    const globalDayKey = "OTP_GLOBAL_DAY_" + today;
+    const globalDailyCount = Number(props.getProperty(globalDayKey) || "0");
     if (daily.count >= OTP_DAILY_SEND_LIMIT) {
       return json({ ok: false, message: "Daily email code limit reached. Try again tomorrow." });
     }
+    if (globalDailyCount >= OTP_GLOBAL_DAILY_SEND_LIMIT) {
+      return json({ ok: false, message: "Email verification is temporarily busy. Please try again tomorrow." });
+    }
 
-    // Generate the OTP from UUID entropy and keep only decimal digits.
-    const code = Utilities.getUuid().replace(/[^0-9]/g, "").slice(0, 6).padEnd(6, "7");
+    // Derive six decimal digits from UUID entropy without predictable padding.
+    const uuidDigits = Utilities.getUuid().replace(/-/g, "").slice(0, 6);
+    const code = uuidDigits.split("").map(function(ch) {
+      return String(parseInt(ch, 16) % 10);
+    }).join("");
     const salt = getOtpSecret();
     const digest = hashCode(email, code, salt);
     props.setProperty(key, JSON.stringify({
@@ -260,6 +269,7 @@ function sendOtp(email) {
     }));
     daily.count++;
     props.setProperty(dayKey, JSON.stringify(daily));
+    props.setProperty(globalDayKey, String(globalDailyCount + 1));
 
     try {
       GmailApp.sendEmail(
