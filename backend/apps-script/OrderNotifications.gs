@@ -74,6 +74,14 @@ function doPost(e) {
         { htmlBody: statusHtml, name: "Sri Lakshmi Ganapathi Ayurveda Nilayam" });
       return jsonOut({ success: true, ok: true, message: "Order status email sent." });
     }
+    if (action === "sendPush") {
+      if (!isAdmin(user.localId)) throw new Error("Only an authorized administrator may send push notifications.");
+      const title = clean(input.title, 80);
+      const body = clean(input.body, 300);
+      if (!title || !body) throw new Error("Notification title and message are required.");
+      const result = sendPushToCustomers(title, body);
+      return jsonOut({ success: true, ok: true, message: "Push notification campaign completed.", sent: result.sent, skipped: result.skipped, failed: result.failed });
+    }
     if (action === "retryInvoice") {
       if (!isAdmin(user.localId)) throw new Error("Only an authorized administrator may retry invoice emails.");
       const documentId = clean(input.documentId || input.orderId, 120);
@@ -113,6 +121,81 @@ function sendAdminOrderNotification(orderId, order) {
     "A new SLGAN order was placed. Order ID: " + orderId + ". Total: ₹" + total.toFixed(2),
     { htmlBody: html, name: "Sri Lakshmi Ganapathi Ayurveda Nilayam" });
   return "Admin notification sent.";
+}
+
+function sendPushToCustomers(title, body) {
+  const customers = firestoreListCustomers();
+  let sent = 0, skipped = 0, failed = 0;
+  customers.forEach(function(customer) {
+    if (customer.is_admin === true || customer.notificationsEnabled === false) {
+      skipped++;
+      return;
+    }
+    const tokens = Array.isArray(customer.fcmTokens)
+      ? customer.fcmTokens.filter(function(token) { return typeof token === "string" && token.trim(); })
+      : [];
+    if (!tokens.length) {
+      skipped++;
+      return;
+    }
+    tokens.forEach(function(token) {
+      try {
+        sendFcmMessage(token, title, body);
+        sent++;
+      } catch (err) {
+        failed++;
+        console.error("SLGAN FCM delivery failed: " + String(err && err.message || err).slice(0, 250));
+      }
+    });
+  });
+  return { sent: sent, skipped: skipped, failed: failed };
+}
+
+function firestoreListCustomers() {
+  const all = [];
+  let pageToken = "";
+  do {
+    let url = FIRESTORE_ROOT + "/customers?pageSize=1000";
+    if (pageToken) url += "&pageToken=" + encodeURIComponent(pageToken);
+    const response = UrlFetchApp.fetch(url, {
+      headers: { Authorization: "Bearer " + getAccessToken() },
+      muteHttpExceptions: true
+    });
+    if (response.getResponseCode() < 200 || response.getResponseCode() >= 300) {
+      throw new Error("Could not list customer profiles from Firestore (" + response.getResponseCode() + ").");
+    }
+    const page = JSON.parse(response.getContentText() || "{}");
+    (page.documents || []).forEach(function(doc) {
+      const item = {};
+      Object.keys(doc.fields || {}).forEach(function(key) { item[key] = decodeValue(doc.fields[key]); });
+      all.push(item);
+    });
+    pageToken = page.nextPageToken || "";
+  } while (pageToken);
+  return all;
+}
+
+function sendFcmMessage(deviceToken, title, body) {
+  const response = UrlFetchApp.fetch(
+    "https://fcm.googleapis.com/v1/projects/" + PROJECT_ID + "/messages:send",
+    {
+      method: "post",
+      contentType: "application/json",
+      headers: { Authorization: "Bearer " + getAccessToken() },
+      payload: JSON.stringify({
+        message: {
+          token: deviceToken,
+          notification: { title: title, body: body },
+          android: { priority: "HIGH" }
+        }
+      }),
+      muteHttpExceptions: true
+    }
+  );
+  if (response.getResponseCode() < 200 || response.getResponseCode() >= 300) {
+    throw new Error("FCM HTTP " + response.getResponseCode() + ": " + response.getContentText().slice(0, 250));
+  }
+  return true;
 }
 
 function sendOrderConfirmation(documentId, displayOrderId, order) {
@@ -475,7 +558,7 @@ function decodeValue(v) {
 
 function getAccessToken() {
   const cache = CacheService.getScriptCache();
-  const cached = cache.get("FIRESTORE_OAUTH_ACCESS_TOKEN");
+  const cached = cache.get("FIRESTORE_FCM_OAUTH_ACCESS_TOKEN_V2");
   if (cached) return cached;
   const raw = PropertiesService.getScriptProperties().getProperty("FIREBASE_SERVICE_ACCOUNT_JSON");
   if (!raw) throw new Error("FIREBASE_SERVICE_ACCOUNT_JSON is missing from Script Properties.");
@@ -487,7 +570,7 @@ function getAccessToken() {
   const enc = function(obj) { return Utilities.base64EncodeWebSafe(JSON.stringify(obj)).replace(/=+$/g, ""); };
   const unsigned = enc({ alg: "RS256", typ: "JWT" }) + "." + enc({
     iss: sa.client_email, sub: sa.client_email, aud: "https://oauth2.googleapis.com/token",
-    iat: now, exp: now + 3600, scope: "https://www.googleapis.com/auth/datastore"
+    iat: now, exp: now + 3600, scope: "https://www.googleapis.com/auth/datastore https://www.googleapis.com/auth/firebase.messaging"
   });
   const signature = Utilities.computeRsaSha256Signature(unsigned, sa.private_key);
   const assertion = unsigned + "." + Utilities.base64EncodeWebSafe(signature).replace(/=+$/g, "");
@@ -499,7 +582,7 @@ function getAccessToken() {
   if (tokenResponse.getResponseCode() < 200 || tokenResponse.getResponseCode() >= 300 || !tokenBody.access_token) {
     throw new Error("Could not obtain Firestore access token. Check the service-account key.");
   }
-  cache.put("FIRESTORE_OAUTH_ACCESS_TOKEN", tokenBody.access_token, Math.min(3300, Number(tokenBody.expires_in || 3600) - 60));
+  cache.put("FIRESTORE_FCM_OAUTH_ACCESS_TOKEN_V2", tokenBody.access_token, Math.min(3300, Number(tokenBody.expires_in || 3600) - 60));
   return tokenBody.access_token;
 }
 
