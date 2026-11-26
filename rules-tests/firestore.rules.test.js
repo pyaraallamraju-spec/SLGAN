@@ -221,3 +221,58 @@ test("address owners can edit allowed fields but cannot change ownership or inje
   await assertFails(setDoc(addressRef, { userId: "someone-else" }, { merge: true }));
   await assertFails(setDoc(addressRef, { adminApproved: true }, { merge: true }));
 });
+
+
+test("customers can create profiles with app fields but cannot inject protected fields", async () => {
+  const db = testEnv.authenticatedContext("profile-user").firestore();
+  const profile = {
+    is_admin: false,
+    is_active: true,
+    email: "profile@example.com",
+    firstName: "Test",
+    lastName: "Customer",
+    nickname: "",
+    gender: "",
+    dateOfBirth: "",
+    countryIso: "IN",
+    countryFlag: "🇮🇳",
+    countryDialCode: "+91",
+    mobileNumber: "+919999999999",
+    updatedAt: Date.now(),
+    profileCompletionRequired: false
+  };
+  await assertSucceeds(setDoc(doc(db, "customers", "profile-user"), profile));
+  await assertFails(setDoc(doc(db, "customers", "injected-user"), {
+    ...profile,
+    is_admin: true,
+    is_active: true
+  }));
+});
+
+test("customers can edit own profile but cannot change role or status", async () => {
+  const db = testEnv.authenticatedContext("profile-user").firestore();
+  await testEnv.withSecurityRulesDisabled(async context => {
+    await setDoc(doc(context.firestore(), "customers", "profile-user"), {
+      is_admin: false, is_active: true, email: "old@example.com"
+    });
+  });
+  const ref = doc(db, "customers", "profile-user");
+  await assertSucceeds(setDoc(ref, { firstName: "Updated" }, { merge: true }));
+  await assertFails(setDoc(ref, { is_admin: true }, { merge: true }));
+  await assertFails(setDoc(ref, { is_active: false }, { merge: true }));
+  await assertFails(setDoc(ref, { unexpectedRole: "owner" }, { merge: true }));
+});
+
+test("admins can edit customer details and active status but cannot grant admin role", async () => {
+  await seedAdmin();
+  await testEnv.withSecurityRulesDisabled(async context => {
+    await setDoc(doc(context.firestore(), "customers", "target-user"), {
+      is_admin: false, is_active: true, firstName: "Original"
+    });
+  });
+  const db = testEnv.authenticatedContext("admin-user").firestore();
+  const target = doc(db, "customers", "target-user");
+  await assertSucceeds(setDoc(target, { firstName: "Edited", updatedAt: Date.now() }, { merge: true }));
+  await assertSucceeds(setDoc(target, { is_active: false, updatedAt: Date.now() }, { merge: true }));
+  await assertFails(setDoc(target, { is_admin: true }, { merge: true }));
+});
