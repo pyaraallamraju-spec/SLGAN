@@ -40,20 +40,33 @@ service cloud.firestore {
 
       allow create: if request.auth != null
         && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly([
+          'is_admin', 'is_active', 'email', 'firstName', 'lastName',
+          'nickname', 'gender', 'dateOfBirth', 'countryIso', 'countryFlag',
+          'countryDialCode', 'mobileNumber', 'updatedAt',
+          'profileCompletionRequired'
+        ])
         && request.resource.data.is_admin == false
         && request.resource.data.is_active == true;
 
       allow update: if request.auth != null && (
-        // Verified admins may change only is_active and updatedAt.
+        // Trusted admins may edit customer profile fields and account status,
+        // but can never change the protected administrator role.
         (isAdmin()
-          && request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['is_active', 'updatedAt'])
-          && request.resource.data.is_active is bool)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            'is_active', 'updatedAt', 'firstName', 'lastName', 'nickname',
+            'email', 'mobileNumber', 'countryCode', 'countryIso', 'gender'
+          ])
+          && (!('is_active' in request.resource.data)
+            || request.resource.data.is_active is bool))
         ||
-        // Customers may update their own profile, but not their role or status.
+        // Customers may edit only their own supported profile fields.
         (request.auth.uid == userId
-          && !request.resource.data.diff(resource.data).affectedKeys()
-            .hasAny(['is_admin', 'is_active', 'enabled'])
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            'email', 'firstName', 'lastName', 'nickname', 'gender',
+            'dateOfBirth', 'countryIso', 'countryFlag', 'countryDialCode',
+            'mobileNumber', 'updatedAt', 'profileCompletionRequired'
+          ])
           && (
             (!('is_admin' in resource.data)
               && request.resource.data.is_admin == false)
