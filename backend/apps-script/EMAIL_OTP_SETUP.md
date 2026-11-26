@@ -26,6 +26,12 @@ Do not place the service-account JSON in Gradle properties, GitHub source, or th
 
 The Apps Script creates a Firebase custom token whose UID is the normalized email address. Firebase Auth therefore creates/uses that UID for email-OTP sign-in; it does not automatically merge it with a separately-created email/password account that already has a different UID. Users who already have an email/password account should continue to use that method unless an account-linking/migration flow is implemented deliberately. Google Sign-In, email/password, and phone OTP code paths are otherwise retained.
 
+## Firebase UID consistency
+
+Before issuing an email-OTP custom token, the Apps Script looks up the verified email in Firebase Authentication and uses the existing Firebase UID when an account already exists. This keeps OTP sign-in attached to the same customer profile, orders, ratings and saved addresses as Email/Password or Google sign-in. If no Firebase Auth user exists yet, the existing email-derived UID convention is retained for a new OTP-only account.
+
+After changing `EmailOtp.gs`, redeploy the Apps Script Web App as a new version. GitHub changes do not update the deployed Apps Script automatically. Test with an email that already has an Email/Password account and confirm the signed-in UID is unchanged.
+
 ## Security notes
 
 - Never return the OTP itself from the endpoint.
