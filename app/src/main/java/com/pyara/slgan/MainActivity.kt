@@ -3670,7 +3670,7 @@ private fun LoginScreen(
                     onValueChange = onEmailOtpCodeChange,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
                     placeholder = { Text(tr("Enter 6-digit email code", LocalAppLanguage.current)) },
-                    leadingIcon = { Icon(Icons.Default.MarkEmailRead, contentDescription = null) },
+                    leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
                     shape = RoundedCornerShape(12.dp)
