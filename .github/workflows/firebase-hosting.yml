@@ -1,12 +1,6 @@
 name: Deploy SLGAN Firebase Hosting
 on:
-  push:
-    branches: [main]
-    paths:
-      - "public/**"
-      - "firebase.json"
-      - "firestore.rules"
-      - ".github/workflows/firebase-hosting.yml"
+  # Production Hosting and Firestore rules deployment is manual-only.
   workflow_dispatch:
     inputs:
       confirm_production_deploy:
