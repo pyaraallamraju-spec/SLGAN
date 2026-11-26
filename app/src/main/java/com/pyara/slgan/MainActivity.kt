@@ -2581,7 +2581,8 @@ private fun AyurvedicApp() {
                         auth.signOut()
                     } else {
                         isAdmin = snapshot?.getBoolean("is_admin") == true
-                        googleProfileCompletionRequired = snapshot?.getBoolean("profileCompletionRequired") == true
+                        googleProfileCompletionRequired = user.providerData.any { it.providerId == "google.com" } &&
+                            snapshot?.getBoolean("profileCompletionRequired") == true
                         adminRoleResolved = true
                     }
                 }
