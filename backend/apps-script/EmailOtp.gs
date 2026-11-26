@@ -52,12 +52,13 @@ const IDENTITY_TOOLKIT_PROJECTS_URL = "https://identitytoolkit.googleapis.com/v1
  * accounts so callers cannot use it to enumerate registered email addresses.
  */
 function sendBrandedPasswordReset(email, userIp) {
-  if (!userIp || userIp.length > 64 || !/^[0-9a-fA-F:.]+$/.test(userIp)) {
-    console.error("Password reset rejected: caller IP missing or invalid.");
-    return json({ ok: false, message: "Could not verify the network address. Please try again." });
+  // userIp is optional. The Android client must not depend on a third-party IP lookup.
+  if (userIp && (userIp.length > 64 || !/^[0-9a-fA-F:.]+$/.test(userIp))) {
+    console.error("Password reset rejected: supplied caller IP is invalid.");
+    return json({ ok: false, message: "The password reset request could not be validated." });
   }
 
-  console.log("Password reset request received; caller IP supplied.");
+  console.log("Password reset request received.");
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
@@ -183,7 +184,7 @@ function generateFirebasePasswordResetLink(email, userIp) {
     payload: JSON.stringify({
       requestType: "PASSWORD_RESET",
       email: email,
-      userIp: userIp,
+      ...(userIp ? { userIp: userIp } : {}),
       returnOobLink: true
     }),
     muteHttpExceptions: true
