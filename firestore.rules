@@ -134,6 +134,10 @@ service cloud.firestore {
     match /productRatings/{ratingId} {
       allow read: if true;
       allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly([
+          'productId', 'productName', 'userId', 'userName',
+          'rating', 'review', 'createdAt', 'updatedAt'
+        ])
         && request.resource.data.userId == request.auth.uid
         && request.resource.data.productId is string
         && request.resource.data.productId.size() > 0
@@ -168,6 +172,9 @@ service cloud.firestore {
     match /productLikes/{likeId} {
       allow read: if true;
       allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly([
+          'productId', 'productName', 'userId', 'createdAt'
+        ])
         && request.resource.data.userId == request.auth.uid
         && request.resource.data.productId is string
         && request.resource.data.productId.size() > 0
