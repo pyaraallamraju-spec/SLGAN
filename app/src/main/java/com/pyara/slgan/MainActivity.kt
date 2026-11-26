@@ -3649,6 +3649,43 @@ private fun LoginScreen(
                 }
             }
         }
+
+        if (!isCreatingAccount) {
+            Spacer(Modifier.height(4.dp))
+            TextButton(
+                onClick = onSendEmailOtp,
+                enabled = !loading && value.contains("@") && value.contains("."),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                Text(
+                    tr("Sign in with email OTP", LocalAppLanguage.current),
+                    color = Forest,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp
+                )
+            }
+            if (emailOtpSent) {
+                OutlinedTextField(
+                    value = emailOtpCode,
+                    onValueChange = onEmailOtpCodeChange,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp),
+                    placeholder = { Text(tr("Enter 6-digit email code", LocalAppLanguage.current)) },
+                    leadingIcon = { Icon(Icons.Default.MarkEmailRead, contentDescription = null) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                    shape = RoundedCornerShape(12.dp)
+                )
+                Button(
+                    onClick = onVerifyEmailOtp,
+                    enabled = !loading && emailOtpCode.length == 6,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp).height(48.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Forest),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(tr("Verify code & sign in", LocalAppLanguage.current), fontWeight = FontWeight.Bold)
+                }
+            }
+        }
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 3.dp),
             verticalAlignment = Alignment.CenterVertically
