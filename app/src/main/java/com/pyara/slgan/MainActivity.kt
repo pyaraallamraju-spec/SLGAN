@@ -142,7 +142,7 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-private fun saveSlganFcmToken(uid: String, token: String) {
+internal fun saveSlganFcmToken(uid: String, token: String) {
     if (uid.isBlank() || token.isBlank()) return
     FirebaseFirestore.getInstance().collection("customers").document(uid)
         .update(
@@ -10912,22 +10912,21 @@ private fun AccountsPage(
                 if (!snapshot.contains("notificationsEnabled")) {
                     snapshot.reference.update("notificationsEnabled", true)
                 }
-                if (notificationsEnabled &&
-                    (Build.VERSION.SDK_INT < 33 || context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED)
-                ) {
-                    FirebaseMessaging.getInstance().token.addOnSuccessListener { saveSlganFcmToken(uid, it) }
+                if (notificationsEnabled) {
+                    if (Build.VERSION.SDK_INT < 33 ||
+                        context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        FirebaseMessaging.getInstance().token.addOnSuccessListener { saveSlganFcmToken(uid, it) }
+                    } else {
+                        val prefs = context.getSharedPreferences("slgan_notification_preferences", android.content.Context.MODE_PRIVATE)
+                        val promptKey = "permission_prompted_$uid"
+                        if (!prefs.getBoolean(promptKey, false)) {
+                            prefs.edit().putBoolean(promptKey, true).apply()
+                            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    }
                 }
             }
-        if (Build.VERSION.SDK_INT >= 33 &&
-            context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val prefs = context.getSharedPreferences("slgan_notification_preferences", android.content.Context.MODE_PRIVATE)
-            val promptKey = "permission_prompted_$uid"
-            if (!prefs.getBoolean(promptKey, false)) {
-                prefs.edit().putBoolean(promptKey, true).apply()
-                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
     }
     val profileImagePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri == null || user == null) return@rememberLauncherForActivityResult
