@@ -2,15 +2,25 @@ name: Migrate product stock field
 
 on:
   workflow_dispatch:
+    inputs:
+      confirm_live_migration:
+        description: "Type YES to modify the live Firestore products collection"
+        required: true
+        type: choice
+        options:
+          - "NO"
+          - "YES"
+        default: "NO"
 
 permissions:
   contents: read
 
 jobs:
   migrate-product-stock:
+    if: github.ref == 'refs/heads/main' && inputs.confirm_live_migration == 'YES'
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out source
         uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
