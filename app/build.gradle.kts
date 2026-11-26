@@ -53,6 +53,7 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:6.4.1")
     implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-storage")
