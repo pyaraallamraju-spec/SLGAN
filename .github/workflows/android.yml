@@ -80,6 +80,11 @@ jobs:
             echo "GOOGLE_MAPS_API_KEY is not configured; building with an empty Maps key for compile verification."
           fi
           SLGAN_DEBUG_KEYSTORE="$HOME/.android/debug.keystore" gradle assembleDebug
+      - name: Build optimized release APK (develop manual runs only)
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        run: SLGAN_DEBUG_KEYSTORE="$HOME/.android/debug.keystore" gradle assembleRelease
       - name: Verify APK uses the persistent debug signing key
         run: |
           APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)"
@@ -92,6 +97,23 @@ jobs:
             exit 1
           fi
           echo "Verified: APK uses the persistent SLGAN debug signing key."
+      - name: Verify optimized release APK uses the same signing identity
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
+        run: |
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)"
+          KEY_SHA1="$(keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey | awk '/SHA1:/{print toupper($2); exit}' | tr -d ':')"
+          APK_SHA1="$("$APKSIGNER" verify --print-certs app/build/outputs/apk/release/app-release.apk | awk '/certificate SHA-1 digest:/{print toupper($NF); exit}' | tr -d ':')"
+          echo "Persistent key SHA-1: $KEY_SHA1"
+          echo "Release APK SHA-1:    $APK_SHA1"
+          test -n "$KEY_SHA1" && test "$KEY_SHA1" = "$APK_SHA1"
+      - name: Upload optimized release APK artifact
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
+        uses: actions/upload-artifact@v4
+        with:
+          name: SLGAN-Optimized-Release-APK
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 30
       - name: Rename APK to SLGAN.apk
         run: cp app/build/outputs/apk/debug/app-debug.apk SLGAN.apk
       - name: Upload debug APK artifact
