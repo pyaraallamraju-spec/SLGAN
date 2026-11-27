@@ -11790,7 +11790,7 @@ private fun AddressBookPage(modifier: Modifier, onBack: () -> Unit) {
                         },
                         shape = RoundedCornerShape(20.dp),
                         colors = CardDefaults.cardColors(containerColor = appThemedColor(Color.White)),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
                     ) {
                         Row(
                             Modifier.fillMaxWidth().padding(12.dp),
