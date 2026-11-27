@@ -81,7 +81,7 @@ jobs:
           fi
           SLGAN_DEBUG_KEYSTORE="$HOME/.android/debug.keystore" gradle assembleDebug
       - name: Build optimized release APK (develop manual runs only)
-        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop'
         env:
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: SLGAN_DEBUG_KEYSTORE="$HOME/.android/debug.keystore" gradle assembleRelease
@@ -98,7 +98,7 @@ jobs:
           fi
           echo "Verified: APK uses the persistent SLGAN debug signing key."
       - name: Verify optimized release APK uses the same signing identity
-        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop'
         run: |
           APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -n 1)"
           KEY_SHA1="$(keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey | awk '/SHA1:/{print toupper($2); exit}' | tr -d ':')"
@@ -107,7 +107,7 @@ jobs:
           echo "Release APK SHA-1:    $APK_SHA1"
           test -n "$KEY_SHA1" && test "$KEY_SHA1" = "$APK_SHA1"
       - name: Upload optimized release APK artifact
-        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop'
         uses: actions/upload-artifact@v4
         with:
           name: SLGAN-Optimized-Release-APK
@@ -124,7 +124,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Publish direct APK download on the develop channel
-        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: develop-latest
